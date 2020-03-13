@@ -13,15 +13,24 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        testOptions {
+            execution 'ANDROIDX_TEST_ORCHESTRATOR'
+            animationsDisabled true
+            unitTests.all {
+                testLogging.events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+            }
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            testCoverageEnabled false
         }
         debug {
-            testCoverageEnabled true;
+            testCoverageEnabled true
         }
     }
     compileOptions {
@@ -31,6 +40,14 @@ android {
 
     viewBinding.enabled = true
 
+}
+
+jacoco {
+    toolVersion '0.8.5'
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
 }
 
 dependencies {
@@ -45,6 +62,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestUtil 'androidx.test:orchestrator:1.2.0'
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
