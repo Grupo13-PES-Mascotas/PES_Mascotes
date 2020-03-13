@@ -26,7 +26,6 @@ jobs:
       run: |
               cd .github/scripts
               ls -l
-              chmod -x decrypt_key.sh
               ./decrypt_key.sh
       env:
         RELEASE_PASSPHRASE: ${{ secrets.RELEASE_PASSPHRASE }}
