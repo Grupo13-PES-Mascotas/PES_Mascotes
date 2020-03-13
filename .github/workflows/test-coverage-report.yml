@@ -24,9 +24,9 @@ jobs:
     
     - name: Decrypt release secret
       run: |
-              cd .github/scripts
-              ls -l
-              ./decrypt_key.sh
+        pwd
+        ls -l
+        ./.github/scripts/decrypt_key.sh
       env:
         RELEASE_PASSPHRASE: ${{ secrets.RELEASE_PASSPHRASE }}
     
