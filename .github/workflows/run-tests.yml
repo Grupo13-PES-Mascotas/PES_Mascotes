@@ -15,9 +15,7 @@ jobs:
     
     steps:
       - name: Decrypt release secret
-        run: |
-          ls -l
-          ./.github/scripts/decrypt_secret.sh
+        run: ./.github/scripts/decrypt_secret.sh
         env:
          RELEASE_PASSPHRASE: ${{ secrets.RELEASE_PASSPHRASE }}
   
