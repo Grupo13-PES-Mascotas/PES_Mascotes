@@ -23,7 +23,11 @@ jobs:
         java-version: 1.8
     
     - name: Decrypt release secret
-      run: ./.github/scripts/decrypt_key.sh
+      run: |
+              cd .github/scripts
+              ls -l
+              chmod -x decrypt_key.sh
+              ./decrypt_key.sh
       env:
         RELEASE_PASSPHRASE: ${{ secrets.RELEASE_PASSPHRASE }}
     
