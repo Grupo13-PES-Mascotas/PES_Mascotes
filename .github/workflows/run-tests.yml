@@ -9,9 +9,22 @@ on:
     branches: [ master, develop ]
 
 jobs:
+  
+  decrypt:
+    runs-on: [ubuntu-latest]
+    
+    steps:
+      - name: Decrypt release secret
+        run: |
+          ls -l
+          ./.github/scripts/decrypt_secret.sh
+        env:
+         RELEASE_PASSPHRASE: ${{ secrets.RELEASE_PASSPHRASE }}
+  
   unit-tests:
 
     runs-on: ubuntu-latest
+    needs: [decrypt]
 
     steps:
     - name: checkout
@@ -31,6 +44,7 @@ jobs:
   instrumental-tests:
     
     runs-on: macos-latest
+    needs: [decrypt]
     
     steps:
     - name: checkout
