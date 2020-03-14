@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigationMyPets"
+            android:icon="@drawable/paw_icon"
+            android:title="@string/navigation_my_pets"/>
+        <item
+            android:id="@+id/navigationPetsCommunity"
+            android:icon="@drawable/xat_icon"
+            android:title="@string/navigation_pets_community"/>
+        <item
+            android:id="@+id/navigationMyWalks"
+            android:icon="@drawable/walks_icon"
+            android:title="@string/navigation_my_walks"/>
+        <item
+            android:id="@+id/navigationNearEstablishments"
+            android:icon="@drawable/place_icon"
+            android:title="@string/navigation_near_establishments"/>
+        <item
+            android:id="@+id/navigationCalendar"
+            android:icon="@drawable/calendar_icon"
+            android:title="@string/navigation_calendar"/>
+        <item
+            android:id="@+id/navigationAchievements"
+            android:icon="@drawable/medal_icon"
+            android:title="@string/navigation_achievements"/>
+        <item
+            android:id="@+id/navigationSettings"
+            android:icon="@drawable/settings_icon"
+            android:title="@string/navigation_settings"/>
+    </group>
+</menu>
