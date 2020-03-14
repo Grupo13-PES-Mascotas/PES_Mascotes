@@ -35,5 +35,13 @@
     <style name="headerText" parent="boldText">
         <item name="android:textSize">20sp</item>
     </style>
+    
+    <style name="profileText" parent="boldText">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="profileLocation" parent="plainText">
+        <item name="android:textSize">18sp</item>
+    </style>
 
 </resources>
