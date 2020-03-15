@@ -4,7 +4,8 @@
         <item
             android:id="@+id/navigationMyPets"
             android:icon="@drawable/paw_icon"
-            android:title="@string/navigation_my_pets"/>
+            android:title="@string/navigation_my_pets"
+            android:checked="true"/>
         <item
             android:id="@+id/navigationPetsCommunity"
             android:icon="@drawable/xat_icon"
