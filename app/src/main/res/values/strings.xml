@@ -9,4 +9,7 @@
     <string name="navigation_settings">Settings</string>
     <string name="defaultName">John Doe</string>
     <string name="defaultEmail">johndoe@gmail.com</string>
+    <!-- The next two strings cannot be translated into any other language -->
+    <string name="navigation_view_open">Open</string>
+    <string name="navigation_view_closed">Closed</string>
 </resources>
