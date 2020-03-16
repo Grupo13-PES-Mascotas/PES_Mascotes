@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Initialize the views of this activity
+     * Initialize the views of this activity.
      */
     private void initializeActivity() {
         drawerLayout = binding.activityMainDrawerLayout;
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets the first fragment to appear when loading the application for the first time
+     * Sets the first fragment to appear when loading the application for the first time.
      */
     private void setStartFragment() {
         Fragment startFragment = getFragment(APPLICATION_FRAGMENTS[0]);
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets up the navigation drawer of the application
+     * Sets up the navigation drawer of the application.
      */
     private void setUpNavigationDrawer() {
         navigationView.setNavigationItemSelectedListener(item -> {
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Given a fragment class, if the class exists then an instance of it is returned. Otherwise, returns null
+     * Given a fragment class, if the class exists then an instance of it is returned. Otherwise, returns null.
      * @param fragmentClass Fragment class to create an instance of which
      * @return An instance of the fragmentClass if it exists or null otherwise
      */
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Change the current fragment to the one specified
+     * Change the current fragment to the one specified.
      * @param nextFragment Fragment to replace the current one
      */
     private void changeFragment(Fragment nextFragment) {
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Given an id of a menu item, it returns the fragment to which the id is associated with
+     * Given an id of a menu item, it returns the fragment to which the id is associated with.
      * @param menuItemId The selected menu id
      * @return The fragment associated with menuItemId
      */
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Initializes the action bar of the application
+     * Initializes the action bar of the application.
      */
     private void initializeActionbar() {
         toolbar = getSupportActionBar();
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Initializes the action drawer toggle of the navigation drawer
+     * Initializes the action drawer toggle of the navigation drawer.
      */
     private void initializeActionDrawerToggle() {
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,

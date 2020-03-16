@@ -23,7 +23,7 @@ public class CircularImageView extends AppCompatImageView {
     }
 
     /**
-     * Sets the image to be displayed, given its resource id
+     * Sets the image to be displayed, given its resource id.
      * @param imageResourceId Resource id of the image to be displayed
      */
     public void setImage(int imageResourceId) {
@@ -32,7 +32,7 @@ public class CircularImageView extends AppCompatImageView {
     }
 
     /**
-     * Sets the image to be displayed, given its bitmap
+     * Sets the image to be displayed, given its bitmap.
      * @param bitmap Bitmap of the image to be displayed
      */
     public void setImage(Bitmap bitmap) {
