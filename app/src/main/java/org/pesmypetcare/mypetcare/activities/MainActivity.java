@@ -1,5 +1,8 @@
 package org.pesmypetcare.mypetcare.activities;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -7,13 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
-import android.os.Bundle;
-import android.view.MenuItem;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 
 import java.util.Objects;
@@ -24,13 +26,15 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private ActionBar toolbar;
     private NavigationView navigationView;
-    private final int[] NAVIGATION_OPTIONS = new int[] {
-        R.id.navigationMyPets, R.id.navigationPetsCommunity, R.id.navigationMyWalks, R.id.navigationNearEstablishments,
-        R.id.navigationCalendar, R.id.navigationAchievements, R.id.navigationSettings
+    private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
+        R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
+        R.id.navigationAchievements, R.id.navigationSettings
     };
 
-    private final Class[] APPLICATION_FRAGMENTS = new Class[] {
-
+    private static final Class[] APPLICATION_FRAGMENTS = {
+        NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        NotImplementedFragment.class
     };
 
     @Override
@@ -49,14 +53,18 @@ public class MainActivity extends AppCompatActivity {
         initializeActionDrawerToggle();
         initializeActionbar();
         setUpNavigationDrawer();
+        setStartFragment();
     }
 
+    private void setStartFragment() {
+        Fragment startFragment = getFragment(APPLICATION_FRAGMENTS[0]);
+        changeFragment(startFragment);
+    }
 
     private void setUpNavigationDrawer() {
         navigationView.setNavigationItemSelectedListener(item -> {
-            //Fragment nextFragment = findNextFragment(menuItem.getItemId());
-            //FragmentManager fragmentManager = getSupportFragmentManager();
-            //fragmentManager.beginTransaction().replace(R.id.mainActivityFragment, nextFragment).commit();
+            Fragment nextFragment = findNextFragment(item.getItemId());
+            changeFragment(nextFragment);
 
             item.setChecked(true);
             toolbar.setTitle(item.getTitle());
@@ -65,24 +73,36 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private Fragment getFragment(Class fragmentClass) {
+        Fragment fragment = null;
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+        }
+
+        return fragment;
+    }
+
+    private void changeFragment(Fragment nextFragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment);
+        fragmentTransaction.commit();
+    }
+
     private Fragment findNextFragment(int itemId) {
         int index = 0;
         while (index < NAVIGATION_OPTIONS.length && NAVIGATION_OPTIONS[index] != itemId) {
             ++index;
         }
 
-        Fragment nextFragment = null;
-        try {
-            nextFragment = (Fragment) APPLICATION_FRAGMENTS[index].newInstance();
-        } catch (IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
-        }
-
-        return nextFragment;
+        return getFragment(APPLICATION_FRAGMENTS[index]);
     }
 
     private void initializeActionbar() {
         toolbar = getSupportActionBar();
+        Objects.requireNonNull(toolbar).show();
         Objects.requireNonNull(toolbar).setTitle(R.string.navigation_my_pets);
         toolbar.setDisplayHomeAsUpEnabled(true);
     }
