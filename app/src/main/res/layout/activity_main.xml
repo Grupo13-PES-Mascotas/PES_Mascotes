@@ -23,7 +23,6 @@
         app:itemIconTint="@color/white"
         app:menu="@menu/navigation_drawer_menu"
         app:headerLayout="@layout/navigation_drawer_header">
-
     </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

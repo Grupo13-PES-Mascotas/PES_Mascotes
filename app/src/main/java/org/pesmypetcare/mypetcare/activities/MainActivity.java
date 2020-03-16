@@ -21,11 +21,6 @@ import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding binding;
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
-    private ActionBar toolbar;
-    private NavigationView navigationView;
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
@@ -37,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
         NotImplementedFragment.class
     };
 
+    private ActivityMainBinding binding;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private ActionBar toolbar;
+    private NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
         initializeActivity();
     }
 
+    /**
+     * Initialize the views of this activity
+     */
     private void initializeActivity() {
         drawerLayout = binding.activityMainDrawerLayout;
         navigationView = binding.navigationView;
@@ -56,11 +60,17 @@ public class MainActivity extends AppCompatActivity {
         setStartFragment();
     }
 
+    /**
+     * Sets the first fragment to appear when loading the application for the first time
+     */
     private void setStartFragment() {
         Fragment startFragment = getFragment(APPLICATION_FRAGMENTS[0]);
         changeFragment(startFragment);
     }
 
+    /**
+     * Sets up the navigation drawer of the application
+     */
     private void setUpNavigationDrawer() {
         navigationView.setNavigationItemSelectedListener(item -> {
             Fragment nextFragment = findNextFragment(item.getItemId());
@@ -73,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Given a fragment class, if the class exists then an instance of it is returned. Otherwise, returns null
+     * @param fragmentClass Fragment class to create an instance of which
+     * @return An instance of the fragmentClass if it exists or null otherwise
+     */
     private Fragment getFragment(Class fragmentClass) {
         Fragment fragment = null;
         try {
@@ -84,6 +99,10 @@ public class MainActivity extends AppCompatActivity {
         return fragment;
     }
 
+    /**
+     * Change the current fragment to the one specified
+     * @param nextFragment Fragment to replace the current one
+     */
     private void changeFragment(Fragment nextFragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -91,15 +110,23 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private Fragment findNextFragment(int itemId) {
+    /**
+     * Given an id of a menu item, it returns the fragment to which the id is associated with
+     * @param menuItemId The selected menu id
+     * @return The fragment associated with menuItemId
+     */
+    private Fragment findNextFragment(int menuItemId) {
         int index = 0;
-        while (index < NAVIGATION_OPTIONS.length && NAVIGATION_OPTIONS[index] != itemId) {
+        while (index < NAVIGATION_OPTIONS.length && NAVIGATION_OPTIONS[index] != menuItemId) {
             ++index;
         }
 
         return getFragment(APPLICATION_FRAGMENTS[index]);
     }
 
+    /**
+     * Initializes the action bar of the application
+     */
     private void initializeActionbar() {
         toolbar = getSupportActionBar();
         Objects.requireNonNull(toolbar).show();
@@ -107,13 +134,15 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setDisplayHomeAsUpEnabled(true);
     }
 
+    /**
+     * Initializes the action drawer toggle of the navigation drawer
+     */
     private void initializeActionDrawerToggle() {
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
             R.string.navigation_view_open, R.string.navigation_view_closed);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
     }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

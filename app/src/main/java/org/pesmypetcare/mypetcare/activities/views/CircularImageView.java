@@ -22,11 +22,19 @@ public class CircularImageView extends AppCompatImageView {
         }
     }
 
+    /**
+     * Sets the image to be displayed, given its resource id
+     * @param imageResourceId Resource id of the image to be displayed
+     */
     public void setImage(int imageResourceId) {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imageResourceId);
         setImage(bitmap);
     }
 
+    /**
+     * Sets the image to be displayed, given its bitmap
+     * @param bitmap Bitmap of the image to be displayed
+     */
     public void setImage(Bitmap bitmap) {
         RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
         roundedBitmap.setCircular(true);
