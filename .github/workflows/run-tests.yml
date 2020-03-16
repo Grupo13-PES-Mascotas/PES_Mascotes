@@ -10,19 +10,9 @@ on:
 
 jobs:
   
-  decrypt:
-    runs-on: [ubuntu-latest]
-    
-    steps:
-      - name: Decrypt release secret
-        run: ./.github/scripts/decrypt_secret.sh
-        env:
-         RELEASE_PASSPHRASE: ${{ secrets.RELEASE_PASSPHRASE }}
-  
   unit-tests:
 
     runs-on: ubuntu-latest
-    needs: [decrypt]
 
     steps:
     - name: checkout
@@ -32,6 +22,11 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+        
+    - name: Decrypt release secret
+      run: ./.github/scripts/decrypt_key.sh
+      env:
+        RELEASE_PASSPHRASE: ${{ secrets.RELEASE_PASSPHRASE }}
     
     - name: grant execution to gradlew
       run: chmod +x ./gradlew
@@ -42,7 +37,6 @@ jobs:
   instrumental-tests:
     
     runs-on: macos-latest
-    needs: [decrypt]
     
     steps:
     - name: checkout
@@ -52,6 +46,11 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    
+    - name: Decrypt release secret
+      run: ./.github/scripts/decrypt_key.sh
+      env:
+        RELEASE_PASSPHRASE: ${{ secrets.RELEASE_PASSPHRASE }}
     
     - name: grant execution to gradlew
       run: chmod +x ./gradlew
