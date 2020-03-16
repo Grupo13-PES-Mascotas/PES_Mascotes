@@ -16,6 +16,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.registerpet.MainPetInfoFragment;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 
 import java.util.Objects;
@@ -57,7 +58,9 @@ public class MainActivity extends AppCompatActivity {
         initializeActionDrawerToggle();
         initializeActionbar();
         setUpNavigationDrawer();
-        setStartFragment();
+        //setStartFragment();
+
+        changeFragment(getFragment(MainPetInfoFragment.class));
     }
 
     /**
