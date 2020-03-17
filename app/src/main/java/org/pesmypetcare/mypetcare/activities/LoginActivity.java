@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Initializes the fragment and the listeners of the activity
+     * Initializes the fragment and the listeners of the activity.
      */
     private void initializeActivity() {
         replaceFragment(new SignUpFragment());
@@ -52,22 +52,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Selects the new fragment and replaces the old one
+     * Selects the new fragment and replaces the old one.
      * @param tab The container of the tab
      */
     private void fragmentSelector(TabLayout.Tab tab) {
         Fragment fragment;
         if (tab.getPosition() == 0) {
             fragment = new SignUpFragment();
-        }
-        else {
+        } else {
             fragment = new LogInFragment();
         }
         replaceFragment(fragment);
     }
 
     /**
-     * Replaces the current fragment of the view
+     * Replaces the current fragment of the view.
      * @param fragment The new fragment to display in the activity
      */
     private void replaceFragment(Fragment fragment) {

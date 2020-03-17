@@ -11,21 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import org.pesmypetcare.mypetcare.databinding.FragmentLogInBinding;
+import org.pesmypetcare.mypetcare.databinding.FragmentSignUpBinding;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class LogInFragment extends Fragment {
-    private FragmentLogInBinding binding;
-    public LogInFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentLogInBinding.inflate(inflater, container, false);
+        FragmentLogInBinding binding = FragmentLogInBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         binding.loginButton.setOnClickListener(v -> {
             Toast toast1 = Toast.makeText(getActivity(), "Has premut el botó", Toast.LENGTH_LONG);
