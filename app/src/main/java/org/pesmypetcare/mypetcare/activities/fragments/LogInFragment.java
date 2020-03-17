@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import org.pesmypetcare.mypetcare.databinding.FragmentLogInBinding;
-import org.pesmypetcare.mypetcare.databinding.FragmentSignUpBinding;
 
 /**
  * A simple {@link Fragment} subclass.
