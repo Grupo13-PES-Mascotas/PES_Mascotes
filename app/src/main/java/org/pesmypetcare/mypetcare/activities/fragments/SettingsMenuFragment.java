@@ -22,12 +22,6 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentSettingsMenuBinding binding = FragmentSettingsMenuBinding.inflate(getLayoutInflater());
-        ArrayAdapter<CharSequence> languages;
-        languages = ArrayAdapter.createFromResource(Objects.requireNonNull(getActivity()).getApplicationContext(),
-                R.array.Languages, android.R.layout.simple_spinner_item);
-        languages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.idiomSelector.setAdapter(languages);
-        binding.idiomSelector.setOnItemSelectedListener(this);
         settingsOptionsListeners(binding);
         return binding.getRoot();
     }
@@ -36,7 +30,14 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
      * Initializes the listeners of the fragment.
      * @param binding The binding of the fragment
      */
-    private void settingsOptionsListeners(org.pesmypetcare.mypetcare.databinding.FragmentSettingsMenuBinding binding) {
+    private void settingsOptionsListeners(FragmentSettingsMenuBinding binding) {
+        ArrayAdapter<CharSequence> languages;
+        languages = ArrayAdapter.createFromResource(Objects.requireNonNull(getActivity()).getApplicationContext(),
+                R.array.Languages, android.R.layout.simple_spinner_item);
+        languages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.idiomSelector.setAdapter(languages);
+        binding.idiomSelector.setOnItemSelectedListener(this);
+
         binding.logoutButton.setOnClickListener(v -> Toast.makeText(getActivity(),
                 "Logout button clicked", Toast.LENGTH_LONG).show());
         binding.changepasswordButton.setOnClickListener(v -> Toast.makeText(getActivity(),
