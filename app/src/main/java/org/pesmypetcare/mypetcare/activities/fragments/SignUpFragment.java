@@ -35,11 +35,4 @@ public class SignUpFragment extends Fragment {
         });
         return view;
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
 }
