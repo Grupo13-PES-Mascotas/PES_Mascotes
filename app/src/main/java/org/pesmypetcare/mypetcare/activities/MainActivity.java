@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment);
         fragmentTransaction.commit();
+
     }
 
     /**
