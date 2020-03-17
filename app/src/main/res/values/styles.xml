@@ -36,6 +36,20 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="loginFields" parent="plainText">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColorHighlight">@color/colorPrimary</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
 
-
+    <style name="loginButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:textColor">@color/design_default_color_background</item>
+    </style>
 </resources>
