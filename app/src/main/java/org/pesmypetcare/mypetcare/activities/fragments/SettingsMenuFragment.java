@@ -22,7 +22,6 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         FragmentSettingsMenuBinding binding = FragmentSettingsMenuBinding.inflate(getLayoutInflater());
         ArrayAdapter<CharSequence> languages;
         languages = ArrayAdapter.createFromResource(Objects.requireNonNull(getActivity()).getApplicationContext(),
@@ -32,7 +31,6 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
         binding.idiomSelector.setOnItemSelectedListener(this);
         settingsOptionsListeners(binding);
         return binding.getRoot();
-
     }
 
     /**
