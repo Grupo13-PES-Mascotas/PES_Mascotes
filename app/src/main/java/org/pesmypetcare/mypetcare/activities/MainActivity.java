@@ -16,6 +16,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 
 import java.util.Objects;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private static final Class[] APPLICATION_FRAGMENTS = {
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
-        NotImplementedFragment.class
+        SettingsMenuFragment.class
     };
 
     private ActivityMainBinding binding;
