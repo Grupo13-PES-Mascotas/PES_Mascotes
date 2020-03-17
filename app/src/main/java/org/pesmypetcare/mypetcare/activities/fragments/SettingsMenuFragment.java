@@ -15,6 +15,9 @@ import org.pesmypetcare.mypetcare.databinding.FragmentSettingsMenuBinding;
 
 import java.util.Objects;
 
+/**
+ * A simple {@link Fragment} subclass.
+ */
 public class SettingsMenuFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     @Override
@@ -27,7 +30,20 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
         languages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.idiomSelector.setAdapter(languages);
         binding.idiomSelector.setOnItemSelectedListener(this);
+        settingsOptionsListeners(binding);
         return binding.getRoot();
+
+    }
+
+    /**
+     * Initializes the listeners of the fragment.
+     * @param binding The binding of the fragment
+     */
+    private void settingsOptionsListeners(org.pesmypetcare.mypetcare.databinding.FragmentSettingsMenuBinding binding) {
+        binding.logoutButton.setOnClickListener(v -> Toast.makeText(getActivity(),
+                "Logout button clicked", Toast.LENGTH_LONG).show());
+        binding.changepasswordButton.setOnClickListener(v -> Toast.makeText(getActivity(),
+                "Change Password button clicked", Toast.LENGTH_LONG).show());
     }
 
     @Override
@@ -38,6 +54,6 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        //
+        //Unused method for our current tab
     }
 }
