@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.activities.fragments;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
