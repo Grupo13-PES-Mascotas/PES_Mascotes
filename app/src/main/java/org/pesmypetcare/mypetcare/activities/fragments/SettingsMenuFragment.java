@@ -20,8 +20,9 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        org.pesmypetcare.mypetcare.databinding.FragmentSettingsMenuBinding binding = FragmentSettingsMenuBinding.inflate(getLayoutInflater());
-        ArrayAdapter<CharSequence> languages = ArrayAdapter.createFromResource(Objects.requireNonNull(getActivity()).getApplicationContext(),
+        FragmentSettingsMenuBinding binding = FragmentSettingsMenuBinding.inflate(getLayoutInflater());
+        ArrayAdapter<CharSequence> languages;
+        languages = ArrayAdapter.createFromResource(Objects.requireNonNull(getActivity()).getApplicationContext(),
                 R.array.Languages, android.R.layout.simple_spinner_item);
         languages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.idiomSelector.setAdapter(languages);
@@ -32,11 +33,11 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String text = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(),text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
+        //
     }
 }
