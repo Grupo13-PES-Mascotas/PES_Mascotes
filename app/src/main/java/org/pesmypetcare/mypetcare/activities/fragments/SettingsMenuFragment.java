@@ -40,14 +40,16 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
 
         binding.logoutButton.setOnClickListener(v -> Toast.makeText(getActivity(),
                 "Logout button clicked", Toast.LENGTH_LONG).show());
-        binding.changepasswordButton.setOnClickListener(v -> Toast.makeText(getActivity(),
+        binding.changePasswordButton.setOnClickListener(v -> Toast.makeText(getActivity(),
                 "Change Password button clicked", Toast.LENGTH_LONG).show());
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String text = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
+        if ( parent.getSelectedItemPosition() != 0) {
+            Toast.makeText(parent.getContext(), text + " is not implemented yet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
