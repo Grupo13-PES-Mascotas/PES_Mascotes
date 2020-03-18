@@ -1,4 +1,5 @@
 package org.pesmypetcare.mypetcare.activities.fragments;
+import android.app.Activity;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.NewPasswordInterface;
 import org.pesmypetcare.mypetcare.databinding.FragmentSettingsMenuBinding;
 
 import java.util.Objects;
@@ -22,7 +24,7 @@ import java.util.Objects;
  * A simple {@link Fragment} subclass.
  */
 public class SettingsMenuFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-    FragmentSettingsMenuBinding binding;
+    private FragmentSettingsMenuBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,7 +46,11 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
 
         binding.logoutButton.setOnClickListener(v -> Toast.makeText(getActivity(),
                 "Logout button clicked", Toast.LENGTH_LONG).show());
-        binding.changePasswordButton.setOnClickListener(v -> replaceFragment(new NewPassword()));
+        binding.changePasswordButton.setOnClickListener(v -> {
+            Activity thisActivity = getActivity();
+            assert thisActivity != null;
+            ((NewPasswordInterface)thisActivity).changeFragmentPass(new NewPassword());
+        });
     }
 
     @Override
@@ -58,18 +64,5 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         //Unused method for our current tab
-    }
-
-    /**
-     * Replaces the current fragment of the view.
-     * @param fragment The new fragment to display in the activity
-     */
-    private void replaceFragment(Fragment fragment) {
-
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.activityMainDrawerLayout, fragment);
-        fragmentTransaction.commit();
-
     }
 }
