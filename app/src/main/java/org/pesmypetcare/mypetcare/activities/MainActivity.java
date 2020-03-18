@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private static final Class[] APPLICATION_FRAGMENTS = {
-        NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        InfoPetFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class
     };
