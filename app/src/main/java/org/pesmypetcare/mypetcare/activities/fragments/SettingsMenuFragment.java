@@ -47,7 +47,7 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String text = parent.getItemAtPosition(position).toString();
-        if ( parent.getSelectedItemPosition() != 0) {
+        if (parent.getSelectedItemPosition() != 0) {
             Toast.makeText(parent.getContext(), text + " is not implemented yet", Toast.LENGTH_SHORT).show();
         }
     }
