@@ -2,11 +2,15 @@ package org.pesmypetcare.mypetcare.activities.fragments;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Toast;
 
 import org.pesmypetcare.mypetcare.R;
@@ -18,19 +22,19 @@ import java.util.Objects;
  * A simple {@link Fragment} subclass.
  */
 public class SettingsMenuFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+    FragmentSettingsMenuBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentSettingsMenuBinding binding = FragmentSettingsMenuBinding.inflate(getLayoutInflater());
-        settingsOptionsListeners(binding);
+        binding = FragmentSettingsMenuBinding.inflate(getLayoutInflater());
+        settingsOptionsListeners();
         return binding.getRoot();
     }
 
     /**
      * Initializes the listeners of the fragment.
-     * @param binding The binding of the fragment
      */
-    private void settingsOptionsListeners(FragmentSettingsMenuBinding binding) {
+    private void settingsOptionsListeners() {
         ArrayAdapter<CharSequence> languages;
         languages = ArrayAdapter.createFromResource(Objects.requireNonNull(getActivity()).getApplicationContext(),
                 R.array.Languages, android.R.layout.simple_spinner_item);
@@ -40,8 +44,7 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
 
         binding.logoutButton.setOnClickListener(v -> Toast.makeText(getActivity(),
                 "Logout button clicked", Toast.LENGTH_LONG).show());
-        binding.changePasswordButton.setOnClickListener(v -> Toast.makeText(getActivity(),
-                "Change Password button clicked", Toast.LENGTH_LONG).show());
+        binding.changePasswordButton.setOnClickListener(v -> replaceFragment(new NewPassword()));
     }
 
     @Override
@@ -55,5 +58,18 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         //Unused method for our current tab
+    }
+
+    /**
+     * Replaces the current fragment of the view.
+     * @param fragment The new fragment to display in the activity
+     */
+    private void replaceFragment(Fragment fragment) {
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.activityMainDrawerLayout, fragment);
+        fragmentTransaction.commit();
+
     }
 }
