@@ -33,7 +33,7 @@ public class NewPassword extends Fragment {
      */
     private void settingsOptionsListeners() {
         binding.confirmButton.setOnClickListener(v -> {
-            Toast.makeText(getActivity(),"Not implemented yet", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Not implemented yet", Toast.LENGTH_LONG).show();
             Activity thisActivity = getActivity();
             assert thisActivity != null;
             ((NewPasswordInterface) thisActivity).changeFragmentPass(new SettingsMenuFragment());

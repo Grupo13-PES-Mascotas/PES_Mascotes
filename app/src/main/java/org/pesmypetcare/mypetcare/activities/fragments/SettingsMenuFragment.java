@@ -3,15 +3,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Toast;
 
 import org.pesmypetcare.mypetcare.R;
@@ -49,7 +46,7 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
         binding.changePasswordButton.setOnClickListener(v -> {
             Activity thisActivity = getActivity();
             assert thisActivity != null;
-            ((NewPasswordInterface)thisActivity).changeFragmentPass(new NewPassword());
+            ((NewPasswordInterface) thisActivity).changeFragmentPass(new NewPassword());
         });
     }
 
