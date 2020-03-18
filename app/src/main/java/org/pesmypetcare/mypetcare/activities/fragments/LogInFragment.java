@@ -38,7 +38,7 @@ public class LogInFragment extends Fragment {
         binding.loginButton.setOnClickListener(v -> {
             email = Objects.requireNonNull(binding.loginUsernameText.getText()).toString();
             password = Objects.requireNonNull(binding.loginPasswordText.getText()).toString();
-            if ( !email.isEmpty() && !password.isEmpty() ) {
+            if (!email.isEmpty() && !password.isEmpty()) {
                 loginUser();
             } else {
                 Toast toast1 = Toast.makeText(getActivity(), "Incorrect entry", Toast.LENGTH_LONG);
@@ -53,8 +53,8 @@ public class LogInFragment extends Fragment {
     /**
      * Tries to initialize the current user.
      */
-    private void loginUser () {
-        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
+    private void loginUser() {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             System.out.println(email);
             System.out.println(password);
             if (task.isSuccessful()) {
