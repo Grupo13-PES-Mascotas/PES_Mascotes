@@ -14,4 +14,15 @@
     <string name="navigation_view_closed">Closed</string>
     <string name="not_implemented">This functionality is not implemented</string>
     <string name="input_pet_name">Name</string>
+    <string name="input_gender">Gender</string>
+    <string name="input_birth_date">Birth date</string>
+    <string name="input_breed">Breed</string>
+    <string name="input_weight">Weight (kg)</string>
+    <string name="input_recommended_calories">Recommended calories (kcal)</string>
+    <string name="input_wash_frequency">Wash frequency (days)</string>
+    <string name="input_pathologies">Pathologies</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="select_birth_date">Select birth date</string>
+    <string name="add_pet">Add pet</string>
 </resources>
