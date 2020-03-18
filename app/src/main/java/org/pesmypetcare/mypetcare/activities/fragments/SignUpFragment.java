@@ -24,20 +24,22 @@ import org.pesmypetcare.mypetcare.databinding.FragmentSignUpBinding;
  */
 public class SignUpFragment extends Fragment {
     private final int MIN_PASS_LENTGH = 6;
-    private TextInputEditText[] editTexts;
-    private TextInputLayout[] textInputLayouts;
+    private final int PASS_POSITION = 2;
+    private FragmentSignUpBinding binding;
+    private TextInputEditText[] editText;
+    private TextInputLayout [] inputLayout;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        FragmentSignUpBinding binding = FragmentSignUpBinding.inflate(inflater, container, false);
+        binding = FragmentSignUpBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        editTexts = new TextInputEditText[]{binding.signUpUsernameText, binding.signUpMailText,
-            binding.signUpPasswordText, binding.signUpRepPasswordText};
-        textInputLayouts = new TextInputLayout[]{binding.signUpUsernameLayout, binding.signUpMailLayout,
-            binding.signUpPasswordLayout, binding.signUpRepPasswordLayout};
-        binding.signupButton.setOnClickListener(v ->    {
+        editText = new TextInputEditText[] {binding.signUpUsernameText,
+            binding.signUpMailText, binding.signUpPasswordText, binding.signUpRepPasswordText};
+        inputLayout = new TextInputLayout[] {binding.signUpUsernameLayout,
+            binding.signUpMailLayout, binding.signUpPasswordLayout, binding.signUpRepPasswordLayout};
+        binding.signupButton.setOnClickListener(v -> {
             if (validateSignUp()) {
                 testToast();
             }
@@ -49,9 +51,9 @@ public class SignUpFragment extends Fragment {
      * Method used to test to functionality of the components of the interface
      */
     private void testToast() {
-        String username = editTexts[0].getText().toString();
-        String mail = editTexts[1].getText().toString();
-        String passwd = editTexts[2].getText().toString();
+        String username = binding.signUpUsernameText.getText().toString();
+        String mail = binding.signUpMailText.getText().toString();
+        String passwd = binding.signUpPasswordText.getText().toString();
         User test = new User(username, mail, passwd);
         Toast toast1 = Toast.makeText(getActivity(), "Username " + test.getUsername(), Toast.LENGTH_LONG);
         toast1.setGravity(Gravity.CENTER, 0, 0);
@@ -69,44 +71,65 @@ public class SignUpFragment extends Fragment {
      * @return True if the sign up was successful or false otherwise
      */
     private boolean validateSignUp() {
-        boolean returnValue = true;
-        for (TextInputEditText eT:editTexts) {
-            eT.setHintTextColor(getResources().getColor(R.color.colorPrimary));
-            eT.setTextColor(getResources().getColor(R.color.colorPrimary));
-            String text = eT.getText().toString();
-            if (text.equals("")) {
-                returnValue = emptyFieldHandler(eT);
-            } else if (eT == editTexts[2]) {
-                if (text.length() < MIN_PASS_LENTGH) {
-                    returnValue = shortPassHandler(eT, "Password is too short");
-                } else {
-                    returnValue = checkPassStrength(returnValue, eT, text);
-                }
-            } else if (eT == editTexts[3]) {
-                returnValue = diffPassHandler(returnValue, text);
+        resetFieldsStatus();
+        boolean [] emptyFields = new boolean[4];
+        boolean shortPass;
+        boolean weakPass;
+        boolean diffPass;
+        for (int i = 0; i < emptyFields.length; ++i) {
+            if ("".equals(editText[i].getText().toString())){
+                emptyFields[i] = true;
+                emptyFieldHandler(editText[i], inputLayout[i]);
             }
         }
-        return returnValue;
-    }
-
-    private boolean diffPassHandler(boolean returnValue, String text) {
-        if (!text.equals(editTexts[2].getText().toString())) {
-            returnValue = false;
-            editTexts[2].setText("");
-            editTexts[3].setText("");
-            textInputLayouts[2].setHelperText("Passwords do not match");
-            textInputLayouts[2].setHelperTextColor(ColorStateList.valueOf(Color.RED));
-            textInputLayouts[3].setHelperText("Passwords do not match");
-            textInputLayouts[3].setHelperTextColor(ColorStateList.valueOf(Color.RED));
+        if (!emptyFields[PASS_POSITION]) {
+            shortPass = shortPass();
+            if (!shortPass) {
+                weakPass = weakPass();
+                if(!weakPass) {
+                    diffPass = diffPass();
+                    return !diffPass;
+                }
+            }
         }
-        return returnValue;
+        return false;
     }
 
-    private boolean checkPassStrength(boolean returnValue, TextInputEditText eT, String text) {
-        boolean uppercase, lowercase, number, specialChar;
-        uppercase = lowercase = number = specialChar = false;
-        for (int i = 0; i < text.length(); ++i) {
-            char aux = text.charAt(i);
+    private void resetFieldsStatus() {
+        for (int i = 0; i < editText.length; ++i) {
+            inputLayout[i].setHelperText("");
+        }
+        editText[PASS_POSITION].setTextColor(getResources().getColor(R.color.colorPrimary));
+    }
+
+    private void emptyFieldHandler(TextInputEditText eT, TextInputLayout iL) {
+        iL.setHelperText("This field cannot be empty");
+        iL.setHelperTextColor(ColorStateList.valueOf(Color.RED));
+        eT.setHintTextColor(Color.RED);
+    }
+
+    private boolean shortPass() {
+        if (binding.signUpPasswordText.getText().toString().length() < MIN_PASS_LENTGH) {
+            weakPassHandler(binding.signUpPasswordText, binding.signUpPasswordLayout, "Password is too short");
+            return true;
+        }
+        return false;
+    }
+
+    private void weakPassHandler (TextInputEditText eT, TextInputLayout iL, String s) {
+        eT.setTextColor(Color.RED);
+        iL.setHelperText(s);
+        iL.setHelperTextColor(ColorStateList.valueOf(Color.RED));
+    }
+
+    private boolean weakPass() {
+        String pass = binding.signUpPasswordText.getText().toString();
+        boolean uppercase = false;
+        boolean lowercase = false;
+        boolean number = false;
+        boolean specialChar = false;
+        for (int i = 0; i < pass.length(); ++i) {
+            char aux = pass.charAt(i);
             if (Character.isLowerCase(aux)) {
                 lowercase = true;
             } else if (Character.isUpperCase(aux)) {
@@ -117,30 +140,25 @@ public class SignUpFragment extends Fragment {
                 specialChar = true;
             }
         }
-        returnValue = weakPassHandler(returnValue, eT, uppercase, lowercase, number, specialChar);
-        return returnValue;
+        if (uppercase && lowercase && number && specialChar)
+            return false;
+        weakPassHandler(binding.signUpPasswordText, binding.signUpPasswordLayout, "Password is too weak");
+        return true;
     }
 
-    private boolean weakPassHandler(boolean returnValue, TextInputEditText eT, boolean uppercase, boolean lowercase, boolean number, boolean specialChar) {
-        if (!(uppercase && lowercase && number && specialChar)) {
-            eT.setTextColor(Color.RED);
-            textInputLayouts[2].setHelperText("Password is too weak");
-            textInputLayouts[2].setHelperTextColor(ColorStateList.valueOf(Color.RED));
-            returnValue = false;
+    private boolean diffPass() {
+        String text = binding.signUpPasswordText.getText().toString();
+        if (!text.equals(binding.signUpRepPasswordText.getText().toString())) {
+            diffPassHandler(binding.signUpPasswordText, binding.signUpPasswordLayout, "Passwords do not match");
+            diffPassHandler(binding.signUpRepPasswordText, binding.signUpRepPasswordLayout, "Passwords do not match");
+            return true;
         }
-        return returnValue;
-    }
-
-    private boolean shortPassHandler(TextInputEditText eT, String s) {
-        eT.setTextColor(Color.RED);
-        textInputLayouts[2].setHelperText(s);
-        textInputLayouts[2].setHelperTextColor(ColorStateList.valueOf(Color.RED));
         return false;
     }
 
-    private boolean emptyFieldHandler(TextInputEditText eT) {
-        eT.setHintTextColor(Color.RED);
-        eT.setTextColor(Color.RED);
-        return false;
+    private void diffPassHandler(TextInputEditText eT, TextInputLayout iL, String s) {
+        eT.setText("");
+        iL.setHelperText("Passwords do not match");
+        iL.setHelperTextColor(ColorStateList.valueOf(Color.RED));
     }
 }
