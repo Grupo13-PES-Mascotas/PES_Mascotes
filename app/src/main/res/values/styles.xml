@@ -39,11 +39,13 @@
     <style name="loginFields" parent="plainText">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textColorHighlight">@color/colorPrimary</item>
         <item name="android:textColorHint">@color/colorPrimary</item>
         <item name="android:backgroundTint">@color/colorPrimary</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="startIconTint">@color/colorPrimary</item>
+        <item name="startIconContentDescription">@string/fieldImage</item>
+        <item name="endIconTint">@color/colorPrimary</item>
     </style>
 
     <style name="loginButton">

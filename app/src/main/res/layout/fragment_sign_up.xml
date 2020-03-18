@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginLeft="10dp"
     android:layout_marginTop="15dp"
     android:layout_marginRight="10dp"
@@ -11,97 +12,66 @@
     tools:context=".activities.fragments.SignUpFragment">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signUpUsernameLayout"
+        style="@style/loginFields"
+        app:startIconDrawable="@drawable/user_icon"
+        app:endIconMode="clear_text">
 
-        <ImageView
-            android:id="@+id/usernameImg"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/user_icon"
-            android:contentDescription="@string/fieldImage" />
-
-        <EditText
-            android:id="@+id/usernameText"
+        <com.google.android.material.textfield.TextInputEditText
             style="@style/loginFields"
+            android:id="@+id/signUpUsernameText"
+            android:inputType="text"
             android:hint="@string/username"
-            android:inputType="textPersonName"
-            android:autofillHints="@string/username" />
+            />
 
-    </LinearLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signUpMailLayout"
+        style="@style/loginFields"
+        app:startIconDrawable="@drawable/mail_icon"
+        app:endIconMode="clear_text">
 
-        <ImageView
-            android:id="@+id/mailImg"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/mail_icon"
-            android:contentDescription="@string/fieldImage" />
-
-        <EditText
-            android:id="@+id/emailText"
+        <com.google.android.material.textfield.TextInputEditText
             style="@style/loginFields"
+            android:id="@+id/signUpMailText"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:autofillHints="@string/email" />
+            />
 
-    </LinearLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signUpPasswordLayout"
+        style="@style/loginFields"
+        app:startIconDrawable="@drawable/password_icon"
+        app:endIconMode="password_toggle"
+        >
 
-        <ImageView
-            android:id="@+id/passwdImg"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/password_icon"
-            android:contentDescription="@string/fieldImage" />
-
-        <EditText
-            android:id="@+id/passwdText"
+        <com.google.android.material.textfield.TextInputEditText
             style="@style/loginFields"
+            android:id="@+id/signUpPasswordText"
+            android:inputType="textPassword"
             android:hint="@string/pass"
-            android:inputType="textPassword"
-            android:autofillHints="@string/pass" />
+            />
 
-    </LinearLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signUpRepPasswordLayout"
+        style="@style/loginFields"
+        app:startIconDrawable="@drawable/solid_password_icon"
+        app:endIconMode="password_toggle">
 
-        <ImageView
-            android:id="@+id/repeatPasswdImg"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/solid_password_icon"
-            android:contentDescription="@string/fieldImage" />
-
-        <EditText
-            android:id="@+id/repeatPasswdText"
+        <com.google.android.material.textfield.TextInputEditText
             style="@style/loginFields"
-            android:hint="@string/repeat_pass"
+            android:id="@+id/signUpRepPasswordText"
             android:inputType="textPassword"
-            android:autofillHints="@string/repeat_pass" />
+            android:hint="@string/repeat_pass"
+            />
 
-    </LinearLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Space
         android:layout_width="1dp"
