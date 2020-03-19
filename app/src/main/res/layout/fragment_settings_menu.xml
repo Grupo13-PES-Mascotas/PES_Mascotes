@@ -46,10 +46,10 @@
             android:id="@+id/changePasswordButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_button"
             android:backgroundTint="@color/colorPrimary"
             android:text="@string/change_password"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            style="@style/rounded_button"/>
 
         <Space
             android:layout_width="match_parent"
@@ -73,9 +73,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"
-            android:background="@drawable/rounded_button"
             android:backgroundTint="@color/red"
             android:text="@string/log_out"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            style="@style/rounded_button"/>
     </LinearLayout>
 </FrameLayout>
