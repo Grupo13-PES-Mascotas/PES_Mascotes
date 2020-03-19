@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void addNewPet(Bundle petInfo) {
-        Pet pet = new Pet(petInfo);
+        //Pet pet = new Pet(petInfo);
 
         changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
         setUpNewFragment(getString(R.string.navigation_my_pets), NAVIGATION_OPTIONS[0]);

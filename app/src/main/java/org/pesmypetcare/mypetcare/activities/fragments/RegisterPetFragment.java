@@ -86,8 +86,8 @@ public class RegisterPetFragment extends Fragment {
      * @return True if there is any blank field except for pathologies
      */
     private boolean isAnyFieldBlank() {
-        boolean isEmptyNameGenderBreed = isEmpty(binding.inputPetName) || isEmpty(binding.inputGender) ||
-            isEmpty(binding.inputBreed);
+        boolean isEmptyNameGenderBreed = isEmpty(binding.inputPetName) || isEmpty(binding.inputGender)
+            || isEmpty(binding.inputBreed);
         boolean isEmptyWeightCaloriesWash = isEmpty(binding.inputWeight) || isEmpty(binding.inputRecommendedCalories)
             || isEmpty(binding.inputWashFrequency);
 

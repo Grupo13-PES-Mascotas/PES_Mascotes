@@ -33,8 +33,7 @@ public class Pet {
 
         if (isMale(petInfo)) {
             this.gender = Gender.MALE;
-        }
-        else {
+        } else {
             this.gender = Gender.FEMALE;
         }
     }
