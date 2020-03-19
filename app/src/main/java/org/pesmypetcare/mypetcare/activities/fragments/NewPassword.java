@@ -49,11 +49,9 @@ public class NewPassword extends Fragment {
      */
     private boolean validatePassword() {
         String pass = binding.newPasswordText.getText().toString();
-        if (!pass.equals(binding.confirmNewPasswordText.getText().toString())
-                || pass.length() < MIN_PASS_LENTGH || weakPass(pass)) {
-            return false;
-        }
-        return true;
+        boolean aux = !pass.equals(binding.confirmNewPasswordText.getText().toString())
+                || pass.length() < MIN_PASS_LENTGH || weakPass(pass);
+        return !aux;
     }
 
     /**
@@ -65,10 +63,8 @@ public class NewPassword extends Fragment {
         boolean lowercase = containsLowercase(pass);
         boolean number = containsNumber(pass);
         boolean specialChar = containsSpecialChar(pass);
-        if (uppercase && lowercase && number && specialChar) {
-            return false;
-        }
-        return true;
+        boolean aux = uppercase && lowercase && number && specialChar;
+        return !aux;
     }
 
     /**
