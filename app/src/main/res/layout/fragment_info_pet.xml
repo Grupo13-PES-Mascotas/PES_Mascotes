@@ -27,17 +27,19 @@
 
         <TextView
             android:id="@+id/PetName"
-            style="@style/TextAppearance.Compat.Notification.Title"
+            style="@style/TextAppearance.MaterialComponents.Headline1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="50dp"
             android:gravity="center"
             android:text="@string/name_random"
+            android:textStyle="bold"
             android:textColor="@color/design_default_color_surface"
             android:textSize="40sp" />
 
         <ImageView
+            android:id="@+id/PetType"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/icon_dog"
@@ -71,8 +73,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/breed_random"
-                />
+                android:text="@string/breed_random" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,7 +95,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-       <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/Gender"
             android:layout_width="match_parent"
             android:hint="@string/gender_title"
@@ -209,6 +210,5 @@
 
             </LinearLayout>
             </ScrollView>
-
 
         </LinearLayout>
