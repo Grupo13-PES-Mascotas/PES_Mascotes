@@ -40,6 +40,7 @@ public class User {
     }
 
     private void comunicateDatabase(String username, String mail, String passwd) {
-        System.out.println("Es registrara l'usuari " + username + " amb mail " + mail + " i contrasenya " + passwd + " a la BD");
+        System.out.println("Es registrara l'usuari " + username + " amb mail "
+            + mail + " i contrasenya " + passwd + " a la BD");
     }
 }
