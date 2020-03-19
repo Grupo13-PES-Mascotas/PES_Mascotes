@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.activities;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements NewPasswordInterf
     protected void onCreate(Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
         super.onCreate(savedInstanceState);
-        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         initializeActivity();
