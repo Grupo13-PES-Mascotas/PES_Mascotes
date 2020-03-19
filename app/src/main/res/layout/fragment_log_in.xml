@@ -29,10 +29,11 @@
         android:id="@+id/loginPasswordLayout"
         style="@style/loginFields"
         app:startIconDrawable="@drawable/password_icon"
-        app:endIconMode="clear_text">
+        app:endIconMode="password_toggle">
 
         <com.google.android.material.textfield.TextInputEditText
             style="@style/loginFields"
+            android:inputType="textPassword"
             android:id="@+id/loginPasswordText"
             android:hint="@string/pass"
             />
