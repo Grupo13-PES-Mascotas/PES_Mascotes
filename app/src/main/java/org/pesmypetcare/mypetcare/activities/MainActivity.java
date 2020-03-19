@@ -1,7 +1,9 @@
 package org.pesmypetcare.mypetcare.activities;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -12,11 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
-import org.pesmypetcare.mypetcare.activities.fragments.registerpet.MainPetInfoFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 
 import java.util.Objects;
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private ActionBar toolbar;
     private NavigationView navigationView;
+    private FloatingActionButton floatingActionButton;
+    private Class selectedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +59,18 @@ public class MainActivity extends AppCompatActivity {
     private void initializeActivity() {
         drawerLayout = binding.activityMainDrawerLayout;
         navigationView = binding.navigationView;
+        floatingActionButton = binding.flAddPet;
 
         initializeActionDrawerToggle();
         initializeActionbar();
         setUpNavigationDrawer();
-        //setStartFragment();
+        setStartFragment();
+    }
 
-        changeFragment(getFragment(MainPetInfoFragment.class));
+    public void addPet(View view) {
+        floatingActionButton.hide();
+        changeFragment(getFragment(RegisterPetFragment.class));
+        toolbar.setTitle(getString(R.string.register_new_pet));
     }
 
     /**
@@ -80,10 +90,20 @@ public class MainActivity extends AppCompatActivity {
             changeFragment(nextFragment);
 
             item.setChecked(true);
-            toolbar.setTitle(item.getTitle());
             drawerLayout.closeDrawers();
+            setUpNewFragment(item.getTitle(), item.getItemId());
+
             return true;
         });
+    }
+
+    private void setUpNewFragment(CharSequence title, int id) {
+        toolbar.setTitle(title);
+
+        if (id == R.id.navigationMyPets)
+            floatingActionButton.show();
+        else
+            floatingActionButton.hide();
     }
 
     /**
@@ -91,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
      * @param fragmentClass Fragment class to create an instance of which
      * @return An instance of the fragmentClass if it exists or null otherwise
      */
-    private Fragment getFragment(Class fragmentClass) {
+    public Fragment getFragment(Class fragmentClass) {
         Fragment fragment = null;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -106,7 +126,8 @@ public class MainActivity extends AppCompatActivity {
      * Change the current fragment to the one specified.
      * @param nextFragment Fragment to replace the current one
      */
-    private void changeFragment(Fragment nextFragment) {
+    public void changeFragment(Fragment nextFragment) {
+        selectedFragment = nextFragment.getClass();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment);
@@ -150,5 +171,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return actionBarDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (!selectedFragment.equals(APPLICATION_FRAGMENTS[0])) {
+                changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+                setUpNewFragment(getString(NAVIGATION_OPTIONS[0]), NAVIGATION_OPTIONS[0]);
+                return true;
+            }
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 }

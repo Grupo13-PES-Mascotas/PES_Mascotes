@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activities.fragments.registerpet.MainPetInfoFragment">
+    tools:context=".activities.fragments.RegisterPetFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -120,7 +120,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="20dp"
-            android:text="@string/add_pet"
+            android:text="@string/register_new_pet"
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
