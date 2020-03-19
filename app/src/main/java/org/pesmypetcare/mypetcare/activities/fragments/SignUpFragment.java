@@ -73,26 +73,25 @@ public class SignUpFragment extends Fragment {
     private boolean validateSignUp() {
         resetFieldsStatus();
         boolean [] emptyFields = new boolean[editText.length];
-        boolean shortPass;
-        boolean weakPass;
-        boolean diffPass;
         for (int i = 0; i < emptyFields.length; ++i) {
             if ("".equals(editText[i].getText().toString())) {
                 emptyFields[i] = true;
                 emptyFieldHandler(editText[i], inputLayout[i]);
             }
         }
-        if (!emptyFields[PASS_POSITION]) {
-            shortPass = shortPass();
-            if (!shortPass) {
-                weakPass = weakPass();
-                if (!weakPass) {
-                    diffPass = diffPass();
-                    return !diffPass;
-                }
-            }
+        if (emptyFields[PASS_POSITION]) {
+            return false;
         }
-        return false;
+        if (shortPass()) {
+            return false;
+        }
+        if (weakPass()) {
+            return false;
+        }
+        if (diffPass()) {
+            return false;
+        }
+        return true;
     }
 
     /**
