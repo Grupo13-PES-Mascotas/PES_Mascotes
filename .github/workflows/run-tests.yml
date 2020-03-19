@@ -21,6 +21,11 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+        
+    - name: Decrypt release secret
+      run: ./.github/scripts/decrypt_key.sh
+      env:
+        RELEASE_PASSPHRASE: ${{ secrets.RELEASE_PASSPHRASE }}
     
     - name: grant execution to gradlew
       run: chmod +x ./gradlew
@@ -40,7 +45,12 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    
+ 
+    - name: Decrypt release secret
+      run: ./.github/scripts/decrypt_key.sh
+      env:
+        RELEASE_PASSPHRASE: ${{ secrets.RELEASE_PASSPHRASE }}
+
     - name: grant execution to gradlew
       run: chmod +x ./gradlew
     
