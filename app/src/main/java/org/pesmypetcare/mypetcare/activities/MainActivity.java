@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private static final Class[] APPLICATION_FRAGMENTS = {
-        InfoPetFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class
     };
