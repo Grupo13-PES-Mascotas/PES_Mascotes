@@ -49,9 +49,8 @@ public class NewPassword extends Fragment {
      */
     private boolean validatePassword() {
         String pass = binding.newPasswordText.getText().toString();
-        boolean aux = !pass.equals(binding.confirmNewPasswordText.getText().toString())
-                || pass.length() < MIN_PASS_LENTGH || weakPass(pass);
-        return !aux;
+        return !(!pass.equals(binding.confirmNewPasswordText.getText().toString())
+                || pass.length() < MIN_PASS_LENTGH || weakPass(pass));
     }
 
     /**
