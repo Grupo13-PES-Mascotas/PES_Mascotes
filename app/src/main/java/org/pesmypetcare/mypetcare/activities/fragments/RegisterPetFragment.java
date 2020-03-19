@@ -18,6 +18,7 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentRegisterPetBinding;
+import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.util.Objects;
 
@@ -65,15 +66,16 @@ public class RegisterPetFragment extends Fragment {
      */
     private Bundle getPetInfoBundle() {
         Bundle petInfo = new Bundle();
-        petInfo.putString("petName", Objects.requireNonNull(binding.inputPetName.getText()).toString());
-        petInfo.putString("petGender", Objects.requireNonNull(binding.inputGender.getText()).toString());
-        petInfo.putString("petBirthDate", binding.inputBirthMonth.getText().toString());
-        petInfo.putFloat("petWeight", Float.parseFloat(Objects.requireNonNull(binding.inputWeight.getText())
+        petInfo.putString(Pet.BUNDLE_NAME, Objects.requireNonNull(binding.inputPetName.getText()).toString());
+        petInfo.putString(Pet.BUNDLE_GENDER, Objects.requireNonNull(binding.inputGender.getText()).toString());
+        petInfo.putString(Pet.BUNDLE_BIRTH_DATE, binding.inputBirthMonth.getText().toString());
+        petInfo.putFloat(Pet.BUNDLE_WEIGHT, Float.parseFloat(Objects.requireNonNull(binding.inputWeight.getText())
             .toString()));
-        petInfo.putString("petPathologies", Objects.requireNonNull(binding.inputPathologies.getText()).toString());
-        petInfo.putFloat("petCalories", Float.parseFloat(Objects.requireNonNull(binding.inputRecommendedCalories
+        petInfo.putString(Pet.BUNDLE_PATHOLOGIES, Objects.requireNonNull(binding.inputPathologies.getText())
+            .toString());
+        petInfo.putFloat(Pet.BUNDLE_CALORIES, Float.parseFloat(Objects.requireNonNull(binding.inputRecommendedCalories
             .getText()).toString()));
-        petInfo.putInt("petWash", Integer.parseInt(Objects.requireNonNull(binding.inputWashFrequency.getText())
+        petInfo.putInt(Pet.BUNDLE_WASH, Integer.parseInt(Objects.requireNonNull(binding.inputWashFrequency.getText())
             .toString()));
 
         return petInfo;
@@ -84,9 +86,12 @@ public class RegisterPetFragment extends Fragment {
      * @return True if there is any blank field except for pathologies
      */
     private boolean isAnyFieldBlank() {
-        return isEmpty(binding.inputPetName) || isEmpty(binding.inputGender) || isEmpty(binding.inputBreed)
-            || isEmpty(binding.inputWeight) || isEmpty(binding.inputRecommendedCalories)
-            || isEmpty(binding.inputWashFrequency) || !isBirthDateSelected;
+        boolean isEmptyNameGenderBreed = isEmpty(binding.inputPetName) || isEmpty(binding.inputGender) ||
+            isEmpty(binding.inputBreed);
+        boolean isEmptyWeightCaloriesWash = isEmpty(binding.inputWeight) || isEmpty(binding.inputRecommendedCalories)
+            || isEmpty(binding.inputWashFrequency);
+
+        return isEmptyNameGenderBreed || isEmptyWeightCaloriesWash || !isBirthDateSelected;
     }
 
     /**

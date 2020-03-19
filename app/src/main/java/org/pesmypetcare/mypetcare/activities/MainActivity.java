@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     /**
-     * Enters the fragment to create a pet
+     * Enters the fragment to create a pet.
      * @param view View from which the function was called
      */
     public void addPet(View view) {
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     /**
-     * Sets up the new fragment
+     * Sets up the new fragment.
      * @param title Title to display in the top bar
      * @param id Id of the navigation item
      */
@@ -200,26 +200,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void addNewPet(Bundle petInfo) {
-        Gender gender;
-        if (isMale(petInfo))
-            gender = Gender.MALE;
-        else
-            gender = Gender.FEMALE;
-
-        Pet pet = new Pet(petInfo.getString("petName"), gender, petInfo.getString("petBreed"),
-            petInfo.getString("petBirthDate"), petInfo.getFloat("petWeight"), petInfo.getString("petPathologies"),
-            petInfo.getFloat("petCalories"), petInfo.getInt("petWash"));
+        Pet pet = new Pet(petInfo);
 
         changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
         setUpNewFragment(getString(R.string.navigation_my_pets), NAVIGATION_OPTIONS[0]);
-    }
-
-    /**
-     * Checks whether a pet is male or not.
-     * @param petInfo Information about the pet
-     * @return True if the pet is male
-     */
-    private boolean isMale(Bundle petInfo) {
-        return Objects.requireNonNull(petInfo.getString("petGender")).equals(getString(R.string.male));
     }
 }

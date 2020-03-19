@@ -1,6 +1,18 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
+import android.os.Bundle;
+
+import java.util.Objects;
+
 public class Pet {
+    public static final String BUNDLE_NAME = "petName";
+    public static final String BUNDLE_BREED = "petBreed";
+    public static final String BUNDLE_BIRTH_DATE = "petBirthDate";
+    public static final String BUNDLE_WEIGHT = "petFloat";
+    public static final String BUNDLE_PATHOLOGIES = "petPathologies";
+    public static final String BUNDLE_CALORIES = "petCalories";
+    public static final String BUNDLE_WASH = "petWash";
+    public static final String BUNDLE_GENDER = "petGender";
     private String name;
     private Gender gender;
     private String breed;
@@ -10,16 +22,21 @@ public class Pet {
     private float recommendedDailyKiloCalories;
     private int washFrequency;
 
-    public Pet(String name, Gender gender, String breed, String birthDate, float weight, String pathologies,
-               float recommendedDailyKiloCalories, int washFrequency) {
-        this.name = name;
-        this.gender = gender;
-        this.breed = breed;
-        this.birthDate = birthDate;
-        this.weight = weight;
-        this.pathologies = pathologies;
-        this.recommendedDailyKiloCalories = recommendedDailyKiloCalories;
-        this.washFrequency = washFrequency;
+    public Pet(Bundle petInfo) {
+        this.name = petInfo.getString(BUNDLE_NAME);
+        this.breed = petInfo.getString(BUNDLE_BREED);
+        this.birthDate = petInfo.getString(BUNDLE_BIRTH_DATE);
+        this.weight = petInfo.getFloat(BUNDLE_WEIGHT);
+        this.pathologies = petInfo.getString(BUNDLE_PATHOLOGIES);
+        this.recommendedDailyKiloCalories = petInfo.getFloat(BUNDLE_CALORIES);
+        this.washFrequency = petInfo.getInt(BUNDLE_WASH);
+
+        if (isMale(petInfo)) {
+            this.gender = Gender.MALE;
+        }
+        else {
+            this.gender = Gender.FEMALE;
+        }
     }
 
     /**
@@ -148,5 +165,14 @@ public class Pet {
      */
     public void setWashFrequency(int washFrequency) {
         this.washFrequency = washFrequency;
+    }
+
+    /**
+     * Checks whether a pet is male or not.
+     * @param petInfo Information about the pet
+     * @return True if the pet is male
+     */
+    private boolean isMale(Bundle petInfo) {
+        return "Male".equals(Objects.requireNonNull(petInfo.getString(BUNDLE_GENDER)));
     }
 }
