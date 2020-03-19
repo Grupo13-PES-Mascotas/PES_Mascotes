@@ -26,6 +26,7 @@ jobs:
     - name: Decrypt release secret
       run: ./.github/scripts/decrypt_key.sh
       env:
+        GOOGLE_PASSPHRASE: ${{ secrets.GOOGLE_PASSPHRASE }}
         RELEASE_PASSPHRASE: ${{ secrets.RELEASE_PASSPHRASE }}
     
     - name: grant execution to gradlew
@@ -50,6 +51,7 @@ jobs:
     - name: Decrypt release secret
       run: ./.github/scripts/decrypt_key.sh
       env:
+        GOOGLE_PASSPHRASE: ${{ secrets.GOOGLE_PASSPHRASE }}
         RELEASE_PASSPHRASE: ${{ secrets.RELEASE_PASSPHRASE }}
     
     - name: grant execution to gradlew
