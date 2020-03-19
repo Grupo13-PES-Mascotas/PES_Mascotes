@@ -1,5 +1,5 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
-enum Gender {
+public enum Gender {
     MALE, FEMALE
 }

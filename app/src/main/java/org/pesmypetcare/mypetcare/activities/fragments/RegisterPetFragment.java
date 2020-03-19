@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,7 +17,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.databinding.FragmentRegisterPetBinding;
 
 import java.util.Objects;
@@ -24,11 +25,15 @@ import java.util.Objects;
 public class RegisterPetFragment extends Fragment {
     private FragmentRegisterPetBinding binding;
     private MaterialDatePicker materialDatePicker;
+    private RegisterPetCommunication communication;
     private Button birthDate;
+    private boolean isBirthDateSelected;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentRegisterPetBinding.inflate(inflater, container, false);
+        communication = (RegisterPetCommunication) getActivity();
+        isBirthDateSelected = false;
 
         setCalendarPicker();
         setGenderDropdownMenu();
@@ -37,18 +42,65 @@ public class RegisterPetFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Sets up the new pet button.
+     */
     private void setUpAddNewPetButton() {
-        /*MaterialButton btnNewPet = binding.btnAddPet;
-        btnNewPet.addOnCheckedChangeListener((button, isChecked) -> {
-            if (isChecked) {
-                System.out.println("Button pressed");
+        MaterialButton btnNewPet = binding.btnAddPet;
+        btnNewPet.setOnClickListener(v -> {
+            if (isAnyFieldBlank()) {
+                Toast errorMsg = Toast.makeText(getActivity(), R.string.error_empty_field, Toast.LENGTH_LONG);
+                errorMsg.show();
             }
             else {
-                System.out.println("Button no pressed");
+                Bundle petInfo = getPetInfoBundle();
+                communication.addNewPet(petInfo);
             }
-        });*/
+        });
     }
 
+    /**
+     * Creates a bundle to passing the pets information into the activity class.
+     * @return A bundle that contains the information of the pet
+     */
+    private Bundle getPetInfoBundle() {
+        Bundle petInfo = new Bundle();
+        petInfo.putString("petName", Objects.requireNonNull(binding.inputPetName.getText()).toString());
+        petInfo.putString("petGender", Objects.requireNonNull(binding.inputGender.getText()).toString());
+        petInfo.putString("petBirthDate", binding.inputBirthMonth.getText().toString());
+        petInfo.putFloat("petWeight", Float.parseFloat(Objects.requireNonNull(binding.inputWeight.getText())
+            .toString()));
+        petInfo.putString("petPathologies", Objects.requireNonNull(binding.inputPathologies.getText()).toString());
+        petInfo.putFloat("petCalories", Float.parseFloat(Objects.requireNonNull(binding.inputRecommendedCalories
+            .getText()).toString()));
+        petInfo.putInt("petWash", Integer.parseInt(Objects.requireNonNull(binding.inputWashFrequency.getText())
+            .toString()));
+
+        return petInfo;
+    }
+
+    /**
+     * Check whether there is any blank field except for pathologies.
+     * @return True if there is any blank field except for pathologies
+     */
+    private boolean isAnyFieldBlank() {
+        return isEmpty(binding.inputPetName) || isEmpty(binding.inputGender) || isEmpty(binding.inputBreed)
+            || isEmpty(binding.inputWeight) || isEmpty(binding.inputRecommendedCalories)
+            || isEmpty(binding.inputWashFrequency) || !isBirthDateSelected;
+    }
+
+    /**
+     * Checks whether an EditText is empty or not.
+     * @param input EditText to check
+     * @return True if input is empty
+     */
+    private boolean isEmpty(EditText input) {
+        return "".equals(input.getText().toString());
+    }
+
+    /**
+     * Sets the gender drop down menu.
+     */
     private void setGenderDropdownMenu() {
         AutoCompleteTextView gender = binding.inputGender;
         ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
@@ -56,6 +108,9 @@ public class RegisterPetFragment extends Fragment {
         gender.setAdapter(adapter);
     }
 
+    /**
+     * Sets the calendar picker.
+     */
     private void setCalendarPicker() {
         MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
         builder.setTitleText(getString(R.string.select_birth_date));
@@ -67,6 +122,7 @@ public class RegisterPetFragment extends Fragment {
 
         materialDatePicker.addOnPositiveButtonClickListener(selection -> {
             birthDate.setText(materialDatePicker.getHeaderText());
+            isBirthDateSelected = true;
         });
     }
 }

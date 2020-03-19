@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/registerPetLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -20,10 +20,10 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputPetName"
                 style="@style/inputPetContainer">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputPetName"
                     style="@style/inputPetField"
                     android:hint="@string/input_pet_name"
                     android:inputType="text" />
@@ -68,10 +68,10 @@
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputBreed"
                 style="@style/inputPetContainer">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputBreed"
                     style="@style/inputPetField"
                     android:hint="@string/input_breed"
                     android:inputType="text" />
@@ -79,10 +79,10 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputWeight"
                 style="@style/inputPetContainer">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputWeight"
                     style="@style/inputPetField"
                     android:hint="@string/input_weight"
                     android:inputType="numberDecimal" />
@@ -90,10 +90,21 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputRecommendedCalories"
                 style="@style/inputPetContainer">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputPathologies"
+                    style="@style/inputPetField"
+                    android:hint="@string/input_pathologies"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/inputPetContainer">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputRecommendedCalories"
                     style="@style/inputPetField"
                     android:hint="@string/input_recommended_calories"
                     android:inputType="numberDecimal" />
@@ -101,10 +112,10 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputWashFrequency"
                 style="@style/inputPetContainer">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputWashFrequency"
                     style="@style/inputPetField"
                     android:hint="@string/input_wash_frequency"
                     android:inputType="number" />
@@ -128,7 +139,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@+id/registerPetLayout"
             app:layout_constraintVertical_bias="0.86"
             app:cornerRadius="20dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
