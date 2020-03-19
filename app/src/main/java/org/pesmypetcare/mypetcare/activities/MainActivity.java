@@ -22,8 +22,6 @@ import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
-import org.pesmypetcare.mypetcare.features.pets.Gender;
-import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.util.Objects;
 
@@ -112,10 +110,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private void setUpNewFragment(CharSequence title, int id) {
         toolbar.setTitle(title);
 
-        if (id == R.id.navigationMyPets)
+        if (id == R.id.navigationMyPets) {
             floatingActionButton.show();
-        else
+        }
+        else {
             floatingActionButton.hide();
+        }
     }
 
     /**
@@ -187,12 +187,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (!selectedFragment.equals(APPLICATION_FRAGMENTS[0])) {
-                changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
-                setUpNewFragment(getString(NAVIGATION_OPTIONS[0]), NAVIGATION_OPTIONS[0]);
-                return true;
-            }
+        if (keyCode == KeyEvent.KEYCODE_BACK && !selectedFragment.equals(APPLICATION_FRAGMENTS[0])) {
+            changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+            setUpNewFragment(getString(NAVIGATION_OPTIONS[0]), NAVIGATION_OPTIONS[0]);
+            return true;
         }
 
         return super.onKeyDown(keyCode, event);

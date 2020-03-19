@@ -52,8 +52,7 @@ public class RegisterPetFragment extends Fragment {
             if (isAnyFieldBlank()) {
                 Toast errorMsg = Toast.makeText(getActivity(), R.string.error_empty_field, Toast.LENGTH_LONG);
                 errorMsg.show();
-            }
-            else {
+            } else {
                 Bundle petInfo = getPetInfoBundle();
                 communication.addNewPet(petInfo);
             }
