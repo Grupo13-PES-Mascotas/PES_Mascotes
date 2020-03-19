@@ -171,7 +171,7 @@ public class SignUpFragment extends Fragment {
      */
     private boolean containsUppercase(String pass) {
         for (int i = 0; i < pass.length(); ++i) {
-            if(Character.isUpperCase(pass.charAt(i))) {
+            if (Character.isUpperCase(pass.charAt(i))) {
                 return true;
             }
         }
@@ -185,7 +185,7 @@ public class SignUpFragment extends Fragment {
      */
     private boolean containsLowercase(String pass) {
         for (int i = 0; i < pass.length(); ++i) {
-            if(Character.isLowerCase(pass.charAt(i))) {
+            if (Character.isLowerCase(pass.charAt(i))) {
                 return true;
             }
         }
@@ -199,7 +199,7 @@ public class SignUpFragment extends Fragment {
      */
     private boolean containsNumber(String pass) {
         for (int i = 0; i < pass.length(); ++i) {
-            if(Character.isDigit(pass.charAt(i))) {
+            if (Character.isDigit(pass.charAt(i))) {
                 return true;
             }
         }
@@ -213,7 +213,7 @@ public class SignUpFragment extends Fragment {
      */
     private boolean containsSpecialChar(String pass) {
         for (int i = 0; i < pass.length(); ++i) {
-            if(String.valueOf(pass.charAt(i)).matches("[^a-zA-Z0-9]")) {
+            if (String.valueOf(pass.charAt(i)).matches("[^a-zA-Z0-9]")) {
                 return true;
             }
         }
