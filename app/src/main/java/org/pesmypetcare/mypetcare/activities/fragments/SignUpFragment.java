@@ -23,7 +23,6 @@ import org.pesmypetcare.mypetcare.databinding.FragmentSignUpBinding;
  * A simple {@link Fragment} subclass.
  */
 public class SignUpFragment extends Fragment {
-    private final int MIN_PASS_LENTGH = 6;
     private final int PASS_POSITION = 2;
     private FragmentSignUpBinding binding;
     private TextInputEditText[] editText;
@@ -121,6 +120,7 @@ public class SignUpFragment extends Fragment {
      * @return True if the password is too short or false otherwise
      */
     private boolean shortPass() {
+        int MIN_PASS_LENTGH = 6;
         if (binding.signUpPasswordText.getText().toString().length() < MIN_PASS_LENTGH) {
             weakPassHandler(binding.signUpPasswordText, binding.signUpPasswordLayout,
                 getResources().getString(R.string.shortPassword));
