@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -15,17 +16,20 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.material.navigation.NavigationView;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements RegisterPetCommunication {
+public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface {
+    private FirebaseAuth mAuth;
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
@@ -34,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static final Class[] APPLICATION_FRAGMENTS = {
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
-        NotImplementedFragment.class
+        SettingsMenuFragment.class
     };
 
     private ActivityMainBinding binding;
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mAuth = FirebaseAuth.getInstance();
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -143,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment);
         fragmentTransaction.commit();
+
     }
 
     /**
@@ -201,5 +207,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
         setUpNewFragment(getString(R.string.navigation_my_pets), NAVIGATION_OPTIONS[0]);
+    }
+  
+    public void changeFragmentPass(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.mainActivityFrameLayout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    protected void onStart() {
+        super.onStart();
+        if (mAuth.getCurrentUser() == null) {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        }
     }
 }

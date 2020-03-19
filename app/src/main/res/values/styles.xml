@@ -71,4 +71,27 @@
         <item name="endIconTint">@color/colorPrimary</item>
     </style>
 
+    <style name="rounded_button">
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+    <style name="loginFields" parent="plainText">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="startIconTint">@color/colorPrimary</item>
+        <item name="startIconContentDescription">@string/fieldImage</item>
+        <item name="endIconTint">@color/colorPrimary</item>
+        <item name="boxBackgroundColor">@color/design_default_color_background</item>
+    </style>
+
+    <style name="loginButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:textColor">@color/design_default_color_background</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
 </resources>

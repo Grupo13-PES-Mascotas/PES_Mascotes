@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">My Pet Care</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="log_in">LOG IN</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="pass">Password</string>
+    <string name="repeat_pass">Repeat Password</string>
+    <string name="titleDesc">Application Title</string>
+    <string name="fieldImage">Image of the current Field</string>
+    <string name="differentPasswords">Passwords do not match</string>
+    <string name="shortPassword">Password is too short</string>
+    <string name="weakPassword">Password is too weak</string>
+    <string name="emptyField">This field cannot be empty</string>
     <string name="navigation_my_pets">My Pets</string>
     <string name="navigation_pets_community">Pet\'s community</string>
     <string name="navigation_my_walks">My walks</string>
@@ -9,9 +21,38 @@
     <string name="navigation_settings">Settings</string>
     <string name="defaultName">John Doe</string>
     <string name="defaultEmail">johndoe@gmail.com</string>
-    <!-- The next two strings cannot be translated into any other language -->
-    <string name="navigation_view_open">Open</string>
-    <string name="navigation_view_closed">Closed</string>
+    <string name="breed_title">Breed</string>
+    <string name="age_title">Age(years)</string>
+    <string name="gender_title">Gender</string>
+    <string name="birth_title">Birth</string>
+    <string name="weight_title">Weight(kg)</string>
+    <string name="patologies_title">Patologies</string>
+    <string name="recommended_kcal_title">Recommended Kcal</string>
+    <string name="wash_title">Wash Frequency(days)</string>
+    <string name="weight_random">15</string>
+    <string name="birth_random">dd/mm/yyyy</string>
+    <string name="patologies_random">None</string>
+    <string name="Recommended_kcal_random">747</string>
+    <string name="breed_random">Golden Retriever</string>
+    <string name="name_random">Firulais</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="age_random">4</string>
+    <string name="wash_random">30</string>
+    <string name="not_implemented">This functionality is not implemented</string>
+    <string name="log_out">LOG OUT</string>
+    <string name="languages">Languages</string>
+    <string name="change_password">Change Password</string>
+    <string name="version_0_0_0">Version: 0.0.0</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="apply_change">Apply Change</string>
+    <string-array name="Languages">
+        <item>English</item>
+        <item>Catalan</item>
+        <item>Spanish</item>
+    </string-array>
     <string name="not_implemented">This functionality is not implemented</string>
     <string name="input_pet_name">Name</string>
     <string name="input_gender">Gender</string>
@@ -26,4 +67,8 @@
     <string name="select_birth_date">Select birth date</string>
     <string name="register_new_pet">Register new pet</string>
     <string name="error_empty_field">All fields must be filled (pathologies not included)</string>
+
+    <!-- The next two strings cannot be translated into any other language -->
+    <string name="navigation_view_open">Open</string>
+    <string name="navigation_view_closed">Closed</string>
 </resources>
