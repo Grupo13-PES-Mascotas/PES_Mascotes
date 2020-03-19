@@ -41,13 +41,17 @@ public class LogInFragment extends Fragment {
             if (!email.isEmpty() && !password.isEmpty()) {
                 loginUser();
             } else {
-                Toast toast1 = Toast.makeText(getActivity(), "Incorrect entry", Toast.LENGTH_LONG);
-                toast1.setGravity(Gravity.CENTER, 0, 0);
-                toast1.show();
+                testToast("Incorrect entry");
             }
 
         });
         return view;
+    }
+
+    private void testToast(String s) {
+        Toast toast1 = Toast.makeText(getActivity(), s, Toast.LENGTH_LONG);
+        toast1.setGravity(Gravity.CENTER, 0, 0);
+        toast1.show();
     }
 
     /**
@@ -61,9 +65,7 @@ public class LogInFragment extends Fragment {
                 startActivity(new Intent(getActivity(), MainActivity.class));
                 Objects.requireNonNull(getActivity()).finish();
             } else {
-                Toast toast1 = Toast.makeText(getActivity(), "Incorrect username or password", Toast.LENGTH_LONG);
-                toast1.setGravity(Gravity.CENTER, 0, 0);
-                toast1.show();
+                testToast("Incorrect username or password");
             }
         });
     }

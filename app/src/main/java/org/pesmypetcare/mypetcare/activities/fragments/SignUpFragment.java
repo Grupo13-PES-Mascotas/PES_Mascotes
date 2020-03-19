@@ -72,13 +72,7 @@ public class SignUpFragment extends Fragment {
      */
     private boolean validateSignUp() {
         resetFieldsStatus();
-        boolean [] emptyFields = new boolean[editText.length];
-        for (int i = 0; i < emptyFields.length; ++i) {
-            if ("".equals(editText[i].getText().toString())) {
-                emptyFields[i] = true;
-                emptyFieldHandler(editText[i], inputLayout[i]);
-            }
-        }
+        boolean[] emptyFields = checkEmptyFields();
         if (emptyFields[PASS_POSITION]) {
             return false;
         }
@@ -88,10 +82,22 @@ public class SignUpFragment extends Fragment {
         if (weakPass()) {
             return false;
         }
-        if (diffPass()) {
-            return false;
+        return !diffPass();
+    }
+
+    /**
+     * Method responsible for checking which fields are empty.
+     * @return Position i of the array is true if the field i is empty or false otherwise
+     */
+    private boolean[] checkEmptyFields() {
+        boolean [] emptyFields = new boolean[editText.length];
+        for (int i = 0; i < emptyFields.length; ++i) {
+            if ("".equals(editText[i].getText().toString())) {
+                emptyFields[i] = true;
+                emptyFieldHandler(editText[i], inputLayout[i]);
+            }
         }
-        return true;
+        return emptyFields;
     }
 
     /**
@@ -146,28 +152,72 @@ public class SignUpFragment extends Fragment {
      */
     private boolean weakPass() {
         String pass = binding.signUpPasswordText.getText().toString();
-        boolean uppercase = false;
-        boolean lowercase = false;
-        boolean number = false;
-        boolean specialChar = false;
-        for (int i = 0; i < pass.length(); ++i) {
-            char aux = pass.charAt(i);
-            if (Character.isLowerCase(aux)) {
-                lowercase = true;
-            } else if (Character.isUpperCase(aux)) {
-                uppercase = true;
-            } else if (Character.isDigit(aux)) {
-                number = true;
-            } else if (String.valueOf(aux).matches("[^a-zA-Z0-9]")) {
-                specialChar = true;
-            }
-        }
+        boolean uppercase = containsUppercase(pass);
+        boolean lowercase = containsLowercase(pass);
+        boolean number = containsNumber(pass);
+        boolean specialChar = containsSpecialChar(pass);
         if (uppercase && lowercase && number && specialChar) {
             return false;
         }
         weakPassHandler(binding.signUpPasswordText, binding.signUpPasswordLayout,
             getResources().getString(R.string.weakPassword));
         return true;
+    }
+
+    /**
+     * Method responsible for checking if the password contains an uppercase character.
+     * @param pass The password
+     * @return True if the password contains an uppercase letter or false otherwise
+     */
+    private boolean containsUppercase(String pass) {
+        for (int i = 0; i < pass.length(); ++i) {
+            if(Character.isUpperCase(pass.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Method responsible for checking if the password contains an lowercase character.
+     * @param pass The password
+     * @return True if the password contains an lowercase letter or false otherwise
+     */
+    private boolean containsLowercase(String pass) {
+        for (int i = 0; i < pass.length(); ++i) {
+            if(Character.isLowerCase(pass.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Method responsible for checking if the password contains a number.
+     * @param pass The password
+     * @return True if the password contains a number or false otherwise
+     */
+    private boolean containsNumber(String pass) {
+        for (int i = 0; i < pass.length(); ++i) {
+            if(Character.isDigit(pass.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Method responsible for checking if the password contains an special character.
+     * @param pass The password
+     * @return True if the password contains an special character or false otherwise
+     */
+    private boolean containsSpecialChar(String pass) {
+        for (int i = 0; i < pass.length(); ++i) {
+            if(String.valueOf(pass.charAt(i)).matches("[^a-zA-Z0-9]")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
