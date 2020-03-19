@@ -1,15 +1,16 @@
 package org.pesmypetcare.mypetcare.activities.fragments;
+
 import android.app.Activity;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.NewPasswordInterface;
@@ -38,8 +39,8 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
         languages = ArrayAdapter.createFromResource(Objects.requireNonNull(getActivity()).getApplicationContext(),
                 R.array.Languages, android.R.layout.simple_spinner_item);
         languages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.idiomSelector.setAdapter(languages);
-        binding.idiomSelector.setOnItemSelectedListener(this);
+        binding.languageSelector.setAdapter(languages);
+        binding.languageSelector.setOnItemSelectedListener(this);
 
         binding.logoutButton.setOnClickListener(v -> Toast.makeText(getActivity(),
                 "Logout button clicked", Toast.LENGTH_LONG).show());
