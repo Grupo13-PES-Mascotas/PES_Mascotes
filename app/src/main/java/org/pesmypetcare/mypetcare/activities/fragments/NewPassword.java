@@ -33,10 +33,52 @@ public class NewPassword extends Fragment {
      */
     private void settingsOptionsListeners() {
         binding.confirmButton.setOnClickListener(v -> {
-            Toast.makeText(getActivity(), "Not implemented yet", Toast.LENGTH_LONG).show();
-            Activity thisActivity = getActivity();
-            assert thisActivity != null;
-            ((NewPasswordInterface) thisActivity).changeFragmentPass(new SettingsMenuFragment());
+            if (validatePassword()) {
+                Toast.makeText(getActivity(), "Not implemented yet", Toast.LENGTH_LONG).show();
+                Activity thisActivity = getActivity();
+                assert thisActivity != null;
+                ((NewPasswordInterface) thisActivity).changeFragmentPass(new SettingsMenuFragment());
+            }
         });
+    }
+
+    /**
+     * Method responsible of checking if the password change up is correct.
+     * @return True if the sign up was successful or false otherwise
+     */
+    private boolean validatePassword() {
+        String pass = binding.newPasswordText.getText().toString();
+        if ( !pass.equals(binding.confirmNewPasswordText.getText().toString())
+                || pass.length() < 6 || weakPass(pass)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Method responsible for checking whether a password is weak or not.
+     * @return True if the password is weak or false otherwise
+     */
+    private boolean weakPass(String pass) {
+        boolean uppercase = false;
+        boolean lowercase = false;
+        boolean number = false;
+        boolean specialChar = false;
+        for (int i = 0; i < pass.length(); ++i) {
+            char aux = pass.charAt(i);
+            if (Character.isLowerCase(aux)) {
+                lowercase = true;
+            } else if (Character.isUpperCase(aux)) {
+                uppercase = true;
+            } else if (Character.isDigit(aux)) {
+                number = true;
+            } else if (String.valueOf(aux).matches("[^a-zA-Z0-9]")) {
+                specialChar = true;
+            }
+        }
+        if (uppercase && lowercase && number && specialChar) {
+            return false;
+        }
+        return true;
     }
 }
