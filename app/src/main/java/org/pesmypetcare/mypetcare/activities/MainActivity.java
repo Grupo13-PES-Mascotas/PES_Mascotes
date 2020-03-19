@@ -208,7 +208,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
         setUpNewFragment(getString(R.string.navigation_my_pets), NAVIGATION_OPTIONS[0]);
     }
-  
+
+    @Override
     public void changeFragmentPass(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -216,6 +217,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         fragmentTransaction.commit();
     }
 
+    @Override
     protected void onStart() {
         super.onStart();
         if (mAuth.getCurrentUser() == null) {
