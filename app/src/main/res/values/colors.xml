@@ -6,4 +6,5 @@
     <color name="hintColor">#940070C0</color>
     <color name="xatBoxColor">#D3EAFB</color>
     <color name="white">#FFFFFF</color>
+    <color name="red">#FF0000</color>
 </resources>

@@ -25,4 +25,17 @@
     <string name="navigation_view_open">Open</string>
     <string name="navigation_view_closed">Closed</string>
     <string name="not_implemented">This functionality is not implemented</string>
+    <string name="log_out">LOG OUT</string>
+    <string name="languages">Languages</string>
+    <string name="change_password">Change Password</string>
+    <string name="version_0_0_0">Version: 0.0.0</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="apply_change">Apply Change</string>
+    <string-array name="Languages">
+        <item>English</item>
+        <item>Catalan</item>
+        <item>Spanish</item>
+    </string-array>
 </resources>

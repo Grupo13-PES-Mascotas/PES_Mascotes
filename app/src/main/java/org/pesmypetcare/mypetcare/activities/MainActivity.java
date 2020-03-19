@@ -19,11 +19,12 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NewPasswordInterface {
     private FirebaseAuth mAuth;
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private static final Class[] APPLICATION_FRAGMENTS = {
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
-        NotImplementedFragment.class
+        SettingsMenuFragment.class
     };
 
     private ActivityMainBinding binding;
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment);
         fragmentTransaction.commit();
+
     }
 
     /**
@@ -154,6 +156,14 @@ public class MainActivity extends AppCompatActivity {
         return actionBarDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void changeFragmentPass(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.mainActivityFrameLayout, fragment);
+        fragmentTransaction.commit();
+    }
+
     protected void onStart() {
 
         super.onStart();
@@ -161,6 +171,5 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
-
     }
 }
