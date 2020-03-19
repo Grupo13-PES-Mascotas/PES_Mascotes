@@ -2,7 +2,9 @@ package org.pesmypetcare.mypetcare.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -13,17 +15,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.material.navigation.NavigationView;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
+import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements NewPasswordInterface {
+public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface {
     private FirebaseAuth mAuth;
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
@@ -41,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements NewPasswordInterf
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private ActionBar toolbar;
     private NavigationView navigationView;
+    private FloatingActionButton floatingActionButton;
+    private Class selectedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +65,22 @@ public class MainActivity extends AppCompatActivity implements NewPasswordInterf
     private void initializeActivity() {
         drawerLayout = binding.activityMainDrawerLayout;
         navigationView = binding.navigationView;
+        floatingActionButton = binding.flAddPet;
 
         initializeActionDrawerToggle();
         initializeActionbar();
         setUpNavigationDrawer();
         setStartFragment();
+    }
+
+    /**
+     * Enters the fragment to create a pet.
+     * @param view View from which the function was called
+     */
+    public void addPet(View view) {
+        floatingActionButton.hide();
+        changeFragment(getFragment(RegisterPetFragment.class));
+        toolbar.setTitle(getString(R.string.register_new_pet));
     }
 
     /**
@@ -82,10 +100,26 @@ public class MainActivity extends AppCompatActivity implements NewPasswordInterf
             changeFragment(nextFragment);
 
             item.setChecked(true);
-            toolbar.setTitle(item.getTitle());
             drawerLayout.closeDrawers();
+            setUpNewFragment(item.getTitle(), item.getItemId());
+
             return true;
         });
+    }
+
+    /**
+     * Sets up the new fragment.
+     * @param title Title to display in the top bar
+     * @param id Id of the navigation item
+     */
+    private void setUpNewFragment(CharSequence title, int id) {
+        toolbar.setTitle(title);
+
+        if (id == R.id.navigationMyPets) {
+            floatingActionButton.show();
+        } else {
+            floatingActionButton.hide();
+        }
     }
 
     /**
@@ -93,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements NewPasswordInterf
      * @param fragmentClass Fragment class to create an instance of which
      * @return An instance of the fragmentClass if it exists or null otherwise
      */
-    private Fragment getFragment(Class fragmentClass) {
+    public Fragment getFragment(Class fragmentClass) {
         Fragment fragment = null;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -108,7 +142,8 @@ public class MainActivity extends AppCompatActivity implements NewPasswordInterf
      * Change the current fragment to the one specified.
      * @param nextFragment Fragment to replace the current one
      */
-    private void changeFragment(Fragment nextFragment) {
+    public void changeFragment(Fragment nextFragment) {
+        selectedFragment = nextFragment.getClass();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment);
@@ -156,6 +191,24 @@ public class MainActivity extends AppCompatActivity implements NewPasswordInterf
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && !selectedFragment.equals(APPLICATION_FRAGMENTS[0])) {
+            changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+            setUpNewFragment(getString(NAVIGATION_OPTIONS[0]), NAVIGATION_OPTIONS[0]);
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void addNewPet(Bundle petInfo) {
+        //Pet pet = new Pet(petInfo);
+
+        changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+        setUpNewFragment(getString(R.string.navigation_my_pets), NAVIGATION_OPTIONS[0]);
+    }
+  
     public void changeFragmentPass(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -164,7 +217,6 @@ public class MainActivity extends AppCompatActivity implements NewPasswordInterf
     }
 
     protected void onStart() {
-
         super.onStart();
         if (mAuth.getCurrentUser() == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));

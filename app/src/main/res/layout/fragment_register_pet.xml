@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activities.fragments.RegisterPetFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/registerPetLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/inputPetContainer">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputPetName"
+                    style="@style/inputPetField"
+                    android:hint="@string/input_pet_name"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/inputPetContainer"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    app:endIconMode="dropdown_menu">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/inputGender"
+                        style="@style/inputPetField"
+                        android:layout_height="55dp"
+                        android:paddingTop="20dp"
+                        android:paddingStart="12dp"
+                        android:hint="@string/input_gender"
+                        android:inputType="text"
+                        tools:ignore="RtlSymmetry" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/inputBirthMonth"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.4"
+                    android:hint="@string/input_birth_date"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="16sp"
+                    app:icon="@drawable/calendar_icon" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/inputPetContainer">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputBreed"
+                    style="@style/inputPetField"
+                    android:hint="@string/input_breed"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/inputPetContainer">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputWeight"
+                    style="@style/inputPetField"
+                    android:hint="@string/input_weight"
+                    android:inputType="numberDecimal" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/inputPetContainer">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputPathologies"
+                    style="@style/inputPetField"
+                    android:hint="@string/input_pathologies"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/inputPetContainer">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputRecommendedCalories"
+                    style="@style/inputPetField"
+                    android:hint="@string/input_recommended_calories"
+                    android:inputType="numberDecimal" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/inputPetContainer">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputWashFrequency"
+                    style="@style/inputPetField"
+                    android:hint="@string/input_wash_frequency"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddPet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/register_new_pet"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registerPetLayout"
+            app:layout_constraintVertical_bias="0.86"
+            app:cornerRadius="20dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

@@ -53,6 +53,17 @@
         <item>Catalan</item>
         <item>Spanish</item>
     </string-array>
+    <string name="input_pet_name">Name</string>
+    <string name="input_gender">Gender</string>
+    <string name="input_birth_date">Birth date</string>
+    <string name="input_breed">Breed</string>
+    <string name="input_weight">Weight (kg)</string>
+    <string name="input_recommended_calories">Recommended calories (kcal)</string>
+    <string name="input_wash_frequency">Wash frequency (days)</string>
+    <string name="input_pathologies">Pathologies</string>
+    <string name="select_birth_date">Select birth date</string>
+    <string name="register_new_pet">Register new pet</string>
+    <string name="error_empty_field">All fields must be filled (pathologies not included)</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
