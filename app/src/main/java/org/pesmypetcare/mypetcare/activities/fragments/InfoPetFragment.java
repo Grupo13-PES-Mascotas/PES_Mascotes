@@ -28,13 +28,15 @@ public class InfoPetFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoPetBinding.inflate(inflater, container, false);
-        
         setCalendarPicker();
         setGenderDropdownMenu();
-
         return binding.getRoot();
     }
 
+
+    /**
+     * Configure the Dropdown menu of gender
+     */
     private void setGenderDropdownMenu() {
         AutoCompleteTextView gender = binding.inputGender;
         ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
@@ -42,15 +44,16 @@ public class InfoPetFragment extends Fragment {
         gender.setAdapter(adapter);
     }
 
+    /**
+     * Configure the Calendar picker of birthday
+     */
     private void setCalendarPicker() {
         MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
         builder.setTitleText(getString(R.string.birth_random));
         MaterialDatePicker materialDatePicker = builder.build();
-
         birthDate = binding.inputBirthMonth;
         birthDate.setOnClickListener(v ->
                 materialDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
-
         materialDatePicker.addOnPositiveButtonClickListener(selection -> {
             birthDate.setText(materialDatePicker.getHeaderText());
         });
