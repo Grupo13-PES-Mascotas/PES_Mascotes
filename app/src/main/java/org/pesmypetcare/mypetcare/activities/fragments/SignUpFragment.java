@@ -67,12 +67,12 @@ public class SignUpFragment extends Fragment {
     }
 
     /**
-     * Method responsible of checking if the sign up is correct
+     * Method responsible of checking if the sign up is correct.
      * @return True if the sign up was successful or false otherwise
      */
     private boolean validateSignUp() {
         resetFieldsStatus();
-        boolean [] emptyFields = new boolean[4];
+        boolean [] emptyFields = new boolean[editText.length];
         boolean shortPass;
         boolean weakPass;
         boolean diffPass;
@@ -86,7 +86,7 @@ public class SignUpFragment extends Fragment {
             shortPass = shortPass();
             if (!shortPass) {
                 weakPass = weakPass();
-                if(!weakPass) {
+                if (!weakPass) {
                     diffPass = diffPass();
                     return !diffPass;
                 }
@@ -103,20 +103,20 @@ public class SignUpFragment extends Fragment {
     }
 
     private void emptyFieldHandler(TextInputEditText eT, TextInputLayout iL) {
-        iL.setHelperText("This field cannot be empty");
+        iL.setHelperText(getResources().getString(R.string.emptyField));
         iL.setHelperTextColor(ColorStateList.valueOf(Color.RED));
         eT.setHintTextColor(Color.RED);
     }
 
     private boolean shortPass() {
         if (binding.signUpPasswordText.getText().toString().length() < MIN_PASS_LENTGH) {
-            weakPassHandler(binding.signUpPasswordText, binding.signUpPasswordLayout, "Password is too short");
+            weakPassHandler(binding.signUpPasswordText, binding.signUpPasswordLayout, getResources().getString(R.string.shortPassword));
             return true;
         }
         return false;
     }
 
-    private void weakPassHandler (TextInputEditText eT, TextInputLayout iL, String s) {
+    private void weakPassHandler(TextInputEditText eT, TextInputLayout iL, String s) {
         eT.setTextColor(Color.RED);
         iL.setHelperText(s);
         iL.setHelperTextColor(ColorStateList.valueOf(Color.RED));
@@ -140,17 +140,18 @@ public class SignUpFragment extends Fragment {
                 specialChar = true;
             }
         }
-        if (uppercase && lowercase && number && specialChar)
+        if (uppercase && lowercase && number && specialChar) {
             return false;
-        weakPassHandler(binding.signUpPasswordText, binding.signUpPasswordLayout, "Password is too weak");
+        }
+        weakPassHandler(binding.signUpPasswordText, binding.signUpPasswordLayout, getResources().getString(R.string.weakPassword));
         return true;
     }
 
     private boolean diffPass() {
         String text = binding.signUpPasswordText.getText().toString();
         if (!text.equals(binding.signUpRepPasswordText.getText().toString())) {
-            diffPassHandler(binding.signUpPasswordText, binding.signUpPasswordLayout, "Passwords do not match");
-            diffPassHandler(binding.signUpRepPasswordText, binding.signUpRepPasswordLayout, "Passwords do not match");
+            diffPassHandler(binding.signUpPasswordText, binding.signUpPasswordLayout, getResources().getString(R.string.differentPasswords));
+            diffPassHandler(binding.signUpRepPasswordText, binding.signUpRepPasswordLayout, getResources().getString(R.string.differentPasswords));
             return true;
         }
         return false;
@@ -158,7 +159,7 @@ public class SignUpFragment extends Fragment {
 
     private void diffPassHandler(TextInputEditText eT, TextInputLayout iL, String s) {
         eT.setText("");
-        iL.setHelperText("Passwords do not match");
+        iL.setHelperText(s);
         iL.setHelperTextColor(ColorStateList.valueOf(Color.RED));
     }
 }

@@ -8,6 +8,10 @@
     <string name="repeat_pass">Repeat Password</string>
     <string name="titleDesc">Application Title</string>
     <string name="fieldImage">Image of the current Field</string>
+    <string name="differentPasswords">Passwords do not match</string>
+    <string name="shortPassword">Password is too short</string>
+    <string name="weakPassword">Password is too weak</string>
+    <string name="emptyField">This field cannot be empty</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
