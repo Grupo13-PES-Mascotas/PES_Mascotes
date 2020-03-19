@@ -23,7 +23,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="7dp"
-            android:src="@drawable/perrito" />
+            android:src="@drawable/c4907577a372c21c3ea70cad4b59eb07" />
 
         <TextView
             android:id="@+id/PetName"
@@ -31,11 +31,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="80dp"
+            android:layout_marginStart="50dp"
             android:gravity="center"
             android:text="@string/name_random"
-            android:textColor="@color/xatBoxColor"
+            android:textColor="@color/design_default_color_surface"
             android:textSize="40sp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_dog"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="Type of pet" />
+
 
     </LinearLayout>
     <ScrollView
@@ -43,7 +53,7 @@
         android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:orientation="vertical">
 
@@ -55,52 +65,14 @@
             app:hintEnabled="true"
             app:startIconContentDescription="@string/breed_title"
             app:hintAnimationEnabled="true"
-            app:boxStrokeColor = "@color/colorAccent" >
+            app:boxStrokeColor = "@color/colorAccent"
+            app:boxBackgroundColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/breed_random"
                 />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/Age"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/age_title"
-            app:boxBackgroundColor="#FFFFFF"
-            app:errorEnabled="false"
-            app:helperText="years"
-            app:helperTextEnabled="true"
-            app:helperTextTextAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:helperTextTextColor="@color/colorAccent"
-            app:hintAnimationEnabled="true"
-            app:hintEnabled="true"
-            app:startIconContentDescription="@string/breed_title">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/age_random" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/Gender"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/gender_title"
-            app:helperTextEnabled="true"
-            app:hintAnimationEnabled="true"
-            app:hintEnabled="true"
-            app:startIconContentDescription="@string/breed_title">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/gender_random" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,7 +84,8 @@
             app:helperTextEnabled="true"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
-            app:startIconContentDescription="@string/breed_title">
+            app:startIconContentDescription="@string/breed_title"
+            app:boxBackgroundColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -121,21 +94,47 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+       <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/Gender"
+            android:layout_width="match_parent"
+            android:hint="@string/gender_title"
+            android:layout_weight="0.6"
+            app:endIconMode="dropdown_menu"
+            android:layout_height="match_parent"
+           app:boxBackgroundColor="@color/white">
+
+            <AutoCompleteTextView
+                android:id="@+id/inputGender"
+                android:paddingTop="20dp"
+                android:paddingStart="12dp"
+                android:inputType="text"
+                tools:ignore="RtlSymmetry"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:ems="10"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/Birth"
+            android:id="@+id/Age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/birth_title"
+            android:hint="@string/age_title"
+            app:helperTextEnabled="true"
+            app:helperTextTextAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:helperTextTextColor="@color/colorPrimaryDark"
+            app:hintAnimationEnabled="true"
             app:hintEnabled="true"
-            app:startIconContentDescription="@string/birth_title"
-            app:startIconDrawable="@drawable/baseline_cake_black_18dp">
+            app:startIconContentDescription="@string/breed_title"
+            app:boxBackgroundColor="@color/white">
 
-        <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/birth_random"
-                />
+                android:text="@string/age_random" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,7 +146,8 @@
             app:helperTextEnabled="true"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
-            app:startIconContentDescription="@string/breed_title">
+            app:startIconContentDescription="@string/breed_title"
+            app:boxBackgroundColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -164,7 +164,8 @@
             app:helperTextEnabled="true"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
-            app:startIconContentDescription="@string/breed_title">
+            app:startIconContentDescription="@string/breed_title"
+            app:boxBackgroundColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -172,6 +173,39 @@
                 android:text="@string/patologies_random" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/WashFrequency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/wash_title"
+            app:helperTextEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:startIconContentDescription="@string/breed_title"
+            app:boxBackgroundColor="@color/white">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/wash_random" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/inputBirthMonth"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:hint="@string/birth_random"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:icon="@drawable/baseline_cake_black_18dp"
+            app:iconTint="@color/black"
+            android:backgroundTint="@color/white"
+            app:strokeColor="@color/colorAccent"
+            app:strokeWidth="2dp"
+            android:layout_marginBottom="40dp" />
 
             </LinearLayout>
             </ScrollView>

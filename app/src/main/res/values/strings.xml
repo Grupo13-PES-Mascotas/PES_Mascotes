@@ -9,26 +9,32 @@
     <string name="navigation_settings">Settings</string>
     <string name="defaultName">John Doe</string>
     <string name="defaultEmail">johndoe@gmail.com</string>
+
     <string name="breed_title">Breed</string>
-    <string name="age_title">Age</string>
+    <string name="age_title">Age(years)</string>
     <string name="gender_title">Gender</string>
     <string name="birth_title">Birth</string>
-    <string name="weight_title">Weight</string>
+    <string name="weight_title">Weight(kg)</string>
     <string name="patologies_title">Patologies</string>
     <string name="recommended_kcal_title">Recommended Kcal</string>
-    <string name="weight_random">15 kg</string>
-    <string name="birth_random">15/02</string>
-    <string name="patologies_random">None</string>
-    <string name="Recommended_kcal_random">747 Kcal</string>
+    <string name="wash_title">Wash Frequency(days)</string>
 
+    <string name="weight_random">15</string>
+    <string name="birth_random">dd/mm/yyyy</string>
+    <string name="patologies_random">None</string>
+    <string name="Recommended_kcal_random">747</string>
     <string name="breed_random">Golden Retriever</string>
-    <string name="name_random">Scotty</string>
-    <string name="gender_random">Male</string>
+    <string name="name_random">Rodolfo</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
     <string name="age_random">4</string>
+    <string name="wash_random">30</string>
+
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
     <string name="navigation_view_closed">Closed</string>
     <string name="not_implemented">This functionality is not implemented</string>
+
 
 </resources>
