@@ -112,8 +112,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         if (id == R.id.navigationMyPets) {
             floatingActionButton.show();
-        }
-        else {
+        } else {
             floatingActionButton.hide();
         }
     }
