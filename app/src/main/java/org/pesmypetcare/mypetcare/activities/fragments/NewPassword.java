@@ -63,8 +63,7 @@ public class NewPassword extends Fragment {
         boolean lowercase = containsLowercase(pass);
         boolean number = containsNumber(pass);
         boolean specialChar = containsSpecialChar(pass);
-        boolean aux = uppercase && lowercase && number && specialChar;
-        return !aux;
+        return !(uppercase && lowercase && number && specialChar);
     }
 
     /**
