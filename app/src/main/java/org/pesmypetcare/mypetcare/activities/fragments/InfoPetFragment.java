@@ -35,7 +35,7 @@ public class InfoPetFragment extends Fragment {
 
 
     /**
-     * Configure the Dropdown menu of gender
+     * Configure the Dropdown menu of gender.
      */
     private void setGenderDropdownMenu() {
         AutoCompleteTextView gender = binding.inputGender;
@@ -45,7 +45,7 @@ public class InfoPetFragment extends Fragment {
     }
 
     /**
-     * Configure the Calendar picker of birthday
+     * Configure the Calendar picker of birthday.
      */
     private void setCalendarPicker() {
         MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
