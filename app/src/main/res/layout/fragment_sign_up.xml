@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginRight="10dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".activities.fragments.SignUpFragment">
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signUpUsernameLayout"
+        style="@style/loginFields"
+        app:startIconDrawable="@drawable/user_icon"
+        app:endIconMode="clear_text">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/loginFields"
+            android:id="@+id/signUpUsernameText"
+            android:inputType="text"
+            android:hint="@string/username"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signUpMailLayout"
+        style="@style/loginFields"
+        app:startIconDrawable="@drawable/mail_icon"
+        app:endIconMode="clear_text">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/loginFields"
+            android:id="@+id/signUpMailText"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signUpPasswordLayout"
+        style="@style/loginFields"
+        app:startIconDrawable="@drawable/password_icon"
+        app:endIconMode="password_toggle"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/loginFields"
+            android:id="@+id/signUpPasswordText"
+            android:inputType="textPassword"
+            android:hint="@string/pass"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signUpRepPasswordLayout"
+        style="@style/loginFields"
+        app:startIconDrawable="@drawable/solid_password_icon"
+        app:endIconMode="password_toggle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/loginFields"
+            android:id="@+id/signUpRepPasswordText"
+            android:inputType="textPassword"
+            android:hint="@string/repeat_pass"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="85dp" />
+
+    <Button
+        android:id="@+id/signupButton"
+        style="@style/loginButton"
+        android:text="@string/sign_up" />
+
+</LinearLayout>
