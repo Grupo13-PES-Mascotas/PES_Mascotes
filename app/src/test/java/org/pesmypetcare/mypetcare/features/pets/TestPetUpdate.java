@@ -24,7 +24,6 @@ public class TestPetUpdate {
         pet.setRecommendedDailyKiloCalories(2);
         pet.setWashFrequency(2);
         pet.setWeight(2);
-
         usr = new User("johnDoe", "johndoe@gmail.com", "1234");
         trUpdatePet = new TrUpdatePet(new StubPetManagerService());
     }
