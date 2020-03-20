@@ -24,10 +24,10 @@ public class InfoPetFragment extends Fragment {
     private FragmentInfoPetBinding binding;
     private Button birthDate;
     private Boolean modified;
-    private String new_weight;
-    private String new_name;
-    private String new_breed;
-    private String new_gender;
+    private String newWeight;
+    private String newName;
+    private String newBreed;
+    private String newGender;
 
 
     @Override
@@ -47,10 +47,10 @@ public class InfoPetFragment extends Fragment {
         modifiedPet();
         binding.updatePet.setOnClickListener(v -> {
             if (modified) {
-                Toast.makeText(getActivity(), new_name, Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), new_breed, Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), new_gender, Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), new_weight, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), newName, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), newBreed, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), newGender, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), newWeight, Toast.LENGTH_LONG).show();
                 Toast.makeText(getActivity(), "Not implemented yet", Toast.LENGTH_LONG).show();
                 modified = false;
             }
@@ -73,7 +73,7 @@ public class InfoPetFragment extends Fragment {
     private void modifiedGender() {
         binding.Gender.addOnEditTextAttachedListener(textInputLayout -> {
             modified = true;
-            new_gender = Objects.requireNonNull(binding.Gender.getEditText()).getText().toString();
+            newGender = Objects.requireNonNull(binding.Gender.getEditText()).getText().toString();
         });
     }
 
@@ -83,7 +83,7 @@ public class InfoPetFragment extends Fragment {
     private void modifiedBreed() {
         binding.breed.addOnEditTextAttachedListener(textInputLayout -> {
             modified = true;
-            new_breed = Objects.requireNonNull(binding.breed.getEditText()).getText().toString();
+            newBreed = Objects.requireNonNull(binding.breed.getEditText()).getText().toString();
         });
     }
 
@@ -93,7 +93,7 @@ public class InfoPetFragment extends Fragment {
     private void modifiedName() {
         binding.PetName.addOnEditTextAttachedListener(textInputLayout -> {
             modified = true;
-            new_name = Objects.requireNonNull(binding.PetName.getEditText()).getText().toString();
+            newName = Objects.requireNonNull(binding.PetName.getEditText()).getText().toString();
         });
     }
 
@@ -103,7 +103,7 @@ public class InfoPetFragment extends Fragment {
     private void modifiedWeight() {
         binding.Weight.addOnEditTextAttachedListener(textInputLayout -> {
             modified = true;
-            new_weight = Objects.requireNonNull(binding.Weight.getEditText()).getText().toString();
+            newWeight = Objects.requireNonNull(binding.Weight.getEditText()).getText().toString();
         });
     }
 
