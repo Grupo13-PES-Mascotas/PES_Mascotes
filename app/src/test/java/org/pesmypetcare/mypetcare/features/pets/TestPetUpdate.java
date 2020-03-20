@@ -13,23 +13,23 @@ public class TestPetUpdate {
     private Pet pet;
     private User usr;
     private TrUpdatePet trUpdatePet;
-    private final String name = "Manolo";
-    private final String husky = "Husky";
-    private final String bulldog = "Bulldog";
-    private final String linuxName = "Linux";
-    private final String ohio = "Ohio";
-    private final int number30 = 30;
-    private final int number20 = 20;
+    private final String NAME = "Manolo";
+    private final String HUSKY = "Husky";
+    private final String BULLDOG = "Bulldog";
+    private final String LINUX_NAME = "Linux";
+    private final String OHIO = "Ohio";
+    private final int NUMBER_30 = 30;
+    private final int NUMBER_20 = 20;
 
 
     @Before
     public void setUp() throws PetRepeatException {
         usr = new User("johnDoe", "johndoe@gmail.com", "1234");
         pet = new Pet();
-        pet.setName(name);
+        pet.setName(NAME);
         pet.setGender(Gender.FEMALE);
         pet.setBirthDate("2 MAR 2010");
-        pet.setBreed(husky);
+        pet.setBreed(HUSKY);
         pet.setRecommendedDailyKiloCalories(2);
         pet.setWashFrequency(2);
         pet.setWeight(2);
@@ -44,26 +44,26 @@ public class TestPetUpdate {
 
     @Test
     public void shouldChangeWeight() {
-        pet.setWeight(number30);
-        assertEquals("Correct weight change", number30, pet.getWeight(), 0);
+        pet.setWeight(NUMBER_30);
+        assertEquals("Correct weight change", NUMBER_30, pet.getWeight(), 0);
     }
 
     @Test
     public void shouldChangeName() throws PetRepeatException {
-        pet.setName(ohio);
-        assertEquals("Correct name change", ohio, pet.getName());
+        pet.setName(OHIO);
+        assertEquals("Correct name change", OHIO, pet.getName());
     }
 
     @Test
     public void shouldChangeBreed() {
-        pet.setBreed(bulldog);
-        assertEquals("Correct breed change", bulldog, pet.getBreed());
+        pet.setBreed(BULLDOG);
+        assertEquals("Correct breed change", BULLDOG, pet.getBreed());
     }
 
     @Test
     public void shouldUpdatePetService() throws UserIsNotOwnerException {
         usr.addPet(pet);
-        pet.setWeight(number20);
+        pet.setWeight(NUMBER_20);
         trUpdatePet.setUser(usr);
         trUpdatePet.setPet(pet);
         trUpdatePet.execute();
@@ -77,7 +77,7 @@ public class TestPetUpdate {
     public void shouldNotUpdatePetIfNotOwner() throws PetRepeatException, UserIsNotOwnerException {
         usr.addPet(pet);
         User usr2 = new User("Gabi", "er2@gmail.com", "909020");
-        usr2.addPet(getAuxPet(name));
+        usr2.addPet(getAuxPet(NAME));
         trUpdatePet.setUser(usr2);
         trUpdatePet.setPet(pet);
         trUpdatePet.execute();
@@ -85,10 +85,10 @@ public class TestPetUpdate {
 
     @Test(expected = PetRepeatException.class)
     public void shouldNotUpdatePetNameIfExisting() throws PetRepeatException {
-        Pet linux = getAuxPet(linuxName);
+        Pet linux = getAuxPet(LINUX_NAME);
         usr.addPet(linux);
         usr.addPet(pet);
-        pet.setName(linuxName);
+        pet.setName(LINUX_NAME);
     }
 
     /**
@@ -101,7 +101,7 @@ public class TestPetUpdate {
         pet2.setName(petName);
         pet2.setGender(Gender.MALE);
         pet2.setBirthDate("2 MAR 2020");
-        pet2.setBreed(husky);
+        pet2.setBreed(HUSKY);
         pet2.setRecommendedDailyKiloCalories(2);
         pet2.setWashFrequency(2);
         pet2.setWeight(2);
