@@ -1,7 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers;
 
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
@@ -58,7 +57,7 @@ public class TrUpdatePet {
      * Get the result of the transaction.
      * @return The result of the transaction
      */
-    public boolean getResult() {
+    public boolean isResult() {
         return result;
     }
 
