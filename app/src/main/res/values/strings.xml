@@ -64,7 +64,6 @@
     <string name="select_birth_date">Select birth date</string>
     <string name="register_new_pet">Register new pet</string>
     <string name="error_empty_field">All fields must be filled (pathologies not included)</string>
-    <string name="error_pet_already_existing">The pet already belongs to you</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

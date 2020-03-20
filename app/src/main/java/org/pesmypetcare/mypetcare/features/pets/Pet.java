@@ -22,9 +22,6 @@ public class Pet {
     private float recommendedDailyKiloCalories;
     private int washFrequency;
 
-    public Pet() {
-    }
-
     public Pet(Bundle petInfo) {
         this.name = petInfo.getString(BUNDLE_NAME);
         this.breed = petInfo.getString(BUNDLE_BREED);
@@ -176,18 +173,5 @@ public class Pet {
      */
     private boolean isMale(Bundle petInfo) {
         return "Male".equals(Objects.requireNonNull(petInfo.getString(BUNDLE_GENDER)));
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Pet pet = (Pet) o;
-        return Objects.equals(name, pet.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
     }
 }
