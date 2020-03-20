@@ -26,6 +26,9 @@ public class Pet {
     private User owner;
     private String previousName;
 
+    public Pet() {
+    }
+
     public Pet(Bundle petInfo) {
         this.name = petInfo.getString(BUNDLE_NAME);
         this.breed = petInfo.getString(BUNDLE_BREED);

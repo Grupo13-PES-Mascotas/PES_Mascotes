@@ -1,7 +1,5 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
-import android.os.Bundle;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
@@ -18,17 +16,14 @@ public class TestPetUpdate {
 
     @Before
     public void setUp() {
-        Bundle petInfo = new Bundle();
-        petInfo.putString(Pet.BUNDLE_NAME, "Manolo");
-        petInfo.putString(Pet.BUNDLE_BIRTH_DATE, "31/2/2000");
-        petInfo.putString(Pet.BUNDLE_BREED, "MALE");
-        petInfo.putFloat(Pet.BUNDLE_CALORIES, 500);
-        petInfo.putString(Pet.BUNDLE_GENDER, "Manolo");
-        petInfo.putString(Pet.BUNDLE_PATHOLOGIES, "Manolo");
-        petInfo.putInt(Pet.BUNDLE_WASH, 2);
-        petInfo.putFloat(Pet.BUNDLE_WEIGHT, 15);
-
-        pet = new Pet(petInfo);
+        pet = new Pet();
+        pet.setName("Manolo");
+        pet.setGender(Gender.FEMALE);
+        pet.setBirthDate("2 MAR 2010");
+        pet.setBreed("Husky");
+        pet.setRecommendedDailyKiloCalories(2);
+        pet.setWashFrequency(2);
+        pet.setWeight(2);
 
         usr = new User ( "Oriol", "er@gmail.com", "909090");
         usr.addPet(pet);
@@ -90,16 +85,15 @@ public class TestPetUpdate {
     }
 
     private Pet getAuxPet() {
-        Bundle petInfo = new Bundle();
-        petInfo.putString(Pet.BUNDLE_NAME, "Linux");
-        petInfo.putString(Pet.BUNDLE_BIRTH_DATE, "31/2/2000");
-        petInfo.putString(Pet.BUNDLE_BREED, "MALE");
-        petInfo.putFloat(Pet.BUNDLE_CALORIES, 500);
-        petInfo.putString(Pet.BUNDLE_GENDER, "Bulldog");
-        petInfo.putString(Pet.BUNDLE_PATHOLOGIES, "None");
-        petInfo.putInt(Pet.BUNDLE_WASH, 2);
-        petInfo.putFloat(Pet.BUNDLE_WEIGHT, 15);
-        return new Pet(petInfo);
+        Pet pet2 = new Pet();
+        pet2.setName("Linux");
+        pet2.setGender(Gender.MALE);
+        pet2.setBirthDate("2 MAR 2020");
+        pet2.setBreed("Husky");
+        pet2.setRecommendedDailyKiloCalories(2);
+        pet2.setWashFrequency(2);
+        pet2.setWeight(2);
+        return pet2;
     }
 }
 
