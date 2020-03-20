@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -20,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.material.navigation.NavigationView;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeActionbar();
         setUpNavigationDrawer();
         setStartFragment();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
     /**
@@ -223,8 +226,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     protected void onStart() {
         super.onStart();
         if (mAuth.getCurrentUser() == null) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            finish();
+            changeFragment(new InfoPetFragment());
+            //startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            //finish();
         }
     }
 }
