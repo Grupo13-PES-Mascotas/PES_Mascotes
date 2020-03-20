@@ -18,7 +18,7 @@ public class StubPetManagerService implements PetManagerService {
     public void updatePet(Pet pet) {
         if (pet.getPreviousName() != null) {
             Objects.requireNonNull(data.get(pet.getOwner().getUsername())).remove(new Pet(pet.getPreviousName()));
-        } else {
+        } else if (Objects.requireNonNull(data.containsKey(pet.getOwner().getUsername()))) {
             Objects.requireNonNull(data.get(pet.getOwner().getUsername())).remove(pet);
         }
         this.registerNewPet(pet.getOwner().getUsername(), pet);

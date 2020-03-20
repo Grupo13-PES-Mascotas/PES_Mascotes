@@ -79,9 +79,13 @@ public class Pet {
      * Set the name of the pet.
      * @param name The name of the pet to set
      */
-    public void setName(String name) {
-        this.previousName = this.name;
-        this.name = name;
+    public void setName(String name) throws PetRepeatException {
+        if (owner == null || !owner.getPets().contains(new Pet(name))) {
+            this.previousName = this.name;
+            this.name = name;
+        } else {
+            throw new PetRepeatException();
+        }
     }
 
     /**

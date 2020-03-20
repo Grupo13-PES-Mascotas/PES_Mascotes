@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.controllers;
 
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.PetAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
@@ -34,20 +34,14 @@ public class TrUpdatePet {
 
     /**
      * Execute the transaction.
-     * @throws PetAlreadyExistingException The pet has already been registered by the user
      * @throws UserIsNotOwnerException The user is not the owner of the pet
      */
-    public void execute() throws PetAlreadyExistingException, UserIsNotOwnerException {
+    public void execute() throws UserIsNotOwnerException {
         result = false;
-
-        if (petHasAlreadyBeenRegistered()) {
-            throw new PetAlreadyExistingException();
-        }
-
+        System.out.println(user.getUsername());
         if (userIsNotTheOwnerOfThePet()) {
             throw new UserIsNotOwnerException();
         }
-
         petManagerService.updatePet(pet);
         result = true;
     }
@@ -61,18 +55,11 @@ public class TrUpdatePet {
     }
 
     /**
-     *Checks whether the pet has already been registered by the user.
-     * @return True if the pet has already been registered by the user
-     */
-    private boolean petHasAlreadyBeenRegistered() {
-        return user.getPets().contains(pet);
-    }
-
-    /**
      * Get the result of the transaction.
      * @return The result of the transaction
      */
     public boolean getResult() {
         return result;
     }
+
 }

@@ -15,7 +15,8 @@ public class TestPetUpdate {
     private TrUpdatePet trUpdatePet;
 
     @Before
-    public void setUp() {
+    public void setUp() throws PetRepeatException {
+        usr = new User("johnDoe", "johndoe@gmail.com", "1234");
         pet = new Pet();
         pet.setName("Manolo");
         pet.setGender(Gender.FEMALE);
@@ -24,40 +25,35 @@ public class TestPetUpdate {
         pet.setRecommendedDailyKiloCalories(2);
         pet.setWashFrequency(2);
         pet.setWeight(2);
-        usr = new User("johnDoe", "johndoe@gmail.com", "1234");
         trUpdatePet = new TrUpdatePet(new StubPetManagerService());
     }
 
     @Test
     public void shouldChangeGender() {
-        usr.addPet(pet);
         pet.setGender(Gender.MALE);
         assertEquals(Gender.MALE, pet.getGender());
     }
 
     @Test
     public void shouldChangeWeight() {
-        usr.addPet(pet);
         pet.setWeight(30);
         assertEquals(30, pet.getWeight(),0);
     }
 
     @Test
-    public void shouldChangeName() {
-        usr.addPet(pet);
+    public void shouldChangeName() throws PetRepeatException {
         pet.setName("Ohio");
         assertEquals("Ohio", pet.getName());
     }
 
     @Test
     public void shouldChangeBreed() {
-        usr.addPet(pet);
         pet.setBreed("Bulldog");
         assertEquals("Bulldog", pet.getBreed());
     }
 
     @Test
-    public void shouldUpdatePetService() throws PetAlreadyExistingException, UserIsNotOwnerException {
+    public void shouldUpdatePetService() throws UserIsNotOwnerException {
         usr.addPet(pet);
         pet.setWeight(20);
         trUpdatePet.setUser(usr);
@@ -70,28 +66,31 @@ public class TestPetUpdate {
     }
 
     @Test(expected = UserIsNotOwnerException.class)
-    public void shouldNotUpdatePetIfNotOwner() throws PetAlreadyExistingException, UserIsNotOwnerException {
+    public void shouldNotUpdatePetIfNotOwner() throws PetRepeatException, UserIsNotOwnerException {
         usr.addPet(pet);
         User usr2 = new User ( "Gabi", "er2@gmail.com", "909020");
+        usr2.addPet(getAuxPet("Manolo"));
         trUpdatePet.setUser(usr2);
         trUpdatePet.setPet(pet);
         trUpdatePet.execute();
     }
 
-    @Test(expected = PetAlreadyExistingException.class)
-    public void shouldNotUpdatePetIfExisting() throws PetAlreadyExistingException, UserIsNotOwnerException {
-        usr.addPet(pet);
-        Pet linux = getAuxPet();
+    @Test(expected = PetRepeatException.class)
+    public void shouldNotUpdatePetNameIfExisting() throws PetRepeatException {
+        Pet linux = getAuxPet("Linux");
         usr.addPet(linux);
+        usr.addPet(pet);
         pet.setName("Linux");
-        trUpdatePet.setUser(usr);
-        trUpdatePet.setPet(pet);
-        trUpdatePet.execute();
     }
 
-    private Pet getAuxPet() {
+    /**
+     * Creates a new pet.
+     * @param name The name of the new pet
+     * @return The new pet
+     */
+    private Pet getAuxPet(String name) throws PetRepeatException {
         Pet pet2 = new Pet();
-        pet2.setName("Linux");
+        pet2.setName(name);
         pet2.setGender(Gender.MALE);
         pet2.setBirthDate("2 MAR 2020");
         pet2.setBreed("Husky");
