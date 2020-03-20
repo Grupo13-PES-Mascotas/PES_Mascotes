@@ -25,18 +25,26 @@
             android:layout_marginBottom="7dp"
             android:src="@drawable/c4907577a372c21c3ea70cad4b59eb07" />
 
-        <TextView
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/PetName"
             style="@style/TextAppearance.MaterialComponents.Headline1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            app:startIconContentDescription="Pet Name"
             android:layout_marginStart="50dp"
             android:gravity="center"
-            android:text="@string/name_random"
+            app:boxBackgroundColor="@color/colorAccent"
             android:textStyle="bold"
-            android:textColor="@color/design_default_color_surface"
-            android:textSize="40sp" />
+            android:textColor="@color/design_default_color_surface">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/design_default_color_surface"
+                android:text="@string/name_random"
+                android:textSize="40sp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
             android:id="@+id/PetType"
@@ -46,7 +54,7 @@
             android:layout_marginStart="50dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:contentDescription="Type of pet" />
+            android:contentDescription="@string/type_of_pet" />
 
 
     </LinearLayout>
@@ -78,7 +86,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/Weihgt"
+            android:id="@+id/Weight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/weight_title"
@@ -208,7 +216,17 @@
             app:strokeWidth="2dp"
             android:layout_marginBottom="40dp" />
 
-            </LinearLayout>
+        <Button
+            android:id="@+id/updatePet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/update_pet"
+            android:textColor="@color/white"
+            style="@style/rounded_button" />
+
+    </LinearLayout>
             </ScrollView>
 
         </LinearLayout>

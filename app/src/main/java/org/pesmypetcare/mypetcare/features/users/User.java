@@ -54,6 +54,7 @@ public class User {
 
     public void addPet(Pet pet) {
         pets.add(pet);
+        pet.setOwner(this);
     }
 
     public void deletePet(Pet pet) {
