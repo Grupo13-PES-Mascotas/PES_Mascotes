@@ -174,4 +174,17 @@ public class Pet {
     private boolean isMale(Bundle petInfo) {
         return "Male".equals(Objects.requireNonNull(petInfo.getString(BUNDLE_GENDER)));
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pet pet = (Pet) o;
+        return Objects.equals(name, pet.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 }

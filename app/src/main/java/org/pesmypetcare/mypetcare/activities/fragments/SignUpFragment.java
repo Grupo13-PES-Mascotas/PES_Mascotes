@@ -16,7 +16,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.User;
+import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.databinding.FragmentSignUpBinding;
 
 /**

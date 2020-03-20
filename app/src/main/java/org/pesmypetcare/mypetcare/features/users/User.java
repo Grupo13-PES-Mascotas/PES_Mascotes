@@ -1,9 +1,15 @@
-package org.pesmypetcare.mypetcare;
+package org.pesmypetcare.mypetcare.features.users;
+
+import org.pesmypetcare.mypetcare.features.pets.Pet;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class User {
     private String username;
     private String mail;
     private String passwd;
+    private ArrayList<Pet> pets;
 
     public User(String username, String mail, String passwd) {
         this.username = username;
@@ -42,5 +48,26 @@ public class User {
     private void comunicateDatabase(String username, String mail, String passwd) {
         System.out.println("Es registrara l'usuari " + username + " amb mail "
             + mail + " i contrasenya " + passwd + " a la BD");
+    }
+
+    public void addPet(Pet pet) {
+        pets.add(pet);
+    }
+
+    public void deletePet(Pet pet) {
+        pets.remove(pet);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(username, user.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);
     }
 }
