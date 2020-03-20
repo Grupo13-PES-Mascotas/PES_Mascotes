@@ -32,7 +32,7 @@ public class TestUser {
         trRegisterNewPet.setUser(user);
         trRegisterNewPet.setPet(pet);
         trRegisterNewPet.execute();
-        boolean addingResult = trRegisterNewPet.getResult();
+        boolean addingResult = trRegisterNewPet.isResult();
 
         assertTrue("should communicate with service to add a pet", addingResult);
     }
@@ -52,7 +52,7 @@ public class TestUser {
         pet.setGender(Gender.MALE);
         pet.setBirthDate("2 MAR 2020");
         pet.setBreed("Husky");
-        pet.setRecommendedDailyKiloCalories(20.0f);
+        pet.setRecommendedDailyKiloCalories(2);
         pet.setWashFrequency(2);
         pet.setWeight(2);
         return pet;

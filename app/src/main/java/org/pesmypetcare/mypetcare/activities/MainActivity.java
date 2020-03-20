@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         initializeActivity();
         initializeControllers();
+
+        user = new User("johnDoe", "johndoe@gmail.com", "1234");
     }
 
     private void initializeControllers() {
@@ -240,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         fragmentTransaction.replace(R.id.mainActivityFrameLayout, fragment);
         fragmentTransaction.commit();
     }
+
 
     @Override
     protected void onStart() {
