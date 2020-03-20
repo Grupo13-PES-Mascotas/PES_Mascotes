@@ -22,6 +22,9 @@ public class Pet {
     private float recommendedDailyKiloCalories;
     private int washFrequency;
 
+    public Pet() {
+    }
+
     public Pet(Bundle petInfo) {
         this.name = petInfo.getString(BUNDLE_NAME);
         this.breed = petInfo.getString(BUNDLE_BREED);

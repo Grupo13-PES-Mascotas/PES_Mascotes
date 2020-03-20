@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -24,7 +25,11 @@ import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
+import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
+import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.Objects;
@@ -50,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private FloatingActionButton floatingActionButton;
     private Class selectedFragment;
     private User user;
+    private TrRegisterNewPet trRegisterNewPet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setContentView(binding.getRoot());
 
         initializeActivity();
+        initializeControllers();
+    }
+
+    private void initializeControllers() {
+        trRegisterNewPet = ControllersFactory.createStubRegisterNewPet();
     }
 
     /**
@@ -205,7 +216,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void addNewPet(Bundle petInfo) {
-        //Pet pet = new Pet(petInfo);
+        Pet pet = new Pet(petInfo);
+
+        trRegisterNewPet.setUser(user);
+        trRegisterNewPet.setPet(pet);
+
+        try {
+            trRegisterNewPet.execute();
+        } catch (PetAlreadyExistingException e) {
+            Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing), Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
 
         changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
         setUpNewFragment(getString(R.string.navigation_my_pets), NAVIGATION_OPTIONS[0]);
