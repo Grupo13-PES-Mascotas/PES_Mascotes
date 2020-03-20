@@ -20,6 +20,7 @@ public class TestPetUpdate {
     private final int number30 = 30;
     private final int number20 = 20;
 
+
     @Before
     public void setUp() throws PetRepeatException {
         usr = new User("johnDoe", "johndoe@gmail.com", "1234");
