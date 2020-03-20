@@ -1,7 +1,6 @@
 package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,8 +17,8 @@ public class StubPetManagerService implements PetManagerService {
     @Override
     public boolean registerNewPet(String username, Pet pet) {
         data.putIfAbsent(username, new ArrayList<>());
-
         Objects.requireNonNull(data.get(username)).add(pet);
+
         return true;
     }
 }

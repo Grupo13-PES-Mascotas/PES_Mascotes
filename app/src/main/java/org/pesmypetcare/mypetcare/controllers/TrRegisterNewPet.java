@@ -32,7 +32,7 @@ public class TrRegisterNewPet {
     }
 
     /**
-     * Execute the transaction
+     * Execute the transaction.
      * @throws PetAlreadyExistingException The pet has already been registered by the user
      */
     public void execute() throws PetAlreadyExistingException {
@@ -55,7 +55,7 @@ public class TrRegisterNewPet {
     }
 
     /**
-     * Get the result of the transaction
+     * Get the result of the transaction.
      * @return The result of the transaction
      */
     public boolean isResult() {
