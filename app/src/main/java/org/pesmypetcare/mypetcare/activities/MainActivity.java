@@ -25,6 +25,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
+import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.Objects;
 
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private NavigationView navigationView;
     private FloatingActionButton floatingActionButton;
     private Class selectedFragment;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
