@@ -29,9 +29,6 @@ public class Pet {
     public Pet() {
     }
 
-    public Pet() {
-    }
-
     public Pet(Bundle petInfo) {
         this.name = petInfo.getString(BUNDLE_NAME);
         this.breed = petInfo.getString(BUNDLE_BREED);
