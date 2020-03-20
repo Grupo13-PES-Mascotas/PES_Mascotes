@@ -20,14 +20,14 @@ public class TestUser {
     }
 
     @Test
-    public void shouldAddOnePet() {
+    public void shouldAddOnePet() throws PetRepeatException {
         Pet pet = getLinuxPet();
         user.addPet(pet);
         assertTrue("should add one pet", user.getPets().contains(pet));
     }
 
     @Test
-    public void shouldCommunicateWithService() throws PetAlreadyExistingException {
+    public void shouldCommunicateWithService() throws PetAlreadyExistingException, PetRepeatException {
         Pet pet = getLinuxPet();
         trRegisterNewPet.setUser(user);
         trRegisterNewPet.setPet(pet);
@@ -38,7 +38,7 @@ public class TestUser {
     }
 
     @Test(expected = PetAlreadyExistingException.class)
-    public void shouldNotAddPetIfExisting() throws PetAlreadyExistingException {
+    public void shouldNotAddPetIfExisting() throws PetAlreadyExistingException, PetRepeatException {
         Pet pet = getLinuxPet();
         trRegisterNewPet.setUser(user);
         trRegisterNewPet.setPet(pet);
@@ -46,7 +46,7 @@ public class TestUser {
         trRegisterNewPet.execute();
     }
 
-    private Pet getLinuxPet() {
+    private Pet getLinuxPet() throws PetRepeatException {
         Pet pet = new Pet();
         pet.setName("Linux");
         pet.setGender(Gender.MALE);
