@@ -53,6 +53,8 @@ public class InfoPetFragment extends Fragment {
                 Toast.makeText(getActivity(), newWeight, Toast.LENGTH_LONG).show();
                 Toast.makeText(getActivity(), "Not implemented yet", Toast.LENGTH_LONG).show();
                 modified = false;
+            } else {
+                Toast.makeText(getActivity(), "No changes", Toast.LENGTH_LONG).show();
             }
         });
     }
