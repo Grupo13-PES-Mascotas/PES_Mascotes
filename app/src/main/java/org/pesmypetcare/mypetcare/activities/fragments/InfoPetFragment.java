@@ -1,19 +1,16 @@
 package org.pesmypetcare.mypetcare.activities.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 
@@ -27,7 +24,10 @@ public class InfoPetFragment extends Fragment {
     private FragmentInfoPetBinding binding;
     private Button birthDate;
     private Boolean modified;
-    private String new_weight, new_name, new_breed, new_gender;
+    private String new_weight;
+    private String new_name;
+    private String new_breed;
+    private String new_gender;
 
 
     @Override
