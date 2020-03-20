@@ -17,6 +17,7 @@ public class TestPetUpdate {
     private final String husky = "Husky";
     private final String bulldog = "Bulldog";
     private final String linuxName = "Linux";
+    private final String ohio = "Ohio";
     private final int number30 = 30;
     private final int number20 = 20;
 
@@ -49,8 +50,8 @@ public class TestPetUpdate {
 
     @Test
     public void shouldChangeName() throws PetRepeatException {
-        pet.setName("Ohio");
-        assertEquals("Correct name change", "Ohio", pet.getName());
+        pet.setName(ohio);
+        assertEquals("Correct name change", ohio, pet.getName());
     }
 
     @Test
