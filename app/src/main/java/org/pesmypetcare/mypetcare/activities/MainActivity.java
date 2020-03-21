@@ -251,9 +251,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     protected void onStart() {
         super.onStart();
         if (mAuth.getCurrentUser() == null) {
-            changeFragment(new InfoPetFragment());
-            //startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            //finish();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
         }
     }
 }

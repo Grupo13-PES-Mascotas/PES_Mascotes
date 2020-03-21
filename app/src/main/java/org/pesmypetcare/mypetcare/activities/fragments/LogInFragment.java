@@ -30,20 +30,18 @@ public class LogInFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         mAuth = FirebaseAuth.getInstance();
 
         FragmentLogInBinding binding = FragmentLogInBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         binding.loginButton.setOnClickListener(v -> {
-            email = Objects.requireNonNull(binding.loginUsernameText.getText()).toString();
+            email = Objects.requireNonNull(binding.loginEmailText.getText()).toString();
             password = Objects.requireNonNull(binding.loginPasswordText.getText()).toString();
             if (!email.isEmpty() && !password.isEmpty()) {
                 loginUser();
             } else {
                 testToast("Incorrect entry");
             }
-
         });
         return view;
     }
@@ -59,11 +57,13 @@ public class LogInFragment extends Fragment {
      */
     private void loginUser() {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            System.out.println(email);
-            System.out.println(password);
             if (task.isSuccessful()) {
-                startActivity(new Intent(getActivity(), MainActivity.class));
-                Objects.requireNonNull(getActivity()).finish();
+                if (Objects.requireNonNull(mAuth.getCurrentUser()).isEmailVerified()) {
+                    startActivity(new Intent(getActivity(), MainActivity.class));
+                    Objects.requireNonNull(getActivity()).finish();
+                } else {
+                    testToast("User not verified, check your email");
+                }
             } else {
                 testToast("Incorrect username or password");
             }
