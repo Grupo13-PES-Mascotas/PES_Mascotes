@@ -1,7 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.fragments;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +33,7 @@ public class InfoPetFragment extends Fragment {
     private String newGender;
     private CircularImageView petProfileImage;
     private InfoPetCommunication communication;
+    public static Bitmap bitmap;
 
 
     @Override
@@ -53,13 +53,17 @@ public class InfoPetFragment extends Fragment {
     private void setPetProfileImage() {
        petProfileImage = binding.imgPet;
 
+       if (bitmap != null) {
+           petProfileImage.setImage(bitmap);
+       }
+
        petProfileImage.setOnClickListener(view -> {
            communication.makeZoomImage(petProfileImage.getBitmap());
        });
     }
 
-    public void setProfileImage(Bitmap image) {
-        petProfileImage.setImage(image);
+    public static void setProfileImage(Bitmap image) {
+        bitmap = image;
     }
 
     /**
@@ -154,5 +158,9 @@ public class InfoPetFragment extends Fragment {
         materialDatePicker.addOnPositiveButtonClickListener(selection -> {
             birthDate.setText(materialDatePicker.getHeaderText());
         });
+    }
+
+    public void setPetImage(Bitmap bitmap) {
+        petProfileImage.setImage(bitmap);
     }
 }

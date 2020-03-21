@@ -1,8 +1,15 @@
 package org.pesmypetcare.mypetcare.activities;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,9 +17,12 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -41,7 +51,6 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
     InfoPetCommunication {
-    private FirebaseAuth mAuth;
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
@@ -62,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private Class selectedFragment;
     private User user;
     private TrRegisterNewPet trRegisterNewPet;
+    private FirebaseAuth mAuth;
+    private static Bitmap bitmapAux;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         initializeActivity();
         initializeControllers();
+
+        //infoPetFragment = new InfoPetFragment();
 
         user = new User("johnDoe", "johndoe@gmail.com", "1234");
     }
@@ -255,9 +268,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     protected void onStart() {
         super.onStart();
         if (mAuth.getCurrentUser() == null) {
-            changeFragment(new InfoPetFragment());
             //startActivity(new Intent(MainActivity.this, LoginActivity.class));
             //finish();
+        }
+
+        if (bitmapAux != null) {
+            makeZoomImage(bitmapAux);
         }
     }
 
@@ -265,6 +281,30 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void makeZoomImage(Bitmap bitmap) {
         floatingActionButton.hide();
         changeFragment(new ImageZoom(bitmap));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            Uri selectedImage = Objects.requireNonNull(data).getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(Objects.requireNonNull(selectedImage), filePathColumn,
+                null, null, null);
+            Objects.requireNonNull(cursor).moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+
+            String imagePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+            }
+            else {
+                bitmapAux = BitmapFactory.decodeFile(imagePath);
+            }
+        }
     }
 }
 
