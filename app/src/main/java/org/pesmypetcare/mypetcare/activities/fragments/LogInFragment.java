@@ -46,6 +46,10 @@ public class LogInFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Creates a new toast
+     * @param s The toast content
+     */
     private void testToast(String s) {
         Toast toast1 = Toast.makeText(getActivity(), s, Toast.LENGTH_LONG);
         toast1.setGravity(Gravity.CENTER, 0, 0);

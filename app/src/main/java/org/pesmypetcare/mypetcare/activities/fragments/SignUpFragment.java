@@ -148,6 +148,7 @@ public class SignUpFragment extends Fragment {
      */
     private boolean shortPass() {
         if (password.length() < MIN_PASS_LENTGH) {
+            testToast("Password is too short (<6)");
             weakPassHandler(binding.signUpPasswordText, binding.signUpPasswordLayout,
                 getResources().getString(R.string.shortPassword));
             return true;
@@ -192,6 +193,7 @@ public class SignUpFragment extends Fragment {
     private boolean containsUppercase(String pass) {
         for (int i = 0; i < pass.length(); ++i) {
             if (Character.isUpperCase(pass.charAt(i))) {
+                testToast("Password doesn't contain a uppercase");
                 return true;
             }
         }
@@ -206,6 +208,7 @@ public class SignUpFragment extends Fragment {
     private boolean containsLowercase(String pass) {
         for (int i = 0; i < pass.length(); ++i) {
             if (Character.isLowerCase(pass.charAt(i))) {
+                testToast("Password doesn't contain a lowercase");
                 return true;
             }
         }
@@ -220,6 +223,7 @@ public class SignUpFragment extends Fragment {
     private boolean containsNumber(String pass) {
         for (int i = 0; i < pass.length(); ++i) {
             if (Character.isDigit(pass.charAt(i))) {
+                testToast("Password doesn't contain a number");
                 return true;
             }
         }
@@ -234,6 +238,7 @@ public class SignUpFragment extends Fragment {
     private boolean containsSpecialChar(String pass) {
         for (int i = 0; i < pass.length(); ++i) {
             if (String.valueOf(pass.charAt(i)).matches("[^a-zA-Z0-9]")) {
+                testToast("Password doesn't contain a special char");
                 return true;
             }
         }
@@ -250,6 +255,7 @@ public class SignUpFragment extends Fragment {
                 getResources().getString(R.string.differentPasswords));
             diffPassHandler(binding.signUpRepPasswordText, binding.signUpRepPasswordLayout,
                 getResources().getString(R.string.differentPasswords));
+            testToast("Passwords don't match");
             return true;
         }
         return false;
@@ -265,5 +271,15 @@ public class SignUpFragment extends Fragment {
         eT.setText("");
         iL.setHelperText(s);
         iL.setHelperTextColor(ColorStateList.valueOf(Color.RED));
+    }
+
+    /**
+     * Creates a new toast
+     * @param s The toast content
+     */
+    private void testToast(String s) {
+        Toast toast1 = Toast.makeText(getActivity(), s, Toast.LENGTH_LONG);
+        toast1.setGravity(Gravity.CENTER, 0, 0);
+        toast1.show();
     }
 }
