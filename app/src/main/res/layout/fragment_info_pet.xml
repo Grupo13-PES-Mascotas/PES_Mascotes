@@ -11,6 +11,7 @@
 
 
     <LinearLayout
+        android:id="@+id/layoutPetInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
@@ -23,7 +24,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="7dp"
-            android:src="@drawable/single_paw" />
+            android:src="@drawable/c4907577a372c21c3ea70cad4b59eb07" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/PetName"

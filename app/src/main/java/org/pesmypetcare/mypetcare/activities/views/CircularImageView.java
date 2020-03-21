@@ -1,53 +1,36 @@
 package org.pesmypetcare.mypetcare.activities.views;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.cardview.widget.CardView;
 
-public class CircularImageView extends AppCompatImageView {
-    private Bitmap bitmap;
+import org.pesmypetcare.mypetcare.R;
 
-    public CircularImageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+public class CircularImageView extends CardView {
+    private static final float RADIUS = 200.0f;
+    private ImageView imageView;
 
-        Drawable drawable = getDrawable();
-        if (drawable != null) {
-            bitmap = ((BitmapDrawable) drawable).getBitmap();
-            setImage(bitmap);
-        }
+    public CircularImageView(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+
+        setRadius(RADIUS);
+
+        imageView = new ImageView(context);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setLayoutParams(new CardView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        imageView.setImageDrawable(getResources().getDrawable(R.drawable.user_icon_sample, null));
+
+        addView(imageView);
     }
 
-    /**
-     * Sets the image to be displayed, given its resource id.
-     * @param imageResourceId Resource id of the image to be displayed
-     */
-    public void setImage(int imageResourceId) {
-        bitmap = BitmapFactory.decodeResource(getResources(), imageResourceId);
-        setImage(bitmap);
+    public Drawable getDrawable() {
+        return imageView.getDrawable();
     }
 
-    /**
-     * Sets the image to be displayed, given its bitmap.
-     * @param bitmap Bitmap of the image to be displayed
-     */
-    public void setImage(Bitmap bitmap) {
-        RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
-        roundedBitmap.setCircular(true);
-        setImageDrawable(roundedBitmap);
-    }
-
-    /**
-     * Get the bitmap of the image.
-     * @return The bitmap of the image
-     */
-    public Bitmap getBitmap() {
-        return bitmap;
+    public void setDrawable(Drawable drawable) {
+        imageView.setImageDrawable(drawable);
     }
 }

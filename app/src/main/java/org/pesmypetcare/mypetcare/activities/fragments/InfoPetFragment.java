@@ -1,6 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.fragments;
 
-import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +33,7 @@ public class InfoPetFragment extends Fragment {
     private String newGender;
     private CircularImageView petProfileImage;
     private InfoPetCommunication communication;
-    public static Bitmap bitmap;
-
+    private static Drawable petProfileDrawable;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,17 +52,23 @@ public class InfoPetFragment extends Fragment {
     private void setPetProfileImage() {
        petProfileImage = binding.imgPet;
 
-       if (bitmap != null) {
-           petProfileImage.setImage(bitmap);
+       if (petProfileDrawable == null) {
+           petProfileDrawable = getResources().getDrawable(R.drawable.c4907577a372c21c3ea70cad4b59eb07);
        }
 
+       petProfileImage.setDrawable(petProfileDrawable);
+
+       /*if (bitmap != null) {
+           petProfileImage.setImage(bitmap);
+       }*/
+
        petProfileImage.setOnClickListener(view -> {
-           communication.makeZoomImage(petProfileImage.getBitmap());
+           communication.makeZoomImage(petProfileImage.getDrawable(), this);
        });
     }
 
-    public static void setProfileImage(Bitmap image) {
-        bitmap = image;
+    public static void setPetProfileDrawable(Drawable drawable) {
+        petProfileDrawable = drawable;
     }
 
     /**
@@ -158,9 +163,5 @@ public class InfoPetFragment extends Fragment {
         materialDatePicker.addOnPositiveButtonClickListener(selection -> {
             birthDate.setText(materialDatePicker.getHeaderText());
         });
-    }
-
-    public void setPetImage(Bitmap bitmap) {
-        petProfileImage.setImage(bitmap);
     }
 }

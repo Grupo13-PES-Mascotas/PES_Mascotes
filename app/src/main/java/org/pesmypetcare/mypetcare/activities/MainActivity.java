@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -35,6 +37,7 @@ import com.google.android.material.navigation.NavigationView;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.ImageZoom;
+import org.pesmypetcare.mypetcare.activities.fragments.ImageZoomCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
@@ -50,7 +53,7 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
-    InfoPetCommunication {
+    InfoPetCommunication, ImageZoomCommunication {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
@@ -61,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
+
+    private Fragment actualFragment;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -179,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     public void changeFragment(Fragment nextFragment) {
         selectedFragment = nextFragment.getClass();
+        actualFragment = nextFragment;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment);
@@ -271,39 +277,58 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             //startActivity(new Intent(MainActivity.this, LoginActivity.class));
             //finish();
         }
-
-        if (bitmapAux != null) {
-            makeZoomImage(bitmapAux);
-        }
     }
 
     @Override
-    public void makeZoomImage(Bitmap bitmap) {
+    public void makeZoomImage(Drawable drawable, InfoPetFragment infoPetFragment) {
         floatingActionButton.hide();
-        changeFragment(new ImageZoom(bitmap));
+        changeFragment(new ImageZoom(drawable, infoPetFragment));
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            Uri selectedImage = Objects.requireNonNull(data).getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(Objects.requireNonNull(selectedImage), filePathColumn,
-                null, null, null);
-            Objects.requireNonNull(cursor).moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            //if (requestCode == ImageZoom.GALLERY_ZOOM_REQUEST_CODE) {
+                galleryImageZoom(data);
+            //}
+        }
+    }
 
-            String imagePath = cursor.getString(columnIndex);
-            cursor.close();
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-            }
-            else {
-                bitmapAux = BitmapFactory.decodeFile(imagePath);
-            }
+        if (actualFragment != null) {
+            changeFragment(actualFragment);
+        }
+    }
+
+    @Override
+    public void changeToPetInformation(InfoPetFragment infoPetFragment) {
+        changeFragment(infoPetFragment);
+    }
+
+
+    private void galleryImageZoom(@Nullable Intent data) {
+        Uri selectedImage = Objects.requireNonNull(data).getData();
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(Objects.requireNonNull(selectedImage), filePathColumn,
+            null, null, null);
+        Objects.requireNonNull(cursor).moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+
+        String imagePath = cursor.getString(columnIndex);
+        cursor.close();
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+        }
+        else {
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+            ((ImageZoom) actualFragment).setDrawable(drawable);
         }
     }
 }
