@@ -43,10 +43,7 @@ public class SignUpFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        editText = new TextInputEditText[] {binding.signUpUsernameText,
-            binding.signUpMailText, binding.signUpPasswordText, binding.signUpRepPasswordText};
-        inputLayout = new TextInputLayout[] {binding.signUpUsernameLayout,
-            binding.signUpMailLayout, binding.signUpPasswordLayout, binding.signUpRepPasswordLayout};
+        editTextAndInputLayoutDeclaration();
         binding.signupButton.setOnClickListener(v -> {
             if (validateSignUp()) {
                 userCreationAndValidation();
@@ -54,6 +51,16 @@ public class SignUpFragment extends Fragment {
             resetFieldsStatus();
         });
         return view;
+    }
+
+    /**
+     * This method declares the editText and InputLayout.
+     */
+    private void editTextAndInputLayoutDeclaration() {
+        editText = new TextInputEditText[] {binding.signUpUsernameText,
+            binding.signUpMailText, binding.signUpPasswordText, binding.signUpRepPasswordText};
+        inputLayout = new TextInputLayout[] {binding.signUpUsernameLayout,
+            binding.signUpMailLayout, binding.signUpPasswordLayout, binding.signUpRepPasswordLayout};
     }
 
     /**
@@ -274,7 +281,7 @@ public class SignUpFragment extends Fragment {
     }
 
     /**
-     * Creates a new toast
+     * Creates a new toast.
      * @param s The toast content
      */
     private void testToast(String s) {

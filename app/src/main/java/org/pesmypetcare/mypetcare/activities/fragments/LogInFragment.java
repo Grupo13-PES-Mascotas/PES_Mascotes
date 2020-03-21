@@ -47,7 +47,7 @@ public class LogInFragment extends Fragment {
     }
 
     /**
-     * Creates a new toast
+     * Creates a new toast.
      * @param s The toast content
      */
     private void testToast(String s) {
