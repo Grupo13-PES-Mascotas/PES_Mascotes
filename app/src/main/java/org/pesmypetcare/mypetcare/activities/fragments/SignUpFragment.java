@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +36,6 @@ public class SignUpFragment extends Fragment {
     private FirebaseAuth mAuth;
     private String email;
     private String password;
-    private String username;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -51,6 +51,7 @@ public class SignUpFragment extends Fragment {
             if (validateSignUp()) {
                 userCreationAndValidation();
             }
+            resetFieldsStatus();
         });
         return view;
     }
@@ -59,7 +60,8 @@ public class SignUpFragment extends Fragment {
      * This method is responsible for the creation and validation of the new user.
      */
     private void userCreationAndValidation() {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
+        Task taskCreation = mAuth.createUserWithEmailAndPassword(email, password);
+        taskCreation.addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
             if (task.isSuccessful()) {
                 sendEmailVerification();
             } else {
@@ -89,10 +91,8 @@ public class SignUpFragment extends Fragment {
      * @return True if the sign up was successful or false otherwise
      */
     private boolean validateSignUp() {
-        resetFieldsStatus();
         email = Objects.requireNonNull(binding.signUpMailText.getText()).toString();
         password = Objects.requireNonNull(binding.signUpPasswordText.getText()).toString();
-        username = Objects.requireNonNull(binding.signUpUsernameText.getText()).toString();
         boolean[] emptyFields = checkEmptyFields();
         if (emptyFields[PASS_POSITION]) {
             return false;
