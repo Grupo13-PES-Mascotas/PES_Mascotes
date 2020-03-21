@@ -23,7 +23,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="7dp"
-            android:src="@drawable/c4907577a372c21c3ea70cad4b59eb07" />
+            android:src="@drawable/single_paw" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/PetName"

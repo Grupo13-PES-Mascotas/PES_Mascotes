@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -22,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.material.navigation.NavigationView;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
+import org.pesmypetcare.mypetcare.activities.fragments.ImageZoom;
 import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
@@ -36,7 +39,8 @@ import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface {
+public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
+    InfoPetCommunication {
     private FirebaseAuth mAuth;
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
@@ -44,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     };
 
     private static final Class[] APPLICATION_FRAGMENTS = {
-        NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        InfoPetFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
@@ -255,6 +259,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             //startActivity(new Intent(MainActivity.this, LoginActivity.class));
             //finish();
         }
+    }
+
+    @Override
+    public void makeZoomImage(Bitmap bitmap) {
+        floatingActionButton.hide();
+        changeFragment(new ImageZoom(bitmap));
     }
 }
 

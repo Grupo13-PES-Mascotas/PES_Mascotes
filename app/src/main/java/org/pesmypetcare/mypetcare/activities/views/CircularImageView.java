@@ -12,12 +12,14 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 public class CircularImageView extends AppCompatImageView {
+    private Bitmap bitmap;
+
     public CircularImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         Drawable drawable = getDrawable();
         if (drawable != null) {
-            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+            bitmap = ((BitmapDrawable) drawable).getBitmap();
             setImage(bitmap);
         }
     }
@@ -27,7 +29,7 @@ public class CircularImageView extends AppCompatImageView {
      * @param imageResourceId Resource id of the image to be displayed
      */
     public void setImage(int imageResourceId) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imageResourceId);
+        bitmap = BitmapFactory.decodeResource(getResources(), imageResourceId);
         setImage(bitmap);
     }
 
@@ -39,5 +41,13 @@ public class CircularImageView extends AppCompatImageView {
         RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
         roundedBitmap.setCircular(true);
         setImageDrawable(roundedBitmap);
+    }
+
+    /**
+     * Get the bitmap of the image.
+     * @return The bitmap of the image
+     */
+    public Bitmap getBitmap() {
+        return bitmap;
     }
 }

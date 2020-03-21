@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -25,6 +26,7 @@ public class Pet {
     private int washFrequency;
     private User owner;
     private String previousName;
+    private Bitmap profileImage;
 
     public Pet() {
     }
@@ -252,5 +254,21 @@ public class Pet {
      */
     public void setPreviousName(String previousName) {
         this.previousName = previousName;
+    }
+
+    /**
+     * Get the profile image of the pet.
+     * @return The profile image of the pet
+     */
+    public Bitmap getProfileImage() {
+        return profileImage;
+    }
+
+    /**
+     * Set the profile image of the pet.
+     * @param profileImage The profile image of the pet
+     */
+    public void setProfileImage(Bitmap profileImage) {
+        this.profileImage = profileImage;
     }
 }
