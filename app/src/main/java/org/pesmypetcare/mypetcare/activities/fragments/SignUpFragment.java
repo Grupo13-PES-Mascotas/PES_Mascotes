@@ -88,7 +88,7 @@ public class SignUpFragment extends Fragment {
             startActivity(new Intent(getActivity(), MainActivity.class));
             Objects.requireNonNull(getActivity()).finish();
         }
-        Toast toast1 = Toast.makeText(getActivity(), "Email is not verified, check it", Toast.LENGTH_LONG);
+        Toast toast1 = Toast.makeText(getActivity(), "Verify the Email", Toast.LENGTH_LONG);
         toast1.setGravity(Gravity.CENTER, 0, 0);
         toast1.show();
     }
