@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.activities.fragments;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -130,7 +131,11 @@ public class SignUpFragment extends Fragment {
         for (int i = 0; i < editText.length; ++i) {
             inputLayout[i].setHelperText("");
         }
-        editText[PASS_POSITION].setTextColor(getResources().getColor(R.color.colorPrimary));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            editText[PASS_POSITION].setTextColor(getResources().getColor(R.color.colorPrimary, null));
+        } else {
+            editText[PASS_POSITION].setTextColor(getResources().getColor(R.color.colorPrimary));
+        }
     }
 
     /**
