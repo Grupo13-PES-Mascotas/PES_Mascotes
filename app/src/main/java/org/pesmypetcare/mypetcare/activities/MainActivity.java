@@ -343,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     /**
-     * Gets the path of the selected image in the gallery
+     * Gets the path of the selected image in the gallery.
      * @param data Data received from the gallery
      * @return The path of the selected image
      */
