@@ -129,7 +129,7 @@ public class InfoPetFragment extends Fragment {
     }
 
     /**
-     * Sets the pet profile drawable.
+     * Sets the pet profile image drawable.
      * @param drawable The pet profile drawable to set
      */
     public static void setPetProfileDrawable(Drawable drawable) {
