@@ -43,7 +43,7 @@
                 app:backgroundTint="@color/red"
                 app:tint="@color/white"
                 app:fabSize="auto"
-                android:src="@drawable/icon_clear"
+                android:src="@drawable/icon_delete"
                 style="@style/Widget.MaterialComponents.FloatingActionButton" />
 
         </LinearLayout>

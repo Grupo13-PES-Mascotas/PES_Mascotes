@@ -58,12 +58,8 @@ public class InfoPetFragment extends Fragment {
 
        petProfileImage.setDrawable(petProfileDrawable);
 
-       /*if (bitmap != null) {
-           petProfileImage.setImage(bitmap);
-       }*/
-
        petProfileImage.setOnClickListener(view -> {
-           communication.makeZoomImage(petProfileImage.getDrawable(), this);
+           communication.makeZoomImage(petProfileImage.getDrawable());
        });
     }
 

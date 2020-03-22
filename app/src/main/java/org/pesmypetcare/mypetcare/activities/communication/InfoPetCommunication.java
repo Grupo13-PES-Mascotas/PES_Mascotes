@@ -7,5 +7,5 @@ import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
 
 public interface InfoPetCommunication {
 
-    void makeZoomImage(Drawable drawable, InfoPetFragment infoPetFragment);
+    void makeZoomImage(Drawable drawable);
 }

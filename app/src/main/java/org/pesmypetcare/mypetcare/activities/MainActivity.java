@@ -233,9 +233,16 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && !selectedFragment.equals(APPLICATION_FRAGMENTS[0])) {
-            changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
-            setUpNewFragment(getString(NAVIGATION_OPTIONS[0]), NAVIGATION_OPTIONS[0]);
+        if (keyCode == KeyEvent.KEYCODE_BACK ) {
+            if (actualFragment instanceof ImageZoom) {
+                InfoPetFragment.setPetProfileDrawable(ImageZoom.getDrawable());
+                changeFragment(new InfoPetFragment());
+            }
+            else {
+                changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+                setUpNewFragment(getString(NAVIGATION_OPTIONS[0]), NAVIGATION_OPTIONS[0]);
+            }
+
             return true;
         }
 
@@ -280,9 +287,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void makeZoomImage(Drawable drawable, InfoPetFragment infoPetFragment) {
+    public void makeZoomImage(Drawable drawable) {
         floatingActionButton.hide();
-        changeFragment(new ImageZoom(drawable, infoPetFragment));
+        changeFragment(new ImageZoom(drawable));
     }
 
     @Override
