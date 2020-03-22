@@ -45,8 +45,10 @@ import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
+import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
@@ -73,9 +75,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private ActionBar toolbar;
     private NavigationView navigationView;
     private FloatingActionButton floatingActionButton;
-    private Class selectedFragment;
     private User user;
     private TrRegisterNewPet trRegisterNewPet;
+    private TrUpdatePetImage trUpdatePetImage;
     private FirebaseAuth mAuth;
     private static Bitmap bitmapAux;
 
@@ -89,13 +91,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeActivity();
         initializeControllers();
 
-        //infoPetFragment = new InfoPetFragment();
-
         user = new User("johnDoe", "johndoe@gmail.com", "1234");
     }
 
     private void initializeControllers() {
-        trRegisterNewPet = ControllersFactory.createStubRegisterNewPet();
+        trRegisterNewPet = ControllersFactory.createTrRegisterNewPet();
+        trUpdatePetImage = ControllersFactory.createTrUpdatePetImage();
     }
 
     /**
@@ -183,7 +184,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @param nextFragment Fragment to replace the current one
      */
     public void changeFragment(Fragment nextFragment) {
-        selectedFragment = nextFragment.getClass();
         actualFragment = nextFragment;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -290,6 +290,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void makeZoomImage(Drawable drawable) {
         floatingActionButton.hide();
         changeFragment(new ImageZoom(drawable));
+    }
+
+    @Override
+    public void updatePetImage(Pet pet, Bitmap newImage) {
+        trUpdatePetImage.setUser(user);
+        trUpdatePetImage.setPet(pet);
+        trUpdatePetImage.setNewPetImage(newImage);
+
+        try {
+            trUpdatePetImage.execute();
+        } catch (NotPetOwnerException e) {
+            Toast toast = Toast.makeText(this, getString(R.string.error_user_not_owner), Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 
     @Override
