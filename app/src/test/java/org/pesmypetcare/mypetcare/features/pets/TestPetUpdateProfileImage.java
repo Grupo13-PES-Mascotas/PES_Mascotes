@@ -15,6 +15,10 @@ import org.pesmypetcare.mypetcare.services.StubPetManagerService;
 import static org.junit.Assert.assertEquals;
 
 public class TestPetUpdateProfileImage {
+    public static final int WIDTH = 20;
+    public static final int HEIGHT = 20;
+    public static final float RIGHT = 20.0f;
+    public static final float BOTTOM = 20.0f;
     private User user;
     private Pet pet;
     private TrUpdatePetImage trUpdatePetImage;
@@ -50,11 +54,11 @@ public class TestPetUpdateProfileImage {
     }
 
     private Bitmap getBitmap(int color) {
-        Bitmap bitmap = Bitmap.createBitmap(20, 20, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(WIDTH, HEIGHT, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();
         paint.setColor(color);
-        canvas.drawRect(0F, 0F, 20.0f, 20.0f, paint);
+        canvas.drawRect(0.0f, 0.0f, RIGHT, BOTTOM, paint);
         return bitmap;
     }
 

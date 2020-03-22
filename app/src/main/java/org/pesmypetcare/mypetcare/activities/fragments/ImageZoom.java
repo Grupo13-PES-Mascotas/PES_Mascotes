@@ -23,9 +23,9 @@ public class ImageZoom extends Fragment {
     private static final String[] IMAGE_MIME_TYPES = {"image/jpeg", "image/png"};
     private static final int GALLERY_ZOOM_REQUEST_CODE = 0;
     private static final float RADIUS = 1000.0f;
+    private static Drawable drawable;
 
     private FragmentImageZoomBinding binding;
-    private static Drawable drawable;
 
     public ImageZoom(Drawable drawable) {
         ImageZoom.drawable = drawable;

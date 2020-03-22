@@ -101,18 +101,18 @@ public class InfoPetFragment extends Fragment {
      * Sets the pet profile image.
      */
     private void setPetProfileImage() {
-       petProfileImage = binding.imgPet;
+        petProfileImage = binding.imgPet;
 
-       if (petProfileDrawable == null) {
-           assignPetImageToDisplay();
-           isImageModified = false;
-       }
+        if (petProfileDrawable == null) {
+            assignPetImageToDisplay();
+            isImageModified = false;
+        }
 
-       petProfileImage.setDrawable(petProfileDrawable);
+        petProfileImage.setDrawable(petProfileDrawable);
 
-       petProfileImage.setOnClickListener(view -> {
-           communication.makeZoomImage(petProfileImage.getDrawable());
-       });
+        petProfileImage.setOnClickListener(view -> {
+            communication.makeZoomImage(petProfileImage.getDrawable());
+        });
     }
 
     /**
@@ -133,7 +133,7 @@ public class InfoPetFragment extends Fragment {
      * @param drawable The pet profile drawable to set
      */
     public static void setPetProfileDrawable(Drawable drawable) {
-        isImageModified = isImageModified || drawable != petProfileDrawable;
+        isImageModified = isImageModified || !drawable.equals(petProfileDrawable);
         petProfileDrawable = drawable;
     }
 

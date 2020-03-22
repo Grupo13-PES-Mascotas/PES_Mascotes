@@ -1,15 +1,12 @@
 package org.pesmypetcare.mypetcare.activities.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
+import androidx.fragment.app.Fragment;
+
 import org.pesmypetcare.mypetcare.databinding.FragmentNotImplementedBinding;
 
 public class NotImplementedFragment extends Fragment {
