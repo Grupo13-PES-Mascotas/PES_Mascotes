@@ -26,10 +26,18 @@ public class CircularImageView extends CardView {
         addView(imageView);
     }
 
+    /**
+     * Gets the drawable of the image.
+     * @return The drawable of the image
+     */
     public Drawable getDrawable() {
         return imageView.getDrawable();
     }
 
+    /**
+     * Sets the drawable of the image.
+     * @param drawable The drawable of the image to set
+     */
     public void setDrawable(Drawable drawable) {
         imageView.setImageDrawable(drawable);
     }

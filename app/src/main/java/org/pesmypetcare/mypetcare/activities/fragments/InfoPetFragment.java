@@ -30,7 +30,7 @@ import java.util.Objects;
 public class InfoPetFragment extends Fragment {
     private static Drawable petProfileDrawable;
     private static boolean isImageModified;
-    private static Pet pet;
+    private static Pet pet = new Pet("Linux");
 
     private FragmentInfoPetBinding binding;
     private Button birthDate;
@@ -58,6 +58,9 @@ public class InfoPetFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Initialize the pet info.
+     */
     private void initializePetInfo() {
         if (pet != null) {
             Objects.requireNonNull(binding.petName.getEditText()).setText(pet.getName());
@@ -74,12 +77,18 @@ public class InfoPetFragment extends Fragment {
         }
     }
 
+    /**
+     * Sets the pet pathologies if exists.
+     */
     private void setPathologies() {
         if (pet.getPathologies() != null) {
             Objects.requireNonNull(binding.pathologies.getEditText()).setText(pet.getPathologies());
         }
     }
 
+    /**
+     * Sets the gender of the pet.
+     */
     private void setGender() {
         if (pet.getGender() == Gender.MALE) {
             binding.inputGender.setText(R.string.male);
@@ -88,18 +97,14 @@ public class InfoPetFragment extends Fragment {
         }
     }
 
+    /**
+     * Sets the pet profile image.
+     */
     private void setPetProfileImage() {
        petProfileImage = binding.imgPet;
 
        if (petProfileDrawable == null) {
-           Bitmap petImage = pet.getProfileImage();
-
-           if (petImage == null) {
-               petProfileDrawable = getResources().getDrawable(R.drawable.single_paw);
-           } else {
-               petProfileDrawable = new BitmapDrawable(getResources(), petImage);
-           }
-
+           assignPetImageToDisplay();
            isImageModified = false;
        }
 
@@ -110,11 +115,32 @@ public class InfoPetFragment extends Fragment {
        });
     }
 
+    /**
+     * Assigns the pet image to display.
+     */
+    private void assignPetImageToDisplay() {
+        Bitmap petImage = pet.getProfileImage();
+
+        if (petImage == null) {
+            petProfileDrawable = getResources().getDrawable(R.drawable.single_paw);
+        } else {
+            petProfileDrawable = new BitmapDrawable(getResources(), petImage);
+        }
+    }
+
+    /**
+     * Sets the pet profile drawable.
+     * @param drawable The pet profile drawable to set
+     */
     public static void setPetProfileDrawable(Drawable drawable) {
         isImageModified = isImageModified || drawable != petProfileDrawable;
         petProfileDrawable = drawable;
     }
 
+    /**
+     * Sets the pet from which we want to display its information.
+     * @param pet The pet from which we want to display its information
+     */
     public static void setPet(Pet pet) {
         InfoPetFragment.pet = pet;
     }
@@ -218,7 +244,21 @@ public class InfoPetFragment extends Fragment {
         super.onStop();
 
         if (isImageModified) {
-            communication.updatePetImage(pet, ((BitmapDrawable) petProfileImage.getDrawable()).getBitmap());
+            Bitmap bitmap = null;
+
+            if (hasNewImageDefined()) {
+                bitmap = ((BitmapDrawable) petProfileImage.getDrawable()).getBitmap();
+            }
+
+            communication.updatePetImage(pet, bitmap);
         }
+    }
+
+    /**
+     * Check whether the pet has a new image defined.
+     * @return True if the pet has a new image defined
+     */
+    private boolean hasNewImageDefined() {
+        return !petProfileImage.getDrawable().equals(getResources().getDrawable(R.drawable.single_paw));
     }
 }

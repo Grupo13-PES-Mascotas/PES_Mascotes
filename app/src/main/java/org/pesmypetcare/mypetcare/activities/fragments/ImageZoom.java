@@ -21,7 +21,7 @@ import java.util.Objects;
 
 public class ImageZoom extends Fragment {
     private static final String[] IMAGE_MIME_TYPES = {"image/jpeg", "image/png"};
-    public static final int GALLERY_ZOOM_REQUEST_CODE = 0;
+    private static final int GALLERY_ZOOM_REQUEST_CODE = 0;
     private static final float RADIUS = 1000.0f;
 
     private FragmentImageZoomBinding binding;
@@ -31,6 +31,10 @@ public class ImageZoom extends Fragment {
         ImageZoom.drawable = drawable;
     }
 
+    /**
+     * Get the drawable of the displaying image.
+     * @return The drawable of the displaying image
+     */
     public static Drawable getDrawable() {
         return drawable;
     }
@@ -39,44 +43,72 @@ public class ImageZoom extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentImageZoomBinding.inflate(inflater, container, false);
 
-        setCircularImageView();
-        setFloatingButtons();
+        initializeCircularImageView();
+        initializeFloatingButtons();
 
         return binding.getRoot();
     }
 
-    private void setFloatingButtons() {
+    /**
+     * Initialize the floating buttons.
+     */
+    private void initializeFloatingButtons() {
         FloatingActionButton flModifyImage = binding.flModifyImage;
         FloatingActionButton flDeleteImage = binding.flDeleteImage;
 
         flModifyImage.setOnClickListener(view -> {
-            Intent imagePicker = new Intent(Intent.ACTION_PICK);
-            imagePicker.setType("image/*");
-            imagePicker.putExtra(Intent.EXTRA_MIME_TYPES, IMAGE_MIME_TYPES);
+            Intent imagePicker = getGalleryIntent();
             startActivityForResult(imagePicker, GALLERY_ZOOM_REQUEST_CODE);
         });
 
         flDeleteImage.setOnClickListener(view -> {
-            MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(
-                Objects.requireNonNull(getActivity()));
-            alertDialog.setTitle(R.string.delete_pet_image_title);
-            alertDialog.setMessage(R.string.delete_pet_image_text);
-            alertDialog.setPositiveButton(R.string.affirmative_response, (dialog, which) -> {
-                setDrawable(getResources().getDrawable(R.drawable.single_paw));
-            });
-            alertDialog.setNegativeButton(R.string.negative_response, null);
+            MaterialAlertDialogBuilder alertDialog = createAlertDialog();
             alertDialog.show();
         });
     }
 
-    private void setCircularImageView() {
+    /**
+     * Creates the alert dialog to display before deleting the image.
+     * @return The alert dialog to display before deleting the image
+     */
+    private MaterialAlertDialogBuilder createAlertDialog() {
+        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(
+            Objects.requireNonNull(getActivity()));
+        alertDialog.setTitle(R.string.delete_pet_image_title);
+        alertDialog.setMessage(R.string.delete_pet_image_text);
+        alertDialog.setPositiveButton(R.string.affirmative_response, (dialog, which) -> {
+            setDrawable(getResources().getDrawable(R.drawable.single_paw));
+        });
+        alertDialog.setNegativeButton(R.string.negative_response, null);
+        return alertDialog;
+    }
+
+    /**
+     * Gets the gallery intent.
+     * @return The gallery intent
+     */
+    private Intent getGalleryIntent() {
+        Intent imagePicker = new Intent(Intent.ACTION_PICK);
+        imagePicker.setType("image/*");
+        imagePicker.putExtra(Intent.EXTRA_MIME_TYPES, IMAGE_MIME_TYPES);
+        return imagePicker;
+    }
+
+    /**
+     * Initialize the circular image view.
+     */
+    private void initializeCircularImageView() {
         CircularImageView circularImageView = binding.displayedImage;
         circularImageView.setDrawable(drawable);
         circularImageView.setRadius(RADIUS);
     }
 
+    /**
+     * Set the drawable to display.
+     * @param drawable The drawable to set
+     */
     public void setDrawable(Drawable drawable) {
         ImageZoom.drawable = drawable;
-        setCircularImageView();
+        initializeCircularImageView();
     }
 }
