@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -16,10 +17,12 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
+import org.pesmypetcare.mypetcare.activities.NewPasswordInterface;
 import org.pesmypetcare.mypetcare.databinding.FragmentSignUpBinding;
 
 import java.util.Objects;
@@ -36,6 +39,7 @@ public class SignUpFragment extends Fragment {
     private FirebaseAuth mAuth;
     private String email;
     private String password;
+    private String username;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -71,6 +75,7 @@ public class SignUpFragment extends Fragment {
             .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
             if (task.isSuccessful()) {
                 sendEmailVerification();
+                mAuth.signOut();
             } else {
                 testToast(Objects.requireNonNull(task.getException()).toString());
             }
@@ -86,7 +91,11 @@ public class SignUpFragment extends Fragment {
             startActivity(new Intent(getActivity(), MainActivity.class));
             Objects.requireNonNull(getActivity()).finish();
         }
-        testToast("Verify the Email");
+        testToast("Verify the Email and login");
+        binding.signUpUsernameText.setText("");
+        binding.signUpMailText.setText("");
+        binding.signUpPasswordText.setText("");
+        binding.signUpRepPasswordText.setText("");
     }
 
     /**
@@ -94,6 +103,7 @@ public class SignUpFragment extends Fragment {
      * @return True if the sign up was successful or false otherwise
      */
     private boolean validateSignUp() {
+        username = Objects.requireNonNull(binding.signUpUsernameText.getText()).toString();
         email = Objects.requireNonNull(binding.signUpMailText.getText()).toString();
         password = Objects.requireNonNull(binding.signUpPasswordText.getText()).toString();
         boolean[] emptyFields = checkEmptyFields();
