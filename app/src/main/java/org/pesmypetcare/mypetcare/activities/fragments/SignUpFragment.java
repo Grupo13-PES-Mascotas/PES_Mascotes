@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -67,14 +66,12 @@ public class SignUpFragment extends Fragment {
      * This method is responsible for the creation and validation of the new user.
      */
     private void userCreationAndValidation() {
-        Task taskCreation = mAuth.createUserWithEmailAndPassword(email, password);
-        taskCreation.addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
+        mAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
             if (task.isSuccessful()) {
                 sendEmailVerification();
             } else {
-                Toast toast1 = Toast.makeText(getActivity(), "Failure at the user creation", Toast.LENGTH_LONG);
-                toast1.setGravity(Gravity.CENTER, 0, 0);
-                toast1.show();
+                testToast(Objects.requireNonNull(task.getException()).toString());
             }
         });
     }
@@ -88,9 +85,7 @@ public class SignUpFragment extends Fragment {
             startActivity(new Intent(getActivity(), MainActivity.class));
             Objects.requireNonNull(getActivity()).finish();
         }
-        Toast toast1 = Toast.makeText(getActivity(), "Verify the Email", Toast.LENGTH_LONG);
-        toast1.setGravity(Gravity.CENTER, 0, 0);
-        toast1.show();
+        testToast("Verify the Email");
     }
 
     /**
@@ -200,10 +195,10 @@ public class SignUpFragment extends Fragment {
     private boolean containsUppercase(String pass) {
         for (int i = 0; i < pass.length(); ++i) {
             if (Character.isUpperCase(pass.charAt(i))) {
-                testToast("Password doesn't contain a uppercase");
                 return true;
             }
         }
+        testToast("Password doesn't contain a uppercase");
         return false;
     }
 
@@ -215,10 +210,10 @@ public class SignUpFragment extends Fragment {
     private boolean containsLowercase(String pass) {
         for (int i = 0; i < pass.length(); ++i) {
             if (Character.isLowerCase(pass.charAt(i))) {
-                testToast("Password doesn't contain a lowercase");
                 return true;
             }
         }
+        testToast("Password doesn't contain a lowercase");
         return false;
     }
 
@@ -230,10 +225,10 @@ public class SignUpFragment extends Fragment {
     private boolean containsNumber(String pass) {
         for (int i = 0; i < pass.length(); ++i) {
             if (Character.isDigit(pass.charAt(i))) {
-                testToast("Password doesn't contain a number");
                 return true;
             }
         }
+        testToast("Password doesn't contain a number");
         return false;
     }
 
@@ -245,10 +240,10 @@ public class SignUpFragment extends Fragment {
     private boolean containsSpecialChar(String pass) {
         for (int i = 0; i < pass.length(); ++i) {
             if (String.valueOf(pass.charAt(i)).matches("[^a-zA-Z0-9]")) {
-                testToast("Password doesn't contain a special char");
                 return true;
             }
         }
+        testToast("Password doesn't contain a special char");
         return false;
     }
 
