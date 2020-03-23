@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeActivity();
         initializeControllers();
 
-        user = new User("johnDoe", Objects.requireNonNull(mAuth.getCurrentUser()).getEmail(), "1234");
+        user = new User("johnDoe", "johndoe@gmail.com", "1234");
     }
 
     private void initializeControllers() {

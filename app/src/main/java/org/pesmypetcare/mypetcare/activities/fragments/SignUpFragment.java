@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.activities.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -17,12 +16,10 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
-import org.pesmypetcare.mypetcare.activities.NewPasswordInterface;
 import org.pesmypetcare.mypetcare.databinding.FragmentSignUpBinding;
 
 import java.util.Objects;
