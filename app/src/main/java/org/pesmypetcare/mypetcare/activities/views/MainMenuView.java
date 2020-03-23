@@ -18,7 +18,7 @@ import java.util.List;
 public class MainMenuView extends LinearLayout {
     private Context currentActivity;
     private List<ConstraintLayout> petComponents;
-    private final int SPACERSIZE = 55;
+    private final int SPACERSIZE = 40;
 
     public MainMenuView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -59,6 +59,10 @@ public class MainMenuView extends LinearLayout {
         this.addView(space);
     }
 
+    /**
+     * Method responsible for initializing the spacers.
+     * @return The initialized spacer;
+     */
     private Space initializeSpacer() {
         Space space;
         space = new Space(currentActivity);

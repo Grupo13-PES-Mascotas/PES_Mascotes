@@ -21,7 +21,7 @@ public class PetComponentView extends ConstraintLayout {
     private final int PADDING = 15;
     private final int IMAGELAYOUTMARGIN = 10;
     private final int PETINFOIMAGEMARGIN = 40;
-    private final int IMAGEDIMESIONS = 200;
+    private final int IMAGEDIMESIONS = 150;
 
     public PetComponentView(Context context, AttributeSet attrs) {
         super(context, attrs);
