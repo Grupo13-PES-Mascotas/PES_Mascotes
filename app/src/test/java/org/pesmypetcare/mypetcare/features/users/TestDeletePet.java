@@ -7,7 +7,6 @@ import org.pesmypetcare.mypetcare.features.pets.Gender;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
-import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
 
 import static org.junit.Assert.assertFalse;
@@ -27,7 +26,7 @@ public class TestDeletePet {
 
     @Test(expected = UserIsNotOwnerException.class)
     public void shouldNotDeletePetIfNotOwner() throws UserIsNotOwnerException {
-        User user2 = new User("Albert", "albert69@gmail.com", "1234");
+        User user2 = new User("Albert", "albert69@gmail.com", "654321");
         trDeletePet.setUser(user2);
         trDeletePet.setPet(pet);
         trDeletePet.execute();
