@@ -67,7 +67,7 @@ public class PetComponentView extends ConstraintLayout {
      * Method responsible for handling the pet image
      * @return The Circular image view containing the pet image
      */
-    private CircularImageView addPetImage (Pet currentPet) {
+    private CircularImageView addPetImage(Pet currentPet) {
         CircularImageView image = new CircularImageView(currentActivity, null);
         image.setImage(R.drawable.test);
         image.setLayoutParams(new LinearLayout.LayoutParams(IMAGEDIMESIONS, IMAGEDIMESIONS));

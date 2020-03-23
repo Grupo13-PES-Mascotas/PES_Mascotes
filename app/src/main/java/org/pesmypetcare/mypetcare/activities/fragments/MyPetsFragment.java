@@ -14,7 +14,7 @@ import org.pesmypetcare.mypetcare.databinding.FragmentMyPetsBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,20 +41,17 @@ public class MyPetsFragment extends Fragment {
     }
 
     /**
-     * Method responsible for setting the listeners for all the pet components
+     * Method responsible for setting the listeners for all the pet components.
      */
     private void setPetComponentsListeners() {
-        ArrayList<ConstraintLayout> petsComponents = binding.mainMenu.getPetComponents();
+        List<ConstraintLayout> petsComponents = binding.mainMenu.getPetComponents();
         while (!petsComponents.isEmpty()) {
             ConstraintLayout tmp = petsComponents.remove(0);
             tmp.setClickable(true);
-            tmp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.mainActivityFrameLayout, new InfoPetFragment());
-                    ft.commit();
-                }
+            tmp.setOnClickListener(v -> {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.mainActivityFrameLayout, new InfoPetFragment());
+                ft.commit();
             });
         }
     }

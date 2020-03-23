@@ -13,11 +13,11 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainMenuView extends LinearLayout {
     private Context currentActivity;
-    private ArrayList<Pet> userPets;
-    private ArrayList<ConstraintLayout> petComponents;
+    private List<ConstraintLayout> petComponents;
     private final int SPACERSIZE = 55;
 
     public MainMenuView(Context context, @Nullable AttributeSet attrs) {
@@ -25,7 +25,7 @@ public class MainMenuView extends LinearLayout {
         this.currentActivity = context;
         this.petComponents = new ArrayList<>();
         this.setOrientation(VERTICAL);
-        LinearLayout.LayoutParams params= new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+        LinearLayout.LayoutParams params = new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
             LayoutParams.MATCH_PARENT);
         params.gravity = Gravity.START;
         this.setLayoutParams(params);
@@ -36,7 +36,7 @@ public class MainMenuView extends LinearLayout {
      * @param currentUser The current user of the application
      */
     public void showPets(User currentUser) {
-        this.userPets = currentUser.getPets();
+        List<Pet> userPets = currentUser.getPets();
         Space space;
         space = initializeSpacer();
         this.addView(space);
@@ -61,7 +61,7 @@ public class MainMenuView extends LinearLayout {
      * Getter of the pet components arraylist.
      * @return The arraylist containing all the pet components
      */
-    public ArrayList<ConstraintLayout> getPetComponents() {
+    public List<ConstraintLayout> getPetComponents() {
         return petComponents;
     }
 }
