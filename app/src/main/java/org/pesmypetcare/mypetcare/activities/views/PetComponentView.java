@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.views;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -20,7 +21,7 @@ public class PetComponentView extends ConstraintLayout {
     private final int PADDING = 15;
     private final int IMAGELAYOUTMARGIN = 10;
     private final int PETINFOIMAGEMARGIN = 40;
-    private final int IMAGEDIMESIONS = 135;
+    private final int IMAGEDIMESIONS = 200;
 
     public PetComponentView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -57,6 +58,8 @@ public class PetComponentView extends ConstraintLayout {
         constraintSet.clone(petComponentView);
         constraintSet.connect(imageId, ConstraintSet.LEFT, layoutId, ConstraintSet.LEFT, IMAGELAYOUTMARGIN);
         constraintSet.connect(petId, ConstraintSet.LEFT, imageId, ConstraintSet.RIGHT, PETINFOIMAGEMARGIN);
+        constraintSet.connect(petId, ConstraintSet.TOP, layoutId, ConstraintSet.TOP,
+            PETINFOIMAGEMARGIN - IMAGELAYOUTMARGIN);
         constraintSet.applyTo(petComponentView);
     }
 
@@ -102,6 +105,7 @@ public class PetComponentView extends ConstraintLayout {
         TextView infoText = new TextView(currentActivity);
         infoText.setText(String.format("%s - %s", breed, birthdate));
         infoText.setGravity(Gravity.START + Gravity.CENTER_VERTICAL);
+        infoText.setTextColor(Color.BLACK);
         petInfo.addView(infoText);
     }
 
@@ -115,6 +119,7 @@ public class PetComponentView extends ConstraintLayout {
         nameText.setText(name);
         nameText.setTypeface(null, Typeface.BOLD);
         nameText.setGravity(Gravity.START + Gravity.CENTER_VERTICAL);
+        nameText.setTextColor(Color.BLACK);
         petInfo.addView(nameText);
     }
 }
