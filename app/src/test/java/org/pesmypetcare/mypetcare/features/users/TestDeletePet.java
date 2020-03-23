@@ -18,7 +18,7 @@ public class TestDeletePet {
 
     @Before
     public void setUp() throws PetRepeatException {
-        user = new User("johnDoe", "albert69@gmail.com", "123456");
+        user = new User("johnDoe", "albert69@gmail.com", "1234");
         pet = getDinkyPet();
         user.addPet(pet);
         trDeletePet = new TrDeletePet(new StubPetManagerService());
@@ -26,7 +26,7 @@ public class TestDeletePet {
 
     @Test(expected = UserIsNotOwnerException.class)
     public void shouldNotDeletePetIfNotOwner() throws UserIsNotOwnerException {
-        User user2 = new User("Albert", "albert69@gmail.com", "654321");
+        User user2 = new User("Albert", "albert69@gmail.com", "6969");
         trDeletePet.setUser(user2);
         trDeletePet.setPet(pet);
         trDeletePet.execute();

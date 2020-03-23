@@ -298,7 +298,7 @@ public class InfoPetFragment extends Fragment {
     /**
      * Configure some atributtes of confirmation dialog to delete a pet and positive button.
      */
-    void configDialog(MaterialAlertDialogBuilder dialogAlert) {
+    private void configDialog(MaterialAlertDialogBuilder dialogAlert) {
         dialogAlert.setTitle("Delete Pet")
                 .setMessage("Are you sure?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
