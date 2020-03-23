@@ -76,4 +76,5 @@
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
     <string name="navigation_view_closed">Closed</string>
+    <string name="delete_account">Delete Account</string>
 </resources>
