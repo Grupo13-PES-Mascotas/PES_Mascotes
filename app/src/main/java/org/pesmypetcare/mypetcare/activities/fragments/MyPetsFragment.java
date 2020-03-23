@@ -37,8 +37,15 @@ public class MyPetsFragment extends Fragment {
      */
     private void initializeMainMenuView() {
         binding.mainMenu.showPets(currentUser);
+        setPetComponentsListeners();
+    }
+
+    /**
+     * Method responsible for setting the listeners for all the pet components
+     */
+    private void setPetComponentsListeners() {
         ArrayList<ConstraintLayout> petsComponents = binding.mainMenu.getPetComponents();
-        while(!petsComponents.isEmpty()) {
+        while (!petsComponents.isEmpty()) {
             ConstraintLayout tmp = petsComponents.remove(0);
             tmp.setClickable(true);
             tmp.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +63,7 @@ public class MyPetsFragment extends Fragment {
      * Method responsible for initializing a test user.
      */
     private void initializeTestUser() {
-        currentUser = new User("Jaume" , "jaume@gmail.com", "1234");
+        currentUser = new User("Jaume", "jaume@gmail.com", "1234");
         Bundle info = new Bundle();
         info.putString(Pet.BUNDLE_NAME, "Manolo");
         info.putString(Pet.BUNDLE_BREED, "Elephant");

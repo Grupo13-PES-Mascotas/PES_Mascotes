@@ -18,6 +18,7 @@ public class MainMenuView extends LinearLayout {
     private Context currentActivity;
     private ArrayList<Pet> userPets;
     private ArrayList<ConstraintLayout> petComponents;
+    private final int SPACERSIZE = 55;
 
     public MainMenuView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -37,18 +38,23 @@ public class MainMenuView extends LinearLayout {
     public void showPets(User currentUser) {
         this.userPets = currentUser.getPets();
         Space space;
-        space = new Space(currentActivity);
-        space.setMinimumHeight(55);
+        space = initializeSpacer();
         this.addView(space);
         while (!userPets.isEmpty()) {
             Pet currentPet = userPets.remove(0);
             ConstraintLayout component = new PetComponentView(currentActivity, null).initializePetComponent(currentPet);
             this.addView(component);
             this.petComponents.add(component);
-            space = new Space(currentActivity);
-            space.setMinimumHeight(55);
+            space = initializeSpacer();
             this.addView(space);
         }
+    }
+
+    private Space initializeSpacer() {
+        Space space;
+        space = new Space(currentActivity);
+        space.setMinimumHeight(SPACERSIZE);
+        return space;
     }
 
     /**

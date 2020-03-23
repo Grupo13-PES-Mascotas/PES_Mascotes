@@ -17,13 +17,17 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 public class PetComponentView extends ConstraintLayout {
     private Context currentActivity;
+    private final int PADDING = 15;
+    private final int IMAGELAYOUTMARGIN = 10;
+    private final int PETINFOIMAGEMARGIN = 40;
+    private final int IMAGEDIMESIONS = 135;
 
     public PetComponentView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.currentActivity = context;
         this.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT));
-        this.setPadding(15, 15, 0, 0);
+        this.setPadding(PADDING, PADDING, 0, 0);
         this.setId(View.generateViewId());
     }
 
@@ -51,8 +55,8 @@ public class PetComponentView extends ConstraintLayout {
     private void generateConstraints(int imageId, int petId, int layoutId, PetComponentView petComponentView) {
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(petComponentView);
-        constraintSet.connect(imageId, ConstraintSet.LEFT, layoutId, ConstraintSet.LEFT, 10);
-        constraintSet.connect(petId, ConstraintSet.LEFT, imageId, ConstraintSet.RIGHT, 40);
+        constraintSet.connect(imageId, ConstraintSet.LEFT, layoutId, ConstraintSet.LEFT, IMAGELAYOUTMARGIN);
+        constraintSet.connect(petId, ConstraintSet.LEFT, imageId, ConstraintSet.RIGHT, PETINFOIMAGEMARGIN);
         constraintSet.applyTo(petComponentView);
     }
 
@@ -63,7 +67,7 @@ public class PetComponentView extends ConstraintLayout {
     private CircularImageView addPetImage (Pet currentPet) {
         CircularImageView image = new CircularImageView(currentActivity, null);
         image.setImage(R.drawable.test);
-        image.setLayoutParams(new LinearLayout.LayoutParams(135, 135));
+        image.setLayoutParams(new LinearLayout.LayoutParams(IMAGEDIMESIONS, IMAGEDIMESIONS));
         int imageId = View.generateViewId();
         image.setId(imageId);
         return image;
@@ -76,7 +80,7 @@ public class PetComponentView extends ConstraintLayout {
      * @param birthdate The pet birthdate
      * @return The linear layout that contains the pet info
      */
-    private LinearLayout addPetInfo (String name, String breed, String birthdate) {
+    private LinearLayout addPetInfo(String name, String breed, String birthdate) {
         LinearLayout petInfo = new LinearLayout(currentActivity);
         petInfo.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -95,14 +99,14 @@ public class PetComponentView extends ConstraintLayout {
      * @param petInfo The parent layout
      */
     private void infoTextInitializer(String breed, String birthdate, LinearLayout petInfo) {
-        TextView infoText = new TextView((currentActivity));
+        TextView infoText = new TextView(currentActivity);
         infoText.setText(String.format("%s - %s", breed, birthdate));
         infoText.setGravity(Gravity.START + Gravity.CENTER_VERTICAL);
         petInfo.addView(infoText);
     }
 
     /**
-     * Method responsible for creating the text view that will contain the pet name
+     * Method responsible for creating the text view that will contain the pet name.
      * @param name The pet name
      * @param petInfo The parent layout
      */
