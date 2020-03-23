@@ -22,7 +22,7 @@
     <string name="defaultName">John Doe</string>
     <string name="defaultEmail">johndoe@gmail.com</string>
     <string name="breed_title">Breed</string>
-    <string name="age_title">Age(years)</string>
+    <string name="birth_date_title">Age(years)</string>
     <string name="gender_title">Gender</string>
     <string name="birth_title">Birth</string>
     <string name="weight_title">Weight(kg)</string>
@@ -65,10 +65,15 @@
     <string name="register_new_pet">Register new pet</string>
     <string name="error_empty_field">All fields must be filled (pathologies not included)</string>
     <string name="error_pet_already_existing">The pet already belongs to you</string>
+    <string name="error_user_not_owner">The pet does not belong to the user</string>
+    <string name="update_pet">Update Pet</string>
+    <string name="type_of_pet">Type of pet</string>
+    <string name="delete_pet_image_title">Delete pet image</string>
+    <string name="delete_pet_image_text">Are you sure you want to delete the profile image of your pet?</string>
+    <string name="affirmative_response">Yes</string>
+    <string name="negative_response">No</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
     <string name="navigation_view_closed">Closed</string>
-    <string name="update_pet">Update Pet</string>
-    <string name="type_of_pet">Type of pet</string>
 </resources>
