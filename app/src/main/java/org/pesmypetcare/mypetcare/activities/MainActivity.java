@@ -43,10 +43,12 @@ import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private User user;
     private TrRegisterNewPet trRegisterNewPet;
     private TrUpdatePetImage trUpdatePetImage;
+    private TrDeletePet trDeletePet;
     private FirebaseAuth mAuth;
 
     @Override
@@ -304,6 +307,19 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (NotPetOwnerException e) {
             Toast toast = Toast.makeText(this, getString(R.string.error_user_not_owner), Toast.LENGTH_LONG);
             toast.show();
+        }
+    }
+
+    @Override
+    public void deletePet(Pet myPet) {
+        trDeletePet.setUser(user);
+        trDeletePet.setPet(myPet);
+        try {
+            trDeletePet.execute();
+        } catch (UserIsNotOwnerException e) {
+            Toast toast = Toast.makeText(this, getString(R.string.error_user_not_owner), Toast.LENGTH_LONG);
+            toast.show();
+            return;
         }
     }
 

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.users.User;
 
 public interface PetManagerService {
 
@@ -29,4 +30,11 @@ public interface PetManagerService {
      * @param newPetImage The new image for the pet
      */
     void updatePetImage(String username, String petName, Bitmap newPetImage);
+
+    /**
+     * Delete the pet.
+     * @param pet The pet to delete
+     * @param username The owner of the pet
+     */
+    void deletePet(Pet pet, String username);
 }

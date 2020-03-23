@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.services;
 
+import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.HashSet;
@@ -11,4 +12,6 @@ public class StubUserManagerService implements UserManagerService {
     public StubUserManagerService() {
         this.data = new HashSet<>();
     }
+
+
 }
