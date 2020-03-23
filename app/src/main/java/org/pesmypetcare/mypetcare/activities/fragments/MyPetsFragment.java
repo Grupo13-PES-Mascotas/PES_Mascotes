@@ -79,9 +79,8 @@ public class MyPetsFragment extends Fragment {
      */
     private void initializeTestBundle(String[] bundleNames, String[] bundleBreeds,
                                       String[] bundleBirths, String[] bundleGenders, String bundlePathologies) {
-        Bundle info;
+        Bundle info = new Bundle();
         for (int i = 0; i < bundleNames.length; ++i) {
-            info = new Bundle();
             info.putString(Pet.BUNDLE_NAME, bundleNames[i]);
             info.putString(Pet.BUNDLE_BREED, bundleBreeds[i]);
             info.putString(Pet.BUNDLE_BIRTH_DATE, bundleBirths[i]);

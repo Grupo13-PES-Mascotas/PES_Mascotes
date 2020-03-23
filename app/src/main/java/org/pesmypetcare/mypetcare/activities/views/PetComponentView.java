@@ -64,7 +64,7 @@ public class PetComponentView extends ConstraintLayout {
     }
 
     /**
-     * Method responsible for handling the pet image
+     * Method responsible for handling the pet image.
      * @return The Circular image view containing the pet image
      */
     private CircularImageView addPetImage() {
