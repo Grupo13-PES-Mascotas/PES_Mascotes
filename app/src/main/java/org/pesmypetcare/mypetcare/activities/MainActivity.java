@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -16,10 +15,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.fragments.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     };
 
     private static final Class[] APPLICATION_FRAGMENTS = {
-        NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        MyPetsFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
@@ -70,10 +70,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         floatingActionButton = binding.flAddPet;
 
         initializeActionDrawerToggle();
-        initializeActionbar();
+        //initializeActionbar();
         setUpNavigationDrawer();
         setStartFragment();
     }
+
 
     /**
      * Enters the fragment to create a pet.
@@ -219,13 +220,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         fragmentTransaction.commit();
     }
 
-    @Override
+    /*@Override
     protected void onStart() {
         super.onStart();
         if (mAuth.getCurrentUser() == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
-    }
+    }*/
 }
 

@@ -15,6 +15,7 @@ public class User {
         this.username = username;
         this.mail = mail;
         this.passwd = passwd;
+        this.pets = new ArrayList<Pet>();
         comunicateDatabase(this.username, this.mail, this.passwd);
     }
 
@@ -56,6 +57,10 @@ public class User {
 
     public void deletePet(Pet pet) {
         pets.remove(pet);
+    }
+
+    public ArrayList<Pet> getPets() {
+        return pets;
     }
 
     @Override
