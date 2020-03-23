@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.users.User;
 
 public interface PetManagerService {
 

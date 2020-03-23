@@ -45,7 +45,6 @@ public class InfoPetFragment extends Fragment {
     private String newGender;
     private CircularImageView petProfileImage;
     private InfoPetCommunication communication;
-    private MaterialAlertDialogBuilder Dialog;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -269,29 +268,31 @@ public class InfoPetFragment extends Fragment {
     }
 
     /**
-     * Configure the botton deleteButton to delete the pet
+     * Configure the botton deleteButton to delete the pet.
      */
     private void setDeletePet() {
         MaterialButton delete = binding.deleteButton;
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog = new MaterialAlertDialogBuilder(getActivity());
-                configDialog (Dialog);
-                Dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                MaterialAlertDialogBuilder dialogAlert;
+                dialogAlert = new MaterialAlertDialogBuilder(getActivity());
+                configDialog(dialogAlert);
+                dialogAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel(); }
                 });
-                Dialog.show();
+                dialogAlert.show();
             }
         });
     }
 
     /**
-     * Configure some atributtes of confirmation dialog to delete a pet
+     * Configure some atributtes of confirmation dialog to delete a pet.
      */
-    void configDialog (MaterialAlertDialogBuilder Dialog) {
-        Dialog.setTitle("Delete Pet")
+    void configDialog(MaterialAlertDialogBuilder dialogAlert) {
+        dialogAlert.setTitle("Delete Pet")
                 .setMessage("Are you sure?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override

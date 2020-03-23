@@ -14,7 +14,6 @@ import static org.junit.Assert.assertFalse;
 
 public class TestDeletePet {
     private User user;
-    private User user2;
     private Pet pet;
     private TrDeletePet trDeletePet;
 
@@ -28,7 +27,7 @@ public class TestDeletePet {
 
     @Test(expected = UserIsNotOwnerException.class)
     public void shouldNotDeletePetIfNotOwner() throws UserIsNotOwnerException {
-        user2 = new User("Albert", "albert69@gmail.com", "123456");
+        User user2 = new User("Albert", "albert69@gmail.com", "1234");
         trDeletePet.setUser(user2);
         trDeletePet.setPet(pet);
         trDeletePet.execute();
