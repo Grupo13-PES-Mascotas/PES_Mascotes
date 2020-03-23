@@ -36,7 +36,7 @@ public class SignUpFragment extends Fragment {
     private FirebaseAuth mAuth;
     private String email;
     private String password;
-    private String username;
+    //private String username;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -70,13 +70,13 @@ public class SignUpFragment extends Fragment {
     private void userCreationAndValidation() {
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
-            if (task.isSuccessful()) {
-                sendEmailVerification();
-                mAuth.signOut();
-            } else {
-                testToast(Objects.requireNonNull(task.getException()).toString());
-            }
-        });
+                if (task.isSuccessful()) {
+                    sendEmailVerification();
+                    mAuth.signOut();
+                } else {
+                    testToast(Objects.requireNonNull(task.getException()).toString());
+                }
+            });
     }
 
     /**
@@ -100,7 +100,7 @@ public class SignUpFragment extends Fragment {
      * @return True if the sign up was successful or false otherwise
      */
     private boolean validateSignUp() {
-        username = Objects.requireNonNull(binding.signUpUsernameText.getText()).toString();
+        //username = Objects.requireNonNull(binding.signUpUsernameText.getText()).toString();
         email = Objects.requireNonNull(binding.signUpMailText.getText()).toString();
         password = Objects.requireNonNull(binding.signUpPasswordText.getText()).toString();
         boolean[] emptyFields = checkEmptyFields();
