@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.LoginActivity;
 import org.pesmypetcare.mypetcare.activities.NewPasswordInterface;
 import org.pesmypetcare.mypetcare.databinding.FragmentSettingsMenuBinding;
 
@@ -23,9 +27,11 @@ import java.util.Objects;
  */
 public class SettingsMenuFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private FragmentSettingsMenuBinding binding;
+    private FirebaseAuth mAuth;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mAuth = FirebaseAuth.getInstance();
         binding = FragmentSettingsMenuBinding.inflate(getLayoutInflater());
         settingsOptionsListeners();
         return binding.getRoot();
@@ -42,12 +48,23 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
         binding.languageSelector.setAdapter(languages);
         binding.languageSelector.setOnItemSelectedListener(this);
 
-        binding.logoutButton.setOnClickListener(v -> Toast.makeText(getActivity(),
-                "Logout button clicked", Toast.LENGTH_LONG).show());
+        logOutListener();
+
         binding.changePasswordButton.setOnClickListener(v -> {
             Activity thisActivity = getActivity();
             assert thisActivity != null;
             ((NewPasswordInterface) thisActivity).changeFragmentPass(new NewPassword());
+        });
+    }
+
+    /**
+     * Initializes the listeners of the logOut button.
+     */
+    private void logOutListener() {
+        binding.logoutButton.setOnClickListener(v -> {
+            mAuth.signOut();
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
         });
     }
 

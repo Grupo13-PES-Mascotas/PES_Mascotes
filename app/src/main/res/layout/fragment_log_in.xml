@@ -12,15 +12,16 @@
     tools:context=".activities.fragments.SignUpFragment">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/loginUsernameLayout"
+        android:id="@+id/loginEmailLayout"
         style="@style/loginFields"
-        app:startIconDrawable="@drawable/user_icon"
+        app:startIconDrawable="@drawable/mail_icon"
         app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
             style="@style/loginFields"
-            android:id="@+id/loginUsernameText"
-            android:hint="@string/username"
+            android:id="@+id/login_email_text"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
