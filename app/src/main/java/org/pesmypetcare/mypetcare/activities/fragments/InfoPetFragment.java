@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.fragments;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -15,7 +16,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
@@ -23,6 +26,7 @@ import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetBinding;
 import org.pesmypetcare.mypetcare.features.pets.Gender;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 
 import java.util.Objects;
 
@@ -42,6 +46,7 @@ public class InfoPetFragment extends Fragment {
     private CircularImageView petProfileImage;
     private InfoPetCommunication communication;
 
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoPetBinding.inflate(inflater, container, false);
@@ -52,6 +57,7 @@ public class InfoPetFragment extends Fragment {
         setGenderDropdownMenu();
         setPetProfileImage();
         initializePetInfo();
+        setDeletePet();
 
         modified = false;
 
@@ -260,5 +266,50 @@ public class InfoPetFragment extends Fragment {
      */
     private boolean hasNewImageDefined() {
         return !petProfileImage.getDrawable().equals(getResources().getDrawable(R.drawable.single_paw, null));
+    }
+
+    /**
+     * Configure the botton deleteButton to delete the pet.
+     */
+    private void setDeletePet() {
+        MaterialButton delete = binding.deleteButton;
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MaterialAlertDialogBuilder dialogAlert = new MaterialAlertDialogBuilder(getActivity());
+                configDialog(dialogAlert);
+                configureNegativeButton(dialogAlert);
+                dialogAlert.show();
+            }
+        });
+    }
+
+    /**
+     * Configure negative button.
+     */
+    private void configureNegativeButton(MaterialAlertDialogBuilder dialogAlert) {
+        dialogAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel(); }
+        });
+    }
+
+    /**
+     * Configure some atributtes of confirmation dialog to delete a pet and positive button.
+     */
+    private void configDialog(MaterialAlertDialogBuilder dialogAlert) {
+        dialogAlert.setTitle("Delete Pet")
+                .setMessage("Are you sure?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            communication.deletePet(pet);
+                        } catch (UserIsNotOwnerException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 }
