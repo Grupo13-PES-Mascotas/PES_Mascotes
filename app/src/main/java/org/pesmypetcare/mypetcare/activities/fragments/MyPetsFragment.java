@@ -61,35 +61,35 @@ public class MyPetsFragment extends Fragment {
      */
     private void initializeTestUser() {
         currentUser = new User("Jaume", "jaume@gmail.com", "1234");
-        Bundle info = new Bundle();
-        info.putString(Pet.BUNDLE_NAME, "Manolo");
-        info.putString(Pet.BUNDLE_BREED, "Elephant");
-        info.putString(Pet.BUNDLE_BIRTH_DATE, "20/11/1988");
-        info.putFloat(Pet.BUNDLE_CALORIES, (float) 1500.00);
-        info.putString(Pet.BUNDLE_GENDER, "Male");
-        info.putString(Pet.BUNDLE_PATHOLOGIES, "None");
-        info.putInt(Pet.BUNDLE_WASH, 1);
-        info.putFloat(Pet.BUNDLE_WEIGHT, (float) 750.00);
-        currentUser.addPet(new Pet(info));
-        info = new Bundle();
-        info.putString(Pet.BUNDLE_NAME, "Ernesto");
-        info.putString(Pet.BUNDLE_BREED, "Pangolin");
-        info.putString(Pet.BUNDLE_BIRTH_DATE, "05/01/1975");
-        info.putFloat(Pet.BUNDLE_CALORIES, (float) 0.05);
-        info.putString(Pet.BUNDLE_GENDER, "Male");
-        info.putString(Pet.BUNDLE_PATHOLOGIES, "None");
-        info.putInt(Pet.BUNDLE_WASH, 1);
-        info.putFloat(Pet.BUNDLE_WEIGHT, (float) 0.00025);
-        currentUser.addPet(new Pet(info));
-        info = new Bundle();
-        info.putString(Pet.BUNDLE_NAME, "Segismunda");
-        info.putString(Pet.BUNDLE_BREED, "Tortuga");
-        info.putString(Pet.BUNDLE_BIRTH_DATE, "15/11/1875");
-        info.putFloat(Pet.BUNDLE_CALORIES, (float) 9.78);
-        info.putString(Pet.BUNDLE_GENDER, "Female");
-        info.putString(Pet.BUNDLE_PATHOLOGIES, "None");
-        info.putInt(Pet.BUNDLE_WASH, 7);
-        info.putFloat(Pet.BUNDLE_WEIGHT, (float) 37.25);
-        currentUser.addPet(new Pet(info));
+        String [] bundleNames = {"Manolo", "Ernesto", "Segismunda"};
+        String [] bundleBreeds = {"Elephant", "Pangolin", "Turtle"};
+        String [] bundleBirths = {"02/12/2003", "11/09/1999", "21/02/1711"};
+        String [] bundleGenders = {"Male", "Male", "Female"};
+        String bundlePathologies = "None";
+        initializeTestBundle(bundleNames, bundleBreeds, bundleBirths, bundleGenders, bundlePathologies);
+    }
+
+    /**
+     * Method responsible for creating the test pets.
+     * @param bundleNames An array containing the pets names
+     * @param bundleBreeds An array containing the pets breeds
+     * @param bundleBirths An array containing the pets birth dates
+     * @param bundleGenders An array containing the pets genders
+     * @param bundlePathologies An string containing the pets pathologies
+     */
+    private void initializeTestBundle(String[] bundleNames, String[] bundleBreeds, String[] bundleBirths, String[] bundleGenders, String bundlePathologies) {
+        Bundle info;
+        for (int i = 0; i < bundleNames.length; ++i) {
+            info = new Bundle();
+            info.putString(Pet.BUNDLE_NAME, bundleNames[i]);
+            info.putString(Pet.BUNDLE_BREED, bundleBreeds[i]);
+            info.putString(Pet.BUNDLE_BIRTH_DATE, bundleBirths[i]);
+            info.putFloat(Pet.BUNDLE_CALORIES, (float) i);
+            info.putString(Pet.BUNDLE_GENDER, bundleGenders[i]);
+            info.putString(Pet.BUNDLE_PATHOLOGIES, bundlePathologies);
+            info.putInt(Pet.BUNDLE_WASH, i);
+            info.putFloat(Pet.BUNDLE_WEIGHT, (float) i);
+            currentUser.addPet(new Pet(info));
+        }
     }
 }
