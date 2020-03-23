@@ -41,13 +41,22 @@ public class MainMenuView extends LinearLayout {
         space = initializeSpacer();
         this.addView(space);
         while (!userPets.isEmpty()) {
-            Pet currentPet = userPets.remove(0);
-            ConstraintLayout component = new PetComponentView(currentActivity, null).initializePetComponent(currentPet);
-            this.addView(component);
-            this.petComponents.add(component);
-            space = initializeSpacer();
-            this.addView(space);
+            initializeComponent(userPets);
         }
+    }
+
+    /**
+     * Method responsible for creating and adding all the required pet components.
+     * @param userPets The list containing all the pets
+     */
+    private void initializeComponent(List<Pet> userPets) {
+        Space space;
+        Pet currentPet = userPets.remove(0);
+        ConstraintLayout component = new PetComponentView(currentActivity, null).initializePetComponent(currentPet);
+        this.addView(component);
+        this.petComponents.add(component);
+        space = initializeSpacer();
+        this.addView(space);
     }
 
     private Space initializeSpacer() {
