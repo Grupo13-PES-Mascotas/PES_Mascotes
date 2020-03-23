@@ -37,7 +37,6 @@ public class TrUpdatePet {
      */
     public void execute() throws UserIsNotOwnerException {
         result = false;
-        System.out.println(user.getUsername());
         if (userIsNotTheOwnerOfThePet()) {
             throw new UserIsNotOwnerException();
         }

@@ -11,4 +11,15 @@ public class StubUserManagerService implements UserManagerService {
     public StubUserManagerService() {
         this.data = new HashSet<>();
     }
+
+    @Override
+    public boolean registerNewUser(String username, String email, String password) {
+        data.add(new User(username, email, password));
+        return true;
+    }
+
+    @Override
+    public boolean userExists(String username) {
+        return data.contains(new User(username, "", ""));
+    }
 }
