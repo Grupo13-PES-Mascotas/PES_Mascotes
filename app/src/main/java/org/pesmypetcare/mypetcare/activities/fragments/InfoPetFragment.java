@@ -45,6 +45,8 @@ public class InfoPetFragment extends Fragment {
     private String newGender;
     private CircularImageView petProfileImage;
     private InfoPetCommunication communication;
+    private MaterialAlertDialogBuilder dialogAlert;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -275,21 +277,27 @@ public class InfoPetFragment extends Fragment {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MaterialAlertDialogBuilder dialogAlert;
                 dialogAlert = new MaterialAlertDialogBuilder(getActivity());
                 configDialog(dialogAlert);
-                dialogAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel(); }
-                });
+                configureNegativeButton(dialogAlert);
                 dialogAlert.show();
             }
         });
     }
 
     /**
-     * Configure some atributtes of confirmation dialog to delete a pet.
+     * Configure negative button
+     */
+    private void configureNegativeButton(MaterialAlertDialogBuilder dialogAlert) {
+        dialogAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel(); }
+        });
+    }
+
+    /**
+     * Configure some atributtes of confirmation dialog to delete a pet and positive button
      */
     void configDialog(MaterialAlertDialogBuilder dialogAlert) {
         dialogAlert.setTitle("Delete Pet")
