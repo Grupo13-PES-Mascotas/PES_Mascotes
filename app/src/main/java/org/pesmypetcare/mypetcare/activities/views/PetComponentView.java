@@ -25,7 +25,6 @@ public class PetComponentView extends ConstraintLayout {
             ViewGroup.LayoutParams.WRAP_CONTENT));
         this.setPadding(15, 15, 0, 0);
         this.setId(View.generateViewId());
-        this.isClickable();
     }
 
     /**

@@ -5,11 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentMyPetsBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +37,19 @@ public class MyPetsFragment extends Fragment {
      */
     private void initializeMainMenuView() {
         binding.mainMenu.showPets(currentUser);
+        ArrayList<ConstraintLayout> petsComponents = binding.mainMenu.getPetComponents();
+        while(!petsComponents.isEmpty()) {
+            ConstraintLayout tmp = petsComponents.remove(0);
+            tmp.setClickable(true);
+            tmp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.mainActivityFrameLayout, new InfoPetFragment());
+                    ft.commit();
+                }
+            });
+        }
     }
 
     /**
