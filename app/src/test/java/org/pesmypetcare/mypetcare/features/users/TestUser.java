@@ -3,21 +3,25 @@ package org.pesmypetcare.mypetcare.features.users;
 import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
+import org.pesmypetcare.mypetcare.controllers.TrRegisterNewUser;
 import org.pesmypetcare.mypetcare.features.pets.Gender;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
+import org.pesmypetcare.mypetcare.services.StubUserManagerService;
 
 import static org.junit.Assert.assertTrue;
 
 public class TestUser {
     private User user;
     private TrRegisterNewPet trRegisterNewPet;
+    private TrRegisterNewUser trRegisterNewUser;
 
     @Before
     public void setUp() {
         user = new User("johnDoe", "johndoe@gmail.com", "1234");
         trRegisterNewPet = new TrRegisterNewPet(new StubPetManagerService());
+        trRegisterNewUser = new TrRegisterNewUser(new StubUserManagerService());
     }
 
     @Test
@@ -57,5 +61,26 @@ public class TestUser {
         pet.setWashFrequency(2);
         pet.setWeight(2);
         return pet;
+    }
+
+    @Test
+    public void shouldCreateUser() throws UserAlreadyExistingException {
+        trRegisterNewUser.setUsername("Mike");
+        trRegisterNewUser.setEmail("mike@gmail.com");
+        trRegisterNewUser.setPassword("123abc!");
+        trRegisterNewUser.execute();
+        boolean addingResult = trRegisterNewUser.isResult();
+        assertTrue("should communicate with service to add a user", addingResult);
+    }
+
+    @Test(expected = UserAlreadyExistingException.class)
+    public void shouldNotAddUserIfExisting() throws UserAlreadyExistingException {
+        trRegisterNewUser.setUsername("Mike");
+        trRegisterNewUser.setEmail("mike@gmail.com");
+        trRegisterNewUser.setPassword("123abc!");
+        trRegisterNewUser.execute();
+        trRegisterNewUser.setUsername("Mike");
+        trRegisterNewUser.execute();
+
     }
 }
