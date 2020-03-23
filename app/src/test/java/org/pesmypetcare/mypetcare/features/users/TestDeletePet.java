@@ -18,7 +18,7 @@ public class TestDeletePet {
 
     @Before
     public void setUp() throws PetRepeatException {
-        user = new User("johnDoe", "albert69@gmail.com", "1234");
+        user = new User("johnDoe", "johndoe@gmail.com", "1234");
         pet = getDinkyPet();
         user.addPet(pet);
         trDeletePet = new TrDeletePet(new StubPetManagerService());
