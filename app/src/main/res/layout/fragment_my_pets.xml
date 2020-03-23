@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="start|top"
+    tools:context=".activities.fragments.MyPetsFragment">
+
+    <org.pesmypetcare.mypetcare.activities.views.MainMenuView
+        android:id="@+id/mainMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" >
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            />
+
+    </org.pesmypetcare.mypetcare.activities.views.MainMenuView>
+
+</FrameLayout>

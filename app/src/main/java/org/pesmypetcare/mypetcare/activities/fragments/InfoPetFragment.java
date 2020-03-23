@@ -122,7 +122,7 @@ public class InfoPetFragment extends Fragment {
         Bitmap petImage = pet.getProfileImage();
 
         if (petImage == null) {
-            petProfileDrawable = getResources().getDrawable(R.drawable.single_paw);
+            petProfileDrawable = getResources().getDrawable(R.drawable.single_paw, null);
         } else {
             petProfileDrawable = new BitmapDrawable(getResources(), petImage);
         }
@@ -259,6 +259,6 @@ public class InfoPetFragment extends Fragment {
      * @return True if the pet has a new image defined
      */
     private boolean hasNewImageDefined() {
-        return !petProfileImage.getDrawable().equals(getResources().getDrawable(R.drawable.single_paw));
+        return !petProfileImage.getDrawable().equals(getResources().getDrawable(R.drawable.single_paw, null));
     }
 }

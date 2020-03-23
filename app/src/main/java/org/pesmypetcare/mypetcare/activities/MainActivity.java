@@ -35,6 +35,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.fragments.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.ImageZoom;
 import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
@@ -54,14 +55,14 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
-    InfoPetCommunication {
+    InfoPetCommunication, MyPetsComunication {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
     };
 
     private static final Class[] APPLICATION_FRAGMENTS = {
-        NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        MyPetsFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
@@ -109,11 +110,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         floatingActionButton = binding.flAddPet;
 
         initializeActionDrawerToggle();
-        initializeActionbar();
+        //initializeActionbar();
         setUpNavigationDrawer();
         setStartFragment();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
+
 
     /**
      * Enters the fragment to create a pet.
@@ -277,6 +279,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         fragmentTransaction.commit();
     }
 
+
+    @Override
+    public User getUser() {
+        return user;
+    }
 
     @Override
     protected void onStart() {
