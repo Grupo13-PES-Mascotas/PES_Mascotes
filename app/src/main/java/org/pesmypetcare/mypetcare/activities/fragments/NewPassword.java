@@ -2,14 +2,15 @@ package org.pesmypetcare.mypetcare.activities.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.pesmypetcare.mypetcare.activities.NewPasswordInterface;
 import org.pesmypetcare.mypetcare.databinding.FragmentNewPasswordBinding;
@@ -19,6 +20,7 @@ import org.pesmypetcare.mypetcare.databinding.FragmentNewPasswordBinding;
  */
 public class NewPassword extends Fragment {
     private final int MIN_PASS_LENTGH = 6;
+    private String passwd;
     private FragmentNewPasswordBinding binding;
 
     @Override
@@ -35,7 +37,7 @@ public class NewPassword extends Fragment {
     private void settingsOptionsListeners() {
         binding.confirmButton.setOnClickListener(v -> {
             if (validatePassword()) {
-                Toast.makeText(getActivity(), "Not implemented yet", Toast.LENGTH_LONG).show();
+                changePassword();
                 Activity thisActivity = getActivity();
                 assert thisActivity != null;
                 ((NewPasswordInterface) thisActivity).changeFragmentPass(new SettingsMenuFragment());
@@ -44,13 +46,22 @@ public class NewPassword extends Fragment {
     }
 
     /**
-     * Method responsible of checking if the password change up is correct.
+     * Method responsible of made the password change.
+     */
+    private void changePassword() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        assert user != null;
+        user.updatePassword(passwd);
+    }
+
+    /**
+     * Method responsible of checking if the password change is correct.
      * @return True if the sign up was successful or false otherwise
      */
     private boolean validatePassword() {
-        String pass = binding.newPasswordText.getText().toString();
-        return !(!pass.equals(binding.confirmNewPasswordText.getText().toString())
-                || pass.length() < MIN_PASS_LENTGH || weakPass(pass));
+        passwd = binding.newPasswordText.getText().toString();
+        return !(!passwd.equals(binding.confirmNewPasswordText.getText().toString())
+                || passwd.length() < MIN_PASS_LENTGH || weakPass(passwd));
     }
 
     /**

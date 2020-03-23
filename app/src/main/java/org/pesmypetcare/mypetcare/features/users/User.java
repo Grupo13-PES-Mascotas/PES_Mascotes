@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.features.users;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
 public class User {
@@ -15,7 +16,7 @@ public class User {
         this.username = username;
         this.mail = mail;
         this.passwd = passwd;
-        this.pets = new ArrayList<Pet>();
+        this.pets = new ArrayList<>();
         comunicateDatabase(this.username, this.mail, this.passwd);
     }
 
@@ -53,6 +54,7 @@ public class User {
 
     public void addPet(Pet pet) {
         pets.add(pet);
+        pet.setOwner(this);
     }
 
     public void deletePet(Pet pet) {
@@ -74,5 +76,9 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(username);
+    }
+
+    public ArrayList<Pet> getPets() {
+        return pets;
     }
 }

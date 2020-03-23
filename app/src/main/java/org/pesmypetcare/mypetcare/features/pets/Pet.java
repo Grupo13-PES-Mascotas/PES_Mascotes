@@ -1,6 +1,9 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+
+import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.Objects;
 
@@ -21,6 +24,12 @@ public class Pet {
     private String pathologies;
     private float recommendedDailyKiloCalories;
     private int washFrequency;
+    private User owner;
+    private String previousName;
+    private Bitmap profileImage;
+
+    public Pet() {
+    }
 
     public Pet(Bundle petInfo) {
         this.name = petInfo.getString(BUNDLE_NAME);
@@ -38,6 +47,28 @@ public class Pet {
         }
     }
 
+    public Pet(Bundle petInfo, User user) {
+        this.name = petInfo.getString(BUNDLE_NAME);
+        this.breed = petInfo.getString(BUNDLE_BREED);
+        this.birthDate = petInfo.getString(BUNDLE_BIRTH_DATE);
+        this.weight = petInfo.getFloat(BUNDLE_WEIGHT);
+        this.pathologies = petInfo.getString(BUNDLE_PATHOLOGIES);
+        this.recommendedDailyKiloCalories = petInfo.getFloat(BUNDLE_CALORIES);
+        this.washFrequency = petInfo.getInt(BUNDLE_WASH);
+
+        if (isMale(petInfo)) {
+            this.gender = Gender.MALE;
+        } else {
+            this.gender = Gender.FEMALE;
+        }
+
+        owner = user;
+    }
+
+    public Pet(String name) {
+        this.name = name;
+    }
+
     /**
      * Get the name of the pet.
      * @return The name of the pet
@@ -50,8 +81,13 @@ public class Pet {
      * Set the name of the pet.
      * @param name The name of the pet to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String name) throws PetRepeatException {
+        if (owner == null || !owner.getPets().contains(new Pet(name))) {
+            this.previousName = this.name;
+            this.name = name;
+        } else {
+            throw new PetRepeatException();
+        }
     }
 
     /**
@@ -186,5 +222,53 @@ public class Pet {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    /**
+     * Get the owner of the pet.
+     * @return The owner of the pet
+     */
+    public User getOwner() {
+        return owner;
+    }
+
+    /**
+     * Set the owner of the pet.
+     * @param owner  The owner of the pet
+     */
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    /**
+     * Get the previous name of the pet.
+     * @return The previous name of the pet
+     */
+    public String getPreviousName() {
+        return previousName;
+    }
+
+    /**
+     * Set the previous name of the pet.
+     * @param previousName The previous name of the pet
+     */
+    public void setPreviousName(String previousName) {
+        this.previousName = previousName;
+    }
+
+    /**
+     * Get the profile image of the pet.
+     * @return The profile image of the pet
+     */
+    public Bitmap getProfileImage() {
+        return profileImage;
+    }
+
+    /**
+     * Set the profile image of the pet.
+     * @param profileImage The profile image of the pet
+     */
+    public void setProfileImage(Bitmap profileImage) {
+        this.profileImage = profileImage;
     }
 }
