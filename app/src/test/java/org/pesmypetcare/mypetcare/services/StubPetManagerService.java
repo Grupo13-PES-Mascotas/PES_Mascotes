@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
+import android.graphics.Bitmap;
+
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.util.ArrayList;
@@ -8,10 +10,14 @@ import java.util.Map;
 import java.util.Objects;
 
 public class StubPetManagerService implements PetManagerService {
+    private static final String JOHN_DOE = "johnDoe";
+    private static final String DINKY = "Dinky";
     private Map<String, ArrayList<Pet>> data;
 
     public StubPetManagerService() {
         this.data = new HashMap<>();
+        this.data.put(JOHN_DOE, new ArrayList<>());
+        Objects.requireNonNull(this.data.get(JOHN_DOE)).add(new Pet(DINKY));
     }
 
     @Override
@@ -30,5 +36,12 @@ public class StubPetManagerService implements PetManagerService {
         Objects.requireNonNull(data.get(username)).add(pet);
 
         return true;
+    }
+
+    @Override
+    public void updatePetImage(String username, String petName, Bitmap newPetImage) {
+        ArrayList<Pet> pets = data.get(username);
+        int index = Objects.requireNonNull(pets).indexOf(new Pet(petName));
+        pets.get(index).setProfileImage(newPetImage);
     }
 }

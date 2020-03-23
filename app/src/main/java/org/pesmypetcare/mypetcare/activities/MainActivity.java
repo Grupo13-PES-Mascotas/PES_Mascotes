@@ -1,7 +1,17 @@
 package org.pesmypetcare.mypetcare.activities;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,19 +19,24 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
+import org.pesmypetcare.mypetcare.activities.fragments.ImageZoom;
 import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
@@ -29,15 +44,17 @@ import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
+import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface {
-    private FirebaseAuth mAuth;
+public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
+    InfoPetCommunication {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
@@ -49,15 +66,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         SettingsMenuFragment.class
     };
 
+    private Fragment actualFragment;
+
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private ActionBar toolbar;
     private NavigationView navigationView;
     private FloatingActionButton floatingActionButton;
-    private Class selectedFragment;
     private User user;
     private TrRegisterNewPet trRegisterNewPet;
+    private TrUpdatePetImage trUpdatePetImage;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +92,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         user = new User("johnDoe", "johndoe@gmail.com", "1234");
     }
 
+    /**
+     * Initialize the controllers.
+     */
     private void initializeControllers() {
-        trRegisterNewPet = ControllersFactory.createStubRegisterNewPet();
+        trRegisterNewPet = ControllersFactory.createTrRegisterNewPet();
+        trUpdatePetImage = ControllersFactory.createTrUpdatePetImage();
     }
 
     /**
@@ -161,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @param nextFragment Fragment to replace the current one
      */
     public void changeFragment(Fragment nextFragment) {
-        selectedFragment = nextFragment.getClass();
+        actualFragment = nextFragment;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment);
@@ -210,9 +234,16 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && !selectedFragment.equals(APPLICATION_FRAGMENTS[0])) {
-            changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
-            setUpNewFragment(getString(NAVIGATION_OPTIONS[0]), NAVIGATION_OPTIONS[0]);
+        if (keyCode == KeyEvent.KEYCODE_BACK ) {
+            if (actualFragment instanceof ImageZoom) {
+                InfoPetFragment.setPetProfileDrawable(ImageZoom.getDrawable());
+                changeFragment(new InfoPetFragment());
+            }
+            else {
+                changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+                setUpNewFragment(getString(NAVIGATION_OPTIONS[0]), NAVIGATION_OPTIONS[0]);
+            }
+
             return true;
         }
 
@@ -255,5 +286,77 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             finish();
         }
     }
-}
 
+    @Override
+    public void makeZoomImage(Drawable drawable) {
+        floatingActionButton.hide();
+        changeFragment(new ImageZoom(drawable));
+    }
+
+    @Override
+    public void updatePetImage(Pet pet, Bitmap newImage) {
+        trUpdatePetImage.setUser(user);
+        trUpdatePetImage.setPet(pet);
+        trUpdatePetImage.setNewPetImage(newImage);
+
+        try {
+            trUpdatePetImage.execute();
+        } catch (NotPetOwnerException e) {
+            Toast toast = Toast.makeText(this, getString(R.string.error_user_not_owner), Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            galleryImageZoom(data);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (actualFragment != null) {
+            changeFragment(actualFragment);
+        }
+    }
+
+    /**
+     * Access the gallery and selects an image to display in the zoom fragment.
+     * @param data Data received from the gallery
+     */
+    private void galleryImageZoom(@Nullable Intent data) {
+        String imagePath = getImagePath(data);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+        }
+        else {
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+            ((ImageZoom) actualFragment).setDrawable(drawable);
+        }
+    }
+
+    /**
+     * Gets the path of the selected image in the gallery.
+     * @param data Data received from the gallery
+     * @return The path of the selected image
+     */
+    private String getImagePath(@Nullable Intent data) {
+        Uri selectedImage = Objects.requireNonNull(data).getData();
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(Objects.requireNonNull(selectedImage), filePathColumn,
+            null, null, null);
+        Objects.requireNonNull(cursor).moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+
+        String imagePath = cursor.getString(columnIndex);
+        cursor.close();
+        return imagePath;
+    }
+}
