@@ -16,6 +16,7 @@ public class TestUser {
     private User user;
     private TrRegisterNewPet trRegisterNewPet;
     private TrRegisterNewUser trRegisterNewUser;
+    private final String MIKE = "Mike";
 
     @Before
     public void setUp() {
@@ -65,8 +66,8 @@ public class TestUser {
 
     @Test
     public void shouldCreateUser() throws UserAlreadyExistingException {
-        trRegisterNewUser.setUsername("Mike");
-        trRegisterNewUser.setEmail("mike@gmail.com");
+        trRegisterNewUser.setUsername("Michael");
+        trRegisterNewUser.setEmail("michael@gmail.com");
         trRegisterNewUser.setPassword("123abc!");
         trRegisterNewUser.execute();
         boolean addingResult = trRegisterNewUser.isResult();
@@ -75,11 +76,11 @@ public class TestUser {
 
     @Test(expected = UserAlreadyExistingException.class)
     public void shouldNotAddUserIfExisting() throws UserAlreadyExistingException {
-        trRegisterNewUser.setUsername("Mike");
+        trRegisterNewUser.setUsername(MIKE);
         trRegisterNewUser.setEmail("mike@gmail.com");
-        trRegisterNewUser.setPassword("123abc!");
+        trRegisterNewUser.setPassword("123abc?");
         trRegisterNewUser.execute();
-        trRegisterNewUser.setUsername("Mike");
+        trRegisterNewUser.setUsername(MIKE);
         trRegisterNewUser.execute();
 
     }
