@@ -1,6 +1,9 @@
 package org.pesmypetcare.mypetcare.activities.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +15,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.LoginActivity;
 import org.pesmypetcare.mypetcare.activities.NewPasswordInterface;
 import org.pesmypetcare.mypetcare.databinding.FragmentSettingsMenuBinding;
 
@@ -23,9 +31,11 @@ import java.util.Objects;
  */
 public class SettingsMenuFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private FragmentSettingsMenuBinding binding;
+    private FirebaseAuth mAuth;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mAuth = FirebaseAuth.getInstance();
         binding = FragmentSettingsMenuBinding.inflate(getLayoutInflater());
         settingsOptionsListeners();
         return binding.getRoot();
@@ -41,13 +51,51 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
         languages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.languageSelector.setAdapter(languages);
         binding.languageSelector.setOnItemSelectedListener(this);
-
-        binding.logoutButton.setOnClickListener(v -> Toast.makeText(getActivity(),
-                "Logout button clicked", Toast.LENGTH_LONG).show());
+        logOutListener();
+        deleteAccountListener();
         binding.changePasswordButton.setOnClickListener(v -> {
             Activity thisActivity = getActivity();
             assert thisActivity != null;
             ((NewPasswordInterface) thisActivity).changeFragmentPass(new NewPassword());
+        });
+    }
+
+    /**
+     * Initializes the listeners of the Delete Account button.
+     */
+    private void deleteAccountListener() {
+        binding.deleteAccountButton.setOnClickListener(v -> {
+            AlertDialog alertDialog1 = new AlertDialog.Builder(
+                    getActivity()).create();
+            alertDialog1.setTitle("Delete Account of the Database");
+            alertDialog1.setMessage("Are you sure?");
+            alertDialog1.setButton(DialogInterface.BUTTON_POSITIVE, "OK", (dialog, which) -> deleteAccount());
+            alertDialog1.show();
+        });
+    }
+
+    /**
+     * Delete the current user of the database.
+     */
+    private void deleteAccount() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        assert currentUser != null;
+        currentUser.reauthenticate(EmailAuthProvider.getCredential(Objects.requireNonNull(currentUser.getEmail()),
+                "password1234")).addOnCompleteListener(task -> {
+                    currentUser.delete();
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    Objects.requireNonNull(getActivity()).finish();
+                });
+    }
+
+    /**
+     * Initializes the listeners of the logOut button.
+     */
+    private void logOutListener() {
+        binding.logoutButton.setOnClickListener(v -> {
+            mAuth.signOut();
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            Objects.requireNonNull(getActivity()).finish();
         });
     }
 

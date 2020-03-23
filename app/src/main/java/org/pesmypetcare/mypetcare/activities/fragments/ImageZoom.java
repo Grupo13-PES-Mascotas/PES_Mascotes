@@ -77,7 +77,7 @@ public class ImageZoom extends Fragment {
         alertDialog.setTitle(R.string.delete_pet_image_title);
         alertDialog.setMessage(R.string.delete_pet_image_text);
         alertDialog.setPositiveButton(R.string.affirmative_response, (dialog, which) -> {
-            setDrawable(getResources().getDrawable(R.drawable.single_paw));
+            setDrawable(getResources().getDrawable(R.drawable.single_paw, null));
         });
         alertDialog.setNegativeButton(R.string.negative_response, null);
         return alertDialog;
