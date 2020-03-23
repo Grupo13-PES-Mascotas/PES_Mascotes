@@ -21,5 +21,9 @@ public interface InfoPetCommunication {
      */
     void updatePetImage(Pet pet, Bitmap newImage);
 
+    /**
+     * Delete the given pet.
+     * @param pet The pet  which we want to delete
+     */
     void deletePet(Pet myPet) throws UserIsNotOwnerException;
 }

@@ -72,7 +72,7 @@
     <string name="delete_pet_image_text">Are you sure you want to delete the profile image of your pet?</string>
     <string name="affirmative_response">Yes</string>
     <string name="negative_response">No</string>
-    <string name="delete_pet">DELETE PET</string>
+    <string name="delete_pet">Delete pet</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
