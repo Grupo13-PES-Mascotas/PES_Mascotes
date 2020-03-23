@@ -29,7 +29,7 @@ import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface {
+public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface, MyPetsComunication {
     private FirebaseAuth mAuth;
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
@@ -218,6 +218,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainActivityFrameLayout, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public User getUser() {
+        return user;
     }
 
     /*@Override

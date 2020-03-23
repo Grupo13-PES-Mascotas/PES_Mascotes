@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.MyPetsComunication;
 import org.pesmypetcare.mypetcare.databinding.FragmentMyPetsBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -20,13 +21,17 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class MyPetsFragment extends Fragment {
+    private static int index;
     private FragmentMyPetsBinding binding;
     private User currentUser;
+    private MyPetsComunication comunication;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentMyPetsBinding.inflate(inflater, container, false);
+        comunication = (MyPetsComunication) getActivity();
+        currentUser = comunication.getUser();
         initializeTestUser();
         initializeMainMenuView();
         return binding.getRoot();
@@ -45,14 +50,17 @@ public class MyPetsFragment extends Fragment {
      */
     private void setPetComponentsListeners() {
         List<ConstraintLayout> petsComponents = binding.mainMenu.getPetComponents();
+        index = 0;
+        InfoPetFragment testFragment = new InfoPetFragment();
         while (!petsComponents.isEmpty()) {
             ConstraintLayout tmp = petsComponents.remove(0);
             tmp.setClickable(true);
             tmp.setOnClickListener(v -> {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.mainActivityFrameLayout, new InfoPetFragment());
+                ft.replace(R.id.mainActivityFrameLayout, testFragment);
                 ft.commit();
             });
+            ++index;
         }
     }
 
