@@ -31,19 +31,26 @@ public class LogInFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
-
         FragmentLogInBinding binding = FragmentLogInBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         binding.loginButton.setOnClickListener(v -> {
             email = Objects.requireNonNull(binding.loginEmailText.getText()).toString();
             password = Objects.requireNonNull(binding.loginPasswordText.getText()).toString();
-            if (!email.isEmpty() && !password.isEmpty()) {
+            if (notEmptyFields()) {
                 loginUser();
             } else {
                 testToast("Incorrect entry");
             }
         });
         return view;
+    }
+
+    /**
+     * Verify if the fields aren't empty.
+     * @return True if the fields aren't empty, false otherwise
+     */
+    private boolean notEmptyFields() {
+        return !email.isEmpty() && !password.isEmpty();
     }
 
     /**
