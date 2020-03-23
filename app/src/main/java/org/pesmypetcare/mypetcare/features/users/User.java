@@ -3,7 +3,6 @@ package org.pesmypetcare.mypetcare.features.users;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Objects;
 
 public class User {
@@ -76,9 +75,5 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(username);
-    }
-
-    public ArrayList<Pet> getPets() {
-        return pets;
     }
 }

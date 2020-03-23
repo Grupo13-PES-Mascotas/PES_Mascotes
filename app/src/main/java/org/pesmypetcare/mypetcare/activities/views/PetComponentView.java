@@ -69,7 +69,7 @@ public class PetComponentView extends ConstraintLayout {
      */
     private CircularImageView addPetImage() {
         CircularImageView image = new CircularImageView(currentActivity, null);
-        image.setImage(R.drawable.test);
+        image.setDrawable(getResources().getDrawable(R.drawable.test, null));
         image.setLayoutParams(new LinearLayout.LayoutParams(IMAGEDIMESIONS, IMAGEDIMESIONS));
         int imageId = View.generateViewId();
         image.setId(imageId);
