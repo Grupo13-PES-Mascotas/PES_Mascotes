@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -30,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private ActionBar toolbar;
+    private MaterialToolbar toolbar;
     private NavigationView navigationView;
     private FloatingActionButton floatingActionButton;
     private User user;
@@ -108,8 +110,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         navigationView = binding.navigationView;
         floatingActionButton = binding.flAddPet;
 
-        initializeActionDrawerToggle();
         initializeActionbar();
+        initializeActionDrawerToggle();
         setUpNavigationDrawer();
         setStartFragment();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -211,17 +213,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Initializes the action bar of the application.
      */
     private void initializeActionbar() {
-        toolbar = getSupportActionBar();
-        Objects.requireNonNull(toolbar).show();
-        Objects.requireNonNull(toolbar).setTitle(R.string.navigation_my_pets);
-        toolbar.setDisplayHomeAsUpEnabled(true);
+        toolbar = binding.toolbar;
+        //Objects.requireNonNull(toolbar).show();
+        Objects.requireNonNull(toolbar).setTitle(R.string.app_name);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        Objects.requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
+        //toolbar.setDisplayHomeAsUpEnabled(true);
     }
 
     /**
      * Initializes the action drawer toggle of the navigation drawer.
      */
     private void initializeActionDrawerToggle() {
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
             R.string.navigation_view_open, R.string.navigation_view_closed);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
@@ -282,8 +287,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     protected void onStart() {
         super.onStart();
         if (mAuth.getCurrentUser() == null) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            finish();
+            //startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            //finish();
         }
     }
 
