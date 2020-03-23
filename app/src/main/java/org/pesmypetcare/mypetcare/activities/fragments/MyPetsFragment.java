@@ -64,7 +64,7 @@ public class MyPetsFragment extends Fragment {
         String [] bundleNames = {"Manolo", "Ernesto", "Segismunda"};
         String [] bundleBreeds = {"Elephant", "Pangolin", "Turtle"};
         String [] bundleBirths = {"02/12/2003", "11/09/1999", "21/02/1711"};
-        String [] bundleGenders = {"Male", "Male", "Female"};
+        String [] bundleGenders = {"Non-Binary", "Male", "Female"};
         String bundlePathologies = "None";
         initializeTestBundle(bundleNames, bundleBreeds, bundleBirths, bundleGenders, bundlePathologies);
     }
@@ -77,7 +77,8 @@ public class MyPetsFragment extends Fragment {
      * @param bundleGenders An array containing the pets genders
      * @param bundlePathologies An string containing the pets pathologies
      */
-    private void initializeTestBundle(String[] bundleNames, String[] bundleBreeds, String[] bundleBirths, String[] bundleGenders, String bundlePathologies) {
+    private void initializeTestBundle(String[] bundleNames, String[] bundleBreeds,
+                                      String[] bundleBirths, String[] bundleGenders, String bundlePathologies) {
         Bundle info;
         for (int i = 0; i < bundleNames.length; ++i) {
             info = new Bundle();

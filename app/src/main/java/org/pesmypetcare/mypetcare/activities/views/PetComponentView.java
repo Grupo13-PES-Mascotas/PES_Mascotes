@@ -38,7 +38,7 @@ public class PetComponentView extends ConstraintLayout {
      * @return The initialized component
      */
     public ConstraintLayout initializePetComponent(Pet currentPet) {
-        CircularImageView image = addPetImage(currentPet);
+        CircularImageView image = addPetImage();
         this.addView(image);
         LinearLayout petInfo = addPetInfo(currentPet.getName(), currentPet.getBreed(), currentPet.getBirthDate());
         this.addView(petInfo);
@@ -67,7 +67,7 @@ public class PetComponentView extends ConstraintLayout {
      * Method responsible for handling the pet image
      * @return The Circular image view containing the pet image
      */
-    private CircularImageView addPetImage(Pet currentPet) {
+    private CircularImageView addPetImage() {
         CircularImageView image = new CircularImageView(currentActivity, null);
         image.setImage(R.drawable.test);
         image.setLayoutParams(new LinearLayout.LayoutParams(IMAGEDIMESIONS, IMAGEDIMESIONS));
@@ -77,7 +77,7 @@ public class PetComponentView extends ConstraintLayout {
     }
 
     /**
-     * Method responsible for generating the linear layout that contains the pet info
+     * Method responsible for generating the linear layout that contains the pet info.
      * @param name The pet name
      * @param breed The pet breed
      * @param birthdate The pet birthdate
