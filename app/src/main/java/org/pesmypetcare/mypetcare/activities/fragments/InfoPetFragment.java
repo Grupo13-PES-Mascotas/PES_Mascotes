@@ -26,6 +26,7 @@ import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetBinding;
 import org.pesmypetcare.mypetcare.features.pets.Gender;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 
 import java.util.Objects;
@@ -58,9 +59,7 @@ public class InfoPetFragment extends Fragment {
         setPetProfileImage();
         initializePetInfo();
         setDeletePet();
-
         modified = false;
-
         return binding.getRoot();
     }
 
@@ -116,9 +115,7 @@ public class InfoPetFragment extends Fragment {
 
         petProfileImage.setDrawable(petProfileDrawable);
 
-        petProfileImage.setOnClickListener(view -> {
-            communication.makeZoomImage(petProfileImage.getDrawable());
-        });
+        petProfileImage.setOnClickListener(view -> communication.makeZoomImage(petProfileImage.getDrawable()));
     }
 
     /**
@@ -158,16 +155,30 @@ public class InfoPetFragment extends Fragment {
         modifiedPet();
         binding.updatePet.setOnClickListener(v -> {
             if (modified) {
-                Toast.makeText(getActivity(), newName, Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), newBreed, Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), newGender, Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), newWeight, Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), "Not implemented yet", Toast.LENGTH_LONG).show();
-                modified = false;
+                try {
+                    updatePet();
+                } catch (PetRepeatException e) {
+                    e.printStackTrace();
+                }
             } else {
                 Toast.makeText(getActivity(), "No changes", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    /**
+     * Update the Pet.
+     */
+    private void updatePet() throws PetRepeatException {
+        pet.setName(newName);
+        pet.setGender(Gender.valueOf(newGender));
+        pet.setBreed(newBreed);
+        pet.setWeight(Float.parseFloat(newWeight));
+        try {
+            communication.updatePet(pet);
+        } catch (UserIsNotOwnerException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -240,9 +251,8 @@ public class InfoPetFragment extends Fragment {
         birthDate = binding.inputBirthMonth;
         birthDate.setOnClickListener(v ->
                 materialDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
-        materialDatePicker.addOnPositiveButtonClickListener(selection -> {
-            birthDate.setText(materialDatePicker.getHeaderText());
-        });
+        materialDatePicker.addOnPositiveButtonClickListener(selection ->
+                birthDate.setText(materialDatePicker.getHeaderText()));
     }
 
     @Override
@@ -273,14 +283,12 @@ public class InfoPetFragment extends Fragment {
      */
     private void setDeletePet() {
         MaterialButton delete = binding.deleteButton;
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MaterialAlertDialogBuilder dialogAlert = new MaterialAlertDialogBuilder(getActivity());
-                configDialog(dialogAlert);
-                configureNegativeButton(dialogAlert);
-                dialogAlert.show();
-            }
+        delete.setOnClickListener(v -> {
+            MaterialAlertDialogBuilder dialogAlert = new MaterialAlertDialogBuilder(Objects
+                    .requireNonNull(getActivity()));
+            configDialog(dialogAlert);
+            configureNegativeButton(dialogAlert);
+            dialogAlert.show();
         });
     }
 
@@ -288,11 +296,7 @@ public class InfoPetFragment extends Fragment {
      * Configure negative button.
      */
     private void configureNegativeButton(MaterialAlertDialogBuilder dialogAlert) {
-        dialogAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel(); }
-        });
+        dialogAlert.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
     }
 
     /**
@@ -301,14 +305,11 @@ public class InfoPetFragment extends Fragment {
     private void configDialog(MaterialAlertDialogBuilder dialogAlert) {
         dialogAlert.setTitle("Delete Pet")
                 .setMessage("Are you sure?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            communication.deletePet(pet);
-                        } catch (UserIsNotOwnerException e) {
-                            e.printStackTrace();
-                        }
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    try {
+                        communication.deletePet(pet);
+                    } catch (UserIsNotOwnerException e) {
+                        e.printStackTrace();
                     }
                 });
     }

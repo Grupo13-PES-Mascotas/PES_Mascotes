@@ -23,7 +23,13 @@ public interface InfoPetCommunication {
 
     /**
      * Delete the given pet.
-     * @param pet The pet  which we want to delete
+     * @param myPet The pet  which we want to delete
      */
     void deletePet(Pet myPet) throws UserIsNotOwnerException;
+
+    /**
+     * Updates the given pet.
+     * @param pet The pet
+     */
+    void updatePet(Pet pet) throws UserIsNotOwnerException;
 }

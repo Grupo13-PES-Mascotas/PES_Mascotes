@@ -50,6 +50,7 @@ import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewUser;
+import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeletePet trDeletePet;
     private TrDeleteUser trDeleteUser;
     private TrRegisterNewUser trRegisterNewUser;
+    private TrUpdatePet trUpdatePet;
     private FirebaseAuth mAuth;
 
     @Override
@@ -132,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeletePet = ControllersFactory.createTrDeletePet();
         trDeleteUser = ControllersFactory.createTrDeleteUser();
         trRegisterNewUser = ControllersFactory.createTrRegisterNewUser();
+        trUpdatePet = ControllersFactory.createTrUpdatePet();
     }
 
     /**
@@ -357,6 +360,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             Toast toast = Toast.makeText(this, getString(R.string.error_user_not_owner), Toast.LENGTH_LONG);
             toast.show();
         }
+    }
+
+    @Override
+    public void updatePet(Pet pet) throws UserIsNotOwnerException {
+        trUpdatePet.setUser(user);
+        trUpdatePet.setPet(pet);
+        trUpdatePet.execute();
     }
 
     @Override

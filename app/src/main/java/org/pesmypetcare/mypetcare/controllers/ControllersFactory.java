@@ -29,4 +29,8 @@ public class ControllersFactory {
     public static TrRegisterNewUser createTrRegisterNewUser() {
         return new TrRegisterNewUser(null);
     }
+
+    public static TrUpdatePet createTrUpdatePet() {
+        return new TrUpdatePet(null);
+    }
 }
