@@ -43,11 +43,12 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentSettingsMenuBinding.inflate(getLayoutInflater());
+        mAuth = FirebaseAuth.getInstance();
+        settingsOptionsListeners();
+        user = new User("johnDoe", "johndoe@gmail.com", "123456");
         setEmail();
         changeEmail();
-        mAuth = FirebaseAuth.getInstance();
-        binding = FragmentSettingsMenuBinding.inflate(getLayoutInflater());
-        settingsOptionsListeners();
         return binding.getRoot();
     }
 
@@ -84,6 +85,8 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
     private void changeEmail() {
         binding.changeEmailButton.setOnClickListener(v -> {
             binding.changeEmail.addOnEditTextAttachedListener(textInputLayout -> {
+                oldMail = user.getMail();
+                Objects.requireNonNull(binding.changeEmail.getEditText()).setText(oldMail);
                 newEmail = Objects.requireNonNull(binding.changeEmail.getEditText()).getText().toString();
                 if (oldMail != newEmail) {
                     communication.changeMail(newEmail);

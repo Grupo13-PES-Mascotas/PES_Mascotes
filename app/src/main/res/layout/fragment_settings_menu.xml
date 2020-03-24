@@ -41,20 +41,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="30dp" />
-
-        <Button
-            android:id="@+id/changePasswordButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/change_password"
-            android:textColor="@color/white"
-            style="@style/rounded_button"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="15dp" />
+            android:layout_height="20dp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/changeEmail"
@@ -85,14 +72,16 @@
             android:layout_width="match_parent"
             android:layout_height="30dp" />
 
-        <TextView
-            android:id="@+id/textView"
+        <Button
+            android:id="@+id/changePasswordButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/version_0_0_0"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp" />
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/change_password"
+            android:textColor="@color/white"
+            style="@style/rounded_button"/>
+
+
 
         <Space
             android:layout_width="match_parent"
@@ -120,6 +109,19 @@
             android:text="@string/delete_account"
             android:textColor="@color/white"
             style="@style/rounded_button"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/version_0_0_0"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
 
     </LinearLayout>
 </FrameLayout>

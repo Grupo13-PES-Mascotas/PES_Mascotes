@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     };
 
     private static final Class[] APPLICATION_FRAGMENTS = {
-        SettingsMenuFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @param id Id of the navigation item
      */
     private void setUpNewFragment(CharSequence title, int id) {
-        toolbar.setTitle(title);
+       // toolbar.setTitle(title);
 
         if (id == R.id.navigationMyPets) {
             floatingActionButton.show();
