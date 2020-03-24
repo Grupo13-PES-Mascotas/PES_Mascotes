@@ -124,7 +124,5 @@ public class TestUser {
     public void shouldNotDeleteIfNotExists() throws NotValidUserException {
         trDeleteUser.setUser(new User("Manuel", "manuel@gmail.com", "123"));
         trDeleteUser.execute();
-        boolean addingResult = trDeleteUser.isResult();
-        assertTrue("should communicate with service to delete the user", addingResult);
     }
 }

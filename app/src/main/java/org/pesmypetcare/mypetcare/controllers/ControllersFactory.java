@@ -17,10 +17,16 @@ public class ControllersFactory {
         return new TrChangePassword(null);
     }
 
-    public static TrDeleteUser createTrDeleteUser() { return new TrDeleteUser(null,
-            null); }
+    public static TrDeleteUser createTrDeleteUser() {
+        return new TrDeleteUser(null,
+            null);
+    }
 
-    public static TrDeletePet createTrDeletePet() { return new TrDeletePet(null); }
+    public static TrDeletePet createTrDeletePet() {
+        return new TrDeletePet(null);
+    }
 
-    public static TrRegisterNewUser createTrRegisterNewUser() { return new TrRegisterNewUser(null); }
+    public static TrRegisterNewUser createTrRegisterNewUser() {
+        return new TrRegisterNewUser(null);
+    }
 }
