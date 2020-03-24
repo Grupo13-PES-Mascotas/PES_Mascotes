@@ -28,7 +28,6 @@ public class StubUserManagerService implements UserManagerService {
         return data.contains(new User(username, "", ""));
     }
 
-    @Override
     public void changeMail(String mail, String username) {
         for (User user : data) {
             if (user.getUsername().equals(username)) {
