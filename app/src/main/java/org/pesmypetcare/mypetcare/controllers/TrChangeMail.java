@@ -13,7 +13,7 @@ public class TrChangeMail {
     }
 
     /**
-     * Set the user to change the mail
+     * Set the user to change the mail.
      * @param user The user that wants to change his mail
      */
     public void setUser(User user) {

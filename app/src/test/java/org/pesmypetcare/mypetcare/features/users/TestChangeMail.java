@@ -11,7 +11,6 @@ import static org.junit.Assert.assertEquals;
 public class TestChangeMail {
     private User user;
     private TrChangeMail trChangeMail;
-    private String newMail;
 
     @Before
     public void setUp() {
@@ -21,7 +20,7 @@ public class TestChangeMail {
 
     @Test
     public void shouldChangeMailCorrect() {
-        newMail = "hola@gmail.com";
+        String newMail = "hola@gmail.com";
         trChangeMail.setUser(user);
         trChangeMail.setMail(newMail);
         trChangeMail.execute();

@@ -88,7 +88,7 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
                 oldMail = user.getMail();
                 Objects.requireNonNull(binding.changeEmail.getEditText()).setText(oldMail);
                 newEmail = Objects.requireNonNull(binding.changeEmail.getEditText()).getText().toString();
-                if (oldMail != newEmail) {
+                if (!(oldMail.equals(newEmail))) {
                     communication.changeMail(newEmail);
                 }
             });
