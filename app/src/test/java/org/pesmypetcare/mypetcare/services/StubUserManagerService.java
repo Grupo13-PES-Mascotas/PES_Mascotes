@@ -14,6 +14,7 @@ public class StubUserManagerService implements UserManagerService {
     public StubUserManagerService() {
         this.data = new HashSet<>();
         User user = new User("johnDoe", "johndoe@gmail.com","123456");
+        data.add(user);
     }
   
     @Override
@@ -29,16 +30,11 @@ public class StubUserManagerService implements UserManagerService {
 
     @Override
     public void changeMail(String mail, String username) {
-        Iterator it = data.iterator();
-        User user = null;
-        boolean finded = false;
-        while(!finded && it.hasNext()) {
-            if (((User) it.next()).getUsername().equals(username)) {
-                finded = true;
-                user = (User) it.next();
+        for (User user : data) {
+            if (user.getUsername().equals(username)) {
+                user.setMail(mail);
+                break;
             }
         }
-        user.setMail(mail);
-        data.add(user);
     }
 }

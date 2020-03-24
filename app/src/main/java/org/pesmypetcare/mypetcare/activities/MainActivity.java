@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     };
 
     private static final Class[] APPLICATION_FRAGMENTS = {
-        InfoPetFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        SettingsMenuFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
@@ -290,7 +290,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return user;
     }
 
-  /**  @Override
+    /**
+    @Override
     protected void onStart() {
        super.onStart();
         if (mAuth.getCurrentUser() == null) {
@@ -298,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             finish();
         }
     }
-   */
+     */
 
     @Override
     public void makeZoomImage(Drawable drawable) {
