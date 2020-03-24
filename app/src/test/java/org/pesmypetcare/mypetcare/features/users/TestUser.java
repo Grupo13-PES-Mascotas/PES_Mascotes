@@ -92,7 +92,7 @@ public class TestUser {
     }
 
     @Test
-    public void shouldChangeUserPassword() throws SamePasswordException, NotValidPasswordException {
+    public void shouldChangeUserPassword() throws SamePasswordException {
         trChangePassword.setUser(this.user);
         trChangePassword.setNewPassword("Ab12!@");
         trChangePassword.execute();
@@ -101,15 +101,9 @@ public class TestUser {
     }
 
     @Test(expected = SamePasswordException.class)
-    public void shouldNotChangePasswordIfIsTheCurrent() throws SamePasswordException, NotValidPasswordException {
+    public void shouldNotChangePasswordIfIsTheCurrent() throws SamePasswordException {
         trChangePassword.setUser(this.user);
         trChangePassword.setNewPassword(PASSWORD);
-    }
-
-    @Test(expected = NotValidPasswordException.class)
-    public void shouldNotChangePasswordIfNotValid() throws SamePasswordException, NotValidPasswordException {
-        trChangePassword.setUser(this.user);
-        trChangePassword.setNewPassword("1234");
     }
 
     @Test

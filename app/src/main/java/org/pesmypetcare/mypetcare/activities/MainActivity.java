@@ -55,7 +55,6 @@ import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
-import org.pesmypetcare.mypetcare.features.users.NotValidPasswordException;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
@@ -420,10 +419,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             trChangePassword.setNewPassword(password);
         } catch (SamePasswordException e) {
             Toast toast = Toast.makeText(this, "No change", Toast.LENGTH_LONG);
-            toast.show();
-            return;
-        } catch (NotValidPasswordException e) {
-            Toast toast = Toast.makeText(this, "Not valid password", Toast.LENGTH_LONG);
             toast.show();
             return;
         }
