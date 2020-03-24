@@ -27,8 +27,8 @@ public class TrChangePassword {
     /**
      * Set the new password.
      * @param newPassword The new password
-     * @exception SamePasswordException The user has already the same password
-     * @exception notValidPasswordException The new password isn't valid
+     * @throws SamePasswordException The user has already the same password
+     * @throws notValidPasswordException The new password is not valid
      */
     public void setNewPassword(String newPassword) throws SamePasswordException, notValidPasswordException {
         if (newPassword.equals(this.user.getPasswd())) {

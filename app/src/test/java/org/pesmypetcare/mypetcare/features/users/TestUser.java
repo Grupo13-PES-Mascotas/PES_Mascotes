@@ -19,10 +19,11 @@ public class TestUser {
     private TrRegisterNewUser trRegisterNewUser;
     private TrChangePassword trChangePassword;
     private final String MIKE = "Mike";
+    private final String PASSWORD = "12En)(";
 
     @Before
     public void setUp() {
-        user = new User("johnDoe", "johndoe@gmail.com", "12En)(");
+        user = new User("johnDoe", "johndoe@gmail.com", PASSWORD);
         trRegisterNewPet = new TrRegisterNewPet(new StubPetManagerService());
         trRegisterNewUser = new TrRegisterNewUser(new StubUserManagerService());
         trChangePassword = new TrChangePassword(new StubUserManagerService());
@@ -93,13 +94,13 @@ public class TestUser {
         trChangePassword.setNewPassword("Ab12!@");
         trChangePassword.execute();
         boolean addingResult = trChangePassword.isResult();
-        assertTrue("should communicate with service to add a user", addingResult);
+        assertTrue("should communicate with service to change the password", addingResult);
     }
 
     @Test(expected = SamePasswordException.class)
     public void shouldNotChangePasswordIfIsTheCurrent() throws SamePasswordException, notValidPasswordException {
         trChangePassword.setUser(this.user);
-        trChangePassword.setNewPassword("12En)(");
+        trChangePassword.setNewPassword(PASSWORD);
     }
 
     @Test(expected = notValidPasswordException.class)

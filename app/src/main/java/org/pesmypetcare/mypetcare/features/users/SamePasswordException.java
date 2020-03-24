@@ -1,4 +1,4 @@
 package org.pesmypetcare.mypetcare.features.users;
 
-public class SamePasswordException extends Exception  {
+public class SamePasswordException extends Exception {
 }

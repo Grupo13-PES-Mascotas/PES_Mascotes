@@ -76,7 +76,7 @@ public class LogInFragment extends Fragment {
                     testToast("User not verified, check your email");
                 }
             } else {
-                testToast("Incorrect username or password");
+                testToast("Incorrect email or password");
             }
         });
     }
