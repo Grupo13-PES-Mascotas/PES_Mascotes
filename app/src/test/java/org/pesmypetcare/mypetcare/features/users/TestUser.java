@@ -42,7 +42,6 @@ public class TestUser {
         trRegisterNewPet.setPet(pet);
         trRegisterNewPet.execute();
         boolean addingResult = trRegisterNewPet.isResult();
-
         assertTrue("should communicate with service to add a pet", addingResult);
     }
 
