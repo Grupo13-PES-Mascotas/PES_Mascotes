@@ -46,15 +46,15 @@ public class TestRegisterPetFragment {
         onView(withId(R.id.flAddPet)).perform(click());
         onView(withId(R.id.inputPetName)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.inputPetName)).perform(typeText("Linux"));
-        onView(withId(R.id.inputGender)).perform(typeText("Male"));
+        onView(withId(R.id.inputPetName)).perform(typeText("Linux"), closeSoftKeyboard());
+        onView(withId(R.id.inputGender)).perform(typeText("Male"), closeSoftKeyboard());
         onView(withId(R.id.inputBirthMonth)).perform(click());
         onView(withText("Selected date")).check(matches(isDisplayed())).perform(pressBack());
         onView(withId(R.id.inputBirthMonth)).perform(setButtonText("5 MAR 2020"));
-        onView(withId(R.id.inputBreed)).perform(typeText("Husky"));
-        onView(withId(R.id.inputWeight)).perform(typeText("5"));
-        onView(withId(R.id.inputPathologies)).perform(typeText("lame"));
-        onView(withId(R.id.inputRecommendedCalories)).perform(typeText("10"));
+        onView(withId(R.id.inputBreed)).perform(typeText("Husky"), closeSoftKeyboard());
+        onView(withId(R.id.inputWeight)).perform(typeText("5"), closeSoftKeyboard());
+        onView(withId(R.id.inputPathologies)).perform(typeText("lame"), closeSoftKeyboard());
+        onView(withId(R.id.inputRecommendedCalories)).perform(typeText("10"), closeSoftKeyboard());
         onView(withId(R.id.inputWashFrequency)).perform(typeText("2"), closeSoftKeyboard());
 
         onView(withId(R.id.btnAddPet)).perform(click());
