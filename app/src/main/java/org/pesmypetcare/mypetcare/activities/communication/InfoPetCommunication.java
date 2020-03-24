@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 
 public interface InfoPetCommunication {
 
@@ -19,4 +20,16 @@ public interface InfoPetCommunication {
      * @param newImage The bitmap of the new image to display
      */
     void updatePetImage(Pet pet, Bitmap newImage);
+
+    /**
+     * Delete the given pet.
+     * @param myPet The pet  which we want to delete
+     */
+    void deletePet(Pet myPet) throws UserIsNotOwnerException;
+
+    /**
+     * Updates the given pet.
+     * @param pet The pet
+     */
+    void updatePet(Pet pet) throws UserIsNotOwnerException;
 }

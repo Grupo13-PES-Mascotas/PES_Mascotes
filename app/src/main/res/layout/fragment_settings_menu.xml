@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.fragments.NotImplementedFragment">
+    tools:context=".activities.fragments.SettingsMenuFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,6 +41,35 @@
 
         <Space
             android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/changeEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/change_email"
+            app:hintEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:boxStrokeColor = "@color/colorAccent"
+            app:boxBackgroundColor="@color/white">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/changeEmailButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/save_email"
+                android:textColor="@color/white"
+                style="@style/rounded_button"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="match_parent"
             android:layout_height="30dp" />
 
         <Button
@@ -64,18 +94,41 @@
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
 
+        <Button
+            android:id="@+id/logoutButton"
+            style="@style/rounded_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/red"
+            android:text="@string/log_out"
+            android:textColor="@color/white" />
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="30dp" />
 
         <Button
-            android:id="@+id/logoutButton"
+            android:id="@+id/deleteAccountButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"
             android:backgroundTint="@color/red"
-            android:text="@string/log_out"
+            android:text="@string/delete_account"
             android:textColor="@color/white"
             style="@style/rounded_button"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/version_0_0_0"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
+
     </LinearLayout>
 </FrameLayout>

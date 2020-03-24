@@ -15,7 +15,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
@@ -23,6 +25,8 @@ import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetBinding;
 import org.pesmypetcare.mypetcare.features.pets.Gender;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
+import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 
 import java.util.Objects;
 
@@ -42,6 +46,7 @@ public class InfoPetFragment extends Fragment {
     private CircularImageView petProfileImage;
     private InfoPetCommunication communication;
 
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoPetBinding.inflate(inflater, container, false);
@@ -52,9 +57,8 @@ public class InfoPetFragment extends Fragment {
         setGenderDropdownMenu();
         setPetProfileImage();
         initializePetInfo();
-
+        setDeletePet();
         modified = false;
-
         return binding.getRoot();
     }
 
@@ -110,9 +114,7 @@ public class InfoPetFragment extends Fragment {
 
         petProfileImage.setDrawable(petProfileDrawable);
 
-        petProfileImage.setOnClickListener(view -> {
-            communication.makeZoomImage(petProfileImage.getDrawable());
-        });
+        petProfileImage.setOnClickListener(view -> communication.makeZoomImage(petProfileImage.getDrawable()));
     }
 
     /**
@@ -122,7 +124,7 @@ public class InfoPetFragment extends Fragment {
         Bitmap petImage = pet.getProfileImage();
 
         if (petImage == null) {
-            petProfileDrawable = getResources().getDrawable(R.drawable.single_paw);
+            petProfileDrawable = getResources().getDrawable(R.drawable.single_paw, null);
         } else {
             petProfileDrawable = new BitmapDrawable(getResources(), petImage);
         }
@@ -152,16 +154,30 @@ public class InfoPetFragment extends Fragment {
         modifiedPet();
         binding.updatePet.setOnClickListener(v -> {
             if (modified) {
-                Toast.makeText(getActivity(), newName, Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), newBreed, Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), newGender, Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), newWeight, Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), "Not implemented yet", Toast.LENGTH_LONG).show();
-                modified = false;
+                try {
+                    updatePet();
+                } catch (PetRepeatException e) {
+                    e.printStackTrace();
+                }
             } else {
                 Toast.makeText(getActivity(), "No changes", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    /**
+     * Update the Pet.
+     */
+    private void updatePet() throws PetRepeatException {
+        pet.setName(newName);
+        pet.setGender(Gender.valueOf(newGender));
+        pet.setBreed(newBreed);
+        pet.setWeight(Float.parseFloat(newWeight));
+        try {
+            communication.updatePet(pet);
+        } catch (UserIsNotOwnerException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -234,15 +250,13 @@ public class InfoPetFragment extends Fragment {
         birthDate = binding.inputBirthMonth;
         birthDate.setOnClickListener(v ->
                 materialDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
-        materialDatePicker.addOnPositiveButtonClickListener(selection -> {
-            birthDate.setText(materialDatePicker.getHeaderText());
-        });
+        materialDatePicker.addOnPositiveButtonClickListener(selection ->
+                birthDate.setText(materialDatePicker.getHeaderText()));
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
         if (isImageModified) {
             Bitmap bitmap = null;
 
@@ -259,6 +273,42 @@ public class InfoPetFragment extends Fragment {
      * @return True if the pet has a new image defined
      */
     private boolean hasNewImageDefined() {
-        return !petProfileImage.getDrawable().equals(getResources().getDrawable(R.drawable.single_paw));
+        return !petProfileImage.getDrawable().equals(getResources().getDrawable(R.drawable.single_paw, null));
+    }
+
+    /**
+     * Configure the botton deleteButton to delete the pet.
+     */
+    private void setDeletePet() {
+        MaterialButton delete = binding.deleteButton;
+        delete.setOnClickListener(v -> {
+            MaterialAlertDialogBuilder dialogAlert = new MaterialAlertDialogBuilder(Objects
+                    .requireNonNull(getActivity()));
+            configDialog(dialogAlert);
+            configureNegativeButton(dialogAlert);
+            dialogAlert.show();
+        });
+    }
+
+    /**
+     * Configure negative button.
+     */
+    private void configureNegativeButton(MaterialAlertDialogBuilder dialogAlert) {
+        dialogAlert.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+    }
+
+    /**
+     * Configure some atributtes of confirmation dialog to delete a pet and positive button.
+     */
+    private void configDialog(MaterialAlertDialogBuilder dialogAlert) {
+        dialogAlert.setTitle("Delete Pet")
+                .setMessage("Are you sure?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    try {
+                        communication.deletePet(pet);
+                    } catch (UserIsNotOwnerException e) {
+                        e.printStackTrace();
+                    }
+                });
     }
 }

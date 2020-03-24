@@ -5,27 +5,26 @@ import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
 
-public class TrUpdatePet {
+public class TrDeletePet {
     private PetManagerService petManagerService;
     private User user;
     private Pet pet;
-    private boolean result;
 
-    public TrUpdatePet(PetManagerService petManagerService) {
+    public TrDeletePet(PetManagerService petManagerService) {
         this.petManagerService = petManagerService;
     }
 
     /**
-     * Set the user to whom the pet will be registered.
-     * @param user The user that wants to register a new pet
+     * Set the user to whom the pet will be deleted.
+     * @param user The user that wants to delete a pet
      */
     public void setUser(User user) {
         this.user = user;
     }
 
     /**
-     * Set the pet that the user wants to register.
-     * @param pet The pet that will be registered
+     * Set the pet that the user wants to delete.
+     * @param pet The pet that will be deleted
      */
     public void setPet(Pet pet) {
         this.pet = pet;
@@ -36,28 +35,11 @@ public class TrUpdatePet {
      * @throws UserIsNotOwnerException The user is not the owner of the pet
      */
     public void execute() throws UserIsNotOwnerException {
-        result = false;
-        if (userIsNotTheOwnerOfThePet()) {
+        if (pet.getOwner() != user) {
             throw new UserIsNotOwnerException();
+        } else {
+            petManagerService.deletePet(pet, user.getUsername());
+            user.deletePet(pet);
         }
-        petManagerService.updatePet(pet);
-        result = true;
     }
-
-    /**
-     *Checks whether the user isn't the pet owner.
-     * @return True if the user isn't the pet owner
-     */
-    private boolean userIsNotTheOwnerOfThePet() {
-        return !pet.getOwner().equals(user);
-    }
-
-    /**
-     * Get the result of the transaction.
-     * @return The result of the transaction
-     */
-    public boolean isResult() {
-        return result;
-    }
-
 }

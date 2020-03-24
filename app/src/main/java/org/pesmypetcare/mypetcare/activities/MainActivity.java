@@ -43,20 +43,31 @@ import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
+import org.pesmypetcare.mypetcare.activities.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
+import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
+import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
+import org.pesmypetcare.mypetcare.controllers.TrRegisterNewUser;
+import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
+import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.features.users.UserAlreadyExistingException;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
-    InfoPetCommunication {
+    InfoPetCommunication, MyPetsComunication, SettingsCommunication {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
@@ -79,6 +90,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private User user;
     private TrRegisterNewPet trRegisterNewPet;
     private TrUpdatePetImage trUpdatePetImage;
+    private TrChangePassword trChangePassword;
+    private TrDeletePet trDeletePet;
+    private TrDeleteUser trDeleteUser;
+    private TrRegisterNewUser trRegisterNewUser;
+    private TrUpdatePet trUpdatePet;
+    private TrChangeMail trChangeMail;
     private FirebaseAuth mAuth;
     private Fragment actualFragment;
 
@@ -92,7 +109,23 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeActivity();
         initializeControllers();
 
-        user = new User("johnDoe", "johndoe@gmail.com", "1234");
+        initializeUser();
+    }
+
+    /**
+     * Initialize the current.
+     */
+    private void initializeUser() {
+        user = new User(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
+                mAuth.getCurrentUser().getEmail(), "");
+        trRegisterNewUser.setUsername(mAuth.getCurrentUser().getUid());
+        trRegisterNewUser.setEmail(mAuth.getCurrentUser().getEmail());
+        trRegisterNewUser.setPassword("");
+        try {
+            trRegisterNewUser.execute();
+        } catch (UserAlreadyExistingException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -101,6 +134,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private void initializeControllers() {
         trRegisterNewPet = ControllersFactory.createTrRegisterNewPet();
         trUpdatePetImage = ControllersFactory.createTrUpdatePetImage();
+        trChangePassword = ControllersFactory.createTrChangePassword();
+        trDeletePet = ControllersFactory.createTrDeletePet();
+        trDeleteUser = ControllersFactory.createTrDeleteUser();
+        trRegisterNewUser = ControllersFactory.createTrRegisterNewUser();
+        trUpdatePet = ControllersFactory.createTrUpdatePet();
     }
 
     /**
@@ -117,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setStartFragment();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
+
 
     /**
      * Enters the fragment to create a pet.
@@ -295,6 +334,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
 
     @Override
+    public User getUser() {
+        return user;
+    }
+
+
+    @Override
     protected void onStart() {
         super.onStart();
         if (enableLoginActivity && mAuth.getCurrentUser() == null) {
@@ -302,6 +347,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             finish();
         }
     }
+
 
     @Override
     public void makeZoomImage(Drawable drawable) {
@@ -321,6 +367,25 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             Toast toast = Toast.makeText(this, getString(R.string.error_user_not_owner), Toast.LENGTH_LONG);
             toast.show();
         }
+    }
+
+    @Override
+    public void deletePet(Pet myPet) {
+        trDeletePet.setUser(user);
+        trDeletePet.setPet(myPet);
+        try {
+            trDeletePet.execute();
+        } catch (UserIsNotOwnerException e) {
+            Toast toast = Toast.makeText(this, getString(R.string.error_user_not_owner), Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+
+    @Override
+    public void updatePet(Pet pet) throws UserIsNotOwnerException {
+        trUpdatePet.setUser(user);
+        trUpdatePet.setPet(pet);
+        trUpdatePet.execute();
     }
 
     @Override
@@ -374,5 +439,36 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         String imagePath = cursor.getString(columnIndex);
         cursor.close();
         return imagePath;
+    }
+
+    @Override
+    public void changePassword(String password) {
+        trChangePassword.setUser(user);
+        try {
+            trChangePassword.setNewPassword(password);
+        } catch (SamePasswordException e) {
+            Toast toast = Toast.makeText(this, "No change", Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+        trChangePassword.execute();
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        trDeleteUser.setUser(user);
+        try {
+            trDeleteUser.execute();
+        } catch (NotValidUserException e) {
+            Toast toast = Toast.makeText(this, "Not valid user", Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+    
+    @Override  
+    public void changeMail(String newEmail) {
+        trChangeMail.setUser(user);
+        trChangeMail.setMail(newEmail);
+        trChangeMail.execute();
     }
 }
