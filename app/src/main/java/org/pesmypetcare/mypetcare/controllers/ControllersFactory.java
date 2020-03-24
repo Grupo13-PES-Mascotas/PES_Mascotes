@@ -12,4 +12,8 @@ public class ControllersFactory {
     public static TrUpdatePetImage createTrUpdatePetImage() {
         return new TrUpdatePetImage(null);
     }
+
+    public static TrChangePassword createTrChangePassword() {
+        return new TrChangePassword(null);
+    }
 }

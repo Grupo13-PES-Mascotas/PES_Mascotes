@@ -42,8 +42,10 @@ import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
@@ -51,13 +53,15 @@ import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
+import org.pesmypetcare.mypetcare.features.users.NotValidPasswordException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
-    InfoPetCommunication, MyPetsComunication {
+    InfoPetCommunication, MyPetsComunication, SettingsCommunication {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
@@ -80,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private User user;
     private TrRegisterNewPet trRegisterNewPet;
     private TrUpdatePetImage trUpdatePetImage;
+    private TrChangePassword trChangePassword;
     private TrDeletePet trDeletePet;
     private FirebaseAuth mAuth;
 
@@ -102,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private void initializeControllers() {
         trRegisterNewPet = ControllersFactory.createTrRegisterNewPet();
         trUpdatePetImage = ControllersFactory.createTrUpdatePetImage();
+        trChangePassword = ControllersFactory.createTrChangePassword();
     }
 
     /**
@@ -381,5 +387,22 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         String imagePath = cursor.getString(columnIndex);
         cursor.close();
         return imagePath;
+    }
+
+    @Override
+    public void changePassword(String password) {
+        trChangePassword.setUser(user);
+        try {
+            trChangePassword.setNewPassword(password);
+        } catch (SamePasswordException e) {
+            Toast toast = Toast.makeText(this, "No change", Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        } catch (NotValidPasswordException e) {
+            Toast toast = Toast.makeText(this, "Not valid password", Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+        trChangePassword.execute();
     }
 }
