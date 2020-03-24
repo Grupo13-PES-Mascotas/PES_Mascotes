@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         SettingsMenuFragment.class
     };
 
-    private Fragment actualFragment;
+    private static boolean enableLoginActivity = true;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrRegisterNewPet trRegisterNewPet;
     private TrUpdatePetImage trUpdatePetImage;
     private FirebaseAuth mAuth;
+    private Fragment actualFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +126,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         floatingActionButton.hide();
         changeFragment(getFragment(RegisterPetFragment.class));
         toolbar.setTitle(getString(R.string.register_new_pet));
+    }
+
+    public static void setEnableLoginActivity(boolean enableLoginActivity) {
+        MainActivity.enableLoginActivity = enableLoginActivity;
     }
 
     /**
@@ -190,7 +195,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         actualFragment = nextFragment;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment);
+        fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment, nextFragment.getClass()
+            .getSimpleName());
         fragmentTransaction.commit();
 
     }
@@ -286,9 +292,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     protected void onStart() {
         super.onStart();
-        if (mAuth.getCurrentUser() == null) {
-            //startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            //finish();
+        if (enableLoginActivity && mAuth.getCurrentUser() == null) {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
         }
     }
 
