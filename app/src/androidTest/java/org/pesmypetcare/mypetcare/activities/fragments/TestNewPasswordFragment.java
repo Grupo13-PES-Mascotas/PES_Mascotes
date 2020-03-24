@@ -24,6 +24,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class TestNewPasswordFragment {
+    public static final String OLD_PASSWORD = "AbcDef456";
+    public static final String NEW_PASSWORD = "GhiJkl789";
+    public static final String WRONG_NEW_PASSWORD = "MnoPqr123";
     @Rule
     public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -40,9 +43,9 @@ public class TestNewPasswordFragment {
         onView(withId(R.id.changePasswordButton)).perform(click());
         onView(withId(R.id.oldPasswordText)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.oldPasswordText)).perform(typeText("AbcDef456"));
-        onView(withId(R.id.newPasswordText)).perform(typeText("GhiJkl789"));
-        onView(withId(R.id.confirmNewPasswordText)).perform(typeText("GhiJkl789"), closeSoftKeyboard());
+        onView(withId(R.id.oldPasswordText)).perform(typeText(OLD_PASSWORD));
+        onView(withId(R.id.newPasswordText)).perform(typeText(NEW_PASSWORD));
+        onView(withId(R.id.confirmNewPasswordText)).perform(typeText(NEW_PASSWORD), closeSoftKeyboard());
         onView(withId(R.id.confirmButton)).perform(click());
         //onView(withId(R.id.oldPasswordText)).check(matches(not(isDisplayed())));
     }
@@ -54,8 +57,8 @@ public class TestNewPasswordFragment {
         onView(withId(R.id.changePasswordButton)).perform(click());
         onView(withId(R.id.oldPasswordText)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.oldPasswordText)).perform(typeText("AbcDef456"));
-        onView(withId(R.id.newPasswordText)).perform(typeText("GhiJkl789"), closeSoftKeyboard());
+        onView(withId(R.id.oldPasswordText)).perform(typeText(OLD_PASSWORD));
+        onView(withId(R.id.newPasswordText)).perform(typeText(NEW_PASSWORD), closeSoftKeyboard());
         onView(withId(R.id.confirmButton)).perform(click());
         onView(withId(R.id.oldPasswordText)).check(matches(isDisplayed()));
     }
@@ -68,9 +71,9 @@ public class TestNewPasswordFragment {
         onView(withId(R.id.changePasswordButton)).perform(click());
         onView(withId(R.id.oldPasswordText)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.oldPasswordText)).perform(typeText("AbcDef456"));
-        onView(withId(R.id.newPasswordText)).perform(typeText("GhiJkl789"));
-        onView(withId(R.id.confirmNewPasswordText)).perform(typeText("MnoPqr123"), closeSoftKeyboard());
+        onView(withId(R.id.oldPasswordText)).perform(typeText(OLD_PASSWORD));
+        onView(withId(R.id.newPasswordText)).perform(typeText(NEW_PASSWORD));
+        onView(withId(R.id.confirmNewPasswordText)).perform(typeText(WRONG_NEW_PASSWORD), closeSoftKeyboard());
         onView(withId(R.id.confirmButton)).perform(click());
         onView(withId(R.id.oldPasswordText)).check(matches(isDisplayed()));
     }
