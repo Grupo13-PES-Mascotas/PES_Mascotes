@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.activities.fragments;
 
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
