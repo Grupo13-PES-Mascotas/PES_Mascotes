@@ -35,7 +35,8 @@ public interface UserManagerService {
      * @param user The user
      */
     void deleteUser(User user);
-  
+
+    /**
      * Changes the mail.
      * @param mail The mail that user wants to set
      * @param username The user which wants to change his mail

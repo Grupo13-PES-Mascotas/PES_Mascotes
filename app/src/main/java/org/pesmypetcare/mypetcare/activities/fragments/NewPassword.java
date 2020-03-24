@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.pesmypetcare.mypetcare.activities.NewPasswordInterface;
+import org.pesmypetcare.mypetcare.activities.SettingsCommunication;
 import org.pesmypetcare.mypetcare.databinding.FragmentNewPasswordBinding;
 
 /**

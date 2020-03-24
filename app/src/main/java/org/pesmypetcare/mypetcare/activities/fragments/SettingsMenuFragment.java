@@ -39,7 +39,6 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
     private User user;
     private String oldMail;
     private String newEmail;
-    private SettingsCommunication communication;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
