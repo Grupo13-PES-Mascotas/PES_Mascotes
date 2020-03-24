@@ -258,7 +258,6 @@ public class InfoPetFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-
         if (isImageModified) {
             Bitmap bitmap = null;
 
