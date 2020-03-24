@@ -24,6 +24,7 @@ public class ImageZoom extends Fragment {
     private static final int GALLERY_ZOOM_REQUEST_CODE = 0;
     private static final float RADIUS = 1000.0f;
     private static Drawable drawable;
+    private static boolean isMainActivity;
 
     private FragmentImageZoomBinding binding;
 
@@ -35,6 +36,7 @@ public class ImageZoom extends Fragment {
      * Get the drawable of the displaying image.
      * @return The drawable of the displaying image
      */
+
     public static Drawable getDrawable() {
         return drawable;
     }
@@ -110,5 +112,13 @@ public class ImageZoom extends Fragment {
     public void setDrawable(Drawable drawable) {
         ImageZoom.drawable = drawable;
         initializeCircularImageView();
+    }
+
+    public static boolean isMainActivity() {
+        return isMainActivity;
+    }
+
+    public static void setIsMainActivity(boolean isMainActivity) {
+        ImageZoom.isMainActivity = isMainActivity;
     }
 }

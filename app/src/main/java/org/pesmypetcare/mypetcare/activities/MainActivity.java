@@ -35,10 +35,10 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.activities.fragments.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.ImageZoom;
 import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
@@ -89,11 +89,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        user = new User("johnDoe", "johndoe@gmail.com", "1234");
 
         initializeActivity();
         initializeControllers();
-
-        user = new User("johnDoe", "johndoe@gmail.com", "1234");
+        setUpNavigationImage();
     }
 
     /**
@@ -152,6 +152,29 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
             return true;
         });
+    }
+
+    private void setUpNavigationImage() {
+        setUpUserImage();
+        //CircularImageView userImageView = findViewById(R.id.imgUser);
+        /*userImageView.setDrawable(drawable);
+        userImageView.setClickable(true);
+        userImageView.setOnClickListener(v -> changeFragment(new ImageZoom(drawable)));*/
+
+        navigationView.getHeaderView(0).setOnClickListener(v -> {
+            Drawable drawable = new BitmapDrawable(getResources(), user.getUserProfileImage());
+            ImageZoom imageZoom = new ImageZoom(drawable);
+            ImageZoom.setIsMainActivity(true);
+            floatingActionButton.hide();
+            changeFragment(imageZoom);
+        });
+    }
+
+    private void setUpUserImage() {
+        Bitmap userImageBitmap = user.getUserProfileImage();
+        if (userImageBitmap == null) {
+            user.setUserProfileImage(BitmapFactory.decodeResource(getResources(), R.drawable.test));
+        }
     }
 
     /**
@@ -241,8 +264,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
             if (actualFragment instanceof ImageZoom) {
-                InfoPetFragment.setPetProfileDrawable(ImageZoom.getDrawable());
-                changeFragment(new InfoPetFragment());
+                if (ImageZoom.isMainActivity()) {
+                    Drawable drawable = ImageZoom.getDrawable();
+                    user.setUserProfileImage(((BitmapDrawable) drawable).getBitmap());
+                    changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+                } else {
+                    InfoPetFragment.setPetProfileDrawable(ImageZoom.getDrawable());
+                    changeFragment(new InfoPetFragment());
+                }
             }
             else {
                 changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
@@ -288,18 +317,19 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return user;
     }
 
-    @Override
+    /**@Override
     protected void onStart() {
         super.onStart();
         if (mAuth.getCurrentUser() == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
-    }
+    }**/
 
     @Override
     public void makeZoomImage(Drawable drawable) {
         floatingActionButton.hide();
+        ImageZoom.setIsMainActivity(false);
         changeFragment(new ImageZoom(drawable));
     }
 
@@ -382,4 +412,5 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         cursor.close();
         return imagePath;
     }
+
 }
