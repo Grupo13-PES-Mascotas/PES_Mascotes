@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.services;
 
+
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.HashSet;
@@ -10,6 +11,8 @@ public class StubUserManagerService implements UserManagerService {
 
     public StubUserManagerService() {
         this.data = new HashSet<>();
+        data.add(new User("johnDoe", "", ""));
+
     }
   
     @Override
@@ -28,5 +31,10 @@ public class StubUserManagerService implements UserManagerService {
         data.remove(user);
         data.add(new User(user.getUsername(), user.getMail(), newPassword));
         return true;
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        data.remove(user);
     }
 }

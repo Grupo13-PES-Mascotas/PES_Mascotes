@@ -17,7 +17,7 @@ public interface UserManagerService {
 
     /**
      * Checks if the user had been registered.
-     * @param username The username of the user
+     * @param username The user id
      * @return True if the user already exists, false otherwise
      */
     boolean userExists(String username);
@@ -29,4 +29,10 @@ public interface UserManagerService {
      * @return True if the change has been done without any problems
      */
     boolean changePassword(User user, String newPassword);
+
+    /**
+     * Delete a user.
+     * @param user The user
+     */
+    void deleteUser(User user);
 }

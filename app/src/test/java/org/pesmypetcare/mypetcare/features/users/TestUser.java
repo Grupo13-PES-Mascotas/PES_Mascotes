@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.features.users;
 import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewUser;
 import org.pesmypetcare.mypetcare.features.pets.Gender;
@@ -18,6 +19,7 @@ public class TestUser {
     private TrRegisterNewPet trRegisterNewPet;
     private TrRegisterNewUser trRegisterNewUser;
     private TrChangePassword trChangePassword;
+    private TrDeleteUser trDeleteUser;
     private final String MIKE = "Mike";
     private final String PASSWORD = "12En)(";
 
@@ -27,6 +29,7 @@ public class TestUser {
         trRegisterNewPet = new TrRegisterNewPet(new StubPetManagerService());
         trRegisterNewUser = new TrRegisterNewUser(new StubUserManagerService());
         trChangePassword = new TrChangePassword(new StubUserManagerService());
+        trDeleteUser = new TrDeleteUser(new StubUserManagerService(), new StubPetManagerService());
     }
 
     @Test
@@ -107,5 +110,21 @@ public class TestUser {
     public void shouldNotChangePasswordIfNotValid() throws SamePasswordException, NotValidPasswordException {
         trChangePassword.setUser(this.user);
         trChangePassword.setNewPassword("1234");
+    }
+
+    @Test
+    public void shouldDeleteUser() throws NotValidUserException {
+        trDeleteUser.setUser(this.user);
+        trDeleteUser.execute();
+        boolean addingResult = trDeleteUser.isResult();
+        assertTrue("should communicate with service to delete the user", addingResult);
+    }
+
+    @Test (expected = NotValidUserException.class)
+    public void shouldNotDeleteIfNotExists() throws NotValidUserException {
+        trDeleteUser.setUser(new User("Manuel", "manuel@gmail.com", "123"));
+        trDeleteUser.execute();
+        boolean addingResult = trDeleteUser.isResult();
+        assertTrue("should communicate with service to delete the user", addingResult);
     }
 }

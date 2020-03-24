@@ -47,16 +47,20 @@ import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
+import org.pesmypetcare.mypetcare.controllers.TrRegisterNewUser;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotValidPasswordException;
+import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.features.users.UserAlreadyExistingException;
 
 import java.util.Objects;
 
@@ -86,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrUpdatePetImage trUpdatePetImage;
     private TrChangePassword trChangePassword;
     private TrDeletePet trDeletePet;
+    private TrDeleteUser trDeleteUser;
+    private TrRegisterNewUser trRegisterNewUser;
     private FirebaseAuth mAuth;
 
     @Override
@@ -98,7 +104,23 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeActivity();
         initializeControllers();
 
-        user = new User("johnDoe", "johndoe@gmail.com", "1234");
+        initializeUser();
+    }
+
+    /**
+     * Initialize the current.
+     */
+    private void initializeUser() {
+        user = new User(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
+                mAuth.getCurrentUser().getEmail(), "");
+        trRegisterNewUser.setUsername(mAuth.getCurrentUser().getUid());
+        trRegisterNewUser.setEmail(mAuth.getCurrentUser().getEmail());
+        trRegisterNewUser.setPassword("");
+        try {
+            trRegisterNewUser.execute();
+        } catch (UserAlreadyExistingException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -108,6 +130,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trRegisterNewPet = ControllersFactory.createTrRegisterNewPet();
         trUpdatePetImage = ControllersFactory.createTrUpdatePetImage();
         trChangePassword = ControllersFactory.createTrChangePassword();
+        trDeletePet = ControllersFactory.createTrDeletePet();
+        trDeleteUser = ControllersFactory.createTrDeleteUser();
+        trRegisterNewUser = ControllersFactory.createTrRegisterNewUser();
     }
 
     /**
@@ -332,7 +357,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (UserIsNotOwnerException e) {
             Toast toast = Toast.makeText(this, getString(R.string.error_user_not_owner), Toast.LENGTH_LONG);
             toast.show();
-            return;
         }
     }
 
@@ -404,5 +428,16 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             return;
         }
         trChangePassword.execute();
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        trDeleteUser.setUser(user);
+        try {
+            trDeleteUser.execute();
+        } catch (NotValidUserException e) {
+            Toast toast = Toast.makeText(this, "Not valid user", Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 }

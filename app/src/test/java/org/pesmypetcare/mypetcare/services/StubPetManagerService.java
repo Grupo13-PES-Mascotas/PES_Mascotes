@@ -18,7 +18,7 @@ public class StubPetManagerService implements PetManagerService {
     public StubPetManagerService() {
         this.data = new HashMap<>();
         this.data.put(JOHN_DOE, new ArrayList<>());
-        this.data.get(JOHN_DOE).add(new Pet(DINKY));
+        Objects.requireNonNull(this.data.get(JOHN_DOE)).add(new Pet(DINKY));
     }
 
     @Override
@@ -48,6 +48,12 @@ public class StubPetManagerService implements PetManagerService {
     @Override
     public void deletePet(Pet pet, String username) {
         ArrayList<Pet> pets = data.get(username);
+        assert pets != null;
         pets.remove(pet);
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        data.remove(user.getUsername());
     }
 }
