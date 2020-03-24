@@ -39,7 +39,6 @@ public class StubUserManagerService implements UserManagerService {
         data.remove(user);
     }
 
-    @Override
     public void changeMail(String mail, String username) {
         for (User user : data) {
             if (user.getUsername().equals(username)) {
