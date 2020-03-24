@@ -2,7 +2,7 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.features.users.notValidPasswordException;
+import org.pesmypetcare.mypetcare.features.users.NotValidPasswordException;
 import org.pesmypetcare.mypetcare.services.UserManagerService;
 
 public class TrChangePassword {
@@ -28,13 +28,13 @@ public class TrChangePassword {
      * Set the new password.
      * @param newPassword The new password
      * @throws SamePasswordException The user has already the same password
-     * @throws notValidPasswordException The new password is not valid
+     * @throws NotValidPasswordException The new password is not valid
      */
-    public void setNewPassword(String newPassword) throws SamePasswordException, notValidPasswordException {
+    public void setNewPassword(String newPassword) throws SamePasswordException, NotValidPasswordException {
         if (newPassword.equals(this.user.getPasswd())) {
             throw new SamePasswordException();
         } else if (!validatePassword(newPassword)) {
-            throw new notValidPasswordException();
+            throw new NotValidPasswordException();
         }
         this.newPassword = newPassword;
     }
