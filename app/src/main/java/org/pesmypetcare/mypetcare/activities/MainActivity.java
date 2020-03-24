@@ -128,6 +128,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         toolbar.setTitle(getString(R.string.register_new_pet));
     }
 
+    /**
+     * Set the enable of the login activity.
+     * @param enableLoginActivity The enable of the login activity to set
+     */
     public static void setEnableLoginActivity(boolean enableLoginActivity) {
         MainActivity.enableLoginActivity = enableLoginActivity;
     }
@@ -163,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     private void setUpNewFragment(CharSequence title, int id) {
         toolbar.setTitle(title);
+        toolbar.setContentDescription(title);
 
         if (id == R.id.navigationMyPets) {
             floatingActionButton.show();
