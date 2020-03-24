@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -30,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -77,12 +79,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         SettingsMenuFragment.class
     };
 
-    private Fragment actualFragment;
+    private static boolean enableLoginActivity = true;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private ActionBar toolbar;
+    private MaterialToolbar toolbar;
     private NavigationView navigationView;
     private FloatingActionButton floatingActionButton;
     private User user;
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrUpdatePet trUpdatePet;
     private TrChangeMail trChangeMail;
     private FirebaseAuth mAuth;
+    private Fragment actualFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,8 +149,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         navigationView = binding.navigationView;
         floatingActionButton = binding.flAddPet;
 
+        initializeActionbar();
         initializeActionDrawerToggle();
-        //initializeActionbar();
         setUpNavigationDrawer();
         setStartFragment();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -162,6 +165,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         floatingActionButton.hide();
         changeFragment(getFragment(RegisterPetFragment.class));
         toolbar.setTitle(getString(R.string.register_new_pet));
+    }
+
+    /**
+     * Set the enable of the login activity.
+     * @param enableLoginActivity The enable of the login activity to set
+     */
+    public static void setEnableLoginActivity(boolean enableLoginActivity) {
+        MainActivity.enableLoginActivity = enableLoginActivity;
     }
 
     /**
@@ -194,7 +205,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @param id Id of the navigation item
      */
     private void setUpNewFragment(CharSequence title, int id) {
-       // toolbar.setTitle(title);
+        toolbar.setTitle(title);
+        toolbar.setContentDescription(title);
 
         if (id == R.id.navigationMyPets) {
             floatingActionButton.show();
@@ -227,7 +239,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         actualFragment = nextFragment;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment);
+        fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment, nextFragment.getClass()
+            .getSimpleName());
         fragmentTransaction.commit();
 
     }
@@ -250,17 +263,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Initializes the action bar of the application.
      */
     private void initializeActionbar() {
-        toolbar = getSupportActionBar();
-        Objects.requireNonNull(toolbar).show();
-        Objects.requireNonNull(toolbar).setTitle(R.string.navigation_my_pets);
-        toolbar.setDisplayHomeAsUpEnabled(true);
+        toolbar = binding.toolbar;
+        //Objects.requireNonNull(toolbar).show();
+        Objects.requireNonNull(toolbar).setTitle(R.string.app_name);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        Objects.requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
+        //toolbar.setDisplayHomeAsUpEnabled(true);
     }
 
     /**
      * Initializes the action drawer toggle of the navigation drawer.
      */
     private void initializeActionDrawerToggle() {
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
             R.string.navigation_view_open, R.string.navigation_view_closed);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
@@ -325,8 +341,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     protected void onStart() {
-       super.onStart();
-        if (mAuth.getCurrentUser() == null) {
+        super.onStart();
+        if (enableLoginActivity && mAuth.getCurrentUser() == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }

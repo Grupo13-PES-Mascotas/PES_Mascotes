@@ -30,7 +30,6 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         testOptions {
-            execution 'ANDROIDX_TEST_ORCHESTRATOR'
             animationsDisabled true
             unitTests.returnDefaultValues = true
             unitTests.all {
@@ -81,7 +80,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestUtil 'androidx.test:orchestrator:1.2.0'
+    androidTestImplementation 'androidx.test:core:1.2.0'
     implementation 'com.google.firebase:firebase-core:17.2.3'
 }
 

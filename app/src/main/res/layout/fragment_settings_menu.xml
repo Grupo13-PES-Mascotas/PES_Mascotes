@@ -81,11 +81,18 @@
             android:textColor="@color/white"
             style="@style/rounded_button"/>
 
-
-
         <Space
             android:layout_width="match_parent"
             android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/current_version"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/logoutButton"
