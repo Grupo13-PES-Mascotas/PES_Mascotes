@@ -290,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return user;
     }
 
-    /**
+
     @Override
     protected void onStart() {
        super.onStart();
@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             finish();
         }
     }
-     */
+
 
     @Override
     public void makeZoomImage(Drawable drawable) {
