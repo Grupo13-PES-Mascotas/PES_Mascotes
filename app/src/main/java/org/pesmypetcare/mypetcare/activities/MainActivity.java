@@ -154,6 +154,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         });
     }
 
+    /**
+     * Method responsible for initializing the listener of the header view.
+     */
     private void setUpNavigationImage() {
         setUpUserImage();
         //CircularImageView userImageView = findViewById(R.id.imgUser);
@@ -170,6 +173,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         });
     }
 
+    /**
+     * Method responsible for assigning an default image to the user.
+     */
     private void setUpUserImage() {
         Bitmap userImageBitmap = user.getUserProfileImage();
         if (userImageBitmap == null) {
@@ -317,14 +323,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return user;
     }
 
-    /**@Override
+    @Override
     protected void onStart() {
         super.onStart();
         if (mAuth.getCurrentUser() == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
-    }**/
+    }
 
     @Override
     public void makeZoomImage(Drawable drawable) {
