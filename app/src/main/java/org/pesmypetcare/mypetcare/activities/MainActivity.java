@@ -44,6 +44,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
@@ -57,14 +58,14 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
-    InfoPetCommunication, MyPetsComunication {
+    InfoPetCommunication, MyPetsComunication, SettingsCommunication {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
     };
 
     private static final Class[] APPLICATION_FRAGMENTS = {
-        MyPetsFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        InfoPetFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrRegisterNewPet trRegisterNewPet;
     private TrUpdatePetImage trUpdatePetImage;
     private TrDeletePet trDeletePet;
+    private TrChangeMail trChangeMail;
     private FirebaseAuth mAuth;
 
     @Override
@@ -288,14 +290,15 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return user;
     }
 
-    @Override
+  /**  @Override
     protected void onStart() {
-        super.onStart();
+       super.onStart();
         if (mAuth.getCurrentUser() == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
     }
+   */
 
     @Override
     public void makeZoomImage(Drawable drawable) {
@@ -381,5 +384,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         String imagePath = cursor.getString(columnIndex);
         cursor.close();
         return imagePath;
+    }
+
+    @Override
+    public void changeMail(String newEmail) {
+        trChangeMail.setUser(user);
+        trChangeMail.setMail(newEmail);
+        trChangeMail.execute();
     }
 }

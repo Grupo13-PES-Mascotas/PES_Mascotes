@@ -20,4 +20,11 @@ public interface UserManagerService {
      * @return True if the user already exists, false otherwise
      */
     boolean userExists(String username);
+
+    /**
+     * Changes the mail.
+     * @param mail The mail that user wants to set
+     * @param username The user which wants to change his mail
+     */
+    void changeMail(String mail, String username);
 }
