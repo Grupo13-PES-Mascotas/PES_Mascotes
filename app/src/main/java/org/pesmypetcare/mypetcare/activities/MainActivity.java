@@ -46,6 +46,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
+import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     };
 
     private static final Class[] APPLICATION_FRAGMENTS = {
-        MyPetsFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeleteUser trDeleteUser;
     private TrRegisterNewUser trRegisterNewUser;
     private TrUpdatePet trUpdatePet;
+    private TrChangeMail trChangeMail;
     private FirebaseAuth mAuth;
 
     @Override
@@ -193,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @param id Id of the navigation item
      */
     private void setUpNewFragment(CharSequence title, int id) {
-        toolbar.setTitle(title);
+       // toolbar.setTitle(title);
 
         if (id == R.id.navigationMyPets) {
             floatingActionButton.show();
@@ -321,14 +323,16 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return user;
     }
 
+
     @Override
     protected void onStart() {
-        super.onStart();
+       super.onStart();
         if (mAuth.getCurrentUser() == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
     }
+
 
     @Override
     public void makeZoomImage(Drawable drawable) {
@@ -444,5 +448,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             Toast toast = Toast.makeText(this, "Not valid user", Toast.LENGTH_LONG);
             toast.show();
         }
+    
+    @Override  
+    public void changeMail(String newEmail) {
+        trChangeMail.setUser(user);
+        trChangeMail.setMail(newEmail);
+        trChangeMail.execute();
     }
 }

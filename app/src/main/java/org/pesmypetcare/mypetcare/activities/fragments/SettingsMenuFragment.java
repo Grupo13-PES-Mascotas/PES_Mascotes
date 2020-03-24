@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.LoginActivity;
 import org.pesmypetcare.mypetcare.activities.NewPasswordInterface;
+import org.pesmypetcare.mypetcare.activities.SettingsCommunication;
 import org.pesmypetcare.mypetcare.databinding.FragmentSettingsMenuBinding;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -35,13 +36,20 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
     private FragmentSettingsMenuBinding binding;
     private FirebaseAuth mAuth;
     private SettingsCommunication communication;
+    private User user;
+    private String oldMail;
+    private String newEmail;
+    private SettingsCommunication communication;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mAuth = FirebaseAuth.getInstance();
         binding = FragmentSettingsMenuBinding.inflate(getLayoutInflater());
         communication = (SettingsCommunication) getActivity();
+        mAuth = FirebaseAuth.getInstance();
         settingsOptionsListeners();
+        user = new User("johnDoe", "johndoe@gmail.com", "123456");
+        setEmail();
+        changeEmail();
         return binding.getRoot();
     }
 
@@ -63,6 +71,31 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
             ((NewPasswordInterface) thisActivity).changeFragmentPass(new NewPassword());
         });
     }
+
+    /**
+     * Sets the existent email.
+     */
+    private void setEmail() {
+        oldMail = user.getMail();
+        Objects.requireNonNull(binding.changeEmail.getEditText()).setText(oldMail);
+    }
+
+    /**
+     * Changes the email.
+     */
+    private void changeEmail() {
+        binding.changeEmailButton.setOnClickListener(v -> {
+            binding.changeEmail.addOnEditTextAttachedListener(textInputLayout -> {
+                oldMail = user.getMail();
+                Objects.requireNonNull(binding.changeEmail.getEditText()).setText(oldMail);
+                newEmail = Objects.requireNonNull(binding.changeEmail.getEditText()).getText().toString();
+                if (!(oldMail.equals(newEmail))) {
+                    communication.changeMail(newEmail);
+                }
+            });
+        });
+    }
+
 
     /**
      * Initializes the listeners of the Delete Account button.
