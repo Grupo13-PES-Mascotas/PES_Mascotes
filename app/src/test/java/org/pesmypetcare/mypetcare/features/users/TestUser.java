@@ -2,6 +2,8 @@ package org.pesmypetcare.mypetcare.features.users;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewUser;
 import org.pesmypetcare.mypetcare.features.pets.Gender;
@@ -16,13 +18,18 @@ public class TestUser {
     private User user;
     private TrRegisterNewPet trRegisterNewPet;
     private TrRegisterNewUser trRegisterNewUser;
+    private TrChangePassword trChangePassword;
+    private TrDeleteUser trDeleteUser;
     private final String MIKE = "Mike";
+    private final String PASSWORD = "12En)(";
 
     @Before
     public void setUp() {
-        user = new User("johnDoe", "johndoe@gmail.com", "1234");
+        user = new User("johnDoe", "johndoe@gmail.com", PASSWORD);
         trRegisterNewPet = new TrRegisterNewPet(new StubPetManagerService());
         trRegisterNewUser = new TrRegisterNewUser(new StubUserManagerService());
+        trChangePassword = new TrChangePassword(new StubUserManagerService());
+        trDeleteUser = new TrDeleteUser(new StubUserManagerService(), new StubPetManagerService());
     }
 
     @Test
@@ -39,7 +46,6 @@ public class TestUser {
         trRegisterNewPet.setPet(pet);
         trRegisterNewPet.execute();
         boolean addingResult = trRegisterNewPet.isResult();
-
         assertTrue("should communicate with service to add a pet", addingResult);
     }
 
@@ -83,5 +89,34 @@ public class TestUser {
         trRegisterNewUser.setUsername(MIKE);
         trRegisterNewUser.execute();
 
+    }
+
+    @Test
+    public void shouldChangeUserPassword() throws SamePasswordException {
+        trChangePassword.setUser(this.user);
+        trChangePassword.setNewPassword("Ab12!@");
+        trChangePassword.execute();
+        boolean addingResult = trChangePassword.isResult();
+        assertTrue("should communicate with service to change the password", addingResult);
+    }
+
+    @Test(expected = SamePasswordException.class)
+    public void shouldNotChangePasswordIfIsTheCurrent() throws SamePasswordException {
+        trChangePassword.setUser(this.user);
+        trChangePassword.setNewPassword(PASSWORD);
+    }
+
+    @Test
+    public void shouldDeleteUser() throws NotValidUserException {
+        trDeleteUser.setUser(this.user);
+        trDeleteUser.execute();
+        boolean addingResult = trDeleteUser.isResult();
+        assertTrue("should communicate with service to delete the user", addingResult);
+    }
+
+    @Test (expected = NotValidUserException.class)
+    public void shouldNotDeleteIfNotExists() throws NotValidUserException {
+        trDeleteUser.setUser(new User("Manuel", "manuel@gmail.com", "123"));
+        trDeleteUser.execute();
     }
 }

@@ -1,7 +1,6 @@
 package org.pesmypetcare.mypetcare.services;
 
 import android.icu.text.Edits;
-
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.HashSet;
@@ -26,6 +25,18 @@ public class StubUserManagerService implements UserManagerService {
     @Override
     public boolean userExists(String username) {
         return data.contains(new User(username, "", ""));
+    }
+
+    @Override
+    public boolean changePassword(User user, String newPassword) {
+        data.remove(user);
+        data.add(new User(user.getUsername(), user.getMail(), newPassword));
+        return true;
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        data.remove(user);
     }
 
     public void changeMail(String mail, String username) {
