@@ -92,10 +92,10 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
         communication.deleteUser(new User(currentUser.getUid(), currentUser.getEmail(), ""));
         currentUser.reauthenticate(EmailAuthProvider.getCredential(Objects.requireNonNull(currentUser.getEmail()),
                 "password1234")).addOnCompleteListener(task -> {
-            currentUser.delete();
-            startActivity(new Intent(getActivity(), LoginActivity.class));
-            Objects.requireNonNull(getActivity()).finish();
-        });
+                    currentUser.delete();
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    Objects.requireNonNull(getActivity()).finish();
+                });
     }
 
     /**
