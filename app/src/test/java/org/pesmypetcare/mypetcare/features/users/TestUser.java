@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.features.users;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewUser;
 import org.pesmypetcare.mypetcare.features.pets.Gender;
@@ -16,13 +17,15 @@ public class TestUser {
     private User user;
     private TrRegisterNewPet trRegisterNewPet;
     private TrRegisterNewUser trRegisterNewUser;
+    private TrChangePassword trChangePassword;
     private final String MIKE = "Mike";
 
     @Before
     public void setUp() {
-        user = new User("johnDoe", "johndoe@gmail.com", "1234");
+        user = new User("johnDoe", "johndoe@gmail.com", "12En)(");
         trRegisterNewPet = new TrRegisterNewPet(new StubPetManagerService());
         trRegisterNewUser = new TrRegisterNewUser(new StubUserManagerService());
+        trChangePassword = new TrChangePassword(new StubUserManagerService());
     }
 
     @Test
@@ -83,5 +86,26 @@ public class TestUser {
         trRegisterNewUser.setUsername(MIKE);
         trRegisterNewUser.execute();
 
+    }
+
+    @Test
+    public void shouldChangeUserPassword() throws SamePasswordException, notValidPasswordException {
+        trChangePassword.setUser(this.user);
+        trChangePassword.setNewPassword("Ab12!@");
+        trChangePassword.execute();
+        boolean addingResult = trChangePassword.isResult();
+        assertTrue("should communicate with service to add a user", addingResult);
+    }
+
+    @Test(expected = SamePasswordException.class)
+    public void shouldNotChangePasswordIfIsTheCurrent() throws SamePasswordException, notValidPasswordException {
+        trChangePassword.setUser(this.user);
+        trChangePassword.setNewPassword("12En)(");
+    }
+
+    @Test(expected = notValidPasswordException.class)
+    public void shouldNotChangePasswordIfNotValid() throws SamePasswordException, notValidPasswordException {
+        trChangePassword.setUser(this.user);
+        trChangePassword.setNewPassword("1234");
     }
 }

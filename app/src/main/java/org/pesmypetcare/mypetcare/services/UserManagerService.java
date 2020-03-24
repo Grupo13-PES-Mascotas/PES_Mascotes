@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.services;
 
+import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.features.users.UserAlreadyExistingException;
 
 public interface UserManagerService {
@@ -20,4 +21,12 @@ public interface UserManagerService {
      * @return True if the user already exists, false otherwise
      */
     boolean userExists(String username);
+
+    /**
+     * Change the password of a user.
+     * @param user The user
+     * @param newPassword The new password
+     * @return True if the change has been done without any problems
+     */
+    boolean changePassword(User user, String newPassword);
 }

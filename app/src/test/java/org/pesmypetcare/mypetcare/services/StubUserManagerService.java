@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.services;
 
-import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.HashSet;
@@ -22,5 +21,12 @@ public class StubUserManagerService implements UserManagerService {
     @Override
     public boolean userExists(String username) {
         return data.contains(new User(username, "", ""));
+    }
+
+    @Override
+    public boolean changePassword(User user, String newPassword) {
+        data.remove(user);
+        data.add(new User(user.getUsername(), user.getMail(), newPassword));
+        return true;
     }
 }
