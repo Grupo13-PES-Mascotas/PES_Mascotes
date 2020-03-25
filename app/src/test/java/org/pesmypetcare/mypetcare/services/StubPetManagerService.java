@@ -56,4 +56,9 @@ public class StubPetManagerService implements PetManagerService {
     public void deleteUser(User user) {
         data.remove(user.getUsername());
     }
+
+    @Override
+    public ArrayList<Pet> findPetsByOwner(String username) {
+        return data.get(username);
+    }
 }

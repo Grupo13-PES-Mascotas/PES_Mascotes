@@ -1,10 +1,8 @@
 package org.pesmypetcare.mypetcare.services;
 
-import android.icu.text.Edits;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 public class StubUserManagerService implements UserManagerService {
@@ -17,9 +15,14 @@ public class StubUserManagerService implements UserManagerService {
     }
   
     @Override
-    public boolean registerNewUser(String username, String email, String password) {
-        data.add(new User(username, email, password));
-        return true;
+    public User findUserByUsername(String username) {
+        for (User user : data) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+
+        return null;
     }
 
     @Override

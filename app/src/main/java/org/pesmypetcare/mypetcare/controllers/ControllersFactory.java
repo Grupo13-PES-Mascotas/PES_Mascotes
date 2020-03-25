@@ -28,8 +28,8 @@ public class ControllersFactory {
         return new TrDeletePet(new PetManagerAdapter());
     }
 
-    public static TrRegisterNewUser createTrRegisterNewUser() {
-        return new TrRegisterNewUser(new UserManagerAdapter());
+    public static TrObtainUser createTrObtainUser() {
+        return new TrObtainUser(new UserManagerAdapter(), new PetManagerAdapter());
     }
 
     public static TrUpdatePet createTrUpdatePet() {
