@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.communication.MyPetsComunication;
 import org.pesmypetcare.mypetcare.databinding.FragmentMyPetsBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
@@ -59,6 +60,7 @@ public class MyPetsFragment extends Fragment {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.mainActivityFrameLayout, testFragment);
                 ft.commit();
+                MainActivity.setActualFragment(testFragment);
             });
             ++index;
         }
