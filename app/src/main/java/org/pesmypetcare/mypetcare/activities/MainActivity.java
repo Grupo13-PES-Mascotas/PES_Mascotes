@@ -37,11 +37,14 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
+import org.pesmypetcare.mypetcare.activities.communication.MyPetsComunication;
+import org.pesmypetcare.mypetcare.activities.communication.NewPasswordInterface;
+import org.pesmypetcare.mypetcare.activities.communication.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.ImageZoom;
 import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
-import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
+import org.pesmypetcare.mypetcare.activities.communication.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;

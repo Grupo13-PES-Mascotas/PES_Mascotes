@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import org.pesmypetcare.mypetcare.activities.NewPasswordInterface;
-import org.pesmypetcare.mypetcare.activities.SettingsCommunication;
+import org.pesmypetcare.mypetcare.activities.communication.NewPasswordInterface;
+import org.pesmypetcare.mypetcare.activities.communication.SettingsCommunication;
 import org.pesmypetcare.mypetcare.databinding.FragmentNewPasswordBinding;
 
 /**
