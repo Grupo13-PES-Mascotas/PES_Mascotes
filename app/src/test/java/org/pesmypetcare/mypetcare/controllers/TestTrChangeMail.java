@@ -2,7 +2,6 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubUserManagerService;
 
@@ -25,6 +24,6 @@ public class TestTrChangeMail {
         trChangeMail.setUser(user);
         trChangeMail.setMail(newMail);
         trChangeMail.execute();
-        assertEquals("Should change mail", user.getMail(), newMail);
+        assertEquals("Should change mail", user.getEmail(), newMail);
     }
 }

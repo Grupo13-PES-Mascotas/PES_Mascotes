@@ -32,7 +32,7 @@ public class TrChangeMail {
      * Execute the transaction.
      */
     public void execute() {
-        user.setMail(mail);
+        user.setEmail(mail);
         userManagerService.changeMail(mail, user.getUsername());
     }
 }

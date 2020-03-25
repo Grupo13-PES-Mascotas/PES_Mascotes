@@ -38,4 +38,12 @@ public interface UserManagerService {
      * @param username The user which wants to change his mail
      */
     void changeMail(String mail, String username);
+
+    /**
+     * Creates the user.
+     * @param uid User identifier
+     * @param email User email
+     * @param password User password
+     */
+    void createUser(String uid, String email, String password);
 }

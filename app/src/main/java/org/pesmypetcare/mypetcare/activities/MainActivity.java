@@ -35,6 +35,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.communication.MyPetsComunication;
@@ -65,8 +67,11 @@ import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.features.users.UserNotExistingException;
+import org.pesmypetcare.mypetcare.services.ServiceLocator;
+import org.pesmypetcare.usermanagerlib.UserData;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
     InfoPetCommunication, MyPetsComunication, SettingsCommunication {
@@ -81,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         SettingsMenuFragment.class
     };
 
-    private static boolean enableLoginActivity = false;
+    private static boolean enableLoginActivity = true;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;

@@ -142,7 +142,7 @@ public class SettingsMenuFragment extends Fragment {
      * Sets the existent email.
      */
     private void setEmail() {
-        oldMail = user.getMail();
+        oldMail = user.getEmail();
         Objects.requireNonNull(binding.changeEmail.getEditText()).setText(oldMail);
     }
 
@@ -152,7 +152,7 @@ public class SettingsMenuFragment extends Fragment {
     private void changeEmail() {
         binding.changeEmailButton.setOnClickListener(v -> {
             binding.changeEmail.addOnEditTextAttachedListener(textInputLayout -> {
-                oldMail = user.getMail();
+                oldMail = user.getEmail();
                 Objects.requireNonNull(binding.changeEmail.getEditText()).setText(oldMail);
                 newEmail = Objects.requireNonNull(binding.changeEmail.getEditText()).getText().toString();
                 if (!(oldMail.equals(newEmail))) {

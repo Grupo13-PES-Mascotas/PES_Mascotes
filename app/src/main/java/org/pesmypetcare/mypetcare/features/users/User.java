@@ -9,14 +9,14 @@ import java.util.Objects;
 
 public class User {
     private String username;
-    private String mail;
+    private String email;
     private String passwd;
     private ArrayList<Pet> pets;
     private Bitmap userProfileImage;
 
-    public User(String username, String mail, String passwd) {
+    public User(String username, String email, String passwd) {
         this.username = username;
-        this.mail = mail;
+        this.email = email;
         this.passwd = passwd;
         this.pets = new ArrayList<>();
     }
@@ -41,16 +41,16 @@ public class User {
      * Getter of the mail attribute.
      * @return The mail attribute to set
      */
-    public String getMail() {
-        return this.mail;
+    public String getEmail() {
+        return this.email;
     }
 
     /**
      * Setter of the mail attribute.
-     * @param mail The mail attribute to set
+     * @param email The mail attribute to set
      */
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**
