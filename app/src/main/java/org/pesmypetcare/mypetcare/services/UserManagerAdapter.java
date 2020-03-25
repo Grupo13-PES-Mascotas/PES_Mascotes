@@ -1,7 +1,6 @@
 package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.features.users.UserNotExistingException;
 
 public class UserManagerAdapter implements UserManagerService {
     @Override

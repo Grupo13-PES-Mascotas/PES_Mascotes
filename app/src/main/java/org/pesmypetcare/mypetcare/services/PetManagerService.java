@@ -6,7 +6,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface PetManagerService {
 
@@ -51,5 +51,5 @@ public interface PetManagerService {
      * @param username The user who wants to get his pets
      * @return The pets that belongs to the user
      */
-    ArrayList<Pet> findPetsByOwner(String username);
+    List<Pet> findPetsByOwner(String username);
 }

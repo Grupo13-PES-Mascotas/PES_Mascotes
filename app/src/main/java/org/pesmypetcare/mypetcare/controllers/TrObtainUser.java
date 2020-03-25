@@ -1,9 +1,12 @@
 package org.pesmypetcare.mypetcare.controllers;
 
+import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.features.users.UserNotExistingException;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
 import org.pesmypetcare.mypetcare.services.UserManagerService;
+
+import java.util.ArrayList;
 
 public class TrObtainUser {
     private UserManagerService userManagerService;
@@ -34,7 +37,7 @@ public class TrObtainUser {
         }
 
         result = userManagerService.findUserByUsername(username);
-        result.setPets(petManagerService.findPetsByOwner(username));
+        result.setPets((ArrayList<Pet>) petManagerService.findPetsByOwner(username));
     }
 
     /**
