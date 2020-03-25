@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.features.users;
 
+import android.graphics.Bitmap;
+
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ public class User {
     private String mail;
     private String passwd;
     private ArrayList<Pet> pets;
+    private Bitmap userProfileImage;
 
     public User(String username, String mail, String passwd) {
         this.username = username;
@@ -64,6 +67,22 @@ public class User {
         return pets;
     }
 
+    /**
+     * Getter of the userProfileImage attribute.
+     * @return The userProfileImage
+     */
+    public Bitmap getUserProfileImage() {
+        return userProfileImage;
+    }
+
+    /**
+     * Setter of the userProfileImage attribute.
+     * @param bitmap The new userProfileImage to set
+     */
+    public void setUserProfileImage(Bitmap bitmap) {
+        this.userProfileImage = bitmap;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,4 +95,6 @@ public class User {
     public int hashCode() {
         return Objects.hash(username);
     }
+
+
 }

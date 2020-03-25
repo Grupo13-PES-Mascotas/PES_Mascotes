@@ -39,6 +39,7 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.ImageZoom;
 import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
@@ -103,9 +104,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        user = new User("johnDoe", "johndoe@gmail.com", "1234");
 
         initializeActivity();
         initializeControllers();
+        setUpNavigationImage();
 
         initializeUser();
     }
@@ -195,6 +198,35 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
             return true;
         });
+    }
+
+    /**
+     * Method responsible for initializing the listener of the header view.
+     */
+    private void setUpNavigationImage() {
+        setUpUserImage();
+        //CircularImageView userImageView = findViewById(R.id.imgUser);
+        /*userImageView.setDrawable(drawable);
+        userImageView.setClickable(true);
+        userImageView.setOnClickListener(v -> changeFragment(new ImageZoom(drawable)));*/
+
+        navigationView.getHeaderView(0).setOnClickListener(v -> {
+            Drawable drawable = new BitmapDrawable(getResources(), user.getUserProfileImage());
+            ImageZoom imageZoom = new ImageZoom(drawable);
+            ImageZoom.setIsMainActivity(true);
+            floatingActionButton.hide();
+            changeFragment(imageZoom);
+        });
+    }
+
+    /**
+     * Method responsible for assigning an default image to the user.
+     */
+    private void setUpUserImage() {
+        Bitmap userImageBitmap = user.getUserProfileImage();
+        if (userImageBitmap == null) {
+            user.setUserProfileImage(BitmapFactory.decodeResource(getResources(), R.drawable.test));
+        }
     }
 
     /**
@@ -289,8 +321,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
             if (actualFragment instanceof ImageZoom) {
-                InfoPetFragment.setPetProfileDrawable(ImageZoom.getDrawable());
-                changeFragment(new InfoPetFragment());
+                if (ImageZoom.isMainActivity()) {
+                    Drawable drawable = ImageZoom.getDrawable();
+                    user.setUserProfileImage(((BitmapDrawable) drawable).getBitmap());
+                    changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+                } else {
+                    InfoPetFragment.setPetProfileDrawable(ImageZoom.getDrawable());
+                    changeFragment(new InfoPetFragment());
+                }
             }
             else {
                 changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
@@ -350,6 +388,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void makeZoomImage(Drawable drawable) {
         floatingActionButton.hide();
+        ImageZoom.setIsMainActivity(false);
         changeFragment(new ImageZoom(drawable));
     }
 
