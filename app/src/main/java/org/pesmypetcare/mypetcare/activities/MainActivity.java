@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         SettingsMenuFragment.class
     };
 
-    private static boolean enableLoginActivity = false;
+    private static boolean enableLoginActivity = true;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeActivity();
         initializeControllers();
 
-        //initializeUser();
+        initializeUser();
     }
 
     /**
