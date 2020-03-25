@@ -2,8 +2,10 @@ package org.pesmypetcare.mypetcare.activities.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -37,9 +39,9 @@ import java.util.Objects;
  * A simple {@link Fragment} subclass.
  */
 public class SettingsMenuFragment extends Fragment {
-    public static final String EN_GB = "en-GB";
-    public static final String CA_ES = "ca-ES";
-    public static final String ES_ES = "es-ES";
+    private static final String EN_GB = "en-GB";
+    private static final String CA_ES = "ca-ES";
+    private static final String ES_ES = "es-ES";
     private static String selectedLanguage;
     private static final int ENGLISH = 0;
     private static final int CATALAN = 1;
@@ -190,12 +192,24 @@ public class SettingsMenuFragment extends Fragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         assert currentUser != null;
         communication.deleteUser(new User(currentUser.getUid(), currentUser.getEmail(), ""));
+        deleteUserFromSharedPreferences();
         currentUser.reauthenticate(EmailAuthProvider.getCredential(Objects.requireNonNull(currentUser.getEmail()),
                 "password1234")).addOnCompleteListener(task -> {
                     currentUser.delete();
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     Objects.requireNonNull(getActivity()).finish();
                 });
+    }
+
+    /**
+     * Deletes the user from the shared preferences.
+     */
+    private void deleteUserFromSharedPreferences() {
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getActivity())
+            .getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
     }
 
     /**
