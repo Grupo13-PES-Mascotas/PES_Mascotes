@@ -67,6 +67,10 @@ public class User {
         return pets;
     }
 
+    public void setPets(ArrayList<Pet> pets) {
+        this.pets = pets;
+    }
+
     /**
      * Getter of the userProfileImage attribute.
      * @return The userProfileImage
@@ -95,6 +99,5 @@ public class User {
     public int hashCode() {
         return Objects.hash(username);
     }
-
 
 }

@@ -1,12 +1,11 @@
 package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.features.users.UserAlreadyExistingException;
 
 public class UserManagerAdapter implements UserManagerService {
     @Override
-    public boolean registerNewUser(String username, String email, String password) throws UserAlreadyExistingException {
-        return false;
+    public User findUserByUsername(String username) {
+        return null;
     }
 
     @Override

@@ -53,7 +53,7 @@ import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
-import org.pesmypetcare.mypetcare.controllers.TrRegisterNewUser;
+import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
@@ -64,7 +64,7 @@ import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.features.users.UserAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.users.UserNotExistingException;
 
 import java.util.Objects;
 
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrChangePassword trChangePassword;
     private TrDeletePet trDeletePet;
     private TrDeleteUser trDeleteUser;
-    private TrRegisterNewUser trRegisterNewUser;
+    private TrObtainUser trObtainUser;
     private TrUpdatePet trUpdatePet;
     private TrChangeMail trChangeMail;
     private FirebaseAuth mAuth;
@@ -118,16 +118,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Initialize the current.
      */
     private void initializeUser() {
-        user = new User(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
-                mAuth.getCurrentUser().getEmail(), "");
-        trRegisterNewUser.setUsername(mAuth.getCurrentUser().getUid());
-        trRegisterNewUser.setEmail(mAuth.getCurrentUser().getEmail());
-        trRegisterNewUser.setPassword("");
+        trObtainUser.setUsername(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
         try {
-            trRegisterNewUser.execute();
-        } catch (UserAlreadyExistingException e) {
+            trObtainUser.execute();
+        } catch (UserNotExistingException e) {
             e.printStackTrace();
         }
+
+        user = trObtainUser.getResult();
     }
 
     /**
@@ -139,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trChangePassword = ControllersFactory.createTrChangePassword();
         trDeletePet = ControllersFactory.createTrDeletePet();
         trDeleteUser = ControllersFactory.createTrDeleteUser();
-        trRegisterNewUser = ControllersFactory.createTrRegisterNewUser();
+        trObtainUser = ControllersFactory.createTrObtainUser();
         trUpdatePet = ControllersFactory.createTrUpdatePet();
         trChangeMail = ControllersFactory.createTrChangeMail();
     }

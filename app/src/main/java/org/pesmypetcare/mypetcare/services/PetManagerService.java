@@ -6,6 +6,8 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
+import java.util.List;
+
 public interface PetManagerService {
 
     /**
@@ -43,4 +45,11 @@ public interface PetManagerService {
      * @param user The user
      */
     void deleteUser(User user);
+
+    /**
+     * Find all the pets from a user.
+     * @param username The user who wants to get his pets
+     * @return The pets that belongs to the user
+     */
+    List<Pet> findPetsByOwner(String username);
 }

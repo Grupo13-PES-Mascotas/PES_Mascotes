@@ -5,19 +5,20 @@ import org.junit.Test;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
-import org.pesmypetcare.mypetcare.controllers.TrRegisterNewUser;
+import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
 import org.pesmypetcare.mypetcare.features.pets.Gender;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
 import org.pesmypetcare.mypetcare.services.StubUserManagerService;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class TestUser {
     private User user;
     private TrRegisterNewPet trRegisterNewPet;
-    private TrRegisterNewUser trRegisterNewUser;
+    private TrObtainUser trObtainUser;
     private TrChangePassword trChangePassword;
     private TrDeleteUser trDeleteUser;
     private final String MIKE = "Mike";
@@ -27,7 +28,7 @@ public class TestUser {
     public void setUp() {
         user = new User("johnDoe", "johndoe@gmail.com", PASSWORD);
         trRegisterNewPet = new TrRegisterNewPet(new StubPetManagerService());
-        trRegisterNewUser = new TrRegisterNewUser(new StubUserManagerService());
+        trObtainUser = new TrObtainUser(new StubUserManagerService(), new StubPetManagerService());
         trChangePassword = new TrChangePassword(new StubUserManagerService());
         trDeleteUser = new TrDeleteUser(new StubUserManagerService(), new StubPetManagerService());
     }
@@ -71,24 +72,17 @@ public class TestUser {
     }
 
     @Test
-    public void shouldCreateUser() throws UserAlreadyExistingException {
-        trRegisterNewUser.setUsername("Michael");
-        trRegisterNewUser.setEmail("michael@gmail.com");
-        trRegisterNewUser.setPassword("123abc!");
-        trRegisterNewUser.execute();
-        boolean addingResult = trRegisterNewUser.isResult();
-        assertTrue("should communicate with service to add a user", addingResult);
+    public void shouldObtainUser() throws UserNotExistingException {
+        trObtainUser.setUsername("johnDoe");
+        trObtainUser.execute();
+        User user = trObtainUser.getResult();
+        assertNotNull("should communicate with service to obtain a user", user);
     }
 
-    @Test(expected = UserAlreadyExistingException.class)
-    public void shouldNotAddUserIfExisting() throws UserAlreadyExistingException {
-        trRegisterNewUser.setUsername(MIKE);
-        trRegisterNewUser.setEmail("mike@gmail.com");
-        trRegisterNewUser.setPassword("123abc?");
-        trRegisterNewUser.execute();
-        trRegisterNewUser.setUsername(MIKE);
-        trRegisterNewUser.execute();
-
+    @Test(expected = UserNotExistingException.class)
+    public void shouldNotObtainUserIfNotExisting() throws UserNotExistingException {
+        trObtainUser.setUsername(MIKE);
+        trObtainUser.execute();
     }
 
     @Test
