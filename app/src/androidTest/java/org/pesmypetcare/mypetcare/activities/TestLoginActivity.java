@@ -70,9 +70,9 @@ public class TestLoginActivity {
     @Test
     public void shouldMakeLogin() {
         onView(withText(LOG_IN)).perform(click());
-        onView(withId(R.id.loginUsernameText)).check(matches(isDisplayed()));
+        onView(withId(R.id.loginEmailText)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.loginUsernameText)).perform(typeText("johnDoe"), closeSoftKeyboard());
+        onView(withId(R.id.loginEmailText)).perform(typeText("johnDoe@gmail.com"), closeSoftKeyboard());
         onView(withId(R.id.loginPasswordText)).perform(typeText("AbcDert456$"), closeSoftKeyboard());
 
         onView(withId(R.id.loginButton)).perform(click());
@@ -82,18 +82,18 @@ public class TestLoginActivity {
     @Test
     public void shouldNotMakeLoginIfAnyFieldIsEmpty() {
         onView(withText(LOG_IN)).perform(click());
-        onView(withId(R.id.loginUsernameText)).check(matches(isDisplayed()));
+        onView(withId(R.id.loginEmailText)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.loginUsernameText)).perform(typeText("johnDoe"), closeSoftKeyboard());
+        onView(withId(R.id.loginEmailText)).perform(typeText("johnDoe@gmail.com"), closeSoftKeyboard());
 
         onView(withId(R.id.loginButton)).perform(click());
-        onView(withId(R.id.loginUsernameText)).check(matches(isDisplayed()));
+        onView(withId(R.id.loginEmailText)).check(matches(isDisplayed()));
     }
 
     @Test
     public void shouldChangeBetweenTabs() {
         onView(withText(LOG_IN)).perform(click());
-        onView(withId(R.id.loginUsernameText)).check(matches(isDisplayed()));
+        onView(withId(R.id.loginEmailText)).check(matches(isDisplayed()));
 
         onView(withText("SIGN UP")).perform(click());
         onView(withId(R.id.signUpUsernameText)).check(matches(isDisplayed()));

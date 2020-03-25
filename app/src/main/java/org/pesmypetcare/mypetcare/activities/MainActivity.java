@@ -23,7 +23,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -43,11 +42,10 @@ import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
-import org.pesmypetcare.mypetcare.activities.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
-import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
+import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
@@ -79,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         SettingsMenuFragment.class
     };
 
-    private static boolean enableLoginActivity = true;
+    private static boolean enableLoginActivity = false;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -109,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeActivity();
         initializeControllers();
 
-        initializeUser();
+        //initializeUser();
     }
 
     /**

@@ -85,15 +85,6 @@
             android:layout_width="match_parent"
             android:layout_height="30dp" />
 
-        <TextView
-            android:id="@+id/version"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/current_version"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp" />
-
         <Button
             android:id="@+id/logoutButton"
             style="@style/rounded_button"
@@ -122,11 +113,11 @@
             android:layout_height="30dp" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/version_0_0_0"
+            android:text="@string/current_version"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
 
