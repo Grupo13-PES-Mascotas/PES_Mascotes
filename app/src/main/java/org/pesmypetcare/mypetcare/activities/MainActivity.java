@@ -319,24 +319,29 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
             if (actualFragment instanceof ImageZoom) {
-                if (ImageZoom.isMainActivity()) {
-                    Drawable drawable = ImageZoom.getDrawable();
-                    user.setUserProfileImage(((BitmapDrawable) drawable).getBitmap());
-                    changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
-                } else {
-                    InfoPetFragment.setPetProfileDrawable(ImageZoom.getDrawable());
-                    changeFragment(new InfoPetFragment());
-                }
-            }
-            else {
+                changeFromImageZoom();
+            } else if (!(actualFragment instanceof MyPetsFragment)){
                 changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
-                setUpNewFragment(getString(NAVIGATION_OPTIONS[0]), NAVIGATION_OPTIONS[0]);
+                setUpNewFragment(getString(R.string.navigation_my_pets), NAVIGATION_OPTIONS[0]);
+                return true;
             }
-
-            return true;
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * Change to next fragment from an ImageZoomFragment
+     */
+    private void changeFromImageZoom() {
+        if (ImageZoom.isMainActivity()) {
+            Drawable drawable = ImageZoom.getDrawable();
+            user.setUserProfileImage(((BitmapDrawable) drawable).getBitmap());
+            changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+        } else {
+            InfoPetFragment.setPetProfileDrawable(ImageZoom.getDrawable());
+            changeFragment(new InfoPetFragment());
+        }
     }
 
     @Override
