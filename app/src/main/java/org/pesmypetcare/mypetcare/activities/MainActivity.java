@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         SettingsMenuFragment.class
     };
 
-    private static boolean enableLoginActivity = true;
+    private static boolean enableLoginActivity = false;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -294,12 +294,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     private void initializeActionbar() {
         toolbar = binding.toolbar;
-        //Objects.requireNonNull(toolbar).show();
-        Objects.requireNonNull(toolbar).setTitle(R.string.app_name);
+        Objects.requireNonNull(toolbar).setTitle(R.string.navigation_my_pets);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         Objects.requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
-        //toolbar.setDisplayHomeAsUpEnabled(true);
     }
 
     /**
