@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     };
 
     private static final Class[] APPLICATION_FRAGMENTS = {
-        NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        MyPetsFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
@@ -109,8 +109,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeActivity();
         initializeControllers();
         setUpNavigationImage();
-
-        initializeUser();
     }
 
     /**
@@ -140,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteUser = ControllersFactory.createTrDeleteUser();
         trRegisterNewUser = ControllersFactory.createTrRegisterNewUser();
         trUpdatePet = ControllersFactory.createTrUpdatePet();
+        trChangeMail = ControllersFactory.createTrChangeMail();
     }
 
     /**
@@ -381,6 +380,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         if (enableLoginActivity && mAuth.getCurrentUser() == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
+        }
+
+        if (mAuth.getCurrentUser() != null) {
+            initializeUser();
         }
     }
 

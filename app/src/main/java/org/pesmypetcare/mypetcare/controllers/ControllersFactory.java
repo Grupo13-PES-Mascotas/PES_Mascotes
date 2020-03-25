@@ -18,8 +18,7 @@ public class ControllersFactory {
     }
 
     public static TrDeleteUser createTrDeleteUser() {
-        return new TrDeleteUser(null,
-            null);
+        return new TrDeleteUser(null, null);
     }
 
     public static TrDeletePet createTrDeletePet() {
@@ -32,5 +31,9 @@ public class ControllersFactory {
 
     public static TrUpdatePet createTrUpdatePet() {
         return new TrUpdatePet(null);
+    }
+
+    public static TrChangeMail createTrChangeMail() {
+        return new TrChangeMail(null);
     }
 }
