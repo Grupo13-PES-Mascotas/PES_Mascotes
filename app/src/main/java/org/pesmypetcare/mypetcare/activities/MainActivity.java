@@ -168,6 +168,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         toolbar.setTitle(getString(R.string.register_new_pet));
     }
 
+    /**
+     * Set the actual fragment.
+     * @param actualFragment The actual fragment to set
+     */
     public static void setActualFragment(Fragment actualFragment) {
         MainActivity.actualFragment = actualFragment;
     }
