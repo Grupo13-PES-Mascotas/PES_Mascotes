@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         SettingsMenuFragment.class
     };
 
-    private static boolean enableLoginActivity = true;
+    private static boolean enableLoginActivity = false;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrUpdatePet trUpdatePet;
     private TrChangeMail trChangeMail;
     private FirebaseAuth mAuth;
-    private Fragment actualFragment;
+    private static Fragment actualFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +169,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     /**
+     * Set the actual fragment.
+     * @param actualFragment The actual fragment to set
+     */
+    public static void setActualFragment(Fragment actualFragment) {
+        MainActivity.actualFragment = actualFragment;
+    }
+
+    /**
      * Set the enable of the login activity.
      * @param enableLoginActivity The enable of the login activity to set
      */
@@ -215,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             ImageZoom imageZoom = new ImageZoom(drawable);
             ImageZoom.setIsMainActivity(true);
             floatingActionButton.hide();
+            drawerLayout.closeDrawers();
             changeFragment(imageZoom);
         });
     }
@@ -318,8 +327,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
+            System.out.println("I'm here");
             if (actualFragment instanceof ImageZoom) {
                 changeFromImageZoom();
+                return true;
             } else if (!(actualFragment instanceof MyPetsFragment)){
                 changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
                 setUpNewFragment(getString(R.string.navigation_my_pets), NAVIGATION_OPTIONS[0]);

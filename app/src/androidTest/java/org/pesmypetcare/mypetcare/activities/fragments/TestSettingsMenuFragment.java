@@ -29,7 +29,7 @@ import static org.hamcrest.Matchers.not;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class TestSettingsMenuFragment {
-    private static final String LANGUAGE = "Catalan";
+    private static final String LANGUAGE = "Català";
 
     @Rule
     public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
@@ -48,6 +48,7 @@ public class TestSettingsMenuFragment {
 
         onView(withId(R.id.languageSelector)).check(matches(isDisplayed()));
         onView(withId(R.id.changePasswordButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.changeEmail)).check(matches(isDisplayed()));
         onView(withId(R.id.version)).check(matches(withText(R.string.current_version)));
         onView(withId(R.id.logoutButton)).check(matches(isDisplayed()));
     }
@@ -59,6 +60,10 @@ public class TestSettingsMenuFragment {
 
         onView(withId(R.id.languageSelector)).perform(click());
         onData(allOf(is(instanceOf(String.class)), is(LANGUAGE))).perform(click());
+        onView(withId(R.id.mainMenu)).check(matches(isDisplayed()));
+
+        onView(withContentDescription(R.string.navigation_view_open)).perform(click());
+        onView(withText(R.string.navigation_settings)).perform(click());
         onView(withId(R.id.languageSelector)).check(matches(withSpinnerText(containsString(LANGUAGE))));
     }
 }

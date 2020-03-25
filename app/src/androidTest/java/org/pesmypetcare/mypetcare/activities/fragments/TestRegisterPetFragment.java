@@ -58,8 +58,8 @@ public class TestRegisterPetFragment {
         onView(withId(R.id.inputWashFrequency)).perform(typeText("2"), closeSoftKeyboard());
 
         onView(withId(R.id.btnAddPet)).perform(click());
-        //onView(withId(R.id.toolbar)).check(matches(withText("My pets")));
-    }
+        //onView(withId(R.id.mainMenu)).check(matches(isDisplayed()));
+}
 
     @Test
     public void shouldNotRegisterNewPetIfAnyFieldIsEmpty() {

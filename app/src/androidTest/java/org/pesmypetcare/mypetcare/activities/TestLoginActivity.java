@@ -33,7 +33,6 @@ public class TestLoginActivity {
         onView(withId(R.id.signUpRepPasswordText)).perform(typeText("AbcDert456$"), closeSoftKeyboard());
 
         onView(withId(R.id.signupButton)).perform(click());
-        //onView(withId(R.id.toolbar)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -76,7 +75,6 @@ public class TestLoginActivity {
         onView(withId(R.id.loginPasswordText)).perform(typeText("AbcDert456$"), closeSoftKeyboard());
 
         onView(withId(R.id.loginButton)).perform(click());
-        //onView(withId(R.id.toolbar)).check(matches(isDisplayed()));
     }
 
     @Test
