@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.features.pets;
+package org.pesmypetcare.mypetcare.controllers;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,13 +8,16 @@ import android.graphics.Paint;
 import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
+import org.pesmypetcare.mypetcare.features.pets.Gender;
+import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
 
 import static org.junit.Assert.assertEquals;
 
-public class TestPetUpdateProfileImage {
+public class TestTrUpdatePetImage {
     public static final int WIDTH = 20;
     public static final int HEIGHT = 20;
     public static final float RIGHT = 20.0f;
