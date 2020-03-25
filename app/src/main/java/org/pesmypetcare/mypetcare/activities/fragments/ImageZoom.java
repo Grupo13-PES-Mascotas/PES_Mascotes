@@ -114,10 +114,18 @@ public class ImageZoom extends Fragment {
         initializeCircularImageView();
     }
 
+    /**
+     * Getter of the isMainActivity attribute.
+     * @return The value of isMainActivity
+     */
     public static boolean isMainActivity() {
         return isMainActivity;
     }
 
+    /**
+     * Setter of the isMainActivity attribute.
+     * @param isMainActivity The value to set to the isMainActivity attribute
+     */
     public static void setIsMainActivity(boolean isMainActivity) {
         ImageZoom.isMainActivity = isMainActivity;
     }

@@ -67,10 +67,18 @@ public class User {
         return pets;
     }
 
+    /**
+     * Getter of the userProfileImage attribute.
+     * @return The userProfileImage
+     */
     public Bitmap getUserProfileImage() {
         return userProfileImage;
     }
 
+    /**
+     * Setter of the userProfileImage attribute.
+     * @param bitmap The new userProfileImage to set
+     */
     public void setUserProfileImage(Bitmap bitmap) {
         this.userProfileImage = bitmap;
     }
