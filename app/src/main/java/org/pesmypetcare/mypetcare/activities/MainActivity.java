@@ -2,7 +2,9 @@ package org.pesmypetcare.mypetcare.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -403,8 +405,30 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
 
         if (mAuth.getCurrentUser() != null) {
-            initializeUser();
+            SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+            String storedUsername = sharedPreferences.getString("username", "");
+
+            if (storedUsername.equals(mAuth.getCurrentUser().getUid())) {
+                String storedEmail = sharedPreferences.getString("email", "");
+                String storedPassword = sharedPreferences.getString("password", "");
+                user = new User(storedUsername, storedEmail, storedPassword);
+            } else {
+                initializeUser();
+                storeUser(sharedPreferences);
+            }
         }
+    }
+
+    /**
+     * Stores the user in the shared preferences of the device.
+     * @param sharedPreferences The shared preferences of the device
+     */
+    private void storeUser(SharedPreferences sharedPreferences) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", user.getUsername());
+        editor.putString("email", user.getEmail());
+        editor.putString("password", user.getPasswd());
+        editor.apply();
     }
 
 

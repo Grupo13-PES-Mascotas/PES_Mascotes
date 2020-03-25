@@ -6,6 +6,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PetManagerAdapter implements PetManagerService {
@@ -36,6 +37,6 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public List<Pet> findPetsByOwner(String username) {
-        return null;
+        return new ArrayList<>();
     }
 }

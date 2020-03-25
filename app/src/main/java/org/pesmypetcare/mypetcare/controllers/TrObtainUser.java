@@ -32,9 +32,9 @@ public class TrObtainUser {
      * @throws UserNotExistingException The pet has already been registered by the user
      */
     public void execute() throws UserNotExistingException {
-        if (!userHasAlreadyBeenRegistered()) {
+        /*if (!userHasAlreadyBeenRegistered()) {
             throw new UserNotExistingException();
-        }
+        }*/
 
         result = userManagerService.findUserByUsername(username);
         result.setPets((ArrayList<Pet>) petManagerService.findPetsByOwner(username));
