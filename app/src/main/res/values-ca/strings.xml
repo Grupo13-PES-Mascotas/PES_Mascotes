@@ -1,4 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">My Pet Care</string>
+    <string name="sign_up">Registrar-se</string>
+    <string name="log_in">Iniciar Sessió</string>
+    <string name="username">Nom d\'Usuari</string>
+    <string name="email">Correu</string>
+    <string name="pass">Contrasenya</string>
+    <string name="repeat_pass">Repetir Contrasenya</string>
+    <string name="titleDesc">Títol de l\'Aplicació</string>
+    <string name="fieldImage">Imatge del camp actual</string>
+    <string name="differentPasswords">Les contrasenyes no coincideixen</string>
+    <string name="shortPassword">La contrasenya és massa curta</string>
+    <string name="weakPassword">La contrasenya és massa dèbil</string>
+    <string name="emptyField">Aquest camp no pot estar buit</string>
+    <string name="navigation_my_pets">Les meves Mascotes</string>
+    <string name="navigation_pets_community">Comunitat de Mascotes</string>
+    <string name="navigation_my_walks">Els meus Passejos</string>
+    <string name="navigation_near_establishments">Establiments Propers</string>
+    <string name="navigation_calendar">Calendari</string>
+    <string name="navigation_achievements">Assoliments</string>
+    <string name="navigation_settings">Configuració</string>
+    <string name="defaultName">John Doe</string>
+    <string name="defaultEmail">johndoe@gmail.com</string>
+    <string name="breed_title">Raça</string>
+    <string name="birth_date_title">Edat(anys)</string>
+    <string name="gender_title">Gènere</string>
+    <string name="birth_title">Naixement</string>
+    <string name="weight_title">Pes(kg)</string>
+    <string name="patologies_title">Patologies</string>
+    <string name="recommended_kcal_title">Kcal Recomanades</string>
+    <string name="wash_title">Freqüència de Rentat(dies)</string>
+    <string name="weight_random">15</string>
+    <string name="birth_random">dd/mm/yyyy</string>
+    <string name="patologies_random">Cap</string>
+    <string name="Recommended_kcal_random">747</string>
+    <string name="breed_random">Golden Retriever</string>
+    <string name="name_random">Firulais</string>
+    <string name="male">Mascle</string>
+    <string name="female">Femella</string>
+    <string name="age_random">4</string>
+    <string name="wash_random">30</string>
+    <string name="not_implemented">Aquesta funcionalitat encara no està implementada</string>
+    <string name="log_out">Tancar Sessió</string>
+    <string name="languages">Idiomes</string>
+    <string name="change_password">Modificar Contrasenya</string>
+    <string name="current_version">Versió: 0.0.0</string>
+    <string name="old_password">Contrasenya Antiga</string>
+    <string name="new_password">Nova Contrasenya</string>
+    <string name="confirm_new_password">Confirma la nova contrasenya</string>
+    <string name="apply_change">Aplicar Canvis</string>
+    <string-array name="Languages">
+        <item>Anglès</item>
+        <item>Català</item>
+        <item>Castellà</item>
+    </string-array>
+    <string name="input_pet_name">Nom</string>
+    <string name="input_gender">Gènere</string>
+    <string name="input_birth_date">Data de naixement</string>
+    <string name="input_breed">Raça</string>
+    <string name="input_weight">Pes (kg)</string>
+    <string name="input_recommended_calories">Calories recomanades (kcal)</string>
+    <string name="input_wash_frequency">Freqüència de rentat (dies)</string>
+    <string name="input_pathologies">Patologies</string>
+    <string name="select_birth_date">Seleciona la data de naixement</string>
+    <string name="register_new_pet">Registra una nova mascota</string>
+    <string name="error_empty_field">Tots els camps s\'han d\'omplir (sense incloure patologies)</string>
+    <string name="error_pet_already_existing">Aquest mascota ja et pertany</string>
+    <string name="error_user_not_owner">La mascota no pertany a l\'usuari</string>
+    <string name="update_pet">Actualitzar mascota</string>
+    <string name="type_of_pet">Tipus de mascota</string>
+    <string name="delete_pet_image_title">Eliminar imatge de mascota</string>
+    <string name="delete_pet_image_text">Estàs segur de que vols eliminar la imatge de perfil de la teva mascota?</string>
+    <string name="affirmative_response">Si</string>
+    <string name="negative_response">No</string>
+    <string name="delete_pet">Esborrar Mascota</string>
+    <string name="delete_account">Esborrar Compte</string>
+    <string name="change_email">Modificar Correu</string>
+    <string name="save_email">Guardar el nou correu</string>
+    <string name="cancel">Cancel·lar</string>
+    <string name="user_confirm">Estàs segur?</string>
+    <string name="delete_account_db">Esborrar compte de la base de dades</string>
+    <string name="ok">Ok</string>
+    <string name="uninplemented"> encara no està implementat</string>
 
+    <!-- The next two strings cannot be translated into any other language -->
+    <string name="navigation_view_open">Open</string>
+    <string name="navigation_view_closed">Closed</string>
 </resources>
