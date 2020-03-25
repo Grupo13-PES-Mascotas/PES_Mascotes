@@ -113,13 +113,7 @@ public class SettingsMenuFragment extends Fragment {
         binding.languageSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (isChangeLanguageActivated) {
-                    String language = parent.getItemAtPosition(position).toString();
-                    selectedLanguage = getLocaleCode(language);
-                    setLocale();
-                } else {
-                    isChangeLanguageActivated = true;
-                }
+                setOnItemSelectedAction(parent, position);
             }
 
             @Override
@@ -127,6 +121,21 @@ public class SettingsMenuFragment extends Fragment {
                 // Unused
             }
         });
+    }
+
+    /**
+     * Set the action whenever an item is selected from the spinner.
+     * @param parent Spinner where the action is being included
+     * @param position Position that is selected
+     */
+    private void setOnItemSelectedAction(AdapterView<?> parent, int position) {
+        if (isChangeLanguageActivated) {
+            String language = parent.getItemAtPosition(position).toString();
+            selectedLanguage = getLocaleCode(language);
+            setLocale();
+        } else {
+            isChangeLanguageActivated = true;
+        }
     }
 
     /**
@@ -237,7 +246,7 @@ public class SettingsMenuFragment extends Fragment {
      * Sets the locale for the application.
      */
     private void setLocale() {
-        Locale myLocale = new Locale(selectedLanguage.substring(0, selectedLanguage.indexOf("-")));
+        Locale myLocale = new Locale(selectedLanguage.substring(0, selectedLanguage.indexOf('-')));
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration conf = res.getConfiguration();
