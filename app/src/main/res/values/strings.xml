@@ -26,7 +26,7 @@
     <string name="gender_title">Gender</string>
     <string name="birth_title">Birth</string>
     <string name="weight_title">Weight(kg)</string>
-    <string name="patologies_title">Patologies</string>
+    <string name="patologies_title">Pathologies</string>
     <string name="recommended_kcal_title">Recommended Kcal</string>
     <string name="wash_title">Wash Frequency(days)</string>
     <string name="weight_random">15</string>
