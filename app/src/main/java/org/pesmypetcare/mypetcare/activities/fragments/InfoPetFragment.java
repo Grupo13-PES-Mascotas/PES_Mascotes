@@ -294,8 +294,8 @@ public class InfoPetFragment extends Fragment {
      * Configure negative button.
      */
     private void configureNegativeButton(MaterialAlertDialogBuilder dialogAlert) {
-        dialogAlert.setNegativeButton(getResources().getString(R.string.cancel)
-            ,(dialog, which) -> dialog.cancel());
+        dialogAlert.setNegativeButton(getResources().getString(R.string.cancel),
+            (dialog, which) -> dialog.cancel());
     }
 
     /**
