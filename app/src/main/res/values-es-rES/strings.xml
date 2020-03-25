@@ -49,10 +49,13 @@
     <string name="new_password">Nueva contraseña</string>
     <string name="confirm_new_password">Confirmar nueva contraseña</string>
     <string name="apply_change">Aplicar cambios</string>
+    <string name="english">English</string>
+    <string name="catalan">Català</string>
+    <string name="spanish">Español</string>
     <string-array name="Languages">
-        <item>Inglés</item>
-        <item>Catalán</item>
-        <item>Español</item>
+        <item>@string/english</item>
+        <item>@string/catalan</item>
+        <item>@string/spanish</item>
     </string-array>
     <string name="input_pet_name">Nombre</string>
     <string name="input_gender">Género</string>

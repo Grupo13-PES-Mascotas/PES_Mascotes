@@ -4,13 +4,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,24 +23,38 @@ import com.google.firebase.auth.FirebaseUser;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.LoginActivity;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.communication.NewPasswordInterface;
 import org.pesmypetcare.mypetcare.activities.communication.SettingsCommunication;
 import org.pesmypetcare.mypetcare.databinding.FragmentSettingsMenuBinding;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
+import java.util.Locale;
 import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingsMenuFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class SettingsMenuFragment extends Fragment {
+    public static final String EN_GB = "en-GB";
+    public static final String CA_ES = "ca-ES";
+    public static final String ES_ES = "es-ES";
+    private static String selectedLanguage;
+    private static final int ENGLISH = 0;
+    private static final int CATALAN = 1;
+    private static final int SPANISH = 2;
     private FragmentSettingsMenuBinding binding;
     private FirebaseAuth mAuth;
     private SettingsCommunication communication;
     private User user;
     private String oldMail;
     private String newEmail;
+    private boolean isChangeLanguageActivated;
+
+    static {
+        selectedLanguage = Locale.getDefault().toLanguageTag();
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,6 +65,7 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
         user = new User("johnDoe", "johndoe@gmail.com", "123456");
         setEmail();
         changeEmail();
+        isChangeLanguageActivated = false;
         return binding.getRoot();
     }
 
@@ -56,12 +73,7 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
      * Initializes the listeners of the fragment.
      */
     private void settingsOptionsListeners() {
-        ArrayAdapter<CharSequence> languages;
-        languages = ArrayAdapter.createFromResource(Objects.requireNonNull(getActivity()).getApplicationContext(),
-                R.array.Languages, android.R.layout.simple_spinner_item);
-        languages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.languageSelector.setAdapter(languages);
-        binding.languageSelector.setOnItemSelectedListener(this);
+        setLanguages();
         logOutListener();
         deleteAccountListener();
         binding.changePasswordButton.setOnClickListener(v -> {
@@ -69,6 +81,61 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
             assert thisActivity != null;
             ((NewPasswordInterface) thisActivity).changeFragmentPass(new NewPassword());
         });
+    }
+
+    /**
+     * Set the languages of the application.
+     */
+    private void setLanguages() {
+        ArrayAdapter<CharSequence> languages = getLanguages();
+        setLanguageSpinner(languages);
+    }
+
+    /**
+     * Get the languages that are available for the application.
+     * @return The languages that are available for the application.
+     */
+    private ArrayAdapter<CharSequence> getLanguages() {
+        ArrayAdapter<CharSequence> languages;
+        languages = ArrayAdapter.createFromResource(Objects.requireNonNull(getActivity()).getApplicationContext(),
+                R.array.Languages, android.R.layout.simple_spinner_item);
+        languages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return languages;
+    }
+
+    /**
+     * Set the language spinner.
+     * @param languages The languages that have to be displayed in the spinner
+     */
+    private void setLanguageSpinner(ArrayAdapter<CharSequence> languages) {
+        binding.languageSelector.setAdapter(languages);
+        binding.languageSelector.setSelection(getSpinnerPosition());
+        binding.languageSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                setOnItemSelectedAction(parent, position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Unused
+            }
+        });
+    }
+
+    /**
+     * Set the action whenever an item is selected from the spinner.
+     * @param parent Spinner where the action is being included
+     * @param position Position that is selected
+     */
+    private void setOnItemSelectedAction(AdapterView<?> parent, int position) {
+        if (isChangeLanguageActivated) {
+            String language = parent.getItemAtPosition(position).toString();
+            selectedLanguage = getLocaleCode(language);
+            setLocale();
+        } else {
+            isChangeLanguageActivated = true;
+        }
     }
 
     /**
@@ -142,17 +209,51 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
         });
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String text = parent.getItemAtPosition(position).toString();
-        if (parent.getSelectedItemPosition() != 0) {
-            Toast.makeText(parent.getContext(),
-                text + getResources().getString(R.string.uninplemented), Toast.LENGTH_SHORT).show();
+    /**
+     * Gets the lang for the application.
+     * @param language The name of the language to get the lang
+     * @return The lang of the language
+     */
+    private String getLocaleCode(String language) {
+        if (language.equals(getString(R.string.english))) {
+            return EN_GB;
         }
+
+        if (language.equals(getString(R.string.catalan))) {
+            return CA_ES;
+        }
+
+        return ES_ES;
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        //Unused method for our current tab
+    /**
+     * Gets the position of a locale.
+     * @return The position of the locale
+     */
+    private int getSpinnerPosition() {
+        if (EN_GB.equals(selectedLanguage)) {
+            return ENGLISH;
+        }
+
+        if (CA_ES.equals(selectedLanguage)) {
+            return CATALAN;
+        }
+
+        return SPANISH;
+    }
+
+    /**
+     * Sets the locale for the application.
+     */
+    private void setLocale() {
+        Locale myLocale = new Locale(selectedLanguage.substring(0, selectedLanguage.indexOf('-')));
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+        Intent refresh = new Intent(getActivity(), MainActivity.class);
+        Objects.requireNonNull(getActivity()).finish();
+        startActivity(refresh);
     }
 }

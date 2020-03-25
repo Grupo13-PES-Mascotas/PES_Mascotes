@@ -49,10 +49,13 @@
     <string name="new_password">Nova Contrasenya</string>
     <string name="confirm_new_password">Confirma la nova contrasenya</string>
     <string name="apply_change">Aplicar Canvis</string>
+    <string name="english">English</string>
+    <string name="catalan">Català</string>
+    <string name="spanish">Español</string>
     <string-array name="Languages">
-        <item>Anglès</item>
-        <item>Català</item>
-        <item>Castellà</item>
+        <item>@string/english</item>
+        <item>@string/catalan</item>
+        <item>@string/spanish</item>
     </string-array>
     <string name="input_pet_name">Nom</string>
     <string name="input_gender">Gènere</string>
