@@ -77,6 +77,11 @@
     <string name="delete_account">Eliminar cuenta</string>
     <string name="change_email">Cambiar correo electrónico</string>
     <string name="save_email">Guardar nuevo correo electrónico</string>
+    <string name="cancel">Cancelar</string>
+    <string name="user_confirm">¿Estás seguro?</string>
+    <string name="delete_account_db">Eliminar cuenta de la base de datos</string>
+    <string name="ok">Okey</string>
+    <string name="uninplemented">No está implementado</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
