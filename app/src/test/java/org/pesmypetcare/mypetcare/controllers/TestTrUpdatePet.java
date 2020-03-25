@@ -1,15 +1,19 @@
-package org.pesmypetcare.mypetcare.features.pets;
+package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
+import org.pesmypetcare.mypetcare.features.pets.Gender;
+import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
+import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class TestPetUpdate {
+public class TestTrUpdatePet {
     private Pet pet;
     private User usr;
     private TrUpdatePet trUpdatePet;
