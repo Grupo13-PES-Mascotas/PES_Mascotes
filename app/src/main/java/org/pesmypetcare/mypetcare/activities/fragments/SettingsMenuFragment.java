@@ -102,9 +102,10 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
     private void deleteAccountListener() {
         binding.deleteAccountButton.setOnClickListener(v -> {
             AlertDialog alertDialog1 = new AlertDialog.Builder(getActivity()).create();
-            alertDialog1.setTitle("Delete Account of the Database");
-            alertDialog1.setMessage("Are you sure?");
-            alertDialog1.setButton(DialogInterface.BUTTON_POSITIVE, "OK", (dialog, which) -> {
+            alertDialog1.setTitle(getResources().getString(R.string.delete_account_db));
+            alertDialog1.setMessage(getResources().getString(R.string.user_confirm));
+            alertDialog1.setButton(DialogInterface.BUTTON_POSITIVE,
+                getResources().getString(R.string.ok), (dialog, which) -> {
                 try {
                     deleteAccount();
                 } catch (NotValidUserException e) {
@@ -145,7 +146,8 @@ public class SettingsMenuFragment extends Fragment implements AdapterView.OnItem
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String text = parent.getItemAtPosition(position).toString();
         if (parent.getSelectedItemPosition() != 0) {
-            Toast.makeText(parent.getContext(), text + " is not implemented yet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(parent.getContext(),
+                text + getResources().getString(R.string.uninplemented), Toast.LENGTH_SHORT).show();
         }
     }
 

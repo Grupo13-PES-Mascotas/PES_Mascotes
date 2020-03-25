@@ -26,7 +26,7 @@
     <string name="gender_title">Gender</string>
     <string name="birth_title">Birth</string>
     <string name="weight_title">Weight(kg)</string>
-    <string name="patologies_title">Patologies</string>
+    <string name="patologies_title">Pathologies</string>
     <string name="recommended_kcal_title">Recommended Kcal</string>
     <string name="wash_title">Wash Frequency(days)</string>
     <string name="weight_random">15</string>
@@ -76,6 +76,11 @@
     <string name="delete_account">Delete Account</string>
     <string name="change_email">Change email</string>
     <string name="save_email">Save new email</string>
+    <string name="cancel">Cancel</string>
+    <string name="user_confirm">Are you sure?</string>
+    <string name="delete_account_db">Delete Account of the Database</string>
+    <string name="ok">Ok</string>
+    <string name="uninplemented"> is not implemented yet</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

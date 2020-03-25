@@ -294,16 +294,18 @@ public class InfoPetFragment extends Fragment {
      * Configure negative button.
      */
     private void configureNegativeButton(MaterialAlertDialogBuilder dialogAlert) {
-        dialogAlert.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        dialogAlert.setNegativeButton(getResources().getString(R.string.cancel)
+            , (dialog, which) -> dialog.cancel());
     }
 
     /**
      * Configure some atributtes of confirmation dialog to delete a pet and positive button.
      */
     private void configDialog(MaterialAlertDialogBuilder dialogAlert) {
-        dialogAlert.setTitle("Delete Pet")
-                .setMessage("Are you sure?")
-                .setPositiveButton("Yes", (dialog, which) -> {
+        dialogAlert.setTitle(getResources().getString(R.string.delete_pet))
+                .setMessage(getResources().getString(R.string.user_confirm))
+                .setPositiveButton(getResources().getString(R.string.affirmative_response),
+                    (dialog, which) -> {
                     try {
                         communication.deletePet(pet);
                     } catch (UserIsNotOwnerException e) {
