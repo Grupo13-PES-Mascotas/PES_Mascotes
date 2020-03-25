@@ -81,7 +81,7 @@ public class SettingsMenuFragment extends Fragment {
         binding.changePasswordButton.setOnClickListener(v -> {
             Activity thisActivity = getActivity();
             assert thisActivity != null;
-            ((NewPasswordInterface) thisActivity).changeFragmentPass(new NewPassword());
+            ((NewPasswordInterface) thisActivity).changeFragmentPass(new NewPasswordFragment());
         });
     }
 

@@ -23,10 +23,10 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetBinding;
-import org.pesmypetcare.mypetcare.features.pets.Gender;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.util.Objects;
 
@@ -91,13 +91,32 @@ public class InfoPetFragment extends Fragment {
     }
 
     /**
+     * Get the gender of the pet.
+     * @return The gender of the pet
+     */
+    private GenderType getGender() {
+        if (newGender.equals(getString(R.string.male))) {
+            return GenderType.Male;
+        }
+
+        if (newGender.equals(getString(R.string.female))){
+            return GenderType.Female;
+        }
+
+        return GenderType.Other;
+    }
+
+    /**
      * Sets the gender of the pet.
      */
     private void setGender() {
-        if (pet.getGender() == Gender.MALE) {
+        if (pet.getGender() == GenderType.Male) {
             binding.inputGender.setText(R.string.male);
-        } else {
+        } else if (pet.getGender() == GenderType.Female){
             binding.inputGender.setText(R.string.female);
+        }
+        else {
+            binding.inputGender.setText(R.string.other);
         }
     }
 
@@ -170,9 +189,10 @@ public class InfoPetFragment extends Fragment {
      */
     private void updatePet() throws PetRepeatException {
         pet.setName(newName);
-        pet.setGender(Gender.valueOf(newGender));
+        pet.setGender(getGender());
         pet.setBreed(newBreed);
         pet.setWeight(Float.parseFloat(newWeight));
+
         try {
             communication.updatePet(pet);
         } catch (UserIsNotOwnerException e) {
@@ -236,7 +256,8 @@ public class InfoPetFragment extends Fragment {
     private void setGenderDropdownMenu() {
         AutoCompleteTextView gender = binding.inputGender;
         ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
-                R.layout.drop_down_menu_item, new String[] {getString(R.string.male), getString(R.string.female)});
+            R.layout.drop_down_menu_item, new String[] {getString(R.string.male), getString(R.string.female),
+            getString(R.string.other)});
         gender.setAdapter(adapter);
     }
 

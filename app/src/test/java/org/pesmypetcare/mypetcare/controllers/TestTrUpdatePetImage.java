@@ -7,21 +7,20 @@ import android.graphics.Paint;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
-import org.pesmypetcare.mypetcare.features.pets.Gender;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import static org.junit.Assert.assertEquals;
 
 public class TestTrUpdatePetImage {
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 20;
-    public static final float RIGHT = 20.0f;
-    public static final float BOTTOM = 20.0f;
+    private static final int WIDTH = 20;
+    private static final int HEIGHT = 20;
+    private static final float RIGHT = 20.0f;
+    private static final float BOTTOM = 20.0f;
     private User user;
     private Pet pet;
     private TrUpdatePetImage trUpdatePetImage;
@@ -68,7 +67,7 @@ public class TestTrUpdatePetImage {
     private Pet getDinkyPet() throws PetRepeatException {
         Pet pet = new Pet();
         pet.setName("Dinky");
-        pet.setGender(Gender.MALE);
+        pet.setGender(GenderType.Female);
         pet.setBirthDate("2 MAR 2020");
         pet.setBreed("Husky");
         pet.setRecommendedDailyKiloCalories(2);

@@ -63,7 +63,7 @@
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:textSize="16sp"
-                    app:icon="@drawable/calendar_icon" />
+                    app:icon="@drawable/baseline_cake_black_18dp" />
 
             </LinearLayout>
 

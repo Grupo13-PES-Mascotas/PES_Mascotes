@@ -23,7 +23,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class TestNewPasswordFragment {
+public class TestNewPasswordFragmentFragment {
     public static final String OLD_PASSWORD = "AbcDef456";
     public static final String NEW_PASSWORD = "GhiJkl789";
     public static final String WRONG_NEW_PASSWORD = "MnoPqr123";

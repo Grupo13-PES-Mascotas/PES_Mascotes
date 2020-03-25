@@ -44,7 +44,7 @@ public interface PetManagerService {
      * Delete a user.
      * @param user The user
      */
-    void deleteUser(User user);
+    void deletePetsFromUser(User user);
 
     /**
      * Find all the pets from a user.

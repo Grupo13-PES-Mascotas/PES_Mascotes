@@ -2,12 +2,12 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.mypetcare.features.pets.Gender;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import static org.junit.Assert.assertTrue;
 
@@ -51,7 +51,7 @@ public class TestTrRegisterNewPet {
     private Pet getLinuxPet() throws PetRepeatException {
         Pet pet = new Pet();
         pet.setName("Linux");
-        pet.setGender(Gender.MALE);
+        pet.setGender(GenderType.Male);
         pet.setBirthDate("2 MAR 2020");
         pet.setBreed("Husky");
         pet.setRecommendedDailyKiloCalories(2);

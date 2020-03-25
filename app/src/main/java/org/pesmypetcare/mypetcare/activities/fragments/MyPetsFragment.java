@@ -17,6 +17,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,7 +33,7 @@ public class MyPetsFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentMyPetsBinding.inflate(inflater, container, false);
         comunication = (MyPetsComunication) getActivity();
-        currentUser = comunication.getUser();
+        currentUser = Objects.requireNonNull(comunication).getUser();
         initializeTestUser();
         initializeMainMenuView();
         return binding.getRoot();

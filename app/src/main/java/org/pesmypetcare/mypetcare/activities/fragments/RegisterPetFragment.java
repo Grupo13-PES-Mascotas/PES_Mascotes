@@ -109,7 +109,8 @@ public class RegisterPetFragment extends Fragment {
     private void setGenderDropdownMenu() {
         AutoCompleteTextView gender = binding.inputGender;
         ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
-            R.layout.drop_down_menu_item, new String[] {getString(R.string.male), getString(R.string.female)});
+            R.layout.drop_down_menu_item, new String[] {getString(R.string.male), getString(R.string.female),
+            getString(R.string.other)});
         gender.setAdapter(adapter);
     }
 

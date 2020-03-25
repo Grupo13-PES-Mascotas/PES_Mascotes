@@ -38,6 +38,7 @@
     <string name="name_random">Firulais</string>
     <string name="male">Macho</string>
     <string name="female">Hembra</string>
+    <string name="other">Otro</string>
     <string name="age_random">4</string>
     <string name="wash_random">30</string>
     <string name="not_implemented">Esta funcionalidad todavía no está implementada</string>

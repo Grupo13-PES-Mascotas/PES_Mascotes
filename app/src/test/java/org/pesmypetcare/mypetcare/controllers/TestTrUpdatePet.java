@@ -2,13 +2,12 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
-import org.pesmypetcare.mypetcare.features.pets.Gender;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -31,7 +30,7 @@ public class TestTrUpdatePet {
         usr = new User("johnDoe", "johndoe@gmail.com", "1234");
         pet = new Pet();
         pet.setName(NAME);
-        pet.setGender(Gender.FEMALE);
+        pet.setGender(GenderType.Female);
         pet.setBirthDate("2 MAR 2010");
         pet.setBreed(HUSKY);
         pet.setRecommendedDailyKiloCalories(2);
@@ -42,8 +41,8 @@ public class TestTrUpdatePet {
 
     @Test
     public void shouldChangeGender() {
-        pet.setGender(Gender.MALE);
-        assertEquals("Correct gender change", Gender.MALE, pet.getGender());
+        pet.setGender(GenderType.Male);
+        assertEquals("Correct gender change", GenderType.Male, pet.getGender());
     }
 
     @Test
@@ -103,7 +102,7 @@ public class TestTrUpdatePet {
     private Pet getAuxPet(String petName) throws PetRepeatException {
         Pet pet2 = new Pet();
         pet2.setName(petName);
-        pet2.setGender(Gender.MALE);
+        pet2.setGender(GenderType.Male);
         pet2.setBirthDate("2 MAR 2020");
         pet2.setBreed(HUSKY);
         pet2.setRecommendedDailyKiloCalories(2);

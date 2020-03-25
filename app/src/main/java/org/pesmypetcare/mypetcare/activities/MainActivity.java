@@ -37,18 +37,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.communication.MyPetsComunication;
 import org.pesmypetcare.mypetcare.activities.communication.NewPasswordInterface;
+import org.pesmypetcare.mypetcare.activities.communication.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.communication.SettingsCommunication;
-import org.pesmypetcare.mypetcare.activities.fragments.ImageZoom;
+import org.pesmypetcare.mypetcare.activities.fragments.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
-import org.pesmypetcare.mypetcare.activities.communication.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
@@ -56,8 +54,8 @@ import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
-import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
+import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
@@ -69,11 +67,8 @@ import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.features.users.UserNotExistingException;
-import org.pesmypetcare.mypetcare.services.ServiceLocator;
-import org.pesmypetcare.usermanagerlib.UserData;
 
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
     InfoPetCommunication, MyPetsComunication, SettingsCommunication {
@@ -227,11 +222,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         navigationView.getHeaderView(0).setOnClickListener(v -> {
             Drawable drawable = new BitmapDrawable(getResources(), user.getUserProfileImage());
-            ImageZoom imageZoom = new ImageZoom(drawable);
-            ImageZoom.setIsMainActivity(true);
+            ImageZoomFragment imageZoomFragment = new ImageZoomFragment(drawable);
+            ImageZoomFragment.setIsMainActivity(true);
             floatingActionButton.hide();
             drawerLayout.closeDrawers();
-            changeFragment(imageZoom);
+            changeFragment(imageZoomFragment);
         });
     }
 
@@ -335,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
             System.out.println("I'm here");
-            if (actualFragment instanceof ImageZoom) {
+            if (actualFragment instanceof ImageZoomFragment) {
                 changeFromImageZoom();
                 return true;
             } else if (!(actualFragment instanceof MyPetsFragment)){
@@ -352,12 +347,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Change to next fragment from an ImageZoomFragment
      */
     private void changeFromImageZoom() {
-        if (ImageZoom.isMainActivity()) {
-            Drawable drawable = ImageZoom.getDrawable();
+        if (ImageZoomFragment.isMainActivity()) {
+            Drawable drawable = ImageZoomFragment.getDrawable();
             user.setUserProfileImage(((BitmapDrawable) drawable).getBitmap());
             changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
         } else {
-            InfoPetFragment.setPetProfileDrawable(ImageZoom.getDrawable());
+            InfoPetFragment.setPetProfileDrawable(ImageZoomFragment.getDrawable());
             changeFragment(new InfoPetFragment());
         }
     }
@@ -435,8 +430,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void makeZoomImage(Drawable drawable) {
         floatingActionButton.hide();
-        ImageZoom.setIsMainActivity(false);
-        changeFragment(new ImageZoom(drawable));
+        ImageZoomFragment.setIsMainActivity(false);
+        changeFragment(new ImageZoomFragment(drawable));
     }
 
     @Override
@@ -503,7 +498,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         else {
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             Drawable drawable = new BitmapDrawable(getResources(), bitmap);
-            ((ImageZoom) actualFragment).setDrawable(drawable);
+            ((ImageZoomFragment) actualFragment).setDrawable(drawable);
         }
     }
 

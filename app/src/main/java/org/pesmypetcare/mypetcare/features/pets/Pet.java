@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ public class Pet {
     public static final String BUNDLE_WASH = "petWash";
     public static final String BUNDLE_GENDER = "petGender";
     private String name;
-    private Gender gender;
+    private GenderType gender;
     private String breed;
     private String birthDate;
     private float weight;
@@ -41,9 +42,11 @@ public class Pet {
         this.washFrequency = petInfo.getInt(BUNDLE_WASH);
 
         if (isMale(petInfo)) {
-            this.gender = Gender.MALE;
+            this.gender = GenderType.Male;
+        } else if (isFemale(petInfo)){
+            this.gender = GenderType.Female;
         } else {
-            this.gender = Gender.FEMALE;
+            this.gender = GenderType.Other;
         }
     }
 
@@ -57,9 +60,11 @@ public class Pet {
         this.washFrequency = petInfo.getInt(BUNDLE_WASH);
 
         if (isMale(petInfo)) {
-            this.gender = Gender.MALE;
+            this.gender = GenderType.Male;
+        } else if (isFemale(petInfo)){
+            this.gender = GenderType.Female;
         } else {
-            this.gender = Gender.FEMALE;
+            this.gender = GenderType.Other;
         }
 
         owner = user;
@@ -94,7 +99,7 @@ public class Pet {
      * Get the gender of the pet.
      * @return The gender of the pet
      */
-    public Gender getGender() {
+    public GenderType getGender() {
         return gender;
     }
 
@@ -102,7 +107,7 @@ public class Pet {
      * Set the gender of the pet.
      * @param gender The gender of the pet to set
      */
-    public void setGender(Gender gender) {
+    public void setGender(GenderType gender) {
         this.gender = gender;
     }
 
@@ -209,6 +214,15 @@ public class Pet {
      */
     private boolean isMale(Bundle petInfo) {
         return "Male".equals(Objects.requireNonNull(petInfo.getString(BUNDLE_GENDER)));
+    }
+
+    /**
+     * Checks whether a pet is female or not.
+     * @param petInfo Information about the pet
+     * @return True if the pet is female
+     */
+    private boolean isFemale(Bundle petInfo) {
+        return "Female".equals(Objects.requireNonNull(petInfo.getString(BUNDLE_GENDER)));
     }
 
     @Override

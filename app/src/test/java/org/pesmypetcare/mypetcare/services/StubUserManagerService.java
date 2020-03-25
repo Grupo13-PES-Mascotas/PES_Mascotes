@@ -50,4 +50,9 @@ public class StubUserManagerService implements UserManagerService {
             }
         }
     }
+
+    @Override
+    public void createUser(String uid, String email, String password) {
+        data.add(new User(uid, email, password));
+    }
 }

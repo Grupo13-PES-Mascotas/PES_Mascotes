@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanagerlib.UserData;
+import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -51,6 +51,10 @@ public class UserManagerAdapter implements UserManagerService {
 
     @Override
     public void createUser(String uid, String email, String password) {
-        ServiceLocator.getInstance().getUserManagerClient().signUp(uid, password, email);
+        try {
+            ServiceLocator.getInstance().getUserManagerClient().signUp(uid, password, email);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
