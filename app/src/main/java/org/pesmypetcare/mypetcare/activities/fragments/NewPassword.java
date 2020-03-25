@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.pesmypetcare.mypetcare.activities.NewPasswordInterface;
+import org.pesmypetcare.mypetcare.activities.SettingsCommunication;
 import org.pesmypetcare.mypetcare.databinding.FragmentNewPasswordBinding;
 
 /**
@@ -22,11 +23,13 @@ public class NewPassword extends Fragment {
     private final int MIN_PASS_LENTGH = 6;
     private String passwd;
     private FragmentNewPasswordBinding binding;
+    private SettingsCommunication communication;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentNewPasswordBinding.inflate(getLayoutInflater());
+        communication = (SettingsCommunication) getActivity();
         settingsOptionsListeners();
         return binding.getRoot();
     }
@@ -52,6 +55,7 @@ public class NewPassword extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         assert user != null;
         user.updatePassword(passwd);
+        communication.changePassword(passwd);
     }
 
     /**

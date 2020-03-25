@@ -30,6 +30,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,44 +45,58 @@ import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
+import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
+import org.pesmypetcare.mypetcare.controllers.TrRegisterNewUser;
+import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
+import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.features.users.UserAlreadyExistingException;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
-    InfoPetCommunication, MyPetsComunication {
+    InfoPetCommunication, MyPetsComunication, SettingsCommunication {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
     };
 
     private static final Class[] APPLICATION_FRAGMENTS = {
-        MyPetsFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
 
-    private Fragment actualFragment;
+    private static boolean enableLoginActivity = true;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private ActionBar toolbar;
+    private MaterialToolbar toolbar;
     private NavigationView navigationView;
     private FloatingActionButton floatingActionButton;
     private User user;
     private TrRegisterNewPet trRegisterNewPet;
     private TrUpdatePetImage trUpdatePetImage;
+    private TrChangePassword trChangePassword;
     private TrDeletePet trDeletePet;
+    private TrDeleteUser trDeleteUser;
+    private TrRegisterNewUser trRegisterNewUser;
+    private TrUpdatePet trUpdatePet;
+    private TrChangeMail trChangeMail;
     private FirebaseAuth mAuth;
+    private Fragment actualFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +109,24 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeActivity();
         initializeControllers();
         setUpNavigationImage();
+
+        initializeUser();
+    }
+
+    /**
+     * Initialize the current.
+     */
+    private void initializeUser() {
+        user = new User(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
+                mAuth.getCurrentUser().getEmail(), "");
+        trRegisterNewUser.setUsername(mAuth.getCurrentUser().getUid());
+        trRegisterNewUser.setEmail(mAuth.getCurrentUser().getEmail());
+        trRegisterNewUser.setPassword("");
+        try {
+            trRegisterNewUser.execute();
+        } catch (UserAlreadyExistingException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -102,6 +135,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private void initializeControllers() {
         trRegisterNewPet = ControllersFactory.createTrRegisterNewPet();
         trUpdatePetImage = ControllersFactory.createTrUpdatePetImage();
+        trChangePassword = ControllersFactory.createTrChangePassword();
+        trDeletePet = ControllersFactory.createTrDeletePet();
+        trDeleteUser = ControllersFactory.createTrDeleteUser();
+        trRegisterNewUser = ControllersFactory.createTrRegisterNewUser();
+        trUpdatePet = ControllersFactory.createTrUpdatePet();
     }
 
     /**
@@ -112,8 +150,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         navigationView = binding.navigationView;
         floatingActionButton = binding.flAddPet;
 
+        initializeActionbar();
         initializeActionDrawerToggle();
-        //initializeActionbar();
         setUpNavigationDrawer();
         setStartFragment();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -128,6 +166,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         floatingActionButton.hide();
         changeFragment(getFragment(RegisterPetFragment.class));
         toolbar.setTitle(getString(R.string.register_new_pet));
+    }
+
+    /**
+     * Set the enable of the login activity.
+     * @param enableLoginActivity The enable of the login activity to set
+     */
+    public static void setEnableLoginActivity(boolean enableLoginActivity) {
+        MainActivity.enableLoginActivity = enableLoginActivity;
     }
 
     /**
@@ -190,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     private void setUpNewFragment(CharSequence title, int id) {
         toolbar.setTitle(title);
+        toolbar.setContentDescription(title);
 
         if (id == R.id.navigationMyPets) {
             floatingActionButton.show();
@@ -222,7 +269,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         actualFragment = nextFragment;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment);
+        fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment, nextFragment.getClass()
+            .getSimpleName());
         fragmentTransaction.commit();
 
     }
@@ -245,17 +293,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Initializes the action bar of the application.
      */
     private void initializeActionbar() {
-        toolbar = getSupportActionBar();
-        Objects.requireNonNull(toolbar).show();
-        Objects.requireNonNull(toolbar).setTitle(R.string.navigation_my_pets);
-        toolbar.setDisplayHomeAsUpEnabled(true);
+        toolbar = binding.toolbar;
+        //Objects.requireNonNull(toolbar).show();
+        Objects.requireNonNull(toolbar).setTitle(R.string.app_name);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        Objects.requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
+        //toolbar.setDisplayHomeAsUpEnabled(true);
     }
 
     /**
      * Initializes the action drawer toggle of the navigation drawer.
      */
     private void initializeActionDrawerToggle() {
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
             R.string.navigation_view_open, R.string.navigation_view_closed);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
@@ -323,14 +374,16 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return user;
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
-        if (mAuth.getCurrentUser() == null) {
+        if (enableLoginActivity && mAuth.getCurrentUser() == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
     }
+
 
     @Override
     public void makeZoomImage(Drawable drawable) {
@@ -362,8 +415,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (UserIsNotOwnerException e) {
             Toast toast = Toast.makeText(this, getString(R.string.error_user_not_owner), Toast.LENGTH_LONG);
             toast.show();
-            return;
         }
+    }
+
+    @Override
+    public void updatePet(Pet pet) throws UserIsNotOwnerException {
+        trUpdatePet.setUser(user);
+        trUpdatePet.setPet(pet);
+        trUpdatePet.execute();
     }
 
     @Override
@@ -419,4 +478,34 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return imagePath;
     }
 
+    @Override
+    public void changePassword(String password) {
+        trChangePassword.setUser(user);
+        try {
+            trChangePassword.setNewPassword(password);
+        } catch (SamePasswordException e) {
+            Toast toast = Toast.makeText(this, "No change", Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+        trChangePassword.execute();
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        trDeleteUser.setUser(user);
+        try {
+            trDeleteUser.execute();
+        } catch (NotValidUserException e) {
+            Toast toast = Toast.makeText(this, "Not valid user", Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+    
+    @Override  
+    public void changeMail(String newEmail) {
+        trChangeMail.setUser(user);
+        trChangeMail.setMail(newEmail);
+        trChangeMail.execute();
+    }
 }

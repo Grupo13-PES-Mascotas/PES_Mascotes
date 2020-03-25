@@ -19,7 +19,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             style="@style/loginFields"
-            android:id="@+id/login_email_text"
+            android:id="@+id/loginEmailText"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
             />
