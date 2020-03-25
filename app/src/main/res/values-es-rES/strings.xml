@@ -29,7 +29,7 @@
     <string name="weight_title">Peso(kg)</string>
     <string name="patologies_title">Patologías</string>
     <string name="recommended_kcal_title">Calorias recomendadas(Kcal)</string>
-    <string name="wash_title">Frecuencia de baño(days)</string>
+    <string name="wash_title">Frecuencia de baño(días)</string>
     <string name="weight_random">15</string>
     <string name="birth_random">dd/mm/aaaa</string>
     <string name="patologies_random">Ninguna</string>
@@ -64,7 +64,7 @@
     <string name="input_pathologies">Patologías</string>
     <string name="select_birth_date">Selecciona fecha de nacimiento</string>
     <string name="register_new_pet">Registrar nueva mascota</string>
-    <string name="error_empty_field">Todos los campos deben ser rellenados (patologías no incluída)</string>
+    <string name="error_empty_field">Todos los campos deben ser rellenados (sin incluir patologías)</string>
     <string name="error_pet_already_existing">Esta mascota ya existe</string>
     <string name="error_user_not_owner">Esta mascota no te pertenece</string>
     <string name="update_pet">Actualizar mascota</string>
