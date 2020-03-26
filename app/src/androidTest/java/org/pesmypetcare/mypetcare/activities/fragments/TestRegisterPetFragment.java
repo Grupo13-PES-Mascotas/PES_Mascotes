@@ -39,7 +39,6 @@ public class TestRegisterPetFragment {
     @BeforeClass
     public static void setUpClass() {
         MainActivity.setEnableLoginActivity(false);
-        MainActivity.setSkipPetUserDisplay(true);
     }
 
     @Test
