@@ -2,8 +2,10 @@ package org.pesmypetcare.mypetcare.activities.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -37,9 +39,9 @@ import java.util.Objects;
  * A simple {@link Fragment} subclass.
  */
 public class SettingsMenuFragment extends Fragment {
-    public static final String EN_GB = "en-GB";
-    public static final String CA_ES = "ca-ES";
-    public static final String ES_ES = "es-ES";
+    private static final String EN_GB = "en-GB";
+    private static final String CA_ES = "ca-ES";
+    private static final String ES_ES = "es-ES";
     private static String selectedLanguage;
     private static final int ENGLISH = 0;
     private static final int CATALAN = 1;
@@ -62,10 +64,11 @@ public class SettingsMenuFragment extends Fragment {
         communication = (SettingsCommunication) getActivity();
         mAuth = FirebaseAuth.getInstance();
         settingsOptionsListeners();
-        user = new User("johnDoe", "johndoe@gmail.com", "123456");
+        user = communication.getUserForSettings();
         setEmail();
         changeEmail();
         isChangeLanguageActivated = false;
+        binding.changeEmail.getEditText().setText(user.getEmail());
         return binding.getRoot();
     }
 
@@ -79,7 +82,7 @@ public class SettingsMenuFragment extends Fragment {
         binding.changePasswordButton.setOnClickListener(v -> {
             Activity thisActivity = getActivity();
             assert thisActivity != null;
-            ((NewPasswordInterface) thisActivity).changeFragmentPass(new NewPassword());
+            ((NewPasswordInterface) thisActivity).changeFragmentPass(new NewPasswordFragment());
         });
     }
 
@@ -142,7 +145,7 @@ public class SettingsMenuFragment extends Fragment {
      * Sets the existent email.
      */
     private void setEmail() {
-        oldMail = user.getMail();
+        oldMail = user.getEmail();
         Objects.requireNonNull(binding.changeEmail.getEditText()).setText(oldMail);
     }
 
@@ -152,7 +155,7 @@ public class SettingsMenuFragment extends Fragment {
     private void changeEmail() {
         binding.changeEmailButton.setOnClickListener(v -> {
             binding.changeEmail.addOnEditTextAttachedListener(textInputLayout -> {
-                oldMail = user.getMail();
+                oldMail = user.getEmail();
                 Objects.requireNonNull(binding.changeEmail.getEditText()).setText(oldMail);
                 newEmail = Objects.requireNonNull(binding.changeEmail.getEditText()).getText().toString();
                 if (!(oldMail.equals(newEmail))) {
@@ -168,19 +171,26 @@ public class SettingsMenuFragment extends Fragment {
      */
     private void deleteAccountListener() {
         binding.deleteAccountButton.setOnClickListener(v -> {
-            AlertDialog alertDialog1 = new AlertDialog.Builder(getActivity()).create();
-            alertDialog1.setTitle(getResources().getString(R.string.delete_account_db));
-            alertDialog1.setMessage(getResources().getString(R.string.user_confirm));
-            alertDialog1.setButton(DialogInterface.BUTTON_POSITIVE,
-                getResources().getString(R.string.ok), (dialog, which) -> {
+            showAlertDialogDeleteAccount();
+        });
+    }
+
+    /**
+     * Show an alert dialog to confirm the delete account.
+     */
+    private void showAlertDialogDeleteAccount() {
+        AlertDialog alertDialog1 = new AlertDialog.Builder(getActivity()).create();
+        alertDialog1.setTitle(getResources().getString(R.string.delete_account_db));
+        alertDialog1.setMessage(getResources().getString(R.string.user_confirm));
+        alertDialog1.setButton(DialogInterface.BUTTON_POSITIVE,
+            getResources().getString(R.string.ok), (dialog, which) -> {
                 try {
                     deleteAccount();
                 } catch (NotValidUserException e) {
                     e.printStackTrace();
                 }
-            });
-            alertDialog1.show();
         });
+        alertDialog1.show();
     }
 
     /**
@@ -190,12 +200,24 @@ public class SettingsMenuFragment extends Fragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         assert currentUser != null;
         communication.deleteUser(new User(currentUser.getUid(), currentUser.getEmail(), ""));
+        deleteUserFromSharedPreferences();
         currentUser.reauthenticate(EmailAuthProvider.getCredential(Objects.requireNonNull(currentUser.getEmail()),
                 "password1234")).addOnCompleteListener(task -> {
                     currentUser.delete();
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     Objects.requireNonNull(getActivity()).finish();
                 });
+    }
+
+    /**
+     * Deletes the user from the shared preferences.
+     */
+    private void deleteUserFromSharedPreferences() {
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getActivity())
+            .getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
     }
 
     /**

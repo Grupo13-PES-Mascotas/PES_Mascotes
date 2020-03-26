@@ -33,7 +33,7 @@ public class StubUserManagerService implements UserManagerService {
     @Override
     public boolean changePassword(User user, String newPassword) {
         data.remove(user);
-        data.add(new User(user.getUsername(), user.getMail(), newPassword));
+        data.add(new User(user.getUsername(), user.getEmail(), newPassword));
         return true;
     }
 
@@ -45,9 +45,14 @@ public class StubUserManagerService implements UserManagerService {
     public void changeMail(String mail, String username) {
         for (User user : data) {
             if (user.getUsername().equals(username)) {
-                user.setMail(mail);
+                user.setEmail(mail);
                 break;
             }
         }
+    }
+
+    @Override
+    public void createUser(String uid, String email, String password) {
+        data.add(new User(uid, email, password));
     }
 }

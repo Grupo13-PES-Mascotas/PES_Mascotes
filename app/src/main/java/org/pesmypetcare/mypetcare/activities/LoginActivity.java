@@ -13,8 +13,6 @@ import org.pesmypetcare.mypetcare.activities.fragments.LogInFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.SignUpFragment;
 import org.pesmypetcare.mypetcare.databinding.ActivityLoginBinding;
 
-import java.util.Objects;
-
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
 

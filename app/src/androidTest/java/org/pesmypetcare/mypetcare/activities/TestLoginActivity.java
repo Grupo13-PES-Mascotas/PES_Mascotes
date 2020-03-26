@@ -21,7 +21,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class TestLoginActivity {
-    public static final String LOG_IN = "LOG IN";
+    private static final String LOG_IN = "LOG IN";
     @Rule
     public ActivityTestRule<LoginActivity> activityRule = new ActivityTestRule<>(LoginActivity.class);
 
@@ -73,8 +73,6 @@ public class TestLoginActivity {
 
         onView(withId(R.id.loginEmailText)).perform(typeText("johnDoe@gmail.com"), closeSoftKeyboard());
         onView(withId(R.id.loginPasswordText)).perform(typeText("AbcDert456$"), closeSoftKeyboard());
-
-        onView(withId(R.id.loginButton)).perform(click());
     }
 
     @Test

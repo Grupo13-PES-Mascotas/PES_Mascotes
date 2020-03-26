@@ -19,7 +19,7 @@ import org.pesmypetcare.mypetcare.databinding.FragmentImageZoomBinding;
 
 import java.util.Objects;
 
-public class ImageZoom extends Fragment {
+public class ImageZoomFragment extends Fragment {
     private static final String[] IMAGE_MIME_TYPES = {"image/jpeg", "image/png"};
     private static final int GALLERY_ZOOM_REQUEST_CODE = 0;
     private static final float RADIUS = 1000.0f;
@@ -28,8 +28,8 @@ public class ImageZoom extends Fragment {
 
     private FragmentImageZoomBinding binding;
 
-    public ImageZoom(Drawable drawable) {
-        ImageZoom.drawable = drawable;
+    public ImageZoomFragment(Drawable drawable) {
+        ImageZoomFragment.drawable = drawable;
     }
 
     /**
@@ -110,7 +110,7 @@ public class ImageZoom extends Fragment {
      * @param drawable The drawable to set
      */
     public void setDrawable(Drawable drawable) {
-        ImageZoom.drawable = drawable;
+        ImageZoomFragment.drawable = drawable;
         initializeCircularImageView();
     }
 
@@ -127,6 +127,6 @@ public class ImageZoom extends Fragment {
      * @param isMainActivity The value to set to the isMainActivity attribute
      */
     public static void setIsMainActivity(boolean isMainActivity) {
-        ImageZoom.isMainActivity = isMainActivity;
+        ImageZoomFragment.isMainActivity = isMainActivity;
     }
 }

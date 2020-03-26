@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.util.Objects;
 
@@ -17,12 +18,12 @@ public class Pet {
     public static final String BUNDLE_WASH = "petWash";
     public static final String BUNDLE_GENDER = "petGender";
     private String name;
-    private Gender gender;
+    private GenderType gender;
     private String breed;
     private String birthDate;
-    private float weight;
+    private double weight;
     private String pathologies;
-    private float recommendedDailyKiloCalories;
+    private double recommendedDailyKiloCalories;
     private int washFrequency;
     private User owner;
     private String previousName;
@@ -41,9 +42,11 @@ public class Pet {
         this.washFrequency = petInfo.getInt(BUNDLE_WASH);
 
         if (isMale(petInfo)) {
-            this.gender = Gender.MALE;
+            this.gender = GenderType.Male;
+        } else if (isFemale(petInfo)) {
+            this.gender = GenderType.Female;
         } else {
-            this.gender = Gender.FEMALE;
+            this.gender = GenderType.Other;
         }
     }
 
@@ -57,9 +60,11 @@ public class Pet {
         this.washFrequency = petInfo.getInt(BUNDLE_WASH);
 
         if (isMale(petInfo)) {
-            this.gender = Gender.MALE;
+            this.gender = GenderType.Male;
+        } else if (isFemale(petInfo)){
+            this.gender = GenderType.Female;
         } else {
-            this.gender = Gender.FEMALE;
+            this.gender = GenderType.Other;
         }
 
         owner = user;
@@ -94,7 +99,7 @@ public class Pet {
      * Get the gender of the pet.
      * @return The gender of the pet
      */
-    public Gender getGender() {
+    public GenderType getGender() {
         return gender;
     }
 
@@ -102,7 +107,7 @@ public class Pet {
      * Set the gender of the pet.
      * @param gender The gender of the pet to set
      */
-    public void setGender(Gender gender) {
+    public void setGender(GenderType gender) {
         this.gender = gender;
     }
 
@@ -142,7 +147,7 @@ public class Pet {
      * Get the weight of the pet.
      * @return The weight of the pet
      */
-    public float getWeight() {
+    public double getWeight() {
         return weight;
     }
 
@@ -150,7 +155,7 @@ public class Pet {
      * Set the weight of the pet.
      * @param weight The weight to set
      */
-    public void setWeight(float weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 
@@ -174,7 +179,7 @@ public class Pet {
      * Get the recommended daily kilo calories of the pet.
      * @return The recommended daily kilo calories of the pet
      */
-    public float getRecommendedDailyKiloCalories() {
+    public double getRecommendedDailyKiloCalories() {
         return recommendedDailyKiloCalories;
     }
 
@@ -182,7 +187,7 @@ public class Pet {
      * Set the recommended daily kilo calories of the pet.
      * @param recommendedDailyKiloCalories The recommended daily kilo calories of the pet to set
      */
-    public void setRecommendedDailyKiloCalories(float recommendedDailyKiloCalories) {
+    public void setRecommendedDailyKiloCalories(double recommendedDailyKiloCalories) {
         this.recommendedDailyKiloCalories = recommendedDailyKiloCalories;
     }
 
@@ -209,6 +214,15 @@ public class Pet {
      */
     private boolean isMale(Bundle petInfo) {
         return "Male".equals(Objects.requireNonNull(petInfo.getString(BUNDLE_GENDER)));
+    }
+
+    /**
+     * Checks whether a pet is female or not.
+     * @param petInfo Information about the pet
+     * @return True if the pet is female
+     */
+    private boolean isFemale(Bundle petInfo) {
+        return "Female".equals(Objects.requireNonNull(petInfo.getString(BUNDLE_GENDER)));
     }
 
     @Override

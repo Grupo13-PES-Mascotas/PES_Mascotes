@@ -37,13 +37,14 @@
     <string name="name_random">Firulais</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="other">Other</string>
     <string name="age_random">4</string>
     <string name="wash_random">30</string>
     <string name="not_implemented">This functionality is not implemented</string>
     <string name="log_out">LOG OUT</string>
     <string name="languages">Languages</string>
     <string name="change_password">Change Password</string>
-    <string name="current_version">Version: 0.0.0</string>
+    <string name="current_version">Version: 1.0.0</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>

@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +25,10 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetBinding;
-import org.pesmypetcare.mypetcare.features.pets.Gender;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.util.Objects;
 
@@ -35,6 +37,7 @@ public class InfoPetFragment extends Fragment {
     private static Drawable petProfileDrawable;
     private static boolean isImageModified;
     private static Pet pet = new Pet("Linux");
+    private static final String PET_PROFILE_IMAGE_DESCRIPTION = "pet profile image";
 
     private FragmentInfoPetBinding binding;
     private Button birthDate;
@@ -53,7 +56,7 @@ public class InfoPetFragment extends Fragment {
         communication = (InfoPetCommunication) getActivity();
 
         updatePetListeners();
-        setCalendarPicker();
+        //setCalendarPicker();
         setGenderDropdownMenu();
         setPetProfileImage();
         initializePetInfo();
@@ -91,13 +94,31 @@ public class InfoPetFragment extends Fragment {
     }
 
     /**
+     * Get the gender of the pet.
+     * @return The gender of the pet
+     */
+    private GenderType getGender() {
+        if (newGender.equals(getString(R.string.male))) {
+            return GenderType.Male;
+        }
+
+        if (newGender.equals(getString(R.string.female))) {
+            return GenderType.Female;
+        }
+
+        return GenderType.Other;
+    }
+
+    /**
      * Sets the gender of the pet.
      */
     private void setGender() {
-        if (pet.getGender() == Gender.MALE) {
+        if (pet.getGender() == GenderType.Male) {
             binding.inputGender.setText(R.string.male);
-        } else {
+        } else if (pet.getGender() == GenderType.Female) {
             binding.inputGender.setText(R.string.female);
+        } else {
+            binding.inputGender.setText(R.string.other);
         }
     }
 
@@ -106,6 +127,7 @@ public class InfoPetFragment extends Fragment {
      */
     private void setPetProfileImage() {
         petProfileImage = binding.imgPet;
+        petProfileImage.setContentDescription(PET_PROFILE_IMAGE_DESCRIPTION);
 
         if (petProfileDrawable == null) {
             assignPetImageToDisplay();
@@ -154,8 +176,10 @@ public class InfoPetFragment extends Fragment {
         modifiedPet();
         binding.updatePet.setOnClickListener(v -> {
             if (modified) {
+                modified = false;
                 try {
                     updatePet();
+                    //communication.changeToMainView();
                 } catch (PetRepeatException e) {
                     e.printStackTrace();
                 }
@@ -170,9 +194,10 @@ public class InfoPetFragment extends Fragment {
      */
     private void updatePet() throws PetRepeatException {
         pet.setName(newName);
-        pet.setGender(Gender.valueOf(newGender));
+        pet.setGender(getGender());
         pet.setBreed(newBreed);
-        pet.setWeight(Float.parseFloat(newWeight));
+        pet.setWeight(Double.parseDouble(newWeight));
+
         try {
             communication.updatePet(pet);
         } catch (UserIsNotOwnerException e) {
@@ -194,9 +219,22 @@ public class InfoPetFragment extends Fragment {
      * Initializes the listeners for the new_gender variable.
      */
     private void modifiedGender() {
-        binding.gender.addOnEditTextAttachedListener(textInputLayout -> {
-            modified = true;
-            newGender = Objects.requireNonNull(binding.gender.getEditText()).getText().toString();
+        Objects.requireNonNull(binding.gender.getEditText()).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Unused
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                modified = true;
+                newGender = Objects.requireNonNull(binding.gender.getEditText()).getText().toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Unused
+            }
         });
     }
 
@@ -204,9 +242,22 @@ public class InfoPetFragment extends Fragment {
      * Initializes the listeners for the new_breed variable.
      */
     private void modifiedBreed() {
-        binding.breed.addOnEditTextAttachedListener(textInputLayout -> {
-            modified = true;
-            newBreed = Objects.requireNonNull(binding.breed.getEditText()).getText().toString();
+        Objects.requireNonNull(binding.breed.getEditText()).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Unused
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                modified = true;
+                newBreed = Objects.requireNonNull(binding.breed.getEditText()).getText().toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Unused
+            }
         });
     }
 
@@ -214,9 +265,22 @@ public class InfoPetFragment extends Fragment {
      * Initializes the listeners for the new_name variable.
      */
     private void modifiedName() {
-        binding.petName.addOnEditTextAttachedListener(textInputLayout -> {
-            modified = true;
-            newName = Objects.requireNonNull(binding.petName.getEditText()).getText().toString();
+        Objects.requireNonNull(binding.petName.getEditText()).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Unused
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                modified = true;
+                newName = Objects.requireNonNull(binding.petName.getEditText()).getText().toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Unused
+            }
         });
     }
 
@@ -224,9 +288,22 @@ public class InfoPetFragment extends Fragment {
      * Initializes the listeners for the new_weight variable.
      */
     private void modifiedWeight() {
-        binding.weight.addOnEditTextAttachedListener(textInputLayout -> {
-            modified = true;
-            newWeight = Objects.requireNonNull(binding.weight.getEditText()).getText().toString();
+        Objects.requireNonNull(binding.weight.getEditText()).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Unused
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                modified = true;
+                newWeight = Objects.requireNonNull(binding.weight.getEditText()).getText().toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Unused
+            }
         });
     }
 
@@ -236,7 +313,8 @@ public class InfoPetFragment extends Fragment {
     private void setGenderDropdownMenu() {
         AutoCompleteTextView gender = binding.inputGender;
         ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
-                R.layout.drop_down_menu_item, new String[] {getString(R.string.male), getString(R.string.female)});
+            R.layout.drop_down_menu_item, new String[] {getString(R.string.male), getString(R.string.female),
+            getString(R.string.other)});
         gender.setAdapter(adapter);
     }
 
@@ -299,18 +377,17 @@ public class InfoPetFragment extends Fragment {
     }
 
     /**
-     * Configure some atributtes of confirmation dialog to delete a pet and positive button.
+     * Configure some attributes of confirmation dialog to delete a pet and positive button.
      */
     private void configDialog(MaterialAlertDialogBuilder dialogAlert) {
-        dialogAlert.setTitle(getResources().getString(R.string.delete_pet))
-                .setMessage(getResources().getString(R.string.user_confirm))
-                .setPositiveButton(getResources().getString(R.string.affirmative_response),
-                    (dialog, which) -> {
+        dialogAlert.setTitle(getResources().getString(R.string.delete_pet)).setMessage(getResources()
+            .getString(R.string.user_confirm)).setPositiveButton(getResources()
+            .getString(R.string.affirmative_response), (dialog, which) -> {
                     try {
                         communication.deletePet(pet);
                     } catch (UserIsNotOwnerException e) {
                         e.printStackTrace();
                     }
-                });
+            });
     }
 }

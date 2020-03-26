@@ -38,13 +38,14 @@
     <string name="name_random">Firulais</string>
     <string name="male">Macho</string>
     <string name="female">Hembra</string>
+    <string name="other">Otro</string>
     <string name="age_random">4</string>
     <string name="wash_random">30</string>
     <string name="not_implemented">Esta funcionalidad todavía no está implementada</string>
     <string name="log_out">Cerrar sesión</string>
     <string name="languages">Idiomas</string>
     <string name="change_password">Cambiar contraseña</string>
-    <string name="current_version">Versión: 0.0.0</string>
+    <string name="current_version">Versión: 1.0.0</string>
     <string name="old_password">Anterior contraseña</string>
     <string name="new_password">Nueva contraseña</string>
     <string name="confirm_new_password">Confirmar nueva contraseña</string>
@@ -59,11 +60,11 @@
     </string-array>
     <string name="input_pet_name">Nombre</string>
     <string name="input_gender">Género</string>
-    <string name="input_birth_date">Fecha de nacimiento</string>
+    <string name="input_birth_date">Nacimiento</string>
     <string name="input_breed">Raza</string>
     <string name="input_weight">Peso (kg)</string>
     <string name="input_recommended_calories">Calorías recomendadas (kcal)</string>
-    <string name="input_wash_frequency">Frecuencia de baño (days)</string>
+    <string name="input_wash_frequency">Frecuencia de baño (días)</string>
     <string name="input_pathologies">Patologías</string>
     <string name="select_birth_date">Selecciona fecha de nacimiento</string>
     <string name="register_new_pet">Registrar nueva mascota</string>

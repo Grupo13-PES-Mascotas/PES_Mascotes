@@ -1,2 +1,2 @@
 configurations.maybeCreate("default")
-artifacts.add("default", file('usermanagerlib-release.aar'))
+artifacts.add("default", file('usermanagerlib-v1-1.aar'))

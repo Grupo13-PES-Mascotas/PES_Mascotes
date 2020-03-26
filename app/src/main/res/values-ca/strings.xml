@@ -38,13 +38,14 @@
     <string name="name_random">Firulais</string>
     <string name="male">Mascle</string>
     <string name="female">Femella</string>
+    <string name="other">Altre</string>
     <string name="age_random">4</string>
     <string name="wash_random">30</string>
     <string name="not_implemented">Aquesta funcionalitat encara no està implementada</string>
     <string name="log_out">Tancar Sessió</string>
     <string name="languages">Idiomes</string>
     <string name="change_password">Modificar Contrasenya</string>
-    <string name="current_version">Versió: 0.0.0</string>
+    <string name="current_version">Versió: 1.0.0</string>
     <string name="old_password">Contrasenya Antiga</string>
     <string name="new_password">Nova Contrasenya</string>
     <string name="confirm_new_password">Confirma la nova contrasenya</string>
@@ -59,7 +60,7 @@
     </string-array>
     <string name="input_pet_name">Nom</string>
     <string name="input_gender">Gènere</string>
-    <string name="input_birth_date">Data de naixement</string>
+    <string name="input_birth_date">Naixement</string>
     <string name="input_breed">Raça</string>
     <string name="input_weight">Pes (kg)</string>
     <string name="input_recommended_calories">Calories recomanades (kcal)</string>

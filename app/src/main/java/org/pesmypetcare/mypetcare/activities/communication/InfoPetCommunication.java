@@ -32,4 +32,9 @@ public interface InfoPetCommunication {
      * @param pet The pet
      */
     void updatePet(Pet pet) throws UserIsNotOwnerException;
+
+    /**
+     * Changes to main view.
+     */
+    void changeToMainView();
 }

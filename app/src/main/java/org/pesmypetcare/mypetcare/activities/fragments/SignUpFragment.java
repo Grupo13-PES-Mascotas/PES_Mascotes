@@ -21,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.databinding.FragmentSignUpBinding;
+import org.pesmypetcare.mypetcare.services.UserManagerAdapter;
+import org.pesmypetcare.mypetcare.services.UserManagerService;
 
 import java.util.Objects;
 
@@ -36,6 +38,7 @@ public class SignUpFragment extends Fragment {
     private FirebaseAuth mAuth;
     private String email;
     private String password;
+    private static UserManagerService userManagerService = new UserManagerAdapter();
     //private String username;
 
     @Override
@@ -72,6 +75,7 @@ public class SignUpFragment extends Fragment {
             .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                 if (task.isSuccessful()) {
                     sendEmailVerification();
+                    userManagerService.createUser(mAuth.getCurrentUser().getUid(), email, password);
                     mAuth.signOut();
                 } else {
                     testToast(Objects.requireNonNull(task.getException()).toString());

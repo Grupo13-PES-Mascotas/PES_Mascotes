@@ -19,12 +19,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class TestImageZoom {
+public class TestImageZoomFragment {
     @Rule
     public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -35,8 +34,9 @@ public class TestImageZoom {
 
     @Test
     public void shouldMakeZoomOnPetImage() {
-        onView(withId(R.id.mainMenu)).perform(click());
-        onView(withId(R.id.imgPet)).perform(click());
+        activityRule.getActivity().changeFragment(new InfoPetFragment());
+        //onView(withId(R.id.mainMenu)).perform(click());
+        onView(withContentDescription("pet profile image")).perform(click());
 
         onView(withId(R.id.displayedImage)).check(matches(isDisplayed()));
         onView(withId(R.id.flModifyImage)).check(matches(isDisplayed()));

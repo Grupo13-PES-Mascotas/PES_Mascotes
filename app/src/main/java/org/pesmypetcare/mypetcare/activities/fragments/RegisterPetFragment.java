@@ -20,6 +20,7 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.communication.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.databinding.FragmentRegisterPetBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.utilities.DateConversion;
 
 import java.util.Objects;
 
@@ -68,7 +69,9 @@ public class RegisterPetFragment extends Fragment {
         Bundle petInfo = new Bundle();
         petInfo.putString(Pet.BUNDLE_NAME, Objects.requireNonNull(binding.inputPetName.getText()).toString());
         petInfo.putString(Pet.BUNDLE_GENDER, Objects.requireNonNull(binding.inputGender.getText()).toString());
-        petInfo.putString(Pet.BUNDLE_BIRTH_DATE, binding.inputBirthMonth.getText().toString());
+        petInfo.putString(Pet.BUNDLE_BREED, Objects.requireNonNull(binding.inputBreed.getText()).toString());
+        petInfo.putString(Pet.BUNDLE_BIRTH_DATE, DateConversion.convertToServer(binding.inputBirthMonth.getText()
+            .toString()));
         petInfo.putFloat(Pet.BUNDLE_WEIGHT, Float.parseFloat(Objects.requireNonNull(binding.inputWeight.getText())
             .toString()));
         petInfo.putString(Pet.BUNDLE_PATHOLOGIES, Objects.requireNonNull(binding.inputPathologies.getText())
@@ -109,7 +112,8 @@ public class RegisterPetFragment extends Fragment {
     private void setGenderDropdownMenu() {
         AutoCompleteTextView gender = binding.inputGender;
         ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
-            R.layout.drop_down_menu_item, new String[] {getString(R.string.male), getString(R.string.female)});
+            R.layout.drop_down_menu_item, new String[] {getString(R.string.male), getString(R.string.female),
+            getString(R.string.other)});
         gender.setAdapter(adapter);
     }
 

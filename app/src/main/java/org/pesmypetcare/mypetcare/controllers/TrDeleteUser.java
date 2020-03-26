@@ -34,7 +34,7 @@ public class TrDeleteUser {
             throw new NotValidUserException();
         }
         userManagerService.deleteUser(this.user);
-        petManagerService.deleteUser(this.user);
+        petManagerService.deletePetsFromUser(this.user);
         result = true;
     }
 

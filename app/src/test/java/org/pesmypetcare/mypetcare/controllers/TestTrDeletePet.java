@@ -2,13 +2,12 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
-import org.pesmypetcare.mypetcare.features.pets.Gender;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import static org.junit.Assert.assertFalse;
 
@@ -44,7 +43,7 @@ public class TestTrDeletePet {
     private Pet getDinkyPet() throws PetRepeatException {
         Pet pet = new Pet();
         pet.setName("Dinky");
-        pet.setGender(Gender.MALE);
+        pet.setGender(GenderType.Male);
         pet.setBirthDate("2 MAR 2020");
         pet.setBreed("Husky");
         pet.setRecommendedDailyKiloCalories(2);

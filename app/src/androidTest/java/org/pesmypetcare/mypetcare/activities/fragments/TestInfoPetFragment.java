@@ -19,20 +19,19 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.pressBack;
+import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class TestRegisterPetFragment {
+public class TestInfoPetFragment {
     @Rule
     public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -42,35 +41,32 @@ public class TestRegisterPetFragment {
     }
 
     @Test
-    public void shouldRegisterNewPet() {
-        onView(withId(R.id.flAddPet)).perform(click());
-        onView(withId(R.id.inputPetName)).check(matches(isDisplayed()));
+    public void shouldShowAllComponents() {
+        activityRule.getActivity().changeFragment(new InfoPetFragment());
 
-        onView(withId(R.id.inputPetName)).perform(typeText("Linux"), closeSoftKeyboard());
-        onView(withId(R.id.inputGender)).perform(typeText("Male"), closeSoftKeyboard());
-        onView(withId(R.id.inputBirthMonth)).perform(click());
-        onView(withText("Selected date")).check(matches(isDisplayed())).perform(pressBack());
-        onView(withId(R.id.inputBirthMonth)).perform(setButtonText("5 MAR 2020"));
-        onView(withId(R.id.inputBreed)).perform(typeText("Husky"), closeSoftKeyboard());
-        onView(withId(R.id.inputWeight)).perform(typeText("5"), closeSoftKeyboard());
-        onView(withId(R.id.inputPathologies)).perform(typeText("lame"), closeSoftKeyboard());
-        onView(withId(R.id.inputRecommendedCalories)).perform(typeText("10"), closeSoftKeyboard());
-        onView(withId(R.id.inputWashFrequency)).perform(typeText("2"), closeSoftKeyboard());
+        onView(withId(R.id.petName)).check(matches(isDisplayed()));
+        onView(withId(R.id.breed)).check(matches(isDisplayed()));
+        onView(withId(R.id.weight)).check(matches(isDisplayed()));
+        onView(withId(R.id.gender)).check(matches(isDisplayed()));
+        onView(withId(R.id.recommendedKcal)).check(matches(isDisplayed()));
+        onView(withId(R.id.pathologies)).check(matches(isDisplayed()));
+        onView(withId(R.id.washFrequency)).check(matches(isDisplayed()));
+        onView(withId(R.id.inputBirthMonth)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.btnAddPet)).perform(click());
-        //onView(withId(R.id.mainMenu)).check(matches(isDisplayed()));
+        onView(withId(R.id.updatePet)).check(matches(isDisplayed()));
+        onView(withId(R.id.updatePet)).perform(swipeUp());
+        onView(withId(R.id.deleteButton)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void shouldNotRegisterNewPetIfAnyFieldIsEmpty() {
-        onView(withId(R.id.flAddPet)).perform(click());
-        onView(withId(R.id.inputPetName)).check(matches(isDisplayed()));
+    public void shouldEditAllEditableComponents() {
+        activityRule.getActivity().changeFragment(new InfoPetFragment());
 
-        onView(withId(R.id.inputPetName)).perform(typeText("Linux"));
-        onView(withId(R.id.inputGender)).perform(typeText("Male"), closeSoftKeyboard());
-
-        onView(withId(R.id.btnAddPet)).perform(click());
-        onView(withId(R.id.inputPetName)).check(matches(isDisplayed()));
+        onView(withId(R.id.txtBreed)).perform(clearText(), typeText("Husky"), closeSoftKeyboard());
+        onView(withId(R.id.txtWeight)).perform(clearText(), typeText("5.0"), closeSoftKeyboard());
+        onView(withId(R.id.inputGender)).perform(clearText(), typeText("Male"), closeSoftKeyboard());
+        onView(withId(R.id.txtWashFrequency)).perform(clearText(), typeText("7"), closeSoftKeyboard());
+        onView(withId(R.id.scrollInfoPet)).perform(swipeUp());
     }
 
     private static ViewAction setButtonText(String text) {

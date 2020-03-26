@@ -16,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,12 +40,12 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.communication.MyPetsComunication;
 import org.pesmypetcare.mypetcare.activities.communication.NewPasswordInterface;
+import org.pesmypetcare.mypetcare.activities.communication.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.communication.SettingsCommunication;
-import org.pesmypetcare.mypetcare.activities.fragments.ImageZoom;
+import org.pesmypetcare.mypetcare.activities.fragments.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
-import org.pesmypetcare.mypetcare.activities.communication.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
@@ -52,19 +53,19 @@ import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
-import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
+import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.features.users.UserNotExistingException;
 
 import java.util.Objects;
 
@@ -81,14 +82,16 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         SettingsMenuFragment.class
     };
 
-    private static boolean enableLoginActivity = false;
+    private static boolean enableLoginActivity = true;
+    private static FloatingActionButton floatingActionButton;
+    private static FirebaseAuth mAuth;
+    private static Fragment actualFragment;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private MaterialToolbar toolbar;
     private NavigationView navigationView;
-    private FloatingActionButton floatingActionButton;
     private User user;
     private TrRegisterNewPet trRegisterNewPet;
     private TrUpdatePetImage trUpdatePetImage;
@@ -98,8 +101,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainUser trObtainUser;
     private TrUpdatePet trUpdatePet;
     private TrChangeMail trChangeMail;
-    private FirebaseAuth mAuth;
-    private static Fragment actualFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,17 +116,29 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     /**
-     * Initialize the current.
+     * Returns the instance of Firebase.
+     * @return The instance of Firebase
      */
-    private void initializeUser() {
+    public static FirebaseAuth getmAuth() {
+        return mAuth;
+    }
+
+    /**
+     * Initialize the current.
+     * @throws PetRepeatException The pet has already been registered
+     */
+    private void initializeUser() throws PetRepeatException {
         trObtainUser.setUsername(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
-        try {
-            trObtainUser.execute();
-        } catch (UserNotExistingException e) {
-            e.printStackTrace();
-        }
+        trObtainUser.execute();
 
         user = trObtainUser.getResult();
+
+        View navigationHeader = navigationView.getHeaderView(0);
+        TextView userName = navigationHeader.findViewById(R.id.lblUserName);
+        TextView userEmail = navigationHeader.findViewById(R.id.lblUserEmail);
+
+        userName.setText(getString(R.string.app_name));
+        userEmail.setText(user.getEmail());
     }
 
     /**
@@ -155,6 +168,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setUpNavigationDrawer();
         setStartFragment();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+    }
+
+    public static void hideFloatingPoint() {
+        floatingActionButton.hide();
     }
 
 
@@ -220,11 +237,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         navigationView.getHeaderView(0).setOnClickListener(v -> {
             Drawable drawable = new BitmapDrawable(getResources(), user.getUserProfileImage());
-            ImageZoom imageZoom = new ImageZoom(drawable);
-            ImageZoom.setIsMainActivity(true);
+            ImageZoomFragment imageZoomFragment = new ImageZoomFragment(drawable);
+            ImageZoomFragment.setIsMainActivity(true);
             floatingActionButton.hide();
             drawerLayout.closeDrawers();
-            changeFragment(imageZoom);
+            changeFragment(imageZoomFragment);
         });
     }
 
@@ -327,8 +344,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
-            System.out.println("I'm here");
-            if (actualFragment instanceof ImageZoom) {
+            if (actualFragment instanceof ImageZoomFragment) {
                 changeFromImageZoom();
                 return true;
             } else if (!(actualFragment instanceof MyPetsFragment)){
@@ -345,12 +361,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Change to next fragment from an ImageZoomFragment
      */
     private void changeFromImageZoom() {
-        if (ImageZoom.isMainActivity()) {
-            Drawable drawable = ImageZoom.getDrawable();
+        if (ImageZoomFragment.isMainActivity()) {
+            Drawable drawable = ImageZoomFragment.getDrawable();
             user.setUserProfileImage(((BitmapDrawable) drawable).getBitmap());
             changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
         } else {
-            InfoPetFragment.setPetProfileDrawable(ImageZoom.getDrawable());
+            InfoPetFragment.setPetProfileDrawable(ImageZoomFragment.getDrawable());
             changeFragment(new InfoPetFragment());
         }
     }
@@ -385,6 +401,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public User getUser() {
+        try {
+            initializeUser();
+        } catch (PetRepeatException e) {
+            e.printStackTrace();
+        }
+
         return user;
     }
 
@@ -398,7 +420,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
 
         if (mAuth.getCurrentUser() != null) {
-            initializeUser();
+            try {
+                initializeUser();
+                changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+            } catch (PetRepeatException e) {
+                Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing),
+                    Toast.LENGTH_LONG);
+                toast.show();
+            }
         }
     }
 
@@ -406,8 +435,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void makeZoomImage(Drawable drawable) {
         floatingActionButton.hide();
-        ImageZoom.setIsMainActivity(false);
-        changeFragment(new ImageZoom(drawable));
+        ImageZoomFragment.setIsMainActivity(false);
+        changeFragment(new ImageZoomFragment(drawable));
     }
 
     @Override
@@ -434,6 +463,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             Toast toast = Toast.makeText(this, getString(R.string.error_user_not_owner), Toast.LENGTH_LONG);
             toast.show();
         }
+
+        changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
     }
 
     @Override
@@ -441,6 +472,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdatePet.setUser(user);
         trUpdatePet.setPet(pet);
         trUpdatePet.execute();
+    }
+
+    @Override
+    public void changeToMainView() {
+
     }
 
     @Override
@@ -474,7 +510,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         else {
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             Drawable drawable = new BitmapDrawable(getResources(), bitmap);
-            ((ImageZoom) actualFragment).setDrawable(drawable);
+            ((ImageZoomFragment) actualFragment).setDrawable(drawable);
         }
     }
 
@@ -519,7 +555,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             toast.show();
         }
     }
-    
+
+    @Override
+    public User getUserForSettings() {
+        return user;
+    }
+
     @Override  
     public void changeMail(String newEmail) {
         trChangeMail.setUser(user);

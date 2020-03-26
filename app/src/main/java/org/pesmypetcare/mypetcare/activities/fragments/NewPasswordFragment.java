@@ -19,7 +19,7 @@ import org.pesmypetcare.mypetcare.databinding.FragmentNewPasswordBinding;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewPassword extends Fragment {
+public class NewPasswordFragment extends Fragment {
     private final int MIN_PASS_LENTGH = 6;
     private String passwd;
     private FragmentNewPasswordBinding binding;

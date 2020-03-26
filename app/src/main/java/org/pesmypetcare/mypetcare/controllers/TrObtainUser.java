@@ -1,8 +1,8 @@
 package org.pesmypetcare.mypetcare.controllers;
 
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.features.users.UserNotExistingException;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
 import org.pesmypetcare.mypetcare.services.UserManagerService;
 
@@ -29,23 +29,11 @@ public class TrObtainUser {
 
     /**
      * Execute the transaction.
-     * @throws UserNotExistingException The pet has already been registered by the user
+     * @throws PetRepeatException The user has already this pet registered.
      */
-    public void execute() throws UserNotExistingException {
-        if (!userHasAlreadyBeenRegistered()) {
-            throw new UserNotExistingException();
-        }
-
+    public void execute() throws PetRepeatException {
         result = userManagerService.findUserByUsername(username);
         result.setPets((ArrayList<Pet>) petManagerService.findPetsByOwner(username));
-    }
-
-    /**
-     * Checks if the user had been registered.
-     * @return True if the user already exists, false otherwise
-     */
-    private boolean userHasAlreadyBeenRegistered() {
-        return userManagerService.userExists(this.username);
     }
 
     /**
