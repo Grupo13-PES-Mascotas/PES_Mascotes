@@ -171,19 +171,26 @@ public class SettingsMenuFragment extends Fragment {
      */
     private void deleteAccountListener() {
         binding.deleteAccountButton.setOnClickListener(v -> {
-            AlertDialog alertDialog1 = new AlertDialog.Builder(getActivity()).create();
-            alertDialog1.setTitle(getResources().getString(R.string.delete_account_db));
-            alertDialog1.setMessage(getResources().getString(R.string.user_confirm));
-            alertDialog1.setButton(DialogInterface.BUTTON_POSITIVE,
-                getResources().getString(R.string.ok), (dialog, which) -> {
-                try {
-                    deleteAccount();
-                } catch (NotValidUserException e) {
-                    e.printStackTrace();
-                }
-            });
-            alertDialog1.show();
+            showAlertDialogDeleteAccount();
         });
+    }
+
+    /**
+     * Show an alert dialog to confirm the delete account.
+     */
+    private void showAlertDialogDeleteAccount() {
+        AlertDialog alertDialog1 = new AlertDialog.Builder(getActivity()).create();
+        alertDialog1.setTitle(getResources().getString(R.string.delete_account_db));
+        alertDialog1.setMessage(getResources().getString(R.string.user_confirm));
+        alertDialog1.setButton(DialogInterface.BUTTON_POSITIVE,
+            getResources().getString(R.string.ok), (dialog, which) -> {
+            try {
+                deleteAccount();
+            } catch (NotValidUserException e) {
+                e.printStackTrace();
+            }
+        });
+        alertDialog1.show();
     }
 
     /**

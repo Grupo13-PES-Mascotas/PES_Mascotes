@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.features.users.UserNotExistingException;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
 import org.pesmypetcare.mypetcare.services.StubUserManagerService;
 
@@ -12,7 +11,6 @@ import static org.junit.Assert.assertNotNull;
 
 public class TestTrObtainUser {
     private TrObtainUser trObtainUser;
-    private final String MIKE = "Mike";
 
     @Before
     public void setUp() {

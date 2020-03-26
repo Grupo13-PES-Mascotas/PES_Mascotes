@@ -59,7 +59,7 @@ public class TestRegisterPetFragment {
 
         onView(withId(R.id.btnAddPet)).perform(click());
         //onView(withId(R.id.mainMenu)).check(matches(isDisplayed()));
-}
+    }
 
     @Test
     public void shouldNotRegisterNewPetIfAnyFieldIsEmpty() {

@@ -101,7 +101,7 @@ public class InfoPetFragment extends Fragment {
             return GenderType.Male;
         }
 
-        if (newGender.equals(getString(R.string.female))){
+        if (newGender.equals(getString(R.string.female))) {
             return GenderType.Female;
         }
 
@@ -114,10 +114,9 @@ public class InfoPetFragment extends Fragment {
     private void setGender() {
         if (pet.getGender() == GenderType.Male) {
             binding.inputGender.setText(R.string.male);
-        } else if (pet.getGender() == GenderType.Female){
+        } else if (pet.getGender() == GenderType.Female) {
             binding.inputGender.setText(R.string.female);
-        }
-        else {
+        } else {
             binding.inputGender.setText(R.string.other);
         }
     }
@@ -376,18 +375,15 @@ public class InfoPetFragment extends Fragment {
     }
 
     /**
-     * Configure some atributtes of confirmation dialog to delete a pet and positive button.
+     * Configure some attributes of confirmation dialog to delete a pet and positive button.
      */
     private void configDialog(MaterialAlertDialogBuilder dialogAlert) {
-        dialogAlert.setTitle(getResources().getString(R.string.delete_pet))
-                .setMessage(getResources().getString(R.string.user_confirm))
-                .setPositiveButton(getResources().getString(R.string.affirmative_response),
-                    (dialog, which) -> {
-                    try {
-                        communication.deletePet(pet);
-                    } catch (UserIsNotOwnerException e) {
-                        e.printStackTrace();
-                    }
-                });
+        dialogAlert.setTitle(getResources().getString(R.string.delete_pet)).setMessage(getResources().getString(R.string.user_confirm)).setPositiveButton(getResources().getString(R.string.affirmative_response), (dialog, which) -> {
+            try {
+                communication.deletePet(pet);
+            } catch (UserIsNotOwnerException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
