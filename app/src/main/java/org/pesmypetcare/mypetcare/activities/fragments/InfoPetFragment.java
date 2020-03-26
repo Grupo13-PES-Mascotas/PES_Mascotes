@@ -381,11 +381,11 @@ public class InfoPetFragment extends Fragment {
         dialogAlert.setTitle(getResources().getString(R.string.delete_pet)).setMessage(getResources()
             .getString(R.string.user_confirm)).setPositiveButton(getResources()
             .getString(R.string.affirmative_response), (dialog, which) -> {
-            try {
-                communication.deletePet(pet);
-            } catch (UserIsNotOwnerException e) {
-                e.printStackTrace();
-            }
+                try {
+                    communication.deletePet(pet);
+                } catch (UserIsNotOwnerException e) {
+                    e.printStackTrace();
+                }
         });
     }
 }

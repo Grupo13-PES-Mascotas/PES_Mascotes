@@ -184,11 +184,11 @@ public class SettingsMenuFragment extends Fragment {
         alertDialog1.setMessage(getResources().getString(R.string.user_confirm));
         alertDialog1.setButton(DialogInterface.BUTTON_POSITIVE,
             getResources().getString(R.string.ok), (dialog, which) -> {
-            try {
-                deleteAccount();
-            } catch (NotValidUserException e) {
-                e.printStackTrace();
-            }
+                try {
+                    deleteAccount();
+                } catch (NotValidUserException e) {
+                    e.printStackTrace();
+                }
         });
         alertDialog1.show();
     }
