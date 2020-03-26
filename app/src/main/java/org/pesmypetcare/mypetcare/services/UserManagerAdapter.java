@@ -51,10 +51,6 @@ public class UserManagerAdapter implements UserManagerService {
 
     @Override
     public void createUser(String uid, String email, String password) {
-        try {
-            ServiceLocator.getInstance().getUserManagerClient().signUp(uid, password, email);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        ServiceLocator.getInstance().getUserManagerClient().signUp(uid, password, email);
     }
 }

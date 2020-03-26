@@ -17,7 +17,7 @@ import java.util.List;
 
 public class MainMenuView extends LinearLayout {
     private Context currentActivity;
-    private List<ConstraintLayout> petComponents;
+    private List<PetComponentView> petComponents;
     private final int SPACERSIZE = 40;
 
     public MainMenuView(Context context, @Nullable AttributeSet attrs) {
@@ -52,7 +52,7 @@ public class MainMenuView extends LinearLayout {
     private void initializeComponent(List<Pet> userPets) {
         Space space;
         Pet currentPet = userPets.remove(0);
-        ConstraintLayout component = new PetComponentView(currentActivity, null).initializePetComponent(currentPet);
+        PetComponentView component = new PetComponentView(currentActivity, null).initializePetComponent(currentPet);
         this.addView(component);
         this.petComponents.add(component);
         space = initializeSpacer();
@@ -74,7 +74,7 @@ public class MainMenuView extends LinearLayout {
      * Getter of the pet components arraylist.
      * @return The arraylist containing all the pet components
      */
-    public List<ConstraintLayout> getPetComponents() {
+    public List<PetComponentView> getPetComponents() {
         return petComponents;
     }
 }

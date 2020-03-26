@@ -18,6 +18,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 public class PetComponentView extends ConstraintLayout {
     private Context currentActivity;
+    private Pet pet;
     private final int PADDING = 15;
     private final int IMAGELAYOUTMARGIN = 10;
     private final int PETINFOIMAGEMARGIN = 40;
@@ -37,13 +38,22 @@ public class PetComponentView extends ConstraintLayout {
      * @param currentPet The pet that has to be shown in the component
      * @return The initialized component
      */
-    public ConstraintLayout initializePetComponent(Pet currentPet) {
+    public PetComponentView initializePetComponent(Pet currentPet) {
+        pet = currentPet;
         CircularImageView image = addPetImage();
         this.addView(image);
         LinearLayout petInfo = addPetInfo(currentPet.getName(), currentPet.getBreed(), currentPet.getBirthDate());
         this.addView(petInfo);
         generateConstraints(image.getId(), petInfo.getId(), this.getId(), this);
         return this;
+    }
+
+    /**
+     * Get the current pet.
+     * @return The current pet
+     */
+    public Pet getPet() {
+        return pet;
     }
 
     /**

@@ -18,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -60,6 +61,7 @@ import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
@@ -67,7 +69,10 @@ import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.features.users.UserNotExistingException;
+import org.pesmypetcare.mypetcare.services.ServiceLocator;
+import org.w3c.dom.Text;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
@@ -100,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainUser trObtainUser;
     private TrUpdatePet trUpdatePet;
     private TrChangeMail trChangeMail;
-    private FirebaseAuth mAuth;
+    private static FirebaseAuth mAuth;
     private static Fragment actualFragment;
 
     @Override
@@ -117,17 +122,27 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     /**
-     * Initialize the current.
+     * Returns the instance of Firebase.
+     * @return The instance of Firebase
      */
-    private void initializeUser() {
+    public static FirebaseAuth getmAuth() {
+        return mAuth;
+    }
+
+    /**
+     * Initialize the current.
+     * @throws PetRepeatException The pet has already been registered
+     */
+    private void initializeUser() throws PetRepeatException {
         trObtainUser.setUsername(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
-        try {
-            trObtainUser.execute();
-        } catch (UserNotExistingException e) {
-            e.printStackTrace();
-        }
+        trObtainUser.execute();
 
         user = trObtainUser.getResult();
+        /*TextView navigationDrawerUsername = findViewById(R.id.lblUserName);
+        TextView navigationDrawerUserEmail = findViewById(R.id.lblUserEmail);
+
+        navigationDrawerUsername.setText(user.getUsername());
+        navigationDrawerUserEmail.setText(user.getEmail());*/
     }
 
     /**
@@ -400,30 +415,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
 
         if (mAuth.getCurrentUser() != null) {
-            SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-            String storedUsername = sharedPreferences.getString("username", "");
-
-            if (storedUsername.equals(mAuth.getCurrentUser().getUid())) {
-                String storedEmail = sharedPreferences.getString("email", "");
-                String storedPassword = sharedPreferences.getString("password", "");
-                user = new User(storedUsername, storedEmail, storedPassword);
-            } else {
+            try {
                 initializeUser();
-                storeUser(sharedPreferences);
+            } catch (PetRepeatException e) {
+                Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing),
+                    Toast.LENGTH_LONG);
+                toast.show();
             }
         }
-    }
-
-    /**
-     * Stores the user in the shared preferences of the device.
-     * @param sharedPreferences The shared preferences of the device
-     */
-    private void storeUser(SharedPreferences sharedPreferences) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("username", user.getUsername());
-        editor.putString("email", user.getEmail());
-        editor.putString("password", user.getPasswd());
-        editor.apply();
     }
 
 

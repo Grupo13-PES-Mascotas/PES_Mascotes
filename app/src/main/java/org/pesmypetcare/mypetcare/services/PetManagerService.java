@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.services;
 import android.graphics.Bitmap;
 
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
@@ -23,7 +24,7 @@ public interface PetManagerService {
      * @return True if the register has been done without any problems
      * @throws PetAlreadyExistingException The pet already belongs to the user
      */
-    boolean registerNewPet(String username, Pet pet) throws PetAlreadyExistingException;
+    boolean registerNewPet(String username, Pet pet);
 
     /**
      * Updates the image of the pet.
@@ -51,5 +52,5 @@ public interface PetManagerService {
      * @param username The user who wants to get his pets
      * @return The pets that belongs to the user
      */
-    List<Pet> findPetsByOwner(String username);
+    List<Pet> findPetsByOwner(String username) throws PetRepeatException;
 }

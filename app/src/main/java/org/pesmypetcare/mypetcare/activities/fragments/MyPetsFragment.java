@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.communication.MyPetsComunication;
+import org.pesmypetcare.mypetcare.activities.views.PetComponentView;
 import org.pesmypetcare.mypetcare.databinding.FragmentMyPetsBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -34,7 +35,7 @@ public class MyPetsFragment extends Fragment {
         binding = FragmentMyPetsBinding.inflate(inflater, container, false);
         comunication = (MyPetsComunication) getActivity();
         currentUser = Objects.requireNonNull(comunication).getUser();
-        initializeTestUser();
+        //initializeTestUser();
         initializeMainMenuView();
         return binding.getRoot();
     }
@@ -51,14 +52,15 @@ public class MyPetsFragment extends Fragment {
      * Method responsible for setting the listeners for all the pet components.
      */
     private void setPetComponentsListeners() {
-        List<ConstraintLayout> petsComponents = binding.mainMenu.getPetComponents();
+        List<PetComponentView> petsComponents = binding.mainMenu.getPetComponents();
         index = 0;
         InfoPetFragment testFragment = new InfoPetFragment();
         while (!petsComponents.isEmpty()) {
-            ConstraintLayout tmp = petsComponents.remove(0);
+            PetComponentView tmp = petsComponents.remove(0);
             tmp.setClickable(true);
             tmp.setOnClickListener(v -> {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                InfoPetFragment.setPet(tmp.getPet());
+                FragmentTransaction ft = Objects.requireNonNull(getFragmentManager()).beginTransaction();
                 ft.replace(R.id.mainActivityFrameLayout, testFragment);
                 ft.commit();
                 MainActivity.setActualFragment(testFragment);

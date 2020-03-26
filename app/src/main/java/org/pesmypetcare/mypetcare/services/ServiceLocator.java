@@ -25,7 +25,7 @@ public class ServiceLocator {
         return userManagerClient;
     }
 
-    public PetManagerClient getPetManagerService() {
+    public PetManagerClient getPetManagerClient() {
         return petManagerClient;
     }
 }

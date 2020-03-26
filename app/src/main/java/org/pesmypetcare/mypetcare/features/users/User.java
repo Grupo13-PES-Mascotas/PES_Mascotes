@@ -99,7 +99,10 @@ public class User {
      * @param pets The arraylist of pets to set
      */
     public void setPets(ArrayList<Pet> pets) {
-        this.pets = pets;
+        this.pets.clear();
+        for (Pet pet : pets) {
+            addPet(pet);
+        }
     }
 
     /**
