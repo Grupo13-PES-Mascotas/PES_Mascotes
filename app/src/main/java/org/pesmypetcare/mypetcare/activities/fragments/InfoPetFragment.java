@@ -173,6 +173,7 @@ public class InfoPetFragment extends Fragment {
         modifiedPet();
         binding.updatePet.setOnClickListener(v -> {
             if (modified) {
+                modified = false;
                 try {
                     updatePet();
                 } catch (PetRepeatException e) {
@@ -191,7 +192,7 @@ public class InfoPetFragment extends Fragment {
         pet.setName(newName);
         pet.setGender(getGender());
         pet.setBreed(newBreed);
-        pet.setWeight(Float.parseFloat(newWeight));
+        pet.setWeight(Double.parseDouble(newWeight));
 
         try {
             communication.updatePet(pet);

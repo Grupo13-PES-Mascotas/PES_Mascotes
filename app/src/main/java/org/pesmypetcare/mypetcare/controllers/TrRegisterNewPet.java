@@ -41,8 +41,6 @@ public class TrRegisterNewPet {
             throw new PetAlreadyExistingException();
         }
 
-        System.out.println("PET NAME: " + pet.getName());
-
         user.addPet(pet);
         petManagerService.registerNewPet(user.getUsername(), pet);
         result = true;

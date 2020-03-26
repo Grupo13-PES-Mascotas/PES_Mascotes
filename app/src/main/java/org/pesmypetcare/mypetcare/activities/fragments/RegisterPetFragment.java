@@ -69,7 +69,8 @@ public class RegisterPetFragment extends Fragment {
         petInfo.putString(Pet.BUNDLE_NAME, Objects.requireNonNull(binding.inputPetName.getText()).toString());
         petInfo.putString(Pet.BUNDLE_GENDER, Objects.requireNonNull(binding.inputGender.getText()).toString());
         petInfo.putString(Pet.BUNDLE_BREED, Objects.requireNonNull(binding.inputBreed.getText()).toString());
-        petInfo.putString(Pet.BUNDLE_BIRTH_DATE, binding.inputBirthMonth.getText().toString());
+        petInfo.putString(Pet.BUNDLE_BIRTH_DATE, DateConversion.convertToServer(binding.inputBirthMonth.getText()
+            .toString()));
         petInfo.putFloat(Pet.BUNDLE_WEIGHT, Float.parseFloat(Objects.requireNonNull(binding.inputWeight.getText())
             .toString()));
         petInfo.putString(Pet.BUNDLE_PATHOLOGIES, Objects.requireNonNull(binding.inputPathologies.getText())

@@ -344,7 +344,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
-            System.out.println("I'm here");
             if (actualFragment instanceof ImageZoomFragment) {
                 changeFromImageZoom();
                 return true;
@@ -402,6 +401,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public User getUser() {
+        try {
+            initializeUser();
+        } catch (PetRepeatException e) {
+            e.printStackTrace();
+        }
+
         return user;
     }
 
@@ -417,6 +422,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         if (mAuth.getCurrentUser() != null) {
             try {
                 initializeUser();
+                changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
             } catch (PetRepeatException e) {
                 Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing),
                     Toast.LENGTH_LONG);
@@ -457,6 +463,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             Toast toast = Toast.makeText(this, getString(R.string.error_user_not_owner), Toast.LENGTH_LONG);
             toast.show();
         }
+
+        changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
     }
 
     @Override

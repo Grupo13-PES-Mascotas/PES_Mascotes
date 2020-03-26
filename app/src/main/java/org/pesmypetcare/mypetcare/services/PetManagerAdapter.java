@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.services;
 import android.graphics.Bitmap;
 
 import org.pesmypetcare.mypetcare.activities.MainActivity;
+import org.pesmypetcare.mypetcare.activities.fragments.DateConversion;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -37,8 +38,8 @@ public class PetManagerAdapter implements PetManagerService {
     @Override
     public boolean registerNewPet(String username, Pet pet) {
         ServiceLocator.getInstance().getPetManagerClient()
-            .signUpPet(username, pet.getName(), pet.getGender().toString(), pet.getBreed(), "2015-01-01", pet.getWeight(),
-            pet.getPathologies(), pet.getRecommendedDailyKiloCalories(), pet.getWashFrequency());
+            .signUpPet(username, pet.getName(), pet.getGender().toString(), pet.getBreed(), pet.getBirthDate(),
+                pet.getWeight(), pet.getPathologies(), pet.getRecommendedDailyKiloCalories(), pet.getWashFrequency());
         return true;
     }
 
@@ -75,22 +76,31 @@ public class PetManagerAdapter implements PetManagerService {
 
         for (org.pesmypetcare.usermanagerlib.datacontainers.Pet userPet : userPets) {
             if (userPet != null) {
-                PetData petData = userPet.getBody();
-                Pet pet = new Pet();
-
-                pet.setName(userPet.getName());
-                pet.setGender(petData.getGender());
-                pet.setBirthDate(petData.getBirth().toString());
-                pet.setWeight(petData.getWeight());
-                pet.setWashFrequency(petData.getWashFreq());
-                pet.setRecommendedDailyKiloCalories(petData.getRecommendedKcal());
-                pet.setBreed(pet.getBreed());
-                pet.setPathologies(petData.getPathologies());
-
-                pets.add(pet);
+                pets.add(decodePet(userPet));
             }
         }
 
         return pets;
+    }
+
+    /**
+     * Decodes the pet information from the server.
+     * @param userPet The information from the server
+     * @return The pet associated with that information
+     * @throws PetRepeatException The pet is repeated.
+     */
+    private Pet decodePet(org.pesmypetcare.usermanagerlib.datacontainers.Pet userPet) throws PetRepeatException {
+        PetData petData = userPet.getBody();
+        Pet pet = new Pet();
+
+        pet.setName(userPet.getName());
+        pet.setGender(petData.getGender());
+        pet.setBirthDate(DateConversion.convertToApp(petData.getBirth().toString()));
+        pet.setWeight(petData.getWeight());
+        pet.setWashFrequency(petData.getWashFreq());
+        pet.setRecommendedDailyKiloCalories(petData.getRecommendedKcal());
+        pet.setBreed(petData.getBreed());
+        pet.setPathologies(petData.getPathologies());
+        return pet;
     }
 }

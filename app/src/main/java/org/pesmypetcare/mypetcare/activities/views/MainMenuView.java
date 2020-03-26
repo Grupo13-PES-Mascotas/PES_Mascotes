@@ -7,7 +7,6 @@ import android.widget.LinearLayout;
 import android.widget.Space;
 
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -18,7 +17,7 @@ import java.util.List;
 public class MainMenuView extends LinearLayout {
     private Context currentActivity;
     private List<PetComponentView> petComponents;
-    private final int SPACERSIZE = 40;
+    private final int SPACE_SIZE = 40;
 
     public MainMenuView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -66,7 +65,7 @@ public class MainMenuView extends LinearLayout {
     private Space initializeSpacer() {
         Space space;
         space = new Space(currentActivity);
-        space.setMinimumHeight(SPACERSIZE);
+        space.setMinimumHeight(SPACE_SIZE);
         return space;
     }
 
