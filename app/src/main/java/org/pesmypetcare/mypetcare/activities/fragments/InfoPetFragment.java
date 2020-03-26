@@ -378,7 +378,9 @@ public class InfoPetFragment extends Fragment {
      * Configure some attributes of confirmation dialog to delete a pet and positive button.
      */
     private void configDialog(MaterialAlertDialogBuilder dialogAlert) {
-        dialogAlert.setTitle(getResources().getString(R.string.delete_pet)).setMessage(getResources().getString(R.string.user_confirm)).setPositiveButton(getResources().getString(R.string.affirmative_response), (dialog, which) -> {
+        dialogAlert.setTitle(getResources().getString(R.string.delete_pet)).setMessage(getResources()
+            .getString(R.string.user_confirm)).setPositiveButton(getResources()
+            .getString(R.string.affirmative_response), (dialog, which) -> {
             try {
                 communication.deletePet(pet);
             } catch (UserIsNotOwnerException e) {

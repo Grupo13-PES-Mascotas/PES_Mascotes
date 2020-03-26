@@ -37,8 +37,8 @@ public class DateConversion {
         String[] dateInfo = date.split(" ");
         StringBuilder conversion = new StringBuilder("");
 
-        conversion.append(Integer.parseInt(dateInfo[SERVER_DAY])).append(" ").append(dateInfo[SERVER_MONTH])
-            .append(" ").append(dateInfo[SERVER_YEAR]);
+        conversion.append(Integer.parseInt(dateInfo[SERVER_DAY])).append(' ').append(dateInfo[SERVER_MONTH])
+            .append(' ').append(dateInfo[SERVER_YEAR]);
 
         return conversion.toString();
     }
