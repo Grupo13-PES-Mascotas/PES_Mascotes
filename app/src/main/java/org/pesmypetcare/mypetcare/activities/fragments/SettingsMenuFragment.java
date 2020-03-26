@@ -64,10 +64,11 @@ public class SettingsMenuFragment extends Fragment {
         communication = (SettingsCommunication) getActivity();
         mAuth = FirebaseAuth.getInstance();
         settingsOptionsListeners();
-        user = new User("johnDoe", "johndoe@gmail.com", "123456");
+        user = communication.getUserForSettings();
         setEmail();
         changeEmail();
         isChangeLanguageActivated = false;
+        binding.changeEmail.getEditText().setText(user.getEmail());
         return binding.getRoot();
     }
 

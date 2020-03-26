@@ -21,4 +21,10 @@ public interface SettingsCommunication {
      * @param user The user
      */
     void deleteUser(User user) throws NotValidUserException;
+
+    /**
+     * Gets the user for settings.
+     * @return The user for settings
+     */
+    User getUserForSettings();
 }

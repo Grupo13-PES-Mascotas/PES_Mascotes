@@ -60,7 +60,7 @@
     </string-array>
     <string name="input_pet_name">Nom</string>
     <string name="input_gender">Gènere</string>
-    <string name="input_birth_date">Data de naixement</string>
+    <string name="input_birth_date">Naixement</string>
     <string name="input_breed">Raça</string>
     <string name="input_weight">Pes (kg)</string>
     <string name="input_recommended_calories">Calories recomanades (kcal)</string>

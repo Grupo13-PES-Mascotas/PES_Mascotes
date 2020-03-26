@@ -32,9 +32,10 @@ public class MyPetsFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentMyPetsBinding.inflate(inflater, container, false);
         communication = (MyPetsComunication) getActivity();
-        currentUser = Objects.requireNonNull(communication).getUser();
-        //initializeTestUser();
-        initializeMainMenuView();
+        if (MainActivity.getmAuth().getCurrentUser() != null) {
+            currentUser = Objects.requireNonNull(communication).getUser();
+            initializeMainMenuView();
+        }
         return binding.getRoot();
     }
 
@@ -62,6 +63,7 @@ public class MyPetsFragment extends Fragment {
                 ft.replace(R.id.mainActivityFrameLayout, testFragment);
                 ft.commit();
                 MainActivity.setActualFragment(testFragment);
+                MainActivity.hideFloatingPoint();
             });
             ++index;
         }

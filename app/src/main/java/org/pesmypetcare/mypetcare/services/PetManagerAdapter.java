@@ -2,18 +2,14 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
-import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.fragments.DateConversion;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 public class PetManagerAdapter implements PetManagerService {
@@ -24,15 +20,15 @@ public class PetManagerAdapter implements PetManagerService {
 
         ServiceLocator.getInstance().getPetManagerClient().updateGender(ownerUsername, name,
             pet.getGender().toString());
-        ServiceLocator.getInstance().getPetManagerClient().updateBirthday(ownerUsername, name, pet.getBirthDate());
+        //ServiceLocator.getInstance().getPetManagerClient().updateBirthday(ownerUsername, name, pet.getBirthDate());
         ServiceLocator.getInstance().getPetManagerClient().updateWeight(ownerUsername, name, pet.getWeight());
         ServiceLocator.getInstance().getPetManagerClient().updateBreed(ownerUsername, name, pet.getBreed());
-        ServiceLocator.getInstance().getPetManagerClient().updatePathologies(ownerUsername, name,
+        /*ServiceLocator.getInstance().getPetManagerClient().updatePathologies(ownerUsername, name,
             pet.getPathologies());
         ServiceLocator.getInstance().getPetManagerClient().updateRecKcal(ownerUsername, name,
             pet.getRecommendedDailyKiloCalories());
         ServiceLocator.getInstance().getPetManagerClient().updateWashFreq(ownerUsername, name,
-            pet.getWashFrequency());
+            pet.getWashFrequency());*/
     }
 
     @Override

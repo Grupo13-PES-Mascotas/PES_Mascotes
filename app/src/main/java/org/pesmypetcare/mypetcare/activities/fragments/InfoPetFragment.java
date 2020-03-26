@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +55,7 @@ public class InfoPetFragment extends Fragment {
         communication = (InfoPetCommunication) getActivity();
 
         updatePetListeners();
-        setCalendarPicker();
+        //setCalendarPicker();
         setGenderDropdownMenu();
         setPetProfileImage();
         initializePetInfo();
@@ -176,6 +178,7 @@ public class InfoPetFragment extends Fragment {
                 modified = false;
                 try {
                     updatePet();
+                    //communication.changeToMainView();
                 } catch (PetRepeatException e) {
                     e.printStackTrace();
                 }
@@ -215,9 +218,22 @@ public class InfoPetFragment extends Fragment {
      * Initializes the listeners for the new_gender variable.
      */
     private void modifiedGender() {
-        binding.gender.addOnEditTextAttachedListener(textInputLayout -> {
-            modified = true;
-            newGender = Objects.requireNonNull(binding.gender.getEditText()).getText().toString();
+        Objects.requireNonNull(binding.gender.getEditText()).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Unused
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                modified = true;
+                newGender = Objects.requireNonNull(binding.gender.getEditText()).getText().toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Unused
+            }
         });
     }
 
@@ -225,9 +241,22 @@ public class InfoPetFragment extends Fragment {
      * Initializes the listeners for the new_breed variable.
      */
     private void modifiedBreed() {
-        binding.breed.addOnEditTextAttachedListener(textInputLayout -> {
-            modified = true;
-            newBreed = Objects.requireNonNull(binding.breed.getEditText()).getText().toString();
+        Objects.requireNonNull(binding.breed.getEditText()).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Unused
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                modified = true;
+                newBreed = Objects.requireNonNull(binding.breed.getEditText()).getText().toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Unused
+            }
         });
     }
 
@@ -235,9 +264,22 @@ public class InfoPetFragment extends Fragment {
      * Initializes the listeners for the new_name variable.
      */
     private void modifiedName() {
-        binding.petName.addOnEditTextAttachedListener(textInputLayout -> {
-            modified = true;
-            newName = Objects.requireNonNull(binding.petName.getEditText()).getText().toString();
+        Objects.requireNonNull(binding.petName.getEditText()).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Unused
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                modified = true;
+                newName = Objects.requireNonNull(binding.petName.getEditText()).getText().toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Unused
+            }
         });
     }
 
@@ -245,9 +287,22 @@ public class InfoPetFragment extends Fragment {
      * Initializes the listeners for the new_weight variable.
      */
     private void modifiedWeight() {
-        binding.weight.addOnEditTextAttachedListener(textInputLayout -> {
-            modified = true;
-            newWeight = Objects.requireNonNull(binding.weight.getEditText()).getText().toString();
+        Objects.requireNonNull(binding.weight.getEditText()).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Unused
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                modified = true;
+                newWeight = Objects.requireNonNull(binding.weight.getEditText()).getText().toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Unused
+            }
         });
     }
 

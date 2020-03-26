@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             app:startIconContentDescription="Pet Name"
-            android:layout_marginStart="50dp"
+            android:layout_marginStart="30dp"
             android:gravity="center"
             app:boxBackgroundColor="@color/colorAccent"
             android:textStyle="bold"
@@ -44,7 +44,9 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/design_default_color_surface"
                 android:text="@string/name_random"
-                android:textSize="40sp"/>
+                android:focusable="false"
+                android:singleLine="true"
+                android:textSize="30sp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -53,7 +55,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/icon_dog"
-            android:layout_marginStart="50dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:contentDescription="@string/type_of_pet" />
@@ -143,7 +145,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/Recommended_kcal_random" />
+                    android:text="@string/Recommended_kcal_random"
+                    android:focusable="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -161,7 +164,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/patologies_random" />
+                    android:text="@string/patologies_random"
+                    android:focusable="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -170,6 +174,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/wash_title"
+                android:focusable="false"
                 app:helperTextEnabled="true"
                 app:hintAnimationEnabled="true"
                 app:hintEnabled="true"
@@ -205,21 +210,25 @@
                 android:layout_marginBottom="20dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:text="@string/update_pet"
+                android:paddingStart="40dp"
+                android:textSize="14sp"
                 android:textColor="@color/white"
-                style="@style/rounded_button" />
+                style="@style/rounded_button"
+                tools:ignore="RtlSymmetry" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/deleteButton"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.4"
                 android:text="@string/delete_pet"
                 android:textColor="@color/white"
                 app:icon="@drawable/baseline_delete_black_18dp"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 app:iconTint="@color/white"
                 android:backgroundTint="@color/red"
-                android:layout_marginBottom="40dp" />
+                android:layout_marginBottom="40dp"
+                style="@style/rounded_button"/>
 
         </LinearLayout>
     </ScrollView>

@@ -60,11 +60,11 @@
     </string-array>
     <string name="input_pet_name">Nombre</string>
     <string name="input_gender">Género</string>
-    <string name="input_birth_date">Fecha de nacimiento</string>
+    <string name="input_birth_date">Nacimiento</string>
     <string name="input_breed">Raza</string>
     <string name="input_weight">Peso (kg)</string>
     <string name="input_recommended_calories">Calorías recomendadas (kcal)</string>
-    <string name="input_wash_frequency">Frecuencia de baño (days)</string>
+    <string name="input_wash_frequency">Frecuencia de baño (días)</string>
     <string name="input_pathologies">Patologías</string>
     <string name="select_birth_date">Selecciona fecha de nacimiento</string>
     <string name="register_new_pet">Registrar nueva mascota</string>

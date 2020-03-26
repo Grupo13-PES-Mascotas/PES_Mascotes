@@ -2,9 +2,7 @@ package org.pesmypetcare.mypetcare.activities;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -68,11 +66,7 @@ import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.features.users.UserNotExistingException;
-import org.pesmypetcare.mypetcare.services.ServiceLocator;
-import org.w3c.dom.Text;
 
-import java.util.Date;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
@@ -89,13 +83,15 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     };
 
     private static boolean enableLoginActivity = true;
+    private static FloatingActionButton floatingActionButton;
+    private static FirebaseAuth mAuth;
+    private static Fragment actualFragment;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private MaterialToolbar toolbar;
     private NavigationView navigationView;
-    private FloatingActionButton floatingActionButton;
     private User user;
     private TrRegisterNewPet trRegisterNewPet;
     private TrUpdatePetImage trUpdatePetImage;
@@ -105,8 +101,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainUser trObtainUser;
     private TrUpdatePet trUpdatePet;
     private TrChangeMail trChangeMail;
-    private static FirebaseAuth mAuth;
-    private static Fragment actualFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,11 +132,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainUser.execute();
 
         user = trObtainUser.getResult();
-        /*TextView navigationDrawerUsername = findViewById(R.id.lblUserName);
-        TextView navigationDrawerUserEmail = findViewById(R.id.lblUserEmail);
 
-        navigationDrawerUsername.setText(user.getUsername());
-        navigationDrawerUserEmail.setText(user.getEmail());*/
+        View navigationHeader = navigationView.getHeaderView(0);
+        TextView userName = navigationHeader.findViewById(R.id.lblUserName);
+        TextView userEmail = navigationHeader.findViewById(R.id.lblUserEmail);
+
+        userName.setText(getString(R.string.app_name));
+        userEmail.setText(user.getEmail());
     }
 
     /**
@@ -172,6 +168,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setUpNavigationDrawer();
         setStartFragment();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+    }
+
+    public static void hideFloatingPoint() {
+        floatingActionButton.hide();
     }
 
 
@@ -475,6 +475,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
+    public void changeToMainView() {
+
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
@@ -550,7 +555,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             toast.show();
         }
     }
-    
+
+    @Override
+    public User getUserForSettings() {
+        return user;
+    }
+
     @Override  
     public void changeMail(String newEmail) {
         trChangeMail.setUser(user);
