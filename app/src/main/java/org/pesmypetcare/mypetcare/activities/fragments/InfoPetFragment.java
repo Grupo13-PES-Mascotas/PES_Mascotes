@@ -386,6 +386,6 @@ public class InfoPetFragment extends Fragment {
                     } catch (UserIsNotOwnerException e) {
                         e.printStackTrace();
                     }
-        });
+            });
     }
 }
