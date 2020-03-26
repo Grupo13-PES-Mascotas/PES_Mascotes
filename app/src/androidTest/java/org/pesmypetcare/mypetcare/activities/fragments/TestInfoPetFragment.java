@@ -11,6 +11,7 @@ import androidx.test.rule.ActivityTestRule;
 import com.google.android.material.button.MaterialButton;
 
 import org.hamcrest.Matcher;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,7 +20,9 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.pressBack;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.action.ViewActions.typeText;
@@ -43,7 +46,8 @@ public class TestInfoPetFragment {
 
     @Test
     public void shouldShowAllComponents() {
-        onView(withId(R.id.mainMenu)).perform(click());
+        activityRule.getActivity().changeFragment(new InfoPetFragment());
+
         onView(withId(R.id.petName)).check(matches(isDisplayed()));
         onView(withId(R.id.breed)).check(matches(isDisplayed()));
         onView(withId(R.id.weight)).check(matches(isDisplayed()));
@@ -59,19 +63,14 @@ public class TestInfoPetFragment {
     }
 
     @Test
-    public void shouldEditAllComponents() {
-        onView(withId(R.id.mainMenu)).perform(click());
-        onView(withId(R.id.petName)).perform(typeText("Dinky"));
-        onView(withId(R.id.breed)).perform(typeText("Husky"));
-        onView(withId(R.id.weight)).perform(typeText("5.0"));
-        onView(withId(R.id.gender)).perform(typeText("Male"));
-        onView(withId(R.id.recommendedKcal)).perform(typeText("20.0"));
-        onView(withId(R.id.pathologies)).perform(typeText("Lame"));
-        onView(withId(R.id.washFrequency)).perform(typeText("7"));
-        onView(withText("dd/mm/yyyy")).check(matches(isDisplayed())).perform(pressBack());
-        onView(withId(R.id.inputBirthMonth)).perform(setButtonText("5 MAR 2020"));
+    public void shouldEditAllEditableComponents() {
+        activityRule.getActivity().changeFragment(new InfoPetFragment());
 
-        onView(withId(R.id.updatePet)).perform(click());
+        onView(withId(R.id.txtBreed)).perform(clearText(), typeText("Husky"), closeSoftKeyboard());
+        onView(withId(R.id.txtWeight)).perform(clearText(), typeText("5.0"), closeSoftKeyboard());
+        onView(withId(R.id.inputGender)).perform(clearText(), typeText("Male"), closeSoftKeyboard());
+        onView(withId(R.id.txtWashFrequency)).perform(clearText(), typeText("7"), closeSoftKeyboard());
+        onView(withId(R.id.scrollInfoPet)).perform(swipeUp());
     }
 
     private static ViewAction setButtonText(String text) {

@@ -40,6 +40,7 @@
             android:textColor="@color/design_default_color_surface">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtPetName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/design_default_color_surface"
@@ -63,6 +64,7 @@
 
     </LinearLayout>
     <ScrollView
+        android:id="@+id/scrollInfoPet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
@@ -83,6 +85,7 @@
                 app:boxBackgroundColor="@color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtBreed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/breed_random" />
@@ -101,6 +104,7 @@
                 app:boxBackgroundColor="@color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtWeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/weight_random" />
@@ -143,6 +147,7 @@
                 app:boxBackgroundColor="@color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtRecommendedKcal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/Recommended_kcal_random"
@@ -162,6 +167,7 @@
                 app:boxBackgroundColor="@color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtPathologies"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/patologies_random"
@@ -182,6 +188,7 @@
                 app:boxBackgroundColor="@color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtWashFrequency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/wash_random" />

@@ -34,8 +34,9 @@ public class TestImageZoomFragment {
 
     @Test
     public void shouldMakeZoomOnPetImage() {
-        onView(withId(R.id.mainMenu)).perform(click());
-        onView(withId(R.id.imgPet)).perform(click());
+        activityRule.getActivity().changeFragment(new InfoPetFragment());
+        //onView(withId(R.id.mainMenu)).perform(click());
+        onView(withContentDescription("pet profile image")).perform(click());
 
         onView(withId(R.id.displayedImage)).check(matches(isDisplayed()));
         onView(withId(R.id.flModifyImage)).check(matches(isDisplayed()));

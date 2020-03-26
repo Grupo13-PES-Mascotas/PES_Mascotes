@@ -37,6 +37,7 @@ public class InfoPetFragment extends Fragment {
     private static Drawable petProfileDrawable;
     private static boolean isImageModified;
     private static Pet pet = new Pet("Linux");
+    private static final String PET_PROFILE_IMAGE_DESCRIPTION = "pet profile image";
 
     private FragmentInfoPetBinding binding;
     private Button birthDate;
@@ -126,6 +127,7 @@ public class InfoPetFragment extends Fragment {
      */
     private void setPetProfileImage() {
         petProfileImage = binding.imgPet;
+        petProfileImage.setContentDescription(PET_PROFILE_IMAGE_DESCRIPTION);
 
         if (petProfileDrawable == null) {
             assignPetImageToDisplay();
