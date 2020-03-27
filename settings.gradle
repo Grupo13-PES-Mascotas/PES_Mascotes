@@ -1,0 +1,2 @@
+rootProject.name='My Pet Care'
+include ':app', ':usermanagerlib'

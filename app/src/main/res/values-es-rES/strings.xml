@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My Pet Care</string>
+    <string name="sign_up">Registrarse</string>
+    <string name="log_in">Iniciar sesión</string>
+    <string name="username">Usuario</string>
+    <string name="email">Correo electrónico</string>
+    <string name="pass">Contraseña</string>
+    <string name="repeat_pass">Repetir Contraseña</string>
+    <string name="titleDesc">Título de la aplicación</string>
+    <string name="fieldImage">Imagen del actual campo</string>
+    <string name="differentPasswords">Las contraseñas no coinciden</string>
+    <string name="shortPassword">Contraseña demasiado corta</string>
+    <string name="weakPassword">Contraseña muy débil</string>
+    <string name="emptyField">Este campo no puede estar vacío</string>
+    <string name="navigation_my_pets">Mis mascotas</string>
+    <string name="navigation_pets_community">Comunidad de mascotas</string>
+    <string name="navigation_my_walks">Mis paseos</string>
+    <string name="navigation_near_establishments">Establecimientos cercanos</string>
+    <string name="navigation_calendar">Calendario</string>
+    <string name="navigation_achievements">Logros</string>
+    <string name="navigation_settings">Ajustes</string>
+    <string name="defaultName">John Doe</string>
+    <string name="defaultEmail">johndoe@gmail.com</string>
+    <string name="breed_title">Raza</string>
+    <string name="birth_date_title">Edad(años)</string>
+    <string name="gender_title">Género</string>
+    <string name="birth_title">Fecha de nacimiento</string>
+    <string name="weight_title">Peso(kg)</string>
+    <string name="patologies_title">Patologías</string>
+    <string name="recommended_kcal_title">Calorias recomendadas(Kcal)</string>
+    <string name="wash_title">Frecuencia de baño(días)</string>
+    <string name="weight_random">15</string>
+    <string name="birth_random">dd/mm/aaaa</string>
+    <string name="patologies_random">Ninguna</string>
+    <string name="Recommended_kcal_random">747</string>
+    <string name="breed_random">Golden Retriever</string>
+    <string name="name_random">Firulais</string>
+    <string name="male">Macho</string>
+    <string name="female">Hembra</string>
+    <string name="other">Otro</string>
+    <string name="age_random">4</string>
+    <string name="wash_random">30</string>
+    <string name="not_implemented">Esta funcionalidad todavía no está implementada</string>
+    <string name="log_out">Cerrar sesión</string>
+    <string name="languages">Idiomas</string>
+    <string name="change_password">Cambiar contraseña</string>
+    <string name="current_version">Versión: 1.0.0</string>
+    <string name="old_password">Anterior contraseña</string>
+    <string name="new_password">Nueva contraseña</string>
+    <string name="confirm_new_password">Confirmar nueva contraseña</string>
+    <string name="apply_change">Aplicar cambios</string>
+    <string name="english">English</string>
+    <string name="catalan">Català</string>
+    <string name="spanish">Español</string>
+    <string-array name="Languages">
+        <item>@string/english</item>
+        <item>@string/catalan</item>
+        <item>@string/spanish</item>
+    </string-array>
+    <string name="input_pet_name">Nombre</string>
+    <string name="input_gender">Género</string>
+    <string name="input_birth_date">Nacimiento</string>
+    <string name="input_breed">Raza</string>
+    <string name="input_weight">Peso (kg)</string>
+    <string name="input_recommended_calories">Calorías recomendadas (kcal)</string>
+    <string name="input_wash_frequency">Frecuencia de baño (días)</string>
+    <string name="input_pathologies">Patologías</string>
+    <string name="select_birth_date">Selecciona fecha de nacimiento</string>
+    <string name="register_new_pet">Registrar nueva mascota</string>
+    <string name="error_empty_field">Todos los campos deben ser rellenados (sin incluir patologías)</string>
+    <string name="error_pet_already_existing">Esta mascota ya existe</string>
+    <string name="error_user_not_owner">Esta mascota no te pertenece</string>
+    <string name="update_pet">Actualizar mascota</string>
+    <string name="type_of_pet">Tipo de mascota</string>
+    <string name="delete_pet_image_title">Eliminar imagen de mascota</string>
+    <string name="delete_pet_image_text">¿Seguro que desea eliminar la foto de perfil de su mascota?</string>
+    <string name="affirmative_response">Sí</string>
+    <string name="negative_response">No</string>
+    <string name="delete_pet">Eliminar mascota</string>
+    <string name="delete_account">Eliminar cuenta</string>
+    <string name="change_email">Cambiar correo electrónico</string>
+    <string name="save_email">Guardar nuevo correo electrónico</string>
+    <string name="cancel">Cancelar</string>
+    <string name="user_confirm">¿Estás seguro?</string>
+    <string name="delete_account_db">Eliminar cuenta de la base de datos</string>
+    <string name="ok">Okey</string>
+    <string name="uninplemented">No está implementado</string>
+
+    <!-- The next two strings cannot be translated into any other language -->
+    <string name="navigation_view_open">Open</string>
+    <string name="navigation_view_closed">Closed</string>
+
+</resources>
