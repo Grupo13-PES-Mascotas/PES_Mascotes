@@ -48,6 +48,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.RegisterPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.SettingsMenuFragment;
+import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
@@ -136,9 +137,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         View navigationHeader = navigationView.getHeaderView(0);
         TextView userName = navigationHeader.findViewById(R.id.lblUserName);
         TextView userEmail = navigationHeader.findViewById(R.id.lblUserEmail);
+        CircularImageView circularImageView = navigationHeader.findViewById(R.id.imgUser);
+        Drawable imgUser = new BitmapDrawable(getResources(), user.getUserProfileImage());
 
         userName.setText(getString(R.string.app_name));
         userEmail.setText(user.getEmail());
+        circularImageView.setDrawable(imgUser);
     }
 
     /**
