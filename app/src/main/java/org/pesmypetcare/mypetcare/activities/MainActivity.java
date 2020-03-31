@@ -37,11 +37,13 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.communication.CalendarCommunication;
 import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.communication.MyPetsComunication;
 import org.pesmypetcare.mypetcare.activities.communication.NewPasswordInterface;
 import org.pesmypetcare.mypetcare.activities.communication.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.communication.SettingsCommunication;
+import org.pesmypetcare.mypetcare.activities.fragments.CalendarFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.MyPetsFragment;
@@ -71,7 +73,7 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
-    InfoPetCommunication, MyPetsComunication, SettingsCommunication {
+    InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
@@ -79,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     private static final Class[] APPLICATION_FRAGMENTS = {
         MyPetsFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
-        NotImplementedFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        NotImplementedFragment.class, CalendarFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
 
@@ -102,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainUser trObtainUser;
     private TrUpdatePet trUpdatePet;
     private TrChangeMail trChangeMail;
+    private FloatingActionButton flAddCalendarEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         drawerLayout = binding.activityMainDrawerLayout;
         navigationView = binding.navigationView;
         floatingActionButton = binding.flAddPet;
+        flAddCalendarEvent = binding.flAddCalendarEvent;
 
         initializeActionbar();
         initializeActionDrawerToggle();
@@ -268,6 +272,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         toolbar.setTitle(title);
         toolbar.setContentDescription(title);
 
+        flAddCalendarEvent.hide();
+
         if (id == R.id.navigationMyPets) {
             floatingActionButton.show();
         } else {
@@ -302,7 +308,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment, nextFragment.getClass()
             .getSimpleName());
         fragmentTransaction.commit();
-
     }
 
     /**
