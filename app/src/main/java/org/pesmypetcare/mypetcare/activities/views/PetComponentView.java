@@ -16,7 +16,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
-public class PetComponentView extends ConstraintLayout {
+public abstract class PetComponentView extends ConstraintLayout {
     private Context currentActivity;
     private Pet pet;
     private final int PADDING = 15;
@@ -42,7 +42,7 @@ public class PetComponentView extends ConstraintLayout {
         pet = currentPet;
         CircularImageView image = addPetImage();
         this.addView(image);
-        LinearLayout petInfo = addPetInfo(currentPet.getName(), currentPet.getBreed(), currentPet.getBirthDate());
+        LinearLayout petInfo = addPetInfo();
         this.addView(petInfo);
         generateConstraints(image.getId(), petInfo.getId(), this.getId(), this);
         return this;
@@ -88,18 +88,15 @@ public class PetComponentView extends ConstraintLayout {
 
     /**
      * Method responsible for generating the linear layout that contains the pet info.
-     * @param name The pet name
-     * @param breed The pet breed
-     * @param birthdate The pet birthdate
      * @return The linear layout that contains the pet info
      */
-    private LinearLayout addPetInfo(String name, String breed, String birthdate) {
+    private LinearLayout addPetInfo() {
         LinearLayout petInfo = new LinearLayout(currentActivity);
         petInfo.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT));
         petInfo.setOrientation(LinearLayout.VERTICAL);
-        nameTextInitializer(name, petInfo);
-        infoTextInitializer(breed, birthdate, petInfo);
+        firstLineTextInitializer(petInfo);
+        secondLineTextInitializer(petInfo);
         int petInfoId = View.generateViewId();
         petInfo.setId(petInfoId);
         return petInfo;
@@ -107,13 +104,11 @@ public class PetComponentView extends ConstraintLayout {
 
     /**
      * Method responsible for creating the text view that will contain the pet info.
-     * @param breed The pet breed
-     * @param birthdate The pet birthdate
      * @param petInfo The parent layout
      */
-    private void infoTextInitializer(String breed, String birthdate, LinearLayout petInfo) {
+    private void secondLineTextInitializer(LinearLayout petInfo) {
         TextView infoText = new TextView(currentActivity);
-        infoText.setText(String.format("%s - %s", breed, birthdate));
+        infoText.setText(getSecondLineText(pet));
         infoText.setGravity(Gravity.START + Gravity.CENTER_VERTICAL);
         infoText.setTextColor(Color.BLACK);
         petInfo.addView(infoText);
@@ -121,15 +116,28 @@ public class PetComponentView extends ConstraintLayout {
 
     /**
      * Method responsible for creating the text view that will contain the pet name.
-     * @param name The pet name
      * @param petInfo The parent layout
      */
-    private void nameTextInitializer(String name, LinearLayout petInfo) {
+    private void firstLineTextInitializer(LinearLayout petInfo) {
         TextView nameText = new TextView(currentActivity);
-        nameText.setText(name);
+        nameText.setText(getFirstLineText(pet));
         nameText.setTypeface(null, Typeface.BOLD);
         nameText.setGravity(Gravity.START + Gravity.CENTER_VERTICAL);
         nameText.setTextColor(Color.BLACK);
         petInfo.addView(nameText);
     }
+
+    /**
+     * Get the first line of the component text.
+     * @param pet The pet that appears in the component
+     * @return The first line of the component text.
+     */
+    protected abstract String getFirstLineText(Pet pet);
+
+    /**
+     * Get the second line of the component text.
+     * @param pet The pet that appears in the component
+     * @return The second line of the component text.
+     */
+    protected abstract String getSecondLineText(Pet pet);
 }
