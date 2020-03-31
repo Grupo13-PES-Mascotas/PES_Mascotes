@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.communication;
+package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;

@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.fragments;
+package org.pesmypetcare.mypetcare.activities.fragments.imagezoom;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;

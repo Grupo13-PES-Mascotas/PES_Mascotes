@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.fragments;
+package org.pesmypetcare.mypetcare.activities.fragments.login;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;

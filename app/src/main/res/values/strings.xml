@@ -85,6 +85,9 @@
     <string name="delete_account_db">Delete Account of the Database</string>
     <string name="ok">Ok</string>
     <string name="uninplemented"> is not implemented yet</string>
+    <string name="calendar_select_date">Select date</string>
+    <string name="add_personal_event_button">Personal</string>
+    <string name="add_periodic_event_button">Periodic</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

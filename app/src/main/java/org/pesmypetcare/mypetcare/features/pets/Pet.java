@@ -4,8 +4,12 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Pet {
@@ -17,6 +21,7 @@ public class Pet {
     public static final String BUNDLE_CALORIES = "petCalories";
     public static final String BUNDLE_WASH = "petWash";
     public static final String BUNDLE_GENDER = "petGender";
+
     private String name;
     private GenderType gender;
     private String breed;
@@ -28,8 +33,10 @@ public class Pet {
     private User owner;
     private String previousName;
     private Bitmap profileImage;
+    private ArrayList<Event> events;
 
     public Pet() {
+        this.events = new ArrayList<>();
     }
 
     public Pet(Bundle petInfo) {
@@ -40,6 +47,7 @@ public class Pet {
         this.pathologies = petInfo.getString(BUNDLE_PATHOLOGIES);
         this.recommendedDailyKiloCalories = petInfo.getFloat(BUNDLE_CALORIES);
         this.washFrequency = petInfo.getInt(BUNDLE_WASH);
+        this.events = new ArrayList<>();
 
         if (isMale(petInfo)) {
             this.gender = GenderType.Male;
@@ -58,6 +66,7 @@ public class Pet {
         this.pathologies = petInfo.getString(BUNDLE_PATHOLOGIES);
         this.recommendedDailyKiloCalories = petInfo.getFloat(BUNDLE_CALORIES);
         this.washFrequency = petInfo.getInt(BUNDLE_WASH);
+        this.events = new ArrayList<>();
 
         if (isMale(petInfo)) {
             this.gender = GenderType.Male;
@@ -72,6 +81,7 @@ public class Pet {
 
     public Pet(String name) {
         this.name = name;
+        this.events = new ArrayList<>();
     }
 
     /**
@@ -284,5 +294,39 @@ public class Pet {
      */
     public void setProfileImage(Bitmap profileImage) {
         this.profileImage = profileImage;
+    }
+
+    /**
+     * Add an event to the pet.
+     * @param event The event of the pet to set
+     */
+    public void addEvent(Event event) {
+        events.add(event);
+    }
+
+    /**
+     * Delete an event.
+     * @param event The event to delete
+     */
+    public void deleteEvent(Event event) {
+        events.remove(event);
+    }
+
+    /**
+     * Get the list of events on a date.
+     * @param date The date of the events
+     * @return The list of events on the given date
+     */
+    public List<Event> getEvents(String date) {
+        ArrayList<Event> selectedEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            String eventDate = DateConversion.getDate(event.getDateTime());
+            if (eventDate.equals(date)) {
+                selectedEvents.add(event);
+            }
+        }
+
+        return selectedEvents;
     }
 }
