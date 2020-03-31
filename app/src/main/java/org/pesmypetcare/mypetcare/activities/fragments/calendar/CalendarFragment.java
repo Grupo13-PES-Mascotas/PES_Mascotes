@@ -18,11 +18,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class CalendarFragment extends Fragment {
     private FragmentCalendarBinding binding;
-    private CalendarCommunication communication;
     private CalendarView calendar;
     private User user;
 
@@ -30,7 +30,7 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCalendarBinding.inflate(inflater, container, false);
-        communication = (CalendarCommunication) getActivity();
+        CalendarCommunication communication = (CalendarCommunication) getActivity();
         user = Objects.requireNonNull(communication).getUser();
 
         setUpCalendar();
@@ -44,7 +44,7 @@ public class CalendarFragment extends Fragment {
     private void setUpCalendar() {
         calendar = binding.calendar;
         Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String date = dateFormat.format(currentTime);
 
         addComponents(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(5, 7)),
