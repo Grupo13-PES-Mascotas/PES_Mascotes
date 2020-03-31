@@ -9,9 +9,9 @@ import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 public class TestPet {
+    private static final String DATE = "2020-04-03";
     private User user;
     private Pet pet;
 
@@ -28,8 +28,8 @@ public class TestPet {
 
     @Test
     public void shouldDisplayEventDate() {
-        List<Event> events = pet.getEvents("2020-04-03");
-        assertEquals("Should display event date", "2020-04-03",
+        List<Event> events = pet.getEvents(DATE);
+        assertEquals("Should display event date", DATE,
             DateConversion.getDate(events.get(0).getDateTime()));
     }
 

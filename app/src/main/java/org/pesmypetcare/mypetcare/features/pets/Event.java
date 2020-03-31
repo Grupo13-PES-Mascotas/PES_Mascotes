@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Event {
@@ -46,8 +45,14 @@ public class Event {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         Event event = (Event) o;
         return Objects.equals(dateTime, event.dateTime);
     }

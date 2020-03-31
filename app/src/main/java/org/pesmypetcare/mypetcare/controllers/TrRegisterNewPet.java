@@ -1,16 +1,9 @@
 package org.pesmypetcare.mypetcare.controllers;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
-import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
-
-import java.time.LocalDateTime;
 
 public class TrRegisterNewPet {
     private PetManagerService petManagerService;

@@ -1,8 +1,5 @@
 package org.pesmypetcare.mypetcare.utilities;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 public class DateConversion {
     private static final int APP_DAY = 0;
     private static final int APP_MONTH = 1;
@@ -67,13 +64,13 @@ public class DateConversion {
         StringBuilder date = new StringBuilder("");
         date.append(year).append('-');
 
-        if (month + 1 < 10) {
+        if (month + 1 < DateConversion.FIRST_TWO_DIGIT_NUMBER) {
             date.append('0');
         }
 
         date.append(month + 1).append('-');
 
-        if (day < 10) {
+        if (day < DateConversion.FIRST_TWO_DIGIT_NUMBER) {
             date.append('0');
         }
 
@@ -88,8 +85,7 @@ public class DateConversion {
      * @return The date of the dateTime
      */
     public static String getDate(String dateTime) {
-        String date = dateTime.toString();
-        return date.substring(0, date.lastIndexOf('T'));
+        return dateTime.substring(0, dateTime.lastIndexOf('T'));
     }
 
     /**
