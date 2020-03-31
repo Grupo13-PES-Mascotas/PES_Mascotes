@@ -21,7 +21,7 @@ public class EventView extends PetComponentView {
 
     @Override
     protected String getFirstLineText(Pet pet) {
-        return event.getDescription();
+        return pet.getName() + " - " + event.getDescription();
     }
 
     @Override
