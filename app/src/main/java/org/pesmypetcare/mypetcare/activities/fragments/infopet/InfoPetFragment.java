@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.fragments;
+package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -22,7 +22,6 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.activities.communication.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;

@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.communication;
+package org.pesmypetcare.mypetcare.activities.fragments.settings;
 
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.User;

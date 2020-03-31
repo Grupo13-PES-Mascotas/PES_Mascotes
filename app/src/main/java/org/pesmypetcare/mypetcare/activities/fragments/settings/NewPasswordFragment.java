@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.fragments;
+package org.pesmypetcare.mypetcare.activities.fragments.settings;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,8 +12,6 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import org.pesmypetcare.mypetcare.activities.communication.NewPasswordInterface;
-import org.pesmypetcare.mypetcare.activities.communication.SettingsCommunication;
 import org.pesmypetcare.mypetcare.databinding.FragmentNewPasswordBinding;
 
 /**

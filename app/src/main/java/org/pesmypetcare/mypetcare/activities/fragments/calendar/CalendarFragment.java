@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.fragments;
+package org.pesmypetcare.mypetcare.activities.fragments.calendar;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,7 +8,6 @@ import android.widget.CalendarView;
 
 import androidx.fragment.app.Fragment;
 
-import org.pesmypetcare.mypetcare.activities.communication.CalendarCommunication;
 import org.pesmypetcare.mypetcare.activities.views.CalendarEventsView;
 import org.pesmypetcare.mypetcare.databinding.FragmentCalendarBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;

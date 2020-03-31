@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.communication;
+package org.pesmypetcare.mypetcare.activities.fragments.settings;
 
 import androidx.fragment.app.Fragment;
 

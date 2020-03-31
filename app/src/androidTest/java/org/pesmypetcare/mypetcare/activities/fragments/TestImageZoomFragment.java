@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
+import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;

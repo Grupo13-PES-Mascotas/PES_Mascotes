@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.communication;
+package org.pesmypetcare.mypetcare.activities.fragments.calendar;
 
 import org.pesmypetcare.mypetcare.features.users.User;
 

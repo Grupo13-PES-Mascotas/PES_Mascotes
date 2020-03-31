@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:visibility="visible"
-    tools:context=".activities.fragments.InfoPetFragment">
+    tools:context=".activities.fragments.infopet.InfoPetFragment">
 
 
     <LinearLayout
