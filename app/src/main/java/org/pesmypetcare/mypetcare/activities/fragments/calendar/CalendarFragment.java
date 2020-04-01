@@ -37,10 +37,10 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class CalendarFragment extends Fragment {
-    public static final int PADDING_20 = 20;
-    public static final float TEXT_SIZE_14 = 14f;
-    public static final float TEXT_SIZE_12 = 12f;
-    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final int PADDING_20 = 20;
+    private static final float TEXT_SIZE_14 = 14f;
+    private static final float TEXT_SIZE_12 = 12f;
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
     private FragmentCalendarBinding binding;
     private CalendarView calendar;
     private User user;
