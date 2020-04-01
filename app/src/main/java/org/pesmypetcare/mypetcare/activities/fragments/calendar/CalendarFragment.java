@@ -52,7 +52,6 @@ public class CalendarFragment extends Fragment {
         binding = FragmentCalendarBinding.inflate(inflater, container, false);
         CalendarCommunication communication = (CalendarCommunication) getActivity();
         user = Objects.requireNonNull(communication).getUser();
-
         setUpCalendar();
         binding.btnAddPersonalEvent.setOnClickListener(v -> initializeDialog());
         return binding.getRoot();
