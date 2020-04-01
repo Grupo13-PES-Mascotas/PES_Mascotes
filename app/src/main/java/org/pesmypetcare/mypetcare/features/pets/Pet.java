@@ -7,7 +7,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,10 +25,10 @@ public class Pet {
     private GenderType gender;
     private String breed;
     private String birthDate;
-    private double weight;
-    private String pathologies;
-    private double recommendedDailyKiloCalories;
-    private int washFrequency;
+                            private double weight;
+                            private String pathologies;
+                            private double recommendedDailyKiloCalories;
+                            private int washFrequency;
     private User owner;
     private String previousName;
     private Bitmap profileImage;
