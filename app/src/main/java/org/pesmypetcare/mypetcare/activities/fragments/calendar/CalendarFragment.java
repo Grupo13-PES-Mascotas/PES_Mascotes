@@ -64,6 +64,14 @@ public class CalendarFragment extends Fragment {
     private void initializeDialog() {
         MaterialAlertDialogBuilder newPersonal = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()),
                 R.style.AlertDialogTheme);
+        initializeDialogComponents(newPersonal);
+        newPersonal.show();
+    }
+
+    /**
+     * Initialize the dialog components for a new personal event.
+     */
+    private void initializeDialogComponents(MaterialAlertDialogBuilder newPersonal) {
         newPersonal.setTitle("New personal notice");
         newPersonal.setMessage("Enter the event description, its time and select the pet that will participate.");
         LinearLayout layout = new LinearLayout(getContext());
@@ -76,7 +84,6 @@ public class CalendarFragment extends Fragment {
         newPersonal.setView(layout);
         createPersonalEventListener(newPersonal, reasonText, dateText, timeText, sp);
         cancelDialog(newPersonal);
-        newPersonal.show();
     }
 
     /**
