@@ -92,8 +92,7 @@ public class CalendarFragment extends Fragment {
         newPersonal.setPositiveButton("Create", (dialog, which) -> {
             if (sp.getSelectedItem() != null) {
                 createPersonalEvent(reasonText, dateText, timeText, sp);
-            }
-            else {
+            } else {
                 toastText("Add a pet");
             }
         });
@@ -145,7 +144,7 @@ public class CalendarFragment extends Fragment {
      */
     private EditText initializeDialogLayout(LinearLayout layout) {
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(PADDING_20,0, PADDING_20, 0);
+        layout.setPadding(PADDING_20, 0, PADDING_20, 0);
         EditText reasonText = new EditText(new ContextThemeWrapper(getContext(), R.style.HintStyle));
         reasonText.setHint("Description");
         reasonText.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SIZE_14);
@@ -252,7 +251,7 @@ public class CalendarFragment extends Fragment {
     private void setUpCalendar() {
         calendar = binding.calendar;
         Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
         String date = dateFormat.format(currentTime);
 
         addComponents(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(5, 7)),
