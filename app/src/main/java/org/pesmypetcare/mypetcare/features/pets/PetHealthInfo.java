@@ -23,6 +23,7 @@ public class PetHealthInfo {
         this.exerciseFrequency = new TreeMap<DateTime, Integer>(new TreeComparator());
         this.weeklyExercise = new TreeMap<DateTime, Event>(new TreeComparator());
         this.weeklyKiloCaloriesAverage = new TreeMap<DateTime, Double>(new TreeComparator());
+        this.washFrequency = new TreeMap<DateTime, Integer>(new TreeComparator());
         this.petNeeds = new ArrayList<>();
     }
 
@@ -32,6 +33,18 @@ public class PetHealthInfo {
      */
     public Map<DateTime, Double> getWeight() {
         return weight;
+    }
+
+    /**
+     * Method that get the weight for a given date.
+     * @param date The date for which we went to obtain to weight of the pet
+     * @return The weight of the pet for the given date
+     */
+    public double getWeightForDate(DateTime date) {
+        if (weight.containsKey(date)) {
+            return weight.get(date);
+        }
+        return -1;
     }
 
     /**
@@ -96,15 +109,32 @@ public class PetHealthInfo {
     }
 
     /**
-     * Getter of the exerciseFreq for an specific date.
-     * @param date The date for which we want to get the weight of the pet
-     * @return The weight of the pet for the specified date or -1 if the date was not found
+     * Getter of the exerciseFrequency attribute for a given date.
+     * @param date The date for which we want to obtain de exerciseFrequency
+     * @return The exerciseFrequency for a given date.
      */
-    public double getWeightForDate(DateTime date) {
-        if (weight.containsKey(date)) {
-            return weight.get(date);
+    public int getExerciseFrequencyForDate(DateTime date) {
+        if (exerciseFrequency.containsKey(date)) {
+            return exerciseFrequency.get(date);
         }
         return -1;
+    }
+
+    /**
+     * Method that adds, or replaces if date already present, a new exerciseFrequency.
+     * @param date The date for which we want to add the exerciseFrequency of the pet
+     * @param exerciseFreq The exerciseFreq of the pet for that given date
+     */
+    public void addExerciseFrequencyForDate(DateTime date, int exerciseFreq) {
+        this.exerciseFrequency.put(date, exerciseFreq);
+    }
+
+    /**
+     * Method that removes the exerciseFrequency for a given date.
+     * @param date The date for which we want to remove the exerciseFrequency of the pet
+     */
+    public void removeExerciseFrequencyForDate(DateTime date) {
+        this.exerciseFrequency.remove(date);
     }
 
     /**
@@ -116,6 +146,35 @@ public class PetHealthInfo {
     }
 
     /**
+     * Getter of the weeklyExercise for a given date.
+     * @param date The date for which we want to obtain de weeklyExercise
+     * @return The weeklyExercise for the given date, or null if not present
+     */
+    public Event getWeeklyExerciseForDate(DateTime date) {
+        if (weeklyExercise.containsKey(date)) {
+            return weeklyExercise.get(date);
+        }
+        return null;
+    }
+
+    /**
+     * Method that adds, or replaces if present, the event for a given date.
+     * @param date The date for which we want to add the event
+     * @param exercise The exercise that we want to add for that given date
+     */
+    public void addWeeklyExerciseForDate(DateTime date, Event exercise) {
+        this.weeklyExercise.put(date, exercise);
+    }
+
+    /**
+     * Method that removes the exercise for a given date.
+     * @param date The given date for which we want to remove the event
+     */
+    public void removeWeeklyExerciseForDate(DateTime date) {
+        this.weeklyExercise.remove(date);
+    }
+
+    /**
      * Getter of the weeklyKiloCaloriesAverage attribute.
      * @return The weeklyKiloCaloriesAverage attribute
      */
@@ -124,20 +183,70 @@ public class PetHealthInfo {
     }
 
     /**
+     * Getter of the weeklyKiloCalAverage for a given date.
+     * @param date The given date for which we want to obtain the event.
+     * @return The weeklyKiloCalAverage for the given date, or -1 if the date is not present
+     */
+    public double getWeeklyKiloCalAverageForDate(DateTime date) {
+        if (weeklyKiloCaloriesAverage.containsKey(date)) {
+            return weeklyKiloCaloriesAverage.get(date);
+        }
+        return -1;
+    }
+
+    /**
+     * Method that adds, or replaces if present, the weeklyKiloCalAvg for a given date.
+     * @param date The date for which we want to add the weeklyKiloCalAvg
+     * @param kcalAvg The weeklyKiloCalAvg to add for a given date
+     */
+    public void addWeeklyKiloCalAverageForDate(DateTime date, double kcalAvg) {
+        this.weeklyKiloCaloriesAverage.put(date, kcalAvg);
+    }
+
+    /**
+     * Method that removes the weeklyKiloCalAvg for a given date.
+     * @param date The date for which we want to remove the weeklyKiloCalAvg
+     */
+    public void removeWeeklyKiloCalAverageForDate(DateTime date) {
+        this.weeklyKiloCaloriesAverage.remove(date);
+    }
+
+    /**
      * Getter of the washFrequency attribute.
      * @return The washFrequency attribute
      */
-    /*public int getWashFrequency() {
+    public Map<DateTime, Integer> getWashFrequency() {
         return washFrequency;
-    }*/
+    }
 
     /**
-     * Setter of the wash frequency attribute.
-     * @param washFrequency The wash frequency to set
+     * Getter of the washFrequency for a given date.
+     * @param date The date for which we want to obtain de washFrequency
+     * @return The washFrequency of the pet for the given date or -1 if not present
      */
-    /*public void setWashFrequency(int washFrequency) {
-        this.washFrequency = washFrequency;
-    }*/
+    public int getWashFrequencyForDate(DateTime date) {
+        if (washFrequency.containsKey(date)) {
+            return washFrequency.get(date);
+        }
+        return -1;
+    }
+
+    /**
+     * Method that adds, or replaces if date is present, the given washFreq.
+     * @param date The date for which we want to add the washFrequency
+     * @param washFreq The washFrequency that we want to add
+     */
+    public void addWashFrequencyForDate(DateTime date, int washFreq) {
+        washFrequency.put(date, washFreq);
+    }
+
+    /**
+     * Method that removes the washFrequency for the given date
+     * @param date The date for which we want to remove the washFrequency
+     */
+    public void removeWashFrequencyForDate(DateTime date) {
+        washFrequency.remove(date);
+    }
 
     /**
      * Getter of the pathologies attribute.
