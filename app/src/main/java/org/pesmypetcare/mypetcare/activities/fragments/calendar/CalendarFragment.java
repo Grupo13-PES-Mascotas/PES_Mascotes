@@ -37,6 +37,10 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class CalendarFragment extends Fragment {
+    public static final int PADDING_20 = 20;
+    public static final float TEXT_SIZE_14 = 14f;
+    public static final float TEXT_SIZE_12 = 12f;
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
     private FragmentCalendarBinding binding;
     private CalendarView calendar;
     private User user;
@@ -83,10 +87,10 @@ public class CalendarFragment extends Fragment {
      * @param sp The spinner for pet selection
      * @param timeText The hour of the event
      */
-    private void createPersonalEventListener(MaterialAlertDialogBuilder newPersonal, EditText reasonText,
-                                             TextView dateText, EditText timeText, Spinner sp) {
+    private void createPersonalEventListener(MaterialAlertDialogBuilder newPersonal, EditText reasonText, TextView
+            dateText, EditText timeText, Spinner sp) {
         newPersonal.setPositiveButton("Create", (dialog, which) -> {
-            if ( sp.getSelectedItem() != null ) {
+            if (sp.getSelectedItem() != null) {
                 createPersonalEvent(reasonText, dateText, timeText, sp);
             }
             else {
@@ -115,7 +119,7 @@ public class CalendarFragment extends Fragment {
     private void createPersonalEvent(EditText reasonText, TextView dateText, EditText timeText, Spinner sp) {
         String petName = sp.getSelectedItem().toString();
         StringBuilder dateTime = new StringBuilder(dateText.getText());
-        dateTime.append("T");
+        dateTime.append('T');
         dateTime.append(timeText.getText());
         getPet(petName);
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
@@ -141,10 +145,10 @@ public class CalendarFragment extends Fragment {
      */
     private EditText initializeDialogLayout(LinearLayout layout) {
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(20,0,20,0);
+        layout.setPadding(PADDING_20,0, PADDING_20, 0);
         EditText reasonText = new EditText(new ContextThemeWrapper(getContext(), R.style.HintStyle));
         reasonText.setHint("Description");
-        reasonText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f);
+        reasonText.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SIZE_14);
         layout.addView(reasonText);
         return reasonText;
     }
@@ -158,7 +162,7 @@ public class CalendarFragment extends Fragment {
         EditText timeText = new EditText(new ContextThemeWrapper(getContext(), R.style.HintStyle));
         timeText.setTextColor(Color.parseColor("#0070C0"));
         timeText.setHint("00:00:00");
-        timeText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f);
+        timeText.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SIZE_14);
         time.addView(timeText);
         return timeText;
     }
@@ -174,10 +178,10 @@ public class CalendarFragment extends Fragment {
         time.setWeightSum(2);
         TextView dateText = new TextView(new ContextThemeWrapper(getContext(), R.style.HintStyle));
         Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
         dateText.setText(dateFormat.format(currentTime));
         dateText.setTextColor(Color.parseColor("#0070C0"));
-        dateText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f);
+        dateText.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SIZE_12);
         time.addView(dateText);
         return dateText;
     }
@@ -205,11 +209,11 @@ public class CalendarFragment extends Fragment {
      */
     private boolean isValidTime(String time) {
         boolean result = false;
-        if (time.length() == 8 && time.indexOf(":") == 2 && time.lastIndexOf(":") == 5 &&
-                Character.isDigit(time.charAt(0)) && Character.isDigit(time.charAt(1)) &&
-                Character.isDigit(time.charAt(3)) && Character.isDigit(time.charAt(4)) &&
-                Character.isDigit(time.charAt(6)) && Character.isDigit(time.charAt(7)) ) {
-                            result = true;
+        if (time.length() == 8 && time.indexOf(':') == 2 && time.lastIndexOf(':') == 5
+                && Character.isDigit(time.charAt(0)) && Character.isDigit(time.charAt(1))
+                && Character.isDigit(time.charAt(3)) && Character.isDigit(time.charAt(4))
+                && Character.isDigit(time.charAt(6)) && Character.isDigit(time.charAt(7))) {
+            result = true;
         }
         return result;
     }
@@ -222,8 +226,9 @@ public class CalendarFragment extends Fragment {
         ArrayList<Pet> pets = user.getPets();
 
         for (Pet pet : pets) {
-            if (pet.getName().equals(petName))
+            if (pet.getName().equals(petName)) {
                 selectedPet = pet;
+            }
         }
     }
 
