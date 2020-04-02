@@ -45,7 +45,7 @@
     <string name="log_out">Cerrar sesión</string>
     <string name="languages">Idiomas</string>
     <string name="change_password">Cambiar contraseña</string>
-    <string name="current_version">Versión: 1.0.0</string>
+    <string name="current_version">Versión: 1.0.1</string>
     <string name="old_password">Anterior contraseña</string>
     <string name="new_password">Nueva contraseña</string>
     <string name="confirm_new_password">Confirmar nueva contraseña</string>
