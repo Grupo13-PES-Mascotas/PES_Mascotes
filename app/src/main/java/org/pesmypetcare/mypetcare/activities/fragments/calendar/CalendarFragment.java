@@ -129,6 +129,7 @@ public class CalendarFragment extends Fragment {
         getPet(petName);
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
             selectedPet.addEvent(new Event(reasonText.getText().toString(), dateTime.toString()));
+            //TR add esdeveniment
         } else {
             toastText("Incorrect entry");
         }
