@@ -12,6 +12,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 import static org.junit.Assert.assertTrue;
 
 public class TestTrNewPersonalEvent {
+    private static final String DATE = "2020-04-03";
     private Pet pet;
     private final String NAME = "Dinky";
     private final String HUSKY = "Husky";
@@ -36,13 +37,13 @@ public class TestTrNewPersonalEvent {
         Event e = new Event("Hello", "2020-04-03T10:30:00");
         pet.addEvent(e);
         System.out.println(e);
-        System.out.println(pet.getEvents("2020-04-03"));
-        assertTrue("should add one event", pet.getEvents("2020-04-03").contains(e));
+        System.out.println(pet.getEvents(DATE));
+        assertTrue("should add one event", pet.getEvents(DATE).contains(e));
     }
 
     @Test
     public void shouldCommunicateWithService() {
-        Event e = new Event("Hello", "2020-04-03T10:30:00");
+        Event e = new Event("Hello2", "2020-04-03T10:40:00");
         pet.addEvent(e);
         trNewPersonalEvent.setPet(pet);
         trNewPersonalEvent.setEvent(e);

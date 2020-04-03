@@ -82,12 +82,12 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public void registerNewEvent(Pet pet, Event event) {
-
+        // Not implemented yet
     }
 
     @Override
     public void deleteEvent(Pet pet, Event event) {
-
+        // Not implemented yet
     }
 
     /**

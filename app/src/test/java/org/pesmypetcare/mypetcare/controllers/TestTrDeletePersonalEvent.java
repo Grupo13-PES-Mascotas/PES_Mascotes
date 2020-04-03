@@ -13,6 +13,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class TestTrDeletePersonalEvent {
+    private static final String DATE_TIME = "2020-04-03T10:30:00";
     private Pet pet;
     private final String NAME = "Dinky";
     private final String HUSKY = "Husky";
@@ -34,10 +35,10 @@ public class TestTrDeletePersonalEvent {
 
     @Test
     public void shouldDeleteOneEvent() {
-        Event e = new Event("Hello", "2020-04-03T10:30:00");
+        Event e = new Event("Hello", DATE_TIME);
         pet.addEvent(e);
         pet.deleteEvent(e);
-        assertFalse("should add one event", pet.getEvents("2020-04-03").contains(e));
+        assertFalse("should add one event", pet.getEvents(DATE_TIME).contains(e));
     }
 
     @Test

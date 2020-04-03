@@ -40,11 +40,18 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class CalendarFragment extends Fragment {
-    private static int index;
     private static final int PADDING_20 = 20;
     private static final float TEXT_SIZE_14 = 14f;
     private static final float TEXT_SIZE_12 = 12f;
     private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String PRIMARY_COLOR = "#0070C0";
+    private static final int TIME_LENGTH = 8;
+    private static final int POS5 = 5;
+    private static final int POS2 = 2;
+    private static final int POS3 = 3;
+    private static final int POS4 = 4;
+    private static final int POS6 = 6;
+    private static final int POS7 = 7;
     private FragmentCalendarBinding binding;
     private CalendarView calendar;
     private User user;
@@ -77,7 +84,8 @@ public class CalendarFragment extends Fragment {
      */
     private void initializeDialogComponents(MaterialAlertDialogBuilder newPersonal) {
         newPersonal.setTitle("New personal notice");
-        newPersonal.setMessage("Enter a header, the event description, its time and select the pet that will participate.");
+        newPersonal.setMessage("Enter a header, the event description, " +
+                "its time and select the pet that will participate.");
         LinearLayout layout = new LinearLayout(getContext());
         EditText reasonText = initializeDialogLayout(layout);
         LinearLayout time = new LinearLayout(getContext());
@@ -171,7 +179,7 @@ public class CalendarFragment extends Fragment {
      */
     private EditText putHourTimeLayout(LinearLayout time) {
         EditText timeText = new EditText(new ContextThemeWrapper(getContext(), R.style.HintStyle));
-        timeText.setTextColor(Color.parseColor("#0070C0"));
+        timeText.setTextColor(Color.parseColor(PRIMARY_COLOR));
         timeText.setHint("00:00:00");
         timeText.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SIZE_14);
         time.addView(timeText);
@@ -204,7 +212,7 @@ public class CalendarFragment extends Fragment {
      */
     private Spinner initializeSpinner(LinearLayout layout) {
         final ArrayAdapter<String> adp = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
-                android.R.layout.simple_spinner_item, getPetsName());
+                android.R.layout.simple_spinner_item, (List<String>) getPetsName());
         Spinner sp = new Spinner(getContext());
         sp.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -220,11 +228,14 @@ public class CalendarFragment extends Fragment {
      */
     private boolean isValidTime(String time) {
         boolean result = false;
-        if (time.length() == 8 && time.indexOf(':') == 2 && time.lastIndexOf(':') == 5
-                && Character.isDigit(time.charAt(0)) && Character.isDigit(time.charAt(1))
-                && Character.isDigit(time.charAt(3)) && Character.isDigit(time.charAt(4))
-                && Character.isDigit(time.charAt(6)) && Character.isDigit(time.charAt(7))) {
-            result = true;
+        if (time.length() == TIME_LENGTH && time.indexOf(':') == POS2 && time.lastIndexOf(':') == POS5) {
+            if (Character.isDigit(time.charAt(0)) && Character.isDigit(time.charAt(1))
+                    && Character.isDigit(time.charAt(POS3))) {
+                if (Character.isDigit(time.charAt(POS4)) && Character.isDigit(time.charAt(POS6))
+                        && Character.isDigit(time.charAt(POS7))) {
+                    result = true;
+                }
+            }
         }
         return result;
     }
@@ -247,7 +258,7 @@ public class CalendarFragment extends Fragment {
      * Gets all the pets of the user.
      * @return An array with the pets name
      */
-    private ArrayList<String> getPetsName() {
+    private ArrayList<?> getPetsName() {
         ArrayList<String> petsName = new ArrayList<>();
         ArrayList<Pet> pets = user.getPets();
 
@@ -283,7 +294,7 @@ public class CalendarFragment extends Fragment {
             CalendarEventsView calendarEventsView = new CalendarEventsView(getContext(), null);
             calendarEventsView.showEvents(pet, date);
             List<PetComponentView> petComponents = calendarEventsView.getPetComponents();
-            for ( PetComponentView p : petComponents ) {
+            for (PetComponentView p : petComponents) {
                 p.setOnClickListener(v -> deleteEventDialog(p));
             }
             binding.eventInfoLayout.addView(calendarEventsView);
@@ -294,14 +305,12 @@ public class CalendarFragment extends Fragment {
      * Set up the delete event dialog.
      */
     private void deleteEventDialog(PetComponentView p) {
-        Pet pet = p.getPet();
-        Event event = ((EventView)p).getEvent();
-        System.out.println(p.getPet().getName());
-        System.out.println(((EventView)p).getEvent().toString());
         MaterialAlertDialogBuilder deleteEvent = new MaterialAlertDialogBuilder(Objects.requireNonNull(
                 getContext()), R.style.AlertDialogTheme);
         deleteEvent.setTitle("Delete this event");
         deleteEvent.setMessage("Are you sure?");
+        Pet pet = p.getPet();
+        Event event = ((EventView) p).getEvent();
         deleteEvent.setPositiveButton("Yes", (dialog, which) -> pet.deleteEvent(event));
         deleteEvent.setNegativeButton("No", (dialog, which) -> System.out.println("Not Deleted"));
         deleteEvent.show();

@@ -10,10 +10,6 @@ import org.pesmypetcare.mypetcare.utilities.DateConversion;
 public class EventView extends PetComponentView {
     private Event event;
 
-    public Event getEvent() {
-        return event;
-    }
-
     public EventView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -21,6 +17,14 @@ public class EventView extends PetComponentView {
     public EventView(Context context, AttributeSet attrs, Event event) {
         super(context, attrs);
         this.event = event;
+    }
+
+    /**
+     * Get the event of the view.
+     * @return The event of the view
+     */
+    public Event getEvent() {
+        return event;
     }
 
     @Override
