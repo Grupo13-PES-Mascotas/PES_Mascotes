@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.activities.views;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -40,5 +41,14 @@ public class CircularImageView extends CardView {
      */
     public void setDrawable(Drawable drawable) {
         imageView.setImageDrawable(drawable);
+    }
+
+    @Override
+    public void setRadius(float radius) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            radius = 0;
+        }
+
+        super.setRadius(radius);
     }
 }
