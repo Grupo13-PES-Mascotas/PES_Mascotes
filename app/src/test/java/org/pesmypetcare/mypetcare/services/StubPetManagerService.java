@@ -71,4 +71,12 @@ public class StubPetManagerService implements PetManagerService {
         int index = Objects.requireNonNull(pets).indexOf(pet);
         pets.get(index).addEvent(event);
     }
+
+    @Override
+    public void deleteEvent(Pet pet, Event event) {
+        ArrayList<Pet> pets = data.get(pet.getOwner().getUsername());
+        assert pets != null;
+        int index = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(index).deleteEvent(event);
+    }
 }

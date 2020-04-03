@@ -9,13 +9,14 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class TestTrNewPersonalEvent {
+public class TestTrDeletePersonalEvent {
     private Pet pet;
     private final String NAME = "Dinky";
     private final String HUSKY = "Husky";
-    private TrNewPersonalEvent trNewPersonalEvent;
+    private TrDeletePersonalEvent trDeletePersonalEvent;
 
     @Before
     public void setUp() throws PetRepeatException {
@@ -28,26 +29,25 @@ public class TestTrNewPersonalEvent {
         pet.setWashFrequency(2);
         pet.setWeight(2);
         pet.setOwner(new User("johnDoe", "", ""));
-        trNewPersonalEvent = new TrNewPersonalEvent(new StubPetManagerService());
+        trDeletePersonalEvent = new TrDeletePersonalEvent(new StubPetManagerService());
     }
 
     @Test
-    public void shouldAddOneEvent() {
+    public void shouldDeleteOneEvent() {
         Event e = new Event("Hello", "2020-04-03T10:30:00");
         pet.addEvent(e);
-        System.out.println(e);
-        System.out.println(pet.getEvents("2020-04-03"));
-        assertTrue("should add one event", pet.getEvents("2020-04-03").contains(e));
+        pet.deleteEvent(e);
+        assertFalse("should add one event", pet.getEvents("2020-04-03").contains(e));
     }
 
     @Test
     public void shouldCommunicateWithService() {
         Event e = new Event("Hello", "2020-04-03T10:30:00");
         pet.addEvent(e);
-        trNewPersonalEvent.setPet(pet);
-        trNewPersonalEvent.setEvent(e);
-        trNewPersonalEvent.execute();
-        boolean addingResult = trNewPersonalEvent.isResult();
-        assertTrue("should communicate with service to add a event", addingResult);
+        trDeletePersonalEvent.setPet(pet);
+        trDeletePersonalEvent.setEvent(e);
+        trDeletePersonalEvent.execute();
+        boolean deletingResult = trDeletePersonalEvent.isResult();
+        assertTrue("should communicate with service to delete a event", deletingResult);
     }
 }

@@ -85,6 +85,11 @@ public class PetManagerAdapter implements PetManagerService {
 
     }
 
+    @Override
+    public void deleteEvent(Pet pet, Event event) {
+
+    }
+
     /**
      * Decodes the pet information from the server.
      * @param userPet The information from the server

@@ -61,4 +61,11 @@ public interface PetManagerService {
      * @param event The event
      */
     void registerNewEvent(Pet pet, Event event);
+
+    /**
+     * Delete a event from a pet.
+     * @param pet The pet
+     * @param event The event
+     */
+    void deleteEvent(Pet pet, Event event);
 }
