@@ -2,10 +2,10 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
-import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
 import java.util.ArrayList;
@@ -33,6 +33,11 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public boolean registerNewPet(String username, Pet pet) {
+        System.out.println("Username: " + username);
+        System.out.println("Pet Name: " + pet.getName() + " pet gender: " + pet.getGender() + " pet breed " +
+            pet.getBreed() + " pet birthdate: " + pet.getBirthDate() + " pet weight: " + pet.getWeight() +
+            " pet pathologies " + pet.getPathologies() + " pet recKCal " + pet.getRecommendedDailyKiloCalories() +
+            " pet washFreq " + pet.getWashFrequency());
         ServiceLocator.getInstance().getPetManagerClient()
             .signUpPet(username, pet.getName(), pet.getGender().toString(), pet.getBreed(), pet.getBirthDate(),
                 pet.getWeight(), pet.getPathologies(), pet.getRecommendedDailyKiloCalories(), pet.getWashFrequency());

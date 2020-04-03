@@ -8,16 +8,17 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class PetHealthInfo {
-    private Map<DateTime, Double> weight;
-    private Map<DateTime, Double> recommendedDailyKiloCalories;
-    private Map<DateTime, Integer> exerciseFrequency;
-    private Map<DateTime, Event> weeklyExercise;
-    private Map<DateTime, Double> weeklyKiloCaloriesAverage;
-    private Map<DateTime, Integer> washFrequency;
+    private TreeMap<DateTime, Double> weight;
+    private TreeMap<DateTime, Double> recommendedDailyKiloCalories;
+    private TreeMap<DateTime, Integer> exerciseFrequency;
+    private TreeMap<DateTime, Event> weeklyExercise;
+    private TreeMap<DateTime, Double> weeklyKiloCaloriesAverage;
+    private TreeMap<DateTime, Integer> washFrequency;
     private String pathologies;
     private ArrayList<String> petNeeds;
 
     public PetHealthInfo() {
+        System.out.println("Me han inicializado");
         this.weight = new TreeMap<DateTime, Double>(new TreeComparator());
         this.recommendedDailyKiloCalories = new TreeMap<DateTime, Double>(new TreeComparator());
         this.exerciseFrequency = new TreeMap<DateTime, Integer>(new TreeComparator());
@@ -36,7 +37,17 @@ public class PetHealthInfo {
     }
 
     /**
-     * Method that get the weight for a given date.
+     * Method that gets the last stored weight of the pet.
+     * @return The last stored weight of the pet or -1 if the pet does not have any weight stored
+     */
+    public double getLastWeight() {
+        if (weight.isEmpty()) {
+            return -1;
+        }
+        return weight.lastEntry().getValue();
+    }
+    /**
+     * Method that gets the weight for a given date.
      * @param date The date for which we went to obtain to weight of the pet
      * @return The weight of the pet for the given date
      */
@@ -73,6 +84,18 @@ public class PetHealthInfo {
     }
 
     /**
+     * Method that gets the last stored recommended daily kilocalories of the pet.
+     * @return The last stored recommended daily kilocalories of the pet
+     * or -1 if the pet does not have any recommended daily kilocalories stored
+     */
+    public double getLastRecommendedDailyKiloCalories() {
+        if (recommendedDailyKiloCalories.isEmpty()) {
+            return -1;
+        }
+        return recommendedDailyKiloCalories.lastEntry().getValue();
+    }
+
+    /**
      * Getter of the recommendedDailyKiloCalories for an specific date.
      * @param date The date for which we want to get the recommendedDailyKiloCalories of the pet
      * @return The recommendedDailyKiloCalories of the pet for the specified date or -1 if the date was not found
@@ -106,6 +129,18 @@ public class PetHealthInfo {
      */
     public Map<DateTime, Integer> getExerciseFrequency() {
         return exerciseFrequency;
+    }
+
+    /**
+     * Method that gets the last stored exercise frequency of the pet.
+     * @return The last stored exercise frequency of the pet
+     * or -1 if the pet does not have any exercise frequency stored
+     */
+    public int getLastExerciseFrequency() {
+        if (exerciseFrequency.isEmpty()) {
+            return -1;
+        }
+        return exerciseFrequency.lastEntry().getValue();
     }
 
     /**
@@ -146,6 +181,17 @@ public class PetHealthInfo {
     }
 
     /**
+     * Method that gets the last stored weekly exercise of the pet.
+     * @return The last stored weekly exercise of the pet or null if the pet does not have any weekly exercise stored
+     */
+    public Event getLastWeeklyExercise() {
+        if (weeklyExercise.isEmpty()) {
+            return null;
+        }
+        return weeklyExercise.lastEntry().getValue();
+    }
+
+    /**
      * Getter of the weeklyExercise for a given date.
      * @param date The date for which we want to obtain de weeklyExercise
      * @return The weeklyExercise for the given date, or null if not present
@@ -183,6 +229,18 @@ public class PetHealthInfo {
     }
 
     /**
+     * Method that gets the last stored weekly kilocalories average of the pet.
+     * @return The last stored weekly kilocalories average of the pet
+     * or -1 if the pet does not have any weekly kilocalories average stored
+     */
+    public double getLastWeeklyKilocaloriesAverage() {
+        if (weeklyKiloCaloriesAverage.isEmpty()) {
+            return -1;
+        }
+        return weeklyKiloCaloriesAverage.lastEntry().getValue();
+    }
+
+    /**
      * Getter of the weeklyKiloCalAverage for a given date.
      * @param date The given date for which we want to obtain the event.
      * @return The weeklyKiloCalAverage for the given date, or -1 if the date is not present
@@ -217,6 +275,18 @@ public class PetHealthInfo {
      */
     public Map<DateTime, Integer> getWashFrequency() {
         return washFrequency;
+    }
+
+    /**
+     * Method that gets the last stored wash frequency of the pet.
+     * @return The last stored wash frequency of the pet
+     * or -1 if the pet does not have any wash frequency average stored
+     */
+    public double getLastWashFrequency() {
+        if (washFrequency.isEmpty()) {
+            return -1;
+        }
+        return washFrequency.lastEntry().getValue();
     }
 
     /**
@@ -280,13 +350,13 @@ public class PetHealthInfo {
         this.petNeeds = petNeeds;
     }
 
-    private static class TreeComparator implements Comparator {
+    private static class TreeComparator implements Comparator<DateTime> {
 
         @Override
-        public int compare(Object o1, Object o2) {
-            String date1 = o1.toString();
-            String date2 = o2.toString();
-            return date1.compareTo(date2);
+        public int compare(DateTime date1, DateTime date2) {
+            String strDate1 = date1.toString();
+            String strDate2 = date2.toString();
+            return strDate1.compareTo(strDate2);
         }
     }
 }

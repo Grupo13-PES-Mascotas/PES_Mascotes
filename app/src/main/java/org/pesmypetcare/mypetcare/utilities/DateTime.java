@@ -32,6 +32,15 @@ public class DateTime implements Comparable<DateTime> {
         }
     }
 
+    public DateTime(String dateTime) {
+        this.year = Integer.parseInt(dateTime.substring(0, LEAP_YEAR_FREQ));
+        this.month = Integer.parseInt(dateTime.substring(5, 7));
+        this.day = Integer.parseInt(dateTime.substring(8, FIRST_TWO_DIGITS));
+        this.hour = Integer.parseInt(dateTime.substring(11, 13));
+        this.minutes = Integer.parseInt(dateTime.substring(14, 16));
+        this.seconds = Integer.parseInt(dateTime.substring(17));
+    }
+
     private boolean isOutOfRange(int month, int hour, int minutes, int seconds) {
         int nDays = numberOfDays(year, month);
         return month > DECEMBER || hour >= MAX_HOUR ||
@@ -90,15 +99,6 @@ public class DateTime implements Comparable<DateTime> {
         }
         dateTime.append(seconds);
         return dateTime.toString();
-    }
-
-    public DateTime(String dateTime) {
-        this.year = Integer.parseInt(dateTime.substring(0, LEAP_YEAR_FREQ));
-        this.month = Integer.parseInt(dateTime.substring(5, 7));
-        this.day = Integer.parseInt(dateTime.substring(8, FIRST_TWO_DIGITS));
-        this.hour = Integer.parseInt(dateTime.substring(11, 13));
-        this.minutes = Integer.parseInt(dateTime.substring(14, 16));
-        this.seconds = Integer.parseInt(dateTime.substring(17));
     }
 
     @Override
