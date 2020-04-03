@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.utilities;
 
 public class DateTime implements Comparable<DateTime> {
+    public static final int HOUR_START_POS = 11;
     private static final int DAYS_30 = 30;
     private static final int DAYS_31 = 31;
     private static final int FEBRUARY = 2;
@@ -12,7 +13,13 @@ public class DateTime implements Comparable<DateTime> {
     private static final int DECEMBER = 12;
     private static final int MAX_HOUR = 24;
     private static final int MAX_MINUTES_SECONDS = 60;
-    public static final int FIRST_TWO_DIGITS = 10;
+    private static final int FIRST_TWO_DIGITS = 10;
+    private static final int MONTH_START_POS = 5;
+    private static final int DAY_START_POS = 8;
+    private static final int HOUR_END_POS = 13;
+    private static final int MIN_START_POS = 14;
+    private static final int MIN_END_POS = 16;
+    private static final int SEC_START_POS = 17;
     private int year;
     private int month;
     private int day;
@@ -34,17 +41,18 @@ public class DateTime implements Comparable<DateTime> {
 
     public DateTime(String dateTime) {
         this.year = Integer.parseInt(dateTime.substring(0, LEAP_YEAR_FREQ));
-        this.month = Integer.parseInt(dateTime.substring(5, 7));
-        this.day = Integer.parseInt(dateTime.substring(8, FIRST_TWO_DIGITS));
-        this.hour = Integer.parseInt(dateTime.substring(11, 13));
-        this.minutes = Integer.parseInt(dateTime.substring(14, 16));
-        this.seconds = Integer.parseInt(dateTime.substring(17));
+        this.month = Integer.parseInt(dateTime.substring(MONTH_START_POS, JULY));
+        this.day = Integer.parseInt(dateTime.substring(DAY_START_POS, FIRST_TWO_DIGITS));
+        this.hour = Integer.parseInt(dateTime.substring(HOUR_START_POS, HOUR_END_POS));
+        this.minutes = Integer.parseInt(dateTime.substring(MIN_START_POS, MIN_END_POS));
+        this.seconds = Integer.parseInt(dateTime.substring(SEC_START_POS));
     }
 
     private boolean isOutOfRange(int month, int hour, int minutes, int seconds) {
         int nDays = numberOfDays(year, month);
-        return month > DECEMBER || hour >= MAX_HOUR ||
-            minutes >= MAX_MINUTES_SECONDS || seconds > MAX_MINUTES_SECONDS || day > nDays;
+        boolean dateOutOfRange = month > DECEMBER ||  day > nDays;
+        boolean hourOutOfRange = hour >= MAX_HOUR || minutes >= MAX_MINUTES_SECONDS || seconds > MAX_MINUTES_SECONDS;
+        return dateOutOfRange || hourOutOfRange;
     }
 
     private boolean isNegative(int year, int month, int hour, int minutes, int seconds) {
@@ -52,7 +60,7 @@ public class DateTime implements Comparable<DateTime> {
     }
 
     private int numberOfDays(int year, int month) {
-        if(month <= JULY) {
+        if (month <= JULY) {
             if (month != FEBRUARY) {
                 if (month % 2 == 0) {
                     return DAYS_30;
@@ -71,7 +79,8 @@ public class DateTime implements Comparable<DateTime> {
     }
 
     private boolean isLeapYear(int year) {
-        return year % LEAP_YEAR_FREQ == 0 && (year % TWO_LAST_DIGITS != 0 || (year / TWO_LAST_DIGITS) % LEAP_YEAR_FREQ == 0);
+        return year % LEAP_YEAR_FREQ == 0 && (year % TWO_LAST_DIGITS != 0
+            || (year / TWO_LAST_DIGITS) % LEAP_YEAR_FREQ == 0);
     }
 
     @Override

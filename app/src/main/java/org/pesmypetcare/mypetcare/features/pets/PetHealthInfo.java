@@ -310,7 +310,7 @@ public class PetHealthInfo {
     }
 
     /**
-     * Method that removes the washFrequency for the given date
+     * Method that removes the washFrequency for the given date.
      * @param date The date for which we want to remove the washFrequency
      */
     public void removeWashFrequencyForDate(DateTime date) {
