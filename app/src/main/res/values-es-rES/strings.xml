@@ -89,6 +89,21 @@
     <string name="calendar_select_date">Selecciona una fecha</string>
     <string name="add_personal_event_button">Personal</string>
     <string name="add_periodic_event_button">Periódico</string>
+    <string name="dialog_new_event">Nuevo evento personal</string>
+    <string name="dialog_new_event_message">Introduce la descripción del evento, la hora y selecciona la mascota que participará.</string>
+    <string name="reasonText">reasonText</string>
+    <string name="timeText">timeText</string>
+    <string name="spinnerText">spinnerText</string>
+    <string name="create">Crear</string>
+    <string name="add_a_pet">Añade una mascota</string>
+    <string name="incorrect_entry">Entrada incorrecta</string>
+    <string name="description">Descripción</string>
+    <string name="default_hour">12:00:00</string>
+    <string name="delete_event">Eliminar este evento</string>
+    <string name="confirmation">Estas seguro?</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="no_description">Descripción no introducida</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

@@ -84,22 +84,35 @@ public class CalendarFragment extends Fragment {
      * Initialize the dialog components for a new personal event.
      */
     private void initializeDialogComponents(MaterialAlertDialogBuilder newPersonal) {
-        newPersonal.setTitle("New personal notice");
-        newPersonal.setMessage("Enter a header, the event description, "
-                + "its time and select the pet that will participate.");
         LinearLayout layout = new LinearLayout(getContext());
         EditText reasonText = initializeDialogLayout(layout);
-        reasonText.setContentDescription("reasonText");
+        reasonText.setContentDescription(getString(R.string.reasonText));
         LinearLayout time = new LinearLayout(getContext());
         TextView dateText = initializeTimeLayout(time);
         EditText timeText = putHourTimeLayout(time);
-        timeText.setContentDescription("timeText");
+        timeText.setContentDescription(getString(R.string.timeText));
         layout.addView(time);
         Spinner sp = initializeSpinner(layout);
-        sp.setContentDescription("spinnerPet");
+        sp.setContentDescription(getString(R.string.spinnerText));
+        dialogElements(newPersonal, layout, reasonText, dateText, timeText, sp);
+    }
+
+    /**
+     * Initialize the dialog elements.
+     * @param timeText The time
+     * @param sp The spinner
+     * @param reasonText The event description
+     * @param dateText The event date
+     * @param layout The layout of the dialog
+     * @param newPersonal The dialog
+     */
+    private void dialogElements(MaterialAlertDialogBuilder newPersonal, LinearLayout layout, EditText reasonText,
+                                TextView dateText, EditText timeText, Spinner sp) {
+        newPersonal.setTitle(getString(R.string.dialog_new_event));
+        newPersonal.setMessage(R.string.dialog_new_event_message);
         newPersonal.setView(layout);
-        createPersonalEventListener(newPersonal, reasonText, dateText, timeText, sp);
         cancelDialog(newPersonal);
+        createPersonalEventListener(newPersonal, reasonText, dateText, timeText, sp);
     }
 
     /**
@@ -112,11 +125,15 @@ public class CalendarFragment extends Fragment {
      */
     private void createPersonalEventListener(MaterialAlertDialogBuilder newPersonal, EditText reasonText, TextView
             dateText, EditText timeText, Spinner sp) {
-        newPersonal.setPositiveButton("Create", (dialog, which) -> {
+        newPersonal.setPositiveButton(getString(R.string.create), (dialog, which) -> {
             if (sp.getSelectedItem() != null) {
-                createPersonalEvent(reasonText, dateText, timeText, sp);
+                if (reasonText.getText().toString().length() != 0) {
+                    createPersonalEvent(reasonText, dateText, timeText, sp);
+                } else {
+                    toastText(getString(R.string.no_description));
+                }
             } else {
-                toastText("Add a pet");
+                toastText(getString(R.string.add_a_pet));
             }
         });
     }
@@ -148,7 +165,7 @@ public class CalendarFragment extends Fragment {
             selectedPet.addEvent(new Event(reasonText.getText().toString(), dateTime.toString()));
             communication.newPersonalEvent(selectedPet, reasonText.getText().toString(), dateTime.toString());
         } else {
-            toastText("Incorrect entry");
+            toastText(getString(R.string.incorrect_entry));
         }
     }
 
@@ -157,7 +174,7 @@ public class CalendarFragment extends Fragment {
      * @param newPersonal The dialog
      */
     private void cancelDialog(MaterialAlertDialogBuilder newPersonal) {
-        newPersonal.setNegativeButton("Cancel", (dialog, which) ->
+        newPersonal.setNegativeButton(getString(R.string.cancel), (dialog, which) ->
                 newPersonal.setCancelable(true));
     }
 
@@ -170,7 +187,7 @@ public class CalendarFragment extends Fragment {
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(PADDING_20, 0, PADDING_20, 0);
         EditText reasonText = new EditText(new ContextThemeWrapper(getContext(), R.style.HintStyle));
-        reasonText.setHint("Description");
+        reasonText.setHint(getString(R.string.description));
         reasonText.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SIZE_14);
         layout.addView(reasonText);
         return reasonText;
@@ -184,7 +201,7 @@ public class CalendarFragment extends Fragment {
     private EditText putHourTimeLayout(LinearLayout time) {
         EditText timeText = new EditText(new ContextThemeWrapper(getContext(), R.style.HintStyle));
         timeText.setTextColor(Color.parseColor(PRIMARY_COLOR));
-        timeText.setHint("00:00:00");
+        timeText.setText(getString(R.string.default_hour));
         timeText.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SIZE_14);
         time.addView(timeText);
         return timeText;
@@ -311,15 +328,16 @@ public class CalendarFragment extends Fragment {
     private void deleteEventDialog(PetComponentView p) {
         MaterialAlertDialogBuilder deleteEvent = new MaterialAlertDialogBuilder(Objects.requireNonNull(
                 getContext()), R.style.AlertDialogTheme);
-        deleteEvent.setTitle("Delete this event");
-        deleteEvent.setMessage("Are you sure?");
+        deleteEvent.setTitle(getString(R.string.delete_event));
+        deleteEvent.setMessage(getString(R.string.confirmation));
         Pet pet = p.getPet();
         Event event = ((EventView) p).getEvent();
-        deleteEvent.setPositiveButton("Yes", (dialog, which) -> {
+        deleteEvent.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
             pet.deleteEvent(event);
             communication.deletePersonalEvent(pet, event);
         });
-        deleteEvent.setNegativeButton("No", (dialog, which) -> System.out.println("Not Deleted"));
+        deleteEvent.setNegativeButton(getString(R.string.no), (dialog, which) -> {
+        });
         deleteEvent.show();
     }
 }

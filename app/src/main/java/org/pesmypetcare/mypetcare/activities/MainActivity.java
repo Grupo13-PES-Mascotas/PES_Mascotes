@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdatePet = ControllersFactory.createTrUpdatePet();
         trChangeMail = ControllersFactory.createTrChangeMail();
         trNewPersonalEvent = ControllersFactory.createTrNewPersonalEvent();
-        trDeletePersonalEvent =ControllersFactory.createTrDeletePersonalEvent();
+        trDeletePersonalEvent = ControllersFactory.createTrDeletePersonalEvent();
     }
 
     /**
