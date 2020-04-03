@@ -272,6 +272,9 @@ public class CalendarFragment extends Fragment {
         calendar.setOnDateChangeListener((view, year, month, dayOfMonth) -> addComponents(year, month, dayOfMonth));
     }
 
+    /**
+     * Set up the components.
+     */
     private void addComponents(int year, int month, int dayOfMonth) {
         ArrayList<Pet> pets = user.getPets();
         String date = DateConversion.getDate(year, month, dayOfMonth);
