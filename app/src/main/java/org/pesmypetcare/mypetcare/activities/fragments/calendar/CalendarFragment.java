@@ -84,8 +84,8 @@ public class CalendarFragment extends Fragment {
      */
     private void initializeDialogComponents(MaterialAlertDialogBuilder newPersonal) {
         newPersonal.setTitle("New personal notice");
-        newPersonal.setMessage("Enter a header, the event description, " +
-                "its time and select the pet that will participate.");
+        newPersonal.setMessage("Enter a header, the event description, "
+                + "its time and select the pet that will participate.");
         LinearLayout layout = new LinearLayout(getContext());
         EditText reasonText = initializeDialogLayout(layout);
         LinearLayout time = new LinearLayout(getContext());
@@ -199,7 +199,7 @@ public class CalendarFragment extends Fragment {
         Date currentTime = Calendar.getInstance().getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
         dateText.setText(dateFormat.format(currentTime));
-        dateText.setTextColor(Color.parseColor("#0070C0"));
+        dateText.setTextColor(Color.parseColor(PRIMARY_COLOR));
         dateText.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SIZE_12);
         time.addView(dateText);
         return dateText;

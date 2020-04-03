@@ -43,7 +43,7 @@ public class TestTrDeletePersonalEvent {
 
     @Test
     public void shouldCommunicateWithService() {
-        Event e = new Event("Hello", "2020-04-03T10:30:00");
+        Event e = new Event("Hello2", DATE_TIME);
         pet.addEvent(e);
         trDeletePersonalEvent.setPet(pet);
         trDeletePersonalEvent.setEvent(e);
