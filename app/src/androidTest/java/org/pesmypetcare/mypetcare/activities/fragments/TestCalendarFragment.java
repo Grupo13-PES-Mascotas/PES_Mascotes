@@ -16,6 +16,7 @@ import org.pesmypetcare.mypetcare.activities.MainActivity;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
@@ -41,5 +42,26 @@ public class TestCalendarFragment {
         onView(withClassName(Matchers.equalTo(CalendarView.class.getName()))).check(matches(isDisplayed()));
         onView(withId(R.id.btnAddPersonalEvent)).check(matches(isDisplayed()));
         onView(withId(R.id.btnAddPeriodicEvent)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void shouldInputPersonalEvent() {
+        onView(withContentDescription(R.string.navigation_view_open)).perform(click());
+        onView(withText(R.string.navigation_calendar)).perform(click());
+        onView(withId(R.id.btnAddPersonalEvent)).perform(click());
+        onView(withText("New personal notice")).check(matches(isDisplayed()));
+        onView(withContentDescription("reasonText")).perform(typeText("None"));
+        onView(withContentDescription("timeText")).perform(typeText("00:00:00"));
+        onView(withContentDescription("spinnerPet")).perform(click());
+    }
+
+    @Test
+    public void shouldCancelInputPersonalEvent() {
+        onView(withContentDescription(R.string.navigation_view_open)).perform(click());
+        onView(withText(R.string.navigation_calendar)).perform(click());
+        onView(withId(R.id.btnAddPersonalEvent)).perform(click());
+        onView(withText("New personal notice")).check(matches(isDisplayed()));
+        onView(withText("Cancel")).perform(click());
+        onView(withId(R.id.btnAddPersonalEvent)).perform(click());
     }
 }

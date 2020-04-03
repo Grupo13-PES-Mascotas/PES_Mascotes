@@ -56,12 +56,13 @@ public class CalendarFragment extends Fragment {
     private CalendarView calendar;
     private User user;
     private Pet selectedPet;
+    private CalendarCommunication communication;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCalendarBinding.inflate(inflater, container, false);
-        CalendarCommunication communication = (CalendarCommunication) getActivity();
+        communication = (CalendarCommunication) getActivity();
         user = Objects.requireNonNull(communication).getUser();
         setUpCalendar();
 
@@ -88,11 +89,14 @@ public class CalendarFragment extends Fragment {
                 + "its time and select the pet that will participate.");
         LinearLayout layout = new LinearLayout(getContext());
         EditText reasonText = initializeDialogLayout(layout);
+        reasonText.setContentDescription("reasonText");
         LinearLayout time = new LinearLayout(getContext());
         TextView dateText = initializeTimeLayout(time);
         EditText timeText = putHourTimeLayout(time);
+        timeText.setContentDescription("timeText");
         layout.addView(time);
         Spinner sp = initializeSpinner(layout);
+        sp.setContentDescription("spinnerPet");
         newPersonal.setView(layout);
         createPersonalEventListener(newPersonal, reasonText, dateText, timeText, sp);
         cancelDialog(newPersonal);
@@ -142,7 +146,7 @@ public class CalendarFragment extends Fragment {
         getPet(petName);
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
             selectedPet.addEvent(new Event(reasonText.getText().toString(), dateTime.toString()));
-            //TR add esdeveniment
+            communication.newPersonalEvent(selectedPet, reasonText.getText().toString(), dateTime.toString());
         } else {
             toastText("Incorrect entry");
         }
@@ -311,7 +315,10 @@ public class CalendarFragment extends Fragment {
         deleteEvent.setMessage("Are you sure?");
         Pet pet = p.getPet();
         Event event = ((EventView) p).getEvent();
-        deleteEvent.setPositiveButton("Yes", (dialog, which) -> pet.deleteEvent(event));
+        deleteEvent.setPositiveButton("Yes", (dialog, which) -> {
+            pet.deleteEvent(event);
+            communication.deletePersonalEvent(pet, event);
+        });
         deleteEvent.setNegativeButton("No", (dialog, which) -> System.out.println("Not Deleted"));
         deleteEvent.show();
     }

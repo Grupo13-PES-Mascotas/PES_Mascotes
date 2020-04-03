@@ -54,13 +54,16 @@ import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
+import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
+import org.pesmypetcare.mypetcare.controllers.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
+import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
@@ -104,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainUser trObtainUser;
     private TrUpdatePet trUpdatePet;
     private TrChangeMail trChangeMail;
+    private TrNewPersonalEvent trNewPersonalEvent;
+    private TrDeletePersonalEvent trDeletePersonalEvent;
     private FloatingActionButton flAddCalendarEvent;
 
     @Override
@@ -160,6 +165,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainUser = ControllersFactory.createTrObtainUser();
         trUpdatePet = ControllersFactory.createTrUpdatePet();
         trChangeMail = ControllersFactory.createTrChangeMail();
+        trNewPersonalEvent = ControllersFactory.createTrNewPersonalEvent();
+        trDeletePersonalEvent =ControllersFactory.createTrDeletePersonalEvent();
     }
 
     /**
@@ -417,6 +424,24 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
 
         return user;
+    }
+
+    @Override
+    public void newPersonalEvent(Pet pet, String description, String dateTime) {
+        /*
+        trNewPersonalEvent.setPet(pet);
+        trNewPersonalEvent.setEvent(new Event(description, dateTime));
+        trNewPersonalEvent.execute();
+        */
+    }
+
+    @Override
+    public void deletePersonalEvent(Pet pet, Event event) {
+        /*
+        trDeletePersonalEvent.setPet(pet);
+        trDeletePersonalEvent.setEvent(event);
+        trDeletePersonalEvent.execute();
+         */
     }
 
 

@@ -35,7 +35,7 @@ public class CalendarEventsView extends LinearLayout {
      * @param date The date to obtain the events from
      */
     public void showEvents(Pet pet, String date) {
-        pet.addEvent(new Event("Take to vet", "2020-04-03T10:30:00"));
+        //pet.addEvent(new Event("Take to vet", "2020-04-03T10:30:00"));
         List<Event> events = pet.getEvents(date);
         for (Event event : events) {
             PetComponentView petComponentView = new EventView(context, null, event).initializePetComponent(pet);
