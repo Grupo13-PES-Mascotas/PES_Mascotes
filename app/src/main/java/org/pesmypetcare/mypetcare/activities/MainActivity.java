@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainUser trObtainUser;
     private TrUpdatePet trUpdatePet;
     private TrChangeMail trChangeMail;
-    private FloatingActionButton flAddCalendarEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         drawerLayout = binding.activityMainDrawerLayout;
         navigationView = binding.navigationView;
         floatingActionButton = binding.flAddPet;
-        flAddCalendarEvent = binding.flAddCalendarEvent;
 
         initializeActionbar();
         initializeActionDrawerToggle();
@@ -271,8 +269,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private void setUpNewFragment(CharSequence title, int id) {
         toolbar.setTitle(title);
         toolbar.setContentDescription(title);
-
-        flAddCalendarEvent.hide();
 
         if (id == R.id.navigationMyPets) {
             floatingActionButton.show();
