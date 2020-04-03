@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -70,6 +71,7 @@ import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
+import java.io.File;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
@@ -424,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             finish();
         }
 
-        if (mAuth.getCurrentUser() != null) {
+        if (mAuth.getCurrentUser() != null && actualFragment == null) {
             try {
                 initializeUser();
                 changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
@@ -497,6 +499,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         super.onResume();
 
         if (actualFragment != null) {
+            System.out.println("I'm not null");
+
+            if (actualFragment instanceof ImageZoomFragment) {
+                System.out.println("I'm ImageZoomFragment");
+            }
+            else {
+                System.out.println("I'm another one");
+            }
             changeFragment(actualFragment);
         }
     }
@@ -506,7 +516,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @param data Data received from the gallery
      */
     private void galleryImageZoom(@Nullable Intent data) {
+        System.out.println("Decoding image");
         String imagePath = getImagePath(data);
+        System.out.println("Finished decoding image");
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED) {
