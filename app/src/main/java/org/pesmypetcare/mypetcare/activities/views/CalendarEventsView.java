@@ -44,6 +44,10 @@ public class CalendarEventsView extends LinearLayout {
         }
     }
 
+    /**
+     * Get all the views of the pets.
+     * @return All the views of the pets
+     */
     public List<PetComponentView> getPetComponents() {
         return petComponents;
     }
