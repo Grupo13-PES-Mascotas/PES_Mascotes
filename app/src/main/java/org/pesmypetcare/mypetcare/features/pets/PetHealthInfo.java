@@ -18,13 +18,12 @@ public class PetHealthInfo {
     private ArrayList<String> petNeeds;
 
     public PetHealthInfo() {
-        System.out.println("Me han inicializado");
-        this.weight = new TreeMap<DateTime, Double>(new TreeComparator());
-        this.recommendedDailyKiloCalories = new TreeMap<DateTime, Double>(new TreeComparator());
-        this.exerciseFrequency = new TreeMap<DateTime, Integer>(new TreeComparator());
-        this.weeklyExercise = new TreeMap<DateTime, Event>(new TreeComparator());
-        this.weeklyKiloCaloriesAverage = new TreeMap<DateTime, Double>(new TreeComparator());
-        this.washFrequency = new TreeMap<DateTime, Integer>(new TreeComparator());
+        this.weight = new TreeMap<>(new TreeComparator());
+        this.recommendedDailyKiloCalories = new TreeMap<>(new TreeComparator());
+        this.exerciseFrequency = new TreeMap<>(new TreeComparator());
+        this.weeklyExercise = new TreeMap<>(new TreeComparator());
+        this.weeklyKiloCaloriesAverage = new TreeMap<>(new TreeComparator());
+        this.washFrequency = new TreeMap<>(new TreeComparator());
         this.petNeeds = new ArrayList<>();
     }
 
@@ -101,7 +100,7 @@ public class PetHealthInfo {
      * @return The recommendedDailyKiloCalories of the pet for the specified date or -1 if the date was not found
      */
     public double getRecommendedDailyKiloCaloriesForDate(DateTime date) {
-        if(recommendedDailyKiloCalories.containsKey(date)) {
+        if (recommendedDailyKiloCalories.containsKey(date)) {
             return recommendedDailyKiloCalories.get(date);
         }
         return -1;
