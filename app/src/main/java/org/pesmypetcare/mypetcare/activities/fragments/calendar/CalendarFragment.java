@@ -23,6 +23,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.CalendarEventsView;
+import org.pesmypetcare.mypetcare.activities.views.EventView;
+import org.pesmypetcare.mypetcare.activities.views.PetComponentView;
 import org.pesmypetcare.mypetcare.databinding.FragmentCalendarBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
@@ -33,10 +35,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 public class CalendarFragment extends Fragment {
+    private static int index;
     private static final int PADDING_20 = 20;
     private static final float TEXT_SIZE_14 = 14f;
     private static final float TEXT_SIZE_12 = 12f;
@@ -53,6 +57,7 @@ public class CalendarFragment extends Fragment {
         CalendarCommunication communication = (CalendarCommunication) getActivity();
         user = Objects.requireNonNull(communication).getUser();
         setUpCalendar();
+
         binding.btnAddPersonalEvent.setOnClickListener(v -> initializeDialog());
         return binding.getRoot();
     }
@@ -72,7 +77,7 @@ public class CalendarFragment extends Fragment {
      */
     private void initializeDialogComponents(MaterialAlertDialogBuilder newPersonal) {
         newPersonal.setTitle("New personal notice");
-        newPersonal.setMessage("Enter the event description, its time and select the pet that will participate.");
+        newPersonal.setMessage("Enter a header, the event description, its time and select the pet that will participate.");
         LinearLayout layout = new LinearLayout(getContext());
         EditText reasonText = initializeDialogLayout(layout);
         LinearLayout time = new LinearLayout(getContext());
@@ -271,11 +276,31 @@ public class CalendarFragment extends Fragment {
         ArrayList<Pet> pets = user.getPets();
         String date = DateConversion.getDate(year, month, dayOfMonth);
         binding.eventInfoLayout.removeAllViews();
-
         for (Pet pet : pets) {
             CalendarEventsView calendarEventsView = new CalendarEventsView(getContext(), null);
             calendarEventsView.showEvents(pet, date);
+            List<PetComponentView> petComponents = calendarEventsView.getPetComponents();
+            for ( PetComponentView p : petComponents ) {
+                p.setOnClickListener(v -> deleteEventDialog(p));
+            }
             binding.eventInfoLayout.addView(calendarEventsView);
         }
+    }
+
+    /**
+     * Set up the delete event dialog.
+     */
+    private void deleteEventDialog(PetComponentView p) {
+        Pet pet = p.getPet();
+        Event event = ((EventView)p).getEvent();
+        System.out.println(p.getPet().getName());
+        System.out.println(((EventView)p).getEvent().toString());
+        MaterialAlertDialogBuilder deleteEvent = new MaterialAlertDialogBuilder(Objects.requireNonNull(
+                getContext()), R.style.AlertDialogTheme);
+        deleteEvent.setTitle("Delete this event");
+        deleteEvent.setMessage("Are you sure?");
+        deleteEvent.setPositiveButton("Yes", (dialog, which) -> pet.deleteEvent(event));
+        deleteEvent.setNegativeButton("No", (dialog, which) -> System.out.println("Not Deleted"));
+        deleteEvent.show();
     }
 }

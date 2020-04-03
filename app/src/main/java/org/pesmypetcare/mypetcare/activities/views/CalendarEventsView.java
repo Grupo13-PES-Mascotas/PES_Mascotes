@@ -10,16 +10,18 @@ import androidx.annotation.Nullable;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CalendarEventsView extends LinearLayout {
     private Context context;
+    private List<PetComponentView> petComponents;
 
     public CalendarEventsView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         this.context = context;
-
+        this.petComponents = new ArrayList<>();
         setOrientation(VERTICAL);
         LinearLayout.LayoutParams params = new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
             LayoutParams.MATCH_PARENT);
@@ -33,12 +35,16 @@ public class CalendarEventsView extends LinearLayout {
      * @param date The date to obtain the events from
      */
     public void showEvents(Pet pet, String date) {
-        //pet.addEvent(new Event("Take to vet", "2020-04-03T10:30:00"));
+        pet.addEvent(new Event("Take to vet", "2020-04-03T10:30:00"));
         List<Event> events = pet.getEvents(date);
-
         for (Event event : events) {
             PetComponentView petComponentView = new EventView(context, null, event).initializePetComponent(pet);
             addView(petComponentView);
+            this.petComponents.add(petComponentView);
         }
+    }
+
+    public List<PetComponentView> getPetComponents() {
+        return petComponents;
     }
 }
