@@ -26,8 +26,8 @@ public class StubUserManagerService implements UserManagerService {
     }
 
     @Override
-    public boolean userExists(String username) {
-        return data.contains(new User(username, "", ""));
+    public boolean userExists(User user) {
+        return data.contains(new User(user.getUsername(), "", ""));
     }
 
     @Override
@@ -42,10 +42,11 @@ public class StubUserManagerService implements UserManagerService {
         data.remove(user);
     }
 
-    public void changeMail(String mail, String username) {
-        for (User user : data) {
-            if (user.getUsername().equals(username)) {
-                user.setEmail(mail);
+    @Override
+    public void changeMail(String mail, User user) {
+        for (User nextUser : data) {
+            if (nextUser.getUsername().equals(user.getUsername())) {
+                nextUser.setEmail(mail);
                 break;
             }
         }

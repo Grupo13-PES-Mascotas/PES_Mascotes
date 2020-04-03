@@ -29,26 +29,26 @@ public class StubPetManagerService implements PetManagerService {
         } else if (Objects.requireNonNull(data.containsKey(pet.getOwner().getUsername()))) {
             Objects.requireNonNull(data.get(pet.getOwner().getUsername())).remove(pet);
         }
-        this.registerNewPet(pet.getOwner().getUsername(), pet);
+        this.registerNewPet(pet.getOwner(), pet);
     }
 
     @Override
-    public boolean registerNewPet(String username, Pet pet) {
-        data.putIfAbsent(username, new ArrayList<>());
-        Objects.requireNonNull(data.get(username)).add(pet);
+    public boolean registerNewPet(User user, Pet pet) {
+        data.putIfAbsent(user.getUsername(), new ArrayList<>());
+        Objects.requireNonNull(data.get(user.getUsername())).add(pet);
 
         return true;
     }
 
     @Override
-    public void updatePetImage(String username, String petName, Bitmap newPetImage) {
-        ArrayList<Pet> pets = data.get(username);
+    public void updatePetImage(User user, String petName, Bitmap newPetImage) {
+        ArrayList<Pet> pets = data.get(user.getUsername());
         int index = Objects.requireNonNull(pets).indexOf(new Pet(petName));
         pets.get(index).setProfileImage(newPetImage);
     }
     @Override
-    public void deletePet(Pet pet, String username) {
-        ArrayList<Pet> pets = data.get(username);
+    public void deletePet(Pet pet, User user) {
+        ArrayList<Pet> pets = data.get(user.getUsername());
         assert pets != null;
         pets.remove(pet);
     }
@@ -59,7 +59,7 @@ public class StubPetManagerService implements PetManagerService {
     }
 
     @Override
-    public List<Pet> findPetsByOwner(String username) {
-        return data.get(username);
+    public List<Pet> findPetsByOwner(User user) {
+        return data.get(user.getUsername());
     }
 }

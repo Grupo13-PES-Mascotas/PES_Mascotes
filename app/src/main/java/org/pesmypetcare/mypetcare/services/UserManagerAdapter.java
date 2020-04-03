@@ -12,7 +12,7 @@ public class UserManagerAdapter implements UserManagerService {
         UserData userData = null;
 
         try {
-            userData = ServiceLocator.getInstance().getUserManagerClient().getUser(username);
+            userData = ServiceLocator.getInstance().getUserManagerClient().getUser("token", username);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -21,11 +21,11 @@ public class UserManagerAdapter implements UserManagerService {
     }
 
     @Override
-    public boolean userExists(String username) {
+    public boolean userExists(User user) {
         UserData userData = null;
 
         try {
-            userData = ServiceLocator.getInstance().getUserManagerClient().getUser(username);
+            userData = ServiceLocator.getInstance().getUserManagerClient().getUser(user.getToken(), user.getUsername());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -35,18 +35,19 @@ public class UserManagerAdapter implements UserManagerService {
 
     @Override
     public boolean changePassword(User user, String newPassword) {
-        ServiceLocator.getInstance().getUserManagerClient().updatePassword(user.getUsername(), newPassword);
+        ServiceLocator.getInstance().getUserManagerClient().updatePassword(user.getToken(), user.getUsername(),
+            newPassword);
         return true;
     }
 
     @Override
     public void deleteUser(User user) {
-        ServiceLocator.getInstance().getUserManagerClient().deleteUser(user.getUsername());
+        ServiceLocator.getInstance().getUserManagerClient().deleteUser(user.getToken(), user.getUsername());
     }
 
     @Override
-    public void changeMail(String email, String username) {
-        ServiceLocator.getInstance().getUserManagerClient().updateEmail(username, email);
+    public void changeMail(String email, User user) {
+        ServiceLocator.getInstance().getUserManagerClient().updateEmail(user.getToken(), user.getUsername(), email);
     }
 
     @Override

@@ -39,7 +39,7 @@ public class TrChangePassword {
      */
     public void execute() {
         result = false;
-        userManagerService.changePassword(this.user, this.newPassword);
+        userManagerService.changePassword(user, newPassword);
         result = true;
     }
 

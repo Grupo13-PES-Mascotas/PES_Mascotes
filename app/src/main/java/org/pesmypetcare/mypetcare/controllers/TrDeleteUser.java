@@ -33,8 +33,8 @@ public class TrDeleteUser {
         if (!userHasAlreadyBeenRegistered()) {
             throw new NotValidUserException();
         }
-        userManagerService.deleteUser(this.user);
-        petManagerService.deletePetsFromUser(this.user);
+        userManagerService.deleteUser(user);
+        petManagerService.deletePetsFromUser(user);
         result = true;
     }
 
@@ -43,7 +43,7 @@ public class TrDeleteUser {
      * @return True if the user is registered
      */
     private boolean userHasAlreadyBeenRegistered() {
-        return userManagerService.userExists(this.user.getUsername());
+        return userManagerService.userExists(user);
     }
 
     /**

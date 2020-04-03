@@ -13,12 +13,18 @@ public class User {
     private String passwd;
     private ArrayList<Pet> pets;
     private Bitmap userProfileImage;
+    private String token;
 
     public User(String username, String email, String passwd) {
         this.username = username;
         this.email = email;
         this.passwd = passwd;
         this.pets = new ArrayList<>();
+        this.token = "token";
+    }
+
+    public String getToken() {
+        return token;
     }
 
     /**
