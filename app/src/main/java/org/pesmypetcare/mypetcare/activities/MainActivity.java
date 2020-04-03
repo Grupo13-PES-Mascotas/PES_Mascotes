@@ -70,8 +70,10 @@ import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
@@ -91,13 +93,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static FloatingActionButton floatingActionButton;
     private static FirebaseAuth mAuth;
     private static Fragment actualFragment;
+    private static User user;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private MaterialToolbar toolbar;
     private NavigationView navigationView;
-    private User user;
     private TrRegisterNewPet trRegisterNewPet;
     private TrUpdatePetImage trUpdatePetImage;
     private TrChangePassword trChangePassword;
@@ -113,10 +115,33 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        user = new User("johnDoe", "johndoe@gmail.com", "1234");
+
+        if (enableLoginActivity && mAuth.getCurrentUser() == null) {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        }
+        else if (!enableLoginActivity) {
+            user = new User("johnDoe", "johnDoe@gmail.com", "1234");
+        }
+
+        initializeControllers();
+
+        drawerLayout = binding.activityMainDrawerLayout;
+        navigationView = binding.navigationView;
+        floatingActionButton = binding.flAddPet;
+
+        if (mAuth.getCurrentUser() != null) {
+            try {
+                initializeUser();
+                //changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+            } catch (PetRepeatException e) {
+                Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing),
+                    Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
 
         initializeActivity();
-        initializeControllers();
         setUpNavigationImage();
     }
 
@@ -137,6 +162,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainUser.execute();
 
         user = trObtainUser.getResult();
+
+        for (Pet pet : user.getPets()) {
+            try {
+                System.out.println("TRY");
+                byte[] bytes = ImageManager.readImage(ImageManager.PROFILE_IMAGES_PATH,
+                    pet.getOwner().getUsername() + '_' + pet.getName());
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                pet.setProfileImage(bitmap);
+            } catch (IOException e) {
+                System.out.println("CATCH");
+                Drawable petImageDrawable = getResources().getDrawable(R.drawable.single_paw, null);
+                pet.setProfileImage(((BitmapDrawable) petImageDrawable).getBitmap());
+            }
+        }
 
         View navigationHeader = navigationView.getHeaderView(0);
         TextView userName = navigationHeader.findViewById(R.id.lblUserName);
@@ -167,10 +206,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Initialize the views of this activity.
      */
     private void initializeActivity() {
-        drawerLayout = binding.activityMainDrawerLayout;
-        navigationView = binding.navigationView;
-        floatingActionButton = binding.flAddPet;
-
         initializeActionbar();
         initializeActionDrawerToggle();
         setUpNavigationDrawer();
@@ -180,6 +215,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     public static void hideFloatingPoint() {
         floatingActionButton.hide();
+    }
+
+    public static void setPetImage(Pet pet) {
+        System.out.println("UPDATING PET");
+        user.updatePetProfileImage(pet);
     }
 
 
@@ -408,26 +448,32 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public User getUser() {
-        try {
+        /*try {
             initializeUser();
         } catch (PetRepeatException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return user;
+    }
+
+    @Override
+    public void changePetProfileImage(Pet actualPet) {
+        user.updatePetProfileImage(actualPet);
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (enableLoginActivity && mAuth.getCurrentUser() == null) {
+        /*if (enableLoginActivity && mAuth.getCurrentUser() == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
 
         if (mAuth.getCurrentUser() != null && actualFragment == null) {
             try {
+                System.out.println("On START");
                 initializeUser();
                 changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
             } catch (PetRepeatException e) {
@@ -435,7 +481,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                     Toast.LENGTH_LONG);
                 toast.show();
             }
-        }
+        }*/
     }
 
 

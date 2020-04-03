@@ -140,4 +140,21 @@ public class User {
         return Objects.hash(username);
     }
 
+    public void updatePetProfileImage(Pet actualPet) {
+        System.out.println(pets.toString());
+        System.out.println(actualPet.getName());
+        int index = getActualPetIndex(actualPet.getName());
+        System.out.println(index);
+        pets.get(index).setProfileImage(actualPet.getProfileImage());
+    }
+
+    private int getActualPetIndex(String name) {
+        for (int actual = 0; actual < pets.size(); ++actual) {
+            if (pets.get(actual).getName().equals(name)) {
+                return actual;
+            }
+        }
+
+        return -1;
+    }
 }

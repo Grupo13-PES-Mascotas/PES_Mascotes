@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -14,6 +15,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.BinderThread;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
@@ -35,7 +37,8 @@ import java.util.Objects;
 public class InfoPetFragment extends Fragment {
     private static Drawable petProfileDrawable;
     private static boolean isImageModified;
-    private static Pet pet = new Pet("Linux");
+    private static Pet pet;
+    private static Resources resources;
     private static final String PET_PROFILE_IMAGE_DESCRIPTION = "pet profile image";
 
     private FragmentInfoPetBinding binding;
@@ -53,6 +56,7 @@ public class InfoPetFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoPetBinding.inflate(inflater, container, false);
         communication = (InfoPetCommunication) getActivity();
+        resources = Objects.requireNonNull(getActivity()).getResources();
 
         updatePetListeners();
         //setCalendarPicker();
@@ -166,6 +170,9 @@ public class InfoPetFragment extends Fragment {
      */
     public static void setPet(Pet pet) {
         InfoPetFragment.pet = pet;
+        Drawable drawable = new BitmapDrawable(resources, pet.getProfileImage());
+        isImageModified = isImageModified || !drawable.equals(petProfileDrawable);
+        petProfileDrawable = drawable;
     }
 
     /**

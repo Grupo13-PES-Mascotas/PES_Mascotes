@@ -36,7 +36,7 @@ public class MainMenuView extends LinearLayout {
      * @param currentUser The current user of the application
      */
     public void showPets(User currentUser) {
-        List<Pet> userPets = currentUser.getPets();
+        List<Pet> userPets = new ArrayList<>(currentUser.getPets());
         Space space;
         space = initializeSpacer();
         this.addView(space);
