@@ -37,7 +37,7 @@ import java.util.Objects;
 public class InfoPetFragment extends Fragment {
     private static Drawable petProfileDrawable;
     private static boolean isImageModified;
-    private static Pet pet;
+    private static Pet pet = new Pet("Linux");
     private static Resources resources;
     private static final String PET_PROFILE_IMAGE_DESCRIPTION = "pet profile image";
 
