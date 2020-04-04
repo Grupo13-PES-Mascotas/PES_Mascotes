@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ImageManager {
     public static final String PET_PROFILE_IMAGES_PATH = "petProfileImages";
@@ -69,7 +70,7 @@ public class ImageManager {
      * @param relativePath The path inside the folder with application data
      * @param imageName The name of the image that has to be read
      * @return The bytes of the image that has been read
-     * @throws IOException
+     * @throws IOException The file does not exist
      */
     public static byte[] readImage(String relativePath, String imageName) throws IOException {
         FileInputStream input = new FileInputStream(PATH + File.separator + relativePath + File.separator
@@ -94,7 +95,7 @@ public class ImageManager {
      * @param bytesList The ArrayList of bytes
      * @return The array that contains the bytes from the ArrayList
      */
-    private static byte[] convertToByteArray(ArrayList<Byte> bytesList) {
+    private static byte[] convertToByteArray(List<Byte> bytesList) {
         byte[] bytes = new byte[bytesList.size()];
         for (int actual = 0; actual < bytes.length; ++actual) {
             bytes[actual] = bytesList.get(actual);

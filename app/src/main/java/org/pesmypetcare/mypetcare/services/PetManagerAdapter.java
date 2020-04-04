@@ -93,7 +93,7 @@ public class PetManagerAdapter implements PetManagerService {
      * Get the transformation of the pets from the server to pet instances.
      * @param userPets The pets from the server
      * @return The instances of the pets of our application
-     * @throws PetRepeatException
+     * @throws PetRepeatException The pet is repeated
      */
     private List<Pet> getPets(List<org.pesmypetcare.usermanagerlib.datacontainers.Pet> userPets)
         throws PetRepeatException {
