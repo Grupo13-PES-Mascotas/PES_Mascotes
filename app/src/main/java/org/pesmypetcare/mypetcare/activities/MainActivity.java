@@ -70,12 +70,16 @@ import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.utilities.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
     InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication {
@@ -170,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         user = trObtainUser.getResult();
 
-        for (Pet pet : user.getPets()) {
+        /*for (Pet pet : user.getPets()) {
             try {
                 byte[] bytes = ImageManager.readImage(ImageManager.PROFILE_IMAGES_PATH,
                     pet.getOwner().getUsername() + '_' + pet.getName());
@@ -180,6 +184,25 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 Drawable petImageDrawable = getResources().getDrawable(R.drawable.single_paw, null);
                 pet.setProfileImage(((BitmapDrawable) petImageDrawable).getBitmap());
             }
+        }*/
+
+        int nUserPets = user.getPets().size();
+        Drawable defaultDrawable = getResources().getDrawable(R.drawable.single_paw, null);
+        Bitmap defaultBitmap = ((BitmapDrawable) defaultDrawable).getBitmap();
+
+        ExecutorService executorService = Executors.newCachedThreadPool();
+
+        for (int actual = 0; actual < nUserPets; ++actual) {
+            executorService.execute(new GetPetImageRunnable(actual, user.getUsername(),
+                user.getPets().get(actual).getName(), defaultBitmap));
+        }
+
+        executorService.shutdown();
+
+        try {
+            executorService.awaitTermination(3, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         View navigationHeader = navigationView.getHeaderView(0);
@@ -191,6 +214,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         userName.setText(getString(R.string.app_name));
         userEmail.setText(user.getEmail());
         circularImageView.setDrawable(imgUser);
+    }
+
+    public static void setPetBitmapImage(int actual, Bitmap petImage) {
+        user.getPets().get(actual).setProfileImage(petImage);
     }
 
     /**

@@ -28,7 +28,15 @@ public class ImageManager {
     public static byte[] getImageBytes(Bitmap image) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        return stream.toByteArray();
+        byte[] bytes = stream.toByteArray();
+
+        try {
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return bytes;
     }
 
     public static void writeImage(String relativePath, String fileName, byte[] bytes) {
@@ -60,6 +68,8 @@ public class ImageManager {
         for (int actual = 0; actual < bytes.length; ++actual) {
             bytes[actual] = bytesList.get(actual);
         }
+
+        input.close();
 
         return bytes;
     }
