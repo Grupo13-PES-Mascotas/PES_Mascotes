@@ -9,6 +9,7 @@ import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PetManagerService {
 
@@ -20,27 +21,27 @@ public interface PetManagerService {
 
     /**
      * Registers a new pet to a user.
-     * @param username The user to whom the pet has to be registered
+     * @param user The user to whom the pet has to be registered
      * @param pet The pet to be registered to the user
      * @return True if the register has been done without any problems
      * @throws PetAlreadyExistingException The pet already belongs to the user
      */
-    boolean registerNewPet(String username, Pet pet);
+    boolean registerNewPet(User user, Pet pet);
 
     /**
      * Updates the image of the pet.
-     * @param username The owner of the pet
-     * @param petName The pet from which the image will be updated
+     * @param user The owner of the pet
+     * @param pet The pet from which the image will be updated
      * @param newPetImage The new image for the pet
      */
-    void updatePetImage(String username, String petName, Bitmap newPetImage);
+    void updatePetImage(User user, Pet pet, Bitmap newPetImage);
 
     /**
      * Delete the pet.
      * @param pet The pet to delete
-     * @param username The owner of the pet
+     * @param user The owner of the pet
      */
-    void deletePet(Pet pet, String username);
+    void deletePet(Pet pet, User user);
 
     /**
      * Delete a user.
@@ -50,10 +51,17 @@ public interface PetManagerService {
 
     /**
      * Find all the pets from a user.
-     * @param username The user who wants to get his pets
+     * @param user The user who wants to get his pets
      * @return The pets that belongs to the user
      */
-    List<Pet> findPetsByOwner(String username) throws PetRepeatException;
+    List<Pet> findPetsByOwner(User user) throws PetRepeatException;
+
+    /**
+     * Get all the images of the pets from the user.
+     * @param user The user which owns the pets
+     * @return The images of the pets from the server
+     */
+    Map<String, byte[]> getAllPetsImages(User user);
 
     /**
      * Add a event to a pet.

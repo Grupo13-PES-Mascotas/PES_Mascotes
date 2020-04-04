@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,18 +38,19 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunication;
-import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
-import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsComunication;
-import org.pesmypetcare.mypetcare.activities.fragments.settings.NewPasswordInterface;
-import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetCommunication;
-import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunication;
-import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarFragment;
-import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
-import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
-import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunication;
+import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommunication;
+import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
+import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsComunication;
+import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.settings.NewPasswordInterface;
+import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
@@ -57,11 +59,13 @@ import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
+import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetImages;
 import org.pesmypetcare.mypetcare.controllers.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
+import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
@@ -72,11 +76,19 @@ import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.utilities.GetPetImageRunnable;
+import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
-    InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication {
+    InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
@@ -92,13 +104,15 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static FloatingActionButton floatingActionButton;
     private static FirebaseAuth mAuth;
     private static Fragment actualFragment;
+    private static User user;
+    private static Resources resources;
+    private static NavigationView navigationView;
+    private static int[] countImagesNotFound;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private MaterialToolbar toolbar;
-    private NavigationView navigationView;
-    private User user;
     private TrRegisterNewPet trRegisterNewPet;
     private TrUpdatePetImage trUpdatePetImage;
     private TrChangePassword trChangePassword;
@@ -107,6 +121,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainUser trObtainUser;
     private TrUpdatePet trUpdatePet;
     private TrChangeMail trChangeMail;
+    private TrObtainAllPetImages trObtainAllPetImages;
+    private TrUpdateUserImage trUpdateUserImage;
     private TrNewPersonalEvent trNewPersonalEvent;
     private TrDeletePersonalEvent trDeletePersonalEvent;
     private FloatingActionButton flAddCalendarEvent;
@@ -117,11 +133,54 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        user = new User("johnDoe", "johndoe@gmail.com", "1234");
+        resources = getResources();
 
-        initializeActivity();
+        makeLogin();
         initializeControllers();
+        getComponents();
+
+        ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw));
+        initializeCurrentUser();
+        initializeActivity();
         setUpNavigationImage();
+    }
+
+    /**
+     * Initializes the current user.
+     */
+    private void initializeCurrentUser() {
+        if (mAuth.getCurrentUser() != null) {
+            try {
+                initializeUser();
+                //changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+            } catch (PetRepeatException e) {
+                Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing),
+                    Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
+    }
+
+    /**
+     * Get the components of the activity.
+     */
+    private void getComponents() {
+        drawerLayout = binding.activityMainDrawerLayout;
+        navigationView = binding.navigationView;
+        floatingActionButton = binding.flAddPet;
+    }
+
+    /**
+     * Make the login to the application.
+     */
+    private void makeLogin() {
+        if (enableLoginActivity && mAuth.getCurrentUser() == null) {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        }
+        else if (!enableLoginActivity) {
+            user = new User("johnDoe", "johnDoe@gmail.com", "1234");
+        }
     }
 
     /**
@@ -142,15 +201,140 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         user = trObtainUser.getResult();
 
+        /*for (Pet pet : user.getPets()) {
+            try {
+                byte[] bytes = ImageManager.readImage(ImageManager.PROFILE_IMAGES_PATH,
+                    pet.getOwner().getUsername() + '_' + pet.getName());
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                pet.setProfileImage(bitmap);
+            } catch (IOException e) {
+                Drawable petImageDrawable = getResources().getDrawable(R.drawable.single_paw, null);
+                pet.setProfileImage(((BitmapDrawable) petImageDrawable).getBitmap());
+            }
+        }*/
+
+        int imagesNotFound = getPetImages();
+        int nUserPets = user.getPets().size();
+
+        if (imagesNotFound == nUserPets) {
+            getImagesFromServer();
+        }
+
+        setUpNavigationHeader();
+    }
+
+    /**
+     * Get the images of the pets from the server.
+     */
+    private void getImagesFromServer() {
+        trObtainAllPetImages.setUser(user);
+        trObtainAllPetImages.execute();
+        Map<String, byte[]> petImages = trObtainAllPetImages.getResult();
+        Set<String> names = petImages.keySet();
+
+        for (String petName : names) {
+            byte[] bytes = petImages.get(petName);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, Objects.requireNonNull(bytes).length);
+            int index = user.getPets().indexOf(new Pet(petName));
+            user.getPets().get(index).setProfileImage(bitmap);
+            ImageManager.writeImage(ImageManager.PET_PROFILE_IMAGES_PATH, user.getUsername() + '_' + petName, bytes);
+        }
+    }
+
+    /**
+     * Get the images for the pets.
+     * @return The number of time an image is not found in local storage
+     */
+    private int getPetImages() {
+        int nUserPets = user.getPets().size();
+        Drawable defaultDrawable = getResources().getDrawable(R.drawable.single_paw, null);
+        Bitmap defaultBitmap = ((BitmapDrawable) defaultDrawable).getBitmap();
+        countImagesNotFound = new int[nUserPets];
+        Arrays.fill(countImagesNotFound, 0);
+
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        startRunnable(nUserPets, defaultBitmap, executorService);
+        executorService.shutdown();
+
+        try {
+            executorService.awaitTermination(3, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return calculateImagesNotFound();
+    }
+
+    /**
+     * Calculates how many time an image is not found in local storage.
+     * @return The number of times an image is not found in local storage
+     */
+    private int calculateImagesNotFound() {
+        int imagesNotFound = 0;
+        for (int count : countImagesNotFound) {
+            imagesNotFound += count;
+        }
+
+        return imagesNotFound;
+    }
+
+    /**
+     * Start the runnable to obtain the images of the pets.
+     * @param nUserPets The number of pets the user has
+     * @param defaultBitmap The default image that should be assigned if there is not any one
+     * @param executorService The executor service of the runnable
+     */
+    private void startRunnable(int nUserPets, Bitmap defaultBitmap, ExecutorService executorService) {
+        for (int actual = 0; actual < nUserPets; ++actual) {
+            executorService.execute(new GetPetImageRunnable(actual, user.getUsername(),
+                user.getPets().get(actual).getName(), defaultBitmap));
+        }
+    }
+
+    /**
+     * Set up the navigation header.
+     */
+    private static void setUpNavigationHeader() {
         View navigationHeader = navigationView.getHeaderView(0);
         TextView userName = navigationHeader.findViewById(R.id.lblUserName);
         TextView userEmail = navigationHeader.findViewById(R.id.lblUserEmail);
         CircularImageView circularImageView = navigationHeader.findViewById(R.id.imgUser);
-        Drawable imgUser = new BitmapDrawable(getResources(), user.getUserProfileImage());
 
-        userName.setText(getString(R.string.app_name));
+        userName.setText(resources.getString(R.string.app_name));
         userEmail.setText(user.getEmail());
-        circularImageView.setDrawable(imgUser);
+
+        if (user.getUserProfileImage() == null) {
+            circularImageView.setDrawable(resources.getDrawable(R.drawable.user_icon_sample));
+        } else {
+            Drawable imgUser = new BitmapDrawable(resources, user.getUserProfileImage());
+            circularImageView.setDrawable(imgUser);
+        }
+    }
+
+    /**
+     * Set the pet image.
+     * @param actual The position of the actual pet
+     * @param petImage The bitmap of the selected pet
+     */
+    public static void setPetBitmapImage(int actual, Bitmap petImage) {
+        user.getPets().get(actual).setProfileImage(petImage);
+    }
+
+    /**
+     * Increment the count of the pet that has not got an image.
+     * @param actual The actual pet position
+     */
+    public static void incrementCountNotImage(int actual) {
+        ++countImagesNotFound[actual];
+    }
+
+    /**
+     * Set the default user image.
+     */
+    public static void setDefaultUserImage() {
+        user.setUserProfileImage(null);
+        setUpNavigationHeader();
+        ImageManager.deleteImage(ImageManager.USER_PROFILE_IMAGES_PATH, user.getUsername());
     }
 
     /**
@@ -165,6 +349,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainUser = ControllersFactory.createTrObtainUser();
         trUpdatePet = ControllersFactory.createTrUpdatePet();
         trChangeMail = ControllersFactory.createTrChangeMail();
+        trObtainAllPetImages = ControllersFactory.createTrObtainAllPetImages();
+        trUpdateUserImage = ControllersFactory.createTrUpdateUserImage();
         trNewPersonalEvent = ControllersFactory.createTrNewPersonalEvent();
         trDeletePersonalEvent = ControllersFactory.createTrDeletePersonalEvent();
     }
@@ -173,11 +359,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Initialize the views of this activity.
      */
     private void initializeActivity() {
-        drawerLayout = binding.activityMainDrawerLayout;
-        navigationView = binding.navigationView;
-        floatingActionButton = binding.flAddPet;
-        flAddCalendarEvent = binding.flAddCalendarEvent;
-
         initializeActionbar();
         initializeActionDrawerToggle();
         setUpNavigationDrawer();
@@ -185,10 +366,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
-    public static void hideFloatingPoint() {
+    /**
+     * Hide the floating button.
+     */
+    public static void hideFloatingButton() {
         floatingActionButton.hide();
     }
-
 
     /**
      * Enters the fragment to create a pet.
@@ -244,30 +427,21 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Method responsible for initializing the listener of the header view.
      */
     private void setUpNavigationImage() {
-        setUpUserImage();
-        //CircularImageView userImageView = findViewById(R.id.imgUser);
-        /*userImageView.setDrawable(drawable);
-        userImageView.setClickable(true);
-        userImageView.setOnClickListener(v -> changeFragment(new ImageZoom(drawable)));*/
-
         navigationView.getHeaderView(0).setOnClickListener(v -> {
-            Drawable drawable = new BitmapDrawable(getResources(), user.getUserProfileImage());
+            toolbar.setTitle(R.string.user_profile_image);
+            Bitmap userProfileImage = user.getUserProfileImage();
+            Drawable drawable = getDrawable(R.drawable.user_icon_sample);
+
+            if (userProfileImage != null) {
+                drawable = new BitmapDrawable(getResources(), userProfileImage);
+            }
+
             ImageZoomFragment imageZoomFragment = new ImageZoomFragment(drawable);
             ImageZoomFragment.setIsMainActivity(true);
             floatingActionButton.hide();
             drawerLayout.closeDrawers();
             changeFragment(imageZoomFragment);
         });
-    }
-
-    /**
-     * Method responsible for assigning an default image to the user.
-     */
-    private void setUpUserImage() {
-        Bitmap userImageBitmap = user.getUserProfileImage();
-        if (userImageBitmap == null) {
-            user.setUserProfileImage(BitmapFactory.decodeResource(getResources(), R.drawable.test));
-        }
     }
 
     /**
@@ -278,8 +452,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private void setUpNewFragment(CharSequence title, int id) {
         toolbar.setTitle(title);
         toolbar.setContentDescription(title);
-
-        flAddCalendarEvent.hide();
 
         if (id == R.id.navigationMyPets) {
             floatingActionButton.show();
@@ -361,6 +533,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
             if (actualFragment instanceof ImageZoomFragment) {
+                toolbar.setTitle(R.string.navigation_my_pets);
                 changeFromImageZoom();
                 return true;
             } else if (!(actualFragment instanceof MyPetsFragment)){
@@ -374,7 +547,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     /**
-     * Change to next fragment from an ImageZoomFragment
+     * Change to next fragment from an ImageZoomFragment.
      */
     private void changeFromImageZoom() {
         if (ImageZoomFragment.isMainActivity()) {
@@ -417,16 +590,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public User getUser() {
-        try {
-            initializeUser();
-        } catch (PetRepeatException e) {
-            e.printStackTrace();
-        }
-
         return user;
     }
 
     @Override
+    public void changePetProfileImage(Pet actualPet) {
+        user.updatePetProfileImage(actualPet);
+    }
+    
     public void newPersonalEvent(Pet pet, String description, String dateTime) {
         /*
         trNewPersonalEvent.setPet(pet);
@@ -448,13 +619,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     protected void onStart() {
         super.onStart();
-        if (enableLoginActivity && mAuth.getCurrentUser() == null) {
+        /*if (enableLoginActivity && mAuth.getCurrentUser() == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
 
-        if (mAuth.getCurrentUser() != null) {
+        if (mAuth.getCurrentUser() != null && actualFragment == null) {
             try {
+                System.out.println("On START");
                 initializeUser();
                 changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
             } catch (PetRepeatException e) {
@@ -462,7 +634,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                     Toast.LENGTH_LONG);
                 toast.show();
             }
-        }
+        }*/
     }
 
 
@@ -470,6 +642,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void makeZoomImage(Drawable drawable) {
         floatingActionButton.hide();
         ImageZoomFragment.setIsMainActivity(false);
+
         changeFragment(new ImageZoomFragment(drawable));
     }
 
@@ -540,12 +713,27 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-        }
-        else {
+        } else {
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             Drawable drawable = new BitmapDrawable(getResources(), bitmap);
             ((ImageZoomFragment) actualFragment).setDrawable(drawable);
+            ImageZoomFragment.setIsDefaultImage(false);
+
+            if (ImageZoomFragment.isMainActivity()) {
+                updateUserProfileImage(bitmap);
+            }
         }
+    }
+
+    /**
+     * Updates user profile image.
+     * @param bitmap The bitmap of the profile image
+     */
+    private void updateUserProfileImage(Bitmap bitmap) {
+        user.setUserProfileImage(bitmap);
+        setUpNavigationHeader();
+        byte[] imageBytes = ImageManager.getImageBytes(bitmap);
+        ImageManager.writeImage(ImageManager.USER_PROFILE_IMAGES_PATH, user.getUsername(), imageBytes);
     }
 
     /**
@@ -600,5 +788,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trChangeMail.setUser(user);
         trChangeMail.setMail(newEmail);
         trChangeMail.execute();
+    }
+
+    @Override
+    public void updateUserImage(Drawable drawable) {
+        trUpdateUserImage.setUser(user);
+        trUpdateUserImage.setImage(((BitmapDrawable) drawable).getBitmap());
+        trUpdateUserImage.execute();
     }
 }

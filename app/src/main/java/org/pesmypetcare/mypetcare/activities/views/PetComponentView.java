@@ -3,6 +3,8 @@ package org.pesmypetcare.mypetcare.activities.views;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -79,10 +81,17 @@ public abstract class PetComponentView extends ConstraintLayout {
      */
     private CircularImageView addPetImage() {
         CircularImageView image = new CircularImageView(currentActivity, null);
-        image.setDrawable(getResources().getDrawable(R.drawable.single_paw, null));
+        Drawable petImageDrawable = getResources().getDrawable(R.drawable.single_paw);
+
+        if (pet.getProfileImage() != null) {
+            petImageDrawable = new BitmapDrawable(getResources(), pet.getProfileImage());
+        }
+
+        image.setDrawable(petImageDrawable);
         image.setLayoutParams(new LinearLayout.LayoutParams(IMAGEDIMESIONS, IMAGEDIMESIONS));
         int imageId = View.generateViewId();
         image.setId(imageId);
+
         return image;
     }
 
@@ -140,4 +149,24 @@ public abstract class PetComponentView extends ConstraintLayout {
      * @return The second line of the component text.
      */
     protected abstract String getSecondLineText(Pet pet);
+
+    /*if (pet.getProfileImage() == null) {
+            try {
+                System.out.println("TRY");
+                byte[] bytes = ImageManager.readImage(ImageManager.PROFILE_IMAGES_PATH,
+                    pet.getOwner().getUsername() + '_' + pet.getName());
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                pet.setProfileImage(bitmap);
+                petImageDrawable = new BitmapDrawable(getResources(), bitmap);
+            } catch (IOException e) {
+                System.out.println("CATCH");
+                petImageDrawable = getResources().getDrawable(R.drawable.single_paw, null);
+                pet.setProfileImage(((BitmapDrawable) petImageDrawable).getBitmap());
+            } finally {
+                MainActivity.setPetImage(pet);
+            }
+        } else {
+            System.out.println("ELSE");
+            petImageDrawable = new BitmapDrawable(getResources(), pet.getProfileImage());
+        }*/
 }

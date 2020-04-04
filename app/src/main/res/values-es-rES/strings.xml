@@ -89,6 +89,7 @@
     <string name="calendar_select_date">Selecciona una fecha</string>
     <string name="add_personal_event_button">Personal</string>
     <string name="add_periodic_event_button">Periódico</string>
+    <string name="user_profile_image">Mi imagen de perfil</string>
     <string name="dialog_new_event">Nuevo evento personal</string>
     <string name="dialog_new_event_message">Introduce la descripción del evento, la hora y selecciona la mascota que participará.</string>
     <string name="reasonText">reasonText</string>

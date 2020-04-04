@@ -63,7 +63,7 @@ public class MyPetsFragment extends Fragment {
                 ft.replace(R.id.mainActivityFrameLayout, testFragment);
                 ft.commit();
                 MainActivity.setActualFragment(testFragment);
-                MainActivity.hideFloatingPoint();
+                MainActivity.hideFloatingButton();
             });
             ++index;
         }

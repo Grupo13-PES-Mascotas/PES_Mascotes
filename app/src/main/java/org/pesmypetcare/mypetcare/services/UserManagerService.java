@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
+import android.graphics.Bitmap;
+
 import org.pesmypetcare.mypetcare.features.users.User;
 
 public interface UserManagerService {
@@ -13,10 +15,10 @@ public interface UserManagerService {
 
     /**
      * Checks if the user had been registered.
-     * @param username The user id
+     * @param user The user id
      * @return True if the user already exists, false otherwise
      */
-    boolean userExists(String username);
+    boolean userExists(User user);
 
     /**
      * Change the password of a user.
@@ -35,9 +37,9 @@ public interface UserManagerService {
     /**
      * Changes the mail.
      * @param mail The mail that user wants to set
-     * @param username The user which wants to change his mail
+     * @param user The user which wants to change his mail
      */
-    void changeMail(String mail, String username);
+    void changeMail(String mail, User user);
 
     /**
      * Creates the user.
@@ -46,4 +48,11 @@ public interface UserManagerService {
      * @param password User password
      */
     void createUser(String uid, String email, String password);
+
+    /**
+     * Updates the image of the user.
+     * @param user The user that wants his image to be updated
+     * @param bitmap The bitmap of the image to be assigned
+     */
+    void updateUserImage(User user, Bitmap bitmap);
 }

@@ -40,6 +40,14 @@ public class ControllersFactory {
         return new TrChangeMail(new UserManagerAdapter());
     }
 
+    public static TrObtainAllPetImages createTrObtainAllPetImages() {
+        return new TrObtainAllPetImages(new PetManagerAdapter());
+    }
+
+    public static TrUpdateUserImage createTrUpdateUserImage() {
+        return new TrUpdateUserImage(new UserManagerAdapter());
+    }
+
     public static TrDeletePersonalEvent createTrDeletePersonalEvent() {
         return null;
         //return new TrDeletePersonalEvent(new PetManagerAdapter());
@@ -50,3 +58,4 @@ public class ControllersFactory {
         //return new TrNewPersonalEvent(new PetManagerAdapter());
     }
 }
+
