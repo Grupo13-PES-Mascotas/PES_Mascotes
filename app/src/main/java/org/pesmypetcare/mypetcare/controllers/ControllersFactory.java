@@ -46,6 +46,7 @@ public class ControllersFactory {
 
     public static TrUpdateUserImage createTrUpdateUserImage() {
         return new TrUpdateUserImage(new UserManagerAdapter());
+    }
 
     public static TrDeletePersonalEvent createTrDeletePersonalEvent() {
         return null;
@@ -57,3 +58,4 @@ public class ControllersFactory {
         //return new TrNewPersonalEvent(new PetManagerAdapter());
     }
 }
+

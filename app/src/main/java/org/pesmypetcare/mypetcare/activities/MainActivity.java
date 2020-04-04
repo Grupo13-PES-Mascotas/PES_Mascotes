@@ -596,6 +596,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void changePetProfileImage(Pet actualPet) {
         user.updatePetProfileImage(actualPet);
+    }
     
     public void newPersonalEvent(Pet pet, String description, String dateTime) {
         /*
