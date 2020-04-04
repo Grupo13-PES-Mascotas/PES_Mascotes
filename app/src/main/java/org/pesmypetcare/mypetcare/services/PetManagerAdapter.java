@@ -49,7 +49,7 @@ public class PetManagerAdapter implements PetManagerService {
     public void updatePetImage(User user, Pet pet, Bitmap newPetImage) {
         byte[] bytesImage = ImageManager.getImageBytes(newPetImage);
         if (pet.getProfileImage() != null) {
-            ImageManager.writeImage(ImageManager.PROFILE_IMAGES_PATH, user.getUsername() + '_' + pet.getName(),
+            ImageManager.writeImage(ImageManager.PET_PROFILE_IMAGES_PATH, user.getUsername() + '_' + pet.getName(),
                 bytesImage);
         }
 
@@ -62,7 +62,7 @@ public class PetManagerAdapter implements PetManagerService {
         ServiceLocator.getInstance().getPetManagerClient().deletePet(user.getToken(), user.getUsername(),
             pet.getName());
 
-        ImageManager.deleteImage(ImageManager.PROFILE_IMAGES_PATH, user.getUsername() + '_' + pet.getName());
+        ImageManager.deleteImage(ImageManager.PET_PROFILE_IMAGES_PATH, user.getUsername() + '_' + pet.getName());
     }
 
     @Override

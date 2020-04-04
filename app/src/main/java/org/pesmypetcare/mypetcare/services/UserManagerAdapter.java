@@ -1,8 +1,13 @@
 package org.pesmypetcare.mypetcare.services;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
@@ -17,7 +22,25 @@ public class UserManagerAdapter implements UserManagerService {
             e.printStackTrace();
         }
 
-        return new User(Objects.requireNonNull(userData).getUsername(), userData.getEmail(), "");
+        User user = new User(Objects.requireNonNull(userData).getUsername(), userData.getEmail(), "");
+
+        try {
+            byte[] userProfileImageBytes = ImageManager.readImage(ImageManager.USER_PROFILE_IMAGES_PATH,
+                user.getUsername());
+            user.setUserProfileImage(BitmapFactory.decodeByteArray(userProfileImageBytes, 0,
+                userProfileImageBytes.length));
+        } catch (IOException e) {
+            try {
+                byte[] userProfileImageBytes = ServiceLocator.getInstance().getUserManagerClient()
+                    .downloadProfileImage(user.getToken(), user.getUsername());
+                user.setUserProfileImage(BitmapFactory.decodeByteArray(userProfileImageBytes, 0,
+                    userProfileImageBytes.length));
+            } catch (ExecutionException | InterruptedException ignored) {
+
+            }
+        }
+
+        return user;
     }
 
     @Override
@@ -53,5 +76,12 @@ public class UserManagerAdapter implements UserManagerService {
     @Override
     public void createUser(String uid, String email, String password) {
         ServiceLocator.getInstance().getUserManagerClient().signUp(uid, password, email);
+    }
+
+    @Override
+    public void updateUserImage(User user, Bitmap bitmap) {
+        byte[] imageBytes = ImageManager.getImageBytes(bitmap);
+        ServiceLocator.getInstance().getUserManagerClient().saveProfileImage(user.getToken(), user.getUsername(),
+            imageBytes);
     }
 }

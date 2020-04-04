@@ -89,6 +89,7 @@
     <string name="calendar_select_date">Selecciona una data</string>
     <string name="add_personal_event_button">Personal</string>
     <string name="add_periodic_event_button">Periòdic</string>
+    <string name="user_profile_image">La meva imatge de perfil</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

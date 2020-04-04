@@ -43,4 +43,8 @@ public class ControllersFactory {
     public static TrObtainAllPetImages createTrObtainAllPetImages() {
         return new TrObtainAllPetImages(new PetManagerAdapter());
     }
+
+    public static TrUpdateUserImage createTrUpdateUserImage() {
+        return new TrUpdateUserImage(new UserManagerAdapter());
+    }
 }

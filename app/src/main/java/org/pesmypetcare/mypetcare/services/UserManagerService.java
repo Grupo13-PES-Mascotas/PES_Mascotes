@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
+import android.graphics.Bitmap;
+
 import org.pesmypetcare.mypetcare.features.users.User;
 
 public interface UserManagerService {
@@ -46,4 +48,6 @@ public interface UserManagerService {
      * @param password User password
      */
     void createUser(String uid, String email, String password);
+
+    void updateUserImage(User user, Bitmap bitmap);
 }

@@ -88,6 +88,7 @@
     <string name="calendar_select_date">Select date</string>
     <string name="add_personal_event_button">Personal</string>
     <string name="add_periodic_event_button">Periodic</string>
+    <string name="user_profile_image">My profile image</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

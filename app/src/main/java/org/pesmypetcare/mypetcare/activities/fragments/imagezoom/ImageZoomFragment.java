@@ -14,6 +14,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.databinding.FragmentImageZoomBinding;
@@ -30,6 +31,7 @@ public class ImageZoomFragment extends Fragment {
     private static boolean isDefaultImage = true;
 
     private FragmentImageZoomBinding binding;
+    private ImageZoomCommunication communication;
 
     public ImageZoomFragment(Drawable drawable) {
         ImageZoomFragment.drawable = drawable;
@@ -47,6 +49,7 @@ public class ImageZoomFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentImageZoomBinding.inflate(inflater, container, false);
+        communication = (ImageZoomCommunication) getActivity();
 
         initializeCircularImageView();
         initializeFloatingButtons();
@@ -82,9 +85,13 @@ public class ImageZoomFragment extends Fragment {
         alertDialog.setTitle(R.string.delete_pet_image_title);
         alertDialog.setMessage(R.string.delete_pet_image_text);
         alertDialog.setPositiveButton(R.string.affirmative_response, (dialog, which) -> {
-            setDrawable(getResources().getDrawable(R.drawable.single_paw, null));
-            //setIsDefaultImage(true);
-            InfoPetFragment.setDefaultPetImage();
+            if (isMainActivity) {
+                setDrawable(getResources().getDrawable(R.drawable.user_icon_sample, null));
+                MainActivity.setDefaultUserImage();
+            } else {
+                setDrawable(getResources().getDrawable(R.drawable.single_paw, null));
+                InfoPetFragment.setDefaultPetImage();
+            }
         });
         alertDialog.setNegativeButton(R.string.negative_response, null);
         return alertDialog;
@@ -141,5 +148,14 @@ public class ImageZoomFragment extends Fragment {
      */
     public static void setIsMainActivity(boolean isMainActivity) {
         ImageZoomFragment.isMainActivity = isMainActivity;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        if (isMainActivity) {
+            communication.updateUserImage(drawable);
+        }
     }
 }

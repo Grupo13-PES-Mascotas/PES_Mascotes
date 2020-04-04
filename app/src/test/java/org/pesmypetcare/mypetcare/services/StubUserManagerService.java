@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
+import android.graphics.Bitmap;
+
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.HashSet;
@@ -55,5 +57,15 @@ public class StubUserManagerService implements UserManagerService {
     @Override
     public void createUser(String uid, String email, String password) {
         data.add(new User(uid, email, password));
+    }
+
+    @Override
+    public void updateUserImage(User user, Bitmap bitmap) {
+        for (User nextUser : data) {
+            if (user.equals(nextUser)) {
+                nextUser.setUserProfileImage(bitmap);
+                break;
+            }
+        }
     }
 }

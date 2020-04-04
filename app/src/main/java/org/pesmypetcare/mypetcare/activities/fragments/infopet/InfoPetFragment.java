@@ -23,7 +23,6 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
@@ -348,20 +347,12 @@ public class InfoPetFragment extends Fragment {
         if (isImageModified) {
             Bitmap bitmap = ((BitmapDrawable) petProfileImage.getDrawable()).getBitmap();
 
-            /*if (hasNewImageDefined()) {
-                bitmap = ((BitmapDrawable) petProfileImage.getDrawable()).getBitmap();
-            }*/
-
             if (pet.getProfileImage() == null) {
                 System.out.println("DEFAULT IMAGE");
-                ImageManager.deleteImage(ImageManager.PROFILE_IMAGES_PATH, pet.getOwner().getUsername() + '_'
+                ImageManager.deleteImage(ImageManager.PET_PROFILE_IMAGES_PATH, pet.getOwner().getUsername() + '_'
                     + pet.getName());
             }
 
-            /*if (ImageManager.getPetDefaultImage().equals(bitmap)) {
-                ImageManager.deleteImage(ImageManager.PROFILE_IMAGES_PATH, pet.getOwner().getUsername() + '_'
-                    + pet.getName());
-            }*/
             communication.updatePetImage(pet, bitmap);
         }
     }
