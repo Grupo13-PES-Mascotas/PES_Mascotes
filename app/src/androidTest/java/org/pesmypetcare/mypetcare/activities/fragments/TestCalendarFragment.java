@@ -15,7 +15,9 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
@@ -41,5 +43,27 @@ public class TestCalendarFragment {
         onView(withClassName(Matchers.equalTo(CalendarView.class.getName()))).check(matches(isDisplayed()));
         onView(withId(R.id.btnAddPersonalEvent)).check(matches(isDisplayed()));
         onView(withId(R.id.btnAddPeriodicEvent)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void shouldInputPersonalEvent() {
+        onView(withContentDescription(R.string.navigation_view_open)).perform(click());
+        onView(withText(R.string.navigation_calendar)).perform(click());
+        onView(withId(R.id.btnAddPersonalEvent)).perform(click());
+        onView(withText(R.string.dialog_new_event)).check(matches(isDisplayed()));
+        onView(withContentDescription(R.string.reasonText)).perform(typeText("None"));
+        onView(withContentDescription(R.string.timeText)).perform(clearText());
+        onView(withContentDescription(R.string.timeText)).perform(typeText("00:00:00"));
+        onView(withContentDescription(R.string.spinnerText)).perform(click());
+    }
+
+    @Test
+    public void shouldCancelInputPersonalEvent() {
+        onView(withContentDescription(R.string.navigation_view_open)).perform(click());
+        onView(withText(R.string.navigation_calendar)).perform(click());
+        onView(withId(R.id.btnAddPersonalEvent)).perform(click());
+        onView(withText(R.string.dialog_new_event)).check(matches(isDisplayed()));
+        onView(withText(R.string.cancel)).perform(click());
+        onView(withId(R.id.btnAddPersonalEvent)).perform(click());
     }
 }

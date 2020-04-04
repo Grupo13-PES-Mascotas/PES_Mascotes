@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 
@@ -79,5 +80,21 @@ public class StubPetManagerService implements PetManagerService {
             new byte[] {(byte) 0x0000FF, (byte) 0x0000FF}));
 
         return result;
+    }
+
+    @Override
+    public void registerNewEvent(Pet pet, Event event) {
+        ArrayList<Pet> pets = data.get(pet.getOwner().getUsername());
+        assert pets != null;
+        int index = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(index).addEvent(event);
+    }
+
+    @Override
+    public void deleteEvent(Pet pet, Event event) {
+        ArrayList<Pet> pets = data.get(pet.getOwner().getUsername());
+        assert pets != null;
+        int index = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(index).deleteEvent(event);
     }
 }
