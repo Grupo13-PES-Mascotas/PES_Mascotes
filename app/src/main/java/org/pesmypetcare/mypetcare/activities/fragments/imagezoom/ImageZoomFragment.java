@@ -97,10 +97,6 @@ public class ImageZoomFragment extends Fragment {
         return alertDialog;
     }
 
-    public static boolean isDefaultImage() {
-        return isDefaultImage;
-    }
-
     public static void setIsDefaultImage(boolean isDefaultImage) {
         ImageZoomFragment.isDefaultImage = isDefaultImage;
     }

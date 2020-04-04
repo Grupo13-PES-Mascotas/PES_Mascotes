@@ -14,14 +14,25 @@ public class TrObtainAllPetImages {
         this.petManagerService = petManagerService;
     }
 
+    /**
+     * Set the user that owns the pet.
+     * @param user The user that owns the pets
+     */
     public void setUser(User user) {
         this.user = user;
     }
 
+    /**
+     * Execute the transaction.
+     */
     public void execute() {
         result = petManagerService.getAllPetsImages(user);
     }
 
+    /**
+     * Get the result of the transaction.
+     * @return
+     */
     public Map<String, byte[]> getResult() {
         return result;
     }

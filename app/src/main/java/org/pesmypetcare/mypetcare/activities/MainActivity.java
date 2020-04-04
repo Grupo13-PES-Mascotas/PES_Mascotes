@@ -130,15 +130,19 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         resources = getResources();
 
         makeLogin();
-
         initializeControllers();
-
-        drawerLayout = binding.activityMainDrawerLayout;
-        navigationView = binding.navigationView;
-        floatingActionButton = binding.flAddPet;
+        getComponents();
 
         ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw));
+        initializeCurrentUser();
+        initializeActivity();
+        setUpNavigationImage();
+    }
 
+    /**
+     * Initializes the current user.
+     */
+    private void initializeCurrentUser() {
         if (mAuth.getCurrentUser() != null) {
             try {
                 initializeUser();
@@ -149,11 +153,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 toast.show();
             }
         }
-
-        initializeActivity();
-        setUpNavigationImage();
     }
 
+    /**
+     * Get the components of the activity.
+     */
+    private void getComponents() {
+        drawerLayout = binding.activityMainDrawerLayout;
+        navigationView = binding.navigationView;
+        floatingActionButton = binding.flAddPet;
+    }
+
+    /**
+     * Make the login to the application.
+     */
     private void makeLogin() {
         if (enableLoginActivity && mAuth.getCurrentUser() == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -194,6 +207,39 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             }
         }*/
 
+        int imagesNotFound = getPetImages();
+        int nUserPets = user.getPets().size();
+
+        if (imagesNotFound == nUserPets) {
+            getImagesFromServer();
+        }
+
+        setUpNavigationHeader();
+    }
+
+    /**
+     * Get the images of the pets from the server.
+     */
+    private void getImagesFromServer() {
+        trObtainAllPetImages.setUser(user);
+        trObtainAllPetImages.execute();
+        Map<String, byte[]> petImages = trObtainAllPetImages.getResult();
+        Set<String> names = petImages.keySet();
+
+        for (String petName : names) {
+            byte[] bytes = petImages.get(petName);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, Objects.requireNonNull(bytes).length);
+            int index = user.getPets().indexOf(new Pet(petName));
+            user.getPets().get(index).setProfileImage(bitmap);
+            ImageManager.writeImage(ImageManager.PET_PROFILE_IMAGES_PATH, user.getUsername() + '_' + petName, bytes);
+        }
+    }
+
+    /**
+     * Get the images for the pets.
+     * @return The number of time an image is not found in local storage
+     */
+    private int getPetImages() {
         int nUserPets = user.getPets().size();
         Drawable defaultDrawable = getResources().getDrawable(R.drawable.single_paw, null);
         Bitmap defaultBitmap = ((BitmapDrawable) defaultDrawable).getBitmap();
@@ -201,12 +247,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         Arrays.fill(countImagesNotFound, 0);
 
         ExecutorService executorService = Executors.newCachedThreadPool();
-
-        for (int actual = 0; actual < nUserPets; ++actual) {
-            executorService.execute(new GetPetImageRunnable(actual, user.getUsername(),
-                user.getPets().get(actual).getName(), defaultBitmap));
-        }
-
+        startRunnable(nUserPets, defaultBitmap, executorService);
         executorService.shutdown();
 
         try {
@@ -215,29 +256,38 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             e.printStackTrace();
         }
 
+        return calculateImagesNotFound();
+    }
+
+    /**
+     * Calculates how many time an image is not found in local storage.
+     * @return The number of times an image is not found in local storage
+     */
+    private int calculateImagesNotFound() {
         int imagesNotFound = 0;
         for (int count : countImagesNotFound) {
             imagesNotFound += count;
         }
 
-        if (imagesNotFound == nUserPets) {
-            trObtainAllPetImages.setUser(user);
-            trObtainAllPetImages.execute();
-            Map<String, byte[]> petImages = trObtainAllPetImages.getResult();
-            Set<String> names = petImages.keySet();
-
-            for (String petName : names) {
-                byte[] bytes = petImages.get(petName);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, Objects.requireNonNull(bytes).length);
-                int index = user.getPets().indexOf(new Pet(petName));
-                user.getPets().get(index).setProfileImage(bitmap);
-                ImageManager.writeImage(ImageManager.PET_PROFILE_IMAGES_PATH, user.getUsername() + '_' + petName, bytes);
-            }
-        }
-
-        setUpNavigationHeader();
+        return imagesNotFound;
     }
 
+    /**
+     * Start the runnable to obtain the images of the pets.
+     * @param nUserPets The number of pets the user has
+     * @param defaultBitmap The default image that should be assigned if there is not any one
+     * @param executorService The executor service of the runnable
+     */
+    private void startRunnable(int nUserPets, Bitmap defaultBitmap, ExecutorService executorService) {
+        for (int actual = 0; actual < nUserPets; ++actual) {
+            executorService.execute(new GetPetImageRunnable(actual, user.getUsername(),
+                user.getPets().get(actual).getName(), defaultBitmap));
+        }
+    }
+
+    /**
+     * Set up the navigation header.
+     */
     private static void setUpNavigationHeader() {
         View navigationHeader = navigationView.getHeaderView(0);
         TextView userName = navigationHeader.findViewById(R.id.lblUserName);
@@ -255,14 +305,26 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
     }
 
+    /**
+     * Set the pet image.
+     * @param actual The position of the actual pet
+     * @param petImage The bitmap of the selected pet
+     */
     public static void setPetBitmapImage(int actual, Bitmap petImage) {
         user.getPets().get(actual).setProfileImage(petImage);
     }
 
+    /**
+     * Increment the count of the pet that has not got an image.
+     * @param actual The actual pet position
+     */
     public static void incrementCountNotImage(int actual) {
         ++countImagesNotFound[actual];
     }
 
+    /**
+     * Set the default user image.
+     */
     public static void setDefaultUserImage() {
         user.setUserProfileImage(null);
         setUpNavigationHeader();
@@ -296,14 +358,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
-    public static void hideFloatingPoint() {
+    /**
+     * Hide the floating button.
+     */
+    public static void hideFloatingButton() {
         floatingActionButton.hide();
     }
-
-    public static void setPetImage(Pet pet) {
-        user.updatePetProfileImage(pet);
-    }
-
 
     /**
      * Enters the fragment to create a pet.
@@ -374,16 +434,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             drawerLayout.closeDrawers();
             changeFragment(imageZoomFragment);
         });
-    }
-
-    /**
-     * Method responsible for assigning an default image to the user.
-     */
-    private void setUpUserImage() {
-        Bitmap userImageBitmap = user.getUserProfileImage();
-        if (userImageBitmap == null) {
-            user.setUserProfileImage(BitmapFactory.decodeResource(getResources(), R.drawable.test));
-        }
     }
 
     /**
@@ -489,7 +539,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     /**
-     * Change to next fragment from an ImageZoomFragment
+     * Change to next fragment from an ImageZoomFragment.
      */
     private void changeFromImageZoom() {
         if (ImageZoomFragment.isMainActivity()) {
@@ -532,12 +582,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public User getUser() {
-        /*try {
-            initializeUser();
-        } catch (PetRepeatException e) {
-            e.printStackTrace();
-        }*/
-
         return user;
     }
 
@@ -651,12 +695,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             ImageZoomFragment.setIsDefaultImage(false);
 
             if (ImageZoomFragment.isMainActivity()) {
-                user.setUserProfileImage(bitmap);
-                setUpNavigationHeader();
-                byte[] imageBytes = ImageManager.getImageBytes(bitmap);
-                ImageManager.writeImage(ImageManager.USER_PROFILE_IMAGES_PATH, user.getUsername(), imageBytes);
+                updateUserProfileImage(bitmap);
             }
         }
+    }
+
+    /**
+     * Updates user profile image.
+     * @param bitmap The bitmap of the profile image
+     */
+    private void updateUserProfileImage(Bitmap bitmap) {
+        user.setUserProfileImage(bitmap);
+        setUpNavigationHeader();
+        byte[] imageBytes = ImageManager.getImageBytes(bitmap);
+        ImageManager.writeImage(ImageManager.USER_PROFILE_IMAGES_PATH, user.getUsername(), imageBytes);
     }
 
     /**

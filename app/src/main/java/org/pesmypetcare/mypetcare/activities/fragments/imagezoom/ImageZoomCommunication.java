@@ -4,5 +4,9 @@ import android.graphics.drawable.Drawable;
 
 public interface ImageZoomCommunication {
 
+    /**
+     * Update the image of the user.
+     * @param drawable The image of the user that has to be updated
+     */
     void updateUserImage(Drawable drawable);
 }

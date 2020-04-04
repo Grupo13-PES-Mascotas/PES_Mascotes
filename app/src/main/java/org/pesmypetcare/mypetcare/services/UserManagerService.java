@@ -49,5 +49,10 @@ public interface UserManagerService {
      */
     void createUser(String uid, String email, String password);
 
+    /**
+     * Updates the image of the user.
+     * @param user The user that wants his image to be updated
+     * @param bitmap The bitmap of the image to be assigned
+     */
     void updateUserImage(User user, Bitmap bitmap);
 }

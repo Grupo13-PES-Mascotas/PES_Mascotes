@@ -23,7 +23,16 @@ public class UserManagerAdapter implements UserManagerService {
         }
 
         User user = new User(Objects.requireNonNull(userData).getUsername(), userData.getEmail(), "");
+        assignUserImage(user);
 
+        return user;
+    }
+
+    /**
+     * Assign the image of the user.
+     * @param user The user to whom the image has to be assigned
+     */
+    private void assignUserImage(User user) {
         try {
             byte[] userProfileImageBytes = ImageManager.readImage(ImageManager.USER_PROFILE_IMAGES_PATH,
                 user.getUsername());
@@ -39,8 +48,6 @@ public class UserManagerAdapter implements UserManagerService {
 
             }
         }
-
-        return user;
     }
 
     @Override
