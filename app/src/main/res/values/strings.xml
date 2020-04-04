@@ -89,6 +89,21 @@
     <string name="add_personal_event_button">Personal</string>
     <string name="add_periodic_event_button">Periodic</string>
     <string name="user_profile_image">My profile image</string>
+    <string name="dialog_new_event">New personal event</string>
+    <string name="dialog_new_event_message">Enter the event description, its time and select the pet that will participate.</string>
+    <string name="reasonText">reasonText</string>
+    <string name="timeText">timeText</string>
+    <string name="spinnerText">spinnerText</string>
+    <string name="create">Create</string>
+    <string name="add_a_pet">Add a pet</string>
+    <string name="incorrect_entry">Incorrect entry</string>
+    <string name="description">Description</string>
+    <string name="default_hour">12:00:00</string>
+    <string name="delete_event">Delete this event</string>
+    <string name="confirmation">Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="no_description">Not introduced description</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

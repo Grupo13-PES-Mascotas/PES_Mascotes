@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
@@ -120,6 +121,15 @@ public class PetManagerAdapter implements PetManagerService {
         }
 
         return pets;
+    }
+      
+    public void registerNewEvent(Pet pet, Event event) {
+        // Not implemented yet
+    }
+
+    @Override
+    public void deleteEvent(Pet pet, Event event) {
+        // Not implemented yet
     }
 
     /**

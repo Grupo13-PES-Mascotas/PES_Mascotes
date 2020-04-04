@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
@@ -61,4 +62,25 @@ public interface PetManagerService {
      * @return The images of the pets from the server
      */
     Map<String, byte[]> getAllPetsImages(User user);
+  
+    /**
+     * Find all the pets from a user.
+     * @param user The user who wants to get his pets
+     * @return The pets that belongs to the user
+     */
+    List<Pet> findPetsByOwner(String username) throws PetRepeatException;
+
+    /**
+     * Add a event to a pet.
+     * @param pet The pet
+     * @param event The event
+     */
+    void registerNewEvent(Pet pet, Event event);
+
+    /**
+     * Delete a event from a pet.
+     * @param pet The pet
+     * @param event The event
+     */
+    void deleteEvent(Pet pet, Event event);
 }
