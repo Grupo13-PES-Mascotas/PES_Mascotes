@@ -18,17 +18,22 @@ public class ImageManager {
     private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath()
         + File.separator + "MyPetCare";
     private static final String EXTENSION = ".jpg";
+    private static final int QUALITY = 100;
     private static Bitmap defaultPetImage;
-
     private static byte[] defaultBytesPetImage;
 
     private ImageManager() {
 
     }
 
+    /**
+     * Get the bytes of the bitmap image.
+     * @param image The bitmap that the bytes has to be obtained
+     * @return The bytes of the bitmap
+     */
     public static byte[] getImageBytes(Bitmap image) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        image.compress(Bitmap.CompressFormat.JPEG, QUALITY, stream);
         byte[] bytes = stream.toByteArray();
 
         try {
@@ -40,6 +45,12 @@ public class ImageManager {
         return bytes;
     }
 
+    /**
+     * Write an image to a file.
+     * @param relativePath The path inside the folder with application data
+     * @param fileName The name of the file that has to be written
+     * @param bytes The bytes that has to be written
+     */
     public static void writeImage(String relativePath, String fileName, byte[] bytes) {
         File file = new File(PATH + File.separator + relativePath);
         file.mkdirs();
@@ -53,6 +64,13 @@ public class ImageManager {
         }
     }
 
+    /**
+     * Read an image form a file.
+     * @param relativePath The path inside the folder with application data
+     * @param imageName The name of the image that has to be read
+     * @return The bytes of the image that has been read
+     * @throws IOException
+     */
     public static byte[] readImage(String relativePath, String imageName) throws IOException {
         FileInputStream input = new FileInputStream(PATH + File.separator + relativePath + File.separator
             + imageName + EXTENSION);
@@ -65,31 +83,41 @@ public class ImageManager {
             actualByte = input.read();
         }
 
-        byte[] bytes = new byte[bytesList.size()];
-        for (int actual = 0; actual < bytes.length; ++actual) {
-            bytes[actual] = bytesList.get(actual);
-        }
-
+        byte[] bytes = convertToByteArray(bytesList);
         input.close();
 
         return bytes;
     }
 
-    public static Bitmap getPetDefaultImage() {
-        return defaultPetImage;
+    /**
+     * Converts an ArrayList of bytes to an array of bytes.
+     * @param bytesList The ArrayList of bytes
+     * @return The array that contains the bytes from the ArrayList
+     */
+    private static byte[] convertToByteArray(ArrayList<Byte> bytesList) {
+        byte[] bytes = new byte[bytesList.size()];
+        for (int actual = 0; actual < bytes.length; ++actual) {
+            bytes[actual] = bytesList.get(actual);
+        }
+        return bytes;
     }
 
+    /**
+     * Set the public default image of the pet.
+     * @param drawable The default image of the pet
+     */
     public static void setPetDefaultImage(Drawable drawable) {
         defaultPetImage = ((BitmapDrawable) drawable).getBitmap();
         defaultBytesPetImage = getImageBytes(defaultPetImage);
     }
 
+    /**
+     * Delete an image from local storage.
+     * @param relativePath relativePath The path inside the folder with application data
+     * @param imageName The name of the image that has to be deleted
+     */
     public static void deleteImage(String relativePath, String imageName) {
         File image = new File(PATH + File.separator + relativePath + File.separator + imageName + EXTENSION);
         image.delete();
-    }
-
-    public static byte[] getDefaultBytesPetImage() {
-        return defaultBytesPetImage;
     }
 }

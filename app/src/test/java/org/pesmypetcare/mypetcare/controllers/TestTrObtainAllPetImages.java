@@ -12,16 +12,12 @@ import java.util.Map;
 import static org.junit.Assert.assertArrayEquals;
 
 public class TestTrObtainAllPetImages {
-    private static final int WIDTH = 20;
-    private static final int HEIGHT = 20;
-    private static final float RIGHT = 20.0f;
-    private static final float BOTTOM = 20.0f;
-
+    private static final int BLUE_COLOR = 0x0000FF;
     private User user;
     private TrObtainAllPetImages trObtainAllPetImages;
 
     @Before
-    public void setUp() throws PetRepeatException {
+    public void setUp() {
         user = new User("johnDoe2", "johndoe@gmail.com", "1234");
         trObtainAllPetImages = new TrObtainAllPetImages(new StubPetManagerService());
 
@@ -38,6 +34,6 @@ public class TestTrObtainAllPetImages {
         Map<String, byte[]> images = trObtainAllPetImages.getResult();
 
         images.forEach((name, color) -> assertArrayEquals("Should color be blue", new byte[]{
-            (byte) 0x0000FF, (byte) 0x0000FF}, color));
+            (byte) BLUE_COLOR, (byte) BLUE_COLOR}, color));
     }
 }

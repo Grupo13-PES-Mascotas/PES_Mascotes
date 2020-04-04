@@ -55,5 +55,10 @@ public interface PetManagerService {
      */
     List<Pet> findPetsByOwner(User user) throws PetRepeatException;
 
-    Map<String,byte[]> getAllPetsImages(User user);
+    /**
+     * Get all the images of the pets from the user.
+     * @param user The user which owns the pets
+     * @return The images of the pets from the server
+     */
+    Map<String, byte[]> getAllPetsImages(User user);
 }

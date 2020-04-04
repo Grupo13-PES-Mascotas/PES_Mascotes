@@ -86,6 +86,17 @@ public class PetManagerAdapter implements PetManagerService {
             e.printStackTrace();
         }
 
+        return getPets(userPets);
+    }
+
+    /**
+     * Get the transformation of the pets from the server to pet instances.
+     * @param userPets The pets from the server
+     * @return The instances of the pets of our application
+     * @throws PetRepeatException
+     */
+    private List<Pet> getPets(List<org.pesmypetcare.usermanagerlib.datacontainers.Pet> userPets)
+        throws PetRepeatException {
         List<Pet> pets = new ArrayList<>();
 
         for (org.pesmypetcare.usermanagerlib.datacontainers.Pet userPet : Objects.requireNonNull(userPets)) {

@@ -39,14 +39,22 @@ public class UserManagerAdapter implements UserManagerService {
             user.setUserProfileImage(BitmapFactory.decodeByteArray(userProfileImageBytes, 0,
                 userProfileImageBytes.length));
         } catch (IOException e) {
-            try {
-                byte[] userProfileImageBytes = ServiceLocator.getInstance().getUserManagerClient()
-                    .downloadProfileImage(user.getToken(), user.getUsername());
-                user.setUserProfileImage(BitmapFactory.decodeByteArray(userProfileImageBytes, 0,
-                    userProfileImageBytes.length));
-            } catch (ExecutionException | InterruptedException ignored) {
+            assignImageFromServer(user);
+        }
+    }
 
-            }
+    /**
+     * Assign the user image from the server.
+     * @param user The user that has to be assigned an image
+     */
+    private void assignImageFromServer(User user) {
+        try {
+            byte[] userProfileImageBytes = ServiceLocator.getInstance().getUserManagerClient()
+                .downloadProfileImage(user.getToken(), user.getUsername());
+            user.setUserProfileImage(BitmapFactory.decodeByteArray(userProfileImageBytes, 0,
+                userProfileImageBytes.length));
+        } catch (ExecutionException | InterruptedException ignored) {
+
         }
     }
 
