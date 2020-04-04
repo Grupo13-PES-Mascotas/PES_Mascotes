@@ -39,4 +39,8 @@ public class ControllersFactory {
     public static TrChangeMail createTrChangeMail() {
         return new TrChangeMail(new UserManagerAdapter());
     }
+
+    public static TrObtainAllPetImages createTrObtainAllPetImages() {
+        return new TrObtainAllPetImages(new PetManagerAdapter());
+    }
 }

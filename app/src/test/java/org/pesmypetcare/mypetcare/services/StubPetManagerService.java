@@ -13,6 +13,7 @@ import java.util.Objects;
 
 public class StubPetManagerService implements PetManagerService {
     private static final String JOHN_DOE = "johnDoe";
+    private static final String JOHN_DOE_2 = "johnDoe2";
     private static final String DINKY = "Dinky";
     private Map<String, ArrayList<Pet>> data;
 
@@ -20,6 +21,12 @@ public class StubPetManagerService implements PetManagerService {
         this.data = new HashMap<>();
         this.data.put(JOHN_DOE, new ArrayList<>());
         Objects.requireNonNull(this.data.get(JOHN_DOE)).add(new Pet(DINKY));
+
+        this.data.put(JOHN_DOE_2, new ArrayList<>());
+        for (int index = 0; index < 2; ++index) {
+            Pet pet = new Pet("pet" + index);
+            Objects.requireNonNull(this.data.get(JOHN_DOE_2)).add(pet);
+        }
     }
 
     @Override
@@ -61,5 +68,16 @@ public class StubPetManagerService implements PetManagerService {
     @Override
     public List<Pet> findPetsByOwner(User user) {
         return data.get(user.getUsername());
+    }
+
+    @Override
+    public Map<String, byte[]> getAllPetsImages(User user) {
+        ArrayList<Pet> pets = data.get(user.getUsername());
+        Map<String, byte[]> result = new HashMap<>();
+
+        Objects.requireNonNull(pets).forEach(p -> result.put(p.getName(),
+            new byte[] {(byte) 0x0000FF, (byte) 0x0000FF}));
+
+        return result;
     }
 }

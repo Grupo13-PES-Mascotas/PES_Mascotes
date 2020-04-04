@@ -11,6 +11,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
@@ -60,6 +61,8 @@ public class PetManagerAdapter implements PetManagerService {
     public void deletePet(Pet pet, User user) {
         ServiceLocator.getInstance().getPetManagerClient().deletePet(user.getToken(), user.getUsername(),
             pet.getName());
+
+        ImageManager.deleteImage(ImageManager.PROFILE_IMAGES_PATH, user.getUsername() + '_' + pet.getName());
     }
 
     @Override
@@ -89,6 +92,20 @@ public class PetManagerAdapter implements PetManagerService {
             if (userPet != null) {
                 pets.add(decodePet(userPet));
             }
+        }
+
+        return pets;
+    }
+
+    @Override
+    public Map<String, byte[]> getAllPetsImages(User user) {
+        Map<String, byte[]> pets = null;
+
+        try {
+            pets = ServiceLocator.getInstance().getPetManagerClient().downloadAllProfileImages(user.getToken(),
+                user.getUsername());
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
 
         return pets;

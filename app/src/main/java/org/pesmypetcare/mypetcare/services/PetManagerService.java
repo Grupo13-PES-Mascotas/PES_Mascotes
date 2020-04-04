@@ -8,6 +8,7 @@ import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PetManagerService {
 
@@ -53,4 +54,6 @@ public interface PetManagerService {
      * @return The pets that belongs to the user
      */
     List<Pet> findPetsByOwner(User user) throws PetRepeatException;
+
+    Map<String,byte[]> getAllPetsImages(User user);
 }

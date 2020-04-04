@@ -11,7 +11,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -38,18 +37,18 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunication;
-import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
-import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsComunication;
-import org.pesmypetcare.mypetcare.activities.fragments.settings.NewPasswordInterface;
-import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetCommunication;
-import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsComunication;
 import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsFragment;
-import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.settings.NewPasswordInterface;
+import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
@@ -57,6 +56,7 @@ import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
+import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetImages;
 import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
@@ -70,13 +70,15 @@ import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.ServiceLocator;
 import org.pesmypetcare.mypetcare.utilities.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -99,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static FirebaseAuth mAuth;
     private static Fragment actualFragment;
     private static User user;
+    private static int[] countImagesNotFound;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -113,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainUser trObtainUser;
     private TrUpdatePet trUpdatePet;
     private TrChangeMail trChangeMail;
+    private TrObtainAllPetImages trObtainAllPetImages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,6 +193,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         int nUserPets = user.getPets().size();
         Drawable defaultDrawable = getResources().getDrawable(R.drawable.single_paw, null);
         Bitmap defaultBitmap = ((BitmapDrawable) defaultDrawable).getBitmap();
+        countImagesNotFound = new int[nUserPets];
+        Arrays.fill(countImagesNotFound, 0);
 
         ExecutorService executorService = Executors.newCachedThreadPool();
 
@@ -203,6 +209,26 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             executorService.awaitTermination(3, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+
+        int imagesNotFound = 0;
+        for (int count : countImagesNotFound) {
+            imagesNotFound += count;
+        }
+
+        if (imagesNotFound == nUserPets) {
+            trObtainAllPetImages.setUser(user);
+            trObtainAllPetImages.execute();
+            Map<String, byte[]> petImages = trObtainAllPetImages.getResult();
+            Set<String> names = petImages.keySet();
+
+            for (String petName : names) {
+                byte[] bytes = petImages.get(petName);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, Objects.requireNonNull(bytes).length);
+                int index = user.getPets().indexOf(new Pet(petName));
+                user.getPets().get(index).setProfileImage(bitmap);
+                ImageManager.writeImage(ImageManager.PROFILE_IMAGES_PATH, user.getUsername() + '_' + petName, bytes);
+            }
         }
 
         View navigationHeader = navigationView.getHeaderView(0);
@@ -220,6 +246,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         user.getPets().get(actual).setProfileImage(petImage);
     }
 
+    public static void incrementCountNotImage(int actual) {
+        ++countImagesNotFound[actual];
+    }
+
     /**
      * Initialize the controllers.
      */
@@ -232,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainUser = ControllersFactory.createTrObtainUser();
         trUpdatePet = ControllersFactory.createTrUpdatePet();
         trChangeMail = ControllersFactory.createTrChangeMail();
+        trObtainAllPetImages = ControllersFactory.createTrObtainAllPetImages();
     }
 
     /**

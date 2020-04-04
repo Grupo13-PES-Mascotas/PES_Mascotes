@@ -33,6 +33,7 @@ public class GetPetImageRunnable implements Runnable {
             petImage = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         } catch (IOException e) {
             petImage = defaultBitmap;
+            MainActivity.incrementCountNotImage(actual);
         } finally {
             MainActivity.setPetBitmapImage(actual, petImage);
         }
