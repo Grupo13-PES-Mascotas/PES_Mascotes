@@ -29,10 +29,10 @@ public interface PetManagerService {
     /**
      * Updates the image of the pet.
      * @param user The owner of the pet
-     * @param petName The pet from which the image will be updated
+     * @param pet The pet from which the image will be updated
      * @param newPetImage The new image for the pet
      */
-    void updatePetImage(User user, String petName, Bitmap newPetImage);
+    void updatePetImage(User user, Pet pet, Bitmap newPetImage);
 
     /**
      * Delete the pet.

@@ -1,12 +1,13 @@
 package org.pesmypetcare.mypetcare.utilities;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,6 +17,9 @@ public class ImageManager {
     private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath()
         + File.separator + "MyPetCare";
     private static final String EXTENSION = ".jpg";
+    private static Bitmap defaultPetImage;
+
+    private static byte[] defaultBytesPetImage;
 
     private ImageManager() {
 
@@ -58,5 +62,23 @@ public class ImageManager {
         }
 
         return bytes;
+    }
+
+    public static Bitmap getPetDefaultImage() {
+        return defaultPetImage;
+    }
+
+    public static void setPetDefaultImage(Drawable drawable) {
+        defaultPetImage = ((BitmapDrawable) drawable).getBitmap();
+        defaultBytesPetImage = getImageBytes(defaultPetImage);
+    }
+
+    public static void deleteImage(String relativePath, String imageName) {
+        File image = new File(PATH + File.separator + relativePath + File.separator + imageName + EXTENSION);
+        image.delete();
+    }
+
+    public static byte[] getDefaultBytesPetImage() {
+        return defaultBytesPetImage;
     }
 }

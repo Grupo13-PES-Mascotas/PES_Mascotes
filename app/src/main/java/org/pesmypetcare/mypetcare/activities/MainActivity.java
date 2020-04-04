@@ -74,6 +74,7 @@ import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
@@ -116,19 +117,15 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if (enableLoginActivity && mAuth.getCurrentUser() == null) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            finish();
-        }
-        else if (!enableLoginActivity) {
-            user = new User("johnDoe", "johnDoe@gmail.com", "1234");
-        }
+        makeLogin();
 
         initializeControllers();
 
         drawerLayout = binding.activityMainDrawerLayout;
         navigationView = binding.navigationView;
         floatingActionButton = binding.flAddPet;
+
+        ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw));
 
         if (mAuth.getCurrentUser() != null) {
             try {
@@ -143,6 +140,16 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         initializeActivity();
         setUpNavigationImage();
+    }
+
+    private void makeLogin() {
+        if (enableLoginActivity && mAuth.getCurrentUser() == null) {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        }
+        else if (!enableLoginActivity) {
+            user = new User("johnDoe", "johnDoe@gmail.com", "1234");
+        }
     }
 
     /**
@@ -165,13 +172,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         for (Pet pet : user.getPets()) {
             try {
-                System.out.println("TRY");
                 byte[] bytes = ImageManager.readImage(ImageManager.PROFILE_IMAGES_PATH,
                     pet.getOwner().getUsername() + '_' + pet.getName());
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 pet.setProfileImage(bitmap);
             } catch (IOException e) {
-                System.out.println("CATCH");
                 Drawable petImageDrawable = getResources().getDrawable(R.drawable.single_paw, null);
                 pet.setProfileImage(((BitmapDrawable) petImageDrawable).getBitmap());
             }
@@ -218,7 +223,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     public static void setPetImage(Pet pet) {
-        System.out.println("UPDATING PET");
         user.updatePetProfileImage(pet);
     }
 
@@ -489,6 +493,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void makeZoomImage(Drawable drawable) {
         floatingActionButton.hide();
         ImageZoomFragment.setIsMainActivity(false);
+
         changeFragment(new ImageZoomFragment(drawable));
     }
 
@@ -574,6 +579,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             Drawable drawable = new BitmapDrawable(getResources(), bitmap);
             ((ImageZoomFragment) actualFragment).setDrawable(drawable);
+            ImageZoomFragment.setIsDefaultImage(false);
         }
     }
 

@@ -14,6 +14,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.databinding.FragmentImageZoomBinding;
 
@@ -25,6 +26,8 @@ public class ImageZoomFragment extends Fragment {
     private static final float RADIUS = 1000.0f;
     private static Drawable drawable;
     private static boolean isMainActivity;
+
+    private static boolean isDefaultImage = true;
 
     private FragmentImageZoomBinding binding;
 
@@ -80,9 +83,19 @@ public class ImageZoomFragment extends Fragment {
         alertDialog.setMessage(R.string.delete_pet_image_text);
         alertDialog.setPositiveButton(R.string.affirmative_response, (dialog, which) -> {
             setDrawable(getResources().getDrawable(R.drawable.single_paw, null));
+            //setIsDefaultImage(true);
+            InfoPetFragment.setDefaultPetImage();
         });
         alertDialog.setNegativeButton(R.string.negative_response, null);
         return alertDialog;
+    }
+
+    public static boolean isDefaultImage() {
+        return isDefaultImage;
+    }
+
+    public static void setIsDefaultImage(boolean isDefaultImage) {
+        ImageZoomFragment.isDefaultImage = isDefaultImage;
     }
 
     /**

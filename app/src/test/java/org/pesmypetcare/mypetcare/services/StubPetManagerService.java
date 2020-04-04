@@ -41,9 +41,9 @@ public class StubPetManagerService implements PetManagerService {
     }
 
     @Override
-    public void updatePetImage(User user, String petName, Bitmap newPetImage) {
+    public void updatePetImage(User user, Pet pet, Bitmap newPetImage) {
         ArrayList<Pet> pets = data.get(user.getUsername());
-        int index = Objects.requireNonNull(pets).indexOf(new Pet(petName));
+        int index = Objects.requireNonNull(pets).indexOf(pet);
         pets.get(index).setProfileImage(newPetImage);
     }
     @Override

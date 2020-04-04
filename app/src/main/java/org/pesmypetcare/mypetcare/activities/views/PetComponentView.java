@@ -87,7 +87,11 @@ public abstract class PetComponentView extends ConstraintLayout {
      */
     private CircularImageView addPetImage() {
         CircularImageView image = new CircularImageView(currentActivity, null);
-        Drawable petImageDrawable = new BitmapDrawable(getResources(), pet.getProfileImage());
+        Drawable petImageDrawable = getResources().getDrawable(R.drawable.single_paw);
+
+        if (pet.getProfileImage() != null) {
+            petImageDrawable = new BitmapDrawable(getResources(), pet.getProfileImage());
+        }
 
         /*if (pet.getProfileImage() == null) {
             try {

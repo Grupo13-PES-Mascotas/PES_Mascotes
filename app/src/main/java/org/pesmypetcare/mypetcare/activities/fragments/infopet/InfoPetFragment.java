@@ -15,7 +15,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.BinderThread;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
@@ -24,11 +23,13 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
+import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.util.Objects;
@@ -50,7 +51,6 @@ public class InfoPetFragment extends Fragment {
     private String newGender;
     private CircularImageView petProfileImage;
     private InfoPetCommunication communication;
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -173,6 +173,10 @@ public class InfoPetFragment extends Fragment {
         Drawable drawable = new BitmapDrawable(resources, pet.getProfileImage());
         isImageModified = isImageModified || !drawable.equals(petProfileDrawable);
         petProfileDrawable = drawable;
+    }
+
+    public static void setDefaultPetImage() {
+        pet.setProfileImage(null);
     }
 
     /**
@@ -342,12 +346,22 @@ public class InfoPetFragment extends Fragment {
     public void onStop() {
         super.onStop();
         if (isImageModified) {
-            Bitmap bitmap = null;
+            Bitmap bitmap = ((BitmapDrawable) petProfileImage.getDrawable()).getBitmap();
 
-            if (hasNewImageDefined()) {
+            /*if (hasNewImageDefined()) {
                 bitmap = ((BitmapDrawable) petProfileImage.getDrawable()).getBitmap();
+            }*/
+
+            if (pet.getProfileImage() == null) {
+                System.out.println("DEFAULT IMAGE");
+                ImageManager.deleteImage(ImageManager.PROFILE_IMAGES_PATH, pet.getOwner().getUsername() + '_'
+                    + pet.getName());
             }
 
+            /*if (ImageManager.getPetDefaultImage().equals(bitmap)) {
+                ImageManager.deleteImage(ImageManager.PROFILE_IMAGES_PATH, pet.getOwner().getUsername() + '_'
+                    + pet.getName());
+            }*/
             communication.updatePetImage(pet, bitmap);
         }
     }
