@@ -62,13 +62,6 @@ public interface PetManagerService {
      * @return The images of the pets from the server
      */
     Map<String, byte[]> getAllPetsImages(User user);
-  
-    /**
-     * Find all the pets from a user.
-     * @param user The user who wants to get his pets
-     * @return The pets that belongs to the user
-     */
-    List<Pet> findPetsByOwner(String username) throws PetRepeatException;
 
     /**
      * Add a event to a pet.

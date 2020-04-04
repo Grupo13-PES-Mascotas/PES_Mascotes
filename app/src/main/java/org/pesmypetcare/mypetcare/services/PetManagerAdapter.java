@@ -122,7 +122,7 @@ public class PetManagerAdapter implements PetManagerService {
 
         return pets;
     }
-      
+
     public void registerNewEvent(Pet pet, Event event) {
         // Not implemented yet
     }
