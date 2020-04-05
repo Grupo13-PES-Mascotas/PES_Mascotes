@@ -252,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         countImagesNotFound = new int[nUserPets];
         Arrays.fill(countImagesNotFound, 0);
 
+        long previous = System.nanoTime();
         ExecutorService executorService = Executors.newCachedThreadPool();
         startRunnable(nUserPets, defaultBitmap, executorService);
         executorService.shutdown();
@@ -261,6 +262,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        long after = System.nanoTime();
+        System.out.println("Elapsed time: " + ((after - previous) / 1000000) + " ms");
 
         return calculateImagesNotFound();
     }

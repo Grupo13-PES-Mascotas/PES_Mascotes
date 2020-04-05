@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +75,7 @@ public class ImageManager {
      * @throws IOException The file does not exist
      */
     public static byte[] readImage(String relativePath, String imageName) throws IOException {
-        FileInputStream input = new FileInputStream(PATH + File.separator + relativePath + File.separator
+        /*FileInputStream input = new FileInputStream(PATH + File.separator + relativePath + File.separator
             + imageName + EXTENSION);
 
         ArrayList<Byte> bytesList = new ArrayList<>();
@@ -85,7 +87,13 @@ public class ImageManager {
         }
 
         byte[] bytes = convertToByteArray(bytesList);
-        input.close();
+        input.close();*/
+
+        String imagePath = PATH + File.separator + relativePath + File.separator + imageName + EXTENSION;
+        FileChannel channel = new FileInputStream(imagePath).getChannel();
+        MappedByteBuffer buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+        byte[] bytes = new byte[buffer.remaining()];
+        buffer.get(bytes);
 
         return bytes;
     }
