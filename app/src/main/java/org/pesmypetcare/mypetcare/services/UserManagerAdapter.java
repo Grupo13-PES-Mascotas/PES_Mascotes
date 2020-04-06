@@ -16,7 +16,7 @@ public class UserManagerAdapter implements UserManagerService {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-
+        System.out.println("userData: " + userData);
         return new User(Objects.requireNonNull(userData).getUsername(), userData.getEmail(), "");
     }
 
