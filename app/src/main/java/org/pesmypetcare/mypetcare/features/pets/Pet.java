@@ -352,4 +352,9 @@ public class Pet {
 
         return selectedEvents;
     }
+
+    @Override
+    public String toString() {
+        return "{" + name + ", " + (profileImage == null ? "NULL" : "NO_NULL") + "}";
+    }
 }

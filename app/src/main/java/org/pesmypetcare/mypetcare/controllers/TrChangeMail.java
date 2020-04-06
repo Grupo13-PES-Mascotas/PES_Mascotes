@@ -33,6 +33,6 @@ public class TrChangeMail {
      */
     public void execute() {
         user.setEmail(mail);
-        userManagerService.changeMail(mail, user.getUsername());
+        userManagerService.changeMail(mail, user);
     }
 }

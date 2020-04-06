@@ -33,7 +33,7 @@ public class TrObtainUser {
      */
     public void execute() throws PetRepeatException {
         result = userManagerService.findUserByUsername(username);
-        result.setPets((ArrayList<Pet>) petManagerService.findPetsByOwner(username));
+        result.setPets((ArrayList<Pet>) petManagerService.findPetsByOwner(result));
     }
 
     /**

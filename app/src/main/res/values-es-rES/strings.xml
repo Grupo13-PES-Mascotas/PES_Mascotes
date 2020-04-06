@@ -45,7 +45,7 @@
     <string name="log_out">Cerrar sesión</string>
     <string name="languages">Idiomas</string>
     <string name="change_password">Cambiar contraseña</string>
-    <string name="current_version">Versión: 1.0.0</string>
+    <string name="current_version">Versión: 1.0.1</string>
     <string name="old_password">Anterior contraseña</string>
     <string name="new_password">Nueva contraseña</string>
     <string name="confirm_new_password">Confirmar nueva contraseña</string>
@@ -89,6 +89,22 @@
     <string name="calendar_select_date">Selecciona una fecha</string>
     <string name="add_personal_event_button">Personal</string>
     <string name="add_periodic_event_button">Periódico</string>
+    <string name="user_profile_image">Mi imagen de perfil</string>
+    <string name="dialog_new_event">Nuevo evento personal</string>
+    <string name="dialog_new_event_message">Introduce la descripción del evento, la hora y selecciona la mascota que participará.</string>
+    <string name="reasonText">reasonText</string>
+    <string name="timeText">timeText</string>
+    <string name="spinnerText">spinnerText</string>
+    <string name="create">Crear</string>
+    <string name="add_a_pet">Añade una mascota</string>
+    <string name="incorrect_entry">Entrada incorrecta</string>
+    <string name="description">Descripción</string>
+    <string name="default_hour">12:00:00</string>
+    <string name="delete_event">Eliminar este evento</string>
+    <string name="confirmation">Estas seguro?</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="no_description">Descripción no introducida</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
