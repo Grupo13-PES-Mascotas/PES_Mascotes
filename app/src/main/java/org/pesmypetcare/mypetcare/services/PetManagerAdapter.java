@@ -1,7 +1,6 @@
 package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
-
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
