@@ -56,7 +56,9 @@ public class DateTime implements Comparable<DateTime> {
     }
 
     private boolean isNegative(int year, int month, int hour, int minutes, int seconds) {
-        return year < 0 || month < 0 || hour < 0 || minutes < 0 || seconds < 0 || day < 0;
+        boolean isYearNegative = year < 0 || month < 0 || day < 0;
+        boolean isDateNegative = hour < 0 || minutes < 0 || seconds < 0;
+        return isYearNegative || isDateNegative;
     }
 
     private int numberOfDays(int year, int month) {

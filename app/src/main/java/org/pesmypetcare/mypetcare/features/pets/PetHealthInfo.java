@@ -346,7 +346,7 @@ public class PetHealthInfo {
      * Setter of the petNeeds attribute.
      * @param petNeeds The petNeeds to set
      */
-    public void setPetNeeds(ArrayList<String> petNeeds) {
+    public void setPetNeeds(List<String> petNeeds) {
         this.petNeeds = petNeeds;
     }
 
