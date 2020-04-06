@@ -48,6 +48,15 @@ public class DateTime implements Comparable<DateTime> {
         this.seconds = Integer.parseInt(dateTime.substring(SEC_START_POS));
     }
 
+
+    /**
+     * Method responsible for checking whether the date values are out of range or not.
+     * @param month The month value that we want to check
+     * @param hour The hour value that we want to check
+     * @param minutes The minutes value that we want to check
+     * @param seconds The seconds value that we want to check
+     * @return True if any value is out of range or false otherwise
+     */
     private boolean isOutOfRange(int month, int hour, int minutes, int seconds) {
         int nDays = numberOfDays(year, month);
         boolean dateOutOfRange = month > DECEMBER || day > nDays;
@@ -55,12 +64,27 @@ public class DateTime implements Comparable<DateTime> {
         return dateOutOfRange || hourOutOfRange;
     }
 
+    /**
+     * Method responsible for checking whether the date values are negative or not.
+     * @param year The year value that we want to check
+     * @param month The month value that we want to check
+     * @param hour The hour value that we want to check
+     * @param minutes The minutes value that we want to check
+     * @param seconds The seconds value that we want to check
+     * @return True if any value is negative or false otherwise
+     */
     private boolean isNegative(int year, int month, int hour, int minutes, int seconds) {
         boolean isYearNegative = year < 0 || month < 0 || day < 0;
         boolean isDateNegative = hour < 0 || minutes < 0 || seconds < 0;
         return isYearNegative || isDateNegative;
     }
 
+    /**
+     * Method responsible for obtaining the number of days for a given month of a given year.
+     * @param year The year value
+     * @param month The month for which we want to obtain the number of days
+     * @return The number of days of the month for that given year
+     */
     private int numberOfDays(int year, int month) {
         if (month <= JULY) {
             if (month != FEBRUARY) {
@@ -80,6 +104,11 @@ public class DateTime implements Comparable<DateTime> {
         return DAYS_30;
     }
 
+    /**
+     * Method responsible for checking whether a year is a leap year or not.
+     * @param year The year that we want to check
+     * @return True if the given year is a leap year or false otherwise
+     */
     private boolean isLeapYear(int year) {
         return year % LEAP_YEAR_FREQ == 0 && (year % TWO_LAST_DIGITS != 0
             || (year / TWO_LAST_DIGITS) % LEAP_YEAR_FREQ == 0);

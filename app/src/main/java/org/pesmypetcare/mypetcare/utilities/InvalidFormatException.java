@@ -1,4 +1,4 @@
 package org.pesmypetcare.mypetcare.utilities;
 
-class InvalidFormatException extends Exception {
+public class InvalidFormatException extends Exception {
 }
