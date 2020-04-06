@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.icu.text.IDNA;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -721,6 +722,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
             if (ImageZoomFragment.isMainActivity()) {
                 updateUserProfileImage(bitmap);
+            } else {
+                InfoPetFragment.setIsDefaultPetImage(false);
             }
         }
     }

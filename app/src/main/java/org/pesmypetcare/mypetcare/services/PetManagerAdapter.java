@@ -3,10 +3,10 @@ package org.pesmypetcare.mypetcare.services;
 import android.graphics.Bitmap;
 
 import org.pesmypetcare.mypetcare.features.pets.Event;
-import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
@@ -48,8 +48,10 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public void updatePetImage(User user, Pet pet, Bitmap newPetImage) {
-        byte[] bytesImage = ImageManager.getImageBytes(newPetImage);
+        byte[] bytesImage = ImageManager.getDefaultBytesPetImage();
+
         if (pet.getProfileImage() != null) {
+            bytesImage = ImageManager.getImageBytes(newPetImage);
             ImageManager.writeImage(ImageManager.PET_PROFILE_IMAGES_PATH, user.getUsername() + '_' + pet.getName(),
                 bytesImage);
         }
@@ -71,6 +73,7 @@ public class PetManagerAdapter implements PetManagerService {
         ArrayList<Pet> pets = user.getPets();
 
         for (Pet pet : pets) {
+            ImageManager.deleteImage(ImageManager.PET_PROFILE_IMAGES_PATH, user.getUsername() + "_" + pet.getName());
             ServiceLocator.getInstance().getPetManagerClient().deletePet(user.getToken(), user.getUsername(),
                 pet.getName());
         }

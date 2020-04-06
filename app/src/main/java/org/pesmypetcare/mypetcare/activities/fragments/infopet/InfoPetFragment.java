@@ -39,6 +39,7 @@ public class InfoPetFragment extends Fragment {
     private static boolean isImageModified;
     private static Pet pet = new Pet("Linux");
     private static Resources resources;
+    private static boolean isDefaultPetImage;
     private static final String PET_PROFILE_IMAGE_DESCRIPTION = "pet profile image";
 
     private FragmentInfoPetBinding binding;
@@ -48,6 +49,7 @@ public class InfoPetFragment extends Fragment {
     private String newName;
     private String newBreed;
     private String newGender;
+    private boolean isPetDeleted;
     private CircularImageView petProfileImage;
     private InfoPetCommunication communication;
 
@@ -56,6 +58,7 @@ public class InfoPetFragment extends Fragment {
         binding = FragmentInfoPetBinding.inflate(inflater, container, false);
         communication = (InfoPetCommunication) getActivity();
         resources = Objects.requireNonNull(getActivity()).getResources();
+        isPetDeleted = false;
 
         updatePetListeners();
         //setCalendarPicker();
@@ -164,12 +167,27 @@ public class InfoPetFragment extends Fragment {
     }
 
     /**
+     * Set the default pet image.
+     * @param isDefaultPetImage The default pet image to set
+     */
+    public static void setIsDefaultPetImage(boolean isDefaultPetImage) {
+        InfoPetFragment.isDefaultPetImage = isDefaultPetImage;
+    }
+
+    /**
      * Sets the pet from which we want to display its information.
      * @param pet The pet from which we want to display its information
      */
     public static void setPet(Pet pet) {
         InfoPetFragment.pet = pet;
-        Drawable drawable = new BitmapDrawable(resources, pet.getProfileImage());
+        Drawable drawable = new BitmapDrawable(resources, ImageManager.getDefaultPetImage());
+        isDefaultPetImage = true;
+
+        if (pet.getProfileImage() != null) {
+            drawable = new BitmapDrawable(resources, pet.getProfileImage());
+            isDefaultPetImage = false;
+        }
+
         isImageModified = isImageModified || !drawable.equals(petProfileDrawable);
         petProfileDrawable = drawable;
     }
@@ -344,13 +362,16 @@ public class InfoPetFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (isImageModified) {
-            Bitmap bitmap = ((BitmapDrawable) petProfileImage.getDrawable()).getBitmap();
+        if (!isPetDeleted && isImageModified) {
+            Bitmap bitmap = null;
 
             if (pet.getProfileImage() == null) {
-                System.out.println("DEFAULT IMAGE");
                 ImageManager.deleteImage(ImageManager.PET_PROFILE_IMAGES_PATH, pet.getOwner().getUsername() + '_'
                     + pet.getName());
+            }
+
+            if (!isDefaultPetImage) {
+                bitmap = ((BitmapDrawable) petProfileImage.getDrawable()).getBitmap();
             }
 
             communication.updatePetImage(pet, bitmap);
@@ -396,6 +417,7 @@ public class InfoPetFragment extends Fragment {
             .getString(R.string.affirmative_response), (dialog, which) -> {
                     try {
                         communication.deletePet(pet);
+                        isPetDeleted = true;
                     } catch (UserIsNotOwnerException e) {
                         e.printStackTrace();
                     }

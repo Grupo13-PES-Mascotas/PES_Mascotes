@@ -18,9 +18,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class MyPetsFragment extends Fragment {
     private static int index;
     private FragmentMyPetsBinding binding;
