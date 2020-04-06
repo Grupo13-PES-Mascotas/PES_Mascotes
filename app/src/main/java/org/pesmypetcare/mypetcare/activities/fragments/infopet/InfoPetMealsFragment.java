@@ -9,15 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import org.pesmypetcare.mypetcare.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class InfoPetMealsFragment extends Fragment {
-
-    public InfoPetMealsFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
