@@ -104,6 +104,10 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="no_description">Not introduced description</string>
+    <string name="pet_info_basic">Basic</string>
+    <string name="pet_info_health">Health</string>
+    <string name="pet_info_medication">Medication</string>
+    <string name="pet_info_meal">Meals</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

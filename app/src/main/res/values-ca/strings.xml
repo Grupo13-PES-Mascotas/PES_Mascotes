@@ -105,8 +105,13 @@
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="no_description">No s\'ha introduït la descripció</string>
+    <string name="pet_info_basic">Bàsic</string>
+    <string name="pet_info_health">Salut</string>
+    <string name="pet_info_medication">Medicació</string>
+    <string name="pet_info_meal">Àpats</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
     <string name="navigation_view_closed">Closed</string>
+
 </resources>

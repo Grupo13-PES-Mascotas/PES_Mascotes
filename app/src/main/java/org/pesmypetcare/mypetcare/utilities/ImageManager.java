@@ -75,20 +75,6 @@ public class ImageManager {
      * @throws IOException The file does not exist
      */
     public static byte[] readImage(String relativePath, String imageName) throws IOException {
-        /*FileInputStream input = new FileInputStream(PATH + File.separator + relativePath + File.separator
-            + imageName + EXTENSION);
-
-        ArrayList<Byte> bytesList = new ArrayList<>();
-        int actualByte = input.read();
-
-        while (actualByte != -1) {
-            bytesList.add((byte) actualByte);
-            actualByte = input.read();
-        }
-
-        byte[] bytes = convertToByteArray(bytesList);
-        input.close();*/
-
         String imagePath = PATH + File.separator + relativePath + File.separator + imageName + EXTENSION;
         FileChannel channel = new FileInputStream(imagePath).getChannel();
         MappedByteBuffer buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
@@ -145,4 +131,18 @@ public class ImageManager {
     public static byte[] getDefaultBytesPetImage() {
         return defaultBytesPetImage;
     }
+
+    /*FileInputStream input = new FileInputStream(PATH + File.separator + relativePath + File.separator
+            + imageName + EXTENSION);
+
+        ArrayList<Byte> bytesList = new ArrayList<>();
+        int actualByte = input.read();
+
+        while (actualByte != -1) {
+            bytesList.add((byte) actualByte);
+            actualByte = input.read();
+        }
+
+        byte[] bytes = convertToByteArray(bytesList);
+        input.close();*/
 }

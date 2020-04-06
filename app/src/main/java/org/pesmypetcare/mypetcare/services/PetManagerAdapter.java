@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
+
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
@@ -25,13 +26,24 @@ public class PetManagerAdapter implements PetManagerService {
             pet.getGender().toString());
         //ServiceLocator.getInstance().getPetManagerClient().updateBirthday(pet.getOwner().getToken(), ownerUsername,
         //  name, pet.getBirthDate());
-        ServiceLocator.getInstance().getPetManagerClient().updateWeight(pet.getOwner().getToken(), ownerUsername,
-            name, pet.getWeight());
         ServiceLocator.getInstance().getPetManagerClient().updateBreed(pet.getOwner().getToken(), ownerUsername,
             name, pet.getBreed());
         /*ServiceLocator.getInstance().getPetManagerClient().updatePathologies(pet.getOwner().getToken(),
-            ownerUsername, name, pet.getPathologies());
-        ServiceLocator.getInstance().getPetManagerClient().updateRecKcal(pet.getOwner().getToken(), ownerUsername,
+            ownerUsername, name, pet.getPathologies());*/
+        updateHealth(pet);
+    }
+
+    /**
+     * Update the health data of the pet.
+     * @param pet The pet to which its health data has to be updated
+     */
+    private void updateHealth(Pet pet) {
+        String name = pet.getName();
+        String ownerUsername = pet.getOwner().getUsername();
+
+        ServiceLocator.getInstance().getPetManagerClient().updateWeight(pet.getOwner().getToken(), ownerUsername,
+            name, pet.getWeight());
+        /*ServiceLocator.getInstance().getPetManagerClient().updateRecKcal(pet.getOwner().getToken(), ownerUsername,
             name, pet.getRecommendedDailyKiloCalories());
         ServiceLocator.getInstance().getPetManagerClient().updateWashFreq(pet.getOwner().getToken(), ownerUsername,
             name, pet.getWashFrequency());*/
