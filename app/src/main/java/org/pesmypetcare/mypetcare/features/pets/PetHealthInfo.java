@@ -4,18 +4,19 @@ import org.pesmypetcare.mypetcare.utilities.DateTime;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class PetHealthInfo {
-    private TreeMap<DateTime, Double> weight;
-    private TreeMap<DateTime, Double> recommendedDailyKiloCalories;
-    private TreeMap<DateTime, Integer> exerciseFrequency;
-    private TreeMap<DateTime, Event> weeklyExercise;
-    private TreeMap<DateTime, Double> weeklyKiloCaloriesAverage;
-    private TreeMap<DateTime, Integer> washFrequency;
+    private Map<DateTime, Double> weight;
+    private Map<DateTime, Double> recommendedDailyKiloCalories;
+    private Map<DateTime, Integer> exerciseFrequency;
+    private Map<DateTime, Event> weeklyExercise;
+    private Map<DateTime, Double> weeklyKiloCaloriesAverage;
+    private Map<DateTime, Integer> washFrequency;
     private String pathologies;
-    private ArrayList<String> petNeeds;
+    private List<String> petNeeds;
 
     public PetHealthInfo() {
         this.weight = new TreeMap<>(new TreeComparator());
@@ -43,7 +44,7 @@ public class PetHealthInfo {
         if (weight.isEmpty()) {
             return -1;
         }
-        return weight.lastEntry().getValue();
+        return ((TreeMap<DateTime, Double>) weight).lastEntry().getValue();
     }
     /**
      * Method that gets the weight for a given date.
@@ -91,7 +92,7 @@ public class PetHealthInfo {
         if (recommendedDailyKiloCalories.isEmpty()) {
             return -1;
         }
-        return recommendedDailyKiloCalories.lastEntry().getValue();
+        return ((TreeMap<DateTime, Double>) recommendedDailyKiloCalories).lastEntry().getValue();
     }
 
     /**
@@ -139,7 +140,7 @@ public class PetHealthInfo {
         if (exerciseFrequency.isEmpty()) {
             return -1;
         }
-        return exerciseFrequency.lastEntry().getValue();
+        return ((TreeMap<DateTime, Integer>) exerciseFrequency).lastEntry().getValue();
     }
 
     /**
@@ -187,7 +188,7 @@ public class PetHealthInfo {
         if (weeklyExercise.isEmpty()) {
             return null;
         }
-        return weeklyExercise.lastEntry().getValue();
+        return ((TreeMap<DateTime, Event>) weeklyExercise).lastEntry().getValue();
     }
 
     /**
@@ -236,7 +237,7 @@ public class PetHealthInfo {
         if (weeklyKiloCaloriesAverage.isEmpty()) {
             return -1;
         }
-        return weeklyKiloCaloriesAverage.lastEntry().getValue();
+        return ((TreeMap<DateTime, Double>) weeklyKiloCaloriesAverage).lastEntry().getValue();
     }
 
     /**
@@ -281,11 +282,11 @@ public class PetHealthInfo {
      * @return The last stored wash frequency of the pet
      * or -1 if the pet does not have any wash frequency average stored
      */
-    public double getLastWashFrequency() {
+    public int getLastWashFrequency() {
         if (washFrequency.isEmpty()) {
             return -1;
         }
-        return washFrequency.lastEntry().getValue();
+        return ((TreeMap<DateTime, Integer>) washFrequency).lastEntry().getValue();
     }
 
     /**
@@ -337,7 +338,7 @@ public class PetHealthInfo {
      * Getter of the petNeeds attribute.
      * @return The petNeeds
      */
-    public ArrayList<String> getPetNeeds() {
+    public List<String> getPetNeeds() {
         return petNeeds;
     }
 

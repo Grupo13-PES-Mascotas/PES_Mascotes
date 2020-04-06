@@ -50,7 +50,7 @@ public class DateTime implements Comparable<DateTime> {
 
     private boolean isOutOfRange(int month, int hour, int minutes, int seconds) {
         int nDays = numberOfDays(year, month);
-        boolean dateOutOfRange = month > DECEMBER ||  day > nDays;
+        boolean dateOutOfRange = month > DECEMBER || day > nDays;
         boolean hourOutOfRange = hour >= MAX_HOUR || minutes >= MAX_MINUTES_SECONDS || seconds > MAX_MINUTES_SECONDS;
         return dateOutOfRange || hourOutOfRange;
     }
