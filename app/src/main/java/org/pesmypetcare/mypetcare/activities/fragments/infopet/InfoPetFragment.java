@@ -166,6 +166,10 @@ public class InfoPetFragment extends Fragment {
         petProfileDrawable = drawable;
     }
 
+    /**
+     * Set the default pet image.
+     * @param isDefaultPetImage The default pet image to set
+     */
     public static void setIsDefaultPetImage(boolean isDefaultPetImage) {
         InfoPetFragment.isDefaultPetImage = isDefaultPetImage;
     }
