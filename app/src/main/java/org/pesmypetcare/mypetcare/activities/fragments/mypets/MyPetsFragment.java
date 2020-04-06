@@ -55,7 +55,7 @@ public class MyPetsFragment extends Fragment {
             PetComponentView tmp = petsComponents.remove(0);
             tmp.setClickable(true);
             tmp.setOnClickListener(v -> {
-               // InfoPetFragment.setPet(tmp.getPet());
+                InfoPetFragment.setPet(tmp.getPet());
                 FragmentTransaction ft = Objects.requireNonNull(getFragmentManager()).beginTransaction();
                 ft.replace(R.id.mainActivityFrameLayout, testFragment);
                 ft.commit();

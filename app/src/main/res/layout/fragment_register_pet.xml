@@ -104,17 +104,6 @@
                 style="@style/inputPetContainer">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputRecommendedCalories"
-                    style="@style/inputPetField"
-                    android:hint="@string/input_recommended_calories"
-                    android:inputType="numberDecimal" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/inputPetContainer">
-
-                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputWashFrequency"
                     style="@style/inputPetField"
                     android:hint="@string/input_wash_frequency"

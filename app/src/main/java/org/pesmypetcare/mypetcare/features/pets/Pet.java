@@ -21,9 +21,10 @@ public class Pet {
     public static final String BUNDLE_BIRTH_DATE = "petBirthDate";
     public static final String BUNDLE_WEIGHT = "petFloat";
     public static final String BUNDLE_PATHOLOGIES = "petPathologies";
-    public static final String BUNDLE_CALORIES = "petCalories";
     public static final String BUNDLE_WASH = "petWash";
     public static final String BUNDLE_GENDER = "petGender";
+    private static final int FACTOR_PES_1 = 30;
+    private static final int FACTOR_PES_2 = 70;
 
     private String name;
     private GenderType gender;
@@ -68,8 +69,16 @@ public class Pet {
         this.healthInfo = new PetHealthInfo();
         this.healthInfo.addWeightForDate(dateTime, petInfo.getFloat(BUNDLE_WEIGHT));
         this.healthInfo.setPathologies(petInfo.getString(BUNDLE_PATHOLOGIES));
-        this.healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, petInfo.getFloat(BUNDLE_CALORIES));
+        this.healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, calculateRecommendedKiloCalories());
         this.healthInfo.addWashFrequencyForDate(dateTime, petInfo.getInt(BUNDLE_WASH));
+    }
+
+    /**
+     * Calculate the recommended kilocalories for the pet
+     * @return The recommended kilocalories
+     */
+    private double calculateRecommendedKiloCalories() {
+        return healthInfo.getLastWeight() * FACTOR_PES_1 + FACTOR_PES_2;
     }
 
     public Pet(Bundle petInfo, User user) {

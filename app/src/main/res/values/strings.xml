@@ -107,12 +107,10 @@
     <string name="pet_info_basic">Basic</string>
     <string name="pet_info_health">Health</string>
     <string name="pet_info_medication">Medication</string>
+    <string name="pet_info_meal">Meals</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
     <string name="navigation_view_closed">Closed</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

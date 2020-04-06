@@ -45,7 +45,6 @@ import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommun
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
-import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment2;
 import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsComunication;
 import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetCommunication;
@@ -97,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     private static final Class[] APPLICATION_FRAGMENTS = {
         MyPetsFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
-        NotImplementedFragment.class, CalendarFragment.class, InfoPetFragment2.class,
+        NotImplementedFragment.class, CalendarFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
 
@@ -556,7 +555,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             user.setUserProfileImage(((BitmapDrawable) drawable).getBitmap());
             changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
         } else {
-            //InfoPetFragment.setPetProfileDrawable(ImageZoomFragment.getDrawable());
+            InfoPetFragment.setPetProfileDrawable(ImageZoomFragment.getDrawable());
             changeFragment(new InfoPetFragment());
         }
     }
@@ -723,7 +722,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             if (ImageZoomFragment.isMainActivity()) {
                 updateUserProfileImage(bitmap);
             } else {
-                //InfoPetFragment.setIsDefaultPetImage(false);
+                InfoPetFragment.setIsDefaultPetImage(false);
             }
         }
     }

@@ -7,10 +7,11 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import java.util.Objects;
 
 public class InfoPetFragmentAdapter extends FragmentStateAdapter {
-    private static final int NUM_TABS = 3;
+    private static final int NUM_TABS = 4;
     public static final int INFO_PET_BASIC = 0;
     public static final int INFO_PET_HEALTH = 1;
     public static final int INFO_PET_MEDICATION = 2;
+    public static final int INFO_PET_MEALS = 3;
 
     public InfoPetFragmentAdapter(@NonNull Fragment fragment) {
         super(fragment);
@@ -30,6 +31,9 @@ public class InfoPetFragmentAdapter extends FragmentStateAdapter {
                 break;
             case INFO_PET_MEDICATION:
                 fragment = new InfoPetMedicationFragment();
+                break;
+            case INFO_PET_MEALS:
+                fragment = new InfoPetMealsFragment();
                 break;
             default:
                 fragment = null;
