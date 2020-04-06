@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.utilities;
 
 public class DateTime implements Comparable<DateTime> {
-    public static final int HOUR_START_POS = 11;
+    private static final int HOUR_START_POS = 11;
     private static final int DAYS_30 = 30;
     private static final int DAYS_31 = 31;
     private static final int FEBRUARY = 2;

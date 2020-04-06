@@ -15,7 +15,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
-import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.databinding.FragmentImageZoomBinding;
 
@@ -90,8 +89,8 @@ public class ImageZoomFragment extends Fragment {
                 MainActivity.setDefaultUserImage();
             } else {
                 setDrawable(getResources().getDrawable(R.drawable.single_paw, null));
-                InfoPetFragment.setDefaultPetImage();
-                InfoPetFragment.setIsDefaultPetImage(true);
+                //InfoPetFragment.setDefaultPetImage();
+                //InfoPetFragment.setIsDefaultPetImage(true);
             }
         });
         alertDialog.setNegativeButton(R.string.negative_response, null);

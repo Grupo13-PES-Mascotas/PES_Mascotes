@@ -118,5 +118,4 @@ public class TestDateTime {
     public void shouldTransformToDateTime() {
         assertEquals("Should transform to dateTime", 0, dateTime.compareTo(new DateTime("2020-10-23T15:02:11")));
     }
-
 }

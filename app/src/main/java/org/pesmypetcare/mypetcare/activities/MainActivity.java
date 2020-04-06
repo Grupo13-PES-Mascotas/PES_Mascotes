@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.icu.text.IDNA;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -46,6 +45,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommun
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment2;
 import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsComunication;
 import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetCommunication;
@@ -60,8 +60,8 @@ import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
-import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetImages;
 import org.pesmypetcare.mypetcare.controllers.TrNewPersonalEvent;
+import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetImages;
 import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     private static final Class[] APPLICATION_FRAGMENTS = {
         MyPetsFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
-        NotImplementedFragment.class, CalendarFragment.class, NotImplementedFragment.class,
+        NotImplementedFragment.class, CalendarFragment.class, InfoPetFragment2.class,
         SettingsMenuFragment.class
     };
 
@@ -556,7 +556,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             user.setUserProfileImage(((BitmapDrawable) drawable).getBitmap());
             changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
         } else {
-            InfoPetFragment.setPetProfileDrawable(ImageZoomFragment.getDrawable());
+            //InfoPetFragment.setPetProfileDrawable(ImageZoomFragment.getDrawable());
             changeFragment(new InfoPetFragment());
         }
     }
@@ -723,7 +723,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             if (ImageZoomFragment.isMainActivity()) {
                 updateUserProfileImage(bitmap);
             } else {
-                InfoPetFragment.setIsDefaultPetImage(false);
+                //InfoPetFragment.setIsDefaultPetImage(false);
             }
         }
     }
