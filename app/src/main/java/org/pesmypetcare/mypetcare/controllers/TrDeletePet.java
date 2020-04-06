@@ -4,7 +4,6 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
-import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
 public class TrDeletePet {
     private PetManagerService petManagerService;
