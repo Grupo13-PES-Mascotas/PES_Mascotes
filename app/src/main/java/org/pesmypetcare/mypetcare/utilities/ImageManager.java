@@ -12,7 +12,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ImageManager {
@@ -22,6 +21,7 @@ public class ImageManager {
         + File.separator + "MyPetCare";
     private static final String EXTENSION = ".jpg";
     private static final int QUALITY = 100;
+
     private static Bitmap defaultPetImage;
     private static byte[] defaultBytesPetImage;
 
@@ -128,5 +128,21 @@ public class ImageManager {
     public static void deleteImage(String relativePath, String imageName) {
         File image = new File(PATH + File.separator + relativePath + File.separator + imageName + EXTENSION);
         image.delete();
+    }
+
+    /**
+     * Get default pet image.
+     * @return The default pet image
+     */
+    public static Bitmap getDefaultPetImage() {
+        return defaultPetImage;
+    }
+
+    /**
+     * Get default bytes for pet image.
+     * @return The bytes of pet image
+     */
+    public static byte[] getDefaultBytesPetImage() {
+        return defaultBytesPetImage;
     }
 }

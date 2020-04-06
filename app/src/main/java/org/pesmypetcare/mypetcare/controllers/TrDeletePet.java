@@ -4,6 +4,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
+import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
 public class TrDeletePet {
     private PetManagerService petManagerService;
@@ -37,9 +38,9 @@ public class TrDeletePet {
     public void execute() throws UserIsNotOwnerException {
         if (pet.getOwner() != user) {
             throw new UserIsNotOwnerException();
-        } else {
-            petManagerService.deletePet(pet, user);
-            user.deletePet(pet);
         }
+
+        petManagerService.deletePet(pet, user);
+        user.deletePet(pet);
     }
 }

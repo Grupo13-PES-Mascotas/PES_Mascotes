@@ -28,7 +28,6 @@ public class GetPetImageRunnable implements Runnable {
             byte[] bytes = ImageManager.readImage(ImageManager.PET_PROFILE_IMAGES_PATH, username + '_' + petName);
             petImage = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         } catch (IOException e) {
-            petImage = defaultBitmap;
             MainActivity.incrementCountNotImage(actual);
         } finally {
             MainActivity.setPetBitmapImage(actual, petImage);

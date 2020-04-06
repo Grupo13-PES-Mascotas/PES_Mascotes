@@ -91,6 +91,7 @@ public class ImageZoomFragment extends Fragment {
             } else {
                 setDrawable(getResources().getDrawable(R.drawable.single_paw, null));
                 InfoPetFragment.setDefaultPetImage();
+                InfoPetFragment.setIsDefaultPetImage(true);
             }
         });
         alertDialog.setNegativeButton(R.string.negative_response, null);
