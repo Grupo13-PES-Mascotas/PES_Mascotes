@@ -67,9 +67,9 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public boolean registerNewPet(User user, Pet pet) {
-        /*ServiceLocator.getInstance().getPetManagerClient().createPet(user.getToken(), user.getUsername(), pet.getName(),
-            pet.getGender().toString(), pet.getBreed(), pet.getBirthDate(), pet.getWeight(), pet.getPathologies(),
-            pet.getRecommendedDailyKiloCalories(), pet.getWashFrequency());*/
+        /*ServiceLocator.getInstance().getPetManagerClient().createPet(user.getToken(), user.getUsername(),
+            pet.getName(), pet.getGender().toString(), pet.getBreed(), pet.getBirthDate(), pet.getWeight(),
+            pet.getPathologies(), pet.getRecommendedDailyKiloCalories(), pet.getWashFrequency());*/
 
         org.pesmypetcare.usermanagerlib.datacontainers.Pet registerPet = getRegisterPet(pet);
 
