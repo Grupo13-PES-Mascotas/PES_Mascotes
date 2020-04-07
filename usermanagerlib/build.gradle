@@ -1,2 +1,2 @@
 configurations.maybeCreate("default")
-artifacts.add("default", file('usermanagerlib-profile-images.aar'))
+artifacts.add("default", file('usermanagerlib-v2.2.1.aar'))
