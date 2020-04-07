@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
+import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 
 import java.io.IOException;
@@ -72,30 +73,56 @@ public class UserManagerAdapter implements UserManagerService {
 
     @Override
     public boolean changePassword(User user, String newPassword) {
-        ServiceLocator.getInstance().getUserManagerClient().updatePassword(user.getToken(), user.getUsername(),
-            newPassword);
+        /*ServiceLocator.getInstance().getUserManagerClient().updatePassword(user.getToken(), user.getUsername(),
+            newPassword);*/
+
+        try {
+            ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(), user.getUsername(),
+                UserManagerClient.PASSWORD, newPassword);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
         return true;
     }
 
     @Override
     public void deleteUser(User user) {
-        ServiceLocator.getInstance().getUserManagerClient().deleteUser(user.getToken(), user.getUsername());
+        try {
+            ServiceLocator.getInstance().getUserManagerClient().deleteUser(user.getToken(), user.getUsername());
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void changeMail(String email, User user) {
-        ServiceLocator.getInstance().getUserManagerClient().updateEmail(user.getToken(), user.getUsername(), email);
+        //ServiceLocator.getInstance().getUserManagerClient().updateEmail(user.getToken(), user.getUsername(), email);
+        try {
+            ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(), user.getUsername(),
+                UserManagerClient.EMAIL, email);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void createUser(String uid, String email, String password) {
-        ServiceLocator.getInstance().getUserManagerClient().signUp(uid, password, email);
+        try {
+            ServiceLocator.getInstance().getUserManagerClient().signUp(uid, password, email);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void updateUserImage(User user, Bitmap bitmap) {
         byte[] imageBytes = ImageManager.getImageBytes(bitmap);
-        ServiceLocator.getInstance().getUserManagerClient().saveProfileImage(user.getToken(), user.getUsername(),
-            imageBytes);
+        try {
+            ServiceLocator.getInstance().getUserManagerClient().saveProfileImage(user.getToken(), user.getUsername(),
+                imageBytes);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
