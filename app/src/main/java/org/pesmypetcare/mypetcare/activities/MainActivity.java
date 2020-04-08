@@ -792,7 +792,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra(getString(R.string.title), title);
         intent.putExtra(getString(R.string.text), text);
-        intent.putExtra(getString(R.string.notificationid), NOTIFICATIONID);
+        intent.putExtra(getString(R.string.notificationid), Integer.toString(NOTIFICATIONID));
         NOTIFICATIONID++;
         PendingIntent pending = PendingIntent.getBroadcast(context, REQUESTCODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         REQUESTCODE++;
