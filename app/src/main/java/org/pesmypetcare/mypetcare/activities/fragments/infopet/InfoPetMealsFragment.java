@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,10 +65,14 @@ public class InfoPetMealsFragment extends Fragment {
 
     private void initializeMealsLayoutView() {
         ArrayList<Event> mealsToDisplay = new ArrayList<>();
+        mealsToDisplay.clear();
+        mealDisplay.removeAllViews();
         if (isWeeklyInterval) {
             mealsToDisplay = getLastWeekMeals();
+            System.out.println("Nº de Meals Last Week " + mealsToDisplay.size());
         } else {
             mealsToDisplay = (ArrayList<Event>) pet.getMealEvents();
+            System.out.println("Nº de meals totales " + mealsToDisplay.size());
         }
 
         for (Event meal : mealsToDisplay) {
@@ -77,16 +82,21 @@ public class InfoPetMealsFragment extends Fragment {
 
     private void initializeMealComponent(Event meal) {
         LinearLayout layout = new LinearLayout(this.getActivity(), null);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT);
+        layout.setLayoutParams(params);
+        layout.setGravity(Gravity.CENTER_HORIZONTAL);
         layout.setOrientation(LinearLayout.VERTICAL);
+
         TextView mealIdentification = new TextView(this.getActivity(), null);
         String mealIdentificationText = ((Meals)meal).getMealName() + " " + ((Meals)meal).getDateTime().toString();
         mealIdentification.setText(mealIdentificationText);
+        mealIdentification.setGravity(Gravity.CENTER_HORIZONTAL);
         layout.addView(mealIdentification);
         TextView mealKcal = new TextView(this.getActivity(), null);
         String mealKcalText = "Meal Kcal " + ((Meals)meal).getKcal();
         mealKcal.setText(mealKcalText);
+        mealKcal.setGravity(Gravity.CENTER_HORIZONTAL);
         layout.addView(mealKcal);
         mealDisplay.addView(layout);
     }
@@ -94,8 +104,10 @@ public class InfoPetMealsFragment extends Fragment {
     private ArrayList<Event> getLastWeekMeals() {
         DateTime dateTime = getCurrentDate();
         ArrayList<Event> result = new ArrayList<>();
+        result.clear();
         for (int i = 0; i < 7; ++i) {
             ArrayList<Event> temp = (ArrayList<Event>) pet.getMealEventsForDate(dateTime.toString());
+            System.out.println("Temp meals : " + temp.toString());
             result.addAll(temp);
             dateTime.increaseDay();
         }
