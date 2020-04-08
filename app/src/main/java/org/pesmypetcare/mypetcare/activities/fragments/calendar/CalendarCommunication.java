@@ -1,5 +1,8 @@
 package org.pesmypetcare.mypetcare.activities.fragments.calendar;
 
+import android.content.Context;
+
+import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -26,4 +29,20 @@ public interface CalendarCommunication {
      * @param event The event
      */
     void deletePersonalEvent(Pet pet, Event event);
+
+    /**
+     * Creates a notification
+     * @param context The context
+     * @param time The time of the notification
+     * @param title The notification's title
+     * @param text The notification's text
+     */
+    void scheduleNotification(Context context, long time, String title, String text);
+
+    /**
+     * Cancel a notification.
+     * @param context The context
+     * @param notification The notification
+     */
+    void cancelNotification(Context context, Notification notification);
 }

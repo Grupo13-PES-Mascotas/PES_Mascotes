@@ -26,6 +26,7 @@ import org.pesmypetcare.mypetcare.activities.views.CalendarEventsView;
 import org.pesmypetcare.mypetcare.activities.views.EventView;
 import org.pesmypetcare.mypetcare.activities.views.PetComponentView;
 import org.pesmypetcare.mypetcare.databinding.FragmentCalendarBinding;
+import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -164,9 +165,33 @@ public class CalendarFragment extends Fragment {
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
             selectedPet.addEvent(new Event(reasonText.getText().toString(), dateTime.toString()));
             communication.newPersonalEvent(selectedPet, reasonText.getText().toString(), dateTime.toString());
+            Calendar c = Calendar.getInstance();
+            calendarAlarmInitialization(dateTime, c);
+            communication.scheduleNotification(getContext(), c.getTimeInMillis() , selectedPet.getName(), reasonText.getText().toString());
         } else {
             toastText(getString(R.string.incorrect_entry));
         }
+    }
+
+    /**
+     * Initializes the calendar of a alarm
+     * @param dateTime The time and date of the alarm
+     * @param c The calendar
+     */
+    private void calendarAlarmInitialization(StringBuilder dateTime, Calendar c) {
+        int year = Integer.parseInt(dateTime.substring(0,4));
+        int month = Integer.parseInt(dateTime.substring(5,7));
+        int day = Integer.parseInt(dateTime.substring(8,10));
+        int hour = Integer.parseInt(dateTime.substring(11,13));
+        int min = Integer.parseInt(dateTime.substring(14,16));
+        int sec = Integer.parseInt(dateTime.substring(17,19));
+        c.setTimeInMillis(System.currentTimeMillis());
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month-1);
+        c.set(Calendar.DAY_OF_MONTH, day);
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, min);
+        c.set(Calendar.SECOND, sec);
     }
 
     /**
@@ -324,20 +349,33 @@ public class CalendarFragment extends Fragment {
 
     /**
      * Set up the delete event dialog.
+     * @param p The PetComponentView
      */
     private void deleteEventDialog(PetComponentView p) {
         MaterialAlertDialogBuilder deleteEvent = new MaterialAlertDialogBuilder(Objects.requireNonNull(
                 getContext()), R.style.AlertDialogTheme);
         deleteEvent.setTitle(getString(R.string.delete_event));
         deleteEvent.setMessage(getString(R.string.confirmation));
+        initializePositiveButtonDialog(p, deleteEvent);
+        deleteEvent.setNegativeButton(getString(R.string.no), (dialog, which) -> {});
+        deleteEvent.show();
+    }
+
+    /**
+     * Initialize the dialog's Positive Button.
+     * @param p The PetViewComponent
+     * @param deleteEvent The dialog
+     */
+    private void initializePositiveButtonDialog(PetComponentView p, MaterialAlertDialogBuilder deleteEvent) {
         Pet pet = p.getPet();
         Event event = ((EventView) p).getEvent();
         deleteEvent.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
             pet.deleteEvent(event);
             communication.deletePersonalEvent(pet, event);
+            Calendar c = Calendar.getInstance();
+            calendarAlarmInitialization(new StringBuilder(event.getDateTime()), c);
+            communication.cancelNotification(getContext(), new Notification(event.getDescription(),
+                    new Date(c.getTimeInMillis()), pet.getName()));
         });
-        deleteEvent.setNegativeButton(getString(R.string.no), (dialog, which) -> {
-        });
-        deleteEvent.show();
     }
 }

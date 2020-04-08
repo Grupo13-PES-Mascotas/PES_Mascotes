@@ -109,6 +109,9 @@
     <string name="pet_info_health">Salut</string>
     <string name="pet_info_medication">Medicació</string>
     <string name="pet_info_meal">Àpats</string>
+    <string name="notificationid">NOTIFICATION_ID</string>
+    <string name="text">text</string>
+    <string name="title">title</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
