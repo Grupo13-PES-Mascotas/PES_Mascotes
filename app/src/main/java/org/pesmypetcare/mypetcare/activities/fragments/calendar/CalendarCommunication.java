@@ -31,7 +31,7 @@ public interface CalendarCommunication {
     void deletePersonalEvent(Pet pet, Event event);
 
     /**
-     * Creates a notification
+     * Creates a notification.
      * @param context The context
      * @param time The time of the notification
      * @param title The notification's title

@@ -16,7 +16,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -88,7 +87,6 @@ import org.pesmypetcare.mypetcare.utilities.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -136,8 +134,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrNewPersonalEvent trNewPersonalEvent;
     private TrDeletePersonalEvent trDeletePersonalEvent;
     private FloatingActionButton flAddCalendarEvent;
-    private static int NOTIFICATION_ID;
-    private static int REQUEST_CODE;
+    private static int NOTIFICATIONID;
+    private static int REQUESTCODE;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -148,8 +146,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setContentView(binding.getRoot());
         resources = getResources();
 
-        NOTIFICATION_ID = 0;
-        REQUEST_CODE = 0;
+        NOTIFICATIONID = 0;
+        REQUESTCODE = 0;
         /*Calendar calendarAlarm = Calendar.getInstance();
         calendarAlarm.setTimeInMillis(System.currentTimeMillis());
         scheduleNotification(this, calendarAlarm.getTimeInMillis(), "nada1", "nada1");
@@ -787,14 +785,17 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void scheduleNotification(Context context, long time, String title, String text) {
-        user.addNotification(new Notification(title, text, new Date(time), Long.toString(time), NOTIFICATION_ID, REQUEST_CODE ));
+        Notification notification = new Notification(title, text, new Date(time), Long.toString(time));
+        notification.setNotificationID(NOTIFICATIONID);
+        notification.setRequestCode(REQUESTCODE);
+        user.addNotification(notification);
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra(getString(R.string.title), title);
         intent.putExtra(getString(R.string.text), text);
-        intent.putExtra(getString(R.string.notificationid), NOTIFICATION_ID );
-        NOTIFICATION_ID++;
-        PendingIntent pending = PendingIntent.getBroadcast(context, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        REQUEST_CODE++;
+        intent.putExtra(getString(R.string.notificationid), NOTIFICATIONID);
+        NOTIFICATIONID++;
+        PendingIntent pending = PendingIntent.getBroadcast(context, REQUESTCODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        REQUESTCODE++;
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert manager != null;
         manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pending);
@@ -810,8 +811,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra(getString(R.string.title), deleted.getTitle());
         intent.putExtra(getString(R.string.text), deleted.getText());
-        intent.putExtra(getString(R.string.notificationid) , deleted.getNOTIFICATION_ID());
-        PendingIntent pending = PendingIntent.getBroadcast(context, deleted.getREQUEST_CODE(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.putExtra(getString(R.string.notificationid) , deleted.getNotificationID());
+        PendingIntent pending = PendingIntent.getBroadcast(context, deleted.getRequestCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         user.deleteNotification(notification);
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

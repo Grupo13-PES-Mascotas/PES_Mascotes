@@ -10,17 +10,15 @@ public class Notification {
     private String description;
     private Date date;
     private String hour;
-    private int NOTIFICATION_ID;
-    private int REQUEST_CODE;
+    private int notificationID;
+    private int requestCode;
     private User user;
 
-    public Notification(String title, String description, Date date, String hour, int id, int req){
+    public Notification(String title, String description, Date date, String hour) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.hour = hour;
-        this.NOTIFICATION_ID = id;
-        this.REQUEST_CODE = req;
     }
 
     public Notification(String description, Date date, String title) {
@@ -30,19 +28,35 @@ public class Notification {
     }
 
     /**
-     * Getter of the NOTIFICATION_ID attribute.
-     * @return The NOTIFICATION_ID
+     * Setter of the notificationID attribute.
+     * @param notificationID The notificationID
      */
-    public int getNOTIFICATION_ID() {
-        return NOTIFICATION_ID;
+    public void setNotificationID(int notificationID) {
+        this.notificationID = notificationID;
     }
 
     /**
-     * Getter of the REQUEST_CODE attribute.
-     * @return The REQUEST_CODE
+     * Setter of the requestCode attribute.
+     * @param requestCode The requestCode
      */
-    public int getREQUEST_CODE() {
-        return REQUEST_CODE;
+    public void setRequestCode(int requestCode) {
+        this.requestCode = requestCode;
+    }
+
+    /**
+     * Getter of the notificationID attribute.
+     * @return The notificationID
+     */
+    public int getNotificationID() {
+        return notificationID;
+    }
+
+    /**
+     * Getter of the requestCode attribute.
+     * @return The requestCode
+     */
+    public int getRequestCode() {
+        return requestCode;
     }
 
     /**
@@ -71,8 +85,12 @@ public class Notification {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Notification notification = (Notification) o;
         return Objects.equals(description, notification.description)
                 && Objects.equals(date.toString(), notification.date.toString())
