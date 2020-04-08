@@ -4,16 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Space;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarFragment;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetMealsBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
@@ -31,16 +33,29 @@ public class InfoPetMealsFragment extends Fragment {
     private boolean isWeeklyInterval;
     private Pet pet;
     private LinearLayout mealDisplay;
+    private Button addMealButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoPetMealsBinding.inflate(inflater, container, false);
         pet = InfoPetFragment.getPet();
         mealDisplay = binding.mealsDisplayLayout;
+        addMealButton = binding.addMealButton;
         initializeTestMeals(pet);
         initializeIntervalSwitch();
+        initializeAddMealButton();
         initializeMealsLayoutView();
         return binding.getRoot();
+    }
+
+    private void initializeAddMealButton() {
+        addMealButton.setOnClickListener(v -> {
+            Fragment calendar = new CalendarFragment();
+            System.out.println("Aun no he petado");
+            FragmentTransaction ft = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.mainActivityFrameLayout, calendar);
+            ft.commit();
+        });
     }
 
     private void initializeTestMeals(Pet pet) {
@@ -95,11 +110,8 @@ public class InfoPetMealsFragment extends Fragment {
         String mealKcal = "Meal Kcal " + ((Meals)meal).getKcal();
         mealComponent.setText(mealKcal);
         mealComponent.setEnabled(false);
-        Space space = new Space(this.getActivity(), null);
-        space.setLayoutParams(new LinearLayout.LayoutParams(0,15));
         layout.addView(mealComponent);
         mealDisplay.addView(layout);
-        //mealDisplay.addView(space);
     }
 
     private ArrayList<Event> getLastWeekMeals() {
