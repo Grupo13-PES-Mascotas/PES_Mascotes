@@ -362,6 +362,37 @@ public class Pet {
         return selectedEvents;
     }
 
+    /**
+     * Get the list of meals of the pet.
+     * @return The list of meals of the pet
+     */
+    public List<Event> getMealEvents() {
+        ArrayList<Event> mealEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof Meals) {
+                mealEvents.add(event);
+            }
+        }
+        return mealEvents;
+    }
+
+    /**
+     * Get the list of meals of the pet for a given date.
+     * @return The list of meals of the pet for a given date
+     */
+    public List<Event> getMealEventsForDate(String dateTime) {
+        ArrayList<Event> mealEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            String eventDate = DateConversion.getDate(event.getDateTime());
+            if (event instanceof Meals && eventDate.equals(dateTime)) {
+                mealEvents.add(event);
+            }
+        }
+        return mealEvents;
+    }
+
     @Override
     public String toString() {
         return "{" + name + ", " + (profileImage == null ? "NULL" : "NO_NULL") + "}";

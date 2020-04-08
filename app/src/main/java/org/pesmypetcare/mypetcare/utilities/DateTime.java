@@ -208,4 +208,16 @@ public class DateTime implements Comparable<DateTime> {
     public void setSeconds(int seconds) {
         this.seconds = seconds;
     }
+
+    public void increaseDay() {
+        day += 1;
+        if (day > numberOfDays(year, month)) {
+            day = 1;
+            month += 1;
+            if (isOutOfRange(month, hour, minutes, seconds)) {
+                month = 1;
+                year += 1;
+            }
+        }
+    }
 }
