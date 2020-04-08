@@ -41,6 +41,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         assert notificationManager != null;
         notificationManager.notify(id , builder.build());
         CHANNEL_ID = Integer.toString(Integer.parseInt(CHANNEL_ID) + 1);
+
     }
 
     /**
