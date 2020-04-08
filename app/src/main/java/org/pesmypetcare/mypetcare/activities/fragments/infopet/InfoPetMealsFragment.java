@@ -1,17 +1,19 @@
 package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Space;
 
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
+import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetMealsBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
@@ -79,26 +81,25 @@ public class InfoPetMealsFragment extends Fragment {
     }
 
     private void initializeMealComponent(Event meal) {
-        LinearLayout layout = new LinearLayout(this.getActivity(), null);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(25, 0, 0, 0);
-        layout.setLayoutParams(params);
-        layout.setGravity(Gravity.CENTER_HORIZONTAL);
-        layout.setOrientation(LinearLayout.VERTICAL);
-
-        TextInputEditText mealIdentification = new TextInputEditText(Objects.requireNonNull(this.getActivity()), null);
+        TextInputLayout layout = new TextInputLayout(this.getActivity(), null);
+        layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         String mealIdentificationText = ((Meals)meal).getMealName() + " " + ((Meals)meal).getDateTime().toString();
-        mealIdentification.setText(mealIdentificationText);
-        mealIdentification.setEnabled(false);
-        layout.addView(mealIdentification);
+        layout.setHint(mealIdentificationText);
+        layout.setBackgroundColor(getResources().getColor(R.color.white));
+        layout.setBoxStrokeColor(getResources().getColor(R.color.colorAccent));
+        layout.setHintAnimationEnabled(true);
+        layout.setHintEnabled(true);
+        layout.setStartIconContentDescription(mealIdentificationText);
 
-        TextInputEditText mealKcal = new TextInputEditText(this.getActivity(), null);
-        String mealKcalText = "Meal Kcal " + ((Meals)meal).getKcal();
-        mealKcal.setText(mealKcalText);
-        mealKcal.setEnabled(false);
-        layout.addView(mealKcal);
+        TextInputEditText mealComponent = new TextInputEditText(Objects.requireNonNull(this.getActivity()), null);
+        String mealKcal = "Meal Kcal " + ((Meals)meal).getKcal();
+        mealComponent.setText(mealKcal);
+        mealComponent.setEnabled(false);
+        Space space = new Space(this.getActivity(), null);
+        space.setLayoutParams(new LinearLayout.LayoutParams(0,15));
+        layout.addView(mealComponent);
         mealDisplay.addView(layout);
+        //mealDisplay.addView(space);
     }
 
     private ArrayList<Event> getLastWeekMeals() {
