@@ -134,8 +134,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrNewPersonalEvent trNewPersonalEvent;
     private TrDeletePersonalEvent trDeletePersonalEvent;
     private FloatingActionButton flAddCalendarEvent;
-    private static int NOTIFICATIONID;
-    private static int REQUESTCODE;
+    private static int notificationid;
+    private static int requestcode;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -146,8 +146,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setContentView(binding.getRoot());
         resources = getResources();
 
-        NOTIFICATIONID = 0;
-        REQUESTCODE = 0;
+        notificationid = 0;
+        requestcode = 0;
 
         makeLogin();
         initializeControllers();
@@ -780,16 +780,16 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void scheduleNotification(Context context, long time, String title, String text) {
         Notification notification = new Notification(title, text, new Date(time), Long.toString(time));
-        notification.setNotificationID(NOTIFICATIONID);
-        notification.setRequestCode(REQUESTCODE);
+        notification.setNotificationID(notificationid);
+        notification.setRequestCode(requestcode);
         user.addNotification(notification);
         Intent intent = new Intent(context, NotificationReceiver.class);
         intent.putExtra(getString(R.string.title), title);
         intent.putExtra(getString(R.string.text), text);
-        intent.putExtra(getString(R.string.notificationid), Integer.toString(NOTIFICATIONID));
-        NOTIFICATIONID++;
-        PendingIntent pending = PendingIntent.getBroadcast(context, REQUESTCODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        REQUESTCODE++;
+        intent.putExtra(getString(R.string.notificationid), Integer.toString(notificationid));
+        notificationid++;
+        PendingIntent pending = PendingIntent.getBroadcast(context, requestcode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        requestcode++;
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert manager != null;
         manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pending);

@@ -16,8 +16,8 @@ import java.util.Objects;
 
 
 public class NotificationReceiver extends BroadcastReceiver {
-    private static String CHANNELID = "0";
-    private static int REQUESTCODE = 0;
+    private static String channelid = "0";
+    private static int requestcode = 0;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -28,7 +28,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 intent.getStringExtra(context.getString(R.string.notificationid))));
         assert notificationManager != null;
         notificationManager.notify(id, builder.build());
-        CHANNELID = Integer.toString(Integer.parseInt(CHANNELID) + 1);
+        channelid = Integer.toString(Integer.parseInt(channelid) + 1);
 
     }
 
@@ -46,7 +46,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 (NotificationManager) context.getSystemService(Context. NOTIFICATION_SERVICE);
         if (android.os.Build.VERSION. SDK_INT >= android.os.Build.VERSION_CODES. O) {
             int importance = NotificationManager. IMPORTANCE_HIGH;
-            NotificationChannel notificationChannel = new NotificationChannel(CHANNELID,
+            NotificationChannel notificationChannel = new NotificationChannel(channelid,
                 context.getString(R.string.notificationChannelName), importance);
             assert notificationManager != null;
             notificationManager.createNotificationChannel(notificationChannel);
@@ -64,9 +64,9 @@ public class NotificationReceiver extends BroadcastReceiver {
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent notifyPendingIntent = PendingIntent.getActivity(
-                context, REQUESTCODE, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                context, requestcode, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT
         );
-        ++REQUESTCODE;
+        ++requestcode;
         return notifyPendingIntent;
     }
 
@@ -77,7 +77,7 @@ public class NotificationReceiver extends BroadcastReceiver {
      * @return The builder
      */
     private NotificationCompat.Builder getBuilder(Context context, Intent intent) {
-        return new NotificationCompat.Builder(context, CHANNELID)
+        return new NotificationCompat.Builder(context, channelid)
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentTitle(intent.getStringExtra(context.getString(R.string.title)))
                     .setContentText(intent.getStringExtra(context.getString(R.string.text)))
