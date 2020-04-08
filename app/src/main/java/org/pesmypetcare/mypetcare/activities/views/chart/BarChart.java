@@ -15,14 +15,21 @@ public class BarChart extends View {
     private static final int BORDER_Y = 50;
     private static final int X_COORD = 0;
     private static final int Y_COORD = 1;
-    public static final int CHART_SIZE = 275;
+    private static final int CHART_SIZE = 275;
+    private static final int X_AXIS_DIVISIONS = 4;
+    /*private static StatisticData[] {
+
+    };*/
 
     private int width;
     private int height;
     private int[] yAxisMaxPoint;
     private int[] originPoint;
     private int[] xAxisMaxPoint;
+    private double xDivisionFactor;
+    private double yDivisionFactor;
     private Paint axisPaint;
+    private int selectedStatistic;
 
     public BarChart(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -40,6 +47,26 @@ public class BarChart extends View {
         super.onDraw(canvas);
 
         drawAxis(canvas);
+        drawxPoints(canvas);
+
+        yDivisionFactor = calculateYDivisionFactor();
+    }
+
+    private double calculateYDivisionFactor() {
+        return 0;
+    }
+
+    private void drawxPoints(Canvas canvas) {
+        xDivisionFactor = calculateXDivisionFactor();
+
+        for (int next = 1; next <= X_AXIS_DIVISIONS; ++next) {
+            double xPoint = originPoint[X_COORD] + next * xDivisionFactor;
+            canvas.drawLine((int) xPoint, originPoint[Y_COORD], (int) xPoint, originPoint[Y_COORD] + 10, axisPaint);
+        }
+    }
+
+    private double calculateXDivisionFactor() {
+        return ((double)(getWidth() - 2 * BORDER_Y)) / (X_AXIS_DIVISIONS + 2);
     }
 
     private void drawAxis(Canvas canvas) {
@@ -69,5 +96,9 @@ public class BarChart extends View {
         height = resolveSizeAndState(minHeight, heightMeasureSpec, 0);
 
         setMeasuredDimension(width, height);
+    }
+
+    public void changeStatistic(int statisticId) {
+
     }
 }

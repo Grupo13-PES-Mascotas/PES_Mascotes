@@ -31,7 +31,6 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
             healthBottomSheet.show(Objects.requireNonNull(getFragmentManager()), BOTTOM_SHEET_TAG);
         });
 
-        sectionTitle = binding.sectionTitle;
         barChart = binding.barChart;
 
         return binding.getRoot();
@@ -39,6 +38,6 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
 
     @Override
     public void selectStatistic(int statisticId) {
-
+        barChart.changeStatistic(statisticId);
     }
 }
