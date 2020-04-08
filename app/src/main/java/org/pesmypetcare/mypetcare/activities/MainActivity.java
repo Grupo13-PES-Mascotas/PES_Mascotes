@@ -148,12 +148,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         NOTIFICATIONID = 0;
         REQUESTCODE = 0;
-        /*Calendar calendarAlarm = Calendar.getInstance();
-        calendarAlarm.setTimeInMillis(System.currentTimeMillis());
-        scheduleNotification(this, calendarAlarm.getTimeInMillis(), "nada1", "nada1");
-        calendarAlarm.add(Calendar.SECOND, 5);
-        scheduleNotification(this, calendarAlarm.getTimeInMillis(), "nada", "nada");
-        //cancelNotification(this, "nada", "nada");*/
 
         makeLogin();
         initializeControllers();
