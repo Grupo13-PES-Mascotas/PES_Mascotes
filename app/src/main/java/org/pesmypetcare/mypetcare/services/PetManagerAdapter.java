@@ -6,6 +6,7 @@ import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
@@ -219,7 +220,7 @@ public class PetManagerAdapter implements PetManagerService {
 
         pet.setName(userPet.getName());
         pet.setGender(petData.getGender());
-        //pet.setBirthDate(DateConversion.convertToApp(petData.getBirth().toString()));
+        pet.setBirthDate(DateConversion.convertToApp(petData.getBirth().toString()));
         pet.setWeight(petData.getWeight());
         pet.setWashFrequency(petData.getWashFreq());
         pet.setRecommendedDailyKiloCalories(petData.getRecommendedKcal());
