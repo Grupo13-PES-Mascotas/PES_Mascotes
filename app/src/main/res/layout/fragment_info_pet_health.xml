@@ -11,16 +11,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            style="@style/section_title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/health_weekly_exercice"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+            <TextView
+                android:id="@+id/sectionTitle"
+                style="@style/section_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/health_weekly_exercice"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <org.pesmypetcare.mypetcare.activities.views.chart.BarChart
+                android:id="@+id/barChart"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                app:layout_constraintBottom_toTopOf="@+id/healthButtonsLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sectionTitle" />
+
+        </LinearLayout>
+
+        <TableLayout
             android:id="@+id/healthButtonsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,23 +51,43 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnChangeStatistic"
-                style="@style/calendar_button"
-                android:layout_weight="0.5"
-                android:text="@string/change_statistic" />
+            <TableRow>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPrevious"
+                    android:layout_weight="0.5"
+                    style="@style/calendar_button"
+                    android:text="@string/previous" />
 
-            <Space
-                android:layout_width="5dp"
-                android:layout_height="0dp" />
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="0dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/addNewStatistic"
-                style="@style/calendar_button"
-                android:layout_weight="0.5"
-                android:text="@string/add_new_statistic" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNext"
+                    android:layout_weight="0.5"
+                    style="@style/calendar_button"
+                    android:text="@string/next" />
+            </TableRow>
 
-        </LinearLayout>
+            <TableRow>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnChangeStatistic"
+                    android:layout_weight="0.5"
+                    style="@style/calendar_button"
+                    android:text="@string/change_statistic" />
+
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="0dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/addNewStatistic"
+                    android:layout_weight="0.5"
+                    style="@style/calendar_button"
+                    android:text="@string/add_new_statistic" />
+            </TableRow>
+
+        </TableLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -118,6 +118,8 @@
     <string name="health_wash_frequency">Freqüencia de bany</string>
     <string name="change_statistic">Canviar estadístic</string>
     <string name="add_new_statistic">Afegir estadístic</string>
+    <string name="previous">Anterior</string>
+    <string name="next">Següent</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

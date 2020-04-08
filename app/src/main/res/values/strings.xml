@@ -117,6 +117,8 @@
     <string name="health_wash_frequency">Wash frequency</string>
     <string name="change_statistic">Change statistic</string>
     <string name="add_new_statistic">Add statistic</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
