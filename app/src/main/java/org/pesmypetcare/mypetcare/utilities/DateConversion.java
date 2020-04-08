@@ -6,7 +6,7 @@ public class DateConversion {
     private static final int APP_YEAR = 2;
     private static final int SERVER_DAY = 2;
     private static final int SERVER_MONTH = 1;
-    private static final int SERVER_YEAR = 5;
+    private static final int SERVER_YEAR = 0;
     private static final int FIRST_TWO_DIGIT_NUMBER = 10;
 
     private enum Months {
@@ -44,7 +44,7 @@ public class DateConversion {
      * @return The date in the app format
      */
     public static String convertToApp(String date) {
-        String[] dateInfo = date.split(" ");
+        String[] dateInfo = date.split("-");
         StringBuilder conversion = new StringBuilder("");
 
         conversion.append(Integer.parseInt(dateInfo[SERVER_DAY])).append(' ').append(dateInfo[SERVER_MONTH])

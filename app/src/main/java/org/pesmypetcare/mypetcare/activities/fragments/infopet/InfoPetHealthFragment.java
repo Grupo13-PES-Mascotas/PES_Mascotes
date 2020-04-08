@@ -5,16 +5,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.views.HealthBottomSheet;
+import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetHealthBinding;
+
+import java.util.Objects;
 
 public class InfoPetHealthFragment extends Fragment {
+    private FragmentInfoPetHealthBinding binding;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_info_pet_health, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentInfoPetHealthBinding.inflate(inflater, container, false);
+
+        binding.testButton.setOnClickListener(v -> {
+            HealthBottomSheet healthBottomSheet = new HealthBottomSheet();
+            healthBottomSheet.show(Objects.requireNonNull(getFragmentManager()), "Bottom sheet");
+        });
+
+        return binding.getRoot();
     }
 }

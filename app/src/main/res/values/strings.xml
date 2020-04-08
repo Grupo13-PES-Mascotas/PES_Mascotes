@@ -108,6 +108,13 @@
     <string name="pet_info_health">Health</string>
     <string name="pet_info_medication">Medication</string>
     <string name="pet_info_meal">Meals</string>
+    <string name="choose_statistic">Choose the statistic to display</string>
+    <string name="health_weight">Weight</string>
+    <string name="health_recommended_daily_kilocalories">Daily kilocalories</string>
+    <string name="health_exercise_frequency">Exercise frequency</string>
+    <string name="health_weekly_exercice">Weekly exercise</string>
+    <string name="health_weekly_kilocalories_average">Weekly kilocalories</string>
+    <string name="health_wash_frequency">Wash frequency</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

@@ -109,6 +109,13 @@
     <string name="pet_info_health">Salut</string>
     <string name="pet_info_medication">Medicació</string>
     <string name="pet_info_meal">Àpats</string>
+    <string name="choose_statistic">Escull l\'estadístic a mostrar</string>
+    <string name="health_weight">Pes</string>
+    <string name="health_recommended_daily_kilocalories">Kilocalories diàries</string>
+    <string name="health_exercise_frequency">Freqüencia d\'exercici</string>
+    <string name="health_weekly_exercice">Exercici setmanal</string>
+    <string name="health_weekly_kilocalories_average">Kilocalories setmanals</string>
+    <string name="health_wash_frequency">Freqüencia de bany</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
