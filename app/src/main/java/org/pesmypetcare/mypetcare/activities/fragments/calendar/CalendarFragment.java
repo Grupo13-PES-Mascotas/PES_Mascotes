@@ -175,7 +175,7 @@ public class CalendarFragment extends Fragment {
     }
 
     /**
-     * Initializes the calendar of a alarm
+     * Initializes the calendar of a alarm.
      * @param dateTime The time and date of the alarm
      * @param c The calendar
      */
