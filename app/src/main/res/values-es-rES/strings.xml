@@ -116,6 +116,8 @@
     <string name="health_weekly_exercice">Ejercicio semanal</string>
     <string name="health_weekly_kilocalories_average">Kilocalorias semanales</string>
     <string name="health_wash_frequency">Frecuencia de baño</string>
+    <string name="change_statistic">Cambiar estadístico</string>
+    <string name="add_new_statistic">Añadir estadístico</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

@@ -115,6 +115,8 @@
     <string name="health_weekly_exercice">Weekly exercise</string>
     <string name="health_weekly_kilocalories_average">Weekly kilocalories</string>
     <string name="health_wash_frequency">Wash frequency</string>
+    <string name="change_statistic">Change statistic</string>
+    <string name="add_new_statistic">Add statistic</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
