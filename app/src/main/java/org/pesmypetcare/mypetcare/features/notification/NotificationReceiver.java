@@ -16,18 +16,19 @@ import java.util.Objects;
 
 
 public class NotificationReceiver extends BroadcastReceiver {
-    private static String CHANNEL_ID = "0";
-    private static int REQUEST_CODE = 0;
+    private static String CHANNELID = "0";
+    private static int REQUESTCODE = 0;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         NotificationCompat.Builder builder = getBuilder(context, intent);
         PendingIntent notifyPendingIntent = getPendingIntent(context);
         NotificationManager notificationManager = getNotificationManager(context, builder, notifyPendingIntent);
-        int id = Integer.parseInt(Objects.requireNonNull(intent.getStringExtra(context.getString(R.string.notificationid))));
+        int id = Integer.parseInt(Objects.requireNonNull(
+                intent.getStringExtra(context.getString(R.string.notificationid))));
         assert notificationManager != null;
-        notificationManager.notify(id , builder.build());
-        CHANNEL_ID = Integer.toString(Integer.parseInt(CHANNEL_ID) + 1);
+        notificationManager.notify(id, builder.build());
+        CHANNELID = Integer.toString(Integer.parseInt(CHANNELID) + 1);
 
     }
 
@@ -42,11 +43,11 @@ public class NotificationReceiver extends BroadcastReceiver {
         PendingIntent notifyPendingIntent) {
         builder.setContentIntent(notifyPendingIntent);
         NotificationManager notificationManager =
-                (NotificationManager)context.getSystemService(Context. NOTIFICATION_SERVICE);
-        if (android.os.Build.VERSION. SDK_INT >= android.os.Build.VERSION_CODES. O ) {
+                (NotificationManager) context.getSystemService(Context. NOTIFICATION_SERVICE);
+        if (android.os.Build.VERSION. SDK_INT >= android.os.Build.VERSION_CODES. O) {
             int importance = NotificationManager. IMPORTANCE_HIGH;
-            NotificationChannel notificationChannel = new NotificationChannel( CHANNEL_ID ,
-                "NOTIFICATION_CHANNEL_NAME" , importance);
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNELID,
+                context.getString(R.string.notificationChannelName), importance);
             assert notificationManager != null;
             notificationManager.createNotificationChannel(notificationChannel);
         }
@@ -63,9 +64,9 @@ public class NotificationReceiver extends BroadcastReceiver {
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent notifyPendingIntent = PendingIntent.getActivity(
-                context, REQUEST_CODE, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                context, REQUESTCODE, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT
         );
-        ++REQUEST_CODE;
+        ++REQUESTCODE;
         return notifyPendingIntent;
     }
 
@@ -76,7 +77,7 @@ public class NotificationReceiver extends BroadcastReceiver {
      * @return The builder
      */
     private NotificationCompat.Builder getBuilder(Context context, Intent intent) {
-        return new NotificationCompat.Builder(context, CHANNEL_ID)
+        return new NotificationCompat.Builder(context, CHANNELID)
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentTitle(intent.getStringExtra(context.getString(R.string.title)))
                     .setContentText(intent.getStringExtra(context.getString(R.string.text)))

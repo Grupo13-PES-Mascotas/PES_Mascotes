@@ -68,6 +68,14 @@ public class Notification {
     }
 
     /**
+     * Getter of the user attribute.
+     * @return The user
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
      * Getter of the text attribute.
      * @return The text
      */
@@ -81,6 +89,14 @@ public class Notification {
      */
     public String getTitle() {
         return this.title;
+    }
+
+    /**
+     * Getter of the hour attribute.
+     * @return The hour
+     */
+    public String getHour() {
+        return hour;
     }
 
     @Override
