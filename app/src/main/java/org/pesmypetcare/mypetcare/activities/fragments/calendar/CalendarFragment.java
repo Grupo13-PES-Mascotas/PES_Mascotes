@@ -168,6 +168,7 @@ public class CalendarFragment extends Fragment {
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(dateTime, c);
             communication.scheduleNotification(getContext(), c.getTimeInMillis() , selectedPet.getName(), reasonText.getText().toString());
+            setUpCalendar();
         } else {
             toastText(getString(R.string.incorrect_entry));
         }
@@ -370,6 +371,7 @@ public class CalendarFragment extends Fragment {
         Pet pet = p.getPet();
         Event event = ((EventView) p).getEvent();
         deleteEvent.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+            setUpCalendar();
             pet.deleteEvent(event);
             communication.deletePersonalEvent(pet, event);
             Calendar c = Calendar.getInstance();
