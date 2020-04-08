@@ -6,11 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetMealsBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
@@ -19,10 +19,9 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.utilities.DateTime;
 import org.pesmypetcare.mypetcare.utilities.InvalidFormatException;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 public class InfoPetMealsFragment extends Fragment {
     private FragmentInfoPetMealsBinding binding;
@@ -51,6 +50,7 @@ public class InfoPetMealsFragment extends Fragment {
         }
         for (int i = 0; i < 14; ++i) {
             Meals meals = new Meals(dateTime, 51.5 + i, "Meal " + i);
+            dateTime.increaseDay();
             pet.addEvent(meals);
         }
     }
@@ -64,18 +64,16 @@ public class InfoPetMealsFragment extends Fragment {
     }
 
     private void initializeMealsLayoutView() {
-        ArrayList<Event> mealsToDisplay = new ArrayList<>();
-        mealsToDisplay.clear();
+        ArrayList<Event> mealsList = new ArrayList<>();
+        mealsList.clear();
         mealDisplay.removeAllViews();
         if (isWeeklyInterval) {
-            mealsToDisplay = getLastWeekMeals();
-            System.out.println("Nº de Meals Last Week " + mealsToDisplay.size());
+            mealsList = getLastWeekMeals();
         } else {
-            mealsToDisplay = (ArrayList<Event>) pet.getMealEvents();
-            System.out.println("Nº de meals totales " + mealsToDisplay.size());
+            mealsList = (ArrayList<Event>) pet.getMealEvents();
         }
 
-        for (Event meal : mealsToDisplay) {
+        for (Event meal : mealsList) {
             initializeMealComponent(meal);
         }
     }
@@ -84,40 +82,35 @@ public class InfoPetMealsFragment extends Fragment {
         LinearLayout layout = new LinearLayout(this.getActivity(), null);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(25, 0, 0, 0);
         layout.setLayoutParams(params);
         layout.setGravity(Gravity.CENTER_HORIZONTAL);
         layout.setOrientation(LinearLayout.VERTICAL);
 
-        TextView mealIdentification = new TextView(this.getActivity(), null);
+        TextInputEditText mealIdentification = new TextInputEditText(Objects.requireNonNull(this.getActivity()), null);
         String mealIdentificationText = ((Meals)meal).getMealName() + " " + ((Meals)meal).getDateTime().toString();
         mealIdentification.setText(mealIdentificationText);
-        mealIdentification.setGravity(Gravity.CENTER_HORIZONTAL);
+        mealIdentification.setEnabled(false);
         layout.addView(mealIdentification);
-        TextView mealKcal = new TextView(this.getActivity(), null);
+
+        TextInputEditText mealKcal = new TextInputEditText(this.getActivity(), null);
         String mealKcalText = "Meal Kcal " + ((Meals)meal).getKcal();
         mealKcal.setText(mealKcalText);
-        mealKcal.setGravity(Gravity.CENTER_HORIZONTAL);
+        mealKcal.setEnabled(false);
         layout.addView(mealKcal);
         mealDisplay.addView(layout);
     }
 
     private ArrayList<Event> getLastWeekMeals() {
-        DateTime dateTime = getCurrentDate();
         ArrayList<Event> result = new ArrayList<>();
         result.clear();
-        for (int i = 0; i < 7; ++i) {
-            ArrayList<Event> temp = (ArrayList<Event>) pet.getMealEventsForDate(dateTime.toString());
-            System.out.println("Temp meals : " + temp.toString());
-            result.addAll(temp);
-            dateTime.increaseDay();
+        List<Event> aux = pet.getMealEvents();
+        for (Event e:aux) {
+            boolean calc = DateTime.isLastWeek(e.getDateTime());
+            if (calc) {
+                result.add(e);
+            }
         }
         return result;
-    }
-
-    private DateTime getCurrentDate() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = new Date();
-        String strData = dateFormat.format(date);
-        return new DateTime(strData);
     }
 }

@@ -1,5 +1,9 @@
 package org.pesmypetcare.mypetcare.utilities;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class DateTime implements Comparable<DateTime> {
     private static final int HOUR_START_POS = 11;
     private static final int DAYS_30 = 30;
@@ -219,5 +223,43 @@ public class DateTime implements Comparable<DateTime> {
                 year += 1;
             }
         }
+    }
+
+    public void decreaseDay() {
+        day -= 1;
+        if (day < 1) {
+            month -= 1;
+            day = numberOfDays(year, month);
+            if (month < 1) {
+                year -= 1;
+                month = 12;
+            }
+        }
+    }
+
+    public static boolean isLastWeek(String dateTime) {
+        boolean result = false;
+        DateTime dateToCheck = new DateTime(dateTime);
+        DateTime currentDate = DateTime.getCurrentDate();
+        for (int i = 0; i <= 7 && !result; ++i) {
+            if (isSameDay(dateToCheck, currentDate)) {
+                result = true;
+            } else {
+                currentDate.decreaseDay();
+            }
+        }
+        return result;
+    }
+
+    private static boolean isSameDay(DateTime dateTime, DateTime currentDate) {
+        return dateTime.getDay() == currentDate.getDay() && dateTime.getMonth() == currentDate.getMonth() &&
+            dateTime.getYear() == currentDate.getYear();
+    }
+
+    private static DateTime getCurrentDate() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date date = new Date();
+        String strData = dateFormat.format(date);
+        return new DateTime(strData);
     }
 }
