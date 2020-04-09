@@ -97,7 +97,7 @@ public class InfoPetMealsFragment extends Fragment {
         mealsList.clear();
         mealDisplay.removeAllViews();
         if (isWeeklyInterval) {
-            mealsList = getLastWeekMeals();
+            mealsList = (ArrayList<Event>) getLastWeekMeals();
         } else {
             mealsList = (ArrayList<Event>) pet.getMealEvents();
         }
@@ -113,6 +113,23 @@ public class InfoPetMealsFragment extends Fragment {
      */
     private void initializeMealComponent(Event meal) {
         MaterialButton mealButton = new MaterialButton(Objects.requireNonNull(this.getActivity()), null);
+        initializeButtonParams(mealButton);
+        String mealButtonText = ((Meals) meal).getMealName() + " " + ((Meals) meal).getDateTime().toString() + "\n"
+            + "Meal Kcal " + ((Meals) meal).getKcal();
+        mealButton.setText(mealButtonText);
+        mealButton.setOnClickListener(v -> {
+            FragmentTransaction ft = Objects.requireNonNull(getActivity())
+                .getSupportFragmentManager().beginTransaction();
+            EditMealFragment.setPet(pet);
+            EditMealFragment.setEditing(true);
+            EditMealFragment.setMeal((Meals) meal);
+            ft.replace(R.id.mainActivityFrameLayout, new EditMealFragment());
+            ft.commit();
+        });
+        mealDisplay.addView(mealButton);
+    }
+
+    private void initializeButtonParams(MaterialButton mealButton) {
         mealButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT));
         mealButton.setBackgroundColor(getResources().getColor(R.color.white));
@@ -120,25 +137,13 @@ public class InfoPetMealsFragment extends Fragment {
         mealButton.setStrokeColorResource(R.color.colorAccent);
         mealButton.setStrokeWidth(5);
         mealButton.setGravity(Gravity.START);
-        String mealButtonText = ((Meals)meal).getMealName() + " " + ((Meals)meal).getDateTime().toString() + "\n" +
-            "Meal Kcal " + ((Meals)meal).getKcal();
-        mealButton.setText(mealButtonText);
-        mealButton.setOnClickListener(v -> {
-            FragmentTransaction ft = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
-            EditMealFragment.setPet(pet);
-            EditMealFragment.setEditing(true);
-            EditMealFragment.setMeal((Meals)meal);
-            ft.replace(R.id.mainActivityFrameLayout, new EditMealFragment());
-            ft.commit();
-        });
-        mealDisplay.addView(mealButton);
     }
 
     /**
      * Method responsible for obtaining all the meals from the last week.
      * @return All the meals from the last week
      */
-    private ArrayList<Event> getLastWeekMeals() {
+    private List<Event> getLastWeekMeals() {
         ArrayList<Event> result = new ArrayList<>();
         result.clear();
         List<Event> aux = pet.getMealEvents();

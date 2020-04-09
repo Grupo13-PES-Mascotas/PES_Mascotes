@@ -21,10 +21,11 @@ import java.util.Objects;
 
 
 public class EditMealFragment extends Fragment {
-    private FragmentEditMealBinding binding;
+    public static final String SEPARATOR = "/";
     private static Pet pet;
     private static Meals meal;
     private static boolean editing;
+    private FragmentEditMealBinding binding;
     private Button mealDate;
     private MaterialDatePicker materialDatePicker;
     private boolean isMealDateSelected;
@@ -62,20 +63,20 @@ public class EditMealFragment extends Fragment {
         initializeRemoveMealButton();
         DateTime mealDate = meal.getMealDate();
         System.out.println("To String result: " + mealDate.toString());
-        String dateString = mealDate.getDay() + "/" + mealDate.getMonth() + "/" + mealDate.getYear();
+        String dateString = mealDate.getDay() + SEPARATOR + mealDate.getMonth() + SEPARATOR + mealDate.getYear();
         System.out.println("My String result: " + dateString);
         binding.inputMealDate.setText(dateString);
     }
 
     /**
-     * Method responsible for initializing the edit/add meal button
+     * Method responsible for initializing the edit/add meal button.
      */
     private void initializeEditMealButton() {
         binding.editMealButton.setOnClickListener(v -> {
             if (isAnyFieldBlank()) {
                 Toast errorMsg = Toast.makeText(getActivity(), R.string.empty_fields, Toast.LENGTH_LONG);
                 errorMsg.show();
-            } else if (editing){
+            } else if (editing) {
                 Toast errorMsg = Toast.makeText(getActivity(), "Success on editing", Toast.LENGTH_LONG);
                 errorMsg.show();
             } else {
