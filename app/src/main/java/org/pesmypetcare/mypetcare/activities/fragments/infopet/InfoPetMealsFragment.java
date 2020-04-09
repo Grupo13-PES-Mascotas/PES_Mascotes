@@ -52,7 +52,8 @@ public class InfoPetMealsFragment extends Fragment {
      */
     private void initializeAddMealButton() {
         addMealButton.setOnClickListener(v -> {
-            FragmentTransaction ft = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
+            FragmentTransaction ft = Objects.requireNonNull(getActivity())
+                .getSupportFragmentManager().beginTransaction();
             EditMealFragment.setPet(pet);
             EditMealFragment.setEditing(false);
             ft.replace(R.id.mainActivityFrameLayout, new EditMealFragment());
@@ -114,21 +115,34 @@ public class InfoPetMealsFragment extends Fragment {
     private void initializeMealComponent(Event meal) {
         MaterialButton mealButton = new MaterialButton(Objects.requireNonNull(this.getActivity()), null);
         initializeButtonParams(mealButton);
-        String mealButtonText = ((Meals) meal).getMealName() + " " + ((Meals) meal).getDateTime().toString() + "\n"
-            + "Meal Kcal " + ((Meals) meal).getKcal();
+        initializeButtonLogic((Meals) meal, mealButton);
+        mealDisplay.addView(mealButton);
+    }
+
+    /**
+     * Method responsible for initializing the button logic.
+     * @param meal The meal for which we want to initialize a button
+     * @param mealButton The button that has to be initialized
+     */
+    private void initializeButtonLogic(Meals meal, MaterialButton mealButton) {
+        String mealButtonText = meal.getMealName() + " " + meal.getDateTime() + "\n"
+            + "Meal Kcal " + meal.getKcal();
         mealButton.setText(mealButtonText);
         mealButton.setOnClickListener(v -> {
             FragmentTransaction ft = Objects.requireNonNull(getActivity())
                 .getSupportFragmentManager().beginTransaction();
             EditMealFragment.setPet(pet);
             EditMealFragment.setEditing(true);
-            EditMealFragment.setMeal((Meals) meal);
+            EditMealFragment.setMeal(meal);
             ft.replace(R.id.mainActivityFrameLayout, new EditMealFragment());
             ft.commit();
         });
-        mealDisplay.addView(mealButton);
     }
 
+    /**
+     * Method responsible for initializing the button parameters.
+     * @param mealButton The button that has to be initialized
+     */
     private void initializeButtonParams(MaterialButton mealButton) {
         mealButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT));
