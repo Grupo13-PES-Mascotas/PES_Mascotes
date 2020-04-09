@@ -30,7 +30,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputMealName"
                     style="@style/inputPetField"
-                    android:hint="@string/pet_info_meal"
+                    android:hint="@string/meal_name"
                     android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
