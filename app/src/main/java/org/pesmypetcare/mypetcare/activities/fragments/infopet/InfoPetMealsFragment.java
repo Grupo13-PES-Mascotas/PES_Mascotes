@@ -99,17 +99,15 @@ public class InfoPetMealsFragment extends Fragment {
         TextInputLayout layout = new TextInputLayout(this.getActivity(), null);
         layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         String mealIdentificationText = ((Meals)meal).getMealName() + " " + ((Meals)meal).getDateTime().toString();
-        layout.setHint(mealIdentificationText);
+        String mealKcal = "Meal Kcal " + ((Meals)meal).getKcal();
         layout.setBackgroundColor(getResources().getColor(R.color.white));
         layout.setBoxStrokeColor(getResources().getColor(R.color.colorAccent));
-        layout.setHintAnimationEnabled(true);
-        layout.setHintEnabled(true);
         layout.setStartIconContentDescription(mealIdentificationText);
 
         TextInputEditText mealComponent = new TextInputEditText(Objects.requireNonNull(this.getActivity()), null);
-        String mealKcal = "Meal Kcal " + ((Meals)meal).getKcal();
-        mealComponent.setText(mealKcal);
+        mealComponent.setText(mealIdentificationText + '\n' + mealKcal);
         mealComponent.setEnabled(false);
+        mealComponent.setTextColor(getResources().getColor(R.color.colorPrimary));
         layout.addView(mealComponent);
         mealDisplay.addView(layout);
     }
