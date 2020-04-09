@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +11,10 @@ import android.widget.LinearLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarFragment;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetMealsBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
@@ -50,10 +49,10 @@ public class InfoPetMealsFragment extends Fragment {
 
     private void initializeAddMealButton() {
         addMealButton.setOnClickListener(v -> {
-            Fragment calendar = new CalendarFragment();
-            System.out.println("Aun no he petado");
             FragmentTransaction ft = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.mainActivityFrameLayout, calendar);
+            EditMealFragment.setPet(pet);
+            EditMealFragment.setEditing(false);
+            ft.replace(R.id.mainActivityFrameLayout, new EditMealFragment());
             ft.commit();
         });
     }
@@ -96,20 +95,29 @@ public class InfoPetMealsFragment extends Fragment {
     }
 
     private void initializeMealComponent(Event meal) {
-        TextInputLayout layout = new TextInputLayout(this.getActivity(), null);
-        layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        String mealIdentificationText = ((Meals)meal).getMealName() + " " + ((Meals)meal).getDateTime().toString();
-        String mealKcal = "Meal Kcal " + ((Meals)meal).getKcal();
-        layout.setBackgroundColor(getResources().getColor(R.color.white));
-        layout.setBoxStrokeColor(getResources().getColor(R.color.colorAccent));
-        layout.setStartIconContentDescription(mealIdentificationText);
-
-        TextInputEditText mealComponent = new TextInputEditText(Objects.requireNonNull(this.getActivity()), null);
-        mealComponent.setText(mealIdentificationText + '\n' + mealKcal);
-        mealComponent.setEnabled(false);
-        mealComponent.setTextColor(getResources().getColor(R.color.colorPrimary));
-        layout.addView(mealComponent);
-        mealDisplay.addView(layout);
+        MaterialButton mealButton = new MaterialButton(this.getActivity(), null);
+        mealButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT));
+        mealButton.setBackgroundColor(getResources().getColor(R.color.white));
+        mealButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        mealButton.setStrokeColorResource(R.color.colorAccent);
+        mealButton.setStrokeWidth(5);
+        mealButton.setGravity(Gravity.START);
+        String mealButtonText = ((Meals)meal).getMealName() + " " + ((Meals)meal).getDateTime().toString() + "\n" +
+            "Meal Kcal " + ((Meals)meal).getKcal();
+        mealButton.setText(mealButtonText);
+        mealButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
+                EditMealFragment.setPet(pet);
+                EditMealFragment.setEditing(true);
+                EditMealFragment.setMeal((Meals)meal);
+                ft.replace(R.id.mainActivityFrameLayout, new EditMealFragment());
+                ft.commit();
+            }
+        });
+        mealDisplay.addView(mealButton);
     }
 
     private ArrayList<Event> getLastWeekMeals() {
