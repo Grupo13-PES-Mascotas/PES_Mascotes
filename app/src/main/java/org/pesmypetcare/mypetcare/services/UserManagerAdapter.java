@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 
 import java.util.Objects;
@@ -12,12 +13,13 @@ public class UserManagerAdapter implements UserManagerService {
         UserData userData = null;
 
         try {
-            userData = ServiceLocator.getInstance().getUserManagerClient().getUser(username);
+            userData = ServiceLocator.getInstance().getUserManagerClient().getUser("token", username);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+        User user = new User(Objects.requireNonNull(userData).getUsername(), userData.getEmail(), "");
 
-        return new User(Objects.requireNonNull(userData).getUsername(), userData.getEmail(), "");
+        return user;
     }
 
     @Override
@@ -25,7 +27,7 @@ public class UserManagerAdapter implements UserManagerService {
         UserData userData = null;
 
         try {
-            userData = ServiceLocator.getInstance().getUserManagerClient().getUser(username);
+            userData = ServiceLocator.getInstance().getUserManagerClient().getUser("token", username);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -35,22 +37,45 @@ public class UserManagerAdapter implements UserManagerService {
 
     @Override
     public boolean changePassword(User user, String newPassword) {
-        ServiceLocator.getInstance().getUserManagerClient().updatePassword(user.getUsername(), newPassword);
+        /*ServiceLocator.getInstance().getUserManagerClient().updatePassword(user.getToken(), user.getUsername(),
+            newPassword);*/
+
+        try {
+            ServiceLocator.getInstance().getUserManagerClient().updateField("token", user.getUsername(),
+                UserManagerClient.PASSWORD, newPassword);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
         return true;
     }
 
     @Override
     public void deleteUser(User user) {
-        ServiceLocator.getInstance().getUserManagerClient().deleteUser(user.getUsername());
+        try {
+            ServiceLocator.getInstance().getUserManagerClient().deleteUser("token", user.getUsername());
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void changeMail(String email, String username) {
-        ServiceLocator.getInstance().getUserManagerClient().updateEmail(username, email);
+        //ServiceLocator.getInstance().getUserManagerClient().updateEmail(user.getToken(), user.getUsername(), email);
+        try {
+            ServiceLocator.getInstance().getUserManagerClient().updateField("token", username,
+                UserManagerClient.EMAIL, email);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void createUser(String uid, String email, String password) {
-        ServiceLocator.getInstance().getUserManagerClient().signUp(uid, password, email);
+        try {
+            ServiceLocator.getInstance().getUserManagerClient().signUp(uid, password, email);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

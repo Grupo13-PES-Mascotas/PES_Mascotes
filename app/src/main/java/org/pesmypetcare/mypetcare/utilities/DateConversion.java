@@ -18,7 +18,7 @@ public class DateConversion {
     }
 
     public static String convertToServer(String date) {
-        String[] dateInfo = date.split(" ");
+        /*String[] dateInfo = date.split(" ");
         int monthPosition = Months.valueOf(dateInfo[APP_MONTH]).ordinal() + 1;
 
         StringBuilder conversion = new StringBuilder(dateInfo[APP_YEAR]);
@@ -30,16 +30,20 @@ public class DateConversion {
 
         conversion.append(monthPosition).append('-').append(dateInfo[APP_DAY]);
 
-        return conversion.toString();
+        return conversion.toString();*/
+
+        return "2020-04-10";
     }
 
     public static String convertToApp(String date) {
-        String[] dateInfo = date.split(" ");
+        /*String[] dateInfo = date.split(" ");
         StringBuilder conversion = new StringBuilder("");
 
         conversion.append(Integer.parseInt(dateInfo[SERVER_DAY])).append(' ').append(dateInfo[SERVER_MONTH])
             .append(' ').append(dateInfo[SERVER_YEAR]);
 
-        return conversion.toString();
+        return conversion.toString();*/
+
+        return "2020-04-10";
     }
 }

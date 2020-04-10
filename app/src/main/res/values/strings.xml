@@ -44,7 +44,7 @@
     <string name="log_out">LOG OUT</string>
     <string name="languages">Languages</string>
     <string name="change_password">Change Password</string>
-    <string name="current_version">Version: 1.0.1</string>
+    <string name="current_version">Version: 1.0.2</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
@@ -85,6 +85,7 @@
     <string name="delete_account_db">Delete Account of the Database</string>
     <string name="ok">Ok</string>
     <string name="uninplemented"> is not implemented yet</string>
+    <string name="email_update">The email has been updated</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

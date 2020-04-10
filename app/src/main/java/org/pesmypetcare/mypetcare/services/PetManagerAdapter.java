@@ -2,14 +2,16 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
-import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.utilities.DateConversion;
+import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 public class PetManagerAdapter implements PetManagerService {
@@ -18,35 +20,99 @@ public class PetManagerAdapter implements PetManagerService {
         String name = pet.getName();
         String ownerUsername = pet.getOwner().getUsername();
 
-        ServiceLocator.getInstance().getPetManagerClient().updateGender(ownerUsername, name,
+        try {
+            ServiceLocator.getInstance().getPetManagerClient().updateField("token", ownerUsername, name,
+                PetManagerClient.GENDER, pet.getGender().toString());
+            ServiceLocator.getInstance().getPetManagerClient().updateField("token", ownerUsername, name,
+                PetManagerClient.BREED, pet.getBreed());
+            updateHealth(pet);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        /*ServiceLocator.getInstance().getPetManagerClient().updateGender(userToken, ownerUsername, name,
             pet.getGender().toString());
-        //ServiceLocator.getInstance().getPetManagerClient().updateBirthday(ownerUsername, name, pet.getBirthDate());
-        ServiceLocator.getInstance().getPetManagerClient().updateWeight(ownerUsername, name, pet.getWeight());
-        ServiceLocator.getInstance().getPetManagerClient().updateBreed(ownerUsername, name, pet.getBreed());
-        /*ServiceLocator.getInstance().getPetManagerClient().updatePathologies(ownerUsername, name,
-            pet.getPathologies());
-        ServiceLocator.getInstance().getPetManagerClient().updateRecKcal(ownerUsername, name,
-            pet.getRecommendedDailyKiloCalories());
-        ServiceLocator.getInstance().getPetManagerClient().updateWashFreq(ownerUsername, name,
-            pet.getWashFrequency());*/
+        ServiceLocator.getInstance().getPetManagerClient().updateBirthday(pet.getOwner().getToken(), ownerUsername,
+          name, pet.getBirthDate());
+        ServiceLocator.getInstance().getPetManagerClient().updateBreed(userToken, ownerUsername,
+            name, pet.getBreed());
+        ServiceLocator.getInstance().getPetManagerClient().updatePathologies(pet.getOwner().getToken(),
+            ownerUsername, name, pet.getPathologies());
+        updateHealth(pet);*/
+    }
+
+    /**
+     * Update the health data of the pet.
+     * @param pet The pet to which its health data has to be updated
+     */
+    private void updateHealth(Pet pet) throws ExecutionException, InterruptedException {
+        String name = pet.getName();
+        String ownerUsername = pet.getOwner().getUsername();
+
+        ServiceLocator.getInstance().getPetManagerClient().updateField("token", ownerUsername, name,
+            PetManagerClient.WEIGHT, pet.getWeight());
+
+        /*ServiceLocator.getInstance().getPetManagerClient().updateWeight(pet.getOwner().getToken(), ownerUsername,
+            name, pet.getWeight());
+        ServiceLocator.getInstance().getPetManagerClient().updateRecKcal(pet.getOwner().getToken(), ownerUsername,
+            name, pet.getRecommendedDailyKiloCalories());
+        ServiceLocator.getInstance().getPetManagerClient().updateWashFreq(pet.getOwner().getToken(), ownerUsername,
+            name, pet.getWashFrequency());*/
     }
 
     @Override
     public boolean registerNewPet(String username, Pet pet) {
-        ServiceLocator.getInstance().getPetManagerClient()
-            .signUpPet(username, pet.getName(), pet.getGender().toString(), pet.getBreed(), pet.getBirthDate(),
-                pet.getWeight(), pet.getPathologies(), pet.getRecommendedDailyKiloCalories(), pet.getWashFrequency());
+        /*ServiceLocator.getInstance().getPetManagerClient().createPet(user.getToken(), user.getUsername(),
+            pet.getName(), pet.getGender().toString(), pet.getBreed(), pet.getBirthDate(), pet.getWeight(),
+            pet.getPathologies(), pet.getRecommendedDailyKiloCalories(), pet.getWashFrequency());*/
+
+        org.pesmypetcare.usermanagerlib.datacontainers.Pet registerPet = getRegisterPet(pet);
+
+        try {
+            ServiceLocator.getInstance().getPetManagerClient()
+                .createPet("token", username, registerPet);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
         return true;
+    }
+
+    /**
+     * Get the register pet.
+     * @param pet The pet from he application
+     * @return The pet to be registered in the system
+     */
+    private org.pesmypetcare.usermanagerlib.datacontainers.Pet getRegisterPet(Pet pet) {
+        org.pesmypetcare.usermanagerlib.datacontainers.Pet registerPet;
+        registerPet = new org.pesmypetcare.usermanagerlib.datacontainers.Pet();
+        PetData petData = new PetData();
+
+        registerPet.setName(pet.getName());
+        petData.setBirth(pet.getBirthDate());
+        petData.setBreed(pet.getBreed());
+        petData.setGender(pet.getGender());
+        petData.setPathologies(pet.getPathologies());
+        petData.setRecommendedKcal(pet.getRecommendedDailyKiloCalories());
+        petData.setWashFreq(pet.getWashFrequency());
+        petData.setWeight(pet.getWeight());
+        registerPet.setBody(petData);
+        return registerPet;
     }
 
     @Override
     public void updatePetImage(String username, String petName, Bitmap newPetImage) {
-        // Not implemented yet
+        // To be implemented
     }
 
     @Override
     public void deletePet(Pet pet, String username) {
-        ServiceLocator.getInstance().getPetManagerClient().deletePet(username, pet.getName());
+        try {
+            ServiceLocator.getInstance().getPetManagerClient().deletePet("token", username,
+                pet.getName());
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -54,7 +120,12 @@ public class PetManagerAdapter implements PetManagerService {
         ArrayList<Pet> pets = user.getPets();
 
         for (Pet pet : pets) {
-            ServiceLocator.getInstance().getPetManagerClient().deletePet(user.getUsername(), pet.getName());
+            try {
+                ServiceLocator.getInstance().getPetManagerClient().deletePet("token", user.getUsername(),
+                    pet.getName());
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -63,14 +134,25 @@ public class PetManagerAdapter implements PetManagerService {
         List<org.pesmypetcare.usermanagerlib.datacontainers.Pet> userPets = null;
 
         try {
-            userPets = ServiceLocator.getInstance().getPetManagerClient().getAllPets(username);
+            userPets = ServiceLocator.getInstance().getPetManagerClient().getAllPets("token", username);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 
+        return getPets(userPets);
+    }
+
+    /**
+     * Get the transformation of the pets from the server to pet instances.
+     * @param userPets The pets from the server
+     * @return The instances of the pets of our application
+     * @throws PetRepeatException The pet is repeated
+     */
+    private List<Pet> getPets(List<org.pesmypetcare.usermanagerlib.datacontainers.Pet> userPets)
+        throws PetRepeatException {
         List<Pet> pets = new ArrayList<>();
 
-        for (org.pesmypetcare.usermanagerlib.datacontainers.Pet userPet : userPets) {
+        for (org.pesmypetcare.usermanagerlib.datacontainers.Pet userPet : Objects.requireNonNull(userPets)) {
             if (userPet != null) {
                 pets.add(decodePet(userPet));
             }
@@ -97,6 +179,7 @@ public class PetManagerAdapter implements PetManagerService {
         pet.setRecommendedDailyKiloCalories(petData.getRecommendedKcal());
         pet.setBreed(petData.getBreed());
         pet.setPathologies(petData.getPathologies());
+
         return pet;
     }
 }

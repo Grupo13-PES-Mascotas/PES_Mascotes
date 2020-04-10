@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -35,9 +36,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import java.util.Locale;
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SettingsMenuFragment extends Fragment {
     private static final String EN_GB = "en-GB";
     private static final String CA_ES = "ca-ES";
@@ -156,10 +154,13 @@ public class SettingsMenuFragment extends Fragment {
         binding.changeEmailButton.setOnClickListener(v -> {
             binding.changeEmail.addOnEditTextAttachedListener(textInputLayout -> {
                 oldMail = user.getEmail();
-                Objects.requireNonNull(binding.changeEmail.getEditText()).setText(oldMail);
                 newEmail = Objects.requireNonNull(binding.changeEmail.getEditText()).getText().toString();
                 if (!(oldMail.equals(newEmail))) {
                     communication.changeMail(newEmail);
+                    Objects.requireNonNull(binding.changeEmail.getEditText()).setText(newEmail);
+
+                    Toast toast = Toast.makeText(getContext(), R.string.email_update, Toast.LENGTH_LONG);
+                    toast.show();
                 }
             });
         });
