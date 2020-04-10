@@ -86,3 +86,5 @@ lint/tmp/
 lint/reports/
 /keystore.properties
 app/google-services.json
+
+usermanagerlib/build.gradle
