@@ -30,6 +30,8 @@ import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Objects;
 
 
@@ -328,8 +330,13 @@ public class InfoPetFragment extends Fragment {
         birthDate = binding.inputBirthMonth;
         birthDate.setOnClickListener(v ->
                 materialDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
-        materialDatePicker.addOnPositiveButtonClickListener(selection ->
-                birthDate.setText(materialDatePicker.getHeaderText()));
+        materialDatePicker.addOnPositiveButtonClickListener(selection -> {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-d");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(Long.parseLong(selection.toString()));
+            String formattedDate = simpleDateFormat.format(calendar.getTime());
+            birthDate.setText(formattedDate);
+        });
     }
 
     @Override
