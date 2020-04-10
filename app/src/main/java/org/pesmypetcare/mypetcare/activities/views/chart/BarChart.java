@@ -10,6 +10,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import org.pesmypetcare.mypetcare.R;
+
 import java.util.List;
 
 public class BarChart extends View {
@@ -20,6 +22,7 @@ public class BarChart extends View {
     private static final int CHART_SIZE = 275;
     private static final int X_AXIS_DIVISIONS = 4;
     private static final int Y_AXIS_DIVISIONS = 5;
+    private static final int BAR_PROPORTION = 4;
     private static StatisticData[] statisticData = {
         new StubStatisticData()
     };
@@ -34,6 +37,7 @@ public class BarChart extends View {
     private double maxValue;
     private double nextTenMultiple;
     private Paint axisPaint;
+    private Paint barPaint;
     private int selectedStatistic;
 
     public BarChart(Context context, @Nullable AttributeSet attrs) {
@@ -45,6 +49,10 @@ public class BarChart extends View {
         axisPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         axisPaint.setColor(Color.BLACK);
         axisPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+
+        barPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        barPaint.setColor(getResources().getColor(R.color.colorPrimary));
+        barPaint.setStyle(Paint.Style.FILL_AND_STROKE);
     }
 
     @Override
@@ -57,12 +65,15 @@ public class BarChart extends View {
 
     private void drawBars(Canvas canvas) {
         List<Double> yValues = statisticData[0].getyAxisValues();
+        float barDrawingFactor = (float) (xDivisionFactor / BAR_PROPORTION);
 
         for (int next = 1; next <= X_AXIS_DIVISIONS; ++next) {
-            double xPoint = originPoint[X_COORD] + next * xDivisionFactor;
-            double yProportion = yValues.get(next - 1) * Y_AXIS_DIVISIONS / nextTenMultiple;
-            double yPoint = originPoint[Y_COORD] - yProportion * yDivisionFactor;
-            canvas.drawLine((int) xPoint, originPoint[Y_COORD], (int) xPoint, (int) yPoint, axisPaint);
+            float xPoint = (float) (originPoint[X_COORD] + next * xDivisionFactor);
+            float yProportion = (float) (yValues.get(next - 1) * Y_AXIS_DIVISIONS / nextTenMultiple);
+            float yPoint = (float) (originPoint[Y_COORD] - yProportion * yDivisionFactor);
+            //canvas.drawLine((int) xPoint, originPoint[Y_COORD], (int) xPoint, (int) yPoint, axisPaint);
+            canvas.drawRect(xPoint - barDrawingFactor, yPoint, xPoint + barDrawingFactor, (float) originPoint[Y_COORD],
+                barPaint);
         }
     }
 
