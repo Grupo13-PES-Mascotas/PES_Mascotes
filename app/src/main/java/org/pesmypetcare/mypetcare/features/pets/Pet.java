@@ -328,6 +328,10 @@ public class Pet {
         this.profileImage = profileImage;
     }
 
+    public PetHealthInfo getHealthInfo() {
+        return healthInfo;
+    }
+
     /**
      * Add an event to the pet.
      * @param event The event of the pet to set

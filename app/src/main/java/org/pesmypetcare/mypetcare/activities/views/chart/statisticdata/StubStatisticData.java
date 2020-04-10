@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.views.chart;
+package org.pesmypetcare.mypetcare.activities.views.chart.statisticdata;
 
 import java.util.ArrayList;
 import java.util.Arrays;

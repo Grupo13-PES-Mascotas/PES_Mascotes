@@ -33,9 +33,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import java.util.Locale;
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SettingsMenuFragment extends Fragment {
     private static final String EN_GB = "en-GB";
     private static final String CA_ES = "ca-ES";
@@ -154,10 +151,10 @@ public class SettingsMenuFragment extends Fragment {
         binding.changeEmailButton.setOnClickListener(v -> {
             binding.changeEmail.addOnEditTextAttachedListener(textInputLayout -> {
                 oldMail = user.getEmail();
-                Objects.requireNonNull(binding.changeEmail.getEditText()).setText(oldMail);
                 newEmail = Objects.requireNonNull(binding.changeEmail.getEditText()).getText().toString();
                 if (!(oldMail.equals(newEmail))) {
                     communication.changeMail(newEmail);
+                    Objects.requireNonNull(binding.changeEmail.getEditText()).setText(newEmail);
                 }
             });
         });

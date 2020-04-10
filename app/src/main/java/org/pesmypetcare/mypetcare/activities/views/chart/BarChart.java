@@ -12,6 +12,8 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.views.chart.statisticdata.StatisticData;
+import org.pesmypetcare.mypetcare.activities.views.chart.statisticdata.StubStatisticData;
 
 import java.util.List;
 
