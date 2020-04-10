@@ -54,7 +54,7 @@ public class UserManagerAdapter implements UserManagerService {
             user.setUserProfileImage(BitmapFactory.decodeByteArray(userProfileImageBytes, 0,
                 userProfileImageBytes.length));
         } catch (ExecutionException | InterruptedException ignored) {
-
+            
         }
     }
 

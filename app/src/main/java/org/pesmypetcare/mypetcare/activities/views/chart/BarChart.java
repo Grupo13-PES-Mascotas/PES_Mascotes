@@ -10,6 +10,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import java.util.List;
+
 public class BarChart extends View {
     private static final int BORDER_X = 125;
     private static final int BORDER_Y = 50;
@@ -17,9 +19,10 @@ public class BarChart extends View {
     private static final int Y_COORD = 1;
     private static final int CHART_SIZE = 275;
     private static final int X_AXIS_DIVISIONS = 4;
-    /*private static StatisticData[] {
-
-    };*/
+    private static final int Y_AXIS_DIVISIONS = 5;
+    private static StatisticData[] statisticData = {
+        new StubStatisticData()
+    };
 
     private int width;
     private int height;
@@ -28,6 +31,8 @@ public class BarChart extends View {
     private int[] xAxisMaxPoint;
     private double xDivisionFactor;
     private double yDivisionFactor;
+    private double maxValue;
+    private double nextTenMultiple;
     private Paint axisPaint;
     private int selectedStatistic;
 
@@ -47,16 +52,40 @@ public class BarChart extends View {
         super.onDraw(canvas);
 
         drawAxis(canvas);
-        drawxPoints(canvas);
+        drawBars(canvas);
+    }
 
+    private void drawBars(Canvas canvas) {
+        List<Double> yValues = statisticData[0].getyAxisValues();
+
+        for (int next = 1; next <= X_AXIS_DIVISIONS; ++next) {
+            double xPoint = originPoint[X_COORD] + next * xDivisionFactor;
+            double yProportion = yValues.get(next - 1) * Y_AXIS_DIVISIONS / nextTenMultiple;
+            double yPoint = originPoint[Y_COORD] - yProportion * yDivisionFactor;
+            canvas.drawLine((int) xPoint, originPoint[Y_COORD], (int) xPoint, (int) yPoint, axisPaint);
+        }
+    }
+
+    private void drawyAxisMarks(Canvas canvas) {
+        maxValue = statisticData[0].getyMaxValue();
+        nextTenMultiple = calculateNextTenMultiple();
         yDivisionFactor = calculateYDivisionFactor();
+
+        for (int next = 1; next <= Y_AXIS_DIVISIONS; ++next) {
+            double yPoint = originPoint[Y_COORD] - next * yDivisionFactor;
+            canvas.drawLine(originPoint[X_COORD], (int) yPoint, originPoint[X_COORD] - 10, (int) yPoint, axisPaint);
+        }
     }
 
     private double calculateYDivisionFactor() {
-        return 0;
+        return (double)(originPoint[Y_COORD] - yAxisMaxPoint[Y_COORD]) / Y_AXIS_DIVISIONS;
     }
 
-    private void drawxPoints(Canvas canvas) {
+    private int calculateNextTenMultiple() {
+        return 10 * (int)(maxValue / 10 + 1);
+    }
+
+    private void drawxAxisMarks(Canvas canvas) {
         xDivisionFactor = calculateXDivisionFactor();
 
         for (int next = 1; next <= X_AXIS_DIVISIONS; ++next) {
@@ -75,6 +104,9 @@ public class BarChart extends View {
             axisPaint);
         canvas.drawLine(originPoint[X_COORD], originPoint[Y_COORD], xAxisMaxPoint[X_COORD], xAxisMaxPoint[Y_COORD],
             axisPaint);
+
+        drawxAxisMarks(canvas);
+        drawyAxisMarks(canvas);
     }
 
     private void calculateAxisPoints() {
