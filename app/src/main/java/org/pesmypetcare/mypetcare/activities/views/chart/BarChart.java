@@ -39,6 +39,7 @@ public class BarChart extends View {
     private Paint axisPaint;
     private Paint barPaint;
     private int selectedStatistic;
+    private int dataRegion;
 
     public BarChart(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -64,21 +65,39 @@ public class BarChart extends View {
     }
 
     private void drawBars(Canvas canvas) {
-        List<Double> yValues = statisticData[0].getyAxisValues();
+        List<Double> yValues = statisticData[selectedStatistic].getyAxisValues();
         float barDrawingFactor = (float) (xDivisionFactor / BAR_PROPORTION);
 
-        for (int next = 1; next <= X_AXIS_DIVISIONS; ++next) {
-            float xPoint = (float) (originPoint[X_COORD] + next * xDivisionFactor);
-            float yProportion = (float) (yValues.get(next - 1) * Y_AXIS_DIVISIONS / nextTenMultiple);
+        System.out.println("DATA REGION: " + dataRegion);
+        int next = dataRegion * X_AXIS_DIVISIONS;
+        int count = 0;
+
+        while (count < X_AXIS_DIVISIONS && next < yValues.size()) {
+            System.out.println("NEXT: " + next);
+            float xPoint = (float) (originPoint[X_COORD] + (count + 1) * xDivisionFactor);
+            float yProportion = (float) (yValues.get(next) * Y_AXIS_DIVISIONS / nextTenMultiple);
             float yPoint = (float) (originPoint[Y_COORD] - yProportion * yDivisionFactor);
             //canvas.drawLine((int) xPoint, originPoint[Y_COORD], (int) xPoint, (int) yPoint, axisPaint);
             canvas.drawRect(xPoint - barDrawingFactor, yPoint, xPoint + barDrawingFactor, (float) originPoint[Y_COORD],
                 barPaint);
+
+            ++count;
+            ++next;
         }
+
+        /*for (int next = dataRegion * X_AXIS_DIVISIONS; next < X_AXIS_DIVISIONS && next < yValues.size(); ++next) {
+            System.out.println("NEXT: " + next);
+            float xPoint = (float) (originPoint[X_COORD] + (next + 1) * xDivisionFactor);
+            float yProportion = (float) (yValues.get(next) * Y_AXIS_DIVISIONS / nextTenMultiple);
+            float yPoint = (float) (originPoint[Y_COORD] - yProportion * yDivisionFactor);
+            //canvas.drawLine((int) xPoint, originPoint[Y_COORD], (int) xPoint, (int) yPoint, axisPaint);
+            canvas.drawRect(xPoint - barDrawingFactor, yPoint, xPoint + barDrawingFactor, (float) originPoint[Y_COORD],
+                barPaint);
+        }*/
     }
 
     private void drawyAxisMarks(Canvas canvas) {
-        maxValue = statisticData[0].getyMaxValue();
+        maxValue = statisticData[selectedStatistic].getyMaxValue();
         nextTenMultiple = calculateNextTenMultiple();
         yDivisionFactor = calculateYDivisionFactor();
 
@@ -143,5 +162,24 @@ public class BarChart extends View {
 
     public void changeStatistic(int statisticId) {
 
+    }
+
+    public void nextRegion() {
+        if (X_AXIS_DIVISIONS * (dataRegion + 1) < statisticData[selectedStatistic].getyAxisValues().size()) {
+            ++dataRegion;
+        }
+
+        invalidate();
+    }
+
+    public void resetRegion() {
+    }
+
+    public void previousRegion() {
+        if (dataRegion > 0) {
+            --dataRegion;
+        }
+
+        invalidate();
     }
 }

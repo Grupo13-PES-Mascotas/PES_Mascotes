@@ -25,19 +25,27 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoPetHealthBinding.inflate(inflater, container, false);
+        barChart = binding.barChart;
 
         binding.btnChangeStatistic.setOnClickListener(v -> {
             HealthBottomSheet healthBottomSheet = new HealthBottomSheet();
             healthBottomSheet.show(Objects.requireNonNull(getFragmentManager()), BOTTOM_SHEET_TAG);
         });
 
-        barChart = binding.barChart;
+        binding.btnNext.setOnClickListener(v -> {
+            barChart.nextRegion();
+        });
+
+        binding.btnPrevious.setOnClickListener(v -> {
+            barChart.previousRegion();
+        });
 
         return binding.getRoot();
     }
 
     @Override
     public void selectStatistic(int statisticId) {
-        barChart.changeStatistic(statisticId);
+        //barChart.changeStatistic(statisticId);
+        barChart.resetRegion();
     }
 }
