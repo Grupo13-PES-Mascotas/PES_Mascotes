@@ -33,4 +33,6 @@ public abstract class StatisticData {
     public double getyMaxValue() {
         return Collections.max(yAxisValues);
     }
+
+    public abstract String getUnit();
 }

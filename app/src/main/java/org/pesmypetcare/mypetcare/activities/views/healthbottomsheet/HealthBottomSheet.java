@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.activities.views.healthbottomsheet;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,10 @@ public class HealthBottomSheet extends BottomSheetDialogFragment {
 
     private HealthBottomSheetCommunication communication;
 
+    public HealthBottomSheet(HealthBottomSheetCommunication communication) {
+        this.communication = communication;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,11 +37,5 @@ public class HealthBottomSheet extends BottomSheetDialogFragment {
         }
 
         return view;
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        communication = (HealthBottomSheetCommunication) context;
     }
 }

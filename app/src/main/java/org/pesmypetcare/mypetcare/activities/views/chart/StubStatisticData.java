@@ -9,11 +9,17 @@ public class StubStatisticData extends StatisticData {
     };
 
     private static final Double[] yValuesStub = { 4.0, 7.5, 16.0, 5.0, 17.0, 11.0, 10.0 };
+    private static final String UNIT = "unit";
 
     public StubStatisticData() {
         super();
 
         setxAxisValues(new ArrayList<>(Arrays.asList(xValuesStub)));
         setyAxisValues(new ArrayList<>(Arrays.asList(yValuesStub)));
+    }
+
+    @Override
+    public String getUnit() {
+        return UNIT;
     }
 }

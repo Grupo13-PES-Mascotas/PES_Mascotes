@@ -28,7 +28,7 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
         barChart = binding.barChart;
 
         binding.btnChangeStatistic.setOnClickListener(v -> {
-            HealthBottomSheet healthBottomSheet = new HealthBottomSheet();
+            HealthBottomSheet healthBottomSheet = new HealthBottomSheet(this);
             healthBottomSheet.show(Objects.requireNonNull(getFragmentManager()), BOTTOM_SHEET_TAG);
         });
 
