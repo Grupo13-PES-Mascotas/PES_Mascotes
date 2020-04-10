@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.chart.BarChart;
 import org.pesmypetcare.mypetcare.activities.views.healthbottomsheet.HealthBottomSheet;
 import org.pesmypetcare.mypetcare.activities.views.healthbottomsheet.HealthBottomSheetCommunication;
@@ -19,16 +20,20 @@ import java.util.Objects;
 public class InfoPetHealthFragment extends Fragment implements HealthBottomSheetCommunication {
     private static final String BOTTOM_SHEET_TAG = "Bottom sheet";
     private FragmentInfoPetHealthBinding binding;
-    private TextView sectionTitle;
+    private TextView statisticTitle;
     private BarChart barChart;
+    private HealthBottomSheet healthBottomSheet;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoPetHealthBinding.inflate(inflater, container, false);
         barChart = binding.barChart;
+        statisticTitle = binding.statisticTitle;
+        healthBottomSheet = new HealthBottomSheet(this);
+
+        statisticTitle.setText(R.string.health_weight);
 
         binding.btnChangeStatistic.setOnClickListener(v -> {
-            HealthBottomSheet healthBottomSheet = new HealthBottomSheet(this);
             healthBottomSheet.show(Objects.requireNonNull(getFragmentManager()), BOTTOM_SHEET_TAG);
         });
 
@@ -44,8 +49,9 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
     }
 
     @Override
-    public void selectStatistic(int statisticId) {
-        //barChart.changeStatistic(statisticId);
-        barChart.resetRegion();
+    public void selectStatistic(int statisticId, String statisticName) {
+        healthBottomSheet.dismiss();
+        statisticTitle.setText(statisticName);
+        barChart.changeStatistic(0);
     }
 }

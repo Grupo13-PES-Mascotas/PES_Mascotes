@@ -25,8 +25,11 @@ public class BarChart extends View {
     private static final int Y_AXIS_DIVISIONS = 5;
     private static final int BAR_PROPORTION = 4;
     private static final int TEXT_SIZE = 24;
-    public static final int TEXT_SEPARATOR = 40;
-    public static final int TEN = 10;
+    private static final int TEXT_SEPARATOR = 40;
+    private static final int TEN = 10;
+    private static final StatisticData[] STATISTIC_DATA = {
+        new StubStatisticData()
+    };
 
     private int width;
     private int height;
@@ -40,13 +43,11 @@ public class BarChart extends View {
     private Paint axisPaint;
     private Paint barPaint;
     private Paint textPaint;
-    private StatisticData statisticData;
+    private int selectedStatistic;
     private int dataRegion;
 
     public BarChart(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        statisticData = new StubStatisticData();
-
         initDrawComponents();
     }
 
@@ -74,8 +75,8 @@ public class BarChart extends View {
     }
 
     private void drawBars(Canvas canvas) {
-        List<String> xValues = statisticData.getxAxisValues();
-        List<Double> yValues = statisticData.getyAxisValues();
+        List<String> xValues = STATISTIC_DATA[selectedStatistic].getxAxisValues();
+        List<Double> yValues = STATISTIC_DATA[selectedStatistic].getyAxisValues();
         float barDrawingFactor = (float) (xDivisionFactor / BAR_PROPORTION);
 
         int next = dataRegion * X_AXIS_DIVISIONS;
@@ -105,7 +106,7 @@ public class BarChart extends View {
         canvas.drawLine(yAxisMaxPoint[X_COORD], yAxisMaxPoint[Y_COORD], originPoint[X_COORD], originPoint[Y_COORD],
             axisPaint);
 
-        maxValue = statisticData.getyMaxValue();
+        maxValue = STATISTIC_DATA[selectedStatistic].getyMaxValue();
         nextTenMultiple = calculateNextTenMultiple();
         yDivisionFactor = calculateYDivisionFactor();
 
@@ -114,7 +115,7 @@ public class BarChart extends View {
             drawYmarkText(canvas, next, yPoint);
         }
 
-        String unit = statisticData.getUnit();
+        String unit = STATISTIC_DATA[selectedStatistic].getUnit();
         float textWith = textPaint.measureText(unit);
         canvas.drawText(unit, yAxisMaxPoint[X_COORD] - textWith - TEXT_SEPARATOR,
             yAxisMaxPoint[Y_COORD] - TEXT_SEPARATOR, textPaint);
@@ -188,18 +189,17 @@ public class BarChart extends View {
     }
 
     public void changeStatistic(int statisticId) {
-
+        selectedStatistic = statisticId;
+        dataRegion = 0;
+        invalidate();
     }
 
     public void nextRegion() {
-        if (X_AXIS_DIVISIONS * (dataRegion + 1) < statisticData.getyAxisValues().size()) {
+        if (X_AXIS_DIVISIONS * (dataRegion + 1) < STATISTIC_DATA[selectedStatistic].getyAxisValues().size()) {
             ++dataRegion;
         }
 
         invalidate();
-    }
-
-    public void resetRegion() {
     }
 
     public void previousRegion() {

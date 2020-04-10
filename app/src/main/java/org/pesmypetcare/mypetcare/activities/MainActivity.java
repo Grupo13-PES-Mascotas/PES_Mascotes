@@ -53,7 +53,6 @@ import org.pesmypetcare.mypetcare.activities.fragments.settings.NewPasswordInter
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
-import org.pesmypetcare.mypetcare.activities.views.healthbottomsheet.HealthBottomSheetCommunication;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
@@ -89,8 +88,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
-    InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
-    HealthBottomSheetCommunication {
+    InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
@@ -799,10 +797,5 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdateUserImage.setUser(user);
         trUpdateUserImage.setImage(((BitmapDrawable) drawable).getBitmap());
         trUpdateUserImage.execute();
-    }
-
-    @Override
-    public void selectStatistic(int statisticId) {
-
     }
 }

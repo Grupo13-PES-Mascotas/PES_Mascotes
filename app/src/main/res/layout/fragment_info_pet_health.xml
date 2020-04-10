@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/linearLayout4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -20,7 +21,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/sectionTitle"
+                android:id="@+id/statisticTitle"
                 style="@style/section_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -36,7 +37,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/healthButtonsLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sectionTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/statisticTitle" />
 
         </LinearLayout>
 
@@ -56,6 +57,9 @@
                     android:id="@+id/btnPrevious"
                     android:layout_weight="0.5"
                     style="@style/calendar_button"
+                    app:icon="@drawable/icon_arrow_back"
+                    app:iconTint="@color/white"
+                    app:backgroundTint="@color/red"
                     android:text="@string/previous" />
 
                 <Space
@@ -66,6 +70,9 @@
                     android:id="@+id/btnNext"
                     android:layout_weight="0.5"
                     style="@style/calendar_button"
+                    app:icon="@drawable/icon_arrow_forward"
+                    app:backgroundTint="@color/green"
+                    app:iconGravity="end"
                     android:text="@string/next" />
             </TableRow>
 
@@ -74,6 +81,7 @@
                     android:id="@+id/btnChangeStatistic"
                     android:layout_weight="0.5"
                     style="@style/calendar_button"
+                    app:icon="@drawable/icon_refresh"
                     android:text="@string/change_statistic" />
 
                 <Space
@@ -84,6 +92,7 @@
                     android:id="@+id/addNewStatistic"
                     android:layout_weight="0.5"
                     style="@style/calendar_button"
+                    app:iconGravity="end"
                     android:text="@string/add_new_statistic" />
             </TableRow>
 
