@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers;
 
+import org.pesmypetcare.mypetcare.services.MealManagerAdapter;
 import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
 import org.pesmypetcare.mypetcare.services.UserManagerAdapter;
 
@@ -56,6 +57,10 @@ public class ControllersFactory {
     public static TrNewPersonalEvent createTrNewPersonalEvent() {
         return null;
         //return new TrNewPersonalEvent(new PetManagerAdapter());
+    }
+
+    public static TrNewPetMeal createTrNewPetMeal() {
+        return new TrNewPetMeal(new MealManagerAdapter());
     }
 }
 

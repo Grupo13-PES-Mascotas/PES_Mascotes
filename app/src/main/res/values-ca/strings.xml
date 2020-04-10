@@ -114,6 +114,7 @@
     <string name="meal_name">Nom de l\'àpat</string>
     <string name="meal_kcal">Quilories de l\'àpat</string>
     <string name="meal_date">Data de l\'àpat</string>
+    <string name="meal_time">Hora de l\'àpat</string>
     <string name="update_meal">Actualitzar àpat</string>
     <string name="delete_current_meal">Esborrar àpat</string>
     <string name="empty_fields">Tots els camps s\'han d\'omplir</string>

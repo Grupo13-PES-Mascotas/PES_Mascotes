@@ -20,7 +20,6 @@ import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.utilities.DateTime;
-import org.pesmypetcare.mypetcare.utilities.InvalidFormatException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +39,6 @@ public class InfoPetMealsFragment extends Fragment {
         pet = InfoPetFragment.getPet();
         mealDisplay = binding.mealsDisplayLayout;
         addMealButton = binding.addMealButton;
-        initializeTestMeals(pet);
         initializeIntervalSwitch();
         initializeAddMealButton();
         initializeMealsLayoutView();
@@ -59,24 +57,6 @@ public class InfoPetMealsFragment extends Fragment {
             ft.replace(R.id.mainActivityFrameLayout, new EditMealFragment());
             ft.commit();
         });
-    }
-
-    /**
-     * Temporal method responsible for initializing the test meals.
-     * @param pet The pet where the meals will be added
-     */
-    private void initializeTestMeals(Pet pet) {
-        DateTime dateTime = null;
-        try {
-            dateTime = new DateTime(2020, 03, 25, 23, 51, 21);
-        } catch (InvalidFormatException e) {
-            e.printStackTrace();
-        }
-        for (int i = 0; i < 14; ++i) {
-            Meals meals = new Meals(dateTime, 51.5 + i, "Meal " + i);
-            dateTime.increaseDay();
-            pet.addEvent(meals);
-        }
     }
 
     /**

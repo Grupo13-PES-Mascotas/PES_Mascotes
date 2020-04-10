@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -13,21 +14,26 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentEditMealBinding;
+import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.mypetcare.utilities.DateTime;
 
 import java.util.Objects;
 
 
 public class EditMealFragment extends Fragment {
-    public static final String SEPARATOR = "/";
+    private static final String SEPARATOR = "/";
     private static Pet pet;
     private static Meals meal;
     private static boolean editing;
+    private static InfoPetCommunication communication;
     private FragmentEditMealBinding binding;
     private Button mealDate;
     private MaterialDatePicker materialDatePicker;
+    private Button mealTime;
+    private TimePicker timePicker;
     private boolean isMealDateSelected;
 
     @Override
@@ -35,7 +41,9 @@ public class EditMealFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentEditMealBinding.inflate(inflater, container, false);
+        communication = (InfoPetCommunication) getActivity();
         setCalendarPicker();
+        setTimePicker();
         if (editing) {
             initializeEditFragment();
         } else {
@@ -43,6 +51,7 @@ public class EditMealFragment extends Fragment {
         }
         return binding.getRoot();
     }
+
 
     /**
      * Method responsible for initializing the add meal view.
@@ -80,10 +89,24 @@ public class EditMealFragment extends Fragment {
                 Toast errorMsg = Toast.makeText(getActivity(), "Success on editing", Toast.LENGTH_LONG);
                 errorMsg.show();
             } else {
-                Toast errorMsg = Toast.makeText(getActivity(), "Success on adding", Toast.LENGTH_LONG);
-                errorMsg.show();
+                initializeAddButtonListener();
             }
         });
+    }
+
+    private void initializeAddButtonListener() {
+        System.out.println("LA MIERDA " + binding.inputMealDate.getText().toString());
+        System.out.println("LA SUPERMIERDA " + DateConversion.convertToServer(binding.inputMealDate.getText().toString()));
+        DateTime mealDate = new DateTime(binding.inputMealDate.getText().toString());
+        double kcal = Double.parseDouble(Objects.requireNonNull(binding.inputMealCal.getText()).toString());
+        String mealName = Objects.requireNonNull(binding.inputMealName.getText()).toString();
+        meal = new Meals(mealDate, kcal, mealName);
+        System.out.println("EL MEAL " + meal);
+        try {
+            communication.addPetMeal(pet, meal);
+        } catch (MealAlreadyExistingException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -163,4 +186,9 @@ public class EditMealFragment extends Fragment {
             isMealDateSelected = true;
         });
     }
+
+    private void setTimePicker() {
+
+    }
+
 }

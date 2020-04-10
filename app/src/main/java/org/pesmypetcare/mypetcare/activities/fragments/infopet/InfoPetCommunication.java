@@ -3,6 +3,8 @@ package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 
@@ -37,4 +39,25 @@ public interface InfoPetCommunication {
      * Changes to main view.
      */
     void changeToMainView();
+
+    /**
+     * Adds a new meal to the pet.
+     * @param pet The pet to which we want to add the meal
+     * @param meal The meal that has to be added
+     */
+    void addPetMeal(Pet pet, Meals meal) throws MealAlreadyExistingException;
+
+    /**
+     * Updates the data of a meal of a pet.
+     * @param pet The pet to which we want to update the meal
+     * @param meal The updated meal
+     */
+    void updatePetMeal(Pet pet, Meals meal);
+
+    /**
+     * Deletes a meal from a pet.
+     * @param pet The pet from which the meal has to be deleted
+     * @param meal The meal that has to be deleted from the pet
+     */
+    void deletePetMeal(Pet pet, Meals meal);
 }
