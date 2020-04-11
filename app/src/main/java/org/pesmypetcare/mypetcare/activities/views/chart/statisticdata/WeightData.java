@@ -16,8 +16,12 @@ public class WeightData extends StatisticData {
         List<Double> yAxisValues = new ArrayList<>();
 
         for (Map.Entry<DateTime, Double> entry : weights.entrySet()) {
-
+            xAxisValues.add(getDate(entry.getKey()));
+            yAxisValues.add(entry.getValue());
         }
+
+        setxAxisValues(xAxisValues);
+        setyAxisValues(yAxisValues);
     }
 
     @Override

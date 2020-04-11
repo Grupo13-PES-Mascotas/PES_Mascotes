@@ -1,9 +1,11 @@
 package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,7 @@ import java.util.Objects;
 
 public class InfoPetHealthFragment extends Fragment implements HealthBottomSheetCommunication {
     private static final String BOTTOM_SHEET_TAG = "Bottom sheet";
+    public static final int CHART_SIZE = 500;
     private FragmentInfoPetHealthBinding binding;
     private TextView statisticTitle;
     private BarChart barChart;
@@ -27,9 +30,14 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoPetHealthBinding.inflate(inflater, container, false);
-        barChart = binding.barChart;
         statisticTitle = binding.statisticTitle;
         healthBottomSheet = new HealthBottomSheet(this);
+
+        barChart = new BarChart(getContext(), null, InfoPetFragment.getPet());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+            (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, CHART_SIZE,
+                getResources().getDisplayMetrics()));
+        binding.barChartLayout.addView(barChart, params);
 
         statisticTitle.setText(R.string.health_weight);
 

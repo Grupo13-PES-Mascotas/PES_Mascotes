@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.chart.statisticdata.StatisticData;
 import org.pesmypetcare.mypetcare.activities.views.chart.statisticdata.StubStatisticData;
+import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.util.List;
 
@@ -29,9 +30,6 @@ public class BarChart extends View {
     private static final int TEXT_SIZE = 24;
     private static final int TEXT_SEPARATOR = 40;
     private static final int TEN = 10;
-    private static final StatisticData[] STATISTIC_DATA = {
-        new StubStatisticData()
-    };
 
     private int width;
     private int height;
@@ -47,10 +45,15 @@ public class BarChart extends View {
     private Paint textPaint;
     private int selectedStatistic;
     private int dataRegion;
+    private StatisticData[] statisticData;
 
-    public BarChart(Context context, @Nullable AttributeSet attrs) {
+    public BarChart(Context context, @Nullable AttributeSet attrs, Pet pet) {
         super(context, attrs);
         initDrawComponents();
+
+        statisticData = new StatisticData[] {
+            new StubStatisticData()
+        };
     }
 
     private void initDrawComponents() {
@@ -77,8 +80,8 @@ public class BarChart extends View {
     }
 
     private void drawBars(Canvas canvas) {
-        List<String> xValues = STATISTIC_DATA[selectedStatistic].getxAxisValues();
-        List<Double> yValues = STATISTIC_DATA[selectedStatistic].getyAxisValues();
+        List<String> xValues = statisticData[selectedStatistic].getxAxisValues();
+        List<Double> yValues = statisticData[selectedStatistic].getyAxisValues();
         float barDrawingFactor = (float) (xDivisionFactor / BAR_PROPORTION);
 
         int next = dataRegion * X_AXIS_DIVISIONS;
@@ -108,7 +111,7 @@ public class BarChart extends View {
         canvas.drawLine(yAxisMaxPoint[X_COORD], yAxisMaxPoint[Y_COORD], originPoint[X_COORD], originPoint[Y_COORD],
             axisPaint);
 
-        maxValue = STATISTIC_DATA[selectedStatistic].getyMaxValue();
+        maxValue = statisticData[selectedStatistic].getyMaxValue();
         nextTenMultiple = calculateNextTenMultiple();
         yDivisionFactor = calculateYDivisionFactor();
 
@@ -117,7 +120,7 @@ public class BarChart extends View {
             drawYmarkText(canvas, next, yPoint);
         }
 
-        String unit = STATISTIC_DATA[selectedStatistic].getUnit();
+        String unit = statisticData[selectedStatistic].getUnit();
         float textWith = textPaint.measureText(unit);
         canvas.drawText(unit, yAxisMaxPoint[X_COORD] - textWith - TEXT_SEPARATOR,
             yAxisMaxPoint[Y_COORD] - TEXT_SEPARATOR, textPaint);
@@ -197,7 +200,7 @@ public class BarChart extends View {
     }
 
     public void nextRegion() {
-        if (X_AXIS_DIVISIONS * (dataRegion + 1) < STATISTIC_DATA[selectedStatistic].getyAxisValues().size()) {
+        if (X_AXIS_DIVISIONS * (dataRegion + 1) < statisticData[selectedStatistic].getyAxisValues().size()) {
             ++dataRegion;
         }
 
