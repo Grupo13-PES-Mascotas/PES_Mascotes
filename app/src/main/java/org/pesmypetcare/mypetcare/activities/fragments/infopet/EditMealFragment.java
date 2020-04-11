@@ -175,6 +175,7 @@ public class EditMealFragment extends Fragment {
     }
 
     private void reloadFragment() {
+        pet.deleteAllMeals();
         FragmentTransaction ft = Objects.requireNonNull(getActivity())
             .getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.mainActivityFrameLayout, new InfoPetMealsFragment());

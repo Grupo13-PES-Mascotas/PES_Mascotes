@@ -77,6 +77,10 @@ public class MealManagerAdapter implements MealManagerService {
         String owner = user.getUsername();
         String petName = pet.getName();
         DateTime dateTime = new DateTime(meal.getDateTime());
+        System.out.println("ACCESS TOKEN " + accessToken);
+        System.out.println("OWNER " + owner);
+        System.out.println("PET NAME " + petName);
+        System.out.println("DATE TIME " + dateTime.toString());
         try {
             ServiceLocator.getInstance().getMealManagerClient().deleteByDate(accessToken, owner, petName, dateTime);
         } catch (ExecutionException | InterruptedException e) {

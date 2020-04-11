@@ -378,11 +378,7 @@ public class Pet {
     }
 
     public void deleteAllMeals() {
-        for (Event event : events) {
-            if (event instanceof Meals) {
-                events.remove(event);
-            }
-        }
+       events = new ArrayList<>();
     }
 
     /**
