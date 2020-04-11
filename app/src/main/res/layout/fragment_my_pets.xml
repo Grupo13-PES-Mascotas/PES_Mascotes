@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="start|top"
-    tools:context=".activities.fragments.MyPetsFragment">
+    tools:context=".activities.fragments.mypets.MyPetsFragment">
 
     <org.pesmypetcare.mypetcare.activities.views.MainMenuView
         android:id="@+id/mainMenu"
@@ -14,11 +14,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp" >
-
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="match_parent"
-            />
 
     </org.pesmypetcare.mypetcare.activities.views.MainMenuView>
 

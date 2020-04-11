@@ -50,8 +50,8 @@ public class TrUpdatePetImage {
             throw new NotPetOwnerException();
         }
 
-        petManagerService.updatePetImage(user.getUsername(), pet.getName(), newPetImage);
         pet.setProfileImage(newPetImage);
+        petManagerService.updatePetImage(user, pet, newPetImage);
     }
 
     /**

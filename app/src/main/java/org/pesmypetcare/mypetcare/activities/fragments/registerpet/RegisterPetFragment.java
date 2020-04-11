@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.fragments;
+package org.pesmypetcare.mypetcare.activities.fragments.registerpet;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +17,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.activities.communication.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.databinding.FragmentRegisterPetBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
@@ -76,8 +75,6 @@ public class RegisterPetFragment extends Fragment {
             .toString()));
         petInfo.putString(Pet.BUNDLE_PATHOLOGIES, Objects.requireNonNull(binding.inputPathologies.getText())
             .toString());
-        petInfo.putFloat(Pet.BUNDLE_CALORIES, Float.parseFloat(Objects.requireNonNull(binding.inputRecommendedCalories
-            .getText()).toString()));
         petInfo.putInt(Pet.BUNDLE_WASH, Integer.parseInt(Objects.requireNonNull(binding.inputWashFrequency.getText())
             .toString()));
 
@@ -91,8 +88,7 @@ public class RegisterPetFragment extends Fragment {
     private boolean isAnyFieldBlank() {
         boolean isEmptyNameGenderBreed = isEmpty(binding.inputPetName) || isEmpty(binding.inputGender)
             || isEmpty(binding.inputBreed);
-        boolean isEmptyWeightCaloriesWash = isEmpty(binding.inputWeight) || isEmpty(binding.inputRecommendedCalories)
-            || isEmpty(binding.inputWashFrequency);
+        boolean isEmptyWeightCaloriesWash = isEmpty(binding.inputWeight) || isEmpty(binding.inputWashFrequency);
 
         return isEmptyNameGenderBreed || isEmptyWeightCaloriesWash || !isBirthDateSelected;
     }

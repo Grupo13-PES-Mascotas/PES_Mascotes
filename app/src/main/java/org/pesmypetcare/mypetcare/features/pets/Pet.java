@@ -4,8 +4,15 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.utilities.DateConversion;
+import org.pesmypetcare.mypetcare.utilities.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class Pet {
@@ -14,32 +21,32 @@ public class Pet {
     public static final String BUNDLE_BIRTH_DATE = "petBirthDate";
     public static final String BUNDLE_WEIGHT = "petFloat";
     public static final String BUNDLE_PATHOLOGIES = "petPathologies";
-    public static final String BUNDLE_CALORIES = "petCalories";
     public static final String BUNDLE_WASH = "petWash";
     public static final String BUNDLE_GENDER = "petGender";
+    private static final int FACTOR_PES_1 = 30;
+    private static final int FACTOR_PES_2 = 70;
+
     private String name;
     private GenderType gender;
     private String breed;
     private String birthDate;
-    private double weight;
-    private String pathologies;
-    private double recommendedDailyKiloCalories;
-    private int washFrequency;
+    private PetHealthInfo healthInfo;
     private User owner;
     private String previousName;
     private Bitmap profileImage;
+    private ArrayList<Event> events;
 
     public Pet() {
+        this.events = new ArrayList<>();
+        this.healthInfo = new PetHealthInfo();
     }
 
     public Pet(Bundle petInfo) {
         this.name = petInfo.getString(BUNDLE_NAME);
         this.breed = petInfo.getString(BUNDLE_BREED);
         this.birthDate = petInfo.getString(BUNDLE_BIRTH_DATE);
-        this.weight = petInfo.getFloat(BUNDLE_WEIGHT);
-        this.pathologies = petInfo.getString(BUNDLE_PATHOLOGIES);
-        this.recommendedDailyKiloCalories = petInfo.getFloat(BUNDLE_CALORIES);
-        this.washFrequency = petInfo.getInt(BUNDLE_WASH);
+        initializeHealthInfo(petInfo);
+        this.events = new ArrayList<>();
 
         if (isMale(petInfo)) {
             this.gender = GenderType.Male;
@@ -50,14 +57,36 @@ public class Pet {
         }
     }
 
+    /**
+     * Method that initializes the health info of the pet.
+     * @param petInfo A bundle containing all the information of the pet
+     */
+    public void initializeHealthInfo(Bundle petInfo) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date date = new Date();
+        String strData = dateFormat.format(date);
+        DateTime dateTime = new DateTime(strData);
+        this.healthInfo = new PetHealthInfo();
+        this.healthInfo.addWeightForDate(dateTime, petInfo.getFloat(BUNDLE_WEIGHT));
+        this.healthInfo.setPathologies(petInfo.getString(BUNDLE_PATHOLOGIES));
+        this.healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, calculateRecommendedKiloCalories());
+        this.healthInfo.addWashFrequencyForDate(dateTime, petInfo.getInt(BUNDLE_WASH));
+    }
+
+    /**
+     * Calculate the recommended kilocalories for the pet
+     * @return The recommended kilocalories
+     */
+    private double calculateRecommendedKiloCalories() {
+        return healthInfo.getLastWeight() * FACTOR_PES_1 + FACTOR_PES_2;
+    }
+
     public Pet(Bundle petInfo, User user) {
         this.name = petInfo.getString(BUNDLE_NAME);
         this.breed = petInfo.getString(BUNDLE_BREED);
         this.birthDate = petInfo.getString(BUNDLE_BIRTH_DATE);
-        this.weight = petInfo.getFloat(BUNDLE_WEIGHT);
-        this.pathologies = petInfo.getString(BUNDLE_PATHOLOGIES);
-        this.recommendedDailyKiloCalories = petInfo.getFloat(BUNDLE_CALORIES);
-        this.washFrequency = petInfo.getInt(BUNDLE_WASH);
+        initializeHealthInfo(petInfo);
+        this.events = new ArrayList<>();
 
         if (isMale(petInfo)) {
             this.gender = GenderType.Male;
@@ -72,6 +101,7 @@ public class Pet {
 
     public Pet(String name) {
         this.name = name;
+        this.events = new ArrayList<>();
     }
 
     /**
@@ -148,7 +178,7 @@ public class Pet {
      * @return The weight of the pet
      */
     public double getWeight() {
-        return weight;
+        return healthInfo.getLastWeight();
     }
 
     /**
@@ -156,7 +186,11 @@ public class Pet {
      * @param weight The weight to set
      */
     public void setWeight(double weight) {
-        this.weight = weight;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date date = new Date();
+        String strData = dateFormat.format(date);
+        DateTime dateTime = new DateTime(strData);
+        this.healthInfo.addWeightForDate(dateTime, weight);
     }
 
     /**
@@ -164,7 +198,7 @@ public class Pet {
      * @return The pathologies of the pet
      */
     public String getPathologies() {
-        return pathologies;
+        return this.healthInfo.getPathologies();
     }
 
     /**
@@ -172,7 +206,7 @@ public class Pet {
      * @param pathologies The pathologies to set
      */
     public void setPathologies(String pathologies) {
-        this.pathologies = pathologies;
+        this.healthInfo.setPathologies(pathologies);
     }
 
     /**
@@ -180,7 +214,7 @@ public class Pet {
      * @return The recommended daily kilo calories of the pet
      */
     public double getRecommendedDailyKiloCalories() {
-        return recommendedDailyKiloCalories;
+        return healthInfo.getLastRecommendedDailyKiloCalories();
     }
 
     /**
@@ -188,7 +222,11 @@ public class Pet {
      * @param recommendedDailyKiloCalories The recommended daily kilo calories of the pet to set
      */
     public void setRecommendedDailyKiloCalories(double recommendedDailyKiloCalories) {
-        this.recommendedDailyKiloCalories = recommendedDailyKiloCalories;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date date = new Date();
+        String strData = dateFormat.format(date);
+        DateTime dateTime = new DateTime(strData);
+        healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, recommendedDailyKiloCalories);
     }
 
     /**
@@ -196,7 +234,7 @@ public class Pet {
      * @return The wash frequency of the pet
      */
     public int getWashFrequency() {
-        return washFrequency;
+        return (int) healthInfo.getLastWashFrequency();
     }
 
     /**
@@ -204,7 +242,11 @@ public class Pet {
      * @param washFrequency The wash frequency to set
      */
     public void setWashFrequency(int washFrequency) {
-        this.washFrequency = washFrequency;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date date = new Date();
+        String strData = dateFormat.format(date);
+        DateTime dateTime = new DateTime(strData);
+        healthInfo.addWashFrequencyForDate(dateTime, washFrequency);
     }
 
     /**
@@ -284,5 +326,44 @@ public class Pet {
      */
     public void setProfileImage(Bitmap profileImage) {
         this.profileImage = profileImage;
+    }
+
+    /**
+     * Add an event to the pet.
+     * @param event The event of the pet to set
+     */
+    public void addEvent(Event event) {
+        events.add(event);
+    }
+
+    /**
+     * Delete an event.
+     * @param event The event to delete
+     */
+    public void deleteEvent(Event event) {
+        events.remove(event);
+    }
+
+    /**
+     * Get the list of events on a date.
+     * @param date The date of the events
+     * @return The list of events on the given date
+     */
+    public List<Event> getEvents(String date) {
+        ArrayList<Event> selectedEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            String eventDate = DateConversion.getDate(event.getDateTime());
+            if (eventDate.equals(date)) {
+                selectedEvents.add(event);
+            }
+        }
+
+        return selectedEvents;
+    }
+
+    @Override
+    public String toString() {
+        return "{" + name + ", " + (profileImage == null ? "NULL" : "NO_NULL") + "}";
     }
 }

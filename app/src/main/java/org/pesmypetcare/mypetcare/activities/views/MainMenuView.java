@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.activities.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Space;
 
@@ -35,7 +36,7 @@ public class MainMenuView extends LinearLayout {
      * @param currentUser The current user of the application
      */
     public void showPets(User currentUser) {
-        List<Pet> userPets = currentUser.getPets();
+        List<Pet> userPets = new ArrayList<>(currentUser.getPets());
         Space space;
         space = initializeSpacer();
         this.addView(space);
@@ -51,7 +52,7 @@ public class MainMenuView extends LinearLayout {
     private void initializeComponent(List<Pet> userPets) {
         Space space;
         Pet currentPet = userPets.remove(0);
-        PetComponentView component = new PetComponentView(currentActivity, null).initializePetComponent(currentPet);
+        PetComponentView component = new PetsInfoView(currentActivity, null).initializePetComponent(currentPet);
         this.addView(component);
         this.petComponents.add(component);
         space = initializeSpacer();

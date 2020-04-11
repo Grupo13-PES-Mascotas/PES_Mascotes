@@ -87,8 +87,36 @@
     <string name="ok">Ok</string>
     <string name="uninplemented"> encara no està implementat</string>
     <string name="email_update">El correu ha estat actualitzat</string>
+    <string name="calendar_select_date">Selecciona una data</string>
+    <string name="add_personal_event_button">Personal</string>
+    <string name="add_periodic_event_button">Periòdic</string>
+    <string name="user_profile_image">La meva imatge de perfil</string>
+    <string name="dialog_new_event">Nou event personal</string>
+    <string name="dialog_new_event_message">Introdueix la descripció de l\'esedeveniment, l\'hora i selecciona la mascota que participarà.</string>
+    <string name="reasonText">reasonText</string>
+    <string name="timeText">timeText</string>
+    <string name="spinnerText">spinnerText</string>
+    <string name="create">Crear</string>
+    <string name="add_a_pet">Afegeix una mascota</string>
+    <string name="incorrect_entry">Entrada incorrecta</string>
+    <string name="description">Descripció</string>
+    <string name="default_hour">12:00:00</string>
+    <string name="delete_event">Eliminar aquest event</string>
+    <string name="confirmation">Estàs segur?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="no_description">No s\'ha introduït la descripció</string>
+    <string name="pet_info_basic">Bàsic</string>
+    <string name="pet_info_health">Salut</string>
+    <string name="pet_info_medication">Medicació</string>
+    <string name="pet_info_meal">Àpats</string>
+    <string name="notificationid">NOTIFICATION_ID</string>
+    <string name="text">text</string>
+    <string name="title">title</string>
+    <string name="notificationChannelName">NOTIFICATION_CHANNEL_NAME</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
     <string name="navigation_view_closed">Closed</string>
+
 </resources>

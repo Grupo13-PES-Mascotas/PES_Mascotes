@@ -6,7 +6,7 @@ public class DateConversion {
     private static final int APP_YEAR = 2;
     private static final int SERVER_DAY = 2;
     private static final int SERVER_MONTH = 1;
-    private static final int SERVER_YEAR = 5;
+    private static final int SERVER_YEAR = 0;
     private static final int FIRST_TWO_DIGIT_NUMBER = 10;
 
     private enum Months {
@@ -17,6 +17,11 @@ public class DateConversion {
 
     }
 
+    /**
+     * Convert a date to the server format.
+     * @param date The date that has to be converted
+     * @return The date in the format of the server
+     */
     public static String convertToServer(String date) {
         /*String[] dateInfo = date.split(" ");
         int monthPosition = Months.valueOf(dateInfo[APP_MONTH]).ordinal() + 1;
@@ -35,6 +40,11 @@ public class DateConversion {
         return "2020-04-10";
     }
 
+    /**
+     * Convert to the format of the app.
+     * @param date The date that has to be converted
+     * @return The date in the app format
+     */
     public static String convertToApp(String date) {
         /*String[] dateInfo = date.split(" ");
         StringBuilder conversion = new StringBuilder("");
@@ -45,5 +55,49 @@ public class DateConversion {
         return conversion.toString();*/
 
         return "2020-04-10";
+    }
+
+    /**
+     * Get a date from a given year, month and day.
+     * @param year The year of the date
+     * @param month The month of the date
+     * @param day The day of the date
+     * @return The date in the standard format
+     */
+    public static String getDate(int year, int month, int day) {
+        StringBuilder date = new StringBuilder("");
+        date.append(year).append('-');
+
+        if (month + 1 < DateConversion.FIRST_TWO_DIGIT_NUMBER) {
+            date.append('0');
+        }
+
+        date.append(month + 1).append('-');
+
+        if (day < DateConversion.FIRST_TWO_DIGIT_NUMBER) {
+            date.append('0');
+        }
+
+        date.append(day);
+
+        return date.toString();
+    }
+
+    /**
+     * Get the date from a given dateTime.
+     * @param dateTime The dateTime to obtain the date
+     * @return The date of the dateTime
+     */
+    public static String getDate(String dateTime) {
+        return dateTime.substring(0, dateTime.lastIndexOf('T'));
+    }
+
+    /**
+     * Get the hour from a given dateTime.
+     * @param dateTime The dateTime to obtain the hour
+     * @return The hour of the dateTime
+     */
+    public static String getHourMinutes(String dateTime) {
+        return dateTime.substring(dateTime.lastIndexOf('T') + 1, dateTime.lastIndexOf(':'));
     }
 }

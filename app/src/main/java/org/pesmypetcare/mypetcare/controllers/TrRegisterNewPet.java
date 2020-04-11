@@ -42,7 +42,7 @@ public class TrRegisterNewPet {
         }
 
         user.addPet(pet);
-        petManagerService.registerNewPet(user.getUsername(), pet);
+        petManagerService.registerNewPet(user, pet);
         result = true;
     }
 

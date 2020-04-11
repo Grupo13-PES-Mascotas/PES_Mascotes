@@ -1,5 +1,6 @@
-package org.pesmypetcare.mypetcare.activities.communication;
+package org.pesmypetcare.mypetcare.activities.fragments.mypets;
 
+import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 public interface MyPetsComunication {
@@ -9,4 +10,6 @@ public interface MyPetsComunication {
      * @return The current user
      */
     User getUser();
+
+    void changePetProfileImage(Pet actualPet);
 }

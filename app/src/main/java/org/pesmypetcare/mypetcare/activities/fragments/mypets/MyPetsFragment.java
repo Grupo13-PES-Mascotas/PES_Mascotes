@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.fragments;
+package org.pesmypetcare.mypetcare.activities.fragments.mypets;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
-import org.pesmypetcare.mypetcare.activities.communication.MyPetsComunication;
+import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.views.PetComponentView;
 import org.pesmypetcare.mypetcare.databinding.FragmentMyPetsBinding;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -18,9 +18,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class MyPetsFragment extends Fragment {
     private static int index;
     private FragmentMyPetsBinding binding;
@@ -63,7 +60,7 @@ public class MyPetsFragment extends Fragment {
                 ft.replace(R.id.mainActivityFrameLayout, testFragment);
                 ft.commit();
                 MainActivity.setActualFragment(testFragment);
-                MainActivity.hideFloatingPoint();
+                MainActivity.hideFloatingButton();
             });
             ++index;
         }

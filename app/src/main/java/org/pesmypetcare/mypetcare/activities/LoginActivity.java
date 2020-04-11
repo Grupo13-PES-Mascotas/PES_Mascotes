@@ -9,8 +9,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.tabs.TabLayout;
 
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.activities.fragments.LogInFragment;
-import org.pesmypetcare.mypetcare.activities.fragments.SignUpFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.login.LogInFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.login.SignUpFragment;
 import org.pesmypetcare.mypetcare.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {

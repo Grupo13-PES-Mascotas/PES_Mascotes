@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
+import android.graphics.Bitmap;
+
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.HashSet;
@@ -26,8 +28,8 @@ public class StubUserManagerService implements UserManagerService {
     }
 
     @Override
-    public boolean userExists(String username) {
-        return data.contains(new User(username, "", ""));
+    public boolean userExists(User user) {
+        return data.contains(new User(user.getUsername(), "", ""));
     }
 
     @Override
@@ -42,10 +44,11 @@ public class StubUserManagerService implements UserManagerService {
         data.remove(user);
     }
 
-    public void changeMail(String mail, String username) {
-        for (User user : data) {
-            if (user.getUsername().equals(username)) {
-                user.setEmail(mail);
+    @Override
+    public void changeMail(String mail, User user) {
+        for (User nextUser : data) {
+            if (nextUser.getUsername().equals(user.getUsername())) {
+                nextUser.setEmail(mail);
                 break;
             }
         }
@@ -54,5 +57,15 @@ public class StubUserManagerService implements UserManagerService {
     @Override
     public void createUser(String uid, String email, String password) {
         data.add(new User(uid, email, password));
+    }
+
+    @Override
+    public void updateUserImage(User user, Bitmap bitmap) {
+        for (User nextUser : data) {
+            if (user.equals(nextUser)) {
+                nextUser.setUserProfileImage(bitmap);
+                break;
+            }
+        }
     }
 }

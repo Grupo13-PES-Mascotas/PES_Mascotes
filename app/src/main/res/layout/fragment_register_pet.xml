@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activities.fragments.RegisterPetFragment">
+    tools:context=".activities.fragments.registerpet.RegisterPetFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -97,17 +97,6 @@
                     style="@style/inputPetField"
                     android:hint="@string/input_pathologies"
                     android:inputType="text" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/inputPetContainer">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputRecommendedCalories"
-                    style="@style/inputPetField"
-                    android:hint="@string/input_recommended_calories"
-                    android:inputType="numberDecimal" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.fragments;
+package org.pesmypetcare.mypetcare.activities.fragments.settings;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -27,8 +27,6 @@ import com.google.firebase.auth.FirebaseUser;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.LoginActivity;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
-import org.pesmypetcare.mypetcare.activities.communication.NewPasswordInterface;
-import org.pesmypetcare.mypetcare.activities.communication.SettingsCommunication;
 import org.pesmypetcare.mypetcare.databinding.FragmentSettingsMenuBinding;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.User;

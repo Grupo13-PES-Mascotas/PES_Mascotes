@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.features.users;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.util.ArrayList;
@@ -13,12 +14,20 @@ public class User {
     private String passwd;
     private ArrayList<Pet> pets;
     private Bitmap userProfileImage;
+    private String token;
+    private ArrayList<Notification> notifications;
 
     public User(String username, String email, String passwd) {
         this.username = username;
         this.email = email;
         this.passwd = passwd;
         this.pets = new ArrayList<>();
+        this.notifications = new ArrayList<>();
+        this.token = "token";
+    }
+
+    public String getToken() {
+        return token;
     }
 
     /**
@@ -70,6 +79,37 @@ public class User {
     }
 
     /**
+     * Method responsible for adding a new notification to the user.
+     * @param notification The notification to be added to the user
+     */
+    public void addNotification(Notification notification) {
+        notifications.add(notification);
+        notification.setUser(this);
+    }
+
+    /**
+     * Method responsible for get a notification from the user.
+     * @param notification The notification
+     */
+    public Notification getNotification(Notification notification) {
+        Notification aux = null;
+        for (Notification not : notifications) {
+            if (not.equals(notification)) {
+                aux = not;
+            }
+        }
+        return aux;
+    }
+
+    /**
+     * Method responsible for deleting a notification from the user.
+     * @param notification The notification to be deleted from the user
+     */
+    public void deleteNotification(Notification notification) {
+        notifications.remove(notification);
+    }
+
+    /**
      * Method responsible for adding a new pet to the user.
      * @param pet The pet to be added to the user
      */
@@ -79,7 +119,7 @@ public class User {
     }
 
     /**
-     * Method responsible for deleting a new pet to the user.
+     * Method responsible for deleting a pet from the user.
      * @param pet The pet to be deleted from the user
      */
     public void deletePet(Pet pet) {
@@ -134,4 +174,21 @@ public class User {
         return Objects.hash(username);
     }
 
+    public void updatePetProfileImage(Pet actualPet) {
+        System.out.println(pets.toString());
+        System.out.println(actualPet.getName());
+        int index = getActualPetIndex(actualPet.getName());
+        System.out.println(index);
+        pets.get(index).setProfileImage(actualPet.getProfileImage());
+    }
+
+    private int getActualPetIndex(String name) {
+        for (int actual = 0; actual < pets.size(); ++actual) {
+            if (pets.get(actual).getName().equals(name)) {
+                return actual;
+            }
+        }
+
+        return -1;
+    }
 }
