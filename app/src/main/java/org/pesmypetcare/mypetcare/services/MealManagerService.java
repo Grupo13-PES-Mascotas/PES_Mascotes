@@ -22,7 +22,7 @@ public interface MealManagerService {
      * @param pet The pet from which we want to update the meal
      * @param meal The updated meal
      */
-    void updateMealBody(User user, Pet pet, Meals meal, Boolean updateName);
+    void updateMealBody(User user, Pet pet, Meals meal);
 
     /**
      * Method that updates the date of the indicated meal.

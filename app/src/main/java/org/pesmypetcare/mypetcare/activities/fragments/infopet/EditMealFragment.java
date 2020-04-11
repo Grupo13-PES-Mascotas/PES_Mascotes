@@ -27,8 +27,9 @@ import java.util.Objects;
 
 
 public class EditMealFragment extends Fragment {
-    private static final String SEPARATOR = "/";
-    public static final int FIRST_TWO_DIGITS = 10;
+    private static final String DATESEPARATOR = " ";
+    private static final String TIMESEPARATOR = ":";
+    private static final int FIRST_TWO_DIGITS = 10;
     private static Pet pet;
     private static Meals meal;
     private static boolean editing;
@@ -42,6 +43,11 @@ public class EditMealFragment extends Fragment {
     private int selectedHour;
     private int selectedMin;
     private boolean isMealTimeSelected;
+    private boolean updatesDate;
+
+    private enum Months {
+        Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,11 +81,70 @@ public class EditMealFragment extends Fragment {
         binding.editMealButton.setText(getResources().getText(R.string.update_meal));
         binding.inputMealName.setText(meal.getMealName());
         binding.inputMealCal.setText(String.valueOf(meal.getKcal()));
+        updatesDate = false;
         DateTime mealDate = meal.getMealDate();
-        String dateString = mealDate.getDay() + SEPARATOR + mealDate.getMonth() + SEPARATOR + mealDate.getYear();
-        binding.inputMealDate.setText(dateString);
+        showMealDate(mealDate);
+        showMealTime(mealDate);
         initializeEditMealButton();
         initializeRemoveMealButton();
+    }
+
+    private void showMealDate(DateTime mealDate) {
+        StringBuilder dateString = new StringBuilder();
+        dateString.append(mealDate.getDay()).append(DATESEPARATOR);
+        String monthPrefix = obtainMonthPrefix(mealDate.getMonth());
+        dateString.append(monthPrefix).append(DATESEPARATOR).append(mealDate.getYear());
+        binding.inputMealDate.setText(dateString);
+    }
+
+    private String obtainMonthPrefix(int month) {
+        if (month == 1) {
+            return Months.Jan.toString();
+        }
+        if (month == 2) {
+            return Months.Feb.toString();
+        }
+        if (month == 3) {
+            return Months.Mar.toString();
+        }
+        if (month == 4) {
+            return Months.Apr.toString();
+        }
+        if (month == 5) {
+            return Months.May.toString();
+        }
+        if (month == 6) {
+            return Months.Jun.toString();
+        }
+        if (month == 7) {
+            return Months.Jul.toString();
+        }
+        if (month == 8) {
+            return Months.Aug.toString();
+        }
+        if (month == 9) {
+            return Months.Sep.toString();
+        }
+        if (month == 10) {
+            return Months.Oct.toString();
+        }
+        if (month == 11) {
+            return Months.Nov.toString();
+        }
+        return Months.Dec.toString();
+    }
+
+    private void showMealTime(DateTime mealDate) {
+        StringBuilder timeString = new StringBuilder();
+        if (mealDate.getHour() < FIRST_TWO_DIGITS) {
+            timeString.append('0');
+        }
+        timeString.append(mealDate.getHour()).append(TIMESEPARATOR);
+        if (mealDate.getMinutes() < FIRST_TWO_DIGITS) {
+            timeString.append('0');
+        }
+        timeString.append(mealDate.getMinutes()).append(TIMESEPARATOR).append("00");
+        binding.inputMealTime.setText(timeString);
     }
 
     /**
@@ -91,19 +156,44 @@ public class EditMealFragment extends Fragment {
                 Toast errorMsg = Toast.makeText(getActivity(), R.string.empty_fields, Toast.LENGTH_LONG);
                 errorMsg.show();
             } else if (editing) {
-                Toast errorMsg = Toast.makeText(getActivity(), "Success on editing", Toast.LENGTH_LONG);
-                errorMsg.show();
+                initializeEditButtonListener();
+                reloadFragment();
             } else {
                 initializeAddButtonListener();
-                FragmentTransaction ft = Objects.requireNonNull(getActivity())
-                    .getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.mainActivityFrameLayout, new InfoPetMealsFragment());
-                ft.commit();
+                reloadFragment();
             }
         });
     }
 
+    private void initializeEditButtonListener() {
+        String newDate = getDateTime().toString();
+        String mealName = Objects.requireNonNull(binding.inputMealName.getText()).toString();
+        double kcal = Double.parseDouble(Objects.requireNonNull(binding.inputMealCal.getText()).toString());
+        meal.setMealName(mealName);
+        meal.setKcal(kcal);
+        communication.updatePetMeal(pet, meal, newDate, updatesDate);
+    }
+
+    private void reloadFragment() {
+        FragmentTransaction ft = Objects.requireNonNull(getActivity())
+            .getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.mainActivityFrameLayout, new InfoPetMealsFragment());
+        ft.commit();
+    }
+
     private void initializeAddButtonListener() {
+        DateTime mealDate = getDateTime();
+        double kcal = Double.parseDouble(Objects.requireNonNull(binding.inputMealCal.getText()).toString());
+        String mealName = Objects.requireNonNull(binding.inputMealName.getText()).toString();
+        meal = new Meals(mealDate, kcal, mealName);
+        try {
+            communication.addPetMeal(pet, meal);
+        } catch (MealAlreadyExistingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private DateTime getDateTime() {
         StringBuilder dateString = new StringBuilder(DateConversion.convertToServer(binding.inputMealDate.getText().toString()));
         dateString.append('T');
         if (selectedHour < FIRST_TWO_DIGITS) {
@@ -115,15 +205,7 @@ public class EditMealFragment extends Fragment {
         }
         dateString.append(selectedMin).append(':');
         dateString.append("00");
-        DateTime mealDate = new DateTime(dateString.toString());
-        double kcal = Double.parseDouble(Objects.requireNonNull(binding.inputMealCal.getText()).toString());
-        String mealName = Objects.requireNonNull(binding.inputMealName.getText()).toString();
-        meal = new Meals(mealDate, kcal, mealName);
-        try {
-            communication.addPetMeal(pet, meal);
-        } catch (MealAlreadyExistingException e) {
-            e.printStackTrace();
-        }
+        return new DateTime(dateString.toString());
     }
 
     /**
@@ -133,7 +215,10 @@ public class EditMealFragment extends Fragment {
     private boolean isAnyFieldBlank() {
         boolean mealNameEmpty = "".equals(Objects.requireNonNull(binding.inputMealName.getText()).toString());
         boolean mealKcalEmpty = "".equals(Objects.requireNonNull(binding.inputMealCal.getText()).toString());
-        return mealNameEmpty || mealKcalEmpty || !isMealDateSelected  || !isMealTimeSelected;
+        if (editing) {
+            return mealKcalEmpty || mealNameEmpty;
+        }
+        return mealNameEmpty || mealKcalEmpty || !isMealDateSelected || !isMealTimeSelected;
     }
 
     /**
@@ -141,8 +226,8 @@ public class EditMealFragment extends Fragment {
      */
     private void initializeRemoveMealButton() {
         binding.deleteMealButton.setOnClickListener(v -> {
-            Toast errorMsg = Toast.makeText(getActivity(), "Success on deleting", Toast.LENGTH_LONG);
-            errorMsg.show();
+            communication.deletePetMeal(pet, meal);
+            reloadFragment();
         });
     }
 
@@ -209,19 +294,25 @@ public class EditMealFragment extends Fragment {
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int min = c.get(Calendar.MINUTE);
         mealTime = binding.inputMealTime;
-        mealTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        selectedHour = hourOfDay;
-                        selectedMin = minute;
-                        isMealTimeSelected = true;
-                    }
-                }, hour, min, true);
-                timePickerDialog.show();
-            }
+        mealTime.setOnClickListener(v -> {
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), (view, hourOfDay, minute) -> {
+                selectedHour = hourOfDay;
+                selectedMin = minute;
+                StringBuilder time = new StringBuilder();
+                if (selectedHour < FIRST_TWO_DIGITS) {
+                    time.append('0');
+                }
+                time.append(selectedHour).append(':');
+                if (selectedMin < FIRST_TWO_DIGITS) {
+                    time.append('0');
+                }
+                time.append(selectedMin).append(':').append("00");
+                binding.inputMealTime.setText(time);
+                isMealTimeSelected = true;
+                updatesDate = true;
+            }, hour, min, true);
+            timePickerDialog.show();
         });
+
     }
 }

@@ -51,8 +51,9 @@ public interface InfoPetCommunication {
      * Updates the data of a meal of a pet.
      * @param pet The pet to which we want to update the meal
      * @param meal The updated meal
+     * @param newDate The new date of the meal
      */
-    void updatePetMeal(Pet pet, Meals meal);
+    void updatePetMeal(Pet pet, Meals meal, String newDate, boolean updatesDate);
 
     /**
      * Deletes a meal from a pet.
@@ -60,4 +61,10 @@ public interface InfoPetCommunication {
      * @param meal The meal that has to be deleted from the pet
      */
     void deletePetMeal(Pet pet, Meals meal);
+
+    /**
+     * Obtains all the meals from a pet.
+     * @param pet The pet from which we want to obtain all the meals
+     */
+    void obtainAllPetMeals(Pet pet);
 }

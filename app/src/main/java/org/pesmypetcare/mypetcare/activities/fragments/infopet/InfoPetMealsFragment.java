@@ -32,11 +32,14 @@ public class InfoPetMealsFragment extends Fragment {
     private Pet pet;
     private LinearLayout mealDisplay;
     private Button addMealButton;
+    private static InfoPetCommunication communication;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoPetMealsBinding.inflate(inflater, container, false);
         pet = InfoPetFragment.getPet();
+        communication = (InfoPetCommunication) getActivity();
+        communication.obtainAllPetMeals(pet);
         mealDisplay = binding.mealsDisplayLayout;
         addMealButton = binding.addMealButton;
         initializeIntervalSwitch();

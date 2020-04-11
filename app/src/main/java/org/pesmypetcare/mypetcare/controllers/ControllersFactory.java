@@ -22,11 +22,11 @@ public class ControllersFactory {
     }
 
     public static TrDeleteUser createTrDeleteUser() {
-        return new TrDeleteUser(new UserManagerAdapter(), new PetManagerAdapter());
+        return new TrDeleteUser(new UserManagerAdapter(), new PetManagerAdapter(), new MealManagerAdapter());
     }
 
     public static TrDeletePet createTrDeletePet() {
-        return new TrDeletePet(new PetManagerAdapter());
+        return new TrDeletePet(new PetManagerAdapter(), new MealManagerAdapter());
     }
 
     public static TrObtainUser createTrObtainUser() {
@@ -61,6 +61,18 @@ public class ControllersFactory {
 
     public static TrNewPetMeal createTrNewPetMeal() {
         return new TrNewPetMeal(new MealManagerAdapter());
+    }
+
+    public static TrObtainAllPetMeals createTrObtainAllPetMeals() {
+        return new TrObtainAllPetMeals(new MealManagerAdapter());
+    }
+
+    public static TrDeleteMeal createTrDeleteMeal() {
+        return new TrDeleteMeal(new MealManagerAdapter());
+    }
+
+    public static TrUpdateMeal createTrUpdateMeal() {
+        return new TrUpdateMeal(new MealManagerAdapter());
     }
 }
 

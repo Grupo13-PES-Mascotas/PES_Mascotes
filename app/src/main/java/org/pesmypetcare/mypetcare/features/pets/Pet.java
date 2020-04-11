@@ -377,6 +377,14 @@ public class Pet {
         return mealEvents;
     }
 
+    public void deleteAllMeals() {
+        for (Event event : events) {
+            if (event instanceof Meals) {
+                events.remove(event);
+            }
+        }
+    }
+
     /**
      * Get the list of meals of the pet for a given date.
      * @return The list of meals of the pet for a given date

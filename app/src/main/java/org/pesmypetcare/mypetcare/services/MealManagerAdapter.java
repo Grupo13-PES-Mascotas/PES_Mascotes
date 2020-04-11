@@ -30,20 +30,21 @@ public class MealManagerAdapter implements MealManagerService {
     }
 
     @Override
-    public void updateMealBody(User user, Pet pet, Meals meal, Boolean updateName) {
+    public void updateMealBody(User user, Pet pet, Meals meal) {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
         DateTime mealDate = new DateTime(meal.getDateTime());
-        String field;
-        Object value;
-        if (updateName) {
-            field = MealManagerClient.MEALNAME;
-            value = meal.getMealName();
-        } else {
-            field = MealManagerClient.KCAL;
-            value = meal.getKcal();
+        String field = MealManagerClient.MEALNAME;
+        Object value = meal.getMealName();
+        try {
+            ServiceLocator.getInstance().getMealManagerClient().updateMealField(accessToken,
+                owner, petName, mealDate, field, value);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
+        field = MealManagerClient.KCAL;
+        value = meal.getKcal();
         try {
             ServiceLocator.getInstance().getMealManagerClient().updateMealField(accessToken,
                 owner, petName, mealDate, field, value);

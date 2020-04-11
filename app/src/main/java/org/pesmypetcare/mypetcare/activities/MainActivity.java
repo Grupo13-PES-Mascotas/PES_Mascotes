@@ -56,14 +56,17 @@ import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrNewPetMeal;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetImages;
+import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetMeals;
 import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
+import org.pesmypetcare.mypetcare.controllers.TrUpdateMeal;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
@@ -129,6 +132,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrNewPersonalEvent trNewPersonalEvent;
     private TrDeletePersonalEvent trDeletePersonalEvent;
     private TrNewPetMeal trNewPetMeal;
+    private TrObtainAllPetMeals trObtainAllPetMeals;
+    private TrDeleteMeal trDeleteMeal;
+    private TrUpdateMeal trUpdateMeal;
     private FloatingActionButton flAddCalendarEvent;
 
     @Override
@@ -358,6 +364,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trNewPersonalEvent = ControllersFactory.createTrNewPersonalEvent();
         trDeletePersonalEvent = ControllersFactory.createTrDeletePersonalEvent();
         trNewPetMeal = ControllersFactory.createTrNewPetMeal();
+        trObtainAllPetMeals = ControllersFactory.createTrObtainAllPetMeals();
+        trDeleteMeal = ControllersFactory.createTrDeleteMeal();
+        trUpdateMeal = ControllersFactory.createTrUpdateMeal();
     }
 
     /**
@@ -700,13 +709,29 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void updatePetMeal(Pet pet, Meals meal) {
-
+    public void updatePetMeal(Pet pet, Meals meal, String newDate, boolean updatesDate) {
+        trUpdateMeal.setUser(user);
+        trUpdateMeal.setPet(pet);
+        trUpdateMeal.setMeal(meal);
+        if (updatesDate) {
+            trUpdateMeal.setNewDate(newDate);
+        }
+        trUpdateMeal.execute();
     }
 
     @Override
     public void deletePetMeal(Pet pet, Meals meal) {
+        trDeleteMeal.setUser(user);
+        trDeleteMeal.setPet(pet);
+        trDeleteMeal.setMeal(meal);
+        trDeleteMeal.execute();
+    }
 
+    @Override
+    public void obtainAllPetMeals(Pet pet) {
+        trObtainAllPetMeals.setUser(user);
+        trObtainAllPetMeals.setPet(pet);
+        trObtainAllPetMeals.execute();
     }
 
     @Override
