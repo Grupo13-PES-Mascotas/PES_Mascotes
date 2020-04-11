@@ -12,8 +12,14 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.views.chart.statisticdata.DailyKilocaloriesData;
+import org.pesmypetcare.mypetcare.activities.views.chart.statisticdata.ExerciseFrequencyData;
 import org.pesmypetcare.mypetcare.activities.views.chart.statisticdata.StatisticData;
 import org.pesmypetcare.mypetcare.activities.views.chart.statisticdata.StubStatisticData;
+import org.pesmypetcare.mypetcare.activities.views.chart.statisticdata.WashFrequencyData;
+import org.pesmypetcare.mypetcare.activities.views.chart.statisticdata.WeeklyExerciseData;
+import org.pesmypetcare.mypetcare.activities.views.chart.statisticdata.WeeklyKilocaloriesData;
+import org.pesmypetcare.mypetcare.activities.views.chart.statisticdata.WeightData;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.util.List;
@@ -43,7 +49,7 @@ public class BarChart extends View {
     private Paint axisPaint;
     private Paint barPaint;
     private Paint textPaint;
-    private int selectedStatistic;
+    private int selectedStatistic = 6;
     private int dataRegion;
     private StatisticData[] statisticData;
 
@@ -52,6 +58,8 @@ public class BarChart extends View {
         initDrawComponents();
 
         statisticData = new StatisticData[] {
+            new WeightData(pet), new DailyKilocaloriesData(pet), new ExerciseFrequencyData(pet),
+            new WeeklyExerciseData(pet), new WeeklyKilocaloriesData(pet), new WashFrequencyData(pet),
             new StubStatisticData()
         };
     }
