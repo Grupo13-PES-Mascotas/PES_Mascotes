@@ -6,13 +6,13 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
-public class TrDeleteWeight {
+public class TrDeleteWashFrequency {
     private PetManagerService petManagerService;
     private User user;
     private Pet pet;
     private DateTime dateTime;
 
-    public TrDeleteWeight(PetManagerService petManagerService) {
+    public TrDeleteWashFrequency(PetManagerService petManagerService) {
         this.petManagerService = petManagerService;
     }
 
@@ -33,7 +33,7 @@ public class TrDeleteWeight {
             throw new NotPetOwnerException();
         }
 
-        petManagerService.deletePetWeight(user, pet, dateTime);
-        pet.deleteWeightForDate(dateTime);
+        petManagerService.deletePetWashFrequency(user, pet, dateTime);
+        pet.deleteWashFrequencyForDate(dateTime);
     }
 }

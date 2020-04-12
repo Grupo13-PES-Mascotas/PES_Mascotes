@@ -16,10 +16,10 @@ import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
-public class TestTrDeleteWeight {
+public class TestTrDeleteWashFrequency {
     private User user;
     private Pet pet;
-    private TrDeleteWeight trDeleteWeight;
+    private TrDeleteWashFrequency trDeleteWashFrequency;
     private DateTime dateTime;
 
     @Before
@@ -30,7 +30,7 @@ public class TestTrDeleteWeight {
         user.addPet(pet);
         setActualDate();
 
-        trDeleteWeight = new TrDeleteWeight(new StubPetManagerService());
+        trDeleteWashFrequency = new TrDeleteWashFrequency(new StubPetManagerService());
     }
 
     private void setActualDate() {
@@ -44,23 +44,23 @@ public class TestTrDeleteWeight {
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotDeleteWeightToNonOwnerPet() throws NotPetOwnerException {
-        trDeleteWeight.setUser(new User("johnSmith", "johnSmith@gmail.com", "5678"));
-        trDeleteWeight.setPet(pet);
-        trDeleteWeight.setDateTime(dateTime);
-        trDeleteWeight.execute();
+    public void shouldNotDeleteWashFrequencyToNonOwnerPet() throws NotPetOwnerException {
+        trDeleteWashFrequency.setUser(new User("johnSmith", "johnSmith@gmail.com", "5678"));
+        trDeleteWashFrequency.setPet(pet);
+        trDeleteWashFrequency.setDateTime(dateTime);
+        trDeleteWashFrequency.execute();
     }
 
     @Test
-    public void shouldDeleteWeightData() throws NotPetOwnerException {
-        pet.setWeight(10.0);
+    public void shouldDeleteWashFrequencyData() throws NotPetOwnerException {
+        pet.setWashFrequency(2);
 
-        trDeleteWeight.setUser(user);
-        trDeleteWeight.setPet(pet);
-        trDeleteWeight.setDateTime(dateTime);
-        trDeleteWeight.execute();
+        trDeleteWashFrequency.setUser(user);
+        trDeleteWashFrequency.setPet(pet);
+        trDeleteWashFrequency.setDateTime(dateTime);
+        trDeleteWashFrequency.execute();
 
-        assertEquals("Should delete weight for actual date", 0, pet.getHealthInfo().getWeight().size());
+        assertEquals("Should delete weight for actual date", 0, pet.getHealthInfo().getWashFrequency().size());
     }
 
     private DateTime getActualDateTime() {

@@ -54,11 +54,15 @@ import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunic
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.TrAddNewWashFrequency;
+import org.pesmypetcare.mypetcare.controllers.TrAddNewWeight;
 import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteWashFrequency;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteWeight;
 import org.pesmypetcare.mypetcare.controllers.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetImages;
 import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
@@ -125,7 +129,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrUpdateUserImage trUpdateUserImage;
     private TrNewPersonalEvent trNewPersonalEvent;
     private TrDeletePersonalEvent trDeletePersonalEvent;
-    private FloatingActionButton flAddCalendarEvent;
+    private TrAddNewWeight trAddNewWeight;
+    private TrDeleteWeight trDeleteWeight;
+    private TrAddNewWashFrequency trAddNewWashFrequency;
+    private TrDeleteWashFrequency trDeleteWashFrequency;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -353,6 +360,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdateUserImage = ControllersFactory.createTrUpdateUserImage();
         trNewPersonalEvent = ControllersFactory.createTrNewPersonalEvent();
         trDeletePersonalEvent = ControllersFactory.createTrDeletePersonalEvent();
+        trAddNewWeight = ControllersFactory.createTrAddNewWeight();
+        trDeleteWeight = ControllersFactory.createTrDeleteWeight();
+        trAddNewWashFrequency = ControllersFactory.createTrAddNewWashFrequency();
+        trDeleteWashFrequency = ControllersFactory.createTrDeleteWashFrequency();
     }
 
     /**

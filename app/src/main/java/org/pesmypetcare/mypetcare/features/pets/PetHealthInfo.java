@@ -65,9 +65,7 @@ public class PetHealthInfo {
      * @param weight The weight of the pet in that date
      */
     public void addWeightForDate(DateTime date, double weight) {
-        date.setHour(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
+        selectDate(date);
         this.weight.put(date, weight);
     }
 
@@ -311,6 +309,7 @@ public class PetHealthInfo {
      * @param washFreq The washFrequency that we want to add
      */
     public void addWashFrequencyForDate(DateTime date, int washFreq) {
+        selectDate(date);
         washFrequency.put(date, washFreq);
     }
 
@@ -318,7 +317,7 @@ public class PetHealthInfo {
      * Method that removes the washFrequency for the given date.
      * @param date The date for which we want to remove the washFrequency
      */
-    public void removeWashFrequencyForDate(DateTime date) {
+    public void deleteWashFrequencyForDate(DateTime date) {
         washFrequency.remove(date);
     }
 
@@ -352,6 +351,12 @@ public class PetHealthInfo {
      */
     public void setPetNeeds(List<String> petNeeds) {
         this.petNeeds = petNeeds;
+    }
+
+    private void selectDate(DateTime date) {
+        date.setHour(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
     }
 
     private static class TreeComparator implements Comparator<DateTime> {

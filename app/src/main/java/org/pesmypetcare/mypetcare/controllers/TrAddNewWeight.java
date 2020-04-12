@@ -28,7 +28,7 @@ public class TrAddNewWeight {
     }
 
     public void execute() throws NotPetOwnerException {
-        if (!pet.getOwner().equals(user)) {
+        if (!pet.isOwner(user)) {
             throw new NotPetOwnerException();
         }
 

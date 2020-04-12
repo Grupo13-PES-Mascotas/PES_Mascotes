@@ -57,5 +57,21 @@ public class ControllersFactory {
         return null;
         //return new TrNewPersonalEvent(new PetManagerAdapter());
     }
+
+    public static TrAddNewWeight createTrAddNewWeight() {
+        return new TrAddNewWeight(new PetManagerAdapter());
+    }
+
+    public static TrDeleteWeight createTrDeleteWeight() {
+        return new TrDeleteWeight(new PetManagerAdapter());
+    }
+
+    public static TrAddNewWashFrequency createTrAddNewWashFrequency() {
+        return new TrAddNewWashFrequency(new PetManagerAdapter());
+    }
+
+    public static TrDeleteWashFrequency createTrDeleteWashFrequency() {
+        return new TrDeleteWashFrequency(new PetManagerAdapter());
+    }
 }
 

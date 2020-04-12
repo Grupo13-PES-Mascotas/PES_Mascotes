@@ -4,15 +4,14 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
-public class TrDeleteWeight {
+public class TrAddNewWashFrequency {
     private PetManagerService petManagerService;
     private User user;
     private Pet pet;
-    private DateTime dateTime;
+    private int newWashFrequency;
 
-    public TrDeleteWeight(PetManagerService petManagerService) {
+    public TrAddNewWashFrequency(PetManagerService petManagerService) {
         this.petManagerService = petManagerService;
     }
 
@@ -24,8 +23,8 @@ public class TrDeleteWeight {
         this.pet = pet;
     }
 
-    public void setDateTime(DateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setNewWashFrequency(int newWashFrequency) {
+        this.newWashFrequency = newWashFrequency;
     }
 
     public void execute() throws NotPetOwnerException {
@@ -33,7 +32,7 @@ public class TrDeleteWeight {
             throw new NotPetOwnerException();
         }
 
-        petManagerService.deletePetWeight(user, pet, dateTime);
-        pet.deleteWeightForDate(dateTime);
+        petManagerService.updateWashFrequency(user, pet, newWashFrequency);
+        pet.setWashFrequency(newWashFrequency);
     }
 }

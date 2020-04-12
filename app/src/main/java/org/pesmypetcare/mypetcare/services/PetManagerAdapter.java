@@ -219,6 +219,16 @@ public class PetManagerAdapter implements PetManagerService {
 
     }
 
+    @Override
+    public void updateWashFrequency(User user, Pet pet, int newWashFrequency) {
+
+    }
+
+    @Override
+    public void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) {
+
+    }
+
     /**
      * Decodes the pet information from the server.
      * @param userPet The information from the server

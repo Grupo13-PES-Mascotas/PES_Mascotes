@@ -114,4 +114,18 @@ public class StubPetManagerService implements PetManagerService {
         int petIndex = Objects.requireNonNull(pets).indexOf(pet);
         pets.get(petIndex).deleteWeightForDate(dateTime);
     }
+
+    @Override
+    public void updateWashFrequency(User user, Pet pet, int newWashFrequency) {
+        ArrayList<Pet> pets = data.get(user.getUsername());
+        int petIndex = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(petIndex).setWashFrequency(newWashFrequency);
+    }
+
+    @Override
+    public void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) {
+        ArrayList<Pet> pets = data.get(user.getUsername());
+        int petIndex = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(petIndex).deleteWashFrequencyForDate(dateTime);
+    }
 }

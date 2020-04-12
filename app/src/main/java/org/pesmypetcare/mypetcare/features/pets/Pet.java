@@ -373,6 +373,14 @@ public class Pet {
         healthInfo.deleteWeightForDate(dateTime);
     }
 
+    public void deleteWashFrequencyForDate(DateTime dateTime) {
+        healthInfo.deleteWashFrequencyForDate(dateTime);
+    }
+
+    public boolean isOwner(User user) {
+        return user.equals(owner);
+    }
+
     @NonNull
     @Override
     public String toString() {

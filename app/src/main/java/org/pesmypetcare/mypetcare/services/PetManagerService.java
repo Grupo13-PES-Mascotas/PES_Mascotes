@@ -81,4 +81,8 @@ public interface PetManagerService {
     void updateWeight(User user, Pet pet, double newWeight);
 
     void deletePetWeight(User user, Pet pet, DateTime dateTime);
+
+    void updateWashFrequency(User user, Pet pet, int newWashFrequency);
+
+    void deletePetWashFrequency(User user, Pet pet, DateTime dateTime);
 }
