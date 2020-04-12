@@ -65,6 +65,9 @@ public class PetHealthInfo {
      * @param weight The weight of the pet in that date
      */
     public void addWeightForDate(DateTime date, double weight) {
+        date.setHour(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
         this.weight.put(date, weight);
     }
 

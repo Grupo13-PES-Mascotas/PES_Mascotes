@@ -9,6 +9,7 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
 import java.util.ArrayList;
@@ -206,6 +207,16 @@ public class PetManagerAdapter implements PetManagerService {
     @Override
     public void deleteEvent(Pet pet, Event event) {
         // Not implemented yet
+    }
+
+    @Override
+    public void updateWeight(User user, Pet pet, double newWeight) {
+
+    }
+
+    @Override
+    public void deletePetWeight(User user, Pet pet, DateTime dateTime) {
+
     }
 
     /**

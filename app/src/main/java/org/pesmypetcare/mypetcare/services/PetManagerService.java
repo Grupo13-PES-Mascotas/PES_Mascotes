@@ -7,6 +7,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.List;
 import java.util.Map;
@@ -76,4 +77,8 @@ public interface PetManagerService {
      * @param event The event
      */
     void deleteEvent(Pet pet, Event event);
+
+    void updateWeight(User user, Pet pet, double newWeight);
+
+    void deletePetWeight(User user, Pet pet, DateTime dateTime);
 }

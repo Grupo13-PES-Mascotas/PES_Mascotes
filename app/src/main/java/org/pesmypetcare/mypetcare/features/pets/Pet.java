@@ -3,6 +3,8 @@ package org.pesmypetcare.mypetcare.features.pets;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
@@ -102,6 +104,7 @@ public class Pet {
     public Pet(String name) {
         this.name = name;
         this.events = new ArrayList<>();
+        this.healthInfo = new PetHealthInfo();
     }
 
     /**
@@ -366,8 +369,23 @@ public class Pet {
         return selectedEvents;
     }
 
+    public void deleteWeightForDate(DateTime dateTime) {
+        healthInfo.deleteWeightForDate(dateTime);
+    }
+
+    @NonNull
     @Override
     public String toString() {
-        return "{" + name + ", " + (profileImage == null ? "NULL" : "NO_NULL") + "}";
+        return "Pet{" +
+            "name='" + name + '\'' +
+            ", gender=" + gender +
+            ", breed='" + breed + '\'' +
+            ", birthDate='" + birthDate + '\'' +
+            ", healthInfo=" + healthInfo +
+            ", owner=" + owner +
+            ", previousName='" + previousName + '\'' +
+            ", profileImage=" + profileImage +
+            ", events=" + events +
+            '}';
     }
 }
