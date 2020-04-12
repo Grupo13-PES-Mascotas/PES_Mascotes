@@ -119,6 +119,11 @@
     <string name="add_new_statistic">Add statistic</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
+    <string name="add_weight">Add weight</string>
+    <string name="add_wash_frequency">Add wash frequency</string>
+    <string name="auto_calculated">Auto calculate</string>
+    <string name="add_not_implemented">Wait for update</string>
+    <string name="stub_statistic">Stub statistic</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

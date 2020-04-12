@@ -51,7 +51,7 @@ public class BarChart extends View {
     private Paint textPaint;
     private int selectedStatistic = 6;
     private int dataRegion;
-    private StatisticData[] statisticData;
+    private static StatisticData[] statisticData;
 
     public BarChart(Context context, @Nullable AttributeSet attrs, Pet pet) {
         super(context, attrs);
@@ -221,5 +221,9 @@ public class BarChart extends View {
         }
 
         invalidate();
+    }
+
+    public static StatisticData getStatistic(int statisticId) {
+        return statisticData[statisticId];
     }
 }

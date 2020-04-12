@@ -120,6 +120,11 @@
     <string name="add_new_statistic">Añadir estadístico</string>
     <string name="previous">Anterior</string>
     <string name="next">Siguiente</string>
+    <string name="add_weight">Añadir peso</string>
+    <string name="add_wash_frequency">Añadir frecuencia de baño</string>
+    <string name="auto_calculated">Auto calculadas</string>
+    <string name="add_not_implemented">Próxima actualización</string>
+    <string name="stub_statistic">Stub statistic</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

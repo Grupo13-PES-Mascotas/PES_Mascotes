@@ -120,6 +120,11 @@
     <string name="add_new_statistic">Afegir estadístic</string>
     <string name="previous">Anterior</string>
     <string name="next">Següent</string>
+    <string name="add_weight">Afegir pest</string>
+    <string name="add_wash_frequency">Afegir freqüència de bany</string>
+    <string name="auto_calculated">Auto calculades</string>
+    <string name="add_not_implemented">Proxima actualització</string>
+    <string name="stub_statistic">Stub statistic</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

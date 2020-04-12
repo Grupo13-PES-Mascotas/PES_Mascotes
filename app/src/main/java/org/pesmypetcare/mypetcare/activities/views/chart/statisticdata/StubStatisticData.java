@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.views.chart.statisticdata;
 
+import org.pesmypetcare.mypetcare.R;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -21,5 +23,15 @@ public class StubStatisticData extends StatisticData {
     @Override
     public String getUnit() {
         return UNIT;
+    }
+
+    @Override
+    public int getMessageIdentifier() {
+        return R.string.stub_statistic;
+    }
+
+    @Override
+    public boolean getFocusableState() {
+        return true;
     }
 }

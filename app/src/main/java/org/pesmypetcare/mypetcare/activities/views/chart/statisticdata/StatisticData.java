@@ -52,4 +52,8 @@ public abstract class StatisticData {
     }
 
     public abstract String getUnit();
+
+    public abstract int getMessageIdentifier();
+
+    public abstract boolean getFocusableState();
 }

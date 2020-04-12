@@ -11,8 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.button.MaterialButton;
+
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.chart.BarChart;
+import org.pesmypetcare.mypetcare.activities.views.chart.statisticdata.StatisticData;
 import org.pesmypetcare.mypetcare.activities.views.healthbottomsheet.HealthBottomSheet;
 import org.pesmypetcare.mypetcare.activities.views.healthbottomsheet.HealthBottomSheetCommunication;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetHealthBinding;
@@ -24,6 +27,7 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
     public static final int CHART_SIZE = 500;
     private FragmentInfoPetHealthBinding binding;
     private TextView statisticTitle;
+    private MaterialButton btnAddNewStatistic;
     private BarChart barChart;
     private HealthBottomSheet healthBottomSheet;
 
@@ -31,6 +35,7 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoPetHealthBinding.inflate(inflater, container, false);
         statisticTitle = binding.statisticTitle;
+        btnAddNewStatistic = binding.btnAddNewStatistic;
         healthBottomSheet = new HealthBottomSheet(this);
 
         barChart = new BarChart(getContext(), null, InfoPetFragment.getPet());
@@ -61,5 +66,9 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
         healthBottomSheet.dismiss();
         statisticTitle.setText(statisticName);
         barChart.changeStatistic(0);
+
+        StatisticData statisticData = BarChart.getStatistic(statisticId);
+        btnAddNewStatistic.setText(statisticData.getMessageIdentifier());
+        btnAddNewStatistic.setFocusable(statisticData.getFocusableState());
     }
 }

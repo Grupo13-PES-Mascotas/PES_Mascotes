@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.views.chart.statisticdata;
 
+import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
@@ -27,5 +28,15 @@ public class ExerciseFrequencyData extends StatisticData {
     @Override
     public String getUnit() {
         return UNIT;
+    }
+
+    @Override
+    public int getMessageIdentifier() {
+        return R.string.add_not_implemented;
+    }
+
+    @Override
+    public boolean getFocusableState() {
+        return false;
     }
 }
