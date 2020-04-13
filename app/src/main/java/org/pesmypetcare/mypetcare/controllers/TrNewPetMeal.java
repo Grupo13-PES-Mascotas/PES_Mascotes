@@ -50,7 +50,7 @@ public class TrNewPetMeal {
     }
 
     /**
-     * Execute the transaction
+     * Execute the transaction.
      */
     public void execute() throws MealAlreadyExistingException {
         result = false;
@@ -59,6 +59,7 @@ public class TrNewPetMeal {
         }
         pet.addEvent(meal);
         mealManagerService.createMeal(user, pet, meal);
+        result = true;
     }
 
     /**

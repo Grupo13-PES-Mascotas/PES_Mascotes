@@ -39,6 +39,9 @@ public class TrDeleteMeal {
         this.meal = meal;
     }
 
+    /**
+     * Executes the transaction.
+     */
     public void execute() {
         mealManagerService.deleteMeal(user, pet, meal);
     }
