@@ -47,10 +47,10 @@ public class NewPasswordFragment extends Fragment {
      * Method responsible of made the password change.
      */
     private void changePassword() {
+        communication.changePassword(passwd);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         assert user != null;
         user.updatePassword(passwd);
-        communication.changePassword(passwd);
     }
 
     /**
