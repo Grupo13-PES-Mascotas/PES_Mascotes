@@ -18,7 +18,8 @@ public class TestTrDeleteUser {
     @Before
     public void setUp() {
         user = new User("johnDoe", "johndoe@gmail.com", PASSWORD);
-        trDeleteUser = new TrDeleteUser(new StubUserManagerService(), new StubPetManagerService(), new StubMealManagerService());
+        trDeleteUser = new TrDeleteUser(new StubUserManagerService(), new StubPetManagerService(),
+            new StubMealManagerService());
     }
 
     @Test

@@ -13,7 +13,7 @@ public class TrUpdateMeal {
     private String newDate;
     private boolean updatesDate;
 
-    public TrUpdateMeal (MealManagerService mealManagerService) {
+    public TrUpdateMeal(MealManagerService mealManagerService) {
         this.mealManagerService = mealManagerService;
         this.updatesDate = false;
     }

@@ -26,13 +26,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class InfoPetMealsFragment extends Fragment {
+    public static final String EOL = "\n";
+    public static final int STROKE_WIDTH = 5;
+    private static InfoPetCommunication communication;
     private FragmentInfoPetMealsBinding binding;
     private SwitchMaterial intervalSelector;
     private boolean isWeeklyInterval;
     private Pet pet;
     private LinearLayout mealDisplay;
     private Button addMealButton;
-    private static InfoPetCommunication communication;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -108,8 +110,9 @@ public class InfoPetMealsFragment extends Fragment {
      * @param mealButton The button that has to be initialized
      */
     private void initializeButtonLogic(Meals meal, MaterialButton mealButton) {
-        String mealButtonText = getString(R.string.meal) + " " + meal.getMealName() + "\n" + getString(R.string.from_date)
-            + " " + meal.getDateTime() + "\n" + getString(R.string.meal_kcal) + ": " + meal.getKcal();
+        String mealButtonText = getString(R.string.meal) + " " + meal.getMealName() + EOL
+            + getString(R.string.from_date) + " " + meal.getDateTime() + EOL + getString(R.string.meal_kcal)
+            + ": " + meal.getKcal();
         mealButton.setText(mealButtonText);
         mealButton.setOnClickListener(v -> {
             FragmentTransaction ft = Objects.requireNonNull(getActivity())
@@ -132,7 +135,7 @@ public class InfoPetMealsFragment extends Fragment {
         mealButton.setBackgroundColor(getResources().getColor(R.color.white));
         mealButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         mealButton.setStrokeColorResource(R.color.colorAccent);
-        mealButton.setStrokeWidth(5);
+        mealButton.setStrokeWidth(STROKE_WIDTH);
         mealButton.setGravity(Gravity.START);
     }
 

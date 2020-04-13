@@ -4,19 +4,21 @@ import org.pesmypetcare.mypetcare.utilities.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.Meal;
 
 public class Meals extends Event {
+    private static final String MEAL = "Meal ";
+    private static final String OF_THE_DAY = " of the day ";
     private String mealName;
     private Double kcal;
     private DateTime mealDate;
 
     public Meals(DateTime dateTime, Double kcal, String mealName) {
-        super("Meal " + mealName + " of the day " + dateTime.toString(), dateTime.toString());
+        super(MEAL + mealName + OF_THE_DAY + dateTime.toString(), dateTime.toString());
         this.mealDate = dateTime;
         this.mealName = mealName;
         this.kcal = kcal;
     }
 
     public Meals(Meal meal) {
-        super("Meal " + meal.getBody().getMealName() + " of the day" + meal.getDate(), meal.getDate());
+        super(MEAL + meal.getBody().getMealName() + OF_THE_DAY + meal.getDate(), meal.getDate());
         this.mealDate = new DateTime(meal.getDate());
         this.mealName = meal.getBody().getMealName();
         this.kcal = meal.getBody().getKcal();

@@ -58,6 +58,20 @@ public class MealManagerAdapter implements MealManagerService {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
+        updateMeal(user, pet, newDate, oldDate, accessToken, owner, petName);
+    }
+
+    /**
+     * Method responsible for obtaining all data an updating the meal.
+     * @param user The owner of the pet
+     * @param pet The pet from which we want to update the meal
+     * @param newDate The new date of the meal
+     * @param oldDate The current date of the meal
+     * @param accessToken The access token of the user
+     * @param owner The username of the owner of the pet
+     * @param petName The name of the pet
+     */
+    private void updateMeal(User user, Pet pet, String newDate, String oldDate, String accessToken, String owner, String petName) {
         MealData mealData = null;
         try {
             mealData = ServiceLocator.getInstance().getMealManagerClient().getMealData(accessToken,
@@ -73,7 +87,7 @@ public class MealManagerAdapter implements MealManagerService {
 
     @Override
     public void deleteMeal(User user, Pet pet, Meals meal) {
-        /**String accessToken = user.getToken();
+        /*String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
         DateTime dateTime = new DateTime(meal.getDateTime());
@@ -92,8 +106,7 @@ public class MealManagerAdapter implements MealManagerService {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
-        List<Meals> result = obtainAllMeals(accessToken, owner, petName);
-        return result;
+        return obtainAllMeals(accessToken, owner, petName);
     }
 
     /**

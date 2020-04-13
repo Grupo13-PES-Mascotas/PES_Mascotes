@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -30,6 +29,7 @@ public class EditMealFragment extends Fragment {
     private static final String DATESEPARATOR = "-";
     private static final String TIMESEPARATOR = ":";
     private static final int FIRST_TWO_DIGITS = 10;
+    public static final String DEFAULT_SECONDS = "00";
     private static Pet pet;
     private static Meals meal;
     private static boolean editing;
@@ -37,8 +37,6 @@ public class EditMealFragment extends Fragment {
     private FragmentEditMealBinding binding;
     private Button mealDate;
     private MaterialDatePicker materialDatePicker;
-    private Button mealTime;
-    private TimePicker timePicker;
     private boolean isMealDateSelected;
     private int selectedHour;
     private int selectedMin;
@@ -113,7 +111,7 @@ public class EditMealFragment extends Fragment {
         if (mealDate.getMinutes() < FIRST_TWO_DIGITS) {
             timeString.append('0');
         }
-        timeString.append(mealDate.getMinutes()).append(TIMESEPARATOR).append("00");
+        timeString.append(mealDate.getMinutes()).append(TIMESEPARATOR).append(DEFAULT_SECONDS);
         binding.inputMealTime.setText(timeString);
     }
 
@@ -174,8 +172,7 @@ public class EditMealFragment extends Fragment {
         if (selectedMin < FIRST_TWO_DIGITS) {
             dateString.append('0');
         }
-        dateString.append(selectedMin).append(':');
-        dateString.append("00");
+        dateString.append(selectedMin).append(':').append("00");
         return new DateTime(dateString.toString());
     }
 
@@ -254,41 +251,59 @@ public class EditMealFragment extends Fragment {
         mealDate.setOnClickListener(v ->
             materialDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
 
-        materialDatePicker.addOnPositiveButtonClickListener(selection -> {
-            mealDate.setText(materialDatePicker.getHeaderText());
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(Long.parseLong(selection.toString()));
-            String formattedDate = simpleDateFormat.format(calendar.getTime());
-            binding.inputMealDate.setText(formattedDate);
-            isMealDateSelected = true;
-        });
+        materialDatePicker.addOnPositiveButtonClickListener(this::initializeOnPositiveButtonClickListener);
     }
 
+    /**
+     * Method responsible for initializing the onPositiveButtonClickListener.
+     * @param selection The selected value
+     */
+    private void initializeOnPositiveButtonClickListener(Object selection) {
+        mealDate.setText(materialDatePicker.getHeaderText());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(selection.toString()));
+        String formattedDate = simpleDateFormat.format(calendar.getTime());
+        binding.inputMealDate.setText(formattedDate);
+        isMealDateSelected = true;
+    }
+
+    /**
+     * Sets the time picker.
+     */
     private void setTimePicker() {
         Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int min = c.get(Calendar.MINUTE);
-        mealTime = binding.inputMealTime;
+        Button mealTime = binding.inputMealTime;
         mealTime.setOnClickListener(v -> {
             TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), (view, hourOfDay, minute) -> {
-                selectedHour = hourOfDay;
-                selectedMin = minute;
-                StringBuilder time = new StringBuilder();
-                if (selectedHour < FIRST_TWO_DIGITS) {
-                    time.append('0');
-                }
-                time.append(selectedHour).append(':');
-                if (selectedMin < FIRST_TWO_DIGITS) {
-                    time.append('0');
-                }
-                time.append(selectedMin).append(':').append("00");
-                binding.inputMealTime.setText(time);
-                isMealTimeSelected = true;
-                updatesDate = true;
+                initializeTimePickerDialog(hourOfDay, minute);
             }, hour, min, true);
             timePickerDialog.show();
         });
 
+    }
+
+    /**
+     * Method responsible for initializing the timePickerDialog.
+     * @param hourOfDay The selected value for the hour
+     * @param minute The selected value for the minutes
+     */
+    private void initializeTimePickerDialog(int hourOfDay, int minute) {
+        selectedHour = hourOfDay;
+        selectedMin = minute;
+        StringBuilder time = new StringBuilder();
+        if (selectedHour < FIRST_TWO_DIGITS) {
+            time.append('0');
+        }
+        time.append(selectedHour).append(':');
+        if (selectedMin < FIRST_TWO_DIGITS) {
+            time.append('0');
+        }
+        time.append(selectedMin).append(':').append("00");
+        binding.inputMealTime.setText(time);
+        isMealTimeSelected = true;
+        updatesDate = true;
     }
 }
