@@ -1,7 +1,12 @@
 package org.pesmypetcare.mypetcare.utilities;
 
+import androidx.annotation.NonNull;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class DateTime implements Comparable<DateTime> {
-    private static final int HOUR_START_POS = 11;
     private static final int DAYS_30 = 30;
     private static final int DAYS_31 = 31;
     private static final int FEBRUARY = 2;
@@ -14,12 +19,24 @@ public class DateTime implements Comparable<DateTime> {
     private static final int MAX_HOUR = 24;
     private static final int MAX_MINUTES_SECONDS = 60;
     private static final int FIRST_TWO_DIGITS = 10;
-    private static final int MONTH_START_POS = 5;
-    private static final int DAY_START_POS = 8;
-    private static final int HOUR_END_POS = 13;
-    private static final int MIN_START_POS = 14;
-    private static final int MIN_END_POS = 16;
-    private static final int SEC_START_POS = 17;
+    private static final int WEEK_DAYS = 7;
+    private static final String FULL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+    private static final String DATE_TIME_SEPARATOR = "T";
+    private static final int DATE = 0;
+    private static final int TIME = 1;
+    private static final int YEAR = 0;
+    private static final int MONTH = 1;
+    private static final int DAY = 2;
+    private static final int HOUR = 0;
+    private static final int MINUTES = 1;
+    private static final int SECONDS = 2;
+    private static final String DATE_SEPARATOR = "-";
+    private static final String TIME_SEPARATOR = ":";
+    private static final char DATE_SEPARATOR_CHAR = '-';
+    private static final char ZERO_DIGIT_CHAR = '0';
+    private static final char DATE_TIME_SEPARATOR_CHAR = 'T';
+    private static final char TIME_SEPARATOR_CHAR = ':';
+
     private int year;
     private int month;
     private int day;
@@ -40,14 +57,43 @@ public class DateTime implements Comparable<DateTime> {
     }
 
     public DateTime(String dateTime) {
-        this.year = Integer.parseInt(dateTime.substring(0, LEAP_YEAR_FREQ));
-        this.month = Integer.parseInt(dateTime.substring(MONTH_START_POS, JULY));
-        this.day = Integer.parseInt(dateTime.substring(DAY_START_POS, FIRST_TWO_DIGITS));
-        this.hour = Integer.parseInt(dateTime.substring(HOUR_START_POS, HOUR_END_POS));
-        this.minutes = Integer.parseInt(dateTime.substring(MIN_START_POS, MIN_END_POS));
-        this.seconds = Integer.parseInt(dateTime.substring(SEC_START_POS));
+        String[] dateTimeParts = dateTime.split(DATE_TIME_SEPARATOR);
+        readDate(dateTimeParts[DATE]);
+        readTime(dateTimeParts[TIME]);
     }
 
+    public DateTime(String dateTime, boolean isFull) {
+        if (isFull) {
+            String[] dateTimeParts = dateTime.split(DATE_TIME_SEPARATOR);
+            readDate(dateTimeParts[DATE]);
+            readTime(dateTimeParts[TIME]);
+        } else {
+            readDate(dateTime);
+            this.hour = this.minutes = this.seconds = 0;
+        }
+    }
+
+    /**
+     * Read the date from string.
+     * @param date The date to read
+     */
+    private void readDate(String date) {
+        String[] dateParts = date.split(DATE_SEPARATOR);
+        this.year = Integer.parseInt(dateParts[YEAR]);
+        this.month = Integer.parseInt(dateParts[MONTH]);
+        this.day = Integer.parseInt(dateParts[DAY]);
+    }
+
+    /**
+     * Read the time from string.
+     * @param time The time to read
+     */
+    private void readTime(String time) {
+        String[] timeParts = time.split(TIME_SEPARATOR);
+        this.hour = Integer.parseInt(timeParts[HOUR]);
+        this.minutes = Integer.parseInt(timeParts[MINUTES]);
+        this.seconds = Integer.parseInt(timeParts[SECONDS]);
+    }
 
     /**
      * Method responsible for checking whether the date values are out of range or not.
@@ -114,28 +160,196 @@ public class DateTime implements Comparable<DateTime> {
             || (year / TWO_LAST_DIGITS) % LEAP_YEAR_FREQ == 0);
     }
 
+    /**
+     * Get the year.
+     * @return The year
+     */
+    public int getYear() {
+        return year;
+    }
+
+    /**
+     * Set the year.
+     * @param year The year to set.
+     */
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    /**
+     * Get the month.
+     * @return The month
+     */
+    public int getMonth() {
+        return month;
+    }
+
+    /**
+     * Set the month.
+     * @param month The month to set.
+     */
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    /**
+     * Get the day.
+     * @return The day
+     */
+    public int getDay() {
+        return day;
+    }
+
+    /**
+     * Set the day.
+     * @param day The day to set.
+     */
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    /**
+     * Get the hour.
+     * @return The hour
+     */
+    public int getHour() {
+        return hour;
+    }
+
+    /**
+     * Set the hour.
+     * @param hour The hour to set.
+     */
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    /**
+     * Get the minutes.
+     * @return The minutes
+     */
+    public int getMinutes() {
+        return minutes;
+    }
+
+    /**
+     * Set the minutes.
+     * @param minutes The minutes to set.
+     */
+    public void setMinutes(int minutes) {
+        this.minutes = minutes;
+    }
+
+    /**
+     * Get the seconds.
+     * @return The seconds
+     */
+    public int getSeconds() {
+        return seconds;
+    }
+
+    /**
+     * Set the seconds.
+     * @param seconds The seconds to set.
+     */
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
+    }
+
+    /**
+     * Increases a day.
+     */
+    public void increaseDay() {
+        day += 1;
+        if (day > numberOfDays(year, month)) {
+            day = 1;
+            month += 1;
+            if (isOutOfRange(month, hour, minutes, seconds)) {
+                month = 1;
+                year += 1;
+            }
+        }
+    }
+
+    /**
+     * Decreases a day.
+     */
+    public void decreaseDay() {
+        day -= 1;
+        if (day < 1) {
+            month -= 1;
+            day = numberOfDays(year, month);
+            if (month < 1) {
+                year -= 1;
+                month = DECEMBER;
+            }
+        }
+    }
+
+    /**
+     * Check whether the date time is the last week.
+     * @param dateTime The datetime to check
+     * @return True if it is the last week
+     */
+    public static boolean isLastWeek(String dateTime) {
+        boolean result = false;
+        DateTime dateToCheck = new DateTime(dateTime);
+        DateTime currentDate = DateTime.getCurrentDate();
+        for (int i = 0; i <= WEEK_DAYS && !result; ++i) {
+            if (isSameDay(dateToCheck, currentDate)) {
+                result = true;
+            } else {
+                currentDate.decreaseDay();
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Check whether two date time take place on the same day.
+     * @param dateTime The first date time to check
+     * @param currentDate The second date time to check
+     * @return True if the date times take place on the same day
+     */
+    private static boolean isSameDay(DateTime dateTime, DateTime currentDate) {
+        return dateTime.getDay() == currentDate.getDay() && dateTime.getMonth() == currentDate.getMonth() &&
+            dateTime.getYear() == currentDate.getYear();
+    }
+
+    /**
+     * Get the current date.
+     * @return The current
+     */
+    private static DateTime getCurrentDate() {
+        DateFormat dateFormat = new SimpleDateFormat(FULL_DATE_FORMAT);
+        Date date = new Date();
+        String strData = dateFormat.format(date);
+        return new DateTime(strData);
+    }
+
+    @NonNull
     @Override
     public String toString() {
         StringBuilder dateTime = new StringBuilder("");
-        dateTime.append(year).append('-');
+        dateTime.append(year).append(DATE_SEPARATOR_CHAR);
         if (month < FIRST_TWO_DIGITS) {
-            dateTime.append('0');
+            dateTime.append(ZERO_DIGIT_CHAR);
         }
-        dateTime.append(month).append('-');
+        dateTime.append(month).append(DATE_SEPARATOR_CHAR);
         if (day < FIRST_TWO_DIGITS) {
-            dateTime.append('0');
+            dateTime.append(ZERO_DIGIT_CHAR);
         }
-        dateTime.append(day).append('T');
+        dateTime.append(day).append(DATE_TIME_SEPARATOR_CHAR);
         if (hour < FIRST_TWO_DIGITS) {
-            dateTime.append('0');
+            dateTime.append(ZERO_DIGIT_CHAR);
         }
-        dateTime.append(hour).append(':');
+        dateTime.append(hour).append(TIME_SEPARATOR_CHAR);
         if (minutes < FIRST_TWO_DIGITS) {
-            dateTime.append('0');
+            dateTime.append(ZERO_DIGIT_CHAR);
         }
-        dateTime.append(minutes).append(':');
+        dateTime.append(minutes).append(TIME_SEPARATOR_CHAR);
         if (seconds < FIRST_TWO_DIGITS) {
-            dateTime.append('0');
+            dateTime.append(ZERO_DIGIT_CHAR);
         }
         dateTime.append(seconds);
         return dateTime.toString();
@@ -161,51 +375,63 @@ public class DateTime implements Comparable<DateTime> {
         return seconds - dateTime.seconds;
     }
 
-    public int getYear() {
-        return year;
-    }
+    public static class Builder {
 
-    public void setYear(int year) {
-        this.year = year;
-    }
+        /**
+         * Build a DateTime with all parameters.
+         * @param year The year
+         * @param month The month
+         * @param day The day
+         * @param hour The hour
+         * @param minutes The minutes
+         * @param seconds The seconds
+         * @return The built DateTime
+         * @throws InvalidFormatException The format is not valid
+         */
+        public static DateTime build(int year, int month, int day, int hour, int minutes, int seconds)
+            throws InvalidFormatException {
+            return new DateTime(year, month, day, hour, minutes, seconds);
+        }
 
-    public int getMonth() {
-        return month;
-    }
+        /**
+         * Build a DateTime with just the date.
+         * @param year The year
+         * @param month The month
+         * @param day The day
+         * @return The built DateTime with just the date
+         * @throws InvalidFormatException The format is not valid
+         */
+        public static DateTime build(int year, int month, int day)
+            throws InvalidFormatException {
+            return new DateTime(year, month, day, 0, 0, 0);
+        }
 
-    public void setMonth(int month) {
-        this.month = month;
-    }
+        /**
+         * Build a DateTime with the format yyyy-MM-d'T'hh:mm:ss (apostrophes not included).
+         * @param date The date with full string format
+         * @return The built DateTime with full string format
+         */
+        public static DateTime buildFullString(String date) {
+            return new DateTime(date, true);
+        }
 
-    public int getDay() {
-        return day;
-    }
+        /**
+         * Build a DateTime with the format yyyy-MM-d.
+         * @param date The date with date string format
+         * @return The built DateTime with date string format
+         */
+        public static DateTime buildDateString(String date) {
+            return new DateTime(date, false);
+        }
 
-    public void setDay(int day) {
-        this.day = day;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
-    public int getMinutes() {
-        return minutes;
-    }
-
-    public void setMinutes(int minutes) {
-        this.minutes = minutes;
-    }
-
-    public int getSeconds() {
-        return seconds;
-    }
-
-    public void setSeconds(int seconds) {
-        this.seconds = seconds;
+        /**
+         * Build a DateTime with the date in the format yyyy-MM-d and the hour with the format hh:mm:ss
+         * @param date The date with the specified format
+         * @param hour The hour with the specified format
+         * @return The built DateTime with full string format using the two strings
+         */
+        public static DateTime buildDateTimeString(String date, String hour) {
+            return new DateTime(date + DATE_TIME_SEPARATOR + hour, true);
+        }
     }
 }

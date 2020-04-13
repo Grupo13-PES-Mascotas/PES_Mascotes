@@ -46,7 +46,7 @@ public class Pet {
     public Pet(Bundle petInfo) {
         this.name = petInfo.getString(BUNDLE_NAME);
         this.breed = petInfo.getString(BUNDLE_BREED);
-        this.birthDate = petInfo.getString(BUNDLE_BIRTH_DATE);
+        this.birthDate = petInfo.getString(BUNDLE_BIRTH_DATE) + "T00:00:00";
         initializeHealthInfo(petInfo);
         this.events = new ArrayList<>();
 
@@ -68,6 +68,11 @@ public class Pet {
         Date date = new Date();
         String strData = dateFormat.format(date);
         DateTime dateTime = new DateTime(strData);
+
+        dateTime.setHour(0);
+        dateTime.setMinutes(0);
+        dateTime.setSeconds(0);
+
         this.healthInfo = new PetHealthInfo();
         this.healthInfo.addWeightForDate(dateTime, petInfo.getFloat(BUNDLE_WEIGHT));
         this.healthInfo.setPathologies(petInfo.getString(BUNDLE_PATHOLOGIES));
@@ -379,6 +384,10 @@ public class Pet {
 
     public boolean isOwner(User user) {
         return user.equals(owner);
+    }
+
+    public void setWeightForDate(double newWeight, DateTime dateTime) {
+        healthInfo.addWeightForDate(dateTime, newWeight);
     }
 
     @NonNull

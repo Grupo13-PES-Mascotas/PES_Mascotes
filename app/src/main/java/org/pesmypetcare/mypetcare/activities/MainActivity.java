@@ -82,6 +82,8 @@ import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -695,6 +697,38 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void changeToMainView() {
 
+    }
+
+    @Override
+    public void addWeightForDate(Pet pet, double newWeight, String date) {
+        trAddNewWeight.setUser(user);
+        trAddNewWeight.setPet(pet);
+        trAddNewWeight.setNewWeight(newWeight);
+
+        DateTime dateTime = getDateTime(date);
+        trAddNewWeight.setDateTime(dateTime);
+        try {
+            trAddNewWeight.execute();
+        } catch (NotPetOwnerException e) {
+            Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+
+    private DateTime getDateTime(String date) {
+        String[] dateValues = date.split("-");
+        int year = Integer.parseInt(dateValues[0]);
+        int month = Integer.parseInt(dateValues[1]);
+        int day = Integer.parseInt(dateValues[2]);
+
+        DateTime dateTime = null;
+
+        try {
+            dateTime = new DateTime(year, month, day, 0, 0, 0);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+        return dateTime;
     }
 
     @Override

@@ -210,7 +210,7 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public void updateWeight(User user, Pet pet, double newWeight) {
+    public void updateWeight(User user, Pet pet, double newWeight, DateTime dateTime) {
 
     }
 

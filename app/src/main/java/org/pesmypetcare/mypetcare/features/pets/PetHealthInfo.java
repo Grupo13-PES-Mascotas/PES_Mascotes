@@ -359,6 +359,20 @@ public class PetHealthInfo {
         date.setSeconds(0);
     }
 
+    @Override
+    public String toString() {
+        return "PetHealthInfo{" +
+            "weight=" + weight +
+            ", recommendedDailyKiloCalories=" + recommendedDailyKiloCalories +
+            ", exerciseFrequency=" + exerciseFrequency +
+            ", weeklyExercise=" + weeklyExercise +
+            ", weeklyKiloCaloriesAverage=" + weeklyKiloCaloriesAverage +
+            ", washFrequency=" + washFrequency +
+            ", pathologies='" + pathologies + '\'' +
+            ", petNeeds=" + petNeeds +
+            '}';
+    }
+
     private static class TreeComparator implements Comparator<DateTime> {
 
         @Override

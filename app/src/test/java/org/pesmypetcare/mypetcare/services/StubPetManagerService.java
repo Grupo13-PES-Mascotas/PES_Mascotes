@@ -102,10 +102,10 @@ public class StubPetManagerService implements PetManagerService {
     }
 
     @Override
-    public void updateWeight(User user, Pet pet, double newWeight) {
+    public void updateWeight(User user, Pet pet, double newWeight, DateTime dateTime) {
         ArrayList<Pet> pets = data.get(user.getUsername());
         int petIndex = Objects.requireNonNull(pets).indexOf(pet);
-        pets.get(petIndex).setWeight(newWeight);
+        pets.get(petIndex).setWeightForDate(newWeight, dateTime);
     }
 
     @Override

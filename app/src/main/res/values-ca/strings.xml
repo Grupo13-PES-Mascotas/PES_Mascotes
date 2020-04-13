@@ -125,6 +125,9 @@
     <string name="auto_calculated">Auto calculades</string>
     <string name="add_not_implemented">Proxima actualització</string>
     <string name="stub_statistic">Stub statistic</string>
+    <string name="add_weight_message">Introdueix el nou pes i selecciona la data</string>
+    <string name="add_weight_hint">Pes (kg)</string>
+    <string name="add_weight_date_hint">Selecciona la data del pes</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

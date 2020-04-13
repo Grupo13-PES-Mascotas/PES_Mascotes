@@ -23,6 +23,7 @@ import org.pesmypetcare.mypetcare.activities.views.chart.statisticdata.WeightDat
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class BarChart extends View {
     private static final int BORDER_X = 125;
@@ -56,7 +57,10 @@ public class BarChart extends View {
     public BarChart(Context context, @Nullable AttributeSet attrs, Pet pet) {
         super(context, attrs);
         initDrawComponents();
+        addStatistics(pet);
+    }
 
+    private void addStatistics(Pet pet) {
         statisticData = new StatisticData[] {
             new WeightData(pet), new DailyKilocaloriesData(pet), new ExerciseFrequencyData(pet),
             new WeeklyExerciseData(pet), new WeeklyKilocaloriesData(pet), new WashFrequencyData(pet),
@@ -119,7 +123,11 @@ public class BarChart extends View {
         canvas.drawLine(yAxisMaxPoint[X_COORD], yAxisMaxPoint[Y_COORD], originPoint[X_COORD], originPoint[Y_COORD],
             axisPaint);
 
-        maxValue = statisticData[selectedStatistic].getyMaxValue();
+        try {
+            maxValue = statisticData[selectedStatistic].getyMaxValue();
+        } catch (NoSuchElementException e) {
+            maxValue = 1;
+        }
         nextTenMultiple = calculateNextTenMultiple();
         yDivisionFactor = calculateYDivisionFactor();
 
@@ -225,5 +233,10 @@ public class BarChart extends View {
 
     public static StatisticData getStatistic(int statisticId) {
         return statisticData[statisticId];
+    }
+
+    public void updatePet(Pet pet) {
+        addStatistics(pet);
+        invalidate();
     }
 }

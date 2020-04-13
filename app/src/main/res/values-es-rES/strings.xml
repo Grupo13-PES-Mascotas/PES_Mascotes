@@ -125,6 +125,9 @@
     <string name="auto_calculated">Auto calculadas</string>
     <string name="add_not_implemented">Próxima actualización</string>
     <string name="stub_statistic">Stub statistic</string>
+    <string name="add_weight_message">Introduce el nuevo peso i la fecha</string>
+    <string name="add_weight_hint">Peso (kg)</string>
+    <string name="add_weight_date_hint">Selecciona la fecha del peso</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

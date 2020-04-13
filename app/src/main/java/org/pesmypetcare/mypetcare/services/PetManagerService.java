@@ -78,7 +78,7 @@ public interface PetManagerService {
      */
     void deleteEvent(Pet pet, Event event);
 
-    void updateWeight(User user, Pet pet, double newWeight);
+    void updateWeight(User user, Pet pet, double newWeight, DateTime dateTime);
 
     void deletePetWeight(User user, Pet pet, DateTime dateTime);
 

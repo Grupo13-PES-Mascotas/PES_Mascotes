@@ -7,6 +7,14 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class StatisticData {
+    public static final int WEIGHT_STATISTIC = 0;
+    public static final int DAILY_KILOCALORIES_STATISTIC = 1;
+    public static final int EXERCISE_FREQUENCY_STATISTIC = 2;
+    public static final int WEEKLY_EXERCISE_STATISTIC = 3;
+    public static final int WEEKLY_KILOCALORIES_STATISTIC = 4;
+    public static final int WASH_FREQUENCY_STATISTIC = 5;
+    public static final int STUB_STATISTIC = 6;
+
     private List<String> xAxisValues;
     private List<Double> yAxisValues;
 

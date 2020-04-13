@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.chart.BarChart;
@@ -20,6 +23,8 @@ import org.pesmypetcare.mypetcare.activities.views.healthbottomsheet.HealthBotto
 import org.pesmypetcare.mypetcare.activities.views.healthbottomsheet.HealthBottomSheetCommunication;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetHealthBinding;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Objects;
 
 public class InfoPetHealthFragment extends Fragment implements HealthBottomSheetCommunication {
@@ -30,6 +35,7 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
     private MaterialButton btnAddNewStatistic;
     private BarChart barChart;
     private HealthBottomSheet healthBottomSheet;
+    private MaterialDatePicker materialDatePicker;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,10 +71,64 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
     public void selectStatistic(int statisticId, String statisticName) {
         healthBottomSheet.dismiss();
         statisticTitle.setText(statisticName);
-        barChart.changeStatistic(0);
+        barChart.changeStatistic(statisticId);
 
         StatisticData statisticData = BarChart.getStatistic(statisticId);
         btnAddNewStatistic.setText(statisticData.getMessageIdentifier());
         btnAddNewStatistic.setFocusable(statisticData.getFocusableState());
+
+        btnAddNewStatistic.setOnClickListener(v -> {
+            switch (statisticId) {
+                case StatisticData.WEIGHT_STATISTIC:
+                    createWeightDialog();
+                    break;
+                case StatisticData.WASH_FREQUENCY_STATISTIC:
+
+                    break;
+                default:
+            }
+        });
+    }
+
+    private void createWeightDialog() {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()),
+            R.style.AlertDialogTheme);
+        dialog.setTitle(R.string.add_weight);
+        dialog.setMessage(R.string.add_weight_message);
+
+        View weightLayout = getLayoutInflater().inflate(R.layout.new_weight_dialog, null);
+        dialog.setView(weightLayout);
+
+        TextInputEditText weight = weightLayout.findViewById(R.id.addWeight);
+
+        MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText(getString(R.string.select_birth_date));
+        materialDatePicker = builder.build();
+
+        MaterialButton btnAddWeightDate = weightLayout.findViewById(R.id.addWeightDate);
+        btnAddWeightDate.setOnClickListener(v ->
+            materialDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
+
+        materialDatePicker.addOnPositiveButtonClickListener(selection -> {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-d");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(Long.parseLong(selection.toString()));
+            String formattedDate = simpleDateFormat.format(calendar.getTime());
+            btnAddWeightDate.setText(formattedDate);
+        });
+
+        dialog.setNegativeButton(R.string.negative_response, (dialog1, which) -> {
+            dialog1.cancel();
+        });
+        dialog.setPositiveButton(R.string.affirmative_response, (dialog1, which) -> {
+            InfoPetFragment.getCommunication().addWeightForDate(InfoPetFragment.getPet(),
+                Double.parseDouble(Objects.requireNonNull(weight.getText()).toString()),
+                (String) btnAddWeightDate.getText());
+            dialog1.dismiss();
+
+            barChart.updatePet(InfoPetFragment.getPet());
+        });
+
+        dialog.show();
     }
 }
