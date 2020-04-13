@@ -31,7 +31,7 @@ public class TestTrNewPetMeal {
         trNewPetMeal.setPet(linux);
         trNewPetMeal.setMeal(meal);
         trNewPetMeal.execute();
-        boolean result = trNewPetMeal.getResult();
+        boolean result = trNewPetMeal.isResult();
         assertTrue("should communicate with service to add a meal", result);
     }
 

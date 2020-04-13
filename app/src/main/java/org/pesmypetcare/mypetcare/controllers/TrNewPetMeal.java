@@ -45,7 +45,7 @@ public class TrNewPetMeal {
      * Getter of the result of the transaction.
      * @return The result of the transaction
      */
-    public boolean getResult() {
+    public boolean isResult() {
         return result;
     }
 

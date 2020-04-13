@@ -73,11 +73,11 @@ public class MealManagerAdapter implements MealManagerService {
 
     @Override
     public void deleteMeal(User user, Pet pet, Meals meal) {
-        String accessToken = user.getToken();
+        /**String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
         DateTime dateTime = new DateTime(meal.getDateTime());
-        /**try {
+        try {
             ServiceLocator.getInstance().getMealManagerClient().deleteByDate(accessToken, owner, petName, dateTime);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
@@ -92,6 +92,18 @@ public class MealManagerAdapter implements MealManagerService {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
+        List<Meals> result = obtainAllMeals(accessToken, owner, petName);
+        return result;
+    }
+
+    /**
+     * Method responsible for accessing the service an obtaining all the meals for the indicated pet.
+     * @param accessToken The accessToken of the owner
+     * @param owner The owner of the pet
+     * @param petName The name of the pet from which we want to obtain all the meals
+     * @return The list with all the meals from the pet
+     */
+    private List<Meals> obtainAllMeals(String accessToken, String owner, String petName) {
         List<Meal> mealList = null;
         try {
             mealList = ServiceLocator.getInstance().getMealManagerClient().getAllMealData(accessToken,
