@@ -118,6 +118,8 @@
     <string name="update_meal">Actualitzar àpat</string>
     <string name="delete_current_meal">Esborrar àpat</string>
     <string name="empty_fields">Tots els camps s\'han d\'omplir</string>
+    <string name="meal">Àpat:</string>
+    <string name="from_date">Del:</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

@@ -117,6 +117,8 @@
     <string name="update_meal">Update meal</string>
     <string name="delete_current_meal">Delete meal</string>
     <string name="empty_fields">Fields cannot be empty</string>
+    <string name="meal">Meal:</string>
+    <string name="from_date">From:</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

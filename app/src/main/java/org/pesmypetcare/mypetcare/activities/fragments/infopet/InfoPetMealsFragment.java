@@ -108,8 +108,8 @@ public class InfoPetMealsFragment extends Fragment {
      * @param mealButton The button that has to be initialized
      */
     private void initializeButtonLogic(Meals meal, MaterialButton mealButton) {
-        String mealButtonText = meal.getMealName() + " " + meal.getDateTime() + "\n"
-            + "Meal Kcal " + meal.getKcal();
+        String mealButtonText = getString(R.string.meal) + " " + meal.getMealName() + "\n" + getString(R.string.from_date)
+            + " " + meal.getDateTime() + "\n" + getString(R.string.meal_kcal) + ": " + meal.getKcal();
         mealButton.setText(mealButtonText);
         mealButton.setOnClickListener(v -> {
             FragmentTransaction ft = Objects.requireNonNull(getActivity())

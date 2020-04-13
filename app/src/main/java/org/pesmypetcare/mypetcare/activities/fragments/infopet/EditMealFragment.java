@@ -19,15 +19,15 @@ import org.pesmypetcare.mypetcare.databinding.FragmentEditMealBinding;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.mypetcare.utilities.DateTime;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
 
 
 public class EditMealFragment extends Fragment {
-    private static final String DATESEPARATOR = " ";
+    private static final String DATESEPARATOR = "-";
     private static final String TIMESEPARATOR = ":";
     private static final int FIRST_TWO_DIGITS = 10;
     private static Pet pet;
@@ -91,48 +91,18 @@ public class EditMealFragment extends Fragment {
 
     private void showMealDate(DateTime mealDate) {
         StringBuilder dateString = new StringBuilder();
-        dateString.append(mealDate.getDay()).append(DATESEPARATOR);
-        String monthPrefix = obtainMonthPrefix(mealDate.getMonth());
-        dateString.append(monthPrefix).append(DATESEPARATOR).append(mealDate.getYear());
+        dateString.append(mealDate.getYear()).append(DATESEPARATOR);
+        if (mealDate.getMonth() < FIRST_TWO_DIGITS) {
+            dateString.append('0');
+        }
+        dateString.append(mealDate.getMonth()).append(DATESEPARATOR);
+        if (mealDate.getDay() < FIRST_TWO_DIGITS) {
+            dateString.append('0');
+        }
+        dateString.append(mealDate.getDay());
         binding.inputMealDate.setText(dateString);
     }
 
-    private String obtainMonthPrefix(int month) {
-        if (month == 1) {
-            return Months.Jan.toString();
-        }
-        if (month == 2) {
-            return Months.Feb.toString();
-        }
-        if (month == 3) {
-            return Months.Mar.toString();
-        }
-        if (month == 4) {
-            return Months.Apr.toString();
-        }
-        if (month == 5) {
-            return Months.May.toString();
-        }
-        if (month == 6) {
-            return Months.Jun.toString();
-        }
-        if (month == 7) {
-            return Months.Jul.toString();
-        }
-        if (month == 8) {
-            return Months.Aug.toString();
-        }
-        if (month == 9) {
-            return Months.Sep.toString();
-        }
-        if (month == 10) {
-            return Months.Oct.toString();
-        }
-        if (month == 11) {
-            return Months.Nov.toString();
-        }
-        return Months.Dec.toString();
-    }
 
     private void showMealTime(DateTime mealDate) {
         StringBuilder timeString = new StringBuilder();
@@ -195,7 +165,7 @@ public class EditMealFragment extends Fragment {
     }
 
     private DateTime getDateTime() {
-        StringBuilder dateString = new StringBuilder(DateConversion.convertToServer(binding.inputMealDate.getText().toString()));
+        StringBuilder dateString = new StringBuilder(binding.inputMealDate.getText().toString());
         dateString.append('T');
         if (selectedHour < FIRST_TWO_DIGITS) {
             dateString.append('0');
@@ -286,6 +256,11 @@ public class EditMealFragment extends Fragment {
 
         materialDatePicker.addOnPositiveButtonClickListener(selection -> {
             mealDate.setText(materialDatePicker.getHeaderText());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(Long.parseLong(selection.toString()));
+            String formattedDate = simpleDateFormat.format(calendar.getTime());
+            binding.inputMealDate.setText(formattedDate);
             isMealDateSelected = true;
         });
     }
