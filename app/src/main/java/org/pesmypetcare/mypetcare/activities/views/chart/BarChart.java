@@ -32,7 +32,7 @@ public class BarChart extends View {
     private static final int Y_COORD = 1;
     private static final int CHART_SIZE = 275;
     private static final int X_AXIS_DIVISIONS = 4;
-    private static final int Y_AXIS_DIVISIONS = 5;
+    private static final int Y_AXIS_DIVISIONS = 10;
     private static final int BAR_PROPORTION = 4;
     private static final int TEXT_SIZE = 24;
     private static final int TEXT_SEPARATOR = 40;
@@ -96,7 +96,7 @@ public class BarChart extends View {
         List<Double> yValues = statisticData[selectedStatistic].getyAxisValues();
         float barDrawingFactor = (float) (xDivisionFactor / BAR_PROPORTION);
 
-        int next = dataRegion * X_AXIS_DIVISIONS;
+        int next = yValues.size() - dataRegion * X_AXIS_DIVISIONS - 1;
         int count = 0;
 
         while (hasValuesRemaining(yValues, next, count)) {
@@ -106,17 +106,17 @@ public class BarChart extends View {
             canvas.drawRect(xPoint - barDrawingFactor, yPoint, xPoint + barDrawingFactor, (float) originPoint[Y_COORD],
                 barPaint);
 
-            float textWidth = textPaint.measureText(xValues.get(count));
-            canvas.drawText(xValues.get(count), xPoint - textWidth / 2, originPoint[Y_COORD] + TEXT_SEPARATOR,
+            float textWidth = textPaint.measureText(xValues.get(next));
+            canvas.drawText(xValues.get(next), xPoint - textWidth / 2, originPoint[Y_COORD] + TEXT_SEPARATOR,
                 textPaint);
 
             ++count;
-            ++next;
+            --next;
         }
     }
 
     private boolean hasValuesRemaining(List<Double> yValues, int next, int count) {
-        return count < X_AXIS_DIVISIONS && next < yValues.size();
+        return count < X_AXIS_DIVISIONS && next >= 0;
     }
 
     private void drawYaxis(Canvas canvas) {

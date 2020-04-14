@@ -31,7 +31,7 @@ public class Pet {
     private String name;
     private GenderType gender;
     private String breed;
-    private String birthDate;
+    private DateTime birthDate;
     private PetHealthInfo healthInfo;
     private User owner;
     private String previousName;
@@ -46,7 +46,7 @@ public class Pet {
     public Pet(Bundle petInfo) {
         this.name = petInfo.getString(BUNDLE_NAME);
         this.breed = petInfo.getString(BUNDLE_BREED);
-        this.birthDate = petInfo.getString(BUNDLE_BIRTH_DATE) + "T00:00:00";
+        this.birthDate = DateTime.Builder.buildDateString(Objects.requireNonNull(petInfo.getString(BUNDLE_BIRTH_DATE)));
         initializeHealthInfo(petInfo);
         this.events = new ArrayList<>();
 
@@ -64,14 +64,7 @@ public class Pet {
      * @param petInfo A bundle containing all the information of the pet
      */
     public void initializeHealthInfo(Bundle petInfo) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = new Date();
-        String strData = dateFormat.format(date);
-        DateTime dateTime = new DateTime(strData);
-
-        dateTime.setHour(0);
-        dateTime.setMinutes(0);
-        dateTime.setSeconds(0);
+        DateTime dateTime = getActualDateTime();
 
         this.healthInfo = new PetHealthInfo();
         this.healthInfo.addWeightForDate(dateTime, petInfo.getFloat(BUNDLE_WEIGHT));
@@ -91,7 +84,7 @@ public class Pet {
     public Pet(Bundle petInfo, User user) {
         this.name = petInfo.getString(BUNDLE_NAME);
         this.breed = petInfo.getString(BUNDLE_BREED);
-        this.birthDate = petInfo.getString(BUNDLE_BIRTH_DATE);
+        this.birthDate = DateTime.Builder.buildDateString(Objects.requireNonNull(petInfo.getString(BUNDLE_BIRTH_DATE)));
         initializeHealthInfo(petInfo);
         this.events = new ArrayList<>();
 
@@ -170,14 +163,14 @@ public class Pet {
      * @return The birth date of the pet
      */
     public String getBirthDate() {
-        return birthDate;
+        return birthDate.getYear() + "-" + birthDate.getMonth() + "-" + birthDate.getDay();
     }
 
     /**
      * Set the birth date of the pet.
      * @param birthDate The birth date to set
      */
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(DateTime birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -194,11 +187,19 @@ public class Pet {
      * @param weight The weight to set
      */
     public void setWeight(double weight) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        DateTime dateTime = getActualDateTime();
+        this.healthInfo.addWeightForDate(dateTime, weight);
+    }
+
+    /**
+     * Get the actual date time.
+     * @return The actual date time
+     */
+    private DateTime getActualDateTime() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d");
         Date date = new Date();
         String strData = dateFormat.format(date);
-        DateTime dateTime = new DateTime(strData);
-        this.healthInfo.addWeightForDate(dateTime, weight);
+        return DateTime.Builder.buildDateString(strData);
     }
 
     /**
@@ -230,10 +231,7 @@ public class Pet {
      * @param recommendedDailyKiloCalories The recommended daily kilo calories of the pet to set
      */
     public void setRecommendedDailyKiloCalories(double recommendedDailyKiloCalories) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = new Date();
-        String strData = dateFormat.format(date);
-        DateTime dateTime = new DateTime(strData);
+        DateTime dateTime = getActualDateTime();
         healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, recommendedDailyKiloCalories);
     }
 
@@ -250,10 +248,7 @@ public class Pet {
      * @param washFrequency The wash frequency to set
      */
     public void setWashFrequency(int washFrequency) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = new Date();
-        String strData = dateFormat.format(date);
-        DateTime dateTime = new DateTime(strData);
+        DateTime dateTime = getActualDateTime();
         healthInfo.addWashFrequencyForDate(dateTime, washFrequency);
     }
 

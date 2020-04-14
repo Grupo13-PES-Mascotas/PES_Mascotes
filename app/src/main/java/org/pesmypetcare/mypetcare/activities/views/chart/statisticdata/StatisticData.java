@@ -48,7 +48,7 @@ public abstract class StatisticData {
         int year = dateTime.getYear();
         int month = dateTime.getMonth();
         int day = dateTime.getDay();
-        StringBuilder date = new StringBuilder(year);
+        StringBuilder date = new StringBuilder(String.valueOf(year));
         date.append('-');
 
         if (month < 10) {

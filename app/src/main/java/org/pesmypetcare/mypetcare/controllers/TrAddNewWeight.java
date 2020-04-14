@@ -11,7 +11,6 @@ public class TrAddNewWeight {
     private User user;
     private Pet pet;
     private double newWeight;
-
     private DateTime dateTime;
 
     public TrAddNewWeight(PetManagerService petManagerService) {

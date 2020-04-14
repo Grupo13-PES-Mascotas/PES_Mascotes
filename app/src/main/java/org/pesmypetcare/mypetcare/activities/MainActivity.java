@@ -705,7 +705,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewWeight.setPet(pet);
         trAddNewWeight.setNewWeight(newWeight);
 
-        DateTime dateTime = getDateTime(date);
+        DateTime dateTime = DateTime.Builder.buildDateString(date);
         trAddNewWeight.setDateTime(dateTime);
         try {
             trAddNewWeight.execute();
