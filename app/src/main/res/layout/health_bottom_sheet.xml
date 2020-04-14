@@ -32,7 +32,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/single_paw"/>
+                    android:src="@drawable/icon_polls"/>
 
                 <TextView
                     android:text="@string/health_weight"
@@ -51,7 +51,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/single_paw"/>
+                    android:src="@drawable/icon_kilocalories"/>
 
                 <TextView
                     android:text="@string/health_recommended_daily_kilocalories"
@@ -70,7 +70,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/single_paw"/>
+                    android:src="@drawable/icon_exercise"/>
 
                 <TextView
                     android:text="@string/health_exercise_frequency"
@@ -98,7 +98,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/single_paw"/>
+                    android:src="@drawable/icon_exercise"/>
 
                 <TextView
                     android:text="@string/health_weekly_exercice"
@@ -117,7 +117,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/single_paw"/>
+                    android:src="@drawable/icon_kilocalories"/>
 
                 <TextView
                     android:text="@string/health_weekly_kilocalories_average"
@@ -136,7 +136,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/single_paw"/>
+                    android:src="@drawable/icon_wash_frequency"/>
 
                 <TextView
                     android:text="@string/health_wash_frequency"

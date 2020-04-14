@@ -82,6 +82,8 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
                         case StatisticData.WEIGHT_STATISTIC:
                             createShowWeightDialog(barChart.getXvalueAt(pressedBar - 1), value);
                             break;
+                        case StatisticData.WASH_FREQUENCY_STATISTIC:
+                            createShowWashFrequencyDialog(barChart.getXvalueAt(pressedBar - 1), (int) value);
                         default:
                     }
                 }
@@ -110,11 +112,52 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
                     createAddWeightDialog();
                     break;
                 case StatisticData.WASH_FREQUENCY_STATISTIC:
-
+                    createAddWashFrequencyDialog();
                     break;
                 default:
             }
         });
+    }
+
+    private void createAddWashFrequencyDialog() {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()),
+            R.style.AlertDialogTheme);
+        dialog.setTitle(R.string.add_wash_frequency);
+        dialog.setMessage(R.string.add_wash_frequency_message);
+
+        View washFrequencyLayout = getLayoutInflater().inflate(R.layout.new_wash_frequency_dialog, null);
+        dialog.setView(washFrequencyLayout);
+
+        TextInputEditText washFrequency = washFrequencyLayout.findViewById(R.id.addWashFrequency);
+
+        MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText(getString(R.string.add_wash_frequency_date_hint));
+        materialDatePicker = builder.build();
+
+        MaterialButton btnAddWashFrequencyDate = washFrequencyLayout.findViewById(R.id.addWashFrequencyDate);
+        btnAddWashFrequencyDate.setOnClickListener(v ->
+            materialDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
+
+        materialDatePicker.addOnPositiveButtonClickListener(selection -> {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-d");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(Long.parseLong(selection.toString()));
+            String formattedDate = simpleDateFormat.format(calendar.getTime());
+            btnAddWashFrequencyDate.setText(formattedDate);
+        });
+
+        dialog.setPositiveButton(R.string.accept, (dialog1, which) -> {
+            if (!isAnyFieldEmpty(washFrequency, btnAddWashFrequencyDate)) {
+                InfoPetFragment.getCommunication().addWashFrequencyForDate(InfoPetFragment.getPet(),
+                    Integer.parseInt(Objects.requireNonNull(washFrequency.getText()).toString()),
+                    (String) btnAddWashFrequencyDate.getText());
+                dialog1.dismiss();
+
+                barChart.updatePet(InfoPetFragment.getPet());
+            }
+        });
+
+        dialog.show();
     }
 
     private void createAddWeightDialog() {
@@ -129,7 +172,7 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
         TextInputEditText weight = weightLayout.findViewById(R.id.addWeight);
 
         MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
-        builder.setTitleText(getString(R.string.select_birth_date));
+        builder.setTitleText(getString(R.string.add_weight_date_hint));
         materialDatePicker = builder.build();
 
         MaterialButton btnAddWeightDate = weightLayout.findViewById(R.id.addWeightDate);
@@ -174,6 +217,25 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
         MaterialButton btnDeleteWeightDate = showWeightLayout.findViewById(R.id.deleteWeightDate);
         btnDeleteWeightDate.setOnClickListener(v -> {
             InfoPetFragment.getCommunication().deleteWeightForDate(InfoPetFragment.getPet(), date);
+            barChart.updatePet(InfoPetFragment.getPet());
+
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
+    private void createShowWashFrequencyDialog(String date, int value) {
+        AlertDialog dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()), R.style.AlertDialogTheme)
+            .create();
+        dialog.setTitle(value + " days");
+
+        View showWashFrequencyLayout = getLayoutInflater().inflate(R.layout.show_wash_frequency_dialog, null);
+        dialog.setView(showWashFrequencyLayout);
+
+        MaterialButton btnDeleteWashFrequencyDate = showWashFrequencyLayout.findViewById(R.id.deleteWashFrequencyDate);
+        btnDeleteWashFrequencyDate.setOnClickListener(v -> {
+            InfoPetFragment.getCommunication().deleteWashFrequencyForDate(InfoPetFragment.getPet(), date);
             barChart.updatePet(InfoPetFragment.getPet());
 
             dialog.dismiss();

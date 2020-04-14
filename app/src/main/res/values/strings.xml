@@ -131,6 +131,10 @@
     <string name="weight_deleted">Weight deleted</string>
     <string name="back_to_return_or_outside">Press back or outside to close</string>
     <string name="accept">Accept</string>
+    <string name="add_wash_frequency_message">Add the new wash frequency and select the date</string>
+    <string name="add_wash_frequency_hint">Wash frequency (days)</string>
+    <string name="add_wash_frequency_date_hint">Select the wash frequency date</string>
+    <string name="delete_wash_frequency">Delete wash frequency</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

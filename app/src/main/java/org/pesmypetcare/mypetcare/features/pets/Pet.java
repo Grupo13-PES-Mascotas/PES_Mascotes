@@ -385,6 +385,10 @@ public class Pet {
         healthInfo.addWeightForDate(dateTime, newWeight);
     }
 
+    public void setWashFrequencyForDate(int newWashFrequency, DateTime dateTime) {
+        healthInfo.addWashFrequencyForDate(dateTime, newWashFrequency);
+    }
+
     @NonNull
     @Override
     public String toString() {

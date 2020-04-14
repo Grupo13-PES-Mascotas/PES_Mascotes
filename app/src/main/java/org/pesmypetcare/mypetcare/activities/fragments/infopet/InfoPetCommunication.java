@@ -41,4 +41,8 @@ public interface InfoPetCommunication {
     void addWeightForDate(Pet pet, double newWeight, String date);
 
     void deleteWeightForDate(Pet pet, String date);
+
+    void addWashFrequencyForDate(Pet pet, int parseInt, String text);
+
+    void deleteWashFrequencyForDate(Pet pet, String date);
 }

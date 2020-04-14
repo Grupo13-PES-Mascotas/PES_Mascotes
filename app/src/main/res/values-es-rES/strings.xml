@@ -132,6 +132,10 @@
     <string name="weight_deleted">Peso eliminado</string>
     <string name="back_to_return_or_outside">Pulsa atrás o fuera para cerrar</string>
     <string name="accept">Aceptart</string>
+    <string name="add_wash_frequency_message">Introduce la nueva frecuencia de baño i la fecha</string>
+    <string name="add_wash_frequency_hint">Frecuencia de baño (días)</string>
+    <string name="add_wash_frequency_date_hint">Selecciona la fecha de la frecuencia de baño</string>
+    <string name="delete_wash_frequency">Eliminar la frecuencia de baño</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

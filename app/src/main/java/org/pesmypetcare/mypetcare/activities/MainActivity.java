@@ -737,6 +737,35 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
+    public void addWashFrequencyForDate(Pet pet, int newWashFrequency, String date) {
+        trAddNewWashFrequency.setUser(user);
+        trAddNewWashFrequency.setPet(pet);
+        trAddNewWashFrequency.setDateTime(DateTime.Builder.buildDateString(date));
+        trAddNewWashFrequency.setNewWashFrequency(newWashFrequency);
+        try {
+            trAddNewWashFrequency.execute();
+        } catch (NotPetOwnerException e) {
+            Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
+            toast.show();
+        }
+
+        hideWindowSoftKeyboard();
+    }
+
+    @Override
+    public void deleteWashFrequencyForDate(Pet pet, String date) {
+        trDeleteWashFrequency.setUser(user);
+        trDeleteWashFrequency.setPet(pet);
+        trDeleteWashFrequency.setDateTime(DateTime.Builder.buildDateString(date));
+        try {
+            trDeleteWashFrequency.execute();
+        } catch (NotPetOwnerException e) {
+            Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {

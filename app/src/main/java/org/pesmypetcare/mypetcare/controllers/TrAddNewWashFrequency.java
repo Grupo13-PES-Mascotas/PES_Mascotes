@@ -4,11 +4,13 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 public class TrAddNewWashFrequency {
     private PetManagerService petManagerService;
     private User user;
     private Pet pet;
+    private DateTime dateTime;
     private int newWashFrequency;
 
     public TrAddNewWashFrequency(PetManagerService petManagerService) {
@@ -23,6 +25,10 @@ public class TrAddNewWashFrequency {
         this.pet = pet;
     }
 
+    public void setDateTime(DateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
     public void setNewWashFrequency(int newWashFrequency) {
         this.newWashFrequency = newWashFrequency;
     }
@@ -33,6 +39,6 @@ public class TrAddNewWashFrequency {
         }
 
         petManagerService.updateWashFrequency(user, pet, newWashFrequency);
-        pet.setWashFrequency(newWashFrequency);
+        pet.setWashFrequencyForDate(newWashFrequency, dateTime);
     }
 }
