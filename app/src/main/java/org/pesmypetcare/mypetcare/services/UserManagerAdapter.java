@@ -90,7 +90,8 @@ public class UserManagerAdapter implements UserManagerService {
     public void deleteUser(User user) {
         try {
             ServiceLocator.getInstance().getUserManagerClient().deleteUser(user.getToken(), user.getUsername());
-            //ServiceLocator.getInstance().getUserManagerClient().deleteUserFromDatabase(user.getToken(), user.getUsername());
+            //ServiceLocator.getInstance().getUserManagerClient().
+            // deleteUserFromDatabase(user.getToken(), user.getUsername());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -110,7 +111,8 @@ public class UserManagerAdapter implements UserManagerService {
     @Override
     public void createUser(String uid, String username, String email, String password) {
         try {
-            ServiceLocator.getInstance().getUserManagerClient().createUser(uid, new UserData(username, email, password));
+            ServiceLocator.getInstance().getUserManagerClient().createUser(uid,
+                    new UserData(username, email, password));
         } catch (ExecutionException | InterruptedException | JSONException e) {
             e.printStackTrace();
         }

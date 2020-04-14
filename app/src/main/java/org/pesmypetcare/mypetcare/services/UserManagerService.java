@@ -53,7 +53,7 @@ public interface UserManagerService {
     void createUser(String uid, String username, String email, String password);
 
     /**
-     * Delete a user from database
+     * Delete a user from database.
      * @param username User username
      */
     void deleteUserFromDatabase(String username);
