@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 
 import org.pesmypetcare.mypetcare.features.users.User;
 
+import java.util.concurrent.ExecutionException;
+
 public interface UserManagerService {
 
     /**
@@ -43,11 +45,18 @@ public interface UserManagerService {
 
     /**
      * Creates the user.
+     * @param username User username
      * @param uid User identifier
      * @param email User email
      * @param password User password
      */
-    void createUser(String uid, String email, String password);
+    void createUser(String uid, String username, String email, String password);
+
+    /**
+     * Delete a user from database.
+     * @param username User username
+     */
+    void deleteUserFromDatabase(String username);
 
     /**
      * Updates the image of the user.
@@ -55,4 +64,11 @@ public interface UserManagerService {
      * @param bitmap The bitmap of the image to be assigned
      */
     void updateUserImage(User user, Bitmap bitmap);
+
+    /**
+     * User with this username exists.
+     * @param username The username
+     * @return True if exists a user with the same username, false otherwise
+     */
+    boolean usernameExists(String username) throws ExecutionException, InterruptedException;
 }

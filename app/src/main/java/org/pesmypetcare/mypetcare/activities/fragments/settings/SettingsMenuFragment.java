@@ -63,7 +63,7 @@ public class SettingsMenuFragment extends Fragment {
         setEmail();
         changeEmail();
         isChangeLanguageActivated = false;
-        binding.changeEmail.getEditText().setText(user.getEmail());
+        Objects.requireNonNull(binding.changeEmail.getEditText()).setText(user.getEmail());
         return binding.getRoot();
     }
 
@@ -165,9 +165,7 @@ public class SettingsMenuFragment extends Fragment {
      * Initializes the listeners of the Delete Account button.
      */
     private void deleteAccountListener() {
-        binding.deleteAccountButton.setOnClickListener(v -> {
-            showAlertDialogDeleteAccount();
-        });
+        binding.deleteAccountButton.setOnClickListener(v -> showAlertDialogDeleteAccount());
     }
 
     /**

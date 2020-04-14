@@ -84,7 +84,7 @@ dependencies {
     androidTestImplementation 'androidx.test:core:1.2.0'
     implementation 'com.google.firebase:firebase-core:17.3.0'
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation project(path: ':usermanagerlib')
+    implementation project(path: ':usermanagerlib-v2.1-sign-up')
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
