@@ -83,7 +83,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -376,6 +375,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeActionDrawerToggle();
         setUpNavigationDrawer();
         setStartFragment();
+        hideWindowSoftKeyboard();
+    }
+
+    /**
+     * Hides the soft keyboard.
+     */
+    public void hideWindowSoftKeyboard() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
@@ -713,22 +719,21 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
             toast.show();
         }
+
+        hideWindowSoftKeyboard();
     }
 
-    private DateTime getDateTime(String date) {
-        String[] dateValues = date.split("-");
-        int year = Integer.parseInt(dateValues[0]);
-        int month = Integer.parseInt(dateValues[1]);
-        int day = Integer.parseInt(dateValues[2]);
-
-        DateTime dateTime = null;
-
+    @Override
+    public void deleteWeightForDate(Pet pet, String date) {
+        trDeleteWeight.setUser(user);
+        trDeleteWeight.setPet(pet);
+        trDeleteWeight.setDateTime(DateTime.Builder.buildDateString(date));
         try {
-            dateTime = new DateTime(year, month, day, 0, 0, 0);
-        } catch (InvalidFormatException e) {
-            e.printStackTrace();
+            trDeleteWeight.execute();
+        } catch (NotPetOwnerException e) {
+            Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
+            toast.show();
         }
-        return dateTime;
     }
 
     @Override

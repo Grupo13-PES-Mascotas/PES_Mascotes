@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
@@ -30,7 +31,7 @@ import java.util.Objects;
 
 public class InfoPetHealthFragment extends Fragment implements HealthBottomSheetCommunication {
     private static final String BOTTOM_SHEET_TAG = "Bottom sheet";
-    public static final int CHART_SIZE = 500;
+    private static final int CHART_SIZE = 500;
     private FragmentInfoPetHealthBinding binding;
     private TextView statisticTitle;
     private MaterialButton btnAddNewStatistic;
@@ -65,14 +66,24 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
             barChart.previousRegion();
         });
 
+        btnAddNewStatistic.setOnClickListener(v -> {
+            createAddWeightDialog();
+        });
+
         barChart.setOnTouchListener((view, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 int pressedBar = ((BarChart) view).getPressedBar(event.getX(), event.getY());
 
                 if (pressedBar != -1) {
-                    System.out.println("BAR " + pressedBar + ": " + barChart.getValueAtBar(pressedBar));
-                } else {
-                    System.out.println("NO BAR HAS BEEN PRESSED");
+                    double value = barChart.getYvalueAt(pressedBar - 1);
+                    int statisticId = barChart.getSelectedStatistic();
+
+                    switch (statisticId) {
+                        case StatisticData.WEIGHT_STATISTIC:
+                            createShowWeightDialog(barChart.getXvalueAt(pressedBar - 1), value);
+                            break;
+                        default:
+                    }
                 }
 
                 view.performClick();
@@ -96,7 +107,7 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
         btnAddNewStatistic.setOnClickListener(v -> {
             switch (statisticId) {
                 case StatisticData.WEIGHT_STATISTIC:
-                    createWeightDialog();
+                    createAddWeightDialog();
                     break;
                 case StatisticData.WASH_FREQUENCY_STATISTIC:
 
@@ -106,7 +117,7 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
         });
     }
 
-    private void createWeightDialog() {
+    private void createAddWeightDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()),
             R.style.AlertDialogTheme);
         dialog.setTitle(R.string.add_weight);
@@ -133,16 +144,39 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
             btnAddWeightDate.setText(formattedDate);
         });
 
-        dialog.setNegativeButton(R.string.negative_response, (dialog1, which) -> {
-            dialog1.cancel();
-        });
-        dialog.setPositiveButton(R.string.affirmative_response, (dialog1, which) -> {
-            InfoPetFragment.getCommunication().addWeightForDate(InfoPetFragment.getPet(),
-                Double.parseDouble(Objects.requireNonNull(weight.getText()).toString()),
-                (String) btnAddWeightDate.getText());
-            dialog1.dismiss();
+        dialog.setPositiveButton(R.string.accept, (dialog1, which) -> {
+            if (!isAnyFieldEmpty(weight, btnAddWeightDate)) {
+                InfoPetFragment.getCommunication().addWeightForDate(InfoPetFragment.getPet(),
+                    Double.parseDouble(Objects.requireNonNull(weight.getText()).toString()),
+                    (String) btnAddWeightDate.getText());
+                dialog1.dismiss();
 
+                barChart.updatePet(InfoPetFragment.getPet());
+            }
+        });
+
+        dialog.show();
+    }
+
+    private boolean isAnyFieldEmpty(TextInputEditText weight, MaterialButton btnAddWeightDate) {
+        return Objects.requireNonNull(weight.getText()).toString().equals("") || btnAddWeightDate.getText()
+            .equals(getString(R.string.add_weight_date_hint));
+    }
+
+    private void createShowWeightDialog(String date, double value) {
+        AlertDialog dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()), R.style.AlertDialogTheme)
+            .create();
+        dialog.setTitle(value + " kg");
+
+        View showWeightLayout = getLayoutInflater().inflate(R.layout.show_weight_dialog, null);
+        dialog.setView(showWeightLayout);
+
+        MaterialButton btnDeleteWeightDate = showWeightLayout.findViewById(R.id.deleteWeightDate);
+        btnDeleteWeightDate.setOnClickListener(v -> {
+            InfoPetFragment.getCommunication().deleteWeightForDate(InfoPetFragment.getPet(), date);
             barChart.updatePet(InfoPetFragment.getPet());
+
+            dialog.dismiss();
         });
 
         dialog.show();

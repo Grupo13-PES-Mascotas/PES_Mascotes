@@ -127,6 +127,10 @@
     <string name="add_weight_message">Add the new weight and select the date</string>
     <string name="add_weight_hint">Weight (kg)</string>
     <string name="add_weight_date_hint"> Select the weight date</string>
+    <string name="delete_weight">Delete weight</string>
+    <string name="weight_deleted">Weight deleted</string>
+    <string name="back_to_return_or_outside">Press back or outside to close</string>
+    <string name="accept">Accept</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

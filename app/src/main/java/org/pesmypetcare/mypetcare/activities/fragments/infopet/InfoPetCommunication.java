@@ -39,4 +39,6 @@ public interface InfoPetCommunication {
     void changeToMainView();
 
     void addWeightForDate(Pet pet, double newWeight, String date);
+
+    void deleteWeightForDate(Pet pet, String date);
 }

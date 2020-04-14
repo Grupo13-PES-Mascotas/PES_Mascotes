@@ -50,7 +50,7 @@ public class BarChart extends View {
     private Paint axisPaint;
     private Paint barPaint;
     private Paint textPaint;
-    private int selectedStatistic = 6;
+    private int selectedStatistic = 0;
     private int dataRegion;
     private static StatisticData[] statisticData;
     private float barDrawingFactor;
@@ -291,10 +291,22 @@ public class BarChart extends View {
         return bar.left <= xPos && xPos <= bar.right && bar.top <= yPos && yPos <= bar.bottom;
     }
 
-    public double getValueAtBar(int pressedBar) {
+    public double getYvalueAt(int pressedBar) {
         List<Double> yValues = statisticData[selectedStatistic].getyAxisValues();
         int next = getNextValue(yValues);
 
-        return yValues.get(next - (pressedBar - 1));
+        return yValues.get(next - pressedBar);
+    }
+
+    public int getSelectedStatistic() {
+        return selectedStatistic;
+    }
+
+    public String getXvalueAt(int xPos) {
+        List<String> xValues = statisticData[selectedStatistic].getxAxisValues();
+        List<Double> yValues = statisticData[selectedStatistic].getyAxisValues();
+        int next = getNextValue(yValues);
+
+        return xValues.get(next - xPos);
     }
 }
