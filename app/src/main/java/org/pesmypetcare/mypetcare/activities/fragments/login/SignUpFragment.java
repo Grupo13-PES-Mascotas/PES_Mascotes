@@ -76,18 +76,20 @@ public class SignUpFragment extends Fragment {
      * This method is responsible for the creation and validation of the new user.
      */
     private void userCreationAndValidation() throws ExecutionException, InterruptedException {
-        userManagerService.usernameExists(username);
-        mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
-                if (task.isSuccessful()) {
-                    sendEmailVerification();
-                    userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(), username, email, password);
-                    mAuth.signOut();
-                } else {
-                    testToast(Objects.requireNonNull(task.getException()).toString());
-                    userManagerService.deleteUserFromDatabase(username);
-                }
-            });
+        if (!userManagerService.usernameExists(username)) {
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
+                        if (task.isSuccessful()) {
+                            sendEmailVerification();
+                            userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(), username, email, password);
+                            mAuth.signOut();
+                        } else {
+                            testToast(Objects.requireNonNull(task.getException()).toString());
+                        }
+                    });
+        } else {
+            testToast(getString(R.string.repeatedUsername));
+        }
     }
 
     /**

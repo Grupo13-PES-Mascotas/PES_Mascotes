@@ -69,5 +69,5 @@ public interface UserManagerService {
      * User with this username exists.
      * @param username The username
      */
-    void usernameExists(String username) throws ExecutionException, InterruptedException;
+    boolean usernameExists(String username) throws ExecutionException, InterruptedException;
 }

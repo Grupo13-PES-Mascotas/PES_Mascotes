@@ -32,7 +32,6 @@ public class TrObtainUser {
      * @throws PetRepeatException The user has already this pet registered.
      */
     public void execute() throws PetRepeatException {
-        System.out.println("hola" + username);
         result = userManagerService.findUserByUsername(username);
         result.setPets((ArrayList<Pet>) petManagerService.findPetsByOwner(result));
     }

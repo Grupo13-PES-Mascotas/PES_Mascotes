@@ -90,8 +90,8 @@ public class UserManagerAdapter implements UserManagerService {
     public void deleteUser(User user) {
         try {
             ServiceLocator.getInstance().getUserManagerClient().deleteUser(user.getToken(), user.getUsername());
-            //ServiceLocator.getInstance().getUserManagerClient().
-            // deleteUserFromDatabase(user.getToken(), user.getUsername());
+            ServiceLocator.getInstance().getUserManagerClient().deleteUserFromDatabase(user.getToken(),
+                    user.getUsername());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -139,7 +139,7 @@ public class UserManagerAdapter implements UserManagerService {
     }
 
     @Override
-    public void usernameExists(String username) throws ExecutionException, InterruptedException {
-        ServiceLocator.getInstance().getUserManagerClient().usernameAlreadyExists(username);
+    public boolean usernameExists(String username) throws ExecutionException, InterruptedException {
+        return ServiceLocator.getInstance().getUserManagerClient().usernameAlreadyExists(username);
     }
 }

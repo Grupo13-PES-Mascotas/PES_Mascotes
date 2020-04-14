@@ -76,7 +76,12 @@ public class StubUserManagerService implements UserManagerService {
     }
 
     @Override
-    public void usernameExists(String username) throws ExecutionException, InterruptedException {
-        // No used here
+    public boolean usernameExists(String username) throws ExecutionException, InterruptedException {
+        for (User nextUser : data) {
+            if (username.equals(nextUser.getUsername())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

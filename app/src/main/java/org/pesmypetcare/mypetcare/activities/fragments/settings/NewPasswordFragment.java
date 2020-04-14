@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 import org.pesmypetcare.mypetcare.databinding.FragmentNewPasswordBinding;
 
 public class NewPasswordFragment extends Fragment {
@@ -48,9 +45,6 @@ public class NewPasswordFragment extends Fragment {
      */
     private void changePassword() {
         communication.changePassword(passwd);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        assert user != null;
-        user.updatePassword(passwd);
     }
 
     /**
