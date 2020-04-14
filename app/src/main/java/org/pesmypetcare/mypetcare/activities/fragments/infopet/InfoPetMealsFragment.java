@@ -28,7 +28,7 @@ import java.util.Objects;
 public class InfoPetMealsFragment extends Fragment {
     private static final String EOL = "\n";
     private static final int STROKE_WIDTH = 5;
-    public static final String SPACE = " ";
+    private static final String SPACE = " ";
     private static InfoPetCommunication communication;
     private FragmentInfoPetMealsBinding binding;
     private SwitchMaterial intervalSelector;
