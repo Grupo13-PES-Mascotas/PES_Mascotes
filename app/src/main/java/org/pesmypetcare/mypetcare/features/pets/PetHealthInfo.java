@@ -353,6 +353,10 @@ public class PetHealthInfo {
         this.petNeeds = petNeeds;
     }
 
+    /**
+     * Select the date.
+     * @param date The dateTime to select the date from
+     */
     private void selectDate(DateTime date) {
         date.setHour(0);
         date.setMinutes(0);

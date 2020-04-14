@@ -7,6 +7,7 @@ import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import static org.junit.Assert.assertTrue;
@@ -52,7 +53,7 @@ public class TestTrRegisterNewPet {
         Pet pet = new Pet();
         pet.setName("Linux");
         pet.setGender(GenderType.Male);
-        pet.setBirthDate("2 MAR 2020");
+        pet.setBirthDate(DateTime.Builder.buildDateString("2020-03-02"));
         pet.setBreed("Husky");
         pet.setRecommendedDailyKiloCalories(2);
         pet.setWashFrequency(2);

@@ -41,6 +41,7 @@ public class Pet {
     public Pet() {
         this.events = new ArrayList<>();
         this.healthInfo = new PetHealthInfo();
+        this.birthDate = DateTime.Builder.buildDateString("2020-01-1");
     }
 
     public Pet(Bundle petInfo) {
@@ -103,6 +104,7 @@ public class Pet {
         this.name = name;
         this.events = new ArrayList<>();
         this.healthInfo = new PetHealthInfo();
+        this.birthDate = DateTime.Builder.buildDateString("2020-01-1");
     }
 
     /**
