@@ -43,10 +43,6 @@ public class EditMealFragment extends Fragment {
     private boolean isMealTimeSelected;
     private boolean updatesDate;
 
-    private enum Months {
-        Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,6 +83,10 @@ public class EditMealFragment extends Fragment {
         initializeRemoveMealButton();
     }
 
+    /**
+     * Method responsible for initializing the string for the inputMealDate button.
+     * @param mealDate The date of the meal
+     */
     private void showMealDate(DateTime mealDate) {
         StringBuilder dateString = new StringBuilder();
         dateString.append(mealDate.getYear()).append(DATESEPARATOR);
@@ -101,7 +101,10 @@ public class EditMealFragment extends Fragment {
         binding.inputMealDate.setText(dateString);
     }
 
-
+    /**
+     * Method responsible for initializing the string for the inputMealTime button.
+     * @param mealDate The date of the meal
+     */
     private void showMealTime(DateTime mealDate) {
         StringBuilder timeString = new StringBuilder();
         if (mealDate.getHour() < FIRST_TWO_DIGITS) {
@@ -133,6 +136,9 @@ public class EditMealFragment extends Fragment {
         });
     }
 
+    /**
+     * Method responsible for initializing the editButton listener.
+     */
     private void initializeEditButtonListener() {
         String newDate = getDateTime().toString();
         String mealName = Objects.requireNonNull(binding.inputMealName.getText()).toString();
@@ -142,14 +148,20 @@ public class EditMealFragment extends Fragment {
         communication.updatePetMeal(pet, meal, newDate, updatesDate);
     }
 
+    /**
+     * Method responsible for reloading the current fragment.
+     */
     private void reloadFragment() {
-        pet.deleteAllMeals();
+        pet.deleteAllEvents();
         FragmentTransaction ft = Objects.requireNonNull(getActivity())
             .getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.mainActivityFrameLayout, new InfoPetMealsFragment());
         ft.commit();
     }
 
+    /**
+     * Method responsible for initializing the addButton listener.
+     */
     private void initializeAddButtonListener() {
         DateTime mealDate = getDateTime();
         double kcal = Double.parseDouble(Objects.requireNonNull(binding.inputMealCal.getText()).toString());
@@ -162,6 +174,10 @@ public class EditMealFragment extends Fragment {
         }
     }
 
+    /**
+     * Method responsible for obtaining the date of the meal in the current format.
+     * @return The dateTime of the meal
+     */
     private DateTime getDateTime() {
         StringBuilder dateString = new StringBuilder(binding.inputMealDate.getText().toString());
         dateString.append('T');

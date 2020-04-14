@@ -377,7 +377,10 @@ public class Pet {
         return mealEvents;
     }
 
-    public void deleteAllMeals() {
+    /**
+     * Method responsible for cleaning the event list of the pet.
+     */
+    public void deleteAllEvents() {
        events = new ArrayList<>();
     }
 

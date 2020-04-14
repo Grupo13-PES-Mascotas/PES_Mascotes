@@ -20,7 +20,6 @@ public class MealManagerAdapter implements MealManagerService {
         String owner = user.getUsername();
         String petName = pet.getName();
         MealData body = new MealData(meal.getMealName(), meal.getKcal());
-        //System.out.println("Meal data pa la libreria " + meal.getDateTime());
         Meal libMeal = new Meal(meal.getDateTime(), body);
         try {
             ServiceLocator.getInstance().getMealManagerClient().createMeal(accessToken, owner, petName, libMeal);
