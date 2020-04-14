@@ -68,6 +68,7 @@ public interface UserManagerService {
     /**
      * User with this username exists.
      * @param username The username
+     * @return True if exists a user with the same username, false otherwise
      */
     boolean usernameExists(String username) throws ExecutionException, InterruptedException;
 }
