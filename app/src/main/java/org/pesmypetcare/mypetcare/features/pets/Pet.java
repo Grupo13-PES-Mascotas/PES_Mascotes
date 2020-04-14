@@ -9,11 +9,15 @@ import org.pesmypetcare.mypetcare.utilities.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Pet {
     public static final String BUNDLE_NAME = "petName";
@@ -35,10 +39,14 @@ public class Pet {
     private String previousName;
     private Bitmap profileImage;
     private ArrayList<Event> events;
+    private HashMap<Integer, Integer> periodsWeek;
+    private HashMap<Integer,Integer> periodsMonth;
+    private boolean dailyNotification;
 
     public Pet() {
         this.events = new ArrayList<>();
         this.healthInfo = new PetHealthInfo();
+        this.periodsWeek = new HashMap<Integer, Integer>();
     }
 
     public Pet(Bundle petInfo) {
@@ -365,5 +373,51 @@ public class Pet {
     @Override
     public String toString() {
         return "{" + name + ", " + (profileImage == null ? "NULL" : "NO_NULL") + "}";
+    }
+
+    public void addPeriodicNotification(String description, String dateTime, int period, int day) throws ParseException {
+        if (period == 7 || period == 14) {
+            putInPeriodsWeek(period, day);
+        }
+        else if (period == -1 || period == -3) {
+            putInPeriodsMonth(period, day);
+        }
+        else if(period == 0) {
+            dailyNotification = true;
+        }
+    }
+
+    private void putInPeriodsMonth(int period, int day) {
+        if (period == -1) {
+            periodsWeek.put(day, 0);
+        }
+        else {
+            periodsWeek.put(day, 2);
+        }
+    }
+
+    private void putInPeriodsWeek(int period, int day) {
+        if (period == 7) {
+            periodsWeek.put(day, 0);
+        }
+        else {
+            periodsWeek.put(day, 1);
+        }
+    }
+
+    private boolean isPeriodicNotificationDay(String dateText) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+        Date date = formatter.parse(dateText.replaceAll("Z$", "+0000"));
+        DateFormat dfWeek = new SimpleDateFormat("u", Locale.ENGLISH);
+        DateFormat dfMonth = new SimpleDateFormat("dd", Locale.ENGLISH);
+        int dayOfWeek = Integer.parseInt(dfWeek.format(date));
+        int dayOfMonth = Integer.parseInt(dfMonth.format(date));
+        if (periodsWeek.containsKey(dayOfWeek)) {
+            return periodsWeek.get(dayOfWeek) == 0;
+        }
+        if (periodsMonth.containsKey(dayOfMonth)) {
+            return periodsMonth.get(dayOfMonth) == 0;
+        }
+        return false;
     }
 }

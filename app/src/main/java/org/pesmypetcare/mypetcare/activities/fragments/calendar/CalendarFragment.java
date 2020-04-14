@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.fragments.calendar;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -31,6 +32,8 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,6 +60,7 @@ public class CalendarFragment extends Fragment {
     private User user;
     private Pet selectedPet;
     private CalendarCommunication communication;
+    private String selectedDate;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -66,24 +70,170 @@ public class CalendarFragment extends Fragment {
         user = Objects.requireNonNull(communication).getUser();
         setUpCalendar();
 
-        binding.btnAddPersonalEvent.setOnClickListener(v -> initializeDialog());
+        binding.btnAddPersonalEvent.setOnClickListener(v -> {
+            try {
+                initializeDialog();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+        binding.btnAddPeriodicEvent.setOnClickListener(v -> {
+            try {
+                initializePeriodicDialog();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+
         return binding.getRoot();
     }
+
 
     /**
      * Initialize the dialog for a new personal event.
      */
-    private void initializeDialog() {
+    private void initializeDialog() throws ParseException {
         MaterialAlertDialogBuilder newPersonal = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()),
                 R.style.AlertDialogTheme);
         initializeDialogComponents(newPersonal);
         newPersonal.show();
     }
 
+    private void initializePeriodicDialog() throws ParseException {
+        MaterialAlertDialogBuilder newPeriodic = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()),
+                R.style.AlertDialogTheme);
+        initializeDialogComponentsPeriodic(newPeriodic);
+        newPeriodic.show();
+    }
+
+    private void initializeDialogComponentsPeriodic(MaterialAlertDialogBuilder newPeriodic) throws ParseException {
+        LinearLayout layout = new LinearLayout(getContext());
+        EditText reasonText = initializeDialogLayout(layout);
+        reasonText.setContentDescription(getString(R.string.reasonText));
+        LinearLayout time = new LinearLayout(getContext());
+        TextView dateText = initializeTimeLayout(time);
+        EditText timeText = putHourTimeLayout(time);
+        timeText.setContentDescription(getString(R.string.timeText));
+        layout.addView(time);
+        Spinner sp_pets = initializeSpinner(layout);
+        sp_pets.setContentDescription(getString(R.string.selectPet));
+        Spinner sp_period = initializeSpinnerPeriod(layout);
+        sp_period.setContentDescription(getString(R.string.selectPeriodicity));
+        dialogElementsPeriodic(newPeriodic, layout, reasonText, dateText, timeText, sp_pets, sp_period);
+    }
+
+    private void dialogElementsPeriodic(MaterialAlertDialogBuilder newPeriodic, LinearLayout layout, EditText
+            reasonText, TextView dateText, EditText timeText, Spinner sp_pets, Spinner sp_period) {
+        newPeriodic.setTitle(R.string.periodic_notification_title);
+        newPeriodic.setMessage(R.string.dialog_new_periodic_message);
+        newPeriodic.setView(layout);
+        cancelDialog(newPeriodic);
+        createPeriodicEventListener(newPeriodic, reasonText, dateText, timeText, sp_pets, sp_period);
+    }
+
+    private void createPeriodicEventListener(MaterialAlertDialogBuilder newPeriodic, EditText reasonText, TextView
+            dateText, EditText timeText, Spinner sp_pets, Spinner sp_period) {
+        newPeriodic.setPositiveButton(getString(R.string.create), (dialog, which) -> {
+            if (sp_pets.getSelectedItem() != null) {
+                if (reasonText.getText().toString().length() != 0) {
+                    try {
+                        createPeriodicNotification(reasonText, dateText, timeText, sp_pets, sp_period);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    toastText(getString(R.string.no_description));
+                }
+            } else {
+                toastText(getString(R.string.add_a_pet));
+            }
+        });
+    }
+
+    private void createPeriodicNotification(EditText reasonText, TextView dateText, EditText timeText,
+                                            Spinner sp_pets, Spinner sp_period) throws ParseException {
+        String petName = sp_pets.getSelectedItem().toString();
+        String periodicity = sp_period.getSelectedItem().toString();
+        int period = setPeriodicity(periodicity);
+        int periodDay;
+        StringBuilder dateTime = new StringBuilder(dateText.getText());
+        dateTime.append('T');
+        dateTime.append(timeText.getText());
+        getPet(petName);
+        if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
+            periodDay = getPeriodicityDay(dateTime.toString(), period);
+            selectedPet.addPeriodicNotification(reasonText.getText().toString(), dateTime.toString(), period, periodDay);
+            communication.newPeriodicNotification(selectedPet, period, reasonText.getText().toString(), dateTime.toString());
+            Calendar c = Calendar.getInstance();
+            calendarAlarmInitialization(dateTime, c);
+            communication.schedulePeriodicNotification(getContext(), c.getTimeInMillis() , selectedPet.getName(), reasonText.getText().toString(), period);
+        } else {
+            toastText(getString(R.string.incorrect_entry));
+        }
+    }
+
+    private int getPeriodicityDay(String dateTime, int period) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+        Date date = formatter.parse(dateTime.replaceAll("Z$", "+0000"));
+        DateFormat dfWeek = new SimpleDateFormat("u", Locale.ENGLISH);
+        DateFormat dfMonth = new SimpleDateFormat("dd", Locale.ENGLISH);
+        switch (period) {
+            case 1:
+                return 0;
+            case 7:
+            case 14:
+                return Integer.parseInt(dfWeek.format(date));
+            case -1:
+            case -3:
+                return Integer.parseInt(dfMonth.format(date));
+            default:
+                return -1;
+        }
+    }
+
+    private int setPeriodicity(String periodicity) {
+        switch (periodicity) {
+            case "Every day":
+                return 1;
+            case "Every week":
+                return 7;
+            case "Every 2 weeks":
+                return 14;
+            case "Every month":
+                return -1;
+            case "Every 3 months":
+                return -3;
+            default:
+                return 0;
+        }
+    }
+
+    private Spinner initializeSpinnerPeriod(LinearLayout layout) {
+        final ArrayAdapter<String> adp = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
+                android.R.layout.simple_spinner_item, (List<String>) getPeriodicityOptions());
+        Spinner sp = new Spinner(getContext());
+        sp.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        sp.setAdapter(adp);
+        layout.addView(sp);
+        return sp;
+    }
+
+    private ArrayList<?> getPeriodicityOptions() {
+        ArrayList<String> PeriodOpt = new ArrayList<>();
+
+        PeriodOpt.add(getString(R.string.two_weeks));
+        PeriodOpt.add(getString(R.string.one_week));
+        PeriodOpt.add(getString(R.string.one_day));
+        PeriodOpt.add(getString(R.string.one_month));
+        PeriodOpt.add(getString(R.string.three_months));
+        return PeriodOpt;
+    }
+
     /**
      * Initialize the dialog components for a new personal event.
      */
-    private void initializeDialogComponents(MaterialAlertDialogBuilder newPersonal) {
+    private void initializeDialogComponents(MaterialAlertDialogBuilder newPersonal) throws ParseException {
         LinearLayout layout = new LinearLayout(getContext());
         EditText reasonText = initializeDialogLayout(layout);
         reasonText.setContentDescription(getString(R.string.reasonText));
@@ -170,6 +320,27 @@ public class CalendarFragment extends Fragment {
     }
 
     /**
+     * Initializes the calendar of a alarm.
+     * @param dateTime The time and date of the alarm
+     * @param c The calendar
+     */
+    private void calendarAlarmInitialization(StringBuilder dateTime, Calendar c) {
+        int year = Integer.parseInt(dateTime.substring(0,4));
+        int month = Integer.parseInt(dateTime.substring(5,7));
+        int day = Integer.parseInt(dateTime.substring(8,10));
+        int hour = Integer.parseInt(dateTime.substring(11,13));
+        int min = Integer.parseInt(dateTime.substring(14,16));
+        int sec = Integer.parseInt(dateTime.substring(17,19));
+        c.setTimeInMillis(System.currentTimeMillis());
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month-1);
+        c.set(Calendar.DAY_OF_MONTH, day);
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, min);
+        c.set(Calendar.SECOND, sec);
+    }
+
+    /**
      * Cancel button of the dialog.
      * @param newPersonal The dialog
      */
@@ -212,12 +383,13 @@ public class CalendarFragment extends Fragment {
      * @param time The layout to put the time and date
      * @return The dateText
      */
-    private TextView initializeTimeLayout(LinearLayout time) {
+    private TextView initializeTimeLayout(LinearLayout time) throws ParseException {
         time.setOrientation(LinearLayout.HORIZONTAL);
         time.setGravity(Gravity.CENTER_HORIZONTAL);
         time.setWeightSum(2);
         TextView dateText = new TextView(new ContextThemeWrapper(getContext(), R.style.HintStyle));
-        Date currentTime = Calendar.getInstance().getTime();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-d");
+        Date currentTime = format.parse(selectedDate);
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
         dateText.setText(dateFormat.format(currentTime));
         dateText.setTextColor(Color.parseColor(PRIMARY_COLOR));
@@ -309,11 +481,11 @@ public class CalendarFragment extends Fragment {
      */
     private void addComponents(int year, int month, int dayOfMonth) {
         ArrayList<Pet> pets = user.getPets();
-        String date = DateConversion.getDate(year, month, dayOfMonth);
+        selectedDate = DateConversion.getDate(year, month, dayOfMonth);
         binding.eventInfoLayout.removeAllViews();
         for (Pet pet : pets) {
             CalendarEventsView calendarEventsView = new CalendarEventsView(getContext(), null);
-            calendarEventsView.showEvents(pet, date);
+            calendarEventsView.showEvents(pet, selectedDate);
             List<PetComponentView> petComponents = calendarEventsView.getPetComponents();
             for (PetComponentView p : petComponents) {
                 p.setOnClickListener(v -> deleteEventDialog(p));

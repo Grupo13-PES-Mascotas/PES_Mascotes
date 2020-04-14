@@ -94,7 +94,7 @@ public class PetManagerAdapter implements PetManagerService {
         PetData petData = new PetData();
 
         registerPet.setName(pet.getName());
-        petData.setBirth(pet.getBirthDate());
+        petData.setBirth("2020-04-10");
         petData.setBreed(pet.getBreed());
         petData.setGender(pet.getGender());
         petData.setPathologies(pet.getPathologies());

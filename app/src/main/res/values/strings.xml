@@ -91,7 +91,7 @@
     <string name="user_profile_image">My profile image</string>
     <string name="dialog_new_event">New personal event</string>
     <string name="dialog_new_event_message">Enter the event description, its time and select the pet that will participate.</string>
-    <string name="reasonText">reasonText</string>
+        <string name="reasonText">reasonText</string>
     <string name="timeText">timeText</string>
     <string name="spinnerText">spinnerText</string>
     <string name="create">Create</string>
@@ -108,6 +108,16 @@
     <string name="pet_info_health">Health</string>
     <string name="pet_info_medication">Medication</string>
     <string name="pet_info_meal">Meals</string>
+    <string name="selectPet">Select pet</string>
+    <string name="selectPeriodicity">Select periodicity</string>
+    <string name="periodic_notification_title">Periodic notification</string>
+    <string name="two_weeks">Every 2 weeks</string>
+    <string name="one_week">Every week</string>
+    <string name="one_day">Every day</string>
+    <string name="one_month">Every month</string>
+    <string name="three_months">Every 3 months</string>
+    <string name="dialog_new_periodic_message">Enter the event description, its periodicity, its time and select the pet that will participate.</string>
+
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

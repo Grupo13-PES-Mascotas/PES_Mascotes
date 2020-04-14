@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -11,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,6 +62,7 @@ import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
+import org.pesmypetcare.mypetcare.controllers.TrNewPeriodicNotification;
 import org.pesmypetcare.mypetcare.controllers.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetImages;
 import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
@@ -126,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrNewPersonalEvent trNewPersonalEvent;
     private TrDeletePersonalEvent trDeletePersonalEvent;
     private FloatingActionButton flAddCalendarEvent;
+    private TrNewPeriodicNotification trNewPeriodicNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -613,6 +618,19 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeletePersonalEvent.setEvent(event);
         trDeletePersonalEvent.execute();
          */
+    }
+
+    @Override
+    public void newPeriodicNotification(Pet selectedPet, int period, String reasonText, String dateTime) {
+        /*
+        trNewPeriodicNotification.setPet(selectedPet);
+        trNewPeriodicNotification.setEvent(new Event(reasonText, dateTime));
+         */
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void schedulePeriodicNotification(Context context, long time, String title, String text, int period) {
+
     }
 
 

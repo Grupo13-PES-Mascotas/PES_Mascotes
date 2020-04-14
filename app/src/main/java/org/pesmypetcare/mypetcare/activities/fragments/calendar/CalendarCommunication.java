@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.fragments.calendar;
 
+import android.content.Context;
+
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -26,4 +28,8 @@ public interface CalendarCommunication {
      * @param event The event
      */
     void deletePersonalEvent(Pet pet, Event event);
+
+    void newPeriodicNotification(Pet selectedPet, int periodicity, String toString, String toString1);
+
+    void schedulePeriodicNotification(Context context, long timeInMillis, String pet, String toString, int period);
 }
