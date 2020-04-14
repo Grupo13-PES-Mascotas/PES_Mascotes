@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -62,6 +63,21 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
 
         binding.btnPrevious.setOnClickListener(v -> {
             barChart.previousRegion();
+        });
+
+        barChart.setOnTouchListener((view, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                int pressedBar = ((BarChart) view).getPressedBar(event.getX(), event.getY());
+
+                if (pressedBar != -1) {
+                    System.out.println("BAR " + pressedBar + ": " + barChart.getValueAtBar(pressedBar));
+                } else {
+                    System.out.println("NO BAR HAS BEEN PRESSED");
+                }
+
+                view.performClick();
+            }
+            return true;
         });
 
         return binding.getRoot();

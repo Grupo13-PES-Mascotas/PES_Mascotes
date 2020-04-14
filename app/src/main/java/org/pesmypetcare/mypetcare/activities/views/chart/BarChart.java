@@ -53,6 +53,7 @@ public class BarChart extends View {
     private int selectedStatistic = 6;
     private int dataRegion;
     private static StatisticData[] statisticData;
+    private float barDrawingFactor;
 
     public BarChart(Context context, @Nullable AttributeSet attrs, Pet pet) {
         super(context, attrs);
@@ -94,15 +95,14 @@ public class BarChart extends View {
     private void drawBars(Canvas canvas) {
         List<String> xValues = statisticData[selectedStatistic].getxAxisValues();
         List<Double> yValues = statisticData[selectedStatistic].getyAxisValues();
-        float barDrawingFactor = (float) (xDivisionFactor / BAR_PROPORTION);
+        barDrawingFactor = (float) (xDivisionFactor / BAR_PROPORTION);
 
-        int next = yValues.size() - dataRegion * X_AXIS_DIVISIONS - 1;
+        int next = getNextValue(yValues);
         int count = 0;
 
         while (hasValuesRemaining(yValues, next, count)) {
-            float xPoint = (float) (originPoint[X_COORD] + (count + 1) * xDivisionFactor);
-            float yProportion = (float) (yValues.get(next) * Y_AXIS_DIVISIONS / nextTenMultiple);
-            float yPoint = (float) (originPoint[Y_COORD] - yProportion * yDivisionFactor);
+            float xPoint = getXcenterBasePoint(count + 1);
+            float yPoint = getYpoint(yValues, next);
             canvas.drawRect(xPoint - barDrawingFactor, yPoint, xPoint + barDrawingFactor, (float) originPoint[Y_COORD],
                 barPaint);
 
@@ -113,6 +113,15 @@ public class BarChart extends View {
             ++count;
             --next;
         }
+    }
+
+    private float getYpoint(List<Double> yValues, int next) {
+        float yProportion = (float) (yValues.get(next) * Y_AXIS_DIVISIONS / nextTenMultiple);
+        return (float) (originPoint[Y_COORD] - yProportion * yDivisionFactor);
+    }
+
+    private int getNextValue(List<Double> yValues) {
+        return yValues.size() - dataRegion * X_AXIS_DIVISIONS - 1;
     }
 
     private boolean hasValuesRemaining(List<Double> yValues, int next, int count) {
@@ -173,9 +182,13 @@ public class BarChart extends View {
         xDivisionFactor = calculateXDivisionFactor();
 
         for (int next = 1; next <= X_AXIS_DIVISIONS; ++next) {
-            double xPoint = originPoint[X_COORD] + next * xDivisionFactor;
+            double xPoint = getXcenterBasePoint(next);
             canvas.drawLine((int) xPoint, originPoint[Y_COORD], (int) xPoint, originPoint[Y_COORD] + TEN, axisPaint);
         }
+    }
+
+    private float getXcenterBasePoint(int next) {
+        return (float)(originPoint[X_COORD] + next * xDivisionFactor);
     }
 
     private double calculateXDivisionFactor() {
@@ -238,5 +251,50 @@ public class BarChart extends View {
     public void updatePet(Pet pet) {
         addStatistics(pet);
         invalidate();
+    }
+
+    @Override
+    public boolean performClick() {
+        return super.performClick();
+    }
+
+    public int getPressedBar(float xPos, float yPos) {
+        int actual = 0;
+        boolean found = false;
+        List<Double> yValues = statisticData[selectedStatistic].getyAxisValues();
+        int next = getNextValue(yValues);
+
+        while (hasValuesRemaining(yValues, next, actual) && !found) {
+            Rect bar = getBar(actual + 1, yValues, next);
+            found = isPointInsideBar(xPos, yPos, bar);
+            --next;
+            ++actual;
+        }
+
+        if (!found) {
+            return -1;
+        }
+
+        return actual;
+    }
+
+    private Rect getBar(int actual, List<Double> yValues, int next) {
+        float left = getXcenterBasePoint(actual) - barDrawingFactor;
+        float top = getYpoint(yValues, next);
+        float right = getXcenterBasePoint(actual) + barDrawingFactor;
+        float bottom = originPoint[Y_COORD];
+
+        return new Rect((int) left, (int) top, (int) right, (int) bottom);
+    }
+
+    private boolean isPointInsideBar(float xPos, float yPos, Rect bar) {
+        return bar.left <= xPos && xPos <= bar.right && bar.top <= yPos && yPos <= bar.bottom;
+    }
+
+    public double getValueAtBar(int pressedBar) {
+        List<Double> yValues = statisticData[selectedStatistic].getyAxisValues();
+        int next = getNextValue(yValues);
+
+        return yValues.get(next - (pressedBar - 1));
     }
 }
