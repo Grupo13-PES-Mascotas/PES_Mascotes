@@ -394,16 +394,16 @@ public class Pet {
     @NonNull
     @Override
     public String toString() {
-        return "Pet{" +
-            "name='" + name + '\'' +
-            ", gender=" + gender +
-            ", breed='" + breed + '\'' +
-            ", birthDate='" + birthDate + '\'' +
-            ", healthInfo=" + healthInfo +
-            ", owner=" + owner +
-            ", previousName='" + previousName + '\'' +
-            ", profileImage=" + profileImage +
-            ", events=" + events +
-            '}';
+        return "Pet{"
+            + "name='" + name + '\''
+            + ", gender=" + gender
+            + ", breed='" + breed + '\''
+            + ", birthDate='" + birthDate + '\''
+            + ", healthInfo=" + healthInfo
+            + ", owner=" + owner
+            + ", previousName='" + previousName + '\''
+            + ", profileImage=" + profileImage +
+            ", events=" + events
+            + '}';
     }
 }

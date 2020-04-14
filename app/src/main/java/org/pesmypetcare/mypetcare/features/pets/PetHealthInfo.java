@@ -365,16 +365,16 @@ public class PetHealthInfo {
 
     @Override
     public String toString() {
-        return "PetHealthInfo{" +
-            "weight=" + weight +
-            ", recommendedDailyKiloCalories=" + recommendedDailyKiloCalories +
-            ", exerciseFrequency=" + exerciseFrequency +
-            ", weeklyExercise=" + weeklyExercise +
-            ", weeklyKiloCaloriesAverage=" + weeklyKiloCaloriesAverage +
-            ", washFrequency=" + washFrequency +
-            ", pathologies='" + pathologies + '\'' +
-            ", petNeeds=" + petNeeds +
-            '}';
+        return "PetHealthInfo{"
+            + "weight=" + weight
+            + ", recommendedDailyKiloCalories=" + recommendedDailyKiloCalories
+            + ", exerciseFrequency=" + exerciseFrequency
+            + ", weeklyExercise=" + weeklyExercise
+            + ", weeklyKiloCaloriesAverage=" + weeklyKiloCaloriesAverage
+            + ", washFrequency=" + washFrequency
+            + ", pathologies='" + pathologies + '\''
+            + ", petNeeds=" + petNeeds
+            + '}';
     }
 
     private static class TreeComparator implements Comparator<DateTime> {

@@ -37,6 +37,7 @@ public class BarChart extends View {
     private static final int TEXT_SIZE = 24;
     private static final int TEXT_SEPARATOR = 40;
     private static final int TEN = 10;
+    private static StatisticData[] statisticData;
 
     private int width;
     private int height;
@@ -50,10 +51,14 @@ public class BarChart extends View {
     private Paint axisPaint;
     private Paint barPaint;
     private Paint textPaint;
-    private int selectedStatistic = 0;
+    private int selectedStatistic;
     private int dataRegion;
-    private static StatisticData[] statisticData;
     private float barDrawingFactor;
+
+    public BarChart(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        initDrawComponents();
+    }
 
     public BarChart(Context context, @Nullable AttributeSet attrs, Pet pet) {
         super(context, attrs);
@@ -101,7 +106,7 @@ public class BarChart extends View {
 
     /**
      * Draw the bars of the barchart.
-     * @param canvas
+     * @param canvas The canvas where the bars are drawn
      */
     private void drawBars(Canvas canvas) {
         List<String> xValues = statisticData[selectedStatistic].getxAxisValues();
@@ -111,7 +116,7 @@ public class BarChart extends View {
         int next = getNextValue(yValues);
         int count = 0;
 
-        while (hasValuesRemaining(yValues, next, count)) {
+        while (hasValuesRemaining(next, count)) {
             drawActualBar(canvas, xValues, yValues, next, count);
             ++count;
             --next;
@@ -159,12 +164,11 @@ public class BarChart extends View {
 
     /**
      * Check whether there are remaining values to display.
-     * @param yValues The y axis values
      * @param next The index of the next value
      * @param count The number of bars that have been drawn
      * @return True if there are some values to be displayed
      */
-    private boolean hasValuesRemaining(List<Double> yValues, int next, int count) {
+    private boolean hasValuesRemaining(int next, int count) {
         return count < X_AXIS_DIVISIONS && next >= 0;
     }
 
@@ -217,7 +221,7 @@ public class BarChart extends View {
      * @param yPoint The point to which the text is drawn next to
      */
     private void drawYmarkText(Canvas canvas, int next, float yPoint) {
-        int markValue = (int)(next * nextTenMultiple / Y_AXIS_DIVISIONS);
+        int markValue = (int) (next * nextTenMultiple / Y_AXIS_DIVISIONS);
         String markText = String.valueOf(markValue);
         float textWidth = textPaint.measureText(markText);
 
@@ -245,7 +249,7 @@ public class BarChart extends View {
      * @return The Y division factor
      */
     private double calculateYDivisionFactor() {
-        return (double)(originPoint[Y_COORD] - yAxisMaxPoint[Y_COORD]) / Y_AXIS_DIVISIONS;
+        return (double) (originPoint[Y_COORD] - yAxisMaxPoint[Y_COORD]) / Y_AXIS_DIVISIONS;
     }
 
     /**
@@ -253,7 +257,7 @@ public class BarChart extends View {
      * @return The next ten multiple
      */
     private int calculateNextTenMultiple() {
-        return TEN * (int)(maxValue / TEN + 1);
+        return TEN * (int) (maxValue / TEN + 1);
     }
 
     /**
@@ -278,7 +282,7 @@ public class BarChart extends View {
      * @return The X center base point
      */
     private float getXcenterBasePoint(int next) {
-        return (float)(originPoint[X_COORD] + next * xDivisionFactor);
+        return (float) (originPoint[X_COORD] + next * xDivisionFactor);
     }
 
     /**
@@ -286,7 +290,7 @@ public class BarChart extends View {
      * @return The X division factor
      */
     private double calculateXDivisionFactor() {
-        return ((double)(getWidth() - 2 * BORDER_Y)) / (X_AXIS_DIVISIONS + 2);
+        return ((double) (getWidth() - 2 * BORDER_Y)) / (X_AXIS_DIVISIONS + 2);
     }
 
     /**
@@ -390,9 +394,8 @@ public class BarChart extends View {
         List<Double> yValues = statisticData[selectedStatistic].getyAxisValues();
         int next = getNextValue(yValues);
 
-        while (hasValuesRemaining(yValues, next, actual) && !found) {
-            Rect bar = getBar(actual + 1, yValues, next);
-            found = isPointInsideBar(xPos, yPos, bar);
+        while (hasValuesRemaining(next, actual) && !found) {
+            found = isFound(xPos, yPos, actual, yValues, next);
             --next;
             ++actual;
         }
@@ -402,6 +405,22 @@ public class BarChart extends View {
         }
 
         return actual;
+    }
+
+    /**
+     * Check whether  the point is found inside the rectangle.
+     * @param xPos Teh X coordinate of the point
+     * @param yPos The Y coordinate of the point
+     * @param actual The actual bar
+     * @param yValues The Y axis values
+     * @param next The next value to display
+     * @return True if the value is found inside the rectangle
+     */
+    private boolean isFound(float xPos, float yPos, int actual, List<Double> yValues, int next) {
+        boolean found;
+        Rect bar = getBar(actual + 1, yValues, next);
+        found = isPointInsideBar(xPos, yPos, bar);
+        return found;
     }
 
     /**
@@ -423,8 +442,8 @@ public class BarChart extends View {
     /**
      * Check whether the point is inside the bar.
      * @param xPos The X coordinate of the clicked position
-     * @param yPos
-     * @param bar
+     * @param yPos The Y coordinate of the clicked position
+     * @param bar The rectangle that represents the bar
      * @return
      */
     private boolean isPointInsideBar(float xPos, float yPos, Rect bar) {
@@ -452,7 +471,7 @@ public class BarChart extends View {
     }
 
     /**
-     * The X axis value in the pressed bar
+     * The X axis value in the pressed bar.
      * @param pressedBar The bar that has been pressed
      * @return The X axis value in the pressed bar
      */

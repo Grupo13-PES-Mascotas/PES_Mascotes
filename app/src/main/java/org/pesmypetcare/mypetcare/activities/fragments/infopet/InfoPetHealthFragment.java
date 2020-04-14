@@ -86,6 +86,7 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
                 break;
             case StatisticData.WASH_FREQUENCY_STATISTIC:
                 createShowWashFrequencyDialog(barChart.getXvalueAt(pressedBar - 1), (int) value);
+                break;
             default:
         }
     }
@@ -230,7 +231,7 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
     }
 
     /**
-     * Add the layout to the dialog
+     * Add the layout to the dialog.
      * @param dialog The dialog to add the layout to
      * @param layoutId The identifier of the layout
      * @return The layout with the view

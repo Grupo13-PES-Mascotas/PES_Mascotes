@@ -14,6 +14,7 @@ public abstract class StatisticData {
     public static final int WEEKLY_KILOCALORIES_STATISTIC = 4;
     public static final int WASH_FREQUENCY_STATISTIC = 5;
     public static final int STUB_STATISTIC = 6;
+    private static final int OCTOBER = 10;
 
     private List<String> xAxisValues;
     private List<Double> yAxisValues;
@@ -75,7 +76,7 @@ public abstract class StatisticData {
         StringBuilder date = new StringBuilder(String.valueOf(year));
         date.append('-');
 
-        if (month < 10) {
+        if (month < OCTOBER) {
             date.append('0');
         }
 

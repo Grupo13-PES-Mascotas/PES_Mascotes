@@ -117,8 +117,8 @@
     <string name="health_wash_frequency">Wash frequency</string>
     <string name="change_statistic">Change statistic</string>
     <string name="add_new_statistic">Add statistic</string>
-    <string name="previous">Previous</string>
-    <string name="next">Next</string>
+    <string name="previous">Newer</string>
+    <string name="next">Older</string>
     <string name="add_weight">Add weight</string>
     <string name="add_wash_frequency">Add wash frequency</string>
     <string name="auto_calculated">Auto calculate</string>
