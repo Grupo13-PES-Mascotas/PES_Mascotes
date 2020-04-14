@@ -77,6 +77,6 @@ public class StubUserManagerService implements UserManagerService {
 
     @Override
     public void usernameExists(String username) throws ExecutionException, InterruptedException {
-
+        // No used here
     }
 }
