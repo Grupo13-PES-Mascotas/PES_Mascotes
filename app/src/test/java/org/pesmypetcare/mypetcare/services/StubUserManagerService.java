@@ -6,6 +6,7 @@ import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 public class StubUserManagerService implements UserManagerService {
     private Set<User> data;
@@ -55,8 +56,13 @@ public class StubUserManagerService implements UserManagerService {
     }
 
     @Override
-    public void createUser(String uid, String email, String password) {
+    public void createUser(String s, String uid, String email, String password) {
         data.add(new User(uid, email, password));
+    }
+
+    @Override
+    public void deleteUserFromDatabase(String username) {
+        data.remove(new User(username, "", ""));
     }
 
     @Override
@@ -67,5 +73,15 @@ public class StubUserManagerService implements UserManagerService {
                 break;
             }
         }
+    }
+
+    @Override
+    public boolean usernameExists(String username) throws ExecutionException, InterruptedException {
+        for (User nextUser : data) {
+            if (username.equals(nextUser.getUsername())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -12,7 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/usermanagerlib-v2.2.1" />
+            <option value="$PROJECT_DIR$/usermanagerlib-v2.1-sign-up" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

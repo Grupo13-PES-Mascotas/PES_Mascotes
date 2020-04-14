@@ -314,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         TextView userEmail = navigationHeader.findViewById(R.id.lblUserEmail);
         CircularImageView circularImageView = navigationHeader.findViewById(R.id.imgUser);
 
-        userName.setText(resources.getString(R.string.app_name));
+        userName.setText(Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName());
         userEmail.setText(user.getEmail());
 
         if (user.getUserProfileImage() == null) {
