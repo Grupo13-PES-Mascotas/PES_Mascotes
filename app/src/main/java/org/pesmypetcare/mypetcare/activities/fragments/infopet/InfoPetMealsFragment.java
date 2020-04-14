@@ -26,8 +26,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class InfoPetMealsFragment extends Fragment {
-    public static final String EOL = "\n";
-    public static final int STROKE_WIDTH = 5;
+    private static final String EOL = "\n";
+    private static final int STROKE_WIDTH = 5;
+    public static final String SPACE = " ";
     private static InfoPetCommunication communication;
     private FragmentInfoPetMealsBinding binding;
     private SwitchMaterial intervalSelector;
@@ -110,8 +111,8 @@ public class InfoPetMealsFragment extends Fragment {
      * @param mealButton The button that has to be initialized
      */
     private void initializeButtonLogic(Meals meal, MaterialButton mealButton) {
-        String mealButtonText = getString(R.string.meal) + " " + meal.getMealName() + EOL
-            + getString(R.string.from_date) + " " + meal.getDateTime() + EOL + getString(R.string.meal_kcal)
+        String mealButtonText = getString(R.string.meal) + SPACE + meal.getMealName() + EOL
+            + getString(R.string.from_date) + SPACE + meal.getDateTime() + EOL + getString(R.string.meal_kcal)
             + ": " + meal.getKcal();
         mealButton.setText(mealButtonText);
         mealButton.setOnClickListener(v -> {

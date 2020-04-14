@@ -82,6 +82,22 @@ public class MealManagerAdapter implements MealManagerService {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
+        MealData mealData = obtainMealData(oldDate, accessToken, owner, petName);
+        Meals currentMeal = new Meals(new Meal(oldDate, mealData));
+        Meals newMeal = new Meals(new Meal(newDate, mealData));
+        this.deleteMeal(user, pet, currentMeal);
+        this.createMeal(user, pet, newMeal);
+    }
+
+    /**
+     * Method responsible for obtaining the meal data.
+     * @param oldDate The date of the meal before the update
+     * @param accessToken The access token of the user
+     * @param owner The owner of the pet
+     * @param petName The name of the pet
+     * @return The data of the meal
+     */
+    private MealData obtainMealData(String oldDate, String accessToken, String owner, String petName) {
         MealData mealData = null;
         try {
             mealData = ServiceLocator.getInstance().getMealManagerClient().getMealData(accessToken,
@@ -89,10 +105,7 @@ public class MealManagerAdapter implements MealManagerService {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-        Meals currentMeal = new Meals(new Meal(oldDate, mealData));
-        Meals newMeal = new Meals(new Meal(newDate, mealData));
-        this.deleteMeal(user, pet, currentMeal);
-        this.createMeal(user, pet, newMeal);
+        return mealData;
     }
 
     @Override
