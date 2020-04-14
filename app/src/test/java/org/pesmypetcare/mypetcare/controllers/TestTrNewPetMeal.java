@@ -13,6 +13,11 @@ import org.pesmypetcare.mypetcare.utilities.InvalidFormatException;
 import static org.junit.Assert.assertTrue;
 
 public class TestTrNewPetMeal {
+    private static final int YEAR = 2020;
+    private static final int DAY = 26;
+    private static final int HOUR = 15;
+    private static final int MINUTES = 23;
+    private static final int SECONDS = 56;
     private User user;
     private Pet linux;
     private TrNewPetMeal trNewPetMeal;
@@ -48,11 +53,11 @@ public class TestTrNewPetMeal {
     private Meals getTestMeal() {
         DateTime date = null;
         try {
-            date = new DateTime(2020, 2, 26, 15, 23, 56);
+            date = new DateTime(YEAR, 2, DAY, HOUR, MINUTES, SECONDS);
         } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
         assert date != null;
-        return new Meals(date, 52d, "Linux meal");
+        return new Meals(date, (double) SECONDS, "Linux meal");
     }
 }

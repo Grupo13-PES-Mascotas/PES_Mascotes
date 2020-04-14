@@ -29,7 +29,7 @@ public class EditMealFragment extends Fragment {
     private static final String DATESEPARATOR = "-";
     private static final String TIMESEPARATOR = ":";
     private static final int FIRST_TWO_DIGITS = 10;
-    public static final String DEFAULT_SECONDS = "00";
+    private static final String DEFAULT_SECONDS = "00";
     private static Pet pet;
     private static Meals meal;
     private static boolean editing;
@@ -172,7 +172,7 @@ public class EditMealFragment extends Fragment {
         if (selectedMin < FIRST_TWO_DIGITS) {
             dateString.append('0');
         }
-        dateString.append(selectedMin).append(':').append("00");
+        dateString.append(selectedMin).append(':').append(DEFAULT_SECONDS);
         return new DateTime(dateString.toString());
     }
 
@@ -293,6 +293,17 @@ public class EditMealFragment extends Fragment {
     private void initializeTimePickerDialog(int hourOfDay, int minute) {
         selectedHour = hourOfDay;
         selectedMin = minute;
+        StringBuilder time = formatTimePickerText();
+        binding.inputMealTime.setText(time);
+        isMealTimeSelected = true;
+        updatesDate = true;
+    }
+
+    /**
+     * Method responsible for formatting the text for the time picker.
+     * @return An stringbuilder containing the time in the correct format
+     */
+    private StringBuilder formatTimePickerText() {
         StringBuilder time = new StringBuilder();
         if (selectedHour < FIRST_TWO_DIGITS) {
             time.append('0');
@@ -301,9 +312,7 @@ public class EditMealFragment extends Fragment {
         if (selectedMin < FIRST_TWO_DIGITS) {
             time.append('0');
         }
-        time.append(selectedMin).append(':').append("00");
-        binding.inputMealTime.setText(time);
-        isMealTimeSelected = true;
-        updatesDate = true;
+        time.append(selectedMin).append(':').append(DEFAULT_SECONDS);
+        return time;
     }
 }
