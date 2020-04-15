@@ -46,6 +46,7 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
@@ -80,6 +81,7 @@ import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
+import org.pesmypetcare.mypetcare.features.community.Group;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
@@ -99,6 +101,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -107,7 +110,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
-    InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication {
+    InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
+    CommunityCommunication {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
@@ -982,5 +986,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdateUserImage.setUser(user);
         trUpdateUserImage.setImage(((BitmapDrawable) drawable).getBitmap());
         trUpdateUserImage.execute();
+    }
+
+    @Override
+    public List<Group> getAllGroups() {
+        return null;
     }
 }
