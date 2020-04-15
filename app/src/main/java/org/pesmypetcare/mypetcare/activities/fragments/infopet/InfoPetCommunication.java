@@ -69,7 +69,8 @@ public interface InfoPetCommunication {
      * @param date Teh date
      */
     void deleteWashFrequencyForDate(Pet pet, String date);
-  
+
+    /**
      * Adds a new meal to the pet.
      * @param pet The pet to which we want to add the meal
      * @param meal The meal that has to be added
