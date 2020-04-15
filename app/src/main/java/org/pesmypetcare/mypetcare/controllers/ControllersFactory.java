@@ -57,5 +57,13 @@ public class ControllersFactory {
         return null;
         //return new TrNewPersonalEvent(new PetManagerAdapter());
     }
+
+    public static TrChangeUsername createTrChangeUsername() {
+        return new TrChangeUsername(new UserManagerAdapter());
+    }
+
+    public static TrExistsUsername createTrExistsUsername() {
+        return new TrExistsUsername(new UserManagerAdapter());
+    }
 }
 

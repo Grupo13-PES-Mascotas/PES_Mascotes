@@ -50,6 +50,8 @@ public class SettingsMenuFragment extends Fragment {
     private User user;
     private String oldMail;
     private String newEmail;
+    private String oldUsername;
+    private String newUsername;
     private boolean isChangeLanguageActivated;
 
     static {
@@ -65,6 +67,8 @@ public class SettingsMenuFragment extends Fragment {
         user = communication.getUserForSettings();
         setEmail();
         changeEmail();
+        setUsername();
+        changeUsername();
         isChangeLanguageActivated = false;
         Objects.requireNonNull(binding.changeEmail.getEditText()).setText(user.getEmail());
         return binding.getRoot();
@@ -148,6 +152,14 @@ public class SettingsMenuFragment extends Fragment {
     }
 
     /**
+     * Sets the existent username.
+     */
+    private void setUsername() {
+        oldUsername = user.getUsername();
+        Objects.requireNonNull(binding.changeUsername.getEditText()).setText(oldUsername);
+    }
+
+    /**
      * Changes the email.
      */
     private void changeEmail() {
@@ -163,6 +175,23 @@ public class SettingsMenuFragment extends Fragment {
         });
     }
 
+    /**
+     * Changes the username.
+     */
+    private void changeUsername() {
+        binding.changeUsernameButton.setOnClickListener(v -> {
+            binding.changeUsername.addOnEditTextAttachedListener(textInputLayout -> {
+                newUsername = Objects.requireNonNull(binding.changeUsername.getEditText()).getText().toString();
+                if (!(oldUsername.equals(newUsername))) {
+                    if (!communication.usernameExists(newUsername)) {
+                        communication.changeUsername(newUsername);
+                        user.setUsername(newUsername);
+                        Objects.requireNonNull(binding.changeUsername.getEditText()).setText(newUsername);
+                    }
+                }
+            });
+        });
+    }
 
     /**
      * Initializes the listeners of the Delete Account button.

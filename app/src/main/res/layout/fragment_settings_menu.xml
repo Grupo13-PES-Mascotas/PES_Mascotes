@@ -44,6 +44,33 @@
             android:layout_height="20dp" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/changeUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/change_username"
+            android:textColorHint="@color/colorPrimary"
+            app:hintEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:boxStrokeColor = "@color/colorAccent"
+            app:boxBackgroundColor="@color/white">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"/>
+
+            <Button
+                android:id="@+id/changeUsernameButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/save_username"
+                android:textColor="@color/white"
+                style="@style/rounded_button"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/changeEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
