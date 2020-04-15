@@ -142,4 +142,14 @@ public class UserManagerAdapter implements UserManagerService {
     public boolean usernameExists(String username) throws ExecutionException, InterruptedException {
         return ServiceLocator.getInstance().getUserManagerClient().usernameAlreadyExists(username);
     }
+
+    @Override
+    public void changeUsername(User user, String newUsername) {
+        try {
+            ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(), user.getUsername(),
+                    UserManagerClient.USERNAME, newUsername);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

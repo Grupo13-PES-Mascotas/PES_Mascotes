@@ -71,4 +71,12 @@ public interface UserManagerService {
      * @return True if exists a user with the same username, false otherwise
      */
     boolean usernameExists(String username) throws ExecutionException, InterruptedException;
+
+    /**
+     * Change the username of a user.
+     * @param user The user
+     * @param newUsername The new username
+     * @return True if the change has been done without any problems
+     */
+    void changeUsername(User user, String newUsername);
 }
