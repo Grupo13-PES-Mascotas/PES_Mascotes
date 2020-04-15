@@ -72,6 +72,7 @@ import org.pesmypetcare.mypetcare.controllers.TrDeleteWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteWeight;
 import org.pesmypetcare.mypetcare.controllers.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrNewPetMeal;
+import org.pesmypetcare.mypetcare.controllers.TrObtainAllGroups;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetImages;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetMeals;
 import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
@@ -156,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainAllPetMeals trObtainAllPetMeals;
     private TrDeleteMeal trDeleteMeal;
     private TrUpdateMeal trUpdateMeal;
+    private TrObtainAllGroups trObtainAllGroups;
     private FloatingActionButton flAddCalendarEvent;
     private static int notificationId;
     private static int requestCode;
@@ -398,6 +400,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainAllPetMeals = ControllersFactory.createTrObtainAllPetMeals();
         trDeleteMeal = ControllersFactory.createTrDeleteMeal();
         trUpdateMeal = ControllersFactory.createTrUpdateMeal();
+        trObtainAllGroups = ControllersFactory.createTrObtainAllGroups();
     }
 
     /**
@@ -990,6 +993,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public List<Group> getAllGroups() {
-        return null;
+        trObtainAllGroups.execute();
+        return trObtainAllGroups.getResult();
     }
 }
