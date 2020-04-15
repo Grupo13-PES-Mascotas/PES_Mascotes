@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.StubMealManagerService;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
 import org.pesmypetcare.mypetcare.services.StubUserManagerService;
 
@@ -17,7 +18,8 @@ public class TestTrDeleteUser {
     @Before
     public void setUp() {
         user = new User("johnDoe", "johndoe@gmail.com", PASSWORD);
-        trDeleteUser = new TrDeleteUser(new StubUserManagerService(), new StubPetManagerService());
+        trDeleteUser = new TrDeleteUser(new StubUserManagerService(), new StubPetManagerService(),
+            new StubMealManagerService());
     }
 
     @Test

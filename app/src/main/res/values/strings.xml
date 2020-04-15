@@ -108,6 +108,17 @@
     <string name="pet_info_health">Health</string>
     <string name="pet_info_medication">Medication</string>
     <string name="pet_info_meal">Meals</string>
+    <string name="meals_interval_switch">Show only last week meals</string>
+    <string name="add_meal_button">Add meal</string>
+    <string name="meal_name">Meal Name</string>
+    <string name="meal_kcal">Meal Kilocalories</string>
+    <string name="meal_date">Meal Date</string>
+    <string name="meal_time">Meal Time</string>
+    <string name="update_meal">Update meal</string>
+    <string name="delete_current_meal">Delete meal</string>
+    <string name="empty_fields">Fields cannot be empty</string>
+    <string name="meal">Meal:</string>
+    <string name="from_date">From:</string>
     <string name="notificationid">NOTIFICATION_ID</string>
     <string name="text">text</string>
     <string name="title">title</string>

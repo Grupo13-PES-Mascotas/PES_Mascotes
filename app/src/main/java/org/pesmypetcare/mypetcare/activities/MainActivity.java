@@ -61,13 +61,17 @@ import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrNewPersonalEvent;
+import org.pesmypetcare.mypetcare.controllers.TrNewPetMeal;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetImages;
+import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetMeals;
 import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
+import org.pesmypetcare.mypetcare.controllers.TrUpdateMeal;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
@@ -75,6 +79,8 @@ import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
@@ -133,6 +139,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrUpdateUserImage trUpdateUserImage;
     private TrNewPersonalEvent trNewPersonalEvent;
     private TrDeletePersonalEvent trDeletePersonalEvent;
+    private TrNewPetMeal trNewPetMeal;
+    private TrObtainAllPetMeals trObtainAllPetMeals;
+    private TrDeleteMeal trDeleteMeal;
+    private TrUpdateMeal trUpdateMeal;
     private FloatingActionButton flAddCalendarEvent;
     private static int notificationId;
     private static int requestCode;
@@ -367,6 +377,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdateUserImage = ControllersFactory.createTrUpdateUserImage();
         trNewPersonalEvent = ControllersFactory.createTrNewPersonalEvent();
         trDeletePersonalEvent = ControllersFactory.createTrDeletePersonalEvent();
+        trNewPetMeal = ControllersFactory.createTrNewPetMeal();
+        trObtainAllPetMeals = ControllersFactory.createTrObtainAllPetMeals();
+        trDeleteMeal = ControllersFactory.createTrDeleteMeal();
+        trUpdateMeal = ControllersFactory.createTrUpdateMeal();
     }
 
     /**
@@ -698,6 +712,40 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void changeToMainView() {
 
+    }
+
+    @Override
+    public void addPetMeal(Pet pet, Meals meal) throws MealAlreadyExistingException {
+        trNewPetMeal.setUser(user);
+        trNewPetMeal.setPet(pet);
+        trNewPetMeal.setMeal(meal);
+        trNewPetMeal.execute();
+    }
+
+    @Override
+    public void updatePetMeal(Pet pet, Meals meal, String newDate, boolean updatesDate) {
+        trUpdateMeal.setUser(user);
+        trUpdateMeal.setPet(pet);
+        trUpdateMeal.setMeal(meal);
+        if (updatesDate) {
+            trUpdateMeal.setNewDate(newDate);
+        }
+        trUpdateMeal.execute();
+    }
+
+    @Override
+    public void deletePetMeal(Pet pet, Meals meal) {
+        trDeleteMeal.setUser(user);
+        trDeleteMeal.setPet(pet);
+        trDeleteMeal.setMeal(meal);
+        trDeleteMeal.execute();
+    }
+
+    @Override
+    public void obtainAllPetMeals(Pet pet) {
+        trObtainAllPetMeals.setUser(user);
+        trObtainAllPetMeals.setPet(pet);
+        trObtainAllPetMeals.execute();
     }
 
     @Override

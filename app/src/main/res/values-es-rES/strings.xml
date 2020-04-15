@@ -109,6 +109,17 @@
     <string name="pet_info_health">Salud</string>
     <string name="pet_info_medication">Medicación</string>
     <string name="pet_info_meal">Comidas</string>
+    <string name="meals_interval_switch">Mostrar solo comidas de esta semana</string>
+    <string name="add_meal_button">Añadir comida</string>
+    <string name="meal_name">Nombre de la comida</string>
+    <string name="meal_kcal">Kilocalorias de la comida</string>
+    <string name="meal_date">Fecha de la comida</string>
+    <string name="meal_time">Hora de la comida</string>
+    <string name="update_meal">Actualizar comida</string>
+    <string name="delete_current_meal">Borrar comida</string>
+    <string name="empty_fields">Todos los campos deben ser rellenados</string>
+    <string name="meal">Comida:</string>
+    <string name="from_date">Del:</string>
     <string name="notificationid">NOTIFICATION_ID</string>
     <string name="text">text</string>
     <string name="title">title</string>
