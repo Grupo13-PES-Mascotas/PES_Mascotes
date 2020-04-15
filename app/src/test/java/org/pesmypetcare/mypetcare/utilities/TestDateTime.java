@@ -185,28 +185,4 @@ public class TestDateTime {
         dateTime.increaseDay();
         assertEquals("Should increase day", expectedDate.toString(), dateTime.toString());
     }
-
-    @Test
-    public void shouldIncreaseDayNoMonthChange() throws InvalidFormatException {
-        DateTime expectedDate = new DateTime(2020, 10, 24, 15, 2, 11);
-        dateTime.increaseDay();
-        assertEquals("Should increase day", expectedDate.toString(), dateTime.toString());
-    }
-
-    @Test
-    public void shouldIncreaseDayMonthChange() throws InvalidFormatException {
-        DateTime expectedDate = new DateTime(2020, 11, 1, 15, 2, 11);
-        dateTime.setDay(31);
-        dateTime.increaseDay();
-        assertEquals("Should increase day", expectedDate.toString(), dateTime.toString());
-    }
-
-    @Test
-    public void shouldIncreaseDayYearChange() throws InvalidFormatException {
-        DateTime expectedDate = new DateTime(2021, 1, 1, 15, 2, 11);
-        dateTime.setMonth(12);
-        dateTime.setDay(31);
-        dateTime.increaseDay();
-        assertEquals("Should increase day", expectedDate.toString(), dateTime.toString());
-    }
 }
