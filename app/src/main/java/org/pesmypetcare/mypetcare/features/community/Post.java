@@ -12,6 +12,7 @@ public class Post {
     private boolean isBanned;
     private DateTime creationDate;
     private Bitmap userImage;
+    private Bitmap postImage;
 
     public Post(String username, String text, DateTime creationDate) {
         this.username = username;
@@ -73,5 +74,13 @@ public class Post {
 
     public void setUserImage(Bitmap userImage) {
         this.userImage = userImage;
+    }
+
+    public Bitmap getPostImage() {
+        return postImage;
+    }
+
+    public void setPostImage(Bitmap postImage) {
+        this.postImage = postImage;
     }
 }
