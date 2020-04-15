@@ -1,27 +1,21 @@
 package org.pesmypetcare.mypetcare.features.community;
 
-import android.graphics.Bitmap;
-
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Group {
+public class Forum {
     private String name;
     private String ownerUsername;
-    private String description;
     private DateTime creationDate;
-    private Bitmap groupIcon;
     private List<String> participants;
-    private List<Forum> forums;
+    private List<Post> posts;
     private List<String> tags;
 
-    public Group(String name, String ownerUsername, DateTime creationDate) {
+    public Forum(String name, String ownerUsername, DateTime creationDate) {
         this.name = name;
         this.ownerUsername = ownerUsername;
         this.creationDate = creationDate;
-        this.participants = new ArrayList<>();
     }
 
     public String getName() {
@@ -40,14 +34,6 @@ public class Group {
         this.ownerUsername = ownerUsername;
     }
 
-    public List<String> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(List<String> participants) {
-        this.participants = participants;
-    }
-
     public DateTime getCreationDate() {
         return creationDate;
     }
@@ -56,11 +42,27 @@ public class Group {
         this.creationDate = creationDate;
     }
 
-    public Bitmap getGroupIcon() {
-        return groupIcon;
+    public List<String> getParticipants() {
+        return participants;
     }
 
-    public void setGroupIcon(Bitmap groupIcon) {
-        this.groupIcon = groupIcon;
+    public void setParticipants(List<String> participants) {
+        this.participants = participants;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }
