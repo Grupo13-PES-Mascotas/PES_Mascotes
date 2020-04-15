@@ -33,7 +33,13 @@ public class DateConversion {
             conversion.append('0');
         }
 
-        conversion.append(monthPosition).append('-').append(dateInfo[APP_DAY]);
+        conversion.append(monthPosition).append('-');
+
+        if (Integer.parseInt(dateInfo[APP_DAY]) < FIRST_TWO_DIGIT_NUMBER) {
+            conversion.append('0');
+        }
+
+        conversion.append(dateInfo[APP_DAY]);
 
         return conversion.toString();
     }

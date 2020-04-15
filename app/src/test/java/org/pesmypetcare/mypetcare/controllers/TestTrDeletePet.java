@@ -6,6 +6,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.StubMealManagerService;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
@@ -22,7 +23,7 @@ public class TestTrDeletePet {
         user = new User("johnDoe", "johndoe@gmail.com", "1234");
         pet = getDinkyPet();
         user.addPet(pet);
-        trDeletePet = new TrDeletePet(new StubPetManagerService());
+        trDeletePet = new TrDeletePet(new StubPetManagerService(), new StubMealManagerService());
     }
 
     @Test(expected = UserIsNotOwnerException.class)
