@@ -3,15 +3,18 @@ package org.pesmypetcare.mypetcare.controllers;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.MealManagerService;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
 
 public class TrDeletePet {
     private PetManagerService petManagerService;
+    private MealManagerService mealManagerService;
     private User user;
     private Pet pet;
 
-    public TrDeletePet(PetManagerService petManagerService) {
+    public TrDeletePet(PetManagerService petManagerService, MealManagerService mealManagerService) {
         this.petManagerService = petManagerService;
+        this.mealManagerService = mealManagerService;
     }
 
     /**
@@ -38,7 +41,7 @@ public class TrDeletePet {
         if (pet.getOwner() != user) {
             throw new UserIsNotOwnerException();
         }
-
+        mealManagerService.deleteMealsFromPet(user, pet);
         petManagerService.deletePet(pet, user);
         user.deletePet(pet);
     }

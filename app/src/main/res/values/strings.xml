@@ -135,6 +135,17 @@
     <string name="add_wash_frequency_hint">Wash frequency (days)</string>
     <string name="add_wash_frequency_date_hint">Select the wash frequency date</string>
     <string name="delete_wash_frequency">Delete wash frequency</string>
+    <string name="meals_interval_switch">Show only last week meals</string>
+    <string name="add_meal_button">Add meal</string>
+    <string name="meal_name">Meal Name</string>
+    <string name="meal_kcal">Meal Kilocalories</string>
+    <string name="meal_date">Meal Date</string>
+    <string name="meal_time">Meal Time</string>
+    <string name="update_meal">Update meal</string>
+    <string name="delete_current_meal">Delete meal</string>
+    <string name="empty_fields">Fields cannot be empty</string>
+    <string name="meal">Meal:</string>
+    <string name="from_date">From:</string>
     <string name="notificationid">NOTIFICATION_ID</string>
     <string name="text">text</string>
     <string name="title">title</string>

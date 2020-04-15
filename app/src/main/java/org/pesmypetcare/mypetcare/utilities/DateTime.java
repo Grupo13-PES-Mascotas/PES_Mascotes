@@ -286,6 +286,7 @@ public class DateTime implements Comparable<DateTime> {
         }
     }
 
+
     /**
      * Check whether the date time is the last week.
      * @param dateTime The datetime to check
@@ -295,6 +296,7 @@ public class DateTime implements Comparable<DateTime> {
         boolean result = false;
         DateTime dateToCheck = new DateTime(dateTime);
         DateTime currentDate = DateTime.getCurrentDate();
+      
         for (int i = 0; i <= WEEK_DAYS && !result; ++i) {
             if (isSameDay(dateToCheck, currentDate)) {
                 result = true;
@@ -321,7 +323,8 @@ public class DateTime implements Comparable<DateTime> {
      * @return The current
      */
     private static DateTime getCurrentDate() {
-        DateFormat dateFormat = new SimpleDateFormat(FULL_DATE_FORMAT);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
         Date date = new Date();
         String strData = dateFormat.format(date);
         return new DateTime(strData);

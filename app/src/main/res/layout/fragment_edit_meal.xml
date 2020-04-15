@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.fragments.infopet.EditMealFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|top">
+
+        <LinearLayout
+            android:id="@+id/mealEditLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginTop="50dp"
+
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/mealButtonLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputLayout style="@style/inputPetContainer">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputMealName"
+                    style="@style/inputPetField"
+                    android:hint="@string/meal_name"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout style="@style/inputPetContainer">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputMealCal"
+                    style="@style/inputPetField"
+                    android:hint="@string/meal_kcal"
+                    android:inputType="numberDecimal">
+
+                </com.google.android.material.textfield.TextInputEditText>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/inputMealDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/meal_date"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="16sp"
+                app:icon="@drawable/calendar_icon" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/inputMealTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/meal_time"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="16sp"
+                app:icon="@drawable/time_icon" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mealButtonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="150dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mealEditLayout">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/editMealButton"
+                style="@style/rounded_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:paddingStart="40dp"
+                android:text="@string/add_meal_button"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                tools:ignore="RtlSymmetry" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/deleteMealButton"
+                style="@style/rounded_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:backgroundTint="@color/red"
+                android:text="@string/delete_current_meal"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:icon="@drawable/baseline_delete_black_18dp"
+                app:iconTint="@color/white" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
