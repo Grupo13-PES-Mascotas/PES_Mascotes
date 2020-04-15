@@ -1,32 +1,29 @@
 package org.pesmypetcare.mypetcare.activities.views;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.community.Group;
 
-public class PetsInfoView extends PetComponentView {
-    private Pet pet;
+import java.util.List;
 
-    public PetsInfoView(Context context, AttributeSet attrs) {
+public class GroupComponentView extends PetComponentView {
+    private Group group;
+
+    public GroupComponentView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
     protected CircularImageView getImage() {
         CircularImageView image = new CircularImageView(getCurrentActivity(), null);
-        Drawable petImageDrawable = getResources().getDrawable(R.drawable.single_paw);
+        Drawable groupDrawable = getResources().getDrawable(R.drawable.single_paw);
 
-        if (pet.getProfileImage() != null) {
-            petImageDrawable = new BitmapDrawable(getResources(), pet.getProfileImage());
-        }
-
-        image.setDrawable(petImageDrawable);
+        image.setDrawable(groupDrawable);
         int imageDimensions = getImageDimensions();
         image.setLayoutParams(new LinearLayout.LayoutParams(imageDimensions, imageDimensions));
         int imageId = View.generateViewId();
@@ -37,21 +34,32 @@ public class PetsInfoView extends PetComponentView {
 
     @Override
     public Object getObject() {
-        return pet;
+        return group;
     }
 
-    public PetsInfoView(Context context, AttributeSet attrs, Pet pet) {
+    public GroupComponentView(Context context, AttributeSet attrs, Group group) {
         super(context, attrs);
-        this.pet = pet;
+        this.group = group;
     }
 
     @Override
     protected String getFirstLineText() {
-        return pet.getName();
+        return group.getName();
     }
 
     @Override
     protected String getSecondLineText() {
-        return String.format("%s - %s", pet.getBreed(), pet.getBirthDate());
+        List<String> tags = group.getTags();
+        StringBuilder strTags = new StringBuilder("");
+
+        for (int actual = 0; actual < tags.size(); ++actual) {
+            if (actual != 0) {
+                strTags.append(',');
+            }
+
+            strTags.append('#').append(tags.get(actual));
+        }
+
+        return strTags.toString();
     }
 }

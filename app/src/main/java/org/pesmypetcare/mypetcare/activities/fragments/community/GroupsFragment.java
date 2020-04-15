@@ -23,7 +23,9 @@ public class GroupsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentGroupsBinding.inflate(inflater, container, false);
         communication = (CommunityCommunication) getActivity();
+
         groups = Objects.requireNonNull(communication).getAllGroups();
+        binding.groupInfoLayout.showGroups(groups);
 
         return binding.getRoot();
     }

@@ -61,8 +61,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/layoutGroup"
+            <org.pesmypetcare.mypetcare.activities.views.GroupsView
+                android:id="@+id/groupInfoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />

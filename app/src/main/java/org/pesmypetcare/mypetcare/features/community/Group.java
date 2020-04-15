@@ -63,4 +63,8 @@ public class Group {
     public void setGroupIcon(Bitmap groupIcon) {
         this.groupIcon = groupIcon;
     }
+
+    public List<String> getTags() {
+        return tags;
+    }
 }

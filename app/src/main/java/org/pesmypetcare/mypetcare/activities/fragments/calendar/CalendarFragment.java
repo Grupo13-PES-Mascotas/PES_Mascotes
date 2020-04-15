@@ -364,12 +364,13 @@ public class CalendarFragment extends Fragment {
 
     /**
      * Initialize the dialog's Positive Button.
-     * @param p The PetViewComponent
+     * @param petComponentView The PetViewComponent
      * @param deleteEvent The dialog
      */
-    private void initializePositiveButtonDialog(PetComponentView p, MaterialAlertDialogBuilder deleteEvent) {
-        Pet pet = p.getPet();
-        Event event = ((EventView) p).getEvent();
+    private void initializePositiveButtonDialog(PetComponentView petComponentView,
+                                                MaterialAlertDialogBuilder deleteEvent) {
+        Pet pet = (Pet) petComponentView.getObject();
+        Event event = ((EventView) petComponentView).getEvent();
         deleteEvent.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
             setUpCalendar();
             pet.deleteEvent(event);
