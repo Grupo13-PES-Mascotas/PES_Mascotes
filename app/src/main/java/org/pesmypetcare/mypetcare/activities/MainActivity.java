@@ -868,6 +868,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             return;
         }
         trChangeUsername.execute();
+        View navigationHeader = navigationView.getHeaderView(0);
+        TextView userName = navigationHeader.findViewById(R.id.lblUserName);
+        userName.setText(newUsername);
     }
 
     @Override  

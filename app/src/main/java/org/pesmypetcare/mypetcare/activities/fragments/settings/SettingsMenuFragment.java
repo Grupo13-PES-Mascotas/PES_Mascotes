@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -183,14 +184,25 @@ public class SettingsMenuFragment extends Fragment {
             binding.changeUsername.addOnEditTextAttachedListener(textInputLayout -> {
                 newUsername = Objects.requireNonNull(binding.changeUsername.getEditText()).getText().toString();
                 if (!(oldUsername.equals(newUsername))) {
-                    if (!communication.usernameExists(newUsername)) {
-                        communication.changeUsername(newUsername);
-                        user.setUsername(newUsername);
-                        Objects.requireNonNull(binding.changeUsername.getEditText()).setText(newUsername);
-                    }
+                    tryChangeUsername();
                 }
             });
         });
+    }
+
+    /**
+     * Try to change the username.
+     */
+    private void tryChangeUsername() {
+        if (!communication.usernameExists(newUsername)) {
+            communication.changeUsername(newUsername);
+            user.setUsername(newUsername);
+            Objects.requireNonNull(binding.changeUsername.getEditText()).setText(newUsername);
+        } else {
+            setUsername();
+            Toast errorMsg = Toast.makeText(getActivity(), R.string.repeatedUsername, Toast.LENGTH_LONG);
+            errorMsg.show();
+        }
     }
 
     /**
