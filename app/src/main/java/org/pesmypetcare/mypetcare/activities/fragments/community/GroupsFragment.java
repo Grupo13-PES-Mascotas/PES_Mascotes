@@ -11,6 +11,7 @@ import org.pesmypetcare.mypetcare.databinding.FragmentGroupsBinding;
 import org.pesmypetcare.mypetcare.features.community.Group;
 
 import java.util.List;
+import java.util.Objects;
 
 public class GroupsFragment extends Fragment {
     private FragmentGroupsBinding binding;
@@ -21,7 +22,8 @@ public class GroupsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentGroupsBinding.inflate(inflater, container, false);
-        groups = communication.getAllGroups();
+        communication = (CommunityCommunication) getActivity();
+        groups = Objects.requireNonNull(communication).getAllGroups();
 
         return binding.getRoot();
     }

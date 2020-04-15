@@ -47,6 +47,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityCommunication;
+import org.pesmypetcare.mypetcare.activities.fragments.community.GroupsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     };
 
     private static final Class[] APPLICATION_FRAGMENTS = {
-        MyPetsFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        MyPetsFragment.class, GroupsFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, CalendarFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
@@ -940,7 +941,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         intent.putExtra(getString(R.string.title), deleted.getTitle());
         intent.putExtra(getString(R.string.text), deleted.getText());
         intent.putExtra(getString(R.string.notificationid) , deleted.getNotificationID());
-        PendingIntent pending = PendingIntent.getBroadcast(context, deleted.getRequestCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pending = PendingIntent.getBroadcast(context, deleted.getRequestCode(), intent,
+            PendingIntent.FLAG_UPDATE_CURRENT);
 
         user.deleteNotification(notification);
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
