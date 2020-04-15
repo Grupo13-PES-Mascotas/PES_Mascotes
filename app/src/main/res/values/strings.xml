@@ -119,6 +119,11 @@
     <string name="empty_fields">Fields cannot be empty</string>
     <string name="meal">Meal:</string>
     <string name="from_date">From:</string>
+    <string name="notificationid">NOTIFICATION_ID</string>
+    <string name="text">text</string>
+    <string name="title">title</string>
+    <string name="notificationChannelName">NOTIFICATION_CHANNEL_NAME</string>
+    <string name="repeatedUsername">Repeated username</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

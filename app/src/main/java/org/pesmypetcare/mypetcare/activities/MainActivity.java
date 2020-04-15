@@ -2,6 +2,9 @@ package org.pesmypetcare.mypetcare.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -11,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
@@ -22,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -71,6 +76,8 @@ import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
+import org.pesmypetcare.mypetcare.features.notification.Notification;
+import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
@@ -86,6 +93,7 @@ import org.pesmypetcare.mypetcare.utilities.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -136,7 +144,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeleteMeal trDeleteMeal;
     private TrUpdateMeal trUpdateMeal;
     private FloatingActionButton flAddCalendarEvent;
+    private static int notificationId;
+    private static int requestCode;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
@@ -144,6 +155,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         resources = getResources();
+
+        notificationId = 0;
+        requestCode = 0;
 
         makeLogin();
         initializeControllers();
@@ -310,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         TextView userEmail = navigationHeader.findViewById(R.id.lblUserEmail);
         CircularImageView circularImageView = navigationHeader.findViewById(R.id.imgUser);
 
-        userName.setText(resources.getString(R.string.app_name));
+        userName.setText(Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName());
         userEmail.setText(user.getEmail());
 
         if (user.getUserProfileImage() == null) {
@@ -802,6 +816,50 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         String imagePath = cursor.getString(columnIndex);
         cursor.close();
         return imagePath;
+    }
+
+    /**
+     * Schedule a notification.
+     * @param context The context
+     * @param text The notification's text
+     * @param title The notification's title
+     * @param time The alarm time of the notification
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void scheduleNotification(Context context, long time, String title, String text) {
+        Notification notification = new Notification(title, text, new Date(time), Long.toString(time));
+        notification.setNotificationID(notificationId);
+        notification.setRequestCode(requestCode);
+        user.addNotification(notification);
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        intent.putExtra(getString(R.string.title), title);
+        intent.putExtra(getString(R.string.text), text);
+        intent.putExtra(getString(R.string.notificationid), Integer.toString(notificationId));
+        notificationId++;
+        PendingIntent pending = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        requestCode++;
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        assert manager != null;
+        manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pending);
+    }
+
+    /**
+     * Cancel a notification.
+     * @param context The context
+     * @param notification The notification
+     */
+    public void cancelNotification(Context context, Notification notification) {
+        Notification deleted = user.getNotification(notification);
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        intent.putExtra(getString(R.string.title), deleted.getTitle());
+        intent.putExtra(getString(R.string.text), deleted.getText());
+        intent.putExtra(getString(R.string.notificationid) , deleted.getNotificationID());
+        PendingIntent pending = PendingIntent.getBroadcast(context, deleted.getRequestCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        user.deleteNotification(notification);
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        assert manager != null;
+        manager.cancel(pending);
     }
 
     @Override

@@ -25,6 +25,7 @@ import org.pesmypetcare.mypetcare.services.UserManagerAdapter;
 import org.pesmypetcare.mypetcare.services.UserManagerService;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,7 +40,7 @@ public class SignUpFragment extends Fragment {
     private String email;
     private String password;
     private static UserManagerService userManagerService = new UserManagerAdapter();
-    //private String username;
+    private String username;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -50,7 +51,11 @@ public class SignUpFragment extends Fragment {
         editTextAndInputLayoutDeclaration();
         binding.signupButton.setOnClickListener(v -> {
             if (validateSignUp()) {
-                userCreationAndValidation();
+                try {
+                    userCreationAndValidation();
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
             resetFieldsStatus();
         });
@@ -70,17 +75,21 @@ public class SignUpFragment extends Fragment {
     /**
      * This method is responsible for the creation and validation of the new user.
      */
-    private void userCreationAndValidation() {
-        mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
-                if (task.isSuccessful()) {
-                    sendEmailVerification();
-                    userManagerService.createUser(mAuth.getCurrentUser().getUid(), email, password);
-                    mAuth.signOut();
-                } else {
-                    testToast(Objects.requireNonNull(task.getException()).toString());
-                }
-            });
+    private void userCreationAndValidation() throws ExecutionException, InterruptedException {
+        if (!userManagerService.usernameExists(username)) {
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
+                        if (task.isSuccessful()) {
+                            sendEmailVerification();
+                            userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(), username, email, password);
+                            mAuth.signOut();
+                        } else {
+                            testToast(Objects.requireNonNull(task.getException()).toString());
+                        }
+                    });
+        } else {
+            testToast(getString(R.string.repeatedUsername));
+        }
     }
 
     /**
@@ -104,7 +113,7 @@ public class SignUpFragment extends Fragment {
      * @return True if the sign up was successful or false otherwise
      */
     private boolean validateSignUp() {
-        //username = Objects.requireNonNull(binding.signUpUsernameText.getText()).toString();
+        username = Objects.requireNonNull(binding.signUpUsernameText.getText()).toString();
         email = Objects.requireNonNull(binding.signUpMailText.getText()).toString();
         password = Objects.requireNonNull(binding.signUpPasswordText.getText()).toString();
         boolean[] emptyFields = checkEmptyFields();
