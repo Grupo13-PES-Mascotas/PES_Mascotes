@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.pesmypetcare.mypetcare.services.MealManagerAdapter;
 import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
+import org.pesmypetcare.mypetcare.services.StubCommunityService;
 import org.pesmypetcare.mypetcare.services.UserManagerAdapter;
 
 public class ControllersFactory {
@@ -89,6 +90,10 @@ public class ControllersFactory {
 
     public static TrUpdateMeal createTrUpdateMeal() {
         return new TrUpdateMeal(new MealManagerAdapter());
+    }
+
+    public static TrObtainAllGroups createTrObtainAllGroups() {
+        return new TrObtainAllGroups(new StubCommunityService());
     }
 }
 
