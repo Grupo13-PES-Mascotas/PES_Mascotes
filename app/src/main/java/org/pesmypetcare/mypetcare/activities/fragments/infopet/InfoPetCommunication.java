@@ -3,6 +3,8 @@ package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 
@@ -37,4 +39,62 @@ public interface InfoPetCommunication {
      * Changes to main view.
      */
     void changeToMainView();
+
+    /**
+     * Add a weight for a date.
+     * @param pet The pet
+     * @param newWeight The new weight
+     * @param date The date
+     */
+    void addWeightForDate(Pet pet, double newWeight, String date);
+
+    /**
+     * Delete the weight of a date.
+     * @param pet The pet
+     * @param date The date
+     */
+    void deleteWeightForDate(Pet pet, String date);
+
+    /**
+     * Add a wash frequency for a date.
+     * @param pet The pet
+     * @param newWashFrequency The new wash frequency
+     * @param date The date
+     */
+    void addWashFrequencyForDate(Pet pet, int newWashFrequency, String date);
+
+    /**
+     * Delete the wash frequency for a date.
+     * @param pet The pet
+     * @param date Teh date
+     */
+    void deleteWashFrequencyForDate(Pet pet, String date);
+
+    /**
+     * Adds a new meal to the pet.
+     * @param pet The pet to which we want to add the meal
+     * @param meal The meal that has to be added
+     */
+    void addPetMeal(Pet pet, Meals meal) throws MealAlreadyExistingException;
+
+    /**
+     * Updates the data of a meal of a pet.
+     * @param pet The pet to which we want to update the meal
+     * @param meal The updated meal
+     * @param newDate The new date of the meal
+     */
+    void updatePetMeal(Pet pet, Meals meal, String newDate, boolean updatesDate);
+
+    /**
+     * Deletes a meal from a pet.
+     * @param pet The pet from which the meal has to be deleted
+     * @param meal The meal that has to be deleted from the pet
+     */
+    void deletePetMeal(Pet pet, Meals meal);
+
+    /**
+     * Obtains all the meals from a pet.
+     * @param pet The pet from which we want to obtain all the meals
+     */
+    void obtainAllPetMeals(Pet pet);
 }

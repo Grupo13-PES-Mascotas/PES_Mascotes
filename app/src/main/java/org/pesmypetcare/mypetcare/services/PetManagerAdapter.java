@@ -8,6 +8,7 @@ import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
 import java.util.ArrayList;
@@ -207,6 +208,26 @@ public class PetManagerAdapter implements PetManagerService {
         // Not implemented yet
     }
 
+    @Override
+    public void updateWeight(User user, Pet pet, double newWeight, DateTime dateTime) {
+
+    }
+
+    @Override
+    public void deletePetWeight(User user, Pet pet, DateTime dateTime) {
+
+    }
+
+    @Override
+    public void updateWashFrequency(User user, Pet pet, int newWashFrequency) {
+
+    }
+
+    @Override
+    public void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) {
+
+    }
+
     /**
      * Decodes the pet information from the server.
      * @param userPet The information from the server
@@ -219,7 +240,7 @@ public class PetManagerAdapter implements PetManagerService {
 
         pet.setName(userPet.getName());
         pet.setGender(petData.getGender());
-        //pet.setBirthDate(DateConversion.convertToApp(petData.getBirth().toString()));
+        pet.setBirthDate(DateTime.Builder.buildDateString(petData.getBirth()));
         pet.setWeight(petData.getWeight());
         pet.setWashFrequency(petData.getWashFreq());
         pet.setRecommendedDailyKiloCalories(petData.getRecommendedKcal());

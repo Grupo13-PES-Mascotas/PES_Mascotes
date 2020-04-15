@@ -33,7 +33,13 @@ public class DateConversion {
             conversion.append('0');
         }
 
-        conversion.append(monthPosition).append('-').append(dateInfo[APP_DAY]);
+        conversion.append(monthPosition).append('-');
+
+        if (Integer.parseInt(dateInfo[APP_DAY]) < FIRST_TWO_DIGIT_NUMBER) {
+            conversion.append('0');
+        }
+
+        conversion.append(dateInfo[APP_DAY]);
 
         return conversion.toString();
     }
@@ -44,7 +50,7 @@ public class DateConversion {
      * @return The date in the app format
      */
     public static String convertToApp(String date) {
-        String[] dateInfo = date.split(" ");
+        String[] dateInfo = date.split("-");
         StringBuilder conversion = new StringBuilder("");
 
         conversion.append(Integer.parseInt(dateInfo[SERVER_DAY])).append(' ').append(dateInfo[SERVER_MONTH])

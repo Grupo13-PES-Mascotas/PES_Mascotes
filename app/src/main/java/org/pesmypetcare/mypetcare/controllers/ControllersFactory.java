@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers;
 
+import org.pesmypetcare.mypetcare.services.MealManagerAdapter;
 import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
 import org.pesmypetcare.mypetcare.services.UserManagerAdapter;
 
@@ -21,11 +22,11 @@ public class ControllersFactory {
     }
 
     public static TrDeleteUser createTrDeleteUser() {
-        return new TrDeleteUser(new UserManagerAdapter(), new PetManagerAdapter());
+        return new TrDeleteUser(new UserManagerAdapter(), new PetManagerAdapter(), new MealManagerAdapter());
     }
 
     public static TrDeletePet createTrDeletePet() {
-        return new TrDeletePet(new PetManagerAdapter());
+        return new TrDeletePet(new PetManagerAdapter(), new MealManagerAdapter());
     }
 
     public static TrObtainUser createTrObtainUser() {
@@ -64,6 +65,38 @@ public class ControllersFactory {
 
     public static TrExistsUsername createTrExistsUsername() {
         return new TrExistsUsername(new UserManagerAdapter());
+    }
+  
+    public static TrAddNewWeight createTrAddNewWeight() {
+        return new TrAddNewWeight(new PetManagerAdapter());
+    }
+
+    public static TrDeleteWeight createTrDeleteWeight() {
+        return new TrDeleteWeight(new PetManagerAdapter());
+    }
+
+    public static TrAddNewWashFrequency createTrAddNewWashFrequency() {
+        return new TrAddNewWashFrequency(new PetManagerAdapter());
+    }
+
+    public static TrDeleteWashFrequency createTrDeleteWashFrequency() {
+        return new TrDeleteWashFrequency(new PetManagerAdapter());
+    }
+  
+    public static TrNewPetMeal createTrNewPetMeal() {
+        return new TrNewPetMeal(new MealManagerAdapter());
+    }
+
+    public static TrObtainAllPetMeals createTrObtainAllPetMeals() {
+        return new TrObtainAllPetMeals(new MealManagerAdapter());
+    }
+
+    public static TrDeleteMeal createTrDeleteMeal() {
+        return new TrDeleteMeal(new MealManagerAdapter());
+    }
+
+    public static TrUpdateMeal createTrUpdateMeal() {
+        return new TrUpdateMeal(new MealManagerAdapter());
     }
 }
 

@@ -1,18 +1,19 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
-import org.pesmypetcare.mypetcare.utilities.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 public class PetHealthInfo {
     private Map<DateTime, Double> weight;
     private Map<DateTime, Double> recommendedDailyKiloCalories;
     private Map<DateTime, Integer> exerciseFrequency;
-    private Map<DateTime, Event> weeklyExercise;
+    private Map<DateTime, Integer> weeklyExercise;
     private Map<DateTime, Double> weeklyKiloCaloriesAverage;
     private Map<DateTime, Integer> washFrequency;
     private String pathologies;
@@ -64,6 +65,7 @@ public class PetHealthInfo {
      * @param weight The weight of the pet in that date
      */
     public void addWeightForDate(DateTime date, double weight) {
+        selectDate(date);
         this.weight.put(date, weight);
     }
 
@@ -176,7 +178,7 @@ public class PetHealthInfo {
      * Getter of the weeklyExercise attribute.
      * @return The weeklyExercise attribute
      */
-    public Map<DateTime, Event> getWeeklyExercise() {
+    public Map<DateTime, Integer> getWeeklyExercise() {
         return weeklyExercise;
     }
 
@@ -184,11 +186,11 @@ public class PetHealthInfo {
      * Method that gets the last stored weekly exercise of the pet.
      * @return The last stored weekly exercise of the pet or null if the pet does not have any weekly exercise stored
      */
-    public Event getLastWeeklyExercise() {
+    public Integer getLastWeeklyExercise() {
         if (weeklyExercise.isEmpty()) {
             return null;
         }
-        return ((TreeMap<DateTime, Event>) weeklyExercise).lastEntry().getValue();
+        return Objects.requireNonNull(((TreeMap<DateTime, Integer>) weeklyExercise).lastEntry()).getValue();
     }
 
     /**
@@ -196,7 +198,7 @@ public class PetHealthInfo {
      * @param date The date for which we want to obtain de weeklyExercise
      * @return The weeklyExercise for the given date, or null if not present
      */
-    public Event getWeeklyExerciseForDate(DateTime date) {
+    public Integer getWeeklyExerciseForDate(DateTime date) {
         if (weeklyExercise.containsKey(date)) {
             return weeklyExercise.get(date);
         }
@@ -208,7 +210,7 @@ public class PetHealthInfo {
      * @param date The date for which we want to add the event
      * @param exercise The exercise that we want to add for that given date
      */
-    public void addWeeklyExerciseForDate(DateTime date, Event exercise) {
+    public void addWeeklyExerciseForDate(DateTime date, Integer exercise) {
         this.weeklyExercise.put(date, exercise);
     }
 
@@ -307,6 +309,7 @@ public class PetHealthInfo {
      * @param washFreq The washFrequency that we want to add
      */
     public void addWashFrequencyForDate(DateTime date, int washFreq) {
+        selectDate(date);
         washFrequency.put(date, washFreq);
     }
 
@@ -314,7 +317,7 @@ public class PetHealthInfo {
      * Method that removes the washFrequency for the given date.
      * @param date The date for which we want to remove the washFrequency
      */
-    public void removeWashFrequencyForDate(DateTime date) {
+    public void deleteWashFrequencyForDate(DateTime date) {
         washFrequency.remove(date);
     }
 
@@ -348,6 +351,30 @@ public class PetHealthInfo {
      */
     public void setPetNeeds(List<String> petNeeds) {
         this.petNeeds = petNeeds;
+    }
+
+    /**
+     * Select the date.
+     * @param date The dateTime to select the date from
+     */
+    private void selectDate(DateTime date) {
+        date.setHour(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+    }
+
+    @Override
+    public String toString() {
+        return "PetHealthInfo{"
+            + "weight=" + weight
+            + ", recommendedDailyKiloCalories=" + recommendedDailyKiloCalories
+            + ", exerciseFrequency=" + exerciseFrequency
+            + ", weeklyExercise=" + weeklyExercise
+            + ", weeklyKiloCaloriesAverage=" + weeklyKiloCaloriesAverage
+            + ", washFrequency=" + washFrequency
+            + ", pathologies='" + pathologies + '\''
+            + ", petNeeds=" + petNeeds
+            + '}';
     }
 
     private static class TreeComparator implements Comparator<DateTime> {

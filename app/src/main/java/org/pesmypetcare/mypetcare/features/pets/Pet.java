@@ -3,9 +3,11 @@ package org.pesmypetcare.mypetcare.features.pets;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
-import org.pesmypetcare.mypetcare.utilities.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.text.DateFormat;
@@ -29,7 +31,7 @@ public class Pet {
     private String name;
     private GenderType gender;
     private String breed;
-    private String birthDate;
+    private DateTime birthDate;
     private PetHealthInfo healthInfo;
     private User owner;
     private String previousName;
@@ -39,12 +41,13 @@ public class Pet {
     public Pet() {
         this.events = new ArrayList<>();
         this.healthInfo = new PetHealthInfo();
+        this.birthDate = DateTime.Builder.buildDateString("2020-01-1");
     }
 
     public Pet(Bundle petInfo) {
         this.name = petInfo.getString(BUNDLE_NAME);
         this.breed = petInfo.getString(BUNDLE_BREED);
-        this.birthDate = petInfo.getString(BUNDLE_BIRTH_DATE);
+        this.birthDate = DateTime.Builder.buildDateString(Objects.requireNonNull(petInfo.getString(BUNDLE_BIRTH_DATE)));
         initializeHealthInfo(petInfo);
         this.events = new ArrayList<>();
 
@@ -62,10 +65,8 @@ public class Pet {
      * @param petInfo A bundle containing all the information of the pet
      */
     public void initializeHealthInfo(Bundle petInfo) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = new Date();
-        String strData = dateFormat.format(date);
-        DateTime dateTime = new DateTime(strData);
+        DateTime dateTime = getActualDateTime();
+
         this.healthInfo = new PetHealthInfo();
         this.healthInfo.addWeightForDate(dateTime, petInfo.getFloat(BUNDLE_WEIGHT));
         this.healthInfo.setPathologies(petInfo.getString(BUNDLE_PATHOLOGIES));
@@ -84,7 +85,7 @@ public class Pet {
     public Pet(Bundle petInfo, User user) {
         this.name = petInfo.getString(BUNDLE_NAME);
         this.breed = petInfo.getString(BUNDLE_BREED);
-        this.birthDate = petInfo.getString(BUNDLE_BIRTH_DATE);
+        this.birthDate = DateTime.Builder.buildDateString(Objects.requireNonNull(petInfo.getString(BUNDLE_BIRTH_DATE)));
         initializeHealthInfo(petInfo);
         this.events = new ArrayList<>();
 
@@ -102,6 +103,8 @@ public class Pet {
     public Pet(String name) {
         this.name = name;
         this.events = new ArrayList<>();
+        this.healthInfo = new PetHealthInfo();
+        this.birthDate = DateTime.Builder.buildDateString("2020-01-1");
     }
 
     /**
@@ -162,14 +165,14 @@ public class Pet {
      * @return The birth date of the pet
      */
     public String getBirthDate() {
-        return birthDate;
+        return birthDate.getYear() + "-" + birthDate.getMonth() + "-" + birthDate.getDay();
     }
 
     /**
      * Set the birth date of the pet.
      * @param birthDate The birth date to set
      */
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(DateTime birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -186,11 +189,19 @@ public class Pet {
      * @param weight The weight to set
      */
     public void setWeight(double weight) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        DateTime dateTime = getActualDateTime();
+        this.healthInfo.addWeightForDate(dateTime, weight);
+    }
+
+    /**
+     * Get the actual date time.
+     * @return The actual date time
+     */
+    private DateTime getActualDateTime() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d");
         Date date = new Date();
         String strData = dateFormat.format(date);
-        DateTime dateTime = new DateTime(strData);
-        this.healthInfo.addWeightForDate(dateTime, weight);
+        return DateTime.Builder.buildDateString(strData);
     }
 
     /**
@@ -222,10 +233,7 @@ public class Pet {
      * @param recommendedDailyKiloCalories The recommended daily kilo calories of the pet to set
      */
     public void setRecommendedDailyKiloCalories(double recommendedDailyKiloCalories) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = new Date();
-        String strData = dateFormat.format(date);
-        DateTime dateTime = new DateTime(strData);
+        DateTime dateTime = getActualDateTime();
         healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, recommendedDailyKiloCalories);
     }
 
@@ -242,10 +250,7 @@ public class Pet {
      * @param washFrequency The wash frequency to set
      */
     public void setWashFrequency(int washFrequency) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = new Date();
-        String strData = dateFormat.format(date);
-        DateTime dateTime = new DateTime(strData);
+        DateTime dateTime = getActualDateTime();
         healthInfo.addWashFrequencyForDate(dateTime, washFrequency);
     }
 
@@ -328,6 +333,10 @@ public class Pet {
         this.profileImage = profileImage;
     }
 
+    public PetHealthInfo getHealthInfo() {
+        return healthInfo;
+    }
+
     /**
      * Add an event to the pet.
      * @param event The event of the pet to set
@@ -362,8 +371,77 @@ public class Pet {
         return selectedEvents;
     }
 
+    public void deleteWeightForDate(DateTime dateTime) {
+        healthInfo.deleteWeightForDate(dateTime);
+    }
+
+    public void deleteWashFrequencyForDate(DateTime dateTime) {
+        healthInfo.deleteWashFrequencyForDate(dateTime);
+    }
+
+    public boolean isOwner(User user) {
+        return user.equals(owner);
+    }
+
+    public void setWeightForDate(double newWeight, DateTime dateTime) {
+        healthInfo.addWeightForDate(dateTime, newWeight);
+    }
+
+    public void setWashFrequencyForDate(int newWashFrequency, DateTime dateTime) {
+        healthInfo.addWashFrequencyForDate(dateTime, newWashFrequency);
+    }
+
+    @NonNull
+    /**
+     * Get the list of meals of the pet.
+     * @return The list of meals of the pet
+     */
+    public List<Event> getMealEvents() {
+        ArrayList<Event> mealEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof Meals) {
+                mealEvents.add(event);
+            }
+        }
+        return mealEvents;
+    }
+
+    /**
+     * Method responsible for cleaning the event list of the pet.
+     */
+    public void deleteAllEvents() {
+       events = new ArrayList<>();
+    }
+
+    /**
+     * Get the list of meals of the pet for a given date.
+     * @return The list of meals of the pet for a given date
+     */
+    public List<Event> getMealEventsForDate(String dateTime) {
+        ArrayList<Event> mealEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            String eventDate = DateConversion.getDate(event.getDateTime());
+            if (event instanceof Meals && eventDate.equals(dateTime)) {
+                mealEvents.add(event);
+            }
+        }
+        return mealEvents;
+    }
+
     @Override
     public String toString() {
-        return "{" + name + ", " + (profileImage == null ? "NULL" : "NO_NULL") + "}";
+        return "Pet{"
+            + "name='" + name + '\''
+            + ", gender=" + gender
+            + ", breed='" + breed + '\''
+            + ", birthDate='" + birthDate + '\''
+            + ", healthInfo=" + healthInfo
+            + ", owner=" + owner
+            + ", previousName='" + previousName + '\''
+            + ", profileImage=" + profileImage +
+            ", events=" + events
+            + '}';
     }
 }

@@ -23,7 +23,7 @@
 
             <TextView
                 android:id="@+id/selectDate"
-                style="@style/calendar_title"
+                style="@style/section_title"
                 android:text="@string/calendar_select_date" />
 
             <CalendarView

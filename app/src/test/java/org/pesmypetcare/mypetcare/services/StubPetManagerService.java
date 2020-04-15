@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,11 +22,13 @@ public class StubPetManagerService implements PetManagerService {
     public StubPetManagerService() {
         this.data = new HashMap<>();
         this.data.put(JOHN_DOE, new ArrayList<>());
-        Objects.requireNonNull(this.data.get(JOHN_DOE)).add(new Pet(DINKY));
+        Pet pet = new Pet(DINKY);
+        pet.setWeight(10.0);
+        Objects.requireNonNull(this.data.get(JOHN_DOE)).add(pet);
 
         this.data.put(JOHN_DOE_2, new ArrayList<>());
         for (int index = 0; index < 2; ++index) {
-            Pet pet = new Pet("pet" + index);
+            pet = new Pet("pet" + index);
             Objects.requireNonNull(this.data.get(JOHN_DOE_2)).add(pet);
         }
     }
@@ -96,5 +99,33 @@ public class StubPetManagerService implements PetManagerService {
         assert pets != null;
         int index = Objects.requireNonNull(pets).indexOf(pet);
         pets.get(index).deleteEvent(event);
+    }
+
+    @Override
+    public void updateWeight(User user, Pet pet, double newWeight, DateTime dateTime) {
+        ArrayList<Pet> pets = data.get(user.getUsername());
+        int petIndex = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(petIndex).setWeightForDate(newWeight, dateTime);
+    }
+
+    @Override
+    public void deletePetWeight(User user, Pet pet, DateTime dateTime) {
+        ArrayList<Pet> pets = data.get(user.getUsername());
+        int petIndex = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(petIndex).deleteWeightForDate(dateTime);
+    }
+
+    @Override
+    public void updateWashFrequency(User user, Pet pet, int newWashFrequency) {
+        ArrayList<Pet> pets = data.get(user.getUsername());
+        int petIndex = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(petIndex).setWashFrequency(newWashFrequency);
+    }
+
+    @Override
+    public void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) {
+        ArrayList<Pet> pets = data.get(user.getUsername());
+        int petIndex = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(petIndex).deleteWashFrequencyForDate(dateTime);
     }
 }

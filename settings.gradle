@@ -1,2 +1,2 @@
 rootProject.name='My Pet Care'
-include ':app', ':usermanagerlib-v2.2.4'
+include ':app', ':usermanagerlib'
