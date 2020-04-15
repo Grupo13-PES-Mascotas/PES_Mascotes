@@ -54,7 +54,6 @@ public class TestRegisterPetFragment {
         onView(withId(R.id.inputBreed)).perform(typeText("Husky"), closeSoftKeyboard());
         onView(withId(R.id.inputWeight)).perform(typeText("5"), closeSoftKeyboard());
         onView(withId(R.id.inputPathologies)).perform(typeText("lame"), closeSoftKeyboard());
-        //onView(withId(R.id.inputRecommendedCalories)).perform(typeText("10"), closeSoftKeyboard());
         onView(withId(R.id.inputWashFrequency)).perform(typeText("2"), closeSoftKeyboard());
 
         onView(withId(R.id.btnAddPet)).perform(click());

@@ -33,9 +33,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import java.util.Locale;
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SettingsMenuFragment extends Fragment {
     private static final String EN_GB = "en-GB";
     private static final String CA_ES = "ca-ES";

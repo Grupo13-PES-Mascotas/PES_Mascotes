@@ -59,12 +59,16 @@ import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunic
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.TrAddNewWashFrequency;
+import org.pesmypetcare.mypetcare.controllers.TrAddNewWeight;
 import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteWashFrequency;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteWeight;
 import org.pesmypetcare.mypetcare.controllers.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrNewPetMeal;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetImages;
@@ -91,6 +95,7 @@ import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -139,6 +144,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrUpdateUserImage trUpdateUserImage;
     private TrNewPersonalEvent trNewPersonalEvent;
     private TrDeletePersonalEvent trDeletePersonalEvent;
+    private TrAddNewWeight trAddNewWeight;
+    private TrDeleteWeight trDeleteWeight;
+    private TrAddNewWashFrequency trAddNewWashFrequency;
+    private TrDeleteWashFrequency trDeleteWashFrequency;
     private TrNewPetMeal trNewPetMeal;
     private TrObtainAllPetMeals trObtainAllPetMeals;
     private TrDeleteMeal trDeleteMeal;
@@ -377,6 +386,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdateUserImage = ControllersFactory.createTrUpdateUserImage();
         trNewPersonalEvent = ControllersFactory.createTrNewPersonalEvent();
         trDeletePersonalEvent = ControllersFactory.createTrDeletePersonalEvent();
+        trAddNewWeight = ControllersFactory.createTrAddNewWeight();
+        trDeleteWeight = ControllersFactory.createTrDeleteWeight();
+        trAddNewWashFrequency = ControllersFactory.createTrAddNewWashFrequency();
+        trDeleteWashFrequency = ControllersFactory.createTrDeleteWashFrequency();
         trNewPetMeal = ControllersFactory.createTrNewPetMeal();
         trObtainAllPetMeals = ControllersFactory.createTrObtainAllPetMeals();
         trDeleteMeal = ControllersFactory.createTrDeleteMeal();
@@ -391,6 +404,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeActionDrawerToggle();
         setUpNavigationDrawer();
         setStartFragment();
+        hideWindowSoftKeyboard();
+    }
+
+    /**
+     * Hides the soft keyboard.
+     */
+    public void hideWindowSoftKeyboard() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
@@ -715,6 +735,65 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
+    public void addWeightForDate(Pet pet, double newWeight, String date) {
+        trAddNewWeight.setUser(user);
+        trAddNewWeight.setPet(pet);
+        trAddNewWeight.setNewWeight(newWeight);
+
+        DateTime dateTime = DateTime.Builder.buildDateString(date);
+        trAddNewWeight.setDateTime(dateTime);
+        try {
+            trAddNewWeight.execute();
+        } catch (NotPetOwnerException e) {
+            Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
+            toast.show();
+        }
+
+        hideWindowSoftKeyboard();
+    }
+
+    @Override
+    public void deleteWeightForDate(Pet pet, String date) {
+        trDeleteWeight.setUser(user);
+        trDeleteWeight.setPet(pet);
+        trDeleteWeight.setDateTime(DateTime.Builder.buildDateString(date));
+        try {
+            trDeleteWeight.execute();
+        } catch (NotPetOwnerException e) {
+            Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+
+    @Override
+    public void addWashFrequencyForDate(Pet pet, int newWashFrequency, String date) {
+        trAddNewWashFrequency.setUser(user);
+        trAddNewWashFrequency.setPet(pet);
+        trAddNewWashFrequency.setDateTime(DateTime.Builder.buildDateString(date));
+        trAddNewWashFrequency.setNewWashFrequency(newWashFrequency);
+        try {
+            trAddNewWashFrequency.execute();
+        } catch (NotPetOwnerException e) {
+            Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
+            toast.show();
+        }
+
+        hideWindowSoftKeyboard();
+    }
+
+    @Override
+    public void deleteWashFrequencyForDate(Pet pet, String date) {
+        trDeleteWashFrequency.setUser(user);
+        trDeleteWashFrequency.setPet(pet);
+        trDeleteWashFrequency.setDateTime(DateTime.Builder.buildDateString(date));
+        try {
+            trDeleteWashFrequency.execute();
+        } catch (NotPetOwnerException e) {
+            Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+     
     public void addPetMeal(Pet pet, Meals meal) throws MealAlreadyExistingException {
         trNewPetMeal.setUser(user);
         trNewPetMeal.setPet(pet);

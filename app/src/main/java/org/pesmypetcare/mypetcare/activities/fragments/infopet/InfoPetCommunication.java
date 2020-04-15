@@ -41,6 +41,36 @@ public interface InfoPetCommunication {
     void changeToMainView();
 
     /**
+     * Add a weight for a date.
+     * @param pet The pet
+     * @param newWeight The new weight
+     * @param date The date
+     */
+    void addWeightForDate(Pet pet, double newWeight, String date);
+
+    /**
+     * Delete the weight of a date.
+     * @param pet The pet
+     * @param date The date
+     */
+    void deleteWeightForDate(Pet pet, String date);
+
+    /**
+     * Add a wash frequency for a date.
+     * @param pet The pet
+     * @param newWashFrequency The new wash frequency
+     * @param date The date
+     */
+    void addWashFrequencyForDate(Pet pet, int newWashFrequency, String date);
+
+    /**
+     * Delete the wash frequency for a date.
+     * @param pet The pet
+     * @param date Teh date
+     */
+    void deleteWashFrequencyForDate(Pet pet, String date);
+
+    /**
      * Adds a new meal to the pet.
      * @param pet The pet to which we want to add the meal
      * @param meal The meal that has to be added

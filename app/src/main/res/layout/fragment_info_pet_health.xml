@@ -3,11 +3,92 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.fragments.infopet.InfoPetHealthFragment">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Health" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/barChartLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/statisticTitle"
+                style="@style/section_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/health_weekly_exercice"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+        <TableLayout
+            android:id="@+id/healthButtonsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TableRow>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPrevious"
+                    android:layout_weight="0.5"
+                    style="@style/calendar_button"
+                    app:icon="@drawable/icon_arrow_back"
+                    app:iconTint="@color/white"
+                    app:backgroundTint="@color/green"
+                    android:text="@string/previous" />
+
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="0dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNext"
+                    android:layout_weight="0.5"
+                    style="@style/calendar_button"
+                    app:icon="@drawable/icon_arrow_forward"
+                    app:backgroundTint="@color/red"
+                    app:iconGravity="end"
+                    android:text="@string/next" />
+            </TableRow>
+
+            <TableRow>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnChangeStatistic"
+                    android:layout_weight="0.5"
+                    style="@style/calendar_button"
+                    app:icon="@drawable/icon_refresh"
+                    android:text="@string/change_statistic" />
+
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="0dp" />
+
+                <org.pesmypetcare.mypetcare.activities.views.StatisticButton
+                    android:id="@+id/btnAddNewStatistic"
+                    android:layout_weight="0.5"
+                    style="@style/calendar_button"
+                    app:iconGravity="end"
+                    android:text="@string/add_new_statistic" />
+            </TableRow>
+
+        </TableLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

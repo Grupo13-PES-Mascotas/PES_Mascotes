@@ -7,6 +7,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.List;
 import java.util.Map;
@@ -76,4 +77,37 @@ public interface PetManagerService {
      * @param event The event
      */
     void deleteEvent(Pet pet, Event event);
+
+    /**
+     * Update the weight for a pet.
+     * @param user The user
+     * @param pet The pet
+     * @param newWeight The new weight
+     * @param dateTime The dateTime
+     */
+    void updateWeight(User user, Pet pet, double newWeight, DateTime dateTime);
+
+    /**
+     * Delete the weight of a date.
+     * @param user The user
+     * @param pet The pet
+     * @param dateTime The dateTime
+     */
+    void deletePetWeight(User user, Pet pet, DateTime dateTime);
+
+    /**
+     * Update the wash frequency for a pet.
+     * @param user The user
+     * @param pet The pet
+     * @param newWashFrequency The new wash frequency
+     */
+    void updateWashFrequency(User user, Pet pet, int newWashFrequency);
+
+    /**
+     * Delete the pet wash frequency of a date.
+     * @param user The user
+     * @param pet The pet
+     * @param dateTime The dateTime
+     */
+    void deletePetWashFrequency(User user, Pet pet, DateTime dateTime);
 }

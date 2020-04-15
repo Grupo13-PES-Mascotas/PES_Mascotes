@@ -50,7 +50,6 @@ public class DateConversion {
      * @return The date in the app format
      */
     public static String convertToApp(String date) {
-        System.out.println("Data " + date);
         String[] dateInfo = date.split("-");
         StringBuilder conversion = new StringBuilder("");
 
