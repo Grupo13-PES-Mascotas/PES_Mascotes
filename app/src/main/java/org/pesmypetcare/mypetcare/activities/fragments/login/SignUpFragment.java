@@ -97,16 +97,17 @@ public class SignUpFragment extends Fragment {
     }
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) throws ExecutionException, InterruptedException {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
-                    if (task.isSuccessful()) {
-                        userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
-                                acct.getDisplayName(), acct.getEmail(), "");
-                        startActivity(new Intent(getActivity(), MainActivity.class));
-                        Objects.requireNonNull(getActivity()).finish();
-                    }
-                });
-
+        if (!userManagerService.usernameExists(acct.getDisplayName())) {
+            mAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
+                        if (task.isSuccessful()) {
+                            userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
+                                    acct.getDisplayName(), acct.getEmail(), "");
+                            startActivity(new Intent(getActivity(), MainActivity.class));
+                            Objects.requireNonNull(getActivity()).finish();
+                        }
+                    });
+        }
     }
 
 
