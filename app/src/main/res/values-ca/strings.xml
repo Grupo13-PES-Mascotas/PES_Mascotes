@@ -162,6 +162,7 @@
     <string name="tag_not_valid">Les etiquetes només pot contenir lletres, números i comes</string>
     <string name="empty_field">El camp de cerca no pot estar buit</string>
     <string name="no_search_results">Sense resultats</string>
+    <string name="group_not_found">No s\'ha trobat el grup</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

@@ -66,6 +66,7 @@ import org.pesmypetcare.mypetcare.controllers.TrAddNewWeight;
 import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrCreateNewGroup;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteGroup;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
@@ -86,6 +87,7 @@ import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.community.Group;
 import org.pesmypetcare.mypetcare.features.community.GroupAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
@@ -163,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrUpdateMeal trUpdateMeal;
     private TrObtainAllGroups trObtainAllGroups;
     private TrCreateNewGroup trCreateNewGroup;
+    private TrDeleteGroup trDeleteGroup;
     private FloatingActionButton flAddCalendarEvent;
     private static int notificationId;
     private static int requestCode;
@@ -407,6 +410,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdateMeal = ControllersFactory.createTrUpdateMeal();
         trObtainAllGroups = ControllersFactory.createTrObtainAllGroups();
         trCreateNewGroup = ControllersFactory.createTrObtainNewGroup();
+        trDeleteGroup = ControllersFactory.createTrDeleteGroup();
     }
 
     /**
@@ -1016,7 +1020,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trCreateNewGroup.execute();
         } catch (GroupAlreadyExistingException e) {
-            Toast toast = Toast.makeText(this, "", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(this, getString(R.string.group_already_created), Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+
+    @Override
+    public void deleteGroup(String groupName) {
+        trDeleteGroup.setGroupName(groupName);
+        try {
+            trDeleteGroup.execute();
+        } catch (GroupNotFoundException e) {
+            Toast toast = Toast.makeText(this, R.string.group_not_found, Toast.LENGTH_LONG);
             toast.show();
         }
     }

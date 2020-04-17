@@ -162,6 +162,7 @@
     <string name="tag_not_valid">Las etiquetas solo pueden tener letras, números y comas</string>
     <string name="empty_field">El campo de búsqueda no puede estar vacío</string>
     <string name="no_search_results">Sin resultados</string>
+    <string name="group_not_found">El grupo no existe</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

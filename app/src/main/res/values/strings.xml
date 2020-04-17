@@ -161,6 +161,7 @@
     <string name="tag_not_valid">Tags can only contain letters, numbers and commas</string>
     <string name="empty_field">The search field cannot be empty</string>
     <string name="no_search_results">No results</string>
+    <string name="group_not_found">Group not found</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
