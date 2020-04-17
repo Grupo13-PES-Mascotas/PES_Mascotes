@@ -14,6 +14,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -23,6 +29,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
@@ -45,6 +52,7 @@ public class SignUpFragment extends Fragment {
     private TextInputEditText[] editText;
     private TextInputLayout [] inputLayout;
     private FirebaseAuth mAuth;
+    private CallbackManager mCallbackManager;
     private String email;
     private String password;
     private static UserManagerService userManagerService = new UserManagerAdapter();
@@ -78,12 +86,53 @@ public class SignUpFragment extends Fragment {
             startActivityForResult(signInIntent, 9001);
         });
 
+        FacebookSdk.sdkInitialize(getContext());
+        mCallbackManager = CallbackManager.Factory.create();
+        binding.loginFacebookButton.setReadPermissions("email", "public_profile");
+        binding.loginFacebookButton.setFragment(this);
+        binding.loginFacebookButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                //
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                //
+            }
+        });
+
         return view;
+    }
+
+    /**
+     * Authentication with Facebook.
+     * @param token The Facebook token
+     */
+    private void handleFacebookAccessToken(AccessToken token) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
+                    if (task.isSuccessful()) {
+                        userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
+                                mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getEmail(),
+                                "");
+                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        Objects.requireNonNull(getActivity()).finish();
+                    }
+                });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == 9001) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -95,21 +144,23 @@ public class SignUpFragment extends Fragment {
             }
         }
     }
+
+    /**
+     * Authentication with Google.
+     * @param acct The Google account
+     */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) throws ExecutionException, InterruptedException {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        if (!userManagerService.usernameExists(acct.getDisplayName())) {
-            mAuth.signInWithCredential(credential)
-                    .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
-                        if (task.isSuccessful()) {
-                            userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
-                                    acct.getDisplayName(), acct.getEmail(), "");
-                            startActivity(new Intent(getActivity(), MainActivity.class));
-                            Objects.requireNonNull(getActivity()).finish();
-                        }
-                    });
-        }
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
+                    if (task.isSuccessful()) {
+                        userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
+                                acct.getDisplayName(), acct.getEmail(), "");
+                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        Objects.requireNonNull(getActivity()).finish();
+                    }
+                });
     }
-
 
     /**
      * This method declares the editText and InputLayout.
