@@ -68,9 +68,9 @@ import org.pesmypetcare.mypetcare.controllers.TrAddNewWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.TrAddNewWeight;
 import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
+import org.pesmypetcare.mypetcare.controllers.TrChangeUsername;
 import org.pesmypetcare.mypetcare.controllers.TrCreateNewGroup;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteGroup;
-import org.pesmypetcare.mypetcare.controllers.TrChangeUsername;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
@@ -446,7 +446,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             if (actualFragment instanceof MyPetsFragment) {
                 addPet();
             } else {
-                createGroup();
+                createGroupDialog();
             }
         });
     }
@@ -454,7 +454,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     /**
      * Create the group dialog.
      */
-    private void createGroup() {
+    private void createGroupDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(this),
             R.style.AlertDialogTheme);
         dialog.setTitle(R.string.add_new_group_title);
@@ -1091,6 +1091,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     public List<Group> getGroups() {
         return groups;
+    }
   
     @Override
     public boolean usernameExists(String newUsername) {
