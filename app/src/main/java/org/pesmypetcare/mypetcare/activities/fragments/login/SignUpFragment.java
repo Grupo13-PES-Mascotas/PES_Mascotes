@@ -68,11 +68,8 @@ public class SignUpFragment extends Fragment {
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         signUpWithParameters();
-
         signUpWithGoogle();
-
         signUpWithFacebook();
-
         return view;
     }
 
