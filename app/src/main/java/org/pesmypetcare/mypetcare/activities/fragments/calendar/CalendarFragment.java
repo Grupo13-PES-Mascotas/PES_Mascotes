@@ -23,8 +23,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.CalendarEventsView;
+import org.pesmypetcare.mypetcare.activities.views.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.EventView;
-import org.pesmypetcare.mypetcare.activities.views.PetComponentView;
 import org.pesmypetcare.mypetcare.databinding.FragmentCalendarBinding;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Event;
@@ -340,8 +340,8 @@ public class CalendarFragment extends Fragment {
         for (Pet pet : pets) {
             CalendarEventsView calendarEventsView = new CalendarEventsView(getContext(), null);
             calendarEventsView.showEvents(pet, date);
-            List<PetComponentView> petComponents = calendarEventsView.getPetComponents();
-            for (PetComponentView p : petComponents) {
+            List<CircularEntryView> petComponents = calendarEventsView.getPetComponents();
+            for (CircularEntryView p : petComponents) {
                 p.setOnClickListener(v -> deleteEventDialog(p));
             }
             binding.eventInfoLayout.addView(calendarEventsView);
@@ -352,7 +352,7 @@ public class CalendarFragment extends Fragment {
      * Set up the delete event dialog.
      * @param p The PetComponentView
      */
-    private void deleteEventDialog(PetComponentView p) {
+    private void deleteEventDialog(CircularEntryView p) {
         MaterialAlertDialogBuilder deleteEvent = new MaterialAlertDialogBuilder(Objects.requireNonNull(
                 getContext()), R.style.AlertDialogTheme);
         deleteEvent.setTitle(getString(R.string.delete_event));
@@ -364,12 +364,13 @@ public class CalendarFragment extends Fragment {
 
     /**
      * Initialize the dialog's Positive Button.
-     * @param p The PetViewComponent
+     * @param circularEntryView The PetViewComponent
      * @param deleteEvent The dialog
      */
-    private void initializePositiveButtonDialog(PetComponentView p, MaterialAlertDialogBuilder deleteEvent) {
-        Pet pet = p.getPet();
-        Event event = ((EventView) p).getEvent();
+    private void initializePositiveButtonDialog(CircularEntryView circularEntryView,
+                                                MaterialAlertDialogBuilder deleteEvent) {
+        Pet pet = (Pet) circularEntryView.getObject();
+        Event event = ((EventView) circularEntryView).getEvent();
         deleteEvent.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
             setUpCalendar();
             pet.deleteEvent(event);

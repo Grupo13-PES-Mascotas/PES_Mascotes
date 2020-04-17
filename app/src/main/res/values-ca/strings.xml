@@ -154,6 +154,26 @@
     <string name="title">title</string>
     <string name="notificationChannelName">NOTIFICATION_CHANNEL_NAME</string>
     <string name="repeatedUsername">Repeated username</string>
+    <string name="search_group_name">Nom del grup</string>
+    <string name="search_group_tag">Etiquetes del grup (amb comes)</string>
+    <string name="search">Busca els grups</string>
+    <string name="search_type">Cerca</string>
+    <string name="search_group_name_menu">Nom</string>
+    <string name="search_group_tag_menu">Etiqueta</string>
+    <string name="group_already_created">El grup ja existeix</string>
+    <string name="tag_not_valid">Les etiquetes només pot contenir lletres, números i comes</string>
+    <string name="empty_field">El camp de cerca no pot estar buit</string>
+    <string name="no_search_results">Sense resultats</string>
+    <string name="group_not_found">No s\'ha trobat el grup</string>
+    <string name="add_new_group_title">Afegeix un nou grup</string>
+    <string name="add_new_group_description">Tria un nom pel grup, una descripció (opcional) i les etiquetes seguides
+        amb comes (opcional)
+    </string>
+    <string name="non_empty_field">Aquest camp no pot estar buit</string>
+    <string name="add_description">Descripció del grup (opcional)</string>
+    <string name="add_group_tag">Etiquetes del grup (amb commes, opcional)</string>
+    <string name="delete_group_title">Eliminar grup</string>
+    <string name="delete_group_message">Estàs segur/a que vols eliminar</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>

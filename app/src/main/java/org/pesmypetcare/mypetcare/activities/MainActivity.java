@@ -29,6 +29,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -38,14 +39,18 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityCommunication;
+import org.pesmypetcare.mypetcare.activities.fragments.community.GroupsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
@@ -64,6 +69,8 @@ import org.pesmypetcare.mypetcare.controllers.TrAddNewWeight;
 import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrChangeUsername;
+import org.pesmypetcare.mypetcare.controllers.TrCreateNewGroup;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteGroup;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
@@ -73,6 +80,7 @@ import org.pesmypetcare.mypetcare.controllers.TrDeleteWeight;
 import org.pesmypetcare.mypetcare.controllers.TrExistsUsername;
 import org.pesmypetcare.mypetcare.controllers.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrNewPetMeal;
+import org.pesmypetcare.mypetcare.controllers.TrObtainAllGroups;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetImages;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetMeals;
 import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
@@ -82,6 +90,9 @@ import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
+import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.community.GroupAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
@@ -100,8 +111,12 @@ import org.pesmypetcare.mypetcare.utilities.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -110,17 +125,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
-    InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication {
+    InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
+    CommunityCommunication {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
     };
 
     private static final Class[] APPLICATION_FRAGMENTS = {
-        MyPetsFragment.class, NotImplementedFragment.class, NotImplementedFragment.class,
+        MyPetsFragment.class, GroupsFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, CalendarFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
+    public static final String TAG_REGEX = "^[a-zA-Z0-9,]*$";
 
     private static boolean enableLoginActivity = true;
     private static FloatingActionButton floatingActionButton;
@@ -130,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static Resources resources;
     private static NavigationView navigationView;
     private static int[] countImagesNotFound;
+    private static List<Group> groups;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -157,7 +175,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainAllPetMeals trObtainAllPetMeals;
     private TrDeleteMeal trDeleteMeal;
     private TrUpdateMeal trUpdateMeal;
-    private FloatingActionButton flAddCalendarEvent;
+    private TrObtainAllGroups trObtainAllGroups;
+    private TrCreateNewGroup trCreateNewGroup;
+    private TrDeleteGroup trDeleteGroup;
     private static int notificationId;
     private static int requestCode;
 
@@ -401,6 +421,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainAllPetMeals = ControllersFactory.createTrObtainAllPetMeals();
         trDeleteMeal = ControllersFactory.createTrDeleteMeal();
         trUpdateMeal = ControllersFactory.createTrUpdateMeal();
+        trObtainAllGroups = ControllersFactory.createTrObtainAllGroups();
+        trCreateNewGroup = ControllersFactory.createTrObtainNewGroup();
+        trDeleteGroup = ControllersFactory.createTrDeleteGroup();
     }
 
     /**
@@ -411,7 +434,94 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeActionDrawerToggle();
         setUpNavigationDrawer();
         setStartFragment();
+        setFloatingButtonListener();
         hideWindowSoftKeyboard();
+    }
+
+    /**
+     * Set the floating button listener.
+     */
+    private void setFloatingButtonListener() {
+        floatingActionButton.setOnClickListener(v -> {
+            if (actualFragment instanceof MyPetsFragment) {
+                addPet();
+            } else {
+                createGroupDialog();
+            }
+        });
+    }
+
+    /**
+     * Create the group dialog.
+     */
+    private void createGroupDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(this),
+            R.style.AlertDialogTheme);
+        dialog.setTitle(R.string.add_new_group_title);
+        dialog.setMessage(R.string.add_new_group_description);
+
+        View newGroupDialog = getLayoutInflater().inflate(R.layout.new_group_dialog, null);
+        dialog.setView(newGroupDialog);
+
+        AlertDialog alertDialog = dialog.create();
+        setAddGroupButtonListener(alertDialog, newGroupDialog);
+
+        alertDialog.show();
+    }
+
+    /**
+     * Set the add group button listener.
+     * @param alertDialog The alert dialog
+     * @param newGroupDialog The new group layout
+     */
+    private void setAddGroupButtonListener(AlertDialog alertDialog, View newGroupDialog) {
+        MaterialButton btnAddGroup = newGroupDialog.findViewById(R.id.btnAddGroup);
+
+        btnAddGroup.setOnClickListener(v -> {
+            TextInputLayout groupName = newGroupDialog.findViewById(R.id.addGroupName);
+            TextInputLayout groupDescription = newGroupDialog.findViewById(R.id.addDescription);
+            TextInputLayout groupTags = newGroupDialog.findViewById(R.id.addTags);
+
+            boolean isCorrect = checkEmptyTitle(groupName);
+            isCorrect = isCorrect && checkTagPattern(groupTags);
+
+            if (isCorrect) {
+                String[] tags = Objects.requireNonNull(groupTags.getEditText()).getText().toString().split(",");
+                createGroup(Objects.requireNonNull(groupName.getEditText()).getText().toString(),
+                    Objects.requireNonNull(groupDescription.getEditText()).getText().toString(),
+                    new ArrayList<>(Arrays.asList(tags)));
+                alertDialog.dismiss();
+            }
+        });
+    }
+
+    /**
+     * Check whether the tag follows the correct pattern.
+     * @param groupTags Tags of the group
+     * @return True if the pattern is followed
+     */
+    private boolean checkTagPattern(TextInputLayout groupTags) {
+        if (!Objects.requireNonNull(groupTags.getEditText()).getText().toString().matches(TAG_REGEX)) {
+            groupTags.setErrorEnabled(true);
+            groupTags.setError(getString(R.string.tag_not_valid));
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Check whether the title is empty.
+     * @param groupName The name of the group
+     * @return True if the field is not empty
+     */
+    private boolean checkEmptyTitle(TextInputLayout groupName) {
+        if ("".equals(Objects.requireNonNull(groupName.getEditText()).getText().toString())) {
+            groupName.setErrorEnabled(true);
+            groupName.setError(getString(R.string.non_empty_field));
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -430,9 +540,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     /**
      * Enters the fragment to create a pet.
-     * @param view View from which the function was called
      */
-    public void addPet(View view) {
+    public void addPet() {
         floatingActionButton.hide();
         changeFragment(getFragment(RegisterPetFragment.class));
         toolbar.setTitle(getString(R.string.register_new_pet));
@@ -508,7 +617,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         toolbar.setTitle(title);
         toolbar.setContentDescription(title);
 
-        if (id == R.id.navigationMyPets) {
+        if (id == R.id.navigationMyPets || id == R.id.navigationPetsCommunity) {
             floatingActionButton.show();
         } else {
             floatingActionButton.hide();
@@ -800,7 +909,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             toast.show();
         }
     }
-     
+
+    @Override
     public void addPetMeal(Pet pet, Meals meal) throws MealAlreadyExistingException {
         trNewPetMeal.setUser(user);
         trNewPetMeal.setPet(pet);
@@ -922,7 +1032,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         intent.putExtra(getString(R.string.text), text);
         intent.putExtra(getString(R.string.notificationid), Integer.toString(notificationId));
         notificationId++;
-        PendingIntent pending = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pending = PendingIntent.getBroadcast(context, requestCode, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT);
         requestCode++;
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert manager != null;
@@ -940,7 +1051,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         intent.putExtra(getString(R.string.title), deleted.getTitle());
         intent.putExtra(getString(R.string.text), deleted.getText());
         intent.putExtra(getString(R.string.notificationid) , deleted.getNotificationID());
-        PendingIntent pending = PendingIntent.getBroadcast(context, deleted.getRequestCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pending = PendingIntent.getBroadcast(context, deleted.getRequestCode(), intent,
+            PendingIntent.FLAG_UPDATE_CURRENT);
 
         user.deleteNotification(notification);
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -977,6 +1089,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return user;
     }
 
+    public List<Group> getGroups() {
+        return groups;
+    }
+  
     @Override
     public boolean usernameExists(String newUsername) {
         trExistsUsername.setNewUsername(newUsername);
@@ -1015,5 +1131,48 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdateUserImage.setUser(user);
         trUpdateUserImage.setImage(((BitmapDrawable) drawable).getBitmap());
         trUpdateUserImage.execute();
+    }
+
+    @Override
+    public List<Group> getAllGroups() {
+        trObtainAllGroups.execute();
+        return trObtainAllGroups.getResult();
+    }
+
+    /**
+     * Method responsible for creating a new group.
+     * @param groupName The name of the new group
+     * @param description The description of the new group
+     * @param tags The tags of the new group
+     */
+    private void createGroup(String groupName, String description, List<String> tags) {
+        trCreateNewGroup.setGroupName(groupName);
+        trCreateNewGroup.setOwner(user);
+        trCreateNewGroup.setDescription(description);
+        trCreateNewGroup.setTags(tags);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d");
+        Date date = new Date();
+        String strData = dateFormat.format(date);
+
+        trCreateNewGroup.setCreationDate(DateTime.Builder.buildDateString(strData));
+
+        try {
+            trCreateNewGroup.execute();
+        } catch (GroupAlreadyExistingException e) {
+            Toast toast = Toast.makeText(this, getString(R.string.group_already_created), Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+
+    @Override
+    public void deleteGroup(String groupName) {
+        trDeleteGroup.setGroupName(groupName);
+        try {
+            trDeleteGroup.execute();
+        } catch (GroupNotFoundException e) {
+            Toast toast = Toast.makeText(this, R.string.group_not_found, Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 }

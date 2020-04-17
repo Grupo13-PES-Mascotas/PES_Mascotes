@@ -154,6 +154,26 @@
     <string name="title">title</string>
     <string name="notificationChannelName">NOTIFICATION_CHANNEL_NAME</string>
     <string name="repeatedUsername">Repeated username</string>
+    <string name="search_group_name">Nombre del grupo</string>
+    <string name="search_group_tag">Etiquetas del grupo (con comas)</string>
+    <string name="search">Busca los grupos</string>
+    <string name="search_type">Busca</string>
+    <string name="search_group_name_menu">Nombre</string>
+    <string name="search_group_tag_menu">Etiqueta</string>
+    <string name="group_already_created">El grupo ya existe</string>
+    <string name="tag_not_valid">Las etiquetas solo pueden tener letras, números y comas</string>
+    <string name="empty_field">El campo de búsqueda no puede estar vacío</string>
+    <string name="no_search_results">Sin resultados</string>
+    <string name="group_not_found">El grupo no existe</string>
+    <string name="add_new_group_title">Añade un nuevo grupo</string>
+    <string name="add_new_group_description">Escoje un nombre, añade una descripción (opcional) y las etiquetas
+        seguidas por comas (opcional)
+    </string>
+    <string name="non_empty_field">Este campo no puede estar vacío</string>
+    <string name="add_description">Descripción del grupo (opcional)</string>
+    <string name="add_group_tag">Etiquetas del grupo (con comas, opcional)</string>
+    <string name="delete_group_title">Eliminar grupo</string>
+    <string name="delete_group_message">Estás seguro/a que quieres eliminar</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>
