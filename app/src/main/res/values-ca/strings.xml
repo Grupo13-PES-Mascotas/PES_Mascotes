@@ -155,7 +155,9 @@
     <string name="search_group_name">Nom del grup</string>
     <string name="search_group_tag">Etiquetes del grup (separats amb comes)</string>
     <string name="search">Busca els grups</string>
-    <string name="search_type">Tipus de búsqueda</string>
+    <string name="search_type">Cerca</string>
+    <string name="search_group_name_menu">Nom</string>
+    <string name="search_group_tag_menu">Etiqueta</string>
     <string name="group_already_created">El grup ja existeix</string>
 
     <!-- The next two strings cannot be translated into any other language -->

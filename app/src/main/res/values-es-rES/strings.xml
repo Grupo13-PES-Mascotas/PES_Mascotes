@@ -153,9 +153,11 @@
     <string name="notificationChannelName">NOTIFICATION_CHANNEL_NAME</string>
     <string name="repeatedUsername">Repeated username</string>
     <string name="search_group_name">Nombre del grupo</string>
-    <string name="search_group_tag">Etiquetas del grupo (separado por comas)</string>
+    <string name="search_group_tag">Etiquetas del grupo (con comas)</string>
     <string name="search">Busca los grupos</string>
-    <string name="search_type">Tipo de búsqueda</string>
+    <string name="search_type">Busca</string>
+    <string name="search_group_name_menu">Nombre</string>
+    <string name="search_group_tag_menu">Etiqueta</string>
     <string name="group_already_created">El grupo ya existe</string>
 
     <!-- The next two strings cannot be translated into any other language -->
