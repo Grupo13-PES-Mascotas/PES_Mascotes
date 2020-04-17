@@ -163,6 +163,13 @@
     <string name="empty_field">El campo de búsqueda no puede estar vacío</string>
     <string name="no_search_results">Sin resultados</string>
     <string name="group_not_found">El grupo no existe</string>
+    <string name="add_new_group_title">Añade un nuevo grupo</string>
+    <string name="add_new_group_description">Escoje un nombre, añade una descripción (opcional) y las etiquetas
+        seguidas por comas (opcional)
+    </string>
+    <string name="non_empty_field">Este campo no puede estar vacío</string>
+    <string name="add_description">Descripción del grupo (opcional)</string>
+    <string name="add_group_tag">Etiquetas del grupo (con comas, opcional)</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

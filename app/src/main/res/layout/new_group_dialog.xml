@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutWeightDialog"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addGroupName"
+        style="@style/inputPetContainer">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/addGroupNameEditText"
+            style="@style/inputPetField"
+            android:hint="@string/search_group_name"
+            android:inputType="text"
+            app:errorEnabled="true" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addDescription"
+        style="@style/inputPetContainer">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/inputPetField"
+            android:hint="@string/add_description"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addTags"
+        style="@style/inputPetContainer">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/inputPetField"
+            android:hint="@string/add_group_tag"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAddGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/accept"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textSize="16sp"
+        style="@style/rounded_button" />
+
+</LinearLayout>

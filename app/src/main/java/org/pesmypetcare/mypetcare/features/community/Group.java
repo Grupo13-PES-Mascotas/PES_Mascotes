@@ -43,6 +43,14 @@ public class Group {
         this.ownerUsername = ownerUsername;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public List<String> getParticipants() {
         return participants;
     }
@@ -86,5 +94,12 @@ public class Group {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+            "name='" + name + '\'' +
+            '}';
     }
 }

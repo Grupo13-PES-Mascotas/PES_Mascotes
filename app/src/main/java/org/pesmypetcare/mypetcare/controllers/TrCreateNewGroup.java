@@ -12,6 +12,7 @@ public class TrCreateNewGroup {
     private CommunityService communityService;
     private String groupName;
     private User user;
+    private String description;
     private DateTime creationDate;
     private List<String> tags;
     private Boolean result;
@@ -34,6 +35,14 @@ public class TrCreateNewGroup {
      */
     public void setOwner(User user) {
         this.user = user;
+    }
+
+    /**
+     * Setter of the description of the group that has to be created.
+     * @param description The description of the group that has to be created
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -66,6 +75,7 @@ public class TrCreateNewGroup {
     public void execute() throws GroupAlreadyExistingException {
         result = false;
         Group tmp = new Group(groupName, user.getUsername(), creationDate);
+        tmp.setDescription(description);
         for (String tag : tags) {
             tmp.addTag(tag);
         }

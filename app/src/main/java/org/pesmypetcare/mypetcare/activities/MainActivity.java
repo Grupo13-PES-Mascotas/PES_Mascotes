@@ -29,6 +29,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -38,8 +39,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.pesmypetcare.mypetcare.R;
@@ -105,6 +108,9 @@ import org.pesmypetcare.mypetcare.utilities.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -166,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainAllGroups trObtainAllGroups;
     private TrCreateNewGroup trCreateNewGroup;
     private TrDeleteGroup trDeleteGroup;
-    private FloatingActionButton flAddCalendarEvent;
     private static int notificationId;
     private static int requestCode;
 
@@ -421,7 +426,60 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeActionDrawerToggle();
         setUpNavigationDrawer();
         setStartFragment();
+        setFloatingButtonListener();
         hideWindowSoftKeyboard();
+    }
+
+    private void setFloatingButtonListener() {
+        floatingActionButton.setOnClickListener(v -> {
+            if (actualFragment instanceof MyPetsFragment) {
+                addPet();
+            } else {
+                createGroup();
+            }
+        });
+    }
+
+    private void createGroup() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(this),
+            R.style.AlertDialogTheme);
+        dialog.setTitle(R.string.add_new_group_title);
+        dialog.setMessage(R.string.add_new_group_description);
+
+        View newGroupDialog = getLayoutInflater().inflate(R.layout.new_group_dialog, null);
+        dialog.setView(newGroupDialog);
+
+        TextInputLayout groupName = newGroupDialog.findViewById(R.id.addGroupName);
+        TextInputLayout groupDescription = newGroupDialog.findViewById(R.id.addDescription);
+        TextInputLayout groupTags = newGroupDialog.findViewById(R.id.addTags);
+        MaterialButton btnAddGroup = newGroupDialog.findViewById(R.id.btnAddGroup);
+        AlertDialog alertDialog = dialog.create();
+
+        btnAddGroup.setOnClickListener(v -> {
+            boolean isCorrect = true;
+
+            if ("".equals(Objects.requireNonNull(groupName.getEditText()).getText().toString())) {
+                groupName.setErrorEnabled(true);
+                groupName.setError(getString(R.string.non_empty_field));
+                isCorrect = false;
+            }
+
+            if (!Objects.requireNonNull(groupTags.getEditText()).getText().toString().matches("^[a-zA-Z0-9,]*$")) {
+                groupTags.setErrorEnabled(true);
+                groupTags.setError(getString(R.string.tag_not_valid));
+                isCorrect = false;
+            }
+
+            if (isCorrect) {
+                String[] tags = groupTags.getEditText().getText().toString().split(",");
+                createGroup(groupName.getEditText().getText().toString(),
+                    Objects.requireNonNull(groupDescription.getEditText()).getText().toString(),
+                    new ArrayList<>(Arrays.asList(tags)));
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
     /**
@@ -440,9 +498,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     /**
      * Enters the fragment to create a pet.
-     * @param view View from which the function was called
      */
-    public void addPet(View view) {
+    public void addPet() {
         floatingActionButton.hide();
         changeFragment(getFragment(RegisterPetFragment.class));
         toolbar.setTitle(getString(R.string.register_new_pet));
@@ -518,7 +575,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         toolbar.setTitle(title);
         toolbar.setContentDescription(title);
 
-        if (id == R.id.navigationMyPets) {
+        if (id == R.id.navigationMyPets || id == R.id.navigationPetsCommunity) {
             floatingActionButton.show();
         } else {
             floatingActionButton.hide();
@@ -1009,15 +1066,29 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public List<Group> getAllGroups() {
         trObtainAllGroups.execute();
-        return trObtainAllGroups.getResult();
+        List<Group> result = trObtainAllGroups.getResult();
+        System.out.println(result);
+        return result;
     }
 
-    @Override
-    public void createGroup(User user, String groupName, DateTime creationDate, List<String> tags) {
+    /**
+     * Method responsible for creating a new group.
+     * @param groupName The name of the new group
+     * @param description The description of the new group
+     * @param tags The tags of the new group
+     */
+    private void createGroup(String groupName, String description, List<String> tags) {
         trCreateNewGroup.setGroupName(groupName);
         trCreateNewGroup.setOwner(user);
-        trCreateNewGroup.setCreationDate(creationDate);
+        trCreateNewGroup.setDescription(description);
         trCreateNewGroup.setTags(tags);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d");
+        Date date = new Date();
+        String strData = dateFormat.format(date);
+
+        trCreateNewGroup.setCreationDate(DateTime.Builder.buildDateString(strData));
+
         try {
             trCreateNewGroup.execute();
         } catch (GroupAlreadyExistingException e) {

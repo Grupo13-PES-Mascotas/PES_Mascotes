@@ -163,6 +163,13 @@
     <string name="empty_field">El camp de cerca no pot estar buit</string>
     <string name="no_search_results">Sense resultats</string>
     <string name="group_not_found">No s\'ha trobat el grup</string>
+    <string name="add_new_group_title">Afegeix un nou grup</string>
+    <string name="add_new_group_description">Tria un nom pel grup, una descripció (opcional) i les etiquetes seguides
+        amb comes (opcional)
+    </string>
+    <string name="non_empty_field">Aquest camp no pot estar buit</string>
+    <string name="add_description">Descripció del grup (opcional)</string>
+    <string name="add_group_tag">Etiquetes del grup (amb commes, opcional)</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

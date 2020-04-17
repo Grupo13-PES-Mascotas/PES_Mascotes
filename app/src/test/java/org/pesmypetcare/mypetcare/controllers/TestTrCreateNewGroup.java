@@ -23,12 +23,15 @@ public class TestTrCreateNewGroup {
     private User owner;
     private TrCreateNewGroup trCreateNewGroup;
     private DateTime creationDate;
+    private String description;
     private List<String> tags;
+
     @Before
     public void setUp() throws InvalidFormatException {
         trCreateNewGroup = new TrCreateNewGroup(new StubCommunityService());
         creationDate = DateTime.Builder.build(YEAR, 2, DAY, HOUR, MINUTES, SECONDS);
         owner = new User("johndoe", "johndoe@gmail.com", "1234");
+        description = "Description";
         tags = new ArrayList<>();
         tags.add("Octopus");
         tags.add("Sea");
@@ -38,6 +41,7 @@ public class TestTrCreateNewGroup {
     public void shouldCreateNewGroup() throws GroupAlreadyExistingException {
         trCreateNewGroup.setGroupName(groupName);
         trCreateNewGroup.setOwner(owner);
+        trCreateNewGroup.setDescription(description);
         trCreateNewGroup.setCreationDate(creationDate);
         trCreateNewGroup.setTags(tags);
         trCreateNewGroup.execute();
@@ -48,6 +52,7 @@ public class TestTrCreateNewGroup {
     public void shouldThrowException() throws GroupAlreadyExistingException {
         trCreateNewGroup.setGroupName(groupName);
         trCreateNewGroup.setOwner(owner);
+        trCreateNewGroup.setDescription(description);
         trCreateNewGroup.setCreationDate(creationDate);
         trCreateNewGroup.setTags(tags);
         trCreateNewGroup.execute();

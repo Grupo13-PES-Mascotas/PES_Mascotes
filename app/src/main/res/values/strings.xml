@@ -162,6 +162,13 @@
     <string name="empty_field">The search field cannot be empty</string>
     <string name="no_search_results">No results</string>
     <string name="group_not_found">Group not found</string>
+    <string name="add_new_group_title">Add a new group</string>
+    <string name="add_new_group_description">Choose a name for the group, the description (optional) and enter
+        the tags
+    </string>
+    <string name="non_empty_field">This field cannot be empty</string>
+    <string name="add_description">Group description (optional)</string>
+    <string name="add_group_tag">Group tags (with commas, optional)</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
