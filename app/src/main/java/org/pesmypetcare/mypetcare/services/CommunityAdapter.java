@@ -2,7 +2,7 @@ package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.community.Group;
 import org.pesmypetcare.mypetcare.features.community.GroupNotFoundException;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class CommunityAdapter implements CommunityService {
     }
 
     @Override
-    public void createGroup(String groupName, String ownerUsername, DateTime creationDate) {
+    public void createGroup(User user, Group group) {
 
     }
 

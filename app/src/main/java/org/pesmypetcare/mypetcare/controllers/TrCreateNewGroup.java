@@ -1,14 +1,19 @@
 package org.pesmypetcare.mypetcare.controllers;
 
+import org.pesmypetcare.mypetcare.features.community.Group;
 import org.pesmypetcare.mypetcare.features.community.GroupAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.CommunityService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+
+import java.util.List;
 
 public class TrCreateNewGroup {
     private CommunityService communityService;
     private String groupName;
-    private String ownerUsername;
+    private User user;
     private DateTime creationDate;
+    private List<String> tags;
     private Boolean result;
 
     public TrCreateNewGroup (CommunityService communityService) {
@@ -24,11 +29,11 @@ public class TrCreateNewGroup {
     }
 
     /**
-     * Setter of the username of the owner of the group that has to be created.
-     * @param ownerUsername The username of the owner of the group that has to be created
+     * Setter of the owner of the group that has to be created.
+     * @param user The owner of the group that has to be created
      */
-    public void setOwnerUsername(String ownerUsername) {
-        this.ownerUsername = ownerUsername;
+    public void setOwner(User user) {
+        this.user = user;
     }
 
     /**
@@ -37,6 +42,14 @@ public class TrCreateNewGroup {
      */
     public void setCreationDate(DateTime creationDate) {
         this.creationDate = creationDate;
+    }
+
+    /**
+     * Setter of the tags of the group that has to be created.
+     * @param tags The tags of the group that has to be created
+     */
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     /**
@@ -52,7 +65,11 @@ public class TrCreateNewGroup {
      */
     public void execute() throws GroupAlreadyExistingException {
         result = false;
-        communityService.createGroup(groupName, ownerUsername, creationDate);
+        Group tmp = new Group(groupName, user.getUsername(), creationDate);
+        for (String tag : tags) {
+            tmp.addTag(tag);
+        }
+        communityService.createGroup(user, tmp);
         result = true;
     }
 }

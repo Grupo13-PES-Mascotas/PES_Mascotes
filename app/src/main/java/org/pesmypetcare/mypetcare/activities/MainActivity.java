@@ -1013,10 +1013,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void createGroup(String groupName, String ownerUsername, DateTime creationDate) {
+    public void createGroup(User user, String groupName, DateTime creationDate, List<String> tags) {
         trCreateNewGroup.setGroupName(groupName);
-        trCreateNewGroup.setOwnerUsername(ownerUsername);
+        trCreateNewGroup.setOwner(user);
         trCreateNewGroup.setCreationDate(creationDate);
+        trCreateNewGroup.setTags(tags);
         try {
             trCreateNewGroup.execute();
         } catch (GroupAlreadyExistingException e) {
