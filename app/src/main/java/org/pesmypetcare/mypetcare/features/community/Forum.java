@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.features.community;
 
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Forum {
@@ -16,6 +17,9 @@ public class Forum {
         this.name = name;
         this.ownerUsername = ownerUsername;
         this.creationDate = creationDate;
+        this.participants = new ArrayList<>();
+        this.posts = new ArrayList<>();
+        this.tags = new ArrayList<>();
     }
 
     public String getName() {

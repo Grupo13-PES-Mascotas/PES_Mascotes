@@ -154,6 +154,7 @@
     <string name="search_group_name">Group name</string>
     <string name="search_group_tag">Group tags (separated with commas)</string>
     <string name="search">Groups search</string>
+    <string name="search_type">Search type</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

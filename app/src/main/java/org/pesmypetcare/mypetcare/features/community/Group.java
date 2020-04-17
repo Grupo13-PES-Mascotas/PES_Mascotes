@@ -22,6 +22,8 @@ public class Group {
         this.ownerUsername = ownerUsername;
         this.creationDate = creationDate;
         this.participants = new ArrayList<>();
+        this.forums = new ArrayList<>();
+        this.tags = new ArrayList<>();
     }
 
     public String getName() {
@@ -66,5 +68,9 @@ public class Group {
 
     public List<String> getTags() {
         return tags;
+    }
+
+    public void addTag(String tag) {
+        tags.add(tag);
     }
 }
