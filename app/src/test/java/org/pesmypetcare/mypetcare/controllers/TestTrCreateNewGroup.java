@@ -15,7 +15,7 @@ public class TestTrCreateNewGroup {
     private static final int HOUR = 15;
     private static final int MINUTES = 23;
     private static final int SECONDS = 56;
-    private final String groupName = "Elephants";
+    private final String groupName = "Octopus";
     private final String ownerUsername = "johndoe";
     private TrCreateNewGroup trCreateNewGroup;
     private DateTime creationDate;

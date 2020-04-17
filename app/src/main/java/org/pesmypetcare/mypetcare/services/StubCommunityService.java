@@ -39,10 +39,11 @@ public class StubCommunityService implements CommunityService {
     @Override
     public void createGroup(String groupName, String ownerUsername, DateTime creationDate) throws GroupAlreadyExistingException {
         Group tmp = new Group(groupName, ownerUsername, creationDate);
-        if (groups.contains(tmp)) {
-            throw new GroupAlreadyExistingException();
-        } else {
-            groups.add(tmp);
+        for (int i = 0; i < groups.size(); ++i) {
+            if (tmp.equals(groups.get(i))) {
+                throw new GroupAlreadyExistingException();
+            }
         }
+        groups.add(tmp);
     }
 }
