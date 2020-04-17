@@ -17,6 +17,11 @@ public class PetsInfoView extends CircularEntryView {
         super(context, attrs);
     }
 
+    public PetsInfoView(Context context, AttributeSet attrs, Pet pet) {
+        super(context, attrs);
+        this.pet = pet;
+    }
+
     @Override
     protected CircularImageView getImage() {
         CircularImageView image = new CircularImageView(getCurrentActivity(), null);
@@ -38,11 +43,6 @@ public class PetsInfoView extends CircularEntryView {
     @Override
     public Object getObject() {
         return pet;
-    }
-
-    public PetsInfoView(Context context, AttributeSet attrs, Pet pet) {
-        super(context, attrs);
-        this.pet = pet;
     }
 
     @Override

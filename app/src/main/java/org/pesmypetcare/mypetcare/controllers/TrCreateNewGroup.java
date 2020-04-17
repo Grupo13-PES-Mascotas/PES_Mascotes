@@ -17,7 +17,7 @@ public class TrCreateNewGroup {
     private List<String> tags;
     private Boolean result;
 
-    public TrCreateNewGroup (CommunityService communityService) {
+    public TrCreateNewGroup(CommunityService communityService) {
         this.communityService = communityService;
     }
 

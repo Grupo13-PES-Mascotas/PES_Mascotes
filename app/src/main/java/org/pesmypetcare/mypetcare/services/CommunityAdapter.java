@@ -15,11 +15,11 @@ public class CommunityAdapter implements CommunityService {
 
     @Override
     public void createGroup(User user, Group group) {
-
+        // Not implemented yet
     }
 
     @Override
     public void deleteGroup(String groupName) throws GroupNotFoundException {
-
+        // Not implemented yet
     }
 }

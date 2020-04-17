@@ -20,6 +20,12 @@ public class EventView extends CircularEntryView {
         super(context, attrs);
     }
 
+    public EventView(Context context, AttributeSet attrs, Pet pet, Event event) {
+        super(context, attrs);
+        this.pet = pet;
+        this.event = event;
+    }
+
     @Override
     protected CircularImageView getImage() {
         CircularImageView image = new CircularImageView(getCurrentActivity(), null);
@@ -41,12 +47,6 @@ public class EventView extends CircularEntryView {
     @Override
     public Object getObject() {
         return event;
-    }
-
-    public EventView(Context context, AttributeSet attrs, Pet pet, Event event) {
-        super(context, attrs);
-        this.pet = pet;
-        this.event = event;
     }
 
     /**

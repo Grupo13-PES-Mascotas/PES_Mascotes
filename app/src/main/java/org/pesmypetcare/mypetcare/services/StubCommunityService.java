@@ -22,7 +22,7 @@ public class StubCommunityService implements CommunityService {
         StubCommunityService.groups.add(new Group("Husky", "John Doe",
             DateTime.Builder.buildDateString("2020-04-15")));
         StubCommunityService.groups.add(new Group("Turtles", "John Doe",
-            DateTime.Builder.buildDateString("2020-04-15")));
+            DateTime.Builder.buildDateString("2020-04-16")));
         StubCommunityService.groups.add(new Group("Elephants", "Enric",
             DateTime.Builder.buildDateString("2020-04-14")));
         StubCommunityService.groups.add(new Group("Dinosaur", "Gradle",
@@ -44,8 +44,8 @@ public class StubCommunityService implements CommunityService {
 
     @Override
     public void createGroup(User user, Group group) throws GroupAlreadyExistingException {
-        for (int i = 0; i < groups.size(); ++i) {
-            if (group.equals(groups.get(i))) {
+        for (Group actualGroup : groups) {
+            if (group.equals(actualGroup)) {
                 throw new GroupAlreadyExistingException();
             }
         }

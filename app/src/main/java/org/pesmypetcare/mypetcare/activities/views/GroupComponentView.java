@@ -18,6 +18,11 @@ public class GroupComponentView extends CircularEntryView {
         super(context, attrs);
     }
 
+    public GroupComponentView(Context context, AttributeSet attrs, Group group) {
+        super(context, attrs);
+        this.group = group;
+    }
+
     @Override
     protected CircularImageView getImage() {
         CircularImageView image = new CircularImageView(getCurrentActivity(), null);
@@ -35,11 +40,6 @@ public class GroupComponentView extends CircularEntryView {
     @Override
     public Object getObject() {
         return group;
-    }
-
-    public GroupComponentView(Context context, AttributeSet attrs, Group group) {
-        super(context, attrs);
-        this.group = group;
     }
 
     @Override

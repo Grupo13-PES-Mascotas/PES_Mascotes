@@ -33,7 +33,7 @@ public class TestTrCreateNewGroup {
         owner = new User("johndoe", "johndoe@gmail.com", "1234");
         description = "Description";
         tags = new ArrayList<>();
-        tags.add("Octopus");
+        tags.add(groupName);
         tags.add("Sea");
     }
 

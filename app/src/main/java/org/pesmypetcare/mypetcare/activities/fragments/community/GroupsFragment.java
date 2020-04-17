@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.fragments.community;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,14 +23,16 @@ import org.pesmypetcare.mypetcare.features.community.Group;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class GroupsFragment extends Fragment {
-    private static final int[] groupSearchTitleId = {
+    private static final int[] GROUP_SEARCH_TITLE_ID = {
         R.string.search_group_name, R.string.search_group_tag
     };
     private static final int NAME_SEARCH_MODE = 0;
     private static final String TAG_REGEX = "^[a-zA-Z0-9,]*$";
+    private static final String INTERROGATION_SIGN = "?";
 
     private FragmentGroupsBinding binding;
     private List<Group> groups;
@@ -56,7 +59,7 @@ public class GroupsFragment extends Fragment {
         binding.btnGroupSearch.setOnClickListener(v -> {
             groups = Objects.requireNonNull(communication).getAllGroups();
             String inputText = Objects.requireNonNull(inputGroupSearch.getEditText()).getText().toString()
-                .toLowerCase();
+                .toLowerCase(Locale.getDefault());
             boolean isCorrect = getGroups(inputText);
 
             if (isCorrect) {
@@ -91,13 +94,11 @@ public class GroupsFragment extends Fragment {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()),
             R.style.AlertDialogTheme);
         Group group = (Group) circularEntryView.getObject();
-        dialog.setTitle(getString(R.string.delete_group_title) + " " + group.getName() + "?");
-        dialog.setMessage(getString(R.string.delete_group_message) + " " + group.getName() + "?");
+        dialog.setTitle(getString(R.string.delete_group_title) + " " + group.getName() + INTERROGATION_SIGN);
+        dialog.setMessage(getString(R.string.delete_group_message) + " " + group.getName() + INTERROGATION_SIGN);
 
         dialog.setPositiveButton(R.string.yes, (dialog1, which) -> {
-            communication.deleteGroup(group.getName());
-            binding.groupInfoLayout.removeAllViews();
-            dialog1.dismiss();
+            setDeleteGroupPositiveButton(group, dialog1);
         });
 
         dialog.setNegativeButton(R.string.no, (dialog1, which) -> {
@@ -105,6 +106,17 @@ public class GroupsFragment extends Fragment {
         });
 
         return dialog;
+    }
+
+    /**
+     * Set the delete positive button listener.
+     * @param group The group that has to be deleted
+     * @param dialog The displayed dialog
+     */
+    private void setDeleteGroupPositiveButton(Group group, DialogInterface dialog) {
+        communication.deleteGroup(group.getName());
+        binding.groupInfoLayout.removeAllViews();
+        dialog.dismiss();
     }
 
     /**
@@ -118,7 +130,7 @@ public class GroupsFragment extends Fragment {
         if (selectedSearchMode == NAME_SEARCH_MODE) {
             groups = filterByName(inputText, groups);
             isCorrect = checkNoResults();
-        } else if (inputText.matches(TAG_REGEX)){
+        } else if (inputText.matches(TAG_REGEX)) {
             groups = filterByTag(inputText, groups);
             isCorrect = checkNoResults();
         } else {
@@ -176,7 +188,7 @@ public class GroupsFragment extends Fragment {
             List<String> actualTags = group.getTags();
 
             for (int actual = 0; actual < actualTags.size(); ++actual) {
-                actualTags.set(actual, actualTags.get(actual).toLowerCase());
+                actualTags.set(actual, actualTags.get(actual).toLowerCase(Locale.getDefault()));
             }
 
             if (containsAnyTag(actualTags, selectedTags)) {
@@ -215,7 +227,7 @@ public class GroupsFragment extends Fragment {
         List<Group> selectedGroups = new ArrayList<>();
 
         for (Group group : groups) {
-            if (group.getName().toLowerCase().contains(groupName)) {
+            if (group.getName().toLowerCase(Locale.getDefault()).contains(groupName)) {
                 selectedGroups.add(group);
             }
         }
@@ -235,7 +247,7 @@ public class GroupsFragment extends Fragment {
 
         searchType.setOnItemClickListener((parent, view, position, id) -> {
             selectedSearchMode = position;
-            inputGroupSearch.setHint(getString(groupSearchTitleId[selectedSearchMode]));
+            inputGroupSearch.setHint(getString(GROUP_SEARCH_TITLE_ID[selectedSearchMode]));
             Objects.requireNonNull(binding.inputGroupSearch.getEditText()).setText("");
             binding.groupInfoLayout.removeAllViews();
         });
