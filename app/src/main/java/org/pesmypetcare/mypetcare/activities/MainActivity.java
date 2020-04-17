@@ -85,6 +85,7 @@ import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.community.GroupAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
@@ -134,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static Resources resources;
     private static NavigationView navigationView;
     private static int[] countImagesNotFound;
+    private static List<Group> groups;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -982,6 +984,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return user;
     }
 
+    public List<Group> getGroups() {
+        return groups;
+    }
+
     @Override  
     public void changeMail(String newEmail) {
         trChangeMail.setUser(user);
@@ -1007,8 +1013,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trCreateNewGroup.setGroupName(groupName);
         trCreateNewGroup.setOwnerUsername(ownerUsername);
         trCreateNewGroup.setCreationDate(creationDate);
-        trCreateNewGroup.execute();
-        if (!trCreateNewGroup.getResult()) {
+        try {
+            trCreateNewGroup.execute();
+        } catch (GroupAlreadyExistingException e) {
             Toast toast = Toast.makeText(this, "", Toast.LENGTH_LONG);
             toast.show();
         }

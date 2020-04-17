@@ -50,13 +50,9 @@ public class TrCreateNewGroup {
     /**
      * Execute the transaction.
      */
-    public void execute() {
+    public void execute() throws GroupAlreadyExistingException {
         result = false;
-        try {
-            communityService.createGroup(groupName, ownerUsername, creationDate);
-        } catch (GroupAlreadyExistingException e) {
-            e.printStackTrace();
-        }
+        communityService.createGroup(groupName, ownerUsername, creationDate);
         result = true;
     }
 }
