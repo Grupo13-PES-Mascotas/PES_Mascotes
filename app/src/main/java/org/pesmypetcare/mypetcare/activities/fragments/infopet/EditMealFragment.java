@@ -116,6 +116,8 @@ public class EditMealFragment extends Fragment {
         }
         timeString.append(mealDate.getMinutes()).append(TIMESEPARATOR).append(DEFAULT_SECONDS);
         binding.inputMealTime.setText(timeString);
+        selectedHour = mealDate.getHour();
+        selectedMin = mealDate.getMinutes();
     }
 
     /**
@@ -282,6 +284,7 @@ public class EditMealFragment extends Fragment {
         String formattedDate = simpleDateFormat.format(calendar.getTime());
         binding.inputMealDate.setText(formattedDate);
         isMealDateSelected = true;
+        updatesDate = true;
     }
 
     /**
