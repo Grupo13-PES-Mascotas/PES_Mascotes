@@ -18,7 +18,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
-public abstract class PetComponentView extends ConstraintLayout {
+public abstract class CircularEntryView extends ConstraintLayout {
     private Context currentActivity;
     private Pet pet;
     private final int PADDING = 15;
@@ -27,7 +27,7 @@ public abstract class PetComponentView extends ConstraintLayout {
 
     private final int IMAGE_DIMESIONS = 150;
 
-    public PetComponentView(Context context, AttributeSet attrs) {
+    public CircularEntryView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.currentActivity = context;
         this.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -36,7 +36,7 @@ public abstract class PetComponentView extends ConstraintLayout {
         this.setId(View.generateViewId());
     }
 
-    public PetComponentView initializeComponent() {
+    public CircularEntryView initializeComponent() {
         CircularImageView image = getImage();
         addView(image);
         LinearLayout info = getInfo();
@@ -52,7 +52,7 @@ public abstract class PetComponentView extends ConstraintLayout {
      * @param currentPet The pet that has to be shown in the component
      * @return The initialized component
      */
-    public PetComponentView initializePetComponent(Pet currentPet) {
+    public CircularEntryView initializePetComponent(Pet currentPet) {
         pet = currentPet;
         CircularImageView image = addPetImage();
         this.addView(image);
@@ -77,16 +77,16 @@ public abstract class PetComponentView extends ConstraintLayout {
      * @param imageId The id of the circular image view
      * @param petId The id of the linear layout that contains the pet info
      * @param layoutId The id of the container
-     * @param petComponentView The container where we want to set the constraints
+     * @param circularEntryView The container where we want to set the constraints
      */
-    private void generateConstraints(int imageId, int petId, int layoutId, PetComponentView petComponentView) {
+    private void generateConstraints(int imageId, int petId, int layoutId, CircularEntryView circularEntryView) {
         ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone(petComponentView);
+        constraintSet.clone(circularEntryView);
         constraintSet.connect(imageId, ConstraintSet.LEFT, layoutId, ConstraintSet.LEFT, IMAGE_LAYOUT_MARGIN);
         constraintSet.connect(petId, ConstraintSet.LEFT, imageId, ConstraintSet.RIGHT, PET_INFO_IMAGE_MARGIN);
         constraintSet.connect(petId, ConstraintSet.TOP, layoutId, ConstraintSet.TOP,
             PET_INFO_IMAGE_MARGIN - IMAGE_LAYOUT_MARGIN);
-        constraintSet.applyTo(petComponentView);
+        constraintSet.applyTo(circularEntryView);
     }
 
     /**

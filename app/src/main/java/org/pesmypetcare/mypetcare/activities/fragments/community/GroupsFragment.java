@@ -11,9 +11,11 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.views.CircularEntryView;
 import org.pesmypetcare.mypetcare.databinding.FragmentGroupsBinding;
 import org.pesmypetcare.mypetcare.features.community.Group;
 
@@ -27,6 +29,7 @@ public class GroupsFragment extends Fragment {
         R.string.search_group_name, R.string.search_group_tag
     };
     private static final int NAME_SEARCH_MODE = 0;
+    private static final String TAG_REGEX = "^[a-zA-Z0-9,]*$";
 
     private FragmentGroupsBinding binding;
     private List<Group> groups;
@@ -41,46 +44,129 @@ public class GroupsFragment extends Fragment {
         inputGroupSearch = binding.inputGroupSearch;
 
         setTypeSearch();
-
-        binding.btnGroupSearch.setOnClickListener(v -> {
-            groups = Objects.requireNonNull(communication).getAllGroups();
-            String inputText = Objects.requireNonNull(inputGroupSearch.getEditText()).getText().toString()
-                .toLowerCase();
-            if (selectedSearchMode == NAME_SEARCH_MODE) {
-                groups = filterByName(inputText, groups);
-                binding.groupInfoLayout.removeAllViews();
-                if (isNotResults()) {
-                    showErrorMessage(R.string.no_search_results);
-                    return;
-                }
-            } else if (inputText.matches("^[a-zA-Z0-9,]*$")){
-                groups = filterByTag(inputText, groups);
-                binding.groupInfoLayout.removeAllViews();
-                if (isNotResults()) {
-                    showErrorMessage(R.string.no_search_results);
-                    return;
-                }
-            } else {
-                showErrorMessage(R.string.tag_not_valid);
-                return;
-            }
-
-            binding.groupInfoLayout.showGroups(groups);
-        });
+        addSearchButtonListener();
 
         return binding.getRoot();
     }
 
+    /**
+     * Add the listeners to the search button.
+     */
+    private void addSearchButtonListener() {
+        binding.btnGroupSearch.setOnClickListener(v -> {
+            groups = Objects.requireNonNull(communication).getAllGroups();
+            String inputText = Objects.requireNonNull(inputGroupSearch.getEditText()).getText().toString()
+                .toLowerCase();
+            boolean isCorrect = getGroups(inputText);
+
+            if (isCorrect) {
+                binding.groupInfoLayout.showGroups(groups);
+                addGroupsViewListeners();
+            }
+        });
+    }
+
+    /**
+     * Add the listeners to the groups view.
+     */
+    private void addGroupsViewListeners() {
+        List<CircularEntryView> views = binding.groupInfoLayout.getGroupComponents();
+
+        for (CircularEntryView circularEntryView : views) {
+            circularEntryView.setLongClickable(true);
+            circularEntryView.setOnLongClickListener(v1 -> {
+                MaterialAlertDialogBuilder dialog = createDeleteGroupDialog(circularEntryView);
+                dialog.show();
+                return true;
+            });
+        }
+    }
+
+    /**
+     * Create a dialog to delete the group.
+     * @param circularEntryView The entry to which the dialog is associated to
+     * @return The dialog that is associated with the entry
+     */
+    private MaterialAlertDialogBuilder createDeleteGroupDialog(CircularEntryView circularEntryView) {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()),
+            R.style.AlertDialogTheme);
+        Group group = (Group) circularEntryView.getObject();
+        dialog.setTitle(getString(R.string.delete_group_title) + " " + group.getName() + "?");
+        dialog.setMessage(getString(R.string.delete_group_message) + " " + group.getName() + "?");
+
+        dialog.setPositiveButton(R.string.yes, (dialog1, which) -> {
+            communication.deleteGroup(group.getName());
+            binding.groupInfoLayout.removeAllViews();
+            dialog1.dismiss();
+        });
+
+        dialog.setNegativeButton(R.string.no, (dialog1, which) -> {
+            dialog1.dismiss();
+        });
+
+        return dialog;
+    }
+
+    /**
+     * Get the groups and check whether the introduced values are correct.
+     * @param inputText The text that has been input
+     * @return True if the introduced text is correct
+     */
+    private boolean getGroups(String inputText) {
+        boolean isCorrect = true;
+
+        if (selectedSearchMode == NAME_SEARCH_MODE) {
+            groups = filterByName(inputText, groups);
+            isCorrect = checkNoResults();
+        } else if (inputText.matches(TAG_REGEX)){
+            groups = filterByTag(inputText, groups);
+            isCorrect = checkNoResults();
+        } else {
+            showErrorMessage(R.string.tag_not_valid);
+        }
+
+        return isCorrect;
+    }
+
+    /**
+     * Check whether there is no results.
+     * @return True if there are not any results
+     */
+    private boolean checkNoResults() {
+        binding.groupInfoLayout.removeAllViews();
+
+        if (isNotResults()) {
+            showErrorMessage(R.string.no_search_results);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check whether there has not been any results in the group search.
+     * @return True if there has not been any results in the group search
+     */
     private boolean isNotResults() {
         return groups.size() == 0;
     }
 
+    /**
+     * Show an error message.
+     * @param messageId The id of the message to display
+     */
     private void showErrorMessage(int messageId) {
         Toast toast = Toast.makeText(getContext(), getString(messageId), Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 
+    /**
+     * Filter the groups by the tag.
+     * @param groupTags The tags of the groups to filter
+     * @param groups The existing groups
+     * @return The groups that contain any of the tags or a part of it
+     */
     private List<Group> filterByTag(String groupTags, List<Group> groups) {
         List<Group> selectedGroups = new ArrayList<>();
         String[] tags = groupTags.split(",");
@@ -101,6 +187,12 @@ public class GroupsFragment extends Fragment {
         return selectedGroups;
     }
 
+    /**
+     * Check whether a group contains any of the specified tags.
+     * @param groupTags The tags of the groups
+     * @param selectedTags The selected tags
+     * @return True if any of the selected tags exists in the group tags
+     */
     private boolean containsAnyTag(List<String> groupTags, List<String> selectedTags) {
         for (String groupTag : groupTags) {
             for (String selectedTag : selectedTags) {
@@ -113,6 +205,12 @@ public class GroupsFragment extends Fragment {
         return false;
     }
 
+    /**
+     * Filter the groups by the name.
+     * @param groupName The name of the group
+     * @param groups The existing groups
+     * @return The groups that contains the groupName in their name
+     */
     private List<Group> filterByName(String groupName, List<Group> groups) {
         List<Group> selectedGroups = new ArrayList<>();
 
@@ -125,6 +223,9 @@ public class GroupsFragment extends Fragment {
         return selectedGroups;
     }
 
+    /**
+     * Set the search select type component.
+     */
     private void setTypeSearch() {
         AutoCompleteTextView searchType = binding.inputSearchType;
         ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()),

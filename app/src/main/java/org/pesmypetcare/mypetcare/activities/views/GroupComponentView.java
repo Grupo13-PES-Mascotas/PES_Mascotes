@@ -11,7 +11,7 @@ import org.pesmypetcare.mypetcare.features.community.Group;
 
 import java.util.List;
 
-public class GroupComponentView extends PetComponentView {
+public class GroupComponentView extends CircularEntryView {
     private Group group;
 
     public GroupComponentView(Context context, AttributeSet attrs) {

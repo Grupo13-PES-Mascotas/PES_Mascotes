@@ -170,6 +170,8 @@
     <string name="non_empty_field">Este campo no puede estar vacío</string>
     <string name="add_description">Descripción del grupo (opcional)</string>
     <string name="add_group_tag">Etiquetas del grupo (con comas, opcional)</string>
+    <string name="delete_group_title">Eliminar grupo</string>
+    <string name="delete_group_message">Estás seguro/a que quieres eliminar</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

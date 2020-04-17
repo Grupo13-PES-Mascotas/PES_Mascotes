@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         NotImplementedFragment.class, CalendarFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
+    public static final String TAG_REGEX = "^[a-zA-Z0-9,]*$";
 
     private static boolean enableLoginActivity = true;
     private static FloatingActionButton floatingActionButton;
@@ -430,6 +431,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         hideWindowSoftKeyboard();
     }
 
+    /**
+     * Set the floating button listener.
+     */
     private void setFloatingButtonListener() {
         floatingActionButton.setOnClickListener(v -> {
             if (actualFragment instanceof MyPetsFragment) {
@@ -440,6 +444,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         });
     }
 
+    /**
+     * Create the group dialog.
+     */
     private void createGroup() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(this),
             R.style.AlertDialogTheme);
@@ -449,37 +456,65 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         View newGroupDialog = getLayoutInflater().inflate(R.layout.new_group_dialog, null);
         dialog.setView(newGroupDialog);
 
-        TextInputLayout groupName = newGroupDialog.findViewById(R.id.addGroupName);
-        TextInputLayout groupDescription = newGroupDialog.findViewById(R.id.addDescription);
-        TextInputLayout groupTags = newGroupDialog.findViewById(R.id.addTags);
-        MaterialButton btnAddGroup = newGroupDialog.findViewById(R.id.btnAddGroup);
         AlertDialog alertDialog = dialog.create();
+        setAddGroupButtonListener(alertDialog, newGroupDialog);
+
+        alertDialog.show();
+    }
+
+    /**
+     * Set the add group button listener.
+     * @param alertDialog The alert dialog
+     * @param newGroupDialog The new group layout
+     */
+    private void setAddGroupButtonListener(AlertDialog alertDialog, View newGroupDialog) {
+        MaterialButton btnAddGroup = newGroupDialog.findViewById(R.id.btnAddGroup);
 
         btnAddGroup.setOnClickListener(v -> {
-            boolean isCorrect = true;
+            TextInputLayout groupName = newGroupDialog.findViewById(R.id.addGroupName);
+            TextInputLayout groupDescription = newGroupDialog.findViewById(R.id.addDescription);
+            TextInputLayout groupTags = newGroupDialog.findViewById(R.id.addTags);
 
-            if ("".equals(Objects.requireNonNull(groupName.getEditText()).getText().toString())) {
-                groupName.setErrorEnabled(true);
-                groupName.setError(getString(R.string.non_empty_field));
-                isCorrect = false;
-            }
-
-            if (!Objects.requireNonNull(groupTags.getEditText()).getText().toString().matches("^[a-zA-Z0-9,]*$")) {
-                groupTags.setErrorEnabled(true);
-                groupTags.setError(getString(R.string.tag_not_valid));
-                isCorrect = false;
-            }
+            boolean isCorrect = checkEmptyTitle(groupName);
+            isCorrect = isCorrect && checkTagPattern(groupTags);
 
             if (isCorrect) {
-                String[] tags = groupTags.getEditText().getText().toString().split(",");
-                createGroup(groupName.getEditText().getText().toString(),
+                String[] tags = Objects.requireNonNull(groupTags.getEditText()).getText().toString().split(",");
+                createGroup(Objects.requireNonNull(groupName.getEditText()).getText().toString(),
                     Objects.requireNonNull(groupDescription.getEditText()).getText().toString(),
                     new ArrayList<>(Arrays.asList(tags)));
                 alertDialog.dismiss();
             }
         });
+    }
 
-        alertDialog.show();
+    /**
+     * Check whether the tag follows the correct pattern.
+     * @param groupTags Tags of the group
+     * @return True if the pattern is followed
+     */
+    private boolean checkTagPattern(TextInputLayout groupTags) {
+        if (!Objects.requireNonNull(groupTags.getEditText()).getText().toString().matches(TAG_REGEX)) {
+            groupTags.setErrorEnabled(true);
+            groupTags.setError(getString(R.string.tag_not_valid));
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Check whether the title is empty.
+     * @param groupName The name of the group
+     * @return True if the field is not empty
+     */
+    private boolean checkEmptyTitle(TextInputLayout groupName) {
+        if ("".equals(Objects.requireNonNull(groupName.getEditText()).getText().toString())) {
+            groupName.setErrorEnabled(true);
+            groupName.setError(getString(R.string.non_empty_field));
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -867,7 +902,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             toast.show();
         }
     }
-     
+
+    @Override
     public void addPetMeal(Pet pet, Meals meal) throws MealAlreadyExistingException {
         trNewPetMeal.setUser(user);
         trNewPetMeal.setPet(pet);
@@ -989,7 +1025,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         intent.putExtra(getString(R.string.text), text);
         intent.putExtra(getString(R.string.notificationid), Integer.toString(notificationId));
         notificationId++;
-        PendingIntent pending = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pending = PendingIntent.getBroadcast(context, requestCode, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT);
         requestCode++;
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert manager != null;
@@ -1066,9 +1103,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public List<Group> getAllGroups() {
         trObtainAllGroups.execute();
-        List<Group> result = trObtainAllGroups.getResult();
-        System.out.println(result);
-        return result;
+        return trObtainAllGroups.getResult();
     }
 
     /**

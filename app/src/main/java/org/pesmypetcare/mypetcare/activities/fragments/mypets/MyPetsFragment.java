@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
-import org.pesmypetcare.mypetcare.activities.views.PetComponentView;
+import org.pesmypetcare.mypetcare.activities.views.CircularEntryView;
 import org.pesmypetcare.mypetcare.databinding.FragmentMyPetsBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -49,11 +49,11 @@ public class MyPetsFragment extends Fragment {
      * Method responsible for setting the listeners for all the pet components.
      */
     private void setPetComponentsListeners() {
-        List<PetComponentView> petsComponents = binding.mainMenu.getPetComponents();
+        List<CircularEntryView> petsComponents = binding.mainMenu.getPetComponents();
         index = 0;
         InfoPetFragment testFragment = new InfoPetFragment();
         while (!petsComponents.isEmpty()) {
-            PetComponentView tmp = petsComponents.remove(0);
+            CircularEntryView tmp = petsComponents.remove(0);
             tmp.setClickable(true);
             tmp.setOnClickListener(v -> {
                 InfoPetFragment.setPet((Pet) tmp.getObject());

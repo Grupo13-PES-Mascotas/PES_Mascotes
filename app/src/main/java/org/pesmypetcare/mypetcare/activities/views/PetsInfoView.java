@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
-public class PetsInfoView extends PetComponentView {
+public class PetsInfoView extends CircularEntryView {
     private Pet pet;
 
     public PetsInfoView(Context context, AttributeSet attrs) {

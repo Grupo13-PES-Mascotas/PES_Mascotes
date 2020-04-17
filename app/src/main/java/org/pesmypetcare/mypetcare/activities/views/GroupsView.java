@@ -16,7 +16,7 @@ import java.util.List;
 public class GroupsView extends LinearLayout {
     public static final int MIN_SPACE_SIZE = 20;
     private Context context;
-    private List<PetComponentView> groupComponents;
+    private List<CircularEntryView> groupComponents;
 
     public GroupsView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -30,11 +30,15 @@ public class GroupsView extends LinearLayout {
         setLayoutParams(params);
     }
 
+    /**
+     * Show the specified groups.
+     * @param groups The groups to display
+     */
     public void showGroups(List<Group> groups) {
         for (Group group : groups) {
-            PetComponentView petComponentView = new GroupComponentView(context, null, group).initializeComponent();
-            addView(petComponentView);
-            groupComponents.add(petComponentView);
+            CircularEntryView circularEntryView = new GroupComponentView(context, null, group).initializeComponent();
+            addView(circularEntryView);
+            groupComponents.add(circularEntryView);
 
             Space space = createSpace();
             addView(space);
@@ -52,8 +56,11 @@ public class GroupsView extends LinearLayout {
         return space;
     }
 
-
-    public List<PetComponentView> getGroupComponents() {
+    /**
+     * Get the group components.
+     * @return The group components
+     */
+    public List<CircularEntryView> getGroupComponents() {
         return groupComponents;
     }
 }
