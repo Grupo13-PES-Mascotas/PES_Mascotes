@@ -1031,7 +1031,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trDeleteGroup.execute();
         } catch (GroupNotFoundException e) {
-            Toast toast = Toast.makeText(this, "", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(this, R.string.group_not_found, Toast.LENGTH_LONG);
             toast.show();
         }
     }
