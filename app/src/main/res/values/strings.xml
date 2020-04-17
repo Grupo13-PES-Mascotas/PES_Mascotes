@@ -158,6 +158,7 @@
     <string name="search_group_name_menu">Name</string>
     <string name="search_group_tag_menu">Tag</string>
     <string name="group_already_created">Group already existing</string>
+    <string name="group_not_found">Group not found</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

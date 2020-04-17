@@ -159,6 +159,7 @@
     <string name="search_group_name_menu">Nombre</string>
     <string name="search_group_tag_menu">Etiqueta</string>
     <string name="group_already_created">El grupo ya existe</string>
+    <string name="group_not_found">El grupo no existe</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

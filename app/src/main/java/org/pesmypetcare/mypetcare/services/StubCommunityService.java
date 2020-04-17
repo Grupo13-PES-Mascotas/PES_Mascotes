@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.community.Group;
 import org.pesmypetcare.mypetcare.features.community.GroupAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.GroupNotFoundException;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
@@ -45,5 +46,19 @@ public class StubCommunityService implements CommunityService {
             }
         }
         groups.add(tmp);
+    }
+
+    @Override
+    public void deleteGroup(String groupName) throws GroupNotFoundException {
+        boolean found = false;
+        for (int i = 0; i < groups.size() && !found; ++i) {
+            if (groupName.equals(groups.get(i).getName())) {
+                groups.remove(i);
+                found = true;
+            }
+        }
+        if (!found) {
+            throw new GroupNotFoundException();
+        }
     }
 }
