@@ -153,12 +153,15 @@
     <string name="notificationChannelName">NOTIFICATION_CHANNEL_NAME</string>
     <string name="repeatedUsername">Repeated username</string>
     <string name="search_group_name">Nom del grup</string>
-    <string name="search_group_tag">Etiquetes del grup (separats amb comes)</string>
+    <string name="search_group_tag">Etiquetes del grup (amb comes)</string>
     <string name="search">Busca els grups</string>
     <string name="search_type">Cerca</string>
     <string name="search_group_name_menu">Nom</string>
     <string name="search_group_tag_menu">Etiqueta</string>
     <string name="group_already_created">El grup ja existeix</string>
+    <string name="tag_not_valid">Les etiquetes només pot contenir lletres, números i comes</string>
+    <string name="empty_field">El camp de cerca no pot estar buit</string>
+    <string name="no_search_results">Sense resultats</string>
     <string name="group_not_found">No s\'ha trobat el grup</string>
 
     <!-- The next two strings cannot be translated into any other language -->

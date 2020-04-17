@@ -152,12 +152,15 @@
     <string name="notificationChannelName">NOTIFICATION_CHANNEL_NAME</string>
     <string name="repeatedUsername">Repeated username</string>
     <string name="search_group_name">Group name</string>
-    <string name="search_group_tag">Group tags (separated with commas)</string>
+    <string name="search_group_tag">Group tags (with commas)</string>
     <string name="search">Groups search</string>
     <string name="search_type">Search</string>
     <string name="search_group_name_menu">Name</string>
     <string name="search_group_tag_menu">Tag</string>
     <string name="group_already_created">Group already existing</string>
+    <string name="tag_not_valid">Tags can only contain letters, numbers and commas</string>
+    <string name="empty_field">The search field cannot be empty</string>
+    <string name="no_search_results">No results</string>
     <string name="group_not_found">Group not found</string>
 
     <!-- The next two strings cannot be translated into any other language -->
