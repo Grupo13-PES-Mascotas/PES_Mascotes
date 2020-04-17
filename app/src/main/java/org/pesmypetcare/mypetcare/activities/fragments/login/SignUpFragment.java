@@ -25,6 +25,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -57,13 +58,64 @@ public class SignUpFragment extends Fragment {
     private String password;
     private static UserManagerService userManagerService = new UserManagerAdapter();
     private String username;
+    private static int RC_CODE;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        RC_CODE = 9001;
         mAuth = FirebaseAuth.getInstance();
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+        signUpWithParameters();
+
+        signUpWithGoogle();
+
+        signUpWithFacebook();
+
+        return view;
+    }
+
+    /**
+     * SignUp with Facebook.
+     */
+    private void signUpWithFacebook() {
+        FacebookSdk.sdkInitialize(getContext());
+        mCallbackManager = CallbackManager.Factory.create();
+        binding.loginFacebookButton.setReadPermissions("email", "public_profile");
+        binding.loginFacebookButton.setFragment(this);
+        binding.loginFacebookButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+            @Override
+            public void onCancel() {}
+            @Override
+            public void onError(FacebookException error) {}
+        });
+    }
+
+    /**
+     * SignUp with Google.
+     */
+    private void signUpWithGoogle() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(new Scope("https://www.googleapis.com/auth/calendar"))
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(Objects.requireNonNull(getActivity()), gso);
+        binding.signupGoogleButton.setOnClickListener(v -> {
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, RC_CODE);
+        });
+    }
+
+    /**
+     * SignUp with parameters.
+     */
+    private void signUpWithParameters() {
         editTextAndInputLayoutDeclaration();
         binding.signupButton.setOnClickListener(v -> {
             if (validateSignUp()) {
@@ -75,39 +127,6 @@ public class SignUpFragment extends Fragment {
             }
             resetFieldsStatus();
         });
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(Objects.requireNonNull(getActivity()), gso);
-        binding.signupGoogleButton.setOnClickListener(v -> {
-            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-            startActivityForResult(signInIntent, 9001);
-        });
-
-        FacebookSdk.sdkInitialize(getContext());
-        mCallbackManager = CallbackManager.Factory.create();
-        binding.loginFacebookButton.setReadPermissions("email", "public_profile");
-        binding.loginFacebookButton.setFragment(this);
-        binding.loginFacebookButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                handleFacebookAccessToken(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                //
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                //
-            }
-        });
-
-        return view;
     }
 
     /**
@@ -128,18 +147,24 @@ public class SignUpFragment extends Fragment {
                 });
     }
 
+    /**
+     * Result of the authentication with Google or Facebook.
+     * @param requestCode The request code
+     * @param resultCode The result code
+     * @param data The data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 9001) {
+        if (requestCode == RC_CODE) {
+            ++RC_CODE;
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 assert account != null;
                 firebaseAuthWithGoogle(account);
-            } catch (ApiException | ExecutionException | InterruptedException e) {
+            } catch (ApiException e) {
                 e.printStackTrace();
             }
         }
@@ -149,7 +174,7 @@ public class SignUpFragment extends Fragment {
      * Authentication with Google.
      * @param acct The Google account
      */
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) throws ExecutionException, InterruptedException {
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
