@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.community.GroupAlreadyExistingException;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
@@ -33,5 +34,15 @@ public class StubCommunityService implements CommunityService {
     @Override
     public List<Group> getAllGroups() {
         return groups;
+    }
+
+    @Override
+    public void createGroup(String groupName, String ownerUsername, DateTime creationDate) throws GroupAlreadyExistingException {
+        Group tmp = new Group(groupName, ownerUsername, creationDate);
+        if (groups.contains(tmp)) {
+            throw new GroupAlreadyExistingException();
+        } else {
+            groups.add(tmp);
+        }
     }
 }

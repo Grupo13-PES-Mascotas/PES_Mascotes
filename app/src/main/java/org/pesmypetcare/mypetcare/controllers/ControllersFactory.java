@@ -95,5 +95,9 @@ public class ControllersFactory {
     public static TrObtainAllGroups createTrObtainAllGroups() {
         return new TrObtainAllGroups(new StubCommunityService());
     }
+
+    public static TrCreateNewGroup createTrObtainNewGroup() {
+        return new TrCreateNewGroup(new StubCommunityService());
+    }
 }
 

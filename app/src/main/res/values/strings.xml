@@ -155,6 +155,7 @@
     <string name="search_group_tag">Group tags (separated with commas)</string>
     <string name="search">Groups search</string>
     <string name="search_type">Search type</string>
+    <string name="group_already_created">Group already existing</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

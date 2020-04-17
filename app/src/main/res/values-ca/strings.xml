@@ -156,6 +156,7 @@
     <string name="search_group_tag">Etiquetes del grup (separats amb comes)</string>
     <string name="search">Busca els grups</string>
     <string name="search_type">Tipus de búsqueda</string>
+    <string name="group_already_created">El grup ja existeix</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

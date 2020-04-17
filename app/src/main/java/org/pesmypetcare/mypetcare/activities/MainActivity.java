@@ -65,6 +65,7 @@ import org.pesmypetcare.mypetcare.controllers.TrAddNewWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.TrAddNewWeight;
 import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
+import org.pesmypetcare.mypetcare.controllers.TrCreateNewGroup;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
@@ -159,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeleteMeal trDeleteMeal;
     private TrUpdateMeal trUpdateMeal;
     private TrObtainAllGroups trObtainAllGroups;
+    private TrCreateNewGroup trCreateNewGroup;
     private FloatingActionButton flAddCalendarEvent;
     private static int notificationId;
     private static int requestCode;
@@ -402,6 +404,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteMeal = ControllersFactory.createTrDeleteMeal();
         trUpdateMeal = ControllersFactory.createTrUpdateMeal();
         trObtainAllGroups = ControllersFactory.createTrObtainAllGroups();
+        trCreateNewGroup = ControllersFactory.createTrObtainNewGroup();
     }
 
     /**
@@ -997,5 +1000,17 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public List<Group> getAllGroups() {
         trObtainAllGroups.execute();
         return trObtainAllGroups.getResult();
+    }
+
+    @Override
+    public void createGroup(String groupName, String ownerUsername, DateTime creationDate) {
+        trCreateNewGroup.setGroupName(groupName);
+        trCreateNewGroup.setOwnerUsername(ownerUsername);
+        trCreateNewGroup.setCreationDate(creationDate);
+        trCreateNewGroup.execute();
+        if (!trCreateNewGroup.getResult()) {
+            Toast toast = Toast.makeText(this, "", Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 }
