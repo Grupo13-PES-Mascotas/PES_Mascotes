@@ -1005,6 +1005,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trChangeMail.setUser(user);
         trChangeMail.setMail(newEmail);
         trChangeMail.execute();
+        View navigationHeader = navigationView.getHeaderView(0);
+        TextView userEmail = navigationHeader.findViewById(R.id.lblUserEmail);
+        userEmail.setText(newEmail);
     }
 
     @Override

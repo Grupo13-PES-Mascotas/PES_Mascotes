@@ -20,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -259,6 +260,7 @@ public class SettingsMenuFragment extends Fragment {
      */
     private void logOutListener() {
         binding.logoutButton.setOnClickListener(v -> {
+            LoginManager.getInstance().logOut();
             mAuth.signOut();
             startActivity(new Intent(getActivity(), LoginActivity.class));
             Objects.requireNonNull(getActivity()).finish();
