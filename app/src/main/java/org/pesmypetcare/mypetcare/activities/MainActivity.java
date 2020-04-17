@@ -70,12 +70,14 @@ import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrCreateNewGroup;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteGroup;
+import org.pesmypetcare.mypetcare.controllers.TrChangeUsername;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteWeight;
+import org.pesmypetcare.mypetcare.controllers.TrExistsUsername;
 import org.pesmypetcare.mypetcare.controllers.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrNewPetMeal;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllGroups;
@@ -103,6 +105,7 @@ import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
+import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
@@ -158,6 +161,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainUser trObtainUser;
     private TrUpdatePet trUpdatePet;
     private TrChangeMail trChangeMail;
+    private TrChangeUsername trChangeUsername;
+    private TrExistsUsername trExistsUsername;
     private TrObtainAllPetImages trObtainAllPetImages;
     private TrUpdateUserImage trUpdateUserImage;
     private TrNewPersonalEvent trNewPersonalEvent;
@@ -353,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         TextView userEmail = navigationHeader.findViewById(R.id.lblUserEmail);
         CircularImageView circularImageView = navigationHeader.findViewById(R.id.imgUser);
 
-        userName.setText(Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName());
+        userName.setText(user.getUsername());
         userEmail.setText(user.getEmail());
 
         if (user.getUserProfileImage() == null) {
@@ -406,6 +411,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdateUserImage = ControllersFactory.createTrUpdateUserImage();
         trNewPersonalEvent = ControllersFactory.createTrNewPersonalEvent();
         trDeletePersonalEvent = ControllersFactory.createTrDeletePersonalEvent();
+        trChangeUsername = ControllersFactory.createTrChangeUsername();
+        trExistsUsername = ControllersFactory.createTrExistsUsername();
         trAddNewWeight = ControllersFactory.createTrAddNewWeight();
         trDeleteWeight = ControllersFactory.createTrDeleteWeight();
         trAddNewWashFrequency = ControllersFactory.createTrAddNewWashFrequency();
@@ -1084,6 +1091,28 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     public List<Group> getGroups() {
         return groups;
+  
+    @Override
+    public boolean usernameExists(String newUsername) {
+        trExistsUsername.setNewUsername(newUsername);
+        trExistsUsername.execute();
+        return trExistsUsername.isResult();
+    }
+
+    @Override
+    public void changeUsername(String newUsername) {
+        trChangeUsername.setUser(user);
+        try {
+            trChangeUsername.setNewUsername(newUsername);
+        } catch (SameUsernameException e) {
+            Toast toast = Toast.makeText(this, "No change", Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+        trChangeUsername.execute();
+        View navigationHeader = navigationView.getHeaderView(0);
+        TextView userName = navigationHeader.findViewById(R.id.lblUserName);
+        userName.setText(newUsername);
     }
 
     @Override  
@@ -1091,6 +1120,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trChangeMail.setUser(user);
         trChangeMail.setMail(newEmail);
         trChangeMail.execute();
+        View navigationHeader = navigationView.getHeaderView(0);
+        TextView userEmail = navigationHeader.findViewById(R.id.lblUserEmail);
+        userEmail.setText(newEmail);
     }
 
     @Override

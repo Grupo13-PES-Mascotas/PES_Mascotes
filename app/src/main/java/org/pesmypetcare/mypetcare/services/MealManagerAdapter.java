@@ -109,7 +109,7 @@ public class MealManagerAdapter implements MealManagerService {
 
     @Override
     public void deleteMeal(User user, Pet pet, Meals meal) {
-        /*String accessToken = user.getToken();
+        String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
         DateTime dateTime = new DateTime(meal.getDateTime());
@@ -117,10 +117,7 @@ public class MealManagerAdapter implements MealManagerService {
             ServiceLocator.getInstance().getMealManagerClient().deleteByDate(accessToken, owner, petName, dateTime);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
-        }*/
-        System.out.println("Nº apats before delete " + pet.getMealEvents().size());
-        pet.deleteEvent(meal);
-        System.out.println("Nº apats after delete " + pet.getMealEvents().size());
+        }
     }
 
     @Override

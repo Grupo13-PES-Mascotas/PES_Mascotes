@@ -45,6 +45,7 @@
     <string name="log_out">Cerrar sesión</string>
     <string name="languages">Idiomas</string>
     <string name="change_password">Cambiar contraseña</string>
+    <string name="change_username">Cambiar Username</string>
     <string name="current_version">Versión: 1.0.1</string>
     <string name="old_password">Anterior contraseña</string>
     <string name="new_password">Nueva contraseña</string>
@@ -81,6 +82,7 @@
     <string name="delete_account">Eliminar cuenta</string>
     <string name="change_email">Cambiar correo electrónico</string>
     <string name="save_email">Guardar nuevo correo electrónico</string>
+    <string name="save_username">Guardar nuevo username</string>
     <string name="cancel">Cancelar</string>
     <string name="user_confirm">¿Estás seguro?</string>
     <string name="delete_account_db">Eliminar cuenta de la base de datos</string>
@@ -172,6 +174,9 @@
     <string name="add_group_tag">Etiquetas del grupo (con comas, opcional)</string>
     <string name="delete_group_title">Eliminar grupo</string>
     <string name="delete_group_message">Estás seguro/a que quieres eliminar</string>
+
+    <string name="facebook_app_id">685773595491268</string>
+    <string name="fb_login_protocol_scheme">fb685773595491268</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

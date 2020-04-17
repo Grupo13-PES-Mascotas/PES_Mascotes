@@ -75,11 +75,29 @@
 
     <Space
         android:layout_width="1dp"
-        android:layout_height="85dp" />
+        android:layout_height="20dp" />
 
     <Button
         android:id="@+id/signupButton"
         style="@style/loginButton"
         android:text="@string/sign_up" />
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="10dp" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/signupGoogleButton"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="10dp" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/loginFacebookButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

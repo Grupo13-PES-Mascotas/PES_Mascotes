@@ -15,10 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,6 +49,8 @@ public class SettingsMenuFragment extends Fragment {
     private User user;
     private String oldMail;
     private String newEmail;
+    private String oldUsername;
+    private String newUsername;
     private boolean isChangeLanguageActivated;
 
     static {
@@ -62,6 +66,8 @@ public class SettingsMenuFragment extends Fragment {
         user = communication.getUserForSettings();
         setEmail();
         changeEmail();
+        setUsername();
+        changeUsername();
         isChangeLanguageActivated = false;
         Objects.requireNonNull(binding.changeEmail.getEditText()).setText(user.getEmail());
         return binding.getRoot();
@@ -145,6 +151,14 @@ public class SettingsMenuFragment extends Fragment {
     }
 
     /**
+     * Sets the existent username.
+     */
+    private void setUsername() {
+        oldUsername = user.getUsername();
+        Objects.requireNonNull(binding.changeUsername.getEditText()).setText(oldUsername);
+    }
+
+    /**
      * Changes the email.
      */
     private void changeEmail() {
@@ -160,6 +174,34 @@ public class SettingsMenuFragment extends Fragment {
         });
     }
 
+    /**
+     * Changes the username.
+     */
+    private void changeUsername() {
+        binding.changeUsernameButton.setOnClickListener(v -> {
+            binding.changeUsername.addOnEditTextAttachedListener(textInputLayout -> {
+                newUsername = Objects.requireNonNull(binding.changeUsername.getEditText()).getText().toString();
+                if (!(oldUsername.equals(newUsername))) {
+                    tryChangeUsername();
+                }
+            });
+        });
+    }
+
+    /**
+     * Try to change the username.
+     */
+    private void tryChangeUsername() {
+        if (!communication.usernameExists(newUsername)) {
+            communication.changeUsername(newUsername);
+            user.setUsername(newUsername);
+            Objects.requireNonNull(binding.changeUsername.getEditText()).setText(newUsername);
+        } else {
+            setUsername();
+            Toast errorMsg = Toast.makeText(getActivity(), R.string.repeatedUsername, Toast.LENGTH_LONG);
+            errorMsg.show();
+        }
+    }
 
     /**
      * Initializes the listeners of the Delete Account button.
@@ -218,6 +260,7 @@ public class SettingsMenuFragment extends Fragment {
      */
     private void logOutListener() {
         binding.logoutButton.setOnClickListener(v -> {
+            LoginManager.getInstance().logOut();
             mAuth.signOut();
             startActivity(new Intent(getActivity(), LoginActivity.class));
             Objects.requireNonNull(getActivity()).finish();

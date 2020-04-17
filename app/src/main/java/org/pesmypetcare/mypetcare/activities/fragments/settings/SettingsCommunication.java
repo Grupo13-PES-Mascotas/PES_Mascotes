@@ -27,4 +27,17 @@ public interface SettingsCommunication {
      * @return The user for settings
      */
     User getUserForSettings();
+
+    /**
+     * Checks if a username already exists.
+     * @param newUsername The username
+     * @return True if exists, false otherwise
+     */
+    boolean usernameExists(String newUsername);
+
+    /**
+     * Passes the information to change the username to the main activity.
+     * @param newUsername The new username
+     */
+    void changeUsername(String newUsername);
 }

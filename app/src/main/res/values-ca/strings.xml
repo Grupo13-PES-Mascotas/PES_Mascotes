@@ -45,6 +45,7 @@
     <string name="log_out">Tancar Sessió</string>
     <string name="languages">Idiomes</string>
     <string name="change_password">Modificar Contrasenya</string>
+    <string name="change_username">Modificar Username</string>
     <string name="current_version">Versió: 1.0.1</string>
     <string name="old_password">Contrasenya Antiga</string>
     <string name="new_password">Nova Contrasenya</string>
@@ -81,6 +82,7 @@
     <string name="delete_account">Esborrar Compte</string>
     <string name="change_email">Modificar Correu</string>
     <string name="save_email">Guardar el nou correu</string>
+    <string name="save_username">Guardar el nou username</string>
     <string name="cancel">Cancel·lar</string>
     <string name="user_confirm">Estàs segur?</string>
     <string name="delete_account_db">Esborrar compte de la base de dades</string>
@@ -172,6 +174,9 @@
     <string name="add_group_tag">Etiquetes del grup (amb commes, opcional)</string>
     <string name="delete_group_title">Eliminar grup</string>
     <string name="delete_group_message">Estàs segur/a que vols eliminar</string>
+
+    <string name="facebook_app_id">685773595491268</string>
+    <string name="fb_login_protocol_scheme">fb685773595491268</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
