@@ -16,6 +16,8 @@ import org.pesmypetcare.mypetcare.databinding.FragmentInfoGroupBinding;
 import org.pesmypetcare.mypetcare.features.community.Group;
 
 public class InfoGroupFragment extends Fragment {
+    private static InfoGroupCommunication communication;
+
     private FragmentInfoGroupBinding binding;
     private InfoGroupFragmentAdapter infoGroupFragmentAdapter;
     private ViewPager2 viewPager;
@@ -24,6 +26,7 @@ public class InfoGroupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoGroupBinding.inflate(inflater, container, false);
+        communication = (InfoGroupCommunication) getActivity();
 
         setUpViewPager();
 
@@ -74,5 +77,13 @@ public class InfoGroupFragment extends Fragment {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public static InfoGroupCommunication getCommunication() {
+        return communication;
+    }
+
+    public static boolean isUserSubscriber() {
+        return true;
     }
 }

@@ -51,6 +51,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunic
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
@@ -127,7 +128,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
     InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
-    CommunityCommunication {
+    CommunityCommunication, InfoGroupCommunication {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
@@ -149,11 +150,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static NavigationView navigationView;
     private static int[] countImagesNotFound;
     private static List<Group> groups;
-    private static MaterialToolbar toolbar;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private MaterialToolbar toolbar;
     private TrRegisterNewPet trRegisterNewPet;
     private TrUpdatePetImage trUpdatePetImage;
     private TrChangePassword trChangePassword;
@@ -250,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return mAuth;
     }
 
-    public static void setToolbarText(String text) {
+    public void setToolbarText(String text) {
         toolbar.setTitle(text);
     }
 
