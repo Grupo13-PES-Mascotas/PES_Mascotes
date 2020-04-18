@@ -149,11 +149,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static NavigationView navigationView;
     private static int[] countImagesNotFound;
     private static List<Group> groups;
+    private static MaterialToolbar toolbar;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private MaterialToolbar toolbar;
     private TrRegisterNewPet trRegisterNewPet;
     private TrUpdatePetImage trUpdatePetImage;
     private TrChangePassword trChangePassword;
@@ -248,6 +248,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     public static FirebaseAuth getmAuth() {
         return mAuth;
+    }
+
+    public static void setToolbarText(String text) {
+        toolbar.setTitle(text);
     }
 
     /**
@@ -540,6 +544,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     /**
+     * Show the floating button.
+     */
+    public static void showFloatingButton() {
+        floatingActionButton.show();
+    }
+
+    /**
      * Enters the fragment to create a pet.
      */
     public void addPet() {
@@ -700,6 +711,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             if (actualFragment instanceof ImageZoomFragment) {
                 toolbar.setTitle(R.string.navigation_my_pets);
                 changeFromImageZoom();
+                return true;
+            } else if (actualFragment instanceof InfoGroupFragment) {
+                toolbar.setTitle(R.string.navigation_pets_community);
+                floatingActionButton.show();
+                changeFragment(new CommunityFragment());
                 return true;
             } else if (!(actualFragment instanceof MyPetsFragment)){
                 changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
@@ -1179,6 +1195,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void showGroupFragment(InfoGroupFragment infoGroupFragment) {
+        floatingActionButton.hide();
         changeFragment(infoGroupFragment);
     }
 }

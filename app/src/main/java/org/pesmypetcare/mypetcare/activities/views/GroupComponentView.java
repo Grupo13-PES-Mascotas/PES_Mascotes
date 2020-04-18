@@ -53,11 +53,17 @@ public class GroupComponentView extends CircularEntryView {
         StringBuilder strTags = new StringBuilder("");
 
         for (int actual = 0; actual < tags.size(); ++actual) {
-            if (actual != 0) {
-                strTags.append(',');
-            }
+            if (!tags.get(actual).equals("")) {
+                if (actual != 0) {
+                    strTags.append(',');
+                }
 
-            strTags.append('#').append(tags.get(actual));
+                strTags.append('#').append(tags.get(actual));
+            }
+        }
+
+        if (strTags.length() == 0) {
+            strTags.append(getResources().getString(R.string.no_tags));
         }
 
         return strTags.toString();

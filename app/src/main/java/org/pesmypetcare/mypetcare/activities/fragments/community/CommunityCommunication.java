@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.activities.fragments.community;
 
 import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface CommunityCommunication {
     void deleteGroup(String groupName);
 
     void showGroupFragment(InfoGroupFragment infoGroupFragment);
+
+    User getUser();
 }

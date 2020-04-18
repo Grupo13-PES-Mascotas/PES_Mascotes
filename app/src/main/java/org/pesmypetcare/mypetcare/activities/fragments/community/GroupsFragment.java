@@ -19,6 +19,7 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.views.CircularEntryView;
+import org.pesmypetcare.mypetcare.activities.views.GroupComponentView;
 import org.pesmypetcare.mypetcare.databinding.FragmentGroupsBinding;
 import org.pesmypetcare.mypetcare.features.community.Group;
 
@@ -78,19 +79,31 @@ public class GroupsFragment extends Fragment {
 
         for (CircularEntryView circularEntryView : views) {
             circularEntryView.setLongClickable(true);
-            circularEntryView.setOnLongClickListener(v1 -> {
-                MaterialAlertDialogBuilder dialog = createDeleteGroupDialog(circularEntryView);
-                dialog.show();
-                return true;
-            });
+            circularEntryView.setOnLongClickListener(v1 -> setGroupLongClickEvent(circularEntryView,
+                (GroupComponentView) v1));
 
-            circularEntryView.setOnClickListener(v -> {
-                Group group = (Group) circularEntryView.getObject();
-                infoGroupFragment.setGroup(group);
-                MainActivity.setActualFragment(infoGroupFragment);
-                CommunityFragment.getCommunication().showGroupFragment(infoGroupFragment);
-            });
+            circularEntryView.setOnClickListener(v -> setGroupOnClickEvent(infoGroupFragment, circularEntryView));
         }
+    }
+
+    private void setGroupOnClickEvent(InfoGroupFragment infoGroupFragment, CircularEntryView circularEntryView) {
+        Group group = (Group) circularEntryView.getObject();
+        infoGroupFragment.setGroup(group);
+        MainActivity.setToolbarText(group.getName());
+        CommunityFragment.getCommunication().showGroupFragment(infoGroupFragment);
+    }
+
+    private boolean setGroupLongClickEvent(CircularEntryView circularEntryView, GroupComponentView v1) {
+        Group group = (Group) v1.getObject();
+        String actualUser = CommunityFragment.getCommunication().getUser().getUsername();
+
+        if (actualUser.equals(group.getOwnerUsername())) {
+            MaterialAlertDialogBuilder dialog = createDeleteGroupDialog(circularEntryView);
+            dialog.show();
+            return true;
+        }
+
+        return false;
     }
 
     /**

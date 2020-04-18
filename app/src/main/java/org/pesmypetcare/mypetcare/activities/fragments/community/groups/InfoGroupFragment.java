@@ -26,10 +26,9 @@ public class InfoGroupFragment extends Fragment {
         binding = FragmentInfoGroupBinding.inflate(inflater, container, false);
 
         setUpViewPager();
-        binding.txtGroupName.setText(group.getName());
 
         String tags = getTagsFromGroup();
-        binding.txtGroupTags.setText(tags.toString());
+        binding.txtGroupTags.setText(tags);
 
         return binding.getRoot();
     }
@@ -38,10 +37,17 @@ public class InfoGroupFragment extends Fragment {
         StringBuilder tags = new StringBuilder("");
 
         for (String actualTag : group.getTags()) {
-            tags.append('#').append(actualTag).append(',');
+            if (!actualTag.equals("")) {
+                tags.append('#').append(actualTag).append(',');
+            }
         }
 
-        tags.deleteCharAt(tags.length() - 1);
+        if (tags.length() == 0) {
+            tags.append(getString(R.string.no_tags));
+        } else {
+            tags.deleteCharAt(tags.length() - 1);
+        }
+
         return tags.toString();
     }
 

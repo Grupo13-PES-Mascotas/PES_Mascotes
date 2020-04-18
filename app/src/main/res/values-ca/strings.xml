@@ -178,6 +178,8 @@
     <string name="community_my_subscriptions">Les meves subscripcions</string>
     <string name="info_group_forums">Fòrums</string>
     <string name="info_group_subscriptors">Subscriptors</string>
+    <string name="group_tags">Etiquetes del grup</string>
+    <string name="no_tags">Sense etiquetes</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>

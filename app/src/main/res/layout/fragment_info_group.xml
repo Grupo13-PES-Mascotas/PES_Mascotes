@@ -24,6 +24,8 @@
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:src="@drawable/single_paw" />
 
             <LinearLayout
@@ -32,39 +34,18 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/groupName"
+                    android:id="@+id/groupTags"
                     style="@style/TextAppearance.MaterialComponents.Headline1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center_horizontal"
                     app:startIconContentDescription="Group name"
                     android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center"
-                    app:boxBackgroundColor="@color/colorAccent"
-                    android:textStyle="bold"
-                    android:textColor="@color/design_default_color_surface">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txtGroupName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/design_default_color_surface"
-                        android:text="@string/name_random"
-                        android:focusable="false"
-                        android:singleLine="true"
-                        android:textSize="30sp"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/groupTags"
-                    style="@style/TextAppearance.MaterialComponents.Headline2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start|center_horizontal"
-                    app:startIconContentDescription="Group tags"
-                    android:layout_marginStart="30dp"
-                    android:gravity="center"
+                    android:hint="@string/group_tags"
+                    android:textColorHint="@color/white"
                     app:boxBackgroundColor="@color/colorAccent"
                     android:textStyle="bold"
                     android:textColor="@color/design_default_color_surface">
@@ -77,7 +58,7 @@
                         android:text="@string/name_random"
                         android:focusable="false"
                         android:singleLine="true"
-                        android:textSize="14sp"/>
+                        android:textSize="18sp"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
