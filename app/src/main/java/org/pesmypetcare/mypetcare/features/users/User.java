@@ -6,7 +6,9 @@ import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class User {
     private String username;
@@ -16,6 +18,7 @@ public class User {
     private Bitmap userProfileImage;
     private String token;
     private ArrayList<Notification> notifications;
+    private Set<String> subscribedGroups;
 
     public User(String username, String email, String passwd) {
         this.username = username;
@@ -24,6 +27,7 @@ public class User {
         this.pets = new ArrayList<>();
         this.notifications = new ArrayList<>();
         this.token = "token";
+        this.subscribedGroups = new HashSet<>();
     }
 
     public String getToken() {
@@ -190,5 +194,13 @@ public class User {
         }
 
         return -1;
+    }
+
+    public void addSubscribedGroup(String groupName) {
+        subscribedGroups.add(groupName);
+    }
+
+    public void removeSubscribedGroup(String groupName) {
+        subscribedGroups.remove(groupName);
     }
 }
