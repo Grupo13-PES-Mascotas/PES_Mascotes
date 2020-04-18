@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.fragments.community;
 
+import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.features.community.Group;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface CommunityCommunication {
      * @param groupName The name of the group that has to be deleted
      */
     void deleteGroup(String groupName);
+
+    void showGroupFragment(InfoGroupFragment infoGroupFragment);
 }

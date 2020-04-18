@@ -16,6 +16,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
+import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.views.CircularEntryView;
 import org.pesmypetcare.mypetcare.databinding.FragmentGroupsBinding;
 import org.pesmypetcare.mypetcare.features.community.Group;
@@ -72,6 +74,7 @@ public class GroupsFragment extends Fragment {
      */
     private void addGroupsViewListeners() {
         List<CircularEntryView> views = binding.groupInfoLayout.getGroupComponents();
+        InfoGroupFragment infoGroupFragment = new InfoGroupFragment();
 
         for (CircularEntryView circularEntryView : views) {
             circularEntryView.setLongClickable(true);
@@ -79,6 +82,13 @@ public class GroupsFragment extends Fragment {
                 MaterialAlertDialogBuilder dialog = createDeleteGroupDialog(circularEntryView);
                 dialog.show();
                 return true;
+            });
+
+            circularEntryView.setOnClickListener(v -> {
+                Group group = (Group) circularEntryView.getObject();
+                infoGroupFragment.setGroup(group);
+                MainActivity.setActualFragment(infoGroupFragment);
+                CommunityFragment.getCommunication().showGroupFragment(infoGroupFragment);
             });
         }
     }

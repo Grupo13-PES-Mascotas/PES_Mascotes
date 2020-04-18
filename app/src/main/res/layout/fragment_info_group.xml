@@ -20,45 +20,75 @@
 
             <org.pesmypetcare.mypetcare.activities.views.CircularImageView
                 android:id="@+id/imgGroup"
+                android:layout_gravity="center"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="7dp"
                 android:src="@drawable/single_paw" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/groupName"
-                style="@style/TextAppearance.MaterialComponents.Headline1"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:startIconContentDescription="Group name"
-                android:layout_marginStart="30dp"
-                android:gravity="center"
-                app:boxBackgroundColor="@color/colorAccent"
-                android:textStyle="bold"
-                android:textColor="@color/design_default_color_surface">
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtGroupName"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/groupName"
+                    style="@style/TextAppearance.MaterialComponents.Headline1"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/design_default_color_surface"
-                    android:text="@string/name_random"
-                    android:focusable="false"
-                    android:singleLine="true"
-                    android:textSize="30sp"/>
+                    android:layout_gravity="start|center_horizontal"
+                    app:startIconContentDescription="Group name"
+                    android:layout_marginStart="30dp"
+                    android:gravity="center"
+                    app:boxBackgroundColor="@color/colorAccent"
+                    android:textStyle="bold"
+                    android:textColor="@color/design_default_color_surface">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txtGroupName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/design_default_color_surface"
+                        android:text="@string/name_random"
+                        android:focusable="false"
+                        android:singleLine="true"
+                        android:textSize="30sp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/groupTags"
+                    style="@style/TextAppearance.MaterialComponents.Headline2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_horizontal"
+                    app:startIconContentDescription="Group tags"
+                    android:layout_marginStart="30dp"
+                    android:gravity="center"
+                    app:boxBackgroundColor="@color/colorAccent"
+                    android:textStyle="bold"
+                    android:textColor="@color/design_default_color_surface">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txtGroupTags"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/design_default_color_surface"
+                        android:text="@string/name_random"
+                        android:focusable="false"
+                        android:singleLine="true"
+                        android:textSize="14sp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayoutInfoGroup"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabMode="scrollable" />
+            android:layout_height="wrap_content" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/infoGroupPager"

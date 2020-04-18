@@ -51,6 +51,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunic
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
@@ -1174,5 +1175,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             Toast toast = Toast.makeText(this, R.string.group_not_found, Toast.LENGTH_LONG);
             toast.show();
         }
+    }
+
+    @Override
+    public void showGroupFragment(InfoGroupFragment infoGroupFragment) {
+        changeFragment(infoGroupFragment);
     }
 }

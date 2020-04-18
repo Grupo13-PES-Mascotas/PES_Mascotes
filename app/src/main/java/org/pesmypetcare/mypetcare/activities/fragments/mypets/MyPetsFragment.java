@@ -26,8 +26,7 @@ public class MyPetsFragment extends Fragment {
     private MyPetsComunication communication;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMyPetsBinding.inflate(inflater, container, false);
         communication = (MyPetsComunication) getActivity();
         if (MainActivity.getmAuth().getCurrentUser() != null) {
