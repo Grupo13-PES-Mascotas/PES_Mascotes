@@ -36,14 +36,12 @@ public class GroupsFragment extends Fragment {
 
     private FragmentGroupsBinding binding;
     private List<Group> groups;
-    private CommunityCommunication communication;
     private int selectedSearchMode;
     private TextInputLayout inputGroupSearch;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentGroupsBinding.inflate(inflater, container, false);
-        communication = (CommunityCommunication) getActivity();
         inputGroupSearch = binding.inputGroupSearch;
 
         setTypeSearch();
@@ -57,7 +55,7 @@ public class GroupsFragment extends Fragment {
      */
     private void addSearchButtonListener() {
         binding.btnGroupSearch.setOnClickListener(v -> {
-            groups = Objects.requireNonNull(communication).getAllGroups();
+            groups = Objects.requireNonNull(CommunityFragment.getCommunication()).getAllGroups();
             String inputText = Objects.requireNonNull(inputGroupSearch.getEditText()).getText().toString()
                 .toLowerCase(Locale.getDefault());
             boolean isCorrect = getGroups(inputText);
@@ -114,7 +112,7 @@ public class GroupsFragment extends Fragment {
      * @param dialog The displayed dialog
      */
     private void setDeleteGroupPositiveButton(Group group, DialogInterface dialog) {
-        communication.deleteGroup(group.getName());
+        CommunityFragment.getCommunication().deleteGroup(group.getName());
         binding.groupInfoLayout.removeAllViews();
         dialog.dismiss();
     }

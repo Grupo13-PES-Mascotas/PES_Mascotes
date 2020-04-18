@@ -15,6 +15,8 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentCommunityBinding;
 
 public class CommunityFragment extends Fragment {
+    private static CommunityCommunication communication;
+
     private FragmentCommunityBinding binding;
     private CommunityFragmentAdapter communityFragmentAdapter;
     private ViewPager2 viewPager;
@@ -22,6 +24,7 @@ public class CommunityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentCommunityBinding.inflate(inflater, container, false);
+        communication = (CommunityCommunication) getActivity();
 
         setUpViewPager();
 
@@ -47,5 +50,9 @@ public class CommunityFragment extends Fragment {
         });
 
         tabLayoutMediator.attach();
+    }
+
+    public static CommunityCommunication getCommunication() {
+        return communication;
     }
 }
