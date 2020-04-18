@@ -173,6 +173,10 @@
     <string name="add_group_tag">Group tags (with commas, optional)</string>
     <string name="delete_group_title">Delete group</string>
     <string name="delete_group_message">Are you sure you want to delete</string>
+    <string name="community_group_search">Group search</string>
+    <string name="community_my_subscriptions">My subscriptions</string>
+    <string name="info_group_forums">Forums</string>
+    <string name="info_group_subscriptors">Subscribers</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>
