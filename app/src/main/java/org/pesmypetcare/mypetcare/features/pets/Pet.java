@@ -42,11 +42,20 @@ public class Pet {
     private HashMap<Integer, Integer> periodsWeek;
     private HashMap<Integer,Integer> periodsMonth;
     private boolean dailyNotification;
+    private ArrayList<Event> eventPeriodWeek;
+    private ArrayList<Event> eventPeriodMonth;
+    private ArrayList<Event> dailyEvents;
+
 
     public Pet() {
         this.events = new ArrayList<>();
         this.healthInfo = new PetHealthInfo();
         this.periodsWeek = new HashMap<Integer, Integer>();
+        this.periodsMonth = new HashMap<Integer, Integer>();
+        this.dailyNotification = false;
+        this.eventPeriodWeek = new ArrayList<>(7);
+        this.eventPeriodMonth = new ArrayList<>(31);
+        initializeEventsPeriod();
     }
 
     public Pet(Bundle petInfo) {
@@ -55,6 +64,12 @@ public class Pet {
         this.birthDate = petInfo.getString(BUNDLE_BIRTH_DATE);
         initializeHealthInfo(petInfo);
         this.events = new ArrayList<>();
+        this.periodsWeek = new HashMap<Integer, Integer>();
+        this.periodsMonth = new HashMap<Integer, Integer>();
+        this.dailyNotification = false;
+        this.eventPeriodWeek = new ArrayList<>(7);
+        this.eventPeriodMonth = new ArrayList<>(31);
+        initializeEventsPeriod();
 
         if (isMale(petInfo)) {
             this.gender = GenderType.Male;
@@ -95,6 +110,13 @@ public class Pet {
         this.birthDate = petInfo.getString(BUNDLE_BIRTH_DATE);
         initializeHealthInfo(petInfo);
         this.events = new ArrayList<>();
+        this.periodsWeek = new HashMap<Integer, Integer>();
+        this.periodsMonth = new HashMap<Integer, Integer>();
+        this.dailyNotification = false;
+        this.eventPeriodWeek = new ArrayList<>(7);
+        this.eventPeriodMonth = new ArrayList<>(31);
+        initializeEventsPeriod();
+
 
         if (isMale(petInfo)) {
             this.gender = GenderType.Male;
@@ -110,6 +132,13 @@ public class Pet {
     public Pet(String name) {
         this.name = name;
         this.events = new ArrayList<>();
+        this.periodsWeek = new HashMap<Integer, Integer>();
+        this.periodsMonth = new HashMap<Integer, Integer>();
+        this.dailyNotification = false;
+        this.eventPeriodWeek = new ArrayList<>(7);
+        this.eventPeriodMonth = new ArrayList<>(31);
+        initializeEventsPeriod();
+
     }
 
     /**
@@ -375,24 +404,27 @@ public class Pet {
         return "{" + name + ", " + (profileImage == null ? "NULL" : "NO_NULL") + "}";
     }
 
-    public void addPeriodicNotification(String description, String dateTime, int period, int day) throws ParseException {
+    public void addPeriodicNotification(Event event, int period, int day) throws ParseException {
         if (period == 7 || period == 14) {
             putInPeriodsWeek(period, day);
+            eventPeriodWeek.add(day-1, event);
         }
         else if (period == -1 || period == -3) {
             putInPeriodsMonth(period, day);
+            eventPeriodMonth.add(day-1, event);
         }
         else if(period == 0) {
             dailyNotification = true;
+            dailyEvents.add(event);
         }
     }
 
     private void putInPeriodsMonth(int period, int day) {
         if (period == -1) {
-            periodsWeek.put(day, 0);
+            periodsMonth.put(day, 0);
         }
         else {
-            periodsWeek.put(day, 2);
+            periodsMonth.put(day, 2);
         }
     }
 
@@ -405,19 +437,64 @@ public class Pet {
         }
     }
 
-    private boolean isPeriodicNotificationDay(String dateText) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
-        Date date = formatter.parse(dateText.replaceAll("Z$", "+0000"));
-        DateFormat dfWeek = new SimpleDateFormat("u", Locale.ENGLISH);
-        DateFormat dfMonth = new SimpleDateFormat("dd", Locale.ENGLISH);
-        int dayOfWeek = Integer.parseInt(dfWeek.format(date));
-        int dayOfMonth = Integer.parseInt(dfMonth.format(date));
+    public Event getPeriodicNotificationDay(String dateText) throws ParseException {
+        int dayOfWeek = getDayOfWeek(dateText);
+        int dayOfMonth = getDayOfMonth(dateText);
         if (periodsWeek.containsKey(dayOfWeek)) {
-            return periodsWeek.get(dayOfWeek) == 0;
+            if (periodsWeek.get(dayOfWeek) == 0) {
+                return eventPeriodWeek.get(dayOfWeek - 1);
+            }
+            else if (periodsWeek.get(dayOfWeek) == 1) {
+                if (itsthedayWeek(eventPeriodWeek.get(dayOfWeek - 1), dateText)) {
+                    return eventPeriodWeek.get(dayOfWeek - 1);
+                }
+            }
         }
         if (periodsMonth.containsKey(dayOfMonth)) {
-            return periodsMonth.get(dayOfMonth) == 0;
+            if (periodsMonth.get(dayOfMonth) == 0) {
+                return eventPeriodMonth.get(dayOfMonth - 1);
+            }
+            else if (periodsMonth.get(dayOfMonth) == 2) {
+                if (itsthedayMonth(eventPeriodMonth.get(dayOfMonth - 1), dateText)) {
+                    return eventPeriodMonth.get(dayOfMonth - 1);
+                }
+            }
         }
-        return false;
+        return null;
+    }
+
+    private boolean itsthedayMonth(Event event, String actualDate) throws ParseException {
+        String dateTime = event.getDateTime();
+        Date date1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(dateTime);
+        Date dateActual = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(actualDate);
+        int diff =(int) ((dateActual.getTime()-date1.getTime())/86400000);
+        return (diff % 90) < 15;
+    }
+
+    private boolean itsthedayWeek(Event event, String actualDate) throws ParseException {
+        String dateTime = event.getDateTime();
+        Date date1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(dateTime);
+        Date dateActual = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(actualDate);
+        int diff =(int) ((dateActual.getTime()-date1.getTime())/86400000);
+        return (diff % 14) == 0;
+    }
+
+    private void initializeEventsPeriod() {
+        Event e = new Event("", "");
+        for (int i = 0; i < 6; ++i) eventPeriodWeek.add(i, e);
+        for (int i = 0; i < 30; ++i) eventPeriodMonth.add(i, e);
+    }
+    private int getDayOfWeek(String dateString) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+        Date date = formatter.parse(dateString.replaceAll("Z$", "+0000"));
+        DateFormat dfWeek = new SimpleDateFormat("u", Locale.ENGLISH);
+        return Integer.parseInt(dfWeek.format(date));
+    }
+
+    private int getDayOfMonth(String dateString) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+        Date date = formatter.parse(dateString.replaceAll("Z$", "+0000"));
+        DateFormat dfMonth = new SimpleDateFormat("dd", Locale.ENGLISH);
+        return Integer.parseInt(dfMonth.format(date));
     }
 }

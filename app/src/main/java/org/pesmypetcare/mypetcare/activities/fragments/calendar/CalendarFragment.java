@@ -162,7 +162,7 @@ public class CalendarFragment extends Fragment {
         getPet(petName);
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
             periodDay = getPeriodicityDay(dateTime.toString(), period);
-            selectedPet.addPeriodicNotification(reasonText.getText().toString(), dateTime.toString(), period, periodDay);
+            selectedPet.addPeriodicNotification(new Event(reasonText.getText().toString(), dateTime.toString()), period, periodDay);
             communication.newPeriodicNotification(selectedPet, period, reasonText.getText().toString(), dateTime.toString());
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(dateTime, c);

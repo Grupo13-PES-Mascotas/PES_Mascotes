@@ -11,6 +11,7 @@ import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -206,6 +207,10 @@ public class PetManagerAdapter implements PetManagerService {
     @Override
     public void deleteEvent(Pet pet, Event event) {
         // Not implemented yet
+    }
+
+    public void registerNewPeriodicNotification(Pet pet, Event event, int period, int periodDay) throws ParseException {
+
     }
 
     /**

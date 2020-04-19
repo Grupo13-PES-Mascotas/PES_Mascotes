@@ -6,6 +6,7 @@ import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -96,5 +97,12 @@ public class StubPetManagerService implements PetManagerService {
         assert pets != null;
         int index = Objects.requireNonNull(pets).indexOf(pet);
         pets.get(index).deleteEvent(event);
+    }
+    @Override
+    public void registerNewPeriodicNotification(Pet pet, Event event, int period, int periodDay) throws ParseException {
+        ArrayList<Pet> pets = data.get(pet.getOwner().getUsername());
+        assert pets != null;
+        int index = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(index).addPeriodicNotification(event, period, periodDay);
     }
 }
