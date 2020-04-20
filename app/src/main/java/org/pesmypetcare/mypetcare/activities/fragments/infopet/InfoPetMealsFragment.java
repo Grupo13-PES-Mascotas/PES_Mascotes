@@ -76,6 +76,7 @@ public class InfoPetMealsFragment extends Fragment {
         dialog = getBasicMealDialog();
         dialog.setView(editMealLayout);
         initializeEditMealButton();
+        initializeRemoveMealButton();
 
         initializeIntervalSwitch();
         initializeAddMealButton();
@@ -88,6 +89,7 @@ public class InfoPetMealsFragment extends Fragment {
      */
     private void initializeAddMealButton() {
         addMealButton.setOnClickListener(v -> {
+            editing = false;
             deleteMealButton.setVisibility(View.INVISIBLE);
             dialog.show();
         });
@@ -121,7 +123,8 @@ public class InfoPetMealsFragment extends Fragment {
     private void initializeRemoveMealButton() {
         deleteMealButton.setOnClickListener(v -> {
             InfoPetFragment.getCommunication().deletePetMeal(pet, meal);
-            initializeMealsLayoutView();
+            //initializeMealsLayoutView();
+            dialog.dismiss();
         });
     }
 
@@ -175,7 +178,7 @@ public class InfoPetMealsFragment extends Fragment {
                 }
 
                 dialog.dismiss();
-                initializeMealsLayoutView();
+                //initializeMealsLayoutView();
             }
         });
     }
@@ -332,6 +335,7 @@ public class InfoPetMealsFragment extends Fragment {
         ArrayList<Event> mealsList = new ArrayList<>();
         mealsList.clear();
         mealDisplay.removeAllViews();
+
         if (isWeeklyInterval) {
             mealsList = (ArrayList<Event>) getLastWeekMeals();
         } else {
@@ -365,6 +369,8 @@ public class InfoPetMealsFragment extends Fragment {
             + ": " + meal.getKcal();
         mealButton.setText(mealButtonText);
         mealButton.setOnClickListener(v -> {
+            InfoPetMealsFragment.meal = meal;
+            editing = true;
             initializeEditDialog();
             deleteMealButton.setVisibility(View.VISIBLE);
             dialog.show();
@@ -382,7 +388,6 @@ public class InfoPetMealsFragment extends Fragment {
         DateTime mealDate = meal.getMealDate();
         showMealDate(mealDate);
         showMealTime(mealDate);
-        initializeRemoveMealButton();
     }
 
     /**
@@ -414,5 +419,11 @@ public class InfoPetMealsFragment extends Fragment {
             }
         }
         return result;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initializeMealsLayoutView();
     }
 }
