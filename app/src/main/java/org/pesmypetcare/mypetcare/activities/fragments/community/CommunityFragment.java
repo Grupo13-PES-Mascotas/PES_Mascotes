@@ -51,15 +51,15 @@ public class CommunityFragment extends Fragment {
      */
     private TabLayoutMediator createTabLayoutMediator(ViewPager2 viewPager, TabLayout tabLayout) {
         return new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-                switch (position) {
-                    case CommunityFragmentAdapter.GROUPS_FRAGMENT:
-                        tab.setText(R.string.community_group_search);
-                        break;
-                    case CommunityFragmentAdapter.USER_SUBSCRIPTIONS_FRAGMENT:
-                        tab.setText(R.string.community_my_subscriptions);
-                        break;
-                    default:
-                }
+            switch (position) {
+                case CommunityFragmentAdapter.GROUPS_FRAGMENT:
+                    tab.setText(R.string.community_group_search);
+                    break;
+                case CommunityFragmentAdapter.USER_SUBSCRIPTIONS_FRAGMENT:
+                    tab.setText(R.string.community_my_subscriptions);
+                    break;
+                default:
+            }
             });
     }
 

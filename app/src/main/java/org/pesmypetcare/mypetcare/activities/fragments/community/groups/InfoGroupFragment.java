@@ -75,15 +75,15 @@ public class InfoGroupFragment extends Fragment {
      */
     private TabLayoutMediator createTabLayoutMediator(ViewPager2 viewPager, TabLayout tabLayout) {
         return new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-                switch (position) {
-                    case InfoGroupFragmentAdapter.FORUMS_FRAGMENT:
-                        tab.setText(R.string.info_group_forums);
-                        break;
-                    case InfoGroupFragmentAdapter.GROUP_SUBSCRIPTIONS_FRAGMENT:
-                        tab.setText(R.string.info_group_subscriptors);
-                        break;
-                    default:
-                }
+            switch (position) {
+                case InfoGroupFragmentAdapter.FORUMS_FRAGMENT:
+                    tab.setText(R.string.info_group_forums);
+                    break;
+                case InfoGroupFragmentAdapter.GROUP_SUBSCRIPTIONS_FRAGMENT:
+                    tab.setText(R.string.info_group_subscriptors);
+                    break;
+                default:
+            }
             });
     }
 
