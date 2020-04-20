@@ -343,6 +343,13 @@ public class Pet {
      */
     public void addEvent(Event event) {
         events.add(event);
+
+        /*if (event instanceof Meals) {
+            DateTime eventDate = DateTime.Builder.buildFullString(event.getDateTime());
+            double kcal = ((Meals) event).getKcal();
+
+            healthInfo.addRecommendedDailyKiloCaloriesForDate(eventDate, kcal);
+        }*/
     }
 
     /**
