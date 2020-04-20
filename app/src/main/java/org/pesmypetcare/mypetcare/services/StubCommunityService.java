@@ -74,6 +74,6 @@ public class StubCommunityService implements CommunityService {
     @Override
     public void addSubscriber(User user, Group group) {
         int index = groups.indexOf(group);
-        groups.get(index).addSubscriber(user);
+        user.addSubscribedGroup(groups.get(index));
     }
 }

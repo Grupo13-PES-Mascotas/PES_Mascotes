@@ -31,6 +31,6 @@ public class TrAddSubscription {
         }
 
         communityService.addSubscriber(user, group);
-        group.addSubscriber(user);
+        user.addSubscribedGroup(group);
     }
 }

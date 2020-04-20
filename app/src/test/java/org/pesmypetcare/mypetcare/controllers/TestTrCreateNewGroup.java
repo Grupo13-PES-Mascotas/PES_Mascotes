@@ -70,6 +70,6 @@ public class TestTrCreateNewGroup {
         trCreateNewGroup.execute();
 
         assertEquals("Should owner be subscriber", "[johndoe]",
-            trCreateNewGroup.getResult().getSubscribers().toString());
+            trCreateNewGroup.getResult().getSubscribers().keySet().toString());
     }
 }

@@ -38,6 +38,7 @@ public class TestTrAddSubscription {
         trAddSubscription.setGroup(group);
         trAddSubscription.execute();
 
-        assertEquals("Should add subscription to group", "[John Doe, John Smith]", group.getSubscribers().toString());
+        assertEquals("Should add subscription to group", "[John Doe, John Smith]",
+            group.getSubscribers().keySet().toString());
     }
 }

@@ -5,12 +5,14 @@ import android.graphics.Bitmap;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.TreeMap;
 
 public class Group {
     private String name;
@@ -20,7 +22,7 @@ public class Group {
     private Bitmap groupIcon;
     private List<String> participants;
 
-    private SortedSet<String> subscribers;
+    private Map<String, DateTime> subscribers;
     private List<Forum> forums;
     private List<String> tags;
 
@@ -31,9 +33,9 @@ public class Group {
         this.participants = new ArrayList<>();
         this.forums = new ArrayList<>();
         this.tags = new ArrayList<>();
-        this.subscribers = new TreeSet<>();
+        this.subscribers = new TreeMap<>();
 
-        this.subscribers.add(ownerUsername);
+        this.subscribers.put(ownerUsername, creationDate);
     }
 
     public String getName() {
@@ -92,12 +94,16 @@ public class Group {
         tags.add(tag);
     }
 
-    public Set<String> getSubscribers() {
+    public Map<String, DateTime> getSubscribers() {
         return subscribers;
     }
 
     public void addSubscriber(User user) {
-        subscribers.add(user.getUsername());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d");
+        Date date = new Date();
+        String strData = dateFormat.format(date);
+
+        subscribers.put(user.getUsername(), DateTime.Builder.buildDateString(strData));
     }
 
     @Override
