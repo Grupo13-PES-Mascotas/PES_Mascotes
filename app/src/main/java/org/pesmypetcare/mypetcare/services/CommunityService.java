@@ -28,4 +28,8 @@ public interface CommunityService {
      * @param groupName The name of the group that has to be deleted
      */
     void deleteGroup(String groupName) throws GroupNotFoundException;
+
+    boolean isGroupExisting(Group group);
+
+    void addSubscriber(User user, Group group);
 }

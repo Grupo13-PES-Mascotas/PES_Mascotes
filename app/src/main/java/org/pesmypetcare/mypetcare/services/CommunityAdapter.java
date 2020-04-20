@@ -22,4 +22,14 @@ public class CommunityAdapter implements CommunityService {
     public void deleteGroup(String groupName) throws GroupNotFoundException {
         // Not implemented yet
     }
+
+    @Override
+    public boolean isGroupExisting(Group group) {
+        return false;
+    }
+
+    @Override
+    public void addSubscriber(User user, Group group) {
+        // Not implemented yet
+    }
 }

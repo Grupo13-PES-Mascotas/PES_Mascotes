@@ -68,6 +68,7 @@ import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.TrAddNewWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.TrAddNewWeight;
+import org.pesmypetcare.mypetcare.controllers.TrAddSubscription;
 import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrChangeUsername;
@@ -180,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainAllGroups trObtainAllGroups;
     private TrCreateNewGroup trCreateNewGroup;
     private TrDeleteGroup trDeleteGroup;
+    private TrAddSubscription trAddSubscription;
     private static int notificationId;
     private static int requestCode;
 
@@ -405,31 +407,74 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Initialize the controllers.
      */
     private void initializeControllers() {
+        initializePetControllers();
+        initializeEventControllers();
+        initializeUserControllers();
+        initializePetHealthControllers();
+        initializeMealsControllers();
+        initializeCommunityControllers();
+    }
+
+    /**
+     * Initialize the pet controllers.
+     */
+    private void initializePetControllers() {
         trRegisterNewPet = ControllersFactory.createTrRegisterNewPet();
         trUpdatePetImage = ControllersFactory.createTrUpdatePetImage();
-        trChangePassword = ControllersFactory.createTrChangePassword();
         trDeletePet = ControllersFactory.createTrDeletePet();
-        trDeleteUser = ControllersFactory.createTrDeleteUser();
-        trObtainUser = ControllersFactory.createTrObtainUser();
         trUpdatePet = ControllersFactory.createTrUpdatePet();
-        trChangeMail = ControllersFactory.createTrChangeMail();
         trObtainAllPetImages = ControllersFactory.createTrObtainAllPetImages();
-        trUpdateUserImage = ControllersFactory.createTrUpdateUserImage();
+    }
+
+    /**
+     * Initialize the event controllers.
+     */
+    private void initializeEventControllers() {
         trNewPersonalEvent = ControllersFactory.createTrNewPersonalEvent();
         trDeletePersonalEvent = ControllersFactory.createTrDeletePersonalEvent();
+    }
+
+    /**
+     * Initialize the user controllers.
+     */
+    private void initializeUserControllers() {
+        trUpdateUserImage = ControllersFactory.createTrUpdateUserImage();
+        trDeleteUser = ControllersFactory.createTrDeleteUser();
+        trObtainUser = ControllersFactory.createTrObtainUser();
+        trChangePassword = ControllersFactory.createTrChangePassword();
+        trChangeMail = ControllersFactory.createTrChangeMail();
         trChangeUsername = ControllersFactory.createTrChangeUsername();
         trExistsUsername = ControllersFactory.createTrExistsUsername();
+    }
+
+    /**
+     * Initialize the pet health controllers.
+     */
+    private void initializePetHealthControllers() {
         trAddNewWeight = ControllersFactory.createTrAddNewWeight();
         trDeleteWeight = ControllersFactory.createTrDeleteWeight();
         trAddNewWashFrequency = ControllersFactory.createTrAddNewWashFrequency();
         trDeleteWashFrequency = ControllersFactory.createTrDeleteWashFrequency();
+    }
+
+    /**
+     * Initialize the meal controllers.
+     */
+    private void initializeMealsControllers() {
         trNewPetMeal = ControllersFactory.createTrNewPetMeal();
         trObtainAllPetMeals = ControllersFactory.createTrObtainAllPetMeals();
         trDeleteMeal = ControllersFactory.createTrDeleteMeal();
         trUpdateMeal = ControllersFactory.createTrUpdateMeal();
+    }
+
+    /**
+     * Initialize the community controllers.
+     */
+    private void initializeCommunityControllers() {
         trObtainAllGroups = ControllersFactory.createTrObtainAllGroups();
         trCreateNewGroup = ControllersFactory.createTrObtainNewGroup();
         trDeleteGroup = ControllersFactory.createTrDeleteGroup();
+        trAddSubscription = ControllersFactory.createTrAddSubscription();
     }
 
     /**

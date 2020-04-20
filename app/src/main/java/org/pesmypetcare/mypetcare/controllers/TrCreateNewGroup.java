@@ -15,7 +15,7 @@ public class TrCreateNewGroup {
     private String description;
     private DateTime creationDate;
     private List<String> tags;
-    private Boolean result;
+    private Group result;
 
     public TrCreateNewGroup(CommunityService communityService) {
         this.communityService = communityService;
@@ -63,9 +63,9 @@ public class TrCreateNewGroup {
 
     /**
      * Getter of the result of the transaction.
-     * @return True if the group was created successfully or false otherwise
+     * @return The group that has been created
      */
-    public Boolean getResult() {
+    public Group getResult() {
         return result;
     }
 
@@ -73,13 +73,13 @@ public class TrCreateNewGroup {
      * Execute the transaction.
      */
     public void execute() throws GroupAlreadyExistingException {
-        result = false;
+        result = null;
         Group tmp = new Group(groupName, user.getUsername(), creationDate);
         tmp.setDescription(description);
         for (String tag : tags) {
             tmp.addTag(tag);
         }
         communityService.createGroup(user, tmp);
-        result = true;
+        result = tmp;
     }
 }

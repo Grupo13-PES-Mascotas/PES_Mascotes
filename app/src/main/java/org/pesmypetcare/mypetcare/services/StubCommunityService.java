@@ -65,4 +65,15 @@ public class StubCommunityService implements CommunityService {
             throw new GroupNotFoundException();
         }
     }
+
+    @Override
+    public boolean isGroupExisting(Group group) {
+        return groups.contains(group);
+    }
+
+    @Override
+    public void addSubscriber(User user, Group group) {
+        int index = groups.indexOf(group);
+        groups.get(index).addSubscriber(user);
+    }
 }

@@ -11,7 +11,8 @@ import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class TestTrCreateNewGroup {
     private static final int YEAR = 2020;
@@ -45,7 +46,7 @@ public class TestTrCreateNewGroup {
         trCreateNewGroup.setCreationDate(creationDate);
         trCreateNewGroup.setTags(tags);
         trCreateNewGroup.execute();
-        assertTrue("Should be true", trCreateNewGroup.getResult());
+        assertNotNull("Should be true", trCreateNewGroup.getResult());
     }
 
     @Test (expected = GroupAlreadyExistingException.class)
@@ -57,5 +58,18 @@ public class TestTrCreateNewGroup {
         trCreateNewGroup.setTags(tags);
         trCreateNewGroup.execute();
         trCreateNewGroup.execute();
+    }
+
+    @Test
+    public void shouldOwnerBeSubscriber() throws GroupAlreadyExistingException {
+        trCreateNewGroup.setGroupName(groupName + "2");
+        trCreateNewGroup.setOwner(owner);
+        trCreateNewGroup.setDescription(description);
+        trCreateNewGroup.setCreationDate(creationDate);
+        trCreateNewGroup.setTags(tags);
+        trCreateNewGroup.execute();
+
+        assertEquals("Should owner be subscriber", "[johndoe]",
+            trCreateNewGroup.getResult().getSubscribers().toString());
     }
 }

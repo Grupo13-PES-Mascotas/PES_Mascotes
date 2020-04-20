@@ -111,5 +111,9 @@ public class ControllersFactory {
     public static TrDeleteGroup createTrDeleteGroup() {
         return new TrDeleteGroup(new StubCommunityService());
     }
+
+    public static TrAddSubscription createTrAddSubscription() {
+        return new TrAddSubscription(new StubCommunityService());
+    }
 }
 

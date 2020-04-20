@@ -2,11 +2,15 @@ package org.pesmypetcare.mypetcare.features.community;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class Group {
     private String name;
@@ -15,6 +19,8 @@ public class Group {
     private DateTime creationDate;
     private Bitmap groupIcon;
     private List<String> participants;
+
+    private SortedSet<String> subscribers;
     private List<Forum> forums;
     private List<String> tags;
 
@@ -25,6 +31,9 @@ public class Group {
         this.participants = new ArrayList<>();
         this.forums = new ArrayList<>();
         this.tags = new ArrayList<>();
+        this.subscribers = new TreeSet<>();
+
+        this.subscribers.add(ownerUsername);
     }
 
     public String getName() {
@@ -81,6 +90,14 @@ public class Group {
 
     public void addTag(String tag) {
         tags.add(tag);
+    }
+
+    public Set<String> getSubscribers() {
+        return subscribers;
+    }
+
+    public void addSubscriber(User user) {
+        subscribers.add(user.getUsername());
     }
 
     @Override
