@@ -18,9 +18,13 @@ public class TrNewPeriodicNotification {
         this.petManagerService = petManagerService;
     }
 
-    public void setPet(Pet selectedPet) { this.pet = selectedPet; }
+    public void setPet(Pet selectedPet) {
+        this.pet = selectedPet;
+    }
 
-    public void setEvent(Event event) { this.event = event; }
+    public void setEvent(Event event) {
+        this.event = event;
+    }
 
     public void setPeriodicity(int period, int periodDay) {
         this.period = period;
