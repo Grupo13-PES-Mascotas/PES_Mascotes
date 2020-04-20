@@ -96,6 +96,7 @@ public class InfoPetMealsFragment extends Fragment {
             mealDate.setText(R.string.meal_date);
             mealTime.setText(R.string.meal_time);
             editMealButton.setText(R.string.add_meal_button);
+            dialog.setTitle(R.string.add_meal_button);
             dialog.show();
         });
     }
@@ -298,7 +299,7 @@ public class InfoPetMealsFragment extends Fragment {
      */
     private void setCalendarPicker() {
         MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
-        builder.setTitleText(getString(R.string.select_birth_date));
+        builder.setTitleText(getString(R.string.select_meal_date));
         materialDatePicker = builder.build();
 
         mealDate.setOnClickListener(v ->
@@ -377,6 +378,7 @@ public class InfoPetMealsFragment extends Fragment {
             editing = true;
             initializeEditDialog();
             deleteMealButton.setVisibility(View.VISIBLE);
+            dialog.setTitle(R.string.edit_meal_title);
             dialog.show();
         });
     }

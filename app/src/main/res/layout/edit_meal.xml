@@ -42,6 +42,10 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/inputMealDate"
             android:layout_width="match_parent"
@@ -50,7 +54,12 @@
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="16sp"
-            app:icon="@drawable/calendar_icon" />
+            app:icon="@drawable/calendar_icon"
+            app:iconSize="24dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/inputMealTime"
@@ -60,7 +69,12 @@
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="16sp"
-            app:icon="@drawable/time_icon" />
+            app:icon="@drawable/time_icon"
+            app:iconSize="24dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
 
     </LinearLayout>
 
@@ -74,34 +88,41 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-        app:layout_constraintVertical_bias="1.0">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/editMealButton"
-            style="@style/rounded_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:paddingStart="40dp"
-            android:text="@string/add_meal_button"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            tools:ignore="RtlSymmetry" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/deleteMealButton"
             style="@style/rounded_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
             android:backgroundTint="@color/red"
             android:text="@string/delete_current_meal"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:icon="@drawable/baseline_delete_black_18dp"
+            app:iconSize="24dp"
             app:iconTint="@color/white" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/editMealButton"
+            style="@style/rounded_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/add_meal_button"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:icon="@drawable/icon_add"
+            app:iconSize="24dp"
+            tools:ignore="RtlSymmetry" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
 
     </LinearLayout>
 

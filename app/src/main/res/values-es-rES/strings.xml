@@ -185,6 +185,7 @@
     <string name="owner">(Propietario)</string>
     <string name="edit_meal_title">Editar la comida</string>
     <string name="edit_meal_message">Introduce los datos de la comida</string>
+    <string name="select_meal_date">Selecciona la fecha de la comida</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>
