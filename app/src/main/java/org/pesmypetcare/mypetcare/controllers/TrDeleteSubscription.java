@@ -27,7 +27,8 @@ public class TrDeleteSubscription {
         this.group = group;
     }
 
-    public void execute() throws GroupNotExistingException, NotSubscribedException, OwnerCannotDeleteSubscriptionException {
+    public void execute() throws GroupNotExistingException, NotSubscribedException,
+        OwnerCannotDeleteSubscriptionException {
         if (!communityService.isGroupExisting(group)) {
             throw new GroupNotExistingException();
         } else if (group.getOwnerUsername().equals(user.getUsername())) {

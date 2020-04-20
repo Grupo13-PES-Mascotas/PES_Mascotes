@@ -28,8 +28,8 @@ public class TestTrDeleteSubscription {
     }
 
     @Test(expected = GroupNotExistingException.class)
-    public void shouldNotDeleteSubscriptionFromNonExistingGroup() throws GroupNotExistingException, NotSubscribedException,
-        OwnerCannotDeleteSubscriptionException {
+    public void shouldNotDeleteSubscriptionFromNonExistingGroup() throws GroupNotExistingException,
+        NotSubscribedException, OwnerCannotDeleteSubscriptionException {
         trDeleteSubscription.setUser(user);
         trDeleteSubscription.setGroup(new Group("Penguins", "Oriol Simo",
             DateTime.Builder.buildDateString("2020-04-15")));
@@ -37,8 +37,8 @@ public class TestTrDeleteSubscription {
     }
 
     @Test(expected = NotSubscribedException.class)
-    public void shouldNotDeleteSubscriptionFromNotSubscribedGroup() throws GroupNotExistingException, NotSubscribedException,
-        OwnerCannotDeleteSubscriptionException {
+    public void shouldNotDeleteSubscriptionFromNotSubscribedGroup() throws GroupNotExistingException,
+        NotSubscribedException, OwnerCannotDeleteSubscriptionException {
         trDeleteSubscription.setUser(user);
         trDeleteSubscription.setGroup(group);
         trDeleteSubscription.execute();

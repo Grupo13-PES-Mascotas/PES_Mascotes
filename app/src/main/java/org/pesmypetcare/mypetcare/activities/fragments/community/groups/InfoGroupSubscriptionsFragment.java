@@ -22,6 +22,16 @@ public class InfoGroupSubscriptionsFragment extends Fragment {
         binding = FragmentInfoGroupSubscriptionsBinding.inflate(inflater, container, false);
         btnSubscribe = binding.addSubscription;
 
+        initializeSubscribeButton();
+        addSubscribeButtonListener();
+
+        return binding.getRoot();
+    }
+
+    /**
+     * Method responsible for initializing the subscribe button.
+     */
+    private void initializeSubscribeButton() {
         if (isOwner()) {
             btnSubscribe.setText(getString(R.string.unsubscribe_owner));
         } else if (isUserSubscriber()) {
@@ -33,10 +43,6 @@ public class InfoGroupSubscriptionsFragment extends Fragment {
             btnSubscribe.setBackgroundColor(getResources().getColor(R.color.green));
             btnSubscribe.setFocusable(true);
         }
-
-        addSubscribeButtonListener();
-
-        return binding.getRoot();
     }
 
     /**
@@ -45,19 +51,26 @@ public class InfoGroupSubscriptionsFragment extends Fragment {
     private void addSubscribeButtonListener() {
         btnSubscribe.setOnClickListener(v -> {
             if (!isOwner()) {
-                if (isUserSubscriber()) {
-                    btnSubscribe.setText(getString(R.string.subscribe));
-                    btnSubscribe.setBackgroundColor(getResources().getColor(R.color.green));
-                    InfoGroupFragment.getCommunication().removeSubscription(InfoGroupFragment.getGroup());
-                    showSubscribers();
-                } else {
-                    btnSubscribe.setText(getString(R.string.desubscribe));
-                    btnSubscribe.setBackgroundColor(getResources().getColor(R.color.red));
-                    InfoGroupFragment.getCommunication().addSubscription(InfoGroupFragment.getGroup());
-                    showSubscribers();
-                }
+                initializeListener();
             }
         });
+    }
+
+    /**
+     * Method responsible for initializing the button listener.
+     */
+    private void initializeListener() {
+        if (isUserSubscriber()) {
+            btnSubscribe.setText(getString(R.string.subscribe));
+            btnSubscribe.setBackgroundColor(getResources().getColor(R.color.green));
+            InfoGroupFragment.getCommunication().removeSubscription(InfoGroupFragment.getGroup());
+            showSubscribers();
+        } else {
+            btnSubscribe.setText(getString(R.string.desubscribe));
+            btnSubscribe.setBackgroundColor(getResources().getColor(R.color.red));
+            InfoGroupFragment.getCommunication().addSubscription(InfoGroupFragment.getGroup());
+            showSubscribers();
+        }
     }
 
     /**
