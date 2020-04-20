@@ -27,7 +27,7 @@ public class StubCommunityService implements CommunityService {
             DateTime.Builder.buildDateString("2020-04-16")));
         StubCommunityService.groups.add(new Group("Elephants", "Enric",
             DateTime.Builder.buildDateString("2020-04-14")));
-        StubCommunityService.groups.get(ELEPHANTS).addSubscriber(new User("John Smith",
+        StubCommunityService.groups.get(HUSKY).addSubscriber(new User("John Smith",
             "johnSmith@gmail.com", "1234"));
         StubCommunityService.groups.add(new Group("Dinosaur", "Gradle",
             DateTime.Builder.buildDateString("2019-11-23")));

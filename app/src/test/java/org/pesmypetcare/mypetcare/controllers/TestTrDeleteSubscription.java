@@ -23,7 +23,7 @@ public class TestTrDeleteSubscription {
     @Before
     public void setUp() {
         user = new User("John Smith", "johnSmith@gmail.com", "1234");
-        group = new Group("Elephants", "Enric", DateTime.Builder.buildDateString("2020-04-15"));
+        group = new Group("Husky", "John Doe", DateTime.Builder.buildDateString("2020-04-15"));
         trDeleteSubscription = new TrDeleteSubscription(new StubCommunityService());
     }
 
@@ -39,6 +39,7 @@ public class TestTrDeleteSubscription {
     @Test(expected = NotSubscribedException.class)
     public void shouldNotDeleteSubscriptionFromNotSubscribedGroup() throws GroupNotExistingException,
         NotSubscribedException, OwnerCannotDeleteSubscriptionException {
+        StubCommunityService communityService = new StubCommunityService();
         trDeleteSubscription.setUser(user);
         trDeleteSubscription.setGroup(group);
         trDeleteSubscription.execute();
@@ -47,7 +48,7 @@ public class TestTrDeleteSubscription {
     @Test(expected = OwnerCannotDeleteSubscriptionException.class)
     public void shouldNotDeleteSubscriptionFromOwnedGroup() throws GroupNotExistingException, NotSubscribedException,
         OwnerCannotDeleteSubscriptionException {
-        trDeleteSubscription.setUser(new User("Enric", "enric@gmail.com", "1234"));
+        trDeleteSubscription.setUser(new User("John Doe", "johnDoe@gmail.com", "1234"));
         trDeleteSubscription.setGroup(group);
         trDeleteSubscription.execute();
     }
@@ -59,7 +60,7 @@ public class TestTrDeleteSubscription {
         trDeleteSubscription.setUser(user);
         trDeleteSubscription.setGroup(group);
         trDeleteSubscription.execute();
-        assertEquals("Should only be owner", "[Enric]", group.getSubscribers().keySet().toString());
+        assertEquals("Should only be owner", "[John Doe]", group.getSubscribers().keySet().toString());
     }
 
 }
