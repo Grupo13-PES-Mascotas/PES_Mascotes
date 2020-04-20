@@ -24,4 +24,10 @@ public interface InfoGroupCommunication {
      * @param group The group to add a subscription to
      */
     void addSubscription(Group group);
+
+    /**
+     * Remove the current user from the group.
+     * @param group The group to remove the user from
+     */
+    void removeSubscription(Group group);
 }

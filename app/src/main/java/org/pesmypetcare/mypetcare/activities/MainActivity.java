@@ -77,6 +77,7 @@ import org.pesmypetcare.mypetcare.controllers.TrDeleteGroup;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteSubscription;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteWeight;
@@ -97,6 +98,8 @@ import org.pesmypetcare.mypetcare.features.community.Group;
 import org.pesmypetcare.mypetcare.features.community.GroupAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.community.GroupNotExistingException;
 import org.pesmypetcare.mypetcare.features.community.GroupNotFoundException;
+import org.pesmypetcare.mypetcare.features.community.NotSubscribedException;
+import org.pesmypetcare.mypetcare.features.community.OwnerCannotDeleteSubscriptionException;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
@@ -184,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrCreateNewGroup trCreateNewGroup;
     private TrDeleteGroup trDeleteGroup;
     private TrAddSubscription trAddSubscription;
+    private TrDeleteSubscription trDeleteSubscription;
     private static int notificationId;
     private static int requestCode;
 
@@ -481,6 +485,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trCreateNewGroup = ControllersFactory.createTrObtainNewGroup();
         trDeleteGroup = ControllersFactory.createTrDeleteGroup();
         trAddSubscription = ControllersFactory.createTrAddSubscription();
+        trDeleteSubscription = ControllersFactory.createTrDeleteSubscription();
     }
 
     /**
@@ -839,6 +844,17 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trAddSubscription.execute();
         } catch (GroupNotExistingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void removeSubscription(Group group) {
+        trDeleteSubscription.setUser(user);
+        trDeleteSubscription.setGroup(group);
+        try {
+            trDeleteSubscription.execute();
+        } catch (GroupNotExistingException | NotSubscribedException | OwnerCannotDeleteSubscriptionException e) {
             e.printStackTrace();
         }
     }
