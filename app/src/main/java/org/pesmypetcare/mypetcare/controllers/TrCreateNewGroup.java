@@ -80,6 +80,7 @@ public class TrCreateNewGroup {
             tmp.addTag(tag);
         }
         communityService.createGroup(user, tmp);
+        user.addSubscribedGroup(tmp);
         result = tmp;
     }
 }

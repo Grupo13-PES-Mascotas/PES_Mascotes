@@ -5,7 +5,7 @@ import org.pesmypetcare.mypetcare.features.community.GroupAlreadyExistingExcepti
 import org.pesmypetcare.mypetcare.features.community.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
-import java.util.List;
+import java.util.SortedSet;
 
 public interface CommunityService {
 
@@ -13,7 +13,7 @@ public interface CommunityService {
      * Method responsible for obtaining all the groups.
      * @return A list containing all the groups of the system
      */
-    List<Group> getAllGroups();
+    SortedSet<Group> getAllGroups();
 
     /**
      * Method responsible for creating a new group.

@@ -14,14 +14,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-public class Group {
+public class Group implements Comparable<Group> {
     private String name;
     private String ownerUsername;
     private String description;
     private DateTime creationDate;
     private Bitmap groupIcon;
     private List<String> participants;
-
     private Map<String, DateTime> subscribers;
     private List<Forum> forums;
     private List<String> tags;
@@ -106,6 +105,10 @@ public class Group {
         subscribers.put(user.getUsername(), DateTime.Builder.buildDateString(strData));
     }
 
+    public boolean isUserSubscriber(User user) {
+        return subscribers.containsKey(user.getUsername());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -128,5 +131,10 @@ public class Group {
         return "Group{"
             + "name='" + name + '\''
             + '}';
+    }
+
+    @Override
+    public int compareTo(Group group) {
+        return name.compareTo(group.getName());
     }
 }

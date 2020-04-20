@@ -95,6 +95,7 @@ import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.community.Group;
 import org.pesmypetcare.mypetcare.features.community.GroupAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.GroupNotExistingException;
 import org.pesmypetcare.mypetcare.features.community.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
@@ -123,6 +124,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -821,6 +823,23 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
+    public void setToolbar(String title) {
+        toolbar.setTitle(title);
+    }
+
+    @Override
+    public void addSubscription(Group group) {
+        trAddSubscription.setUser(user);
+        trAddSubscription.setGroup(group);
+
+        try {
+            trAddSubscription.execute();
+        } catch (GroupNotExistingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void changePetProfileImage(Pet actualPet) {
         user.updatePetProfileImage(actualPet);
     }
@@ -1197,7 +1216,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public List<Group> getAllGroups() {
+    public SortedSet<Group> getAllGroups() {
         trObtainAllGroups.execute();
         return trObtainAllGroups.getResult();
     }

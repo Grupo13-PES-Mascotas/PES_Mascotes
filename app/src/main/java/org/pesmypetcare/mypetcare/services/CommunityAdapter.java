@@ -4,12 +4,12 @@ import org.pesmypetcare.mypetcare.features.community.Group;
 import org.pesmypetcare.mypetcare.features.community.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
-import java.util.List;
+import java.util.SortedSet;
 
 public class CommunityAdapter implements CommunityService {
 
     @Override
-    public List<Group> getAllGroups() {
+    public SortedSet<Group> getAllGroups() {
         return null;
     }
 

@@ -27,6 +27,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class GroupsFragment extends Fragment {
     private static final int[] GROUP_SEARCH_TITLE_ID = {
@@ -37,7 +39,7 @@ public class GroupsFragment extends Fragment {
     private static final String INTERROGATION_SIGN = "?";
 
     private FragmentGroupsBinding binding;
-    private List<Group> groups;
+    private SortedSet<Group> groups;
     private int selectedSearchMode;
     private TextInputLayout inputGroupSearch;
 
@@ -85,14 +87,24 @@ public class GroupsFragment extends Fragment {
         }
     }
 
+    /**
+     * Set the group on click listener.
+     * @param infoGroupFragment The InfoGrup fragment to display
+     * @param circularEntryView The entry
+     */
     private void setGroupOnClickEvent(InfoGroupFragment infoGroupFragment, CircularEntryView circularEntryView) {
         Group group = (Group) circularEntryView.getObject();
-        infoGroupFragment.setGroup(group);
+        InfoGroupFragment.setGroup(group);
         CommunityFragment.getCommunication().showGroupFragment(infoGroupFragment);
     }
 
-    private boolean setGroupLongClickEvent(CircularEntryView circularEntryView, GroupComponentView v1) {
-        Group group = (Group) v1.getObject();
+    /**
+     * Set the group on click listener.
+     * @param groupComponentView The GroupComponentView fragment to display
+     * @param circularEntryView The entry
+     */
+    private boolean setGroupLongClickEvent(CircularEntryView circularEntryView, GroupComponentView groupComponentView) {
+        Group group = (Group) groupComponentView.getObject();
         String actualUser = CommunityFragment.getCommunication().getUser().getUsername();
 
         if (actualUser.equals(group.getOwnerUsername())) {
@@ -198,8 +210,8 @@ public class GroupsFragment extends Fragment {
      * @param groups The existing groups
      * @return The groups that contain any of the tags or a part of it
      */
-    private List<Group> filterByTag(String groupTags, List<Group> groups) {
-        List<Group> selectedGroups = new ArrayList<>();
+    private SortedSet<Group> filterByTag(String groupTags, SortedSet<Group> groups) {
+        SortedSet<Group> selectedGroups = new TreeSet<>();
         String[] tags = groupTags.split(",");
         List<String> selectedTags = new ArrayList<>(Arrays.asList(tags));
 
@@ -242,8 +254,8 @@ public class GroupsFragment extends Fragment {
      * @param groups The existing groups
      * @return The groups that contains the groupName in their name
      */
-    private List<Group> filterByName(String groupName, List<Group> groups) {
-        List<Group> selectedGroups = new ArrayList<>();
+    private SortedSet<Group> filterByName(String groupName, SortedSet<Group> groups) {
+        SortedSet<Group> selectedGroups = new TreeSet<>();
 
         for (Group group : groups) {
             if (group.getName().toLowerCase(Locale.getDefault()).contains(groupName)) {

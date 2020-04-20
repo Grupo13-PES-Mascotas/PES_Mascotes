@@ -17,11 +17,11 @@ import org.pesmypetcare.mypetcare.features.community.Group;
 
 public class InfoGroupFragment extends Fragment {
     private static InfoGroupCommunication communication;
+    private static Group group;
 
     private FragmentInfoGroupBinding binding;
     private InfoGroupFragmentAdapter infoGroupFragmentAdapter;
     private ViewPager2 viewPager;
-    private Group group;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +30,7 @@ public class InfoGroupFragment extends Fragment {
 
         setUpViewPager();
 
+        communication.setToolbar(group.getName());
         String tags = getTagsFromGroup();
         binding.txtGroupTags.setText(tags);
 
@@ -75,15 +76,15 @@ public class InfoGroupFragment extends Fragment {
         tabLayoutMediator.attach();
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public static Group getGroup() {
+        return group;
+    }
+
+    public static void setGroup(Group group) {
+        InfoGroupFragment.group = group;
     }
 
     public static InfoGroupCommunication getCommunication() {
         return communication;
-    }
-
-    public static boolean isUserSubscriber() {
-        return true;
     }
 }

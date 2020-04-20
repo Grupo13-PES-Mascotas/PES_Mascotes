@@ -4,7 +4,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGrou
 import org.pesmypetcare.mypetcare.features.community.Group;
 import org.pesmypetcare.mypetcare.features.users.User;
 
-import java.util.List;
+import java.util.SortedSet;
 
 public interface CommunityCommunication {
 
@@ -12,7 +12,7 @@ public interface CommunityCommunication {
      * Method responsible for obtaining all the groups.
      * @return A list containing all the groups of the system
      */
-    List<Group> getAllGroups();
+    SortedSet<Group> getAllGroups();
 
     /**
      * Method responsible for deleting a group from the system.
