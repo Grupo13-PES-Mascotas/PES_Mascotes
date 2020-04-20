@@ -183,6 +183,8 @@
     <string name="subscribe">Subscribirse</string>
     <string name="desubscribe">Eliminar subscripción</string>
     <string name="owner">(Propietario)</string>
+    <string name="edit_meal_title">Editar la comida</string>
+    <string name="edit_meal_message">Introduce los datos de la comida</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>
