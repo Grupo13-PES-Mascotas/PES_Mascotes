@@ -62,7 +62,6 @@ public class InfoPetMealsFragment extends Fragment {
     private TextInputEditText inputMealName;
     private TextInputEditText inputMealCal;
     private MaterialButton deleteMealButton;
-    private View editMealLayout;
     private AlertDialog dialog;
 
     @Override
@@ -72,7 +71,7 @@ public class InfoPetMealsFragment extends Fragment {
 
         mealDisplay = binding.mealsDisplayLayout;
         addMealButton = binding.addMealButton;
-        editMealLayout = prepareDialog();
+        View editMealLayout = prepareDialog();
         dialog = getBasicMealDialog();
         dialog.setView(editMealLayout);
 
@@ -174,8 +173,7 @@ public class InfoPetMealsFragment extends Fragment {
     private void initializeEditMealButton() {
         editMealButton.setOnClickListener(v -> {
             if (isAnyFieldBlank()) {
-                Toast errorMsg = Toast.makeText(getActivity(), R.string.empty_fields, Toast.LENGTH_LONG);
-                errorMsg.show();
+                showErrorMessage();
             } else {
                 if (editing) {
                     initializeEditButtonListener();
@@ -187,6 +185,14 @@ public class InfoPetMealsFragment extends Fragment {
                 initializeMealsLayoutView();
             }
         });
+    }
+
+    /**
+     * Show the error message
+     */
+    private void showErrorMessage() {
+        Toast errorMsg = Toast.makeText(getActivity(), R.string.empty_fields, Toast.LENGTH_LONG);
+        errorMsg.show();
     }
 
     /**
