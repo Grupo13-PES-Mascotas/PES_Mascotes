@@ -188,7 +188,7 @@ public class InfoPetMealsFragment extends Fragment {
     }
 
     /**
-     * Show the error message
+     * Show the error message.
      */
     private void showErrorMessage() {
         Toast errorMsg = Toast.makeText(getActivity(), R.string.empty_fields, Toast.LENGTH_LONG);
