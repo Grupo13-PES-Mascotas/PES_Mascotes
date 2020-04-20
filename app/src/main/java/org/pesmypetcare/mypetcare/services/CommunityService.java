@@ -42,4 +42,11 @@ public interface CommunityService {
      * @param group The group
      */
     void addSubscriber(User user, Group group);
+
+    /**
+     * Remove a subscriber from the group.
+     * @param user The subscriber to add
+     * @param group The group
+     */
+    void deleteSubscriber(User user, Group group);
 }
