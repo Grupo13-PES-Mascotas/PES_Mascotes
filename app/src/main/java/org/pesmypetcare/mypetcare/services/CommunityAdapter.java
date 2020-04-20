@@ -32,4 +32,9 @@ public class CommunityAdapter implements CommunityService {
     public void addSubscriber(User user, Group group) {
         // Not implemented yet
     }
+
+    @Override
+    public void deleteSubscriber(User user, Group group) {
+        //Not implemented yet
+    }
 }
