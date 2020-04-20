@@ -44,5 +44,6 @@ public class TrDeleteMeal {
      */
     public void execute() {
         mealManagerService.deleteMeal(user, pet, meal);
+        pet.deleteEvent(meal);
     }
 }

@@ -69,18 +69,18 @@ public class InfoPetMealsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoPetMealsBinding.inflate(inflater, container, false);
         pet = InfoPetFragment.getPet();
-        InfoPetFragment.getCommunication().obtainAllPetMeals(pet);
+
         mealDisplay = binding.mealsDisplayLayout;
         addMealButton = binding.addMealButton;
         editMealLayout = prepareDialog();
         dialog = getBasicMealDialog();
         dialog.setView(editMealLayout);
+
         initializeEditMealButton();
         initializeRemoveMealButton();
-
         initializeIntervalSwitch();
         initializeAddMealButton();
-        initializeMealsLayoutView();
+
         return binding.getRoot();
     }
 
@@ -91,6 +91,11 @@ public class InfoPetMealsFragment extends Fragment {
         addMealButton.setOnClickListener(v -> {
             editing = false;
             deleteMealButton.setVisibility(View.INVISIBLE);
+            inputMealName.setText("");
+            inputMealCal.setText("");
+            mealDate.setText(R.string.meal_date);
+            mealTime.setText(R.string.meal_time);
+            editMealButton.setText(R.string.add_meal_button);
             dialog.show();
         });
     }
@@ -123,7 +128,7 @@ public class InfoPetMealsFragment extends Fragment {
     private void initializeRemoveMealButton() {
         deleteMealButton.setOnClickListener(v -> {
             InfoPetFragment.getCommunication().deletePetMeal(pet, meal);
-            //initializeMealsLayoutView();
+            initializeMealsLayoutView();
             dialog.dismiss();
         });
     }
@@ -178,7 +183,7 @@ public class InfoPetMealsFragment extends Fragment {
                 }
 
                 dialog.dismiss();
-                //initializeMealsLayoutView();
+                initializeMealsLayoutView();
             }
         });
     }
@@ -332,8 +337,7 @@ public class InfoPetMealsFragment extends Fragment {
      * Method responsible for initializing the meals layout view.
      */
     private void initializeMealsLayoutView() {
-        ArrayList<Event> mealsList = new ArrayList<>();
-        mealsList.clear();
+        ArrayList<Event> mealsList;
         mealDisplay.removeAllViews();
 
         if (isWeeklyInterval) {
@@ -381,7 +385,7 @@ public class InfoPetMealsFragment extends Fragment {
      * Method responsible for initializing the edit meal dialog.
      */
     private void initializeEditDialog() {
-        editMealButton.setText(getResources().getText(R.string.update_meal));
+        editMealButton.setText(R.string.update_meal);
         inputMealName.setText(meal.getMealName());
         inputMealCal.setText(String.valueOf(meal.getKcal()));
         updatesDate = false;

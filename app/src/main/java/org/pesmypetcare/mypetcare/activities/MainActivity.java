@@ -269,6 +269,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         user = trObtainUser.getResult();
 
+        for (Pet pet : user.getPets()) {
+            obtainAllPetMeals(pet);
+        }
+
         /*for (Pet pet : user.getPets()) {
             try {
                 byte[] bytes = ImageManager.readImage(ImageManager.PROFILE_IMAGES_PATH,
