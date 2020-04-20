@@ -39,7 +39,6 @@ public class TestTrDeleteSubscription {
     @Test(expected = NotSubscribedException.class)
     public void shouldNotDeleteSubscriptionFromNotSubscribedGroup() throws GroupNotExistingException,
         NotSubscribedException, OwnerCannotDeleteSubscriptionException {
-        StubCommunityService communityService = new StubCommunityService();
         trDeleteSubscription.setUser(user);
         trDeleteSubscription.setGroup(group);
         trDeleteSubscription.execute();

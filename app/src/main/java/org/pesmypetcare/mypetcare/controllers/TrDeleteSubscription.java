@@ -19,17 +19,33 @@ public class TrDeleteSubscription {
         this.communityService = communityService;
     }
 
+    /**
+     * Setter of the user that has to be deleted from the group.
+     * @param user The user that has to be deleted from the group
+     */
     public void setUser(User user) {
         this.user = user;
     }
 
+    /**
+     * Setter of the group from which the user has to be deleted.
+     * @param group The group from which the user has to be deleted
+     */
     public void setGroup(Group group) {
         this.group = group;
     }
 
+    /**
+     * Execute the transaction.
+     * @throws GroupNotExistingException Exception thrown when the group does not exist
+     * @throws NotSubscribedException Exception thrown when the user is not subscribed to the group
+     * @throws OwnerCannotDeleteSubscriptionException Exception thrown when the owner of the group tries to
+     * unsubscribe from the group
+     */
     public void execute() throws GroupNotExistingException, NotSubscribedException,
         OwnerCannotDeleteSubscriptionException {
-        if (!communityService.isGroupExisting(group)) {
+        boolean groupExisting = communityService.isGroupExisting(group);
+        if (!groupExisting) {
             throw new GroupNotExistingException();
         } else if (group.getOwnerUsername().equals(user.getUsername())) {
             throw new OwnerCannotDeleteSubscriptionException();
