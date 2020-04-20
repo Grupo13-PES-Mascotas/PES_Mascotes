@@ -29,7 +29,17 @@ public interface CommunityService {
      */
     void deleteGroup(String groupName) throws GroupNotFoundException;
 
+    /**
+     * Check whether the group exists.
+     * @param group Teh group to check
+     * @return True if the group exists
+     */
     boolean isGroupExisting(Group group);
 
+    /**
+     * Add a subscriber to the group.
+     * @param user The subscriber to add
+     * @param group The group
+     */
     void addSubscriber(User user, Group group);
 }

@@ -197,15 +197,28 @@ public class User {
         return -1;
     }
 
+    /**
+     * Subscribe to the group.
+     * @param group The group to subscribe
+     */
     public void addSubscribedGroup(Group group) {
         subscribedGroups.add(group.getName());
         group.addSubscriber(this);
     }
 
-    public void removeSubscribedGroup(String groupName) {
-        subscribedGroups.remove(groupName);
+    /**
+     * Remove a subscription to a group
+     * @param group The group to remove the subscription to
+     */
+    public void removeSubscribedGroup(Group group) {
+        subscribedGroups.remove(group.getName());
+        group.removeSubscriber(this);
     }
 
+    /**
+     * Get the subscribed groups.
+     * @return The subscribed groups
+     */
     public SortedSet<String> getSubscribedGroups() {
         return subscribedGroups;
     }

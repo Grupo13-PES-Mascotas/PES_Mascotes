@@ -35,6 +35,10 @@ public class InfoGroupFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Get the tags from the group.
+     * @return The tags from the group
+     */
     private String getTagsFromGroup() {
         StringBuilder tags = new StringBuilder("");
 
@@ -84,7 +88,7 @@ public class InfoGroupFragment extends Fragment {
                     break;
                 default:
             }
-            });
+        });
     }
 
     /**

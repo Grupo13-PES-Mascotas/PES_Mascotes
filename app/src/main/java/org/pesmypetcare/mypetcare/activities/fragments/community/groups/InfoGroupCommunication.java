@@ -7,10 +7,21 @@ import org.pesmypetcare.mypetcare.features.users.User;
  * @author Albert Pinto
  */
 public interface InfoGroupCommunication {
-
+    /**
+     * Get the current user.
+     * @return The current user
+     */
     User getUser();
 
-    void setToolbar(String name);
+    /**
+     * Set the toolbar title.
+     * @param title The toolbar title
+     */
+    void setToolbar(String title);
 
+    /**
+     * Add subscription to group.
+     * @param group The group to add a subscription to
+     */
     void addSubscription(Group group);
 }

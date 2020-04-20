@@ -20,7 +20,15 @@ public interface CommunityCommunication {
      */
     void deleteGroup(String groupName);
 
+    /**
+     * Show the group fragment.
+     * @param infoGroupFragment The group fragment to show
+     */
     void showGroupFragment(InfoGroupFragment infoGroupFragment);
 
+    /**
+     * Get the current user.
+     * @return The current user
+     */
     User getUser();
 }

@@ -38,76 +38,153 @@ public class Group implements Comparable<Group> {
         this.subscribers.put(ownerUsername, creationDate);
     }
 
+    /**
+     * Get the name.
+     * @return The name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set the name.
+     * @param name The name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Get the owner username.
+     * @return The owner username
+     */
     public String getOwnerUsername() {
         return ownerUsername;
     }
 
+    /**
+     * Set the owner username.
+     * @param ownerUsername The owner username to set
+     */
     public void setOwnerUsername(String ownerUsername) {
         this.ownerUsername = ownerUsername;
     }
 
+    /**
+     * Get the description.
+     * @return The description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Set the description.
+     * @param description The description to set
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Get the participants.
+     * @return The participants
+     */
     public List<String> getParticipants() {
         return participants;
     }
 
+    /**
+     * Set the participants.
+     * @param participants The participants to set
+     */
     public void setParticipants(List<String> participants) {
         this.participants = participants;
     }
 
+    /**
+     * Get the creation date.
+     * @return The creation date
+     */
     public DateTime getCreationDate() {
         return creationDate;
     }
 
+    /**
+     * Set the creation date.
+     * @param creationDate The creation date to set
+     */
     public void setCreationDate(DateTime creationDate) {
         this.creationDate = creationDate;
     }
 
+    /**
+     * Get the group icon.
+     * @return The group icon
+     */
     public Bitmap getGroupIcon() {
         return groupIcon;
     }
 
+    /**
+     * Set the group icon.
+     * @param groupIcon The group icon to set
+     */
     public void setGroupIcon(Bitmap groupIcon) {
         this.groupIcon = groupIcon;
     }
 
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void addTag(String tag) {
-        tags.add(tag);
-    }
-
+    /**
+     * Get the subscribers.
+     * @return The subscribers
+     */
     public Map<String, DateTime> getSubscribers() {
         return subscribers;
     }
 
-    public void addSubscriber(User user) {
+    /**
+     * Get the tags.
+     * @return The tags
+     */
+    public List<String> getTags() {
+        return tags;
+    }
+
+    /**
+     * Add a tag.
+     * @param tag The tag to add
+     */
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
+
+    /**
+     * Add a subscriber.
+     * @param subscriber The subscriber to add
+     */
+    public void addSubscriber(User subscriber) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d", Locale.getDefault());
         Date date = new Date();
         String strData = dateFormat.format(date);
 
-        subscribers.put(user.getUsername(), DateTime.Builder.buildDateString(strData));
+        subscribers.put(subscriber.getUsername(), DateTime.Builder.buildDateString(strData));
     }
 
+    /**
+     * Check if the user is a subscriber.
+     * @param user The user
+     * @return True if the user is a subscriber
+     */
     public boolean isUserSubscriber(User user) {
         return subscribers.containsKey(user.getUsername());
+    }
+
+    /**
+     * Remove a subscriber.
+     * @param subscriber The subscriber to remove
+     */
+    public void removeSubscriber(User subscriber) {
+        subscribers.remove(subscriber.getUsername());
     }
 
     @Override
