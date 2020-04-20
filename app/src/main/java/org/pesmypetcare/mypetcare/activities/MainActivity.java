@@ -50,7 +50,9 @@ import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityCommunication;
-import org.pesmypetcare.mypetcare.activities.fragments.community.GroupsFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupCommunication;
+import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
@@ -66,6 +68,7 @@ import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.TrAddNewWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.TrAddNewWeight;
+import org.pesmypetcare.mypetcare.controllers.TrAddSubscription;
 import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrChangeUsername;
@@ -92,6 +95,7 @@ import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.community.Group;
 import org.pesmypetcare.mypetcare.features.community.GroupAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.GroupNotExistingException;
 import org.pesmypetcare.mypetcare.features.community.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
@@ -120,20 +124,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
     InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
-    CommunityCommunication {
+    CommunityCommunication, InfoGroupCommunication {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
     };
 
     private static final Class[] APPLICATION_FRAGMENTS = {
-        MyPetsFragment.class, GroupsFragment.class, NotImplementedFragment.class,
+        MyPetsFragment.class, CommunityFragment.class, NotImplementedFragment.class,
         NotImplementedFragment.class, CalendarFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
@@ -178,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainAllGroups trObtainAllGroups;
     private TrCreateNewGroup trCreateNewGroup;
     private TrDeleteGroup trDeleteGroup;
+    private TrAddSubscription trAddSubscription;
     private static int notificationId;
     private static int requestCode;
 
@@ -247,6 +253,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     public static FirebaseAuth getmAuth() {
         return mAuth;
+    }
+
+    public void setToolbarText(String text) {
+        toolbar.setTitle(text);
     }
 
     /**
@@ -399,31 +409,74 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Initialize the controllers.
      */
     private void initializeControllers() {
+        initializePetControllers();
+        initializeEventControllers();
+        initializeUserControllers();
+        initializePetHealthControllers();
+        initializeMealsControllers();
+        initializeCommunityControllers();
+    }
+
+    /**
+     * Initialize the pet controllers.
+     */
+    private void initializePetControllers() {
         trRegisterNewPet = ControllersFactory.createTrRegisterNewPet();
         trUpdatePetImage = ControllersFactory.createTrUpdatePetImage();
-        trChangePassword = ControllersFactory.createTrChangePassword();
         trDeletePet = ControllersFactory.createTrDeletePet();
-        trDeleteUser = ControllersFactory.createTrDeleteUser();
-        trObtainUser = ControllersFactory.createTrObtainUser();
         trUpdatePet = ControllersFactory.createTrUpdatePet();
-        trChangeMail = ControllersFactory.createTrChangeMail();
         trObtainAllPetImages = ControllersFactory.createTrObtainAllPetImages();
-        trUpdateUserImage = ControllersFactory.createTrUpdateUserImage();
+    }
+
+    /**
+     * Initialize the event controllers.
+     */
+    private void initializeEventControllers() {
         trNewPersonalEvent = ControllersFactory.createTrNewPersonalEvent();
         trDeletePersonalEvent = ControllersFactory.createTrDeletePersonalEvent();
+    }
+
+    /**
+     * Initialize the user controllers.
+     */
+    private void initializeUserControllers() {
+        trUpdateUserImage = ControllersFactory.createTrUpdateUserImage();
+        trDeleteUser = ControllersFactory.createTrDeleteUser();
+        trObtainUser = ControllersFactory.createTrObtainUser();
+        trChangePassword = ControllersFactory.createTrChangePassword();
+        trChangeMail = ControllersFactory.createTrChangeMail();
         trChangeUsername = ControllersFactory.createTrChangeUsername();
         trExistsUsername = ControllersFactory.createTrExistsUsername();
+    }
+
+    /**
+     * Initialize the pet health controllers.
+     */
+    private void initializePetHealthControllers() {
         trAddNewWeight = ControllersFactory.createTrAddNewWeight();
         trDeleteWeight = ControllersFactory.createTrDeleteWeight();
         trAddNewWashFrequency = ControllersFactory.createTrAddNewWashFrequency();
         trDeleteWashFrequency = ControllersFactory.createTrDeleteWashFrequency();
+    }
+
+    /**
+     * Initialize the meal controllers.
+     */
+    private void initializeMealsControllers() {
         trNewPetMeal = ControllersFactory.createTrNewPetMeal();
         trObtainAllPetMeals = ControllersFactory.createTrObtainAllPetMeals();
         trDeleteMeal = ControllersFactory.createTrDeleteMeal();
         trUpdateMeal = ControllersFactory.createTrUpdateMeal();
+    }
+
+    /**
+     * Initialize the community controllers.
+     */
+    private void initializeCommunityControllers() {
         trObtainAllGroups = ControllersFactory.createTrObtainAllGroups();
         trCreateNewGroup = ControllersFactory.createTrObtainNewGroup();
         trDeleteGroup = ControllersFactory.createTrDeleteGroup();
+        trAddSubscription = ControllersFactory.createTrAddSubscription();
     }
 
     /**
@@ -536,6 +589,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     public static void hideFloatingButton() {
         floatingActionButton.hide();
+    }
+
+    /**
+     * Show the floating button.
+     */
+    public static void showFloatingButton() {
+        floatingActionButton.show();
     }
 
     /**
@@ -700,6 +760,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 toolbar.setTitle(R.string.navigation_my_pets);
                 changeFromImageZoom();
                 return true;
+            } else if (actualFragment instanceof InfoGroupFragment) {
+                toolbar.setTitle(R.string.navigation_pets_community);
+                floatingActionButton.show();
+                changeFragment(new CommunityFragment());
+                return true;
             } else if (!(actualFragment instanceof MyPetsFragment)){
                 changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
                 setUpNewFragment(getString(R.string.navigation_my_pets), NAVIGATION_OPTIONS[0]);
@@ -755,6 +820,23 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public User getUser() {
         return user;
+    }
+
+    @Override
+    public void setToolbar(String title) {
+        toolbar.setTitle(title);
+    }
+
+    @Override
+    public void addSubscription(Group group) {
+        trAddSubscription.setUser(user);
+        trAddSubscription.setGroup(group);
+
+        try {
+            trAddSubscription.execute();
+        } catch (GroupNotExistingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -1134,7 +1216,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public List<Group> getAllGroups() {
+    public SortedSet<Group> getAllGroups() {
         trObtainAllGroups.execute();
         return trObtainAllGroups.getResult();
     }
@@ -1174,5 +1256,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             Toast toast = Toast.makeText(this, R.string.group_not_found, Toast.LENGTH_LONG);
             toast.show();
         }
+    }
+
+    @Override
+    public void showGroupFragment(InfoGroupFragment infoGroupFragment) {
+        floatingActionButton.hide();
+        changeFragment(infoGroupFragment);
     }
 }

@@ -9,17 +9,18 @@ import android.widget.Space;
 import androidx.annotation.Nullable;
 
 import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 
-public class GroupsView extends LinearLayout {
+public class SubscriptionView extends LinearLayout {
     public static final int MIN_SPACE_SIZE = 20;
     private Context context;
     private List<CircularEntryView> groupComponents;
 
-    public GroupsView(Context context, @Nullable AttributeSet attrs) {
+    public SubscriptionView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         this.context = context;
@@ -33,17 +34,36 @@ public class GroupsView extends LinearLayout {
 
     /**
      * Show the specified groups.
+     * @param user The current user
      * @param groups The groups to display
      */
-    public void showGroups(SortedSet<Group> groups) {
-        for (Group group : groups) {
-            CircularEntryView circularEntryView = new GroupComponentView(context, null, group).initializeComponent();
+    public void showSubscriptions(User user, SortedSet<Group> groups) {
+        for (String groupName : user.getSubscribedGroups()) {
+            Group group = findByName(groupName, groups);
+            CircularEntryView circularEntryView = new SubscriptionComponentView(context, null, user, group);
+            circularEntryView.initializeComponent();
             addView(circularEntryView);
             groupComponents.add(circularEntryView);
 
             Space space = createSpace();
             addView(space);
         }
+    }
+
+    /**
+     * Find a group by its name.
+     * @param groupName The name of the group
+     * @param groups The grups set
+     * @return The selected group or null if it does not exist
+     */
+    private Group findByName(String groupName, SortedSet<Group> groups) {
+        for (Group group : groups) {
+            if (groupName.equals(group.getName())) {
+                return group;
+            }
+        }
+
+        return null;
     }
 
     /**

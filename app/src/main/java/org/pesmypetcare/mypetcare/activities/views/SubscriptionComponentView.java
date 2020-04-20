@@ -8,18 +8,21 @@ import android.widget.LinearLayout;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.List;
 
-public class GroupComponentView extends CircularEntryView {
+public class SubscriptionComponentView extends CircularEntryView {
+    private User user;
     private Group group;
 
-    public GroupComponentView(Context context, AttributeSet attrs) {
+    public SubscriptionComponentView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public GroupComponentView(Context context, AttributeSet attrs, Group group) {
+    public SubscriptionComponentView(Context context, AttributeSet attrs, User user, Group group) {
         super(context, attrs);
+        this.user = user;
         this.group = group;
     }
 
@@ -44,7 +47,13 @@ public class GroupComponentView extends CircularEntryView {
 
     @Override
     protected String getFirstLineText() {
-        return group.getName();
+        StringBuilder groupName = new StringBuilder(group.getName());
+
+        if (group.getOwnerUsername().equals(user.getUsername())) {
+            groupName.append(' ').append(getResources().getString(R.string.owner));
+        }
+
+        return groupName.toString();
     }
 
     @Override
@@ -53,7 +62,7 @@ public class GroupComponentView extends CircularEntryView {
         StringBuilder strTags = new StringBuilder("");
 
         for (int actual = 0; actual < tags.size(); ++actual) {
-            appendTags(tags, strTags, actual);
+            addActualTag(tags, strTags, actual);
         }
 
         if (strTags.length() == 0) {
@@ -64,12 +73,12 @@ public class GroupComponentView extends CircularEntryView {
     }
 
     /**
-     * Append the tags to the StringBuilder.
-     * @param tags The list of tags
-     * @param strTags The string of tags from the input
+     * Add the actual tag.
+     * @param tags The tag list
+     * @param strTags The tags from the input
      * @param actual The actual tag index
      */
-    private void appendTags(List<String> tags, StringBuilder strTags, int actual) {
+    private void addActualTag(List<String> tags, StringBuilder strTags, int actual) {
         if (!tags.get(actual).equals("")) {
             if (actual != 0) {
                 strTags.append(',');

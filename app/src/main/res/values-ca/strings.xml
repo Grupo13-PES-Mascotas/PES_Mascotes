@@ -174,6 +174,15 @@
     <string name="add_group_tag">Etiquetes del grup (amb commes, opcional)</string>
     <string name="delete_group_title">Eliminar grup</string>
     <string name="delete_group_message">Estàs segur/a que vols eliminar</string>
+    <string name="community_group_search">Cerca grups</string>
+    <string name="community_my_subscriptions">Les meves subscripcions</string>
+    <string name="info_group_forums">Fòrums</string>
+    <string name="info_group_subscriptors">Subscriptors</string>
+    <string name="group_tags">Etiquetes del grup</string>
+    <string name="no_tags">Sense etiquetes</string>
+    <string name="subscribe">Subscriure\'s</string>
+    <string name="desubscribe">Eliminar subscripció</string>
+    <string name="owner">(Propietari)</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>

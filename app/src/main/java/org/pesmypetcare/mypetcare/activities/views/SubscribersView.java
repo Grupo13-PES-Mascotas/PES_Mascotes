@@ -9,17 +9,18 @@ import android.widget.Space;
 import androidx.annotation.Nullable;
 
 import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
+import java.util.Map;
 
-public class GroupsView extends LinearLayout {
+public class SubscribersView extends LinearLayout {
     public static final int MIN_SPACE_SIZE = 20;
     private Context context;
     private List<CircularEntryView> groupComponents;
 
-    public GroupsView(Context context, @Nullable AttributeSet attrs) {
+    public SubscribersView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         this.context = context;
@@ -32,12 +33,16 @@ public class GroupsView extends LinearLayout {
     }
 
     /**
-     * Show the specified groups.
-     * @param groups The groups to display
+     * Show the specified group subscribers.
+     * @param group The group to display the subscribers
      */
-    public void showGroups(SortedSet<Group> groups) {
-        for (Group group : groups) {
-            CircularEntryView circularEntryView = new GroupComponentView(context, null, group).initializeComponent();
+    public void showSubscribers(Group group) {
+        for (Map.Entry<String, DateTime> subscription : group.getSubscribers().entrySet()) {
+            String username = subscription.getKey();
+            DateTime subscriptionDate = subscription.getValue();
+            CircularEntryView circularEntryView = new SubscriberComponentView(context, null, username,
+                subscriptionDate, group);
+            circularEntryView.initializeComponent();
             addView(circularEntryView);
             groupComponents.add(circularEntryView);
 

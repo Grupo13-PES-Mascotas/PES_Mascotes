@@ -8,6 +8,8 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class StubCommunityService implements CommunityService {
     private static final int HUSKY = 0;
@@ -38,8 +40,8 @@ public class StubCommunityService implements CommunityService {
     }
 
     @Override
-    public List<Group> getAllGroups() {
-        return groups;
+    public SortedSet<Group> getAllGroups() {
+        return new TreeSet<>(groups);
     }
 
     @Override
@@ -64,5 +66,16 @@ public class StubCommunityService implements CommunityService {
         if (!found) {
             throw new GroupNotFoundException();
         }
+    }
+
+    @Override
+    public boolean isGroupExisting(Group group) {
+        return groups.contains(group);
+    }
+
+    @Override
+    public void addSubscriber(User user, Group group) {
+        int index = groups.indexOf(group);
+        user.addSubscribedGroup(groups.get(index));
     }
 }

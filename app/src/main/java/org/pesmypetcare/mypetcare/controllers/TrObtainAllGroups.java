@@ -3,16 +3,16 @@ package org.pesmypetcare.mypetcare.controllers;
 import org.pesmypetcare.mypetcare.features.community.Group;
 import org.pesmypetcare.mypetcare.services.CommunityService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class TrObtainAllGroups {
-    private List<Group> result;
+    private SortedSet<Group> result;
     private CommunityService communityService;
 
     public TrObtainAllGroups(CommunityService communityService) {
         this.communityService = communityService;
-        result = new ArrayList<>();
+        result = new TreeSet<>();
     }
 
     /**
@@ -26,7 +26,7 @@ public class TrObtainAllGroups {
      * Obtain the result of the transaction.
      * @return A list that contains all the groups of the system
      */
-    public List<Group> getResult() {
+    public SortedSet<Group> getResult() {
         return result;
     }
 }

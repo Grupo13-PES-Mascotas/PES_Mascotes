@@ -16,7 +16,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.views.CircularEntryView;
+import org.pesmypetcare.mypetcare.activities.views.GroupComponentView;
 import org.pesmypetcare.mypetcare.databinding.FragmentGroupsBinding;
 import org.pesmypetcare.mypetcare.features.community.Group;
 
@@ -25,6 +27,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class GroupsFragment extends Fragment {
     private static final int[] GROUP_SEARCH_TITLE_ID = {
@@ -35,15 +39,13 @@ public class GroupsFragment extends Fragment {
     private static final String INTERROGATION_SIGN = "?";
 
     private FragmentGroupsBinding binding;
-    private List<Group> groups;
-    private CommunityCommunication communication;
+    private SortedSet<Group> groups;
     private int selectedSearchMode;
     private TextInputLayout inputGroupSearch;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentGroupsBinding.inflate(inflater, container, false);
-        communication = (CommunityCommunication) getActivity();
         inputGroupSearch = binding.inputGroupSearch;
 
         setTypeSearch();
@@ -57,7 +59,7 @@ public class GroupsFragment extends Fragment {
      */
     private void addSearchButtonListener() {
         binding.btnGroupSearch.setOnClickListener(v -> {
-            groups = Objects.requireNonNull(communication).getAllGroups();
+            groups = Objects.requireNonNull(CommunityFragment.getCommunication()).getAllGroups();
             String inputText = Objects.requireNonNull(inputGroupSearch.getEditText()).getText().toString()
                 .toLowerCase(Locale.getDefault());
             boolean isCorrect = getGroups(inputText);
@@ -74,15 +76,44 @@ public class GroupsFragment extends Fragment {
      */
     private void addGroupsViewListeners() {
         List<CircularEntryView> views = binding.groupInfoLayout.getGroupComponents();
+        InfoGroupFragment infoGroupFragment = new InfoGroupFragment();
 
         for (CircularEntryView circularEntryView : views) {
             circularEntryView.setLongClickable(true);
-            circularEntryView.setOnLongClickListener(v1 -> {
-                MaterialAlertDialogBuilder dialog = createDeleteGroupDialog(circularEntryView);
-                dialog.show();
-                return true;
-            });
+            circularEntryView.setOnLongClickListener(v1 -> setGroupLongClickEvent(circularEntryView,
+                (GroupComponentView) v1));
+
+            circularEntryView.setOnClickListener(v -> setGroupOnClickEvent(infoGroupFragment, circularEntryView));
         }
+    }
+
+    /**
+     * Set the group on click listener.
+     * @param infoGroupFragment The InfoGrup fragment to display
+     * @param circularEntryView The entry
+     */
+    private void setGroupOnClickEvent(InfoGroupFragment infoGroupFragment, CircularEntryView circularEntryView) {
+        Group group = (Group) circularEntryView.getObject();
+        InfoGroupFragment.setGroup(group);
+        CommunityFragment.getCommunication().showGroupFragment(infoGroupFragment);
+    }
+
+    /**
+     * Set the group on click listener.
+     * @param groupComponentView The GroupComponentView fragment to display
+     * @param circularEntryView The entry
+     */
+    private boolean setGroupLongClickEvent(CircularEntryView circularEntryView, GroupComponentView groupComponentView) {
+        Group group = (Group) groupComponentView.getObject();
+        String actualUser = CommunityFragment.getCommunication().getUser().getUsername();
+
+        if (actualUser.equals(group.getOwnerUsername())) {
+            MaterialAlertDialogBuilder dialog = createDeleteGroupDialog(circularEntryView);
+            dialog.show();
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -114,7 +145,7 @@ public class GroupsFragment extends Fragment {
      * @param dialog The displayed dialog
      */
     private void setDeleteGroupPositiveButton(Group group, DialogInterface dialog) {
-        communication.deleteGroup(group.getName());
+        CommunityFragment.getCommunication().deleteGroup(group.getName());
         binding.groupInfoLayout.removeAllViews();
         dialog.dismiss();
     }
@@ -179,8 +210,8 @@ public class GroupsFragment extends Fragment {
      * @param groups The existing groups
      * @return The groups that contain any of the tags or a part of it
      */
-    private List<Group> filterByTag(String groupTags, List<Group> groups) {
-        List<Group> selectedGroups = new ArrayList<>();
+    private SortedSet<Group> filterByTag(String groupTags, SortedSet<Group> groups) {
+        SortedSet<Group> selectedGroups = new TreeSet<>();
         String[] tags = groupTags.split(",");
         List<String> selectedTags = new ArrayList<>(Arrays.asList(tags));
 
@@ -223,8 +254,8 @@ public class GroupsFragment extends Fragment {
      * @param groups The existing groups
      * @return The groups that contains the groupName in their name
      */
-    private List<Group> filterByName(String groupName, List<Group> groups) {
-        List<Group> selectedGroups = new ArrayList<>();
+    private SortedSet<Group> filterByName(String groupName, SortedSet<Group> groups) {
+        SortedSet<Group> selectedGroups = new TreeSet<>();
 
         for (Group group : groups) {
             if (group.getName().toLowerCase(Locale.getDefault()).contains(groupName)) {

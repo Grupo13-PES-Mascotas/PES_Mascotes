@@ -174,6 +174,15 @@
     <string name="add_group_tag">Etiquetas del grupo (con comas, opcional)</string>
     <string name="delete_group_title">Eliminar grupo</string>
     <string name="delete_group_message">Estás seguro/a que quieres eliminar</string>
+    <string name="community_group_search">Busca grupos</string>
+    <string name="community_my_subscriptions">Mis subscripciones</string>
+    <string name="info_group_forums">Foros</string>
+    <string name="info_group_subscriptors">Subscriptores</string>
+    <string name="group_tags">Etiquetas del grupo</string>
+    <string name="no_tags">Sin etiquetas</string>
+    <string name="subscribe">Subscribirse</string>
+    <string name="desubscribe">Eliminar subscripción</string>
+    <string name="owner">(Propietario)</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>
