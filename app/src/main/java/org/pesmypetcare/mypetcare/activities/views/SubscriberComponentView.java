@@ -11,6 +11,7 @@ import org.pesmypetcare.mypetcare.features.community.Group;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 public class SubscriberComponentView extends CircularEntryView {
+    private static final String HYPHEN = "-";
     private String username;
     private DateTime subscriptionDate;
     private Group group;
@@ -57,6 +58,6 @@ public class SubscriberComponentView extends CircularEntryView {
 
     @Override
     protected String getSecondLineText() {
-        return subscriptionDate.getYear() + "-" + subscriptionDate.getMonth() + "-" + subscriptionDate.getDay();
+        return subscriptionDate.getYear() + HYPHEN + subscriptionDate.getMonth() + HYPHEN + subscriptionDate.getDay();
     }
 }

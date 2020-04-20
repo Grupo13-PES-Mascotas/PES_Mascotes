@@ -47,13 +47,13 @@ public class SubscriptionComponentView extends CircularEntryView {
 
     @Override
     protected String getFirstLineText() {
-        String groupName = group.getName();
+        StringBuilder groupName = new StringBuilder(group.getName());
 
         if (group.getOwnerUsername().equals(user.getUsername())) {
-            groupName += " " + getResources().getString(R.string.owner);
+            groupName.append(" ").append(getResources().getString(R.string.owner));
         }
 
-        return groupName;
+        return groupName.toString();
     }
 
     @Override
@@ -62,13 +62,7 @@ public class SubscriptionComponentView extends CircularEntryView {
         StringBuilder strTags = new StringBuilder("");
 
         for (int actual = 0; actual < tags.size(); ++actual) {
-            if (!tags.get(actual).equals("")) {
-                if (actual != 0) {
-                    strTags.append(',');
-                }
-
-                strTags.append('#').append(tags.get(actual));
-            }
+            addActualTag(tags, strTags, actual);
         }
 
         if (strTags.length() == 0) {
@@ -76,5 +70,21 @@ public class SubscriptionComponentView extends CircularEntryView {
         }
 
         return strTags.toString();
+    }
+
+    /**
+     * Add the actual tag.
+     * @param tags The tag list
+     * @param strTags The tags from the input
+     * @param actual The actual tag index
+     */
+    private void addActualTag(List<String> tags, StringBuilder strTags, int actual) {
+        if (!tags.get(actual).equals("")) {
+            if (actual != 0) {
+                strTags.append(',');
+            }
+
+            strTags.append('#').append(tags.get(actual));
+        }
     }
 }

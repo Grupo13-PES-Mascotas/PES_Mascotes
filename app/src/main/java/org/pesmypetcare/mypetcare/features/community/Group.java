@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -98,7 +99,7 @@ public class Group implements Comparable<Group> {
     }
 
     public void addSubscriber(User user) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d", Locale.getDefault());
         Date date = new Date();
         String strData = dateFormat.format(date);
 

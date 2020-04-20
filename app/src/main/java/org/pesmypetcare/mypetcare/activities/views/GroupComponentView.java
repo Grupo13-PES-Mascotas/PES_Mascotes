@@ -53,13 +53,7 @@ public class GroupComponentView extends CircularEntryView {
         StringBuilder strTags = new StringBuilder("");
 
         for (int actual = 0; actual < tags.size(); ++actual) {
-            if (!tags.get(actual).equals("")) {
-                if (actual != 0) {
-                    strTags.append(',');
-                }
-
-                strTags.append('#').append(tags.get(actual));
-            }
+            appendTags(tags, strTags, actual);
         }
 
         if (strTags.length() == 0) {
@@ -67,5 +61,21 @@ public class GroupComponentView extends CircularEntryView {
         }
 
         return strTags.toString();
+    }
+
+    /**
+     * Append the tags to the StringBuilder.
+     * @param tags The list of tags
+     * @param strTags The string of tags from the input
+     * @param actual The actual tag index
+     */
+    private void appendTags(List<String> tags, StringBuilder strTags, int actual) {
+        if (!tags.get(actual).equals("")) {
+            if (actual != 0) {
+                strTags.append(',');
+            }
+
+            strTags.append('#').append(tags.get(actual));
+        }
     }
 }

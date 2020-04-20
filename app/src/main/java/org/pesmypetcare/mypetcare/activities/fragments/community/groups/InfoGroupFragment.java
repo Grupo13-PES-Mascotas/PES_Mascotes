@@ -20,8 +20,6 @@ public class InfoGroupFragment extends Fragment {
     private static Group group;
 
     private FragmentInfoGroupBinding binding;
-    private InfoGroupFragmentAdapter infoGroupFragmentAdapter;
-    private ViewPager2 viewPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,7 +39,7 @@ public class InfoGroupFragment extends Fragment {
         StringBuilder tags = new StringBuilder("");
 
         for (String actualTag : group.getTags()) {
-            if (!actualTag.equals("")) {
+            if (!"".equals(actualTag)) {
                 tags.append('#').append(actualTag).append(',');
             }
         }
@@ -55,35 +53,60 @@ public class InfoGroupFragment extends Fragment {
         return tags.toString();
     }
 
+    /**
+     * Set up the view pager.
+     */
     private void setUpViewPager() {
-        infoGroupFragmentAdapter = new InfoGroupFragmentAdapter(this);
-        viewPager = binding.infoGroupPager;
+        InfoGroupFragmentAdapter infoGroupFragmentAdapter = new InfoGroupFragmentAdapter(this);
+        ViewPager2 viewPager = binding.infoGroupPager;
         viewPager.setAdapter(infoGroupFragmentAdapter);
 
         TabLayout tabLayout = binding.tabLayoutInfoGroup;
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            switch (position) {
-                case InfoGroupFragmentAdapter.FORUMS_FRAGMENT:
-                    tab.setText(R.string.info_group_forums);
-                    break;
-                case InfoGroupFragmentAdapter.GROUP_SUBSCRIPTIONS_FRAGMENT:
-                    tab.setText(R.string.info_group_subscriptors);
-                    break;
-                default:
-            }
-        });
+        TabLayoutMediator tabLayoutMediator = createTabLayoutMediator(viewPager, tabLayout);
 
         tabLayoutMediator.attach();
     }
 
+    /**
+     * Create the tab layout mediator.
+     * @param viewPager The viewpager of the fragment
+     * @param tabLayout The tabLayout of the fragment
+     * @return The TabLayoutMediator for the fragment
+     */
+    private TabLayoutMediator createTabLayoutMediator(ViewPager2 viewPager, TabLayout tabLayout) {
+        return new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+                switch (position) {
+                    case InfoGroupFragmentAdapter.FORUMS_FRAGMENT:
+                        tab.setText(R.string.info_group_forums);
+                        break;
+                    case InfoGroupFragmentAdapter.GROUP_SUBSCRIPTIONS_FRAGMENT:
+                        tab.setText(R.string.info_group_subscriptors);
+                        break;
+                    default:
+                }
+            });
+    }
+
+    /**
+     * Get the group.
+     * @return The group
+     */
     public static Group getGroup() {
         return group;
     }
 
+    /**
+     * Set the group.
+     * @param group The group
+     */
     public static void setGroup(Group group) {
         InfoGroupFragment.group = group;
     }
 
+    /**
+     * Get the communication.
+     * @return The communication
+     */
     public static InfoGroupCommunication getCommunication() {
         return communication;
     }

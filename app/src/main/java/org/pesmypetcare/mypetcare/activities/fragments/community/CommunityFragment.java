@@ -18,8 +18,6 @@ public class CommunityFragment extends Fragment {
     private static CommunityCommunication communication;
 
     private FragmentCommunityBinding binding;
-    private CommunityFragmentAdapter communityFragmentAdapter;
-    private ViewPager2 viewPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -31,27 +29,44 @@ public class CommunityFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Set up the view pager.
+     */
     private void setUpViewPager() {
-        communityFragmentAdapter = new CommunityFragmentAdapter(this);
-        viewPager = binding.communityPager;
+        CommunityFragmentAdapter communityFragmentAdapter = new CommunityFragmentAdapter(this);
+        ViewPager2 viewPager = binding.communityPager;
         viewPager.setAdapter(communityFragmentAdapter);
 
         TabLayout tabLayout = binding.tabLayoutCommunity;
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            switch (position) {
-                case CommunityFragmentAdapter.GROUPS_FRAGMENT:
-                    tab.setText(R.string.community_group_search);
-                    break;
-                case CommunityFragmentAdapter.USER_SUBSCRIPTIONS_FRAGMENT:
-                    tab.setText(R.string.community_my_subscriptions);
-                    break;
-                default:
-            }
-        });
+        TabLayoutMediator tabLayoutMediator = createTabLayoutMediator(viewPager, tabLayout);
 
         tabLayoutMediator.attach();
     }
 
+    /**
+     * Create the tab layout mediator.
+     * @param viewPager The viewpager of the fragment
+     * @param tabLayout The tabLayout of the fragment
+     * @return The TabLayoutMediator for the fragment
+     */
+    private TabLayoutMediator createTabLayoutMediator(ViewPager2 viewPager, TabLayout tabLayout) {
+        return new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+                switch (position) {
+                    case CommunityFragmentAdapter.GROUPS_FRAGMENT:
+                        tab.setText(R.string.community_group_search);
+                        break;
+                    case CommunityFragmentAdapter.USER_SUBSCRIPTIONS_FRAGMENT:
+                        tab.setText(R.string.community_my_subscriptions);
+                        break;
+                    default:
+                }
+            });
+    }
+
+    /**
+     * Get the communication.
+     * @return The communication
+     */
     public static CommunityCommunication getCommunication() {
         return communication;
     }

@@ -73,7 +73,6 @@ public class TrCreateNewGroup {
      * Execute the transaction.
      */
     public void execute() throws GroupAlreadyExistingException {
-        result = null;
         Group tmp = new Group(groupName, user.getUsername(), creationDate);
         tmp.setDescription(description);
         for (String tag : tags) {

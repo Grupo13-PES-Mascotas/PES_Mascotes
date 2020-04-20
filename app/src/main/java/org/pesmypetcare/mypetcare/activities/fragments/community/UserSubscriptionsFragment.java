@@ -24,9 +24,9 @@ import java.util.SortedSet;
 
 public class UserSubscriptionsFragment extends Fragment {
     private static final String INTERROGATION_SIGN = "?";
+    private static final String SPACE = " ";
 
     private FragmentUserSubscriptionsBinding binding;
-    private SortedSet<Group> groups;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class UserSubscriptionsFragment extends Fragment {
      * Show the subscriptions.
      */
     private void showSubscriptions() {
-        groups = CommunityFragment.getCommunication().getAllGroups();
+        SortedSet<Group> groups = CommunityFragment.getCommunication().getAllGroups();
         User user = CommunityFragment.getCommunication().getUser();
 
         binding.subscriptionViewLayout.removeAllViews();
@@ -95,8 +95,8 @@ public class UserSubscriptionsFragment extends Fragment {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()),
             R.style.AlertDialogTheme);
         Group group = (Group) circularEntryView.getObject();
-        dialog.setTitle(getString(R.string.delete_group_title) + " " + group.getName() + INTERROGATION_SIGN);
-        dialog.setMessage(getString(R.string.delete_group_message) + " " + group.getName() + INTERROGATION_SIGN);
+        dialog.setTitle(getString(R.string.delete_group_title) + SPACE + group.getName() + INTERROGATION_SIGN);
+        dialog.setMessage(getString(R.string.delete_group_message) + SPACE + group.getName() + INTERROGATION_SIGN);
 
         dialog.setPositiveButton(R.string.yes, (dialog1, which) -> {
             setDeleteGroupPositiveButton(group, dialog1);
