@@ -57,5 +57,9 @@ public class ControllersFactory {
         return null;
         //return new TrNewPersonalEvent(new PetManagerAdapter());
     }
+
+    public static TrNewPeriodicNotification createTrNewPeriodicNotification() {
+        return new TrNewPeriodicNotification(new PetManagerAdapter());
+    }
 }
 

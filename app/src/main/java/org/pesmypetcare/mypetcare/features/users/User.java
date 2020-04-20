@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.features.users;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.util.ArrayList;
@@ -14,12 +15,14 @@ public class User {
     private ArrayList<Pet> pets;
     private Bitmap userProfileImage;
     private String token;
+    private ArrayList<Notification> notifications;
 
     public User(String username, String email, String passwd) {
         this.username = username;
         this.email = email;
         this.passwd = passwd;
         this.pets = new ArrayList<>();
+        this.notifications = new ArrayList<>();
         this.token = "token";
     }
 
@@ -73,6 +76,37 @@ public class User {
      */
     public void setPasswd(String passwd) {
         this.passwd = passwd;
+    }
+
+    /**
+     * Method responsible for adding a new notification to the user.
+     * @param notification The notification to be added to the user
+     */
+    public void addNotification(Notification notification) {
+        notifications.add(notification);
+        notification.setUser(this);
+    }
+
+    /**
+     * Method responsible for get a notification from the user.
+     * @param notification The notification
+     */
+    public Notification getNotification(Notification notification) {
+        Notification aux = null;
+        for (Notification not : notifications) {
+            if (not.equals(notification)) {
+                aux = not;
+            }
+        }
+        return aux;
+    }
+
+    /**
+     * Method responsible for deleting a notification from the user.
+     * @param notification The notification to be deleted from the user
+     */
+    public void deleteNotification(Notification notification) {
+        notifications.remove(notification);
     }
 
     /**

@@ -15,10 +15,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TestTrNewPeriodicNotification {
-    private final String NAME = "Dinky";
-    private final String HUSKY = "Husky";
     private static final String DATE = "2020-04-15T10:30:00";
     private static final String DATE2 = "2020-05-13T10:30:00";
+    private static final String DATE2weeks = "2020-05-27T14:30:00";
+    private static final String DATE3months = "2020-08-13T14:30:00";
+    private static final String DESC = "Hello";
+    private static final int wednesday = 3;
+    private static final int DATE13 = 13;
+    private final String NAME = "Dinky";
+    private final String HUSKY = "Husky";
     private Pet pet;
     private TrNewPeriodicNotification trNewPeriodicNotification;
 
@@ -37,43 +42,43 @@ public class TestTrNewPeriodicNotification {
     }
     @Test
     public void shouldAddOneNotificationEveryWeek() throws ParseException {
-        Event e = new Event("Hello", DATE);
+        Event e = new Event(DESC, DATE);
         trNewPeriodicNotification.setPet(pet);
         trNewPeriodicNotification.setEvent(e);
-        trNewPeriodicNotification.setPeriodicity(7,3);
+        trNewPeriodicNotification.setPeriodicity(7, wednesday);
         trNewPeriodicNotification.execute();
         assertEquals("should add one periodic notification weekly", e, pet.getPeriodicNotificationDay(DATE));
     }
 
     @Test
     public void shouldAddOneNotificationEvery2Weeks() throws ParseException {
-        Event e = new Event("Hello", DATE2);
-        String DATE2WEEKS = "2020-05-27T14:30:00";
+        Event e = new Event(DESC, DATE2);
         trNewPeriodicNotification.setPet(pet);
         trNewPeriodicNotification.setEvent(e);
-        trNewPeriodicNotification.setPeriodicity(14,3);
+        trNewPeriodicNotification.setPeriodicity(14, wednesday);
         trNewPeriodicNotification.execute();
-        assertEquals("should add one periodic notification every 2 weeks", e, pet.getPeriodicNotificationDay(DATE2WEEKS));
+        assertEquals("should add one periodic notification every 2 weeks", e,
+                pet.getPeriodicNotificationDay(DATE2weeks));
     }
 
     @Test
     public void shouldAddOneNotificationEveryMonth() throws ParseException {
-        Event e = new Event("Hello", DATE2);
+        Event e = new Event(DESC, DATE2);
         trNewPeriodicNotification.setPet(pet);
         trNewPeriodicNotification.setEvent(e);
-        trNewPeriodicNotification.setPeriodicity(-1,13);
+        trNewPeriodicNotification.setPeriodicity(-1, DATE13);
         trNewPeriodicNotification.execute();
         assertEquals("should add one periodic notification monthly", e, pet.getPeriodicNotificationDay(DATE2));
     }
 
     @Test
     public void shouldAddOneNotificationEvery3Months() throws ParseException {
-        Event e = new Event("Hello", DATE2);
-        String DATE3MONTHS = "2020-08-13T14:30:00";
+        Event e = new Event(DESC, DATE2);
         trNewPeriodicNotification.setPet(pet);
         trNewPeriodicNotification.setEvent(e);
-        trNewPeriodicNotification.setPeriodicity(-3,13);
+        trNewPeriodicNotification.setPeriodicity(-3, DATE13);
         trNewPeriodicNotification.execute();
-        assertEquals("should add one periodic notification every 3 months", e, pet.getPeriodicNotificationDay(DATE3MONTHS));
+        assertEquals("should add one periodic notification every 3 months", e,
+                pet.getPeriodicNotificationDay(DATE3months));
     }
 }

@@ -29,7 +29,7 @@ public interface CalendarCommunication {
      */
     void deletePersonalEvent(Pet pet, Event event);
 
-    void newPeriodicNotification(Pet selectedPet, int periodicity, String toString, String toString1);
+    void newPeriodicNotification(Pet selectedPet, int periodicity, String period, String periodDay);
 
     void schedulePeriodicNotification(Context context, long timeInMillis, String pet, String toString, int period);
 }

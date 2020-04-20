@@ -167,6 +167,7 @@ public class CalendarFragment extends Fragment {
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(dateTime, c);
             communication.schedulePeriodicNotification(getContext(), c.getTimeInMillis() , selectedPet.getName(), reasonText.getText().toString(), period);
+            setUpCalendar();
         } else {
             toastText(getString(R.string.incorrect_entry));
         }

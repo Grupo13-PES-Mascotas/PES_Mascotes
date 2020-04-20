@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.features.pets;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Pair;
 
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
@@ -44,7 +45,7 @@ public class Pet {
     private boolean dailyNotification;
     private ArrayList<Event> eventPeriodWeek;
     private ArrayList<Event> eventPeriodMonth;
-    private ArrayList<Event> dailyEvents;
+    private ArrayList<Pair<String, String>> dailyEvents;
 
 
     public Pet() {
@@ -55,6 +56,7 @@ public class Pet {
         this.dailyNotification = false;
         this.eventPeriodWeek = new ArrayList<>(7);
         this.eventPeriodMonth = new ArrayList<>(31);
+        this.dailyEvents = new ArrayList<Pair<String, String>>();
         initializeEventsPeriod();
     }
 
@@ -415,7 +417,10 @@ public class Pet {
         }
         else if(period == 0) {
             dailyNotification = true;
-            dailyEvents.add(event);
+            String date = event.getDateTime();
+            String[] separate = date.split("'T'");
+            String time = separate[1];
+            dailyEvents.add(new  Pair<String, String>(time, event.getDescription()));
         }
     }
 
@@ -440,6 +445,9 @@ public class Pet {
     public Event getPeriodicNotificationDay(String dateText) throws ParseException {
         int dayOfWeek = getDayOfWeek(dateText);
         int dayOfMonth = getDayOfMonth(dateText);
+        if (dailyNotification) {
+            getDailyNotifications();
+        }
         if (periodsWeek.containsKey(dayOfWeek)) {
             if (periodsWeek.get(dayOfWeek) == 0) {
                 return eventPeriodWeek.get(dayOfWeek - 1);
@@ -463,6 +471,10 @@ public class Pet {
         return null;
     }
 
+    private void getDailyNotifications() {
+    }
+
+
     private boolean itsthedayMonth(Event event, String actualDate) throws ParseException {
         String dateTime = event.getDateTime();
         Date date1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(dateTime);
@@ -484,6 +496,7 @@ public class Pet {
         for (int i = 0; i < 6; ++i) eventPeriodWeek.add(i, e);
         for (int i = 0; i < 30; ++i) eventPeriodMonth.add(i, e);
     }
+
     private int getDayOfWeek(String dateString) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
         Date date = formatter.parse(dateString.replaceAll("Z$", "+0000"));
@@ -496,5 +509,25 @@ public class Pet {
         Date date = formatter.parse(dateString.replaceAll("Z$", "+0000"));
         DateFormat dfMonth = new SimpleDateFormat("dd", Locale.ENGLISH);
         return Integer.parseInt(dfMonth.format(date));
+    }
+
+    public void deletePeriodicNotification(String date, int period, String desc) throws ParseException {
+        int day;
+        Event e = getPeriodicNotificationDay(date);
+        if (eventPeriodWeek.contains(e)) {
+            day = getDayOfWeek(date);
+            eventPeriodWeek.remove(day);
+            periodsWeek.remove(day);
+        }
+        if (eventPeriodMonth.contains(e)) {
+            day = getDayOfMonth(date);
+            eventPeriodMonth.remove(day);
+            periodsMonth.remove(day);
+        }
+        if (period == 0) {
+            String[] separate = date.split("'T'");
+            String time = separate[1];
+            dailyEvents.remove(new Pair<String, String> (time, desc));
+        }
     }
 }

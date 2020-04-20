@@ -2,6 +2,8 @@ package org.pesmypetcare.mypetcare.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -71,6 +73,8 @@ import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
+import org.pesmypetcare.mypetcare.features.notification.Notification;
+import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
@@ -84,6 +88,7 @@ import org.pesmypetcare.mypetcare.utilities.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -131,6 +136,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeletePersonalEvent trDeletePersonalEvent;
     private FloatingActionButton flAddCalendarEvent;
     private TrNewPeriodicNotification trNewPeriodicNotification;
+    private static int notificationId;
+    private static int requestCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +146,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         resources = getResources();
+
+        notificationId = 0;
+        requestCode = 0;
 
         makeLogin();
         initializeControllers();
@@ -358,6 +368,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdateUserImage = ControllersFactory.createTrUpdateUserImage();
         trNewPersonalEvent = ControllersFactory.createTrNewPersonalEvent();
         trDeletePersonalEvent = ControllersFactory.createTrDeletePersonalEvent();
+        trNewPeriodicNotification = ControllersFactory.createTrNewPeriodicNotification();
     }
 
     /**
@@ -628,10 +639,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
          */
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void schedulePeriodicNotification(Context context, long time, String title, String text, int period) {
-
-    }
 
 
     @Override
@@ -772,6 +779,53 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         String imagePath = cursor.getString(columnIndex);
         cursor.close();
         return imagePath;
+    }
+
+    /**
+     * Schedule a notification.
+     * @param context The context
+     * @param text The notification's text
+     * @param title The notification's title
+     * @param time The alarm time of the notification
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void scheduleNotification(Context context, long time, String title, String text) {
+        Notification notification = new Notification(title, text, new Date(time), Long.toString(time));
+        notification.setNotificationID(notificationId);
+        notification.setRequestCode(requestCode);
+        user.addNotification(notification);
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        intent.putExtra(getString(R.string.title), title);
+        intent.putExtra(getString(R.string.text), text);
+        intent.putExtra(getString(R.string.notificationid), Integer.toString(notificationId));
+        notificationId++;
+        PendingIntent pending = PendingIntent.getBroadcast(context, requestCode, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        requestCode++;
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        assert manager != null;
+        manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pending);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void schedulePeriodicNotification(Context context, long time, String title, String text, int period) {
+        Notification notification = new Notification(title, text, new Date(time), Long.toString(time));
+        notification.setNotificationID(notificationId);
+        notification.setRequestCode(requestCode);
+        user.addNotification(notification);
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        intent.putExtra(getString(R.string.title), title);
+        intent.putExtra(getString(R.string.text), text);
+        intent.putExtra(getString(R.string.notificationid), Integer.toString(notificationId));
+        notificationId++;
+        PendingIntent pending = PendingIntent.getBroadcast(context, requestCode, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        requestCode++;
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        assert manager != null;
+        if (period == 0) period = 1;
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, time,
+                AlarmManager.INTERVAL_DAY*period, pending);
     }
 
     @Override
