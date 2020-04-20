@@ -100,6 +100,10 @@ public class InfoPetMealsFragment extends Fragment {
         });
     }
 
+    /**
+     * Create the basic meal dialog.
+     * @return The basic mani dialog
+     */
     private AlertDialog getBasicMealDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()),
             R.style.AlertDialogTheme);
@@ -108,6 +112,10 @@ public class InfoPetMealsFragment extends Fragment {
         return dialog.create();
     }
 
+    /**
+     * Prepare the male dialog.
+     * @return The layout of the main dialog
+     */
     private View prepareDialog() {
         View editMealLayout = getLayoutInflater().inflate(R.layout.edit_meal, null);
         inputMealName = editMealLayout.findViewById(R.id.inputMealName);
@@ -170,6 +178,9 @@ public class InfoPetMealsFragment extends Fragment {
         selectedMin = mealDate.getMinutes();
     }
 
+    /**
+     * Initialize the edit meal button.
+     */
     private void initializeEditMealButton() {
         editMealButton.setOnClickListener(v -> {
             if (isAnyFieldBlank()) {
