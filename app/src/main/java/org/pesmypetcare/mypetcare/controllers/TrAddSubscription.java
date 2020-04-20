@@ -17,14 +17,26 @@ public class TrAddSubscription {
         this.communityService = communityService;
     }
 
+    /**
+     * Set the user.
+     * @param user The user to set
+     */
     public void setUser(User user) {
         this.user = user;
     }
 
+    /**
+     * Set the group.
+     * @param group The group to set
+     */
     public void setGroup(Group group) {
         this.group = group;
     }
 
+    /**
+     * Execute the transaction.
+     * @throws GroupNotExistingException The group does not exist
+     */
     public void execute() throws GroupNotExistingException {
         if (!communityService.isGroupExisting(group)) {
             throw new GroupNotExistingException();

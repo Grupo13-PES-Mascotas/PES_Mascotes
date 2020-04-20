@@ -9,18 +9,18 @@ import android.widget.Space;
 import androidx.annotation.Nullable;
 
 import org.pesmypetcare.mypetcare.features.community.Group;
-import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
+import java.util.Map;
 
-public class SubscriptionView extends LinearLayout {
+public class SubscribersView extends LinearLayout {
     public static final int MIN_SPACE_SIZE = 20;
     private Context context;
     private List<CircularEntryView> groupComponents;
 
-    public SubscriptionView(Context context, @Nullable AttributeSet attrs) {
+    public SubscribersView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         this.context = context;
@@ -33,14 +33,15 @@ public class SubscriptionView extends LinearLayout {
     }
 
     /**
-     * Show the specified groups.
-     * @param user The current user
-     * @param groups The groups to display
+     * Show the specified group subscribers.
+     * @param group The group to display the subscribers
      */
-    public void showSubscriptions(User user, SortedSet<Group> groups) {
-        for (String groupName : user.getSubscribedGroups()) {
-            Group group = findByName(groupName, groups);
-            CircularEntryView circularEntryView = new SubscriptionComponentView(context, null, user, group);
+    public void showSubscribers(Group group) {
+        for (Map.Entry<String, DateTime> subscription : group.getSubscribers().entrySet()) {
+            String username = subscription.getKey();
+            DateTime subscriptionDate = subscription.getValue();
+            CircularEntryView circularEntryView = new SubscriberComponentView(context, null, username,
+                subscriptionDate, group);
             circularEntryView.initializeComponent();
             addView(circularEntryView);
             groupComponents.add(circularEntryView);
@@ -48,22 +49,6 @@ public class SubscriptionView extends LinearLayout {
             Space space = createSpace();
             addView(space);
         }
-    }
-
-    /**
-     * Find a group by its name.
-     * @param groupName The name of the group
-     * @param groups The grups set
-     * @return The selected group or null if it does not exist
-     */
-    private Group findByName(String groupName, SortedSet<Group> groups) {
-        for (Group group : groups) {
-            if (groupName.equals(group.getName())) {
-                return group;
-            }
-        }
-
-        return null;
     }
 
     /**

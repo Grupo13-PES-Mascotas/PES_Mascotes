@@ -182,6 +182,7 @@
     <string name="no_tags">Sense etiquetes</string>
     <string name="subscribe">Subscriure\'s</string>
     <string name="desubscribe">Eliminar subscripció</string>
+    <string name="owner">(Propietari)</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>

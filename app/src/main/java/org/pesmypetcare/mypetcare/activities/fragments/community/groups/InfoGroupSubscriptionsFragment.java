@@ -30,6 +30,15 @@ public class InfoGroupSubscriptionsFragment extends Fragment {
             btnSubscribe.setBackgroundColor(getResources().getColor(R.color.green));
         }
 
+        addSubscribeButtonListener();
+
+        return binding.getRoot();
+    }
+
+    /**
+     * Add the listener for the subscribe button.
+     */
+    private void addSubscribeButtonListener() {
         btnSubscribe.setOnClickListener(v -> {
             if (isUserSubscriber()) {
                 btnSubscribe.setText(getString(R.string.subscribe));
@@ -38,14 +47,31 @@ public class InfoGroupSubscriptionsFragment extends Fragment {
                 btnSubscribe.setText(getString(R.string.desubscribe));
                 btnSubscribe.setBackgroundColor(getResources().getColor(R.color.red));
                 InfoGroupFragment.getCommunication().addSubscription(InfoGroupFragment.getGroup());
+                showSubscribers();
             }
         });
-
-        return binding.getRoot();
     }
 
+    /**
+     * Check whether the user is subscribed.
+     * @return True if the user is subscribed
+     */
     private boolean isUserSubscriber() {
         User user = InfoGroupFragment.getCommunication().getUser();
         return InfoGroupFragment.getGroup().isUserSubscriber(user);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showSubscribers();
+    }
+
+    /**
+     * Show the subscribers of the group.
+     */
+    private void showSubscribers() {
+        binding.subscribersViewLayout.removeAllViews();
+        binding.subscribersViewLayout.showSubscribers(InfoGroupFragment.getGroup());
     }
 }

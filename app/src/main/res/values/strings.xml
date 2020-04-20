@@ -181,6 +181,7 @@
     <string name="no_tags">No tags</string>
     <string name="subscribe">Subscribe</string>
     <string name="desubscribe">Delete subscription</string>
+    <string name="owner">(Owner)</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>

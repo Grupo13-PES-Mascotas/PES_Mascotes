@@ -34,6 +34,9 @@ public class UserSubscriptionsFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Show the subscriptions.
+     */
     private void showSubscriptions() {
         groups = CommunityFragment.getCommunication().getAllGroups();
         User user = CommunityFragment.getCommunication().getUser();

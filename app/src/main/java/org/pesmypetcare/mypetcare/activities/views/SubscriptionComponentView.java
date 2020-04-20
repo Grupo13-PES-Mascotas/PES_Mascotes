@@ -50,7 +50,7 @@ public class SubscriptionComponentView extends CircularEntryView {
         String groupName = group.getName();
 
         if (group.getOwnerUsername().equals(user.getUsername())) {
-            groupName += " (owner)";
+            groupName += " " + getResources().getString(R.string.owner);
         }
 
         return groupName;
