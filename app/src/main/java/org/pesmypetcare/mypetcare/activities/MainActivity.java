@@ -289,6 +289,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             }
         }*/
 
+        Thread askPermissionThread = new Thread(() -> {
+            int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+                System.out.println("Start permission while");
+                while (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                    permissionCheck = ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                }
+                System.out.println("Finish permission while");
+            }
+        });
+
         Thread petsImagesThread = new Thread(() -> {
             System.out.println("Start the thread for reading the images");
 
@@ -316,8 +330,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
             if (actualFragment instanceof MyPetsFragment) {
                 changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+            } else if (actualFragment instanceof InfoPetFragment) {
+                changeFragment(actualFragment);
             }
         });
+
+        askPermissionThread.start();
+
+        try {
+            askPermissionThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         updatePetImagesThread.start();
 
