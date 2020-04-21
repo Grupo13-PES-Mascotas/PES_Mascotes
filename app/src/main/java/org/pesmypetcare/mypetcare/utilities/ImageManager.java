@@ -118,6 +118,16 @@ public class ImageManager {
         return defaultBytesPetImage;
     }
 
+    /**
+     * Get the pet image name.
+     * @param username The username that is the owner of the pet
+     * @param petName The pet name
+     * @return The pet image name
+     */
+    public static String getPetImageName(String username, String petName) {
+        return username + "_" + petName;
+    }
+
     /*FileInputStream input = new FileInputStream(PATH + File.separator + relativePath + File.separator
             + imageName + EXTENSION);
 

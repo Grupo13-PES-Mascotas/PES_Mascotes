@@ -52,6 +52,7 @@ public class TrUpdatePetImage {
 
         pet.setProfileImage(newPetImage);
         petManagerService.updatePetImage(user, pet, newPetImage);
+        System.out.println("Finish update pet image call");
     }
 
     /**

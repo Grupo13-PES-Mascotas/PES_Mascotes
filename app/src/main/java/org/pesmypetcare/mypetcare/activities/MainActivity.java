@@ -1,12 +1,10 @@
 package org.pesmypetcare.mypetcare.activities;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -31,8 +29,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -64,6 +60,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetFr
 import org.pesmypetcare.mypetcare.activities.fragments.settings.NewPasswordInterface;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFragment;
+import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.TrAddNewWashFrequency;
@@ -277,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             obtainAllPetMeals(pet);
         }
 
-        Thread askPermissionThread = createAskPermissionThread();
+        Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
         Thread petsImagesThread = createPetsImagesThread();
         Thread updatePetImagesThread = createUpdatePetImagesThread(petsImagesThread);
 
@@ -323,31 +320,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     private Thread createPetsImagesThread() {
         return new Thread(() -> {
-                int imagesNotFound = getPetImages();
-                int nUserPets = user.getPets().size();
+            int imagesNotFound = getPetImages();
+            int nUserPets = user.getPets().size();
 
-                if (imagesNotFound == nUserPets) {
-                    getImagesFromServer();
-                }
-            });
-    }
-
-    /**
-     * Create the ask permission thread.
-     * @return The ask permission thread
-     */
-    private Thread createAskPermissionThread() {
-        return new Thread(() -> {
-                int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-
-                    while (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                        permissionCheck = ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                    }
-                }
-            });
+            if (imagesNotFound == nUserPets) {
+                getImagesFromServer();
+            }
+        });
     }
 
     /**
@@ -1120,21 +1099,29 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     private void galleryImageZoom(@Nullable Intent data) {
         String imagePath = getImagePath(data);
+        Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+        askPermissionThread.start();
+
+        try {
+            askPermissionThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+        Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+        ((ImageZoomFragment) actualFragment).setDrawable(drawable);
+        ImageZoomFragment.setIsDefaultImage(false);
+
+        if (ImageZoomFragment.isMainActivity()) {
+            updateUserImage(drawable);
         } else {
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            Drawable drawable = new BitmapDrawable(getResources(), bitmap);
-            ((ImageZoomFragment) actualFragment).setDrawable(drawable);
-            ImageZoomFragment.setIsDefaultImage(false);
+            InfoPetFragment.setIsDefaultPetImage(false);
+        }
 
-            if (ImageZoomFragment.isMainActivity()) {
-                updateUserProfileImage(bitmap);
-            } else {
-                InfoPetFragment.setIsDefaultPetImage(false);
-            }
+        if (ImageZoomFragment.isMainActivity()) {
+            updateUserProfileImage(user.getUserProfileImage());
         }
     }
 
@@ -1146,7 +1133,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         user.setUserProfileImage(bitmap);
         setUpNavigationHeader();
         byte[] imageBytes = ImageManager.getImageBytes(bitmap);
-        ImageManager.writeImage(ImageManager.USER_PROFILE_IMAGES_PATH, user.getUsername(), imageBytes);
+        Thread writeUserImageThread = ThreadFactory.createWriteImageThread(ImageManager.USER_PROFILE_IMAGES_PATH,
+            user.getUsername(), imageBytes);
+        writeUserImageThread.start();
     }
 
     /**

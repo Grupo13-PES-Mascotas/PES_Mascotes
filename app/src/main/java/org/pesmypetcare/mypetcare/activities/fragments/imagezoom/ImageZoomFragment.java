@@ -146,13 +146,4 @@ public class ImageZoomFragment extends Fragment {
     public static void setIsMainActivity(boolean isMainActivity) {
         ImageZoomFragment.isMainActivity = isMainActivity;
     }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        if (isMainActivity) {
-            communication.updateUserImage(drawable);
-        }
-    }
 }

@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
@@ -111,16 +112,28 @@ public class PetManagerAdapter implements PetManagerService {
 
         if (pet.getProfileImage() != null) {
             bytesImage = ImageManager.getImageBytes(newPetImage);
-            ImageManager.writeImage(ImageManager.PET_PROFILE_IMAGES_PATH, user.getUsername() + '_' + pet.getName(),
-                bytesImage);
+            Thread writeImageThread = ThreadFactory.createWriteImageThread(ImageManager.PET_PROFILE_IMAGES_PATH,
+                ImageManager.getPetImageName(user.getUsername(), pet.getName()), bytesImage);
+            System.out.println("Start write image thread");
+            writeImageThread.start();
         }
 
-        try {
-            ServiceLocator.getInstance().getPetManagerClient().saveProfileImage(user.getToken(), user.getUsername(),
-                pet.getName(), bytesImage);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        System.out.println("Start server communication ");
+        Thread savePetImageThread = createSavePetImageThread(user, pet, bytesImage);
+        savePetImageThread.start();
+
+        System.out.println("Finish the adapter method");
+    }
+
+    private Thread createSavePetImageThread(User user, Pet pet, byte[] finalBytesImage) {
+        return new Thread(() -> {
+                try {
+                    ServiceLocator.getInstance().getPetManagerClient().saveProfileImage(user.getToken(),
+                        user.getUsername(), pet.getName(), finalBytesImage);
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
     }
 
     @Override
