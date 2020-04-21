@@ -437,6 +437,37 @@ public class Pet {
         return mealEvents;
     }
 
+    /**
+     * Get the list of medication of the pet.
+     * @return The list of medication of the pet
+     */
+    public List<Event> getAllMedicationEvents() {
+        ArrayList<Event> medicationEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof Medication) {
+                medicationEvents.add(event);
+            }
+        }
+        return medicationEvents;
+    }
+
+    /**
+     * Get the list of medications of the pet for a given date.
+     * @return The list of medications of the pet for a given date
+     */
+    public List<Event> getMedicationEventsForDate(String dateTime) {
+        ArrayList<Event> medicationEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            String eventDate = DateConversion.getDate(event.getDateTime());
+            if (event instanceof Medication && eventDate.equals(dateTime)) {
+                medicationEvents.add(event);
+            }
+        }
+        return medicationEvents;
+    }
+
     @Override
     public String toString() {
         return "Pet{"
@@ -451,4 +482,6 @@ public class Pet {
             ", events=" + events
             + '}';
     }
+
+
 }

@@ -20,6 +20,7 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetMedicationBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Medication;
+import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
@@ -282,7 +283,7 @@ public class InfoPetMedicationFragment extends Fragment {
      * Method responsible for initializing the medication layout view.
      */
     private void initializeMedicationsLayoutView() {
-        ArrayList<Event> medicationsList = (ArrayList<Event>) pet.getMedicationEvents();
+        ArrayList<Event> medicationsList = (ArrayList<Event>) pet.getAllMedicationEvents();
         medicationDisplay.removeAllViews();
 
         for (Event medication : medicationsList) {

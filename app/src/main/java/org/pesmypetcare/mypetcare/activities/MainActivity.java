@@ -75,6 +75,7 @@ import org.pesmypetcare.mypetcare.controllers.TrChangeUsername;
 import org.pesmypetcare.mypetcare.controllers.TrCreateNewGroup;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteGroup;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteMeal;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteMedication;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteSubscription;
@@ -84,12 +85,15 @@ import org.pesmypetcare.mypetcare.controllers.TrDeleteWeight;
 import org.pesmypetcare.mypetcare.controllers.TrExistsUsername;
 import org.pesmypetcare.mypetcare.controllers.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrNewPetMeal;
+import org.pesmypetcare.mypetcare.controllers.TrNewPetMedication;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllGroups;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetImages;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetMeals;
+import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetMedications;
 import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdateMeal;
+import org.pesmypetcare.mypetcare.controllers.TrUpdateMedication;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
@@ -105,6 +109,7 @@ import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
+import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
@@ -188,6 +193,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeleteGroup trDeleteGroup;
     private TrAddSubscription trAddSubscription;
     private TrDeleteSubscription trDeleteSubscription;
+    private TrNewPetMedication trNewPetMedication;
+    private TrObtainAllPetMedications trObtainAllPetMedications;
+    private TrDeleteMedication trDeleteMedication;
+    private TrUpdateMedication trUpdateMedication;
     private static int notificationId;
     private static int requestCode;
 
@@ -423,6 +432,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializePetHealthControllers();
         initializeMealsControllers();
         initializeCommunityControllers();
+        initializeMedicationControllers();
+    }
+
+    /**
+     * Initialize the medication controllers
+     */
+    private void initializeMedicationControllers() {
     }
 
     /**
@@ -1044,6 +1060,21 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainAllPetMeals.setUser(user);
         trObtainAllPetMeals.setPet(pet);
         trObtainAllPetMeals.execute();
+    }
+
+    @Override
+    public void addPetMedication(Pet pet, Medication medication) {
+
+    }
+
+    @Override
+    public void updatePetMedication(Pet pet, Medication medication, String newDate, boolean updatesDate) {
+
+    }
+
+    @Override
+    public void deletePetMedication(Pet pet, Medication medication) {
+
     }
 
     @Override

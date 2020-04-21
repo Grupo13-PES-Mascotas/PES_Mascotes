@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
+import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 
@@ -82,6 +83,7 @@ public interface InfoPetCommunication {
      * @param pet The pet to which we want to update the meal
      * @param meal The updated meal
      * @param newDate The new date of the meal
+     * @param updatesDate True if the date has to be updated or false otherwise
      */
     void updatePetMeal(Pet pet, Meals meal, String newDate, boolean updatesDate);
 
@@ -97,4 +99,28 @@ public interface InfoPetCommunication {
      * @param pet The pet from which we want to obtain all the meals
      */
     void obtainAllPetMeals(Pet pet);
+
+
+    /**
+     * Adds a new medication to the pet.
+     * @param pet The pet from which the medication has to be added
+     * @param medication The medication that has to be added to the pet
+     */
+    void addPetMedication(Pet pet, Medication medication);
+
+    /**
+     * Updates the data of a medication of a pet.
+     * @param pet The pet from which we want to update the medication
+     * @param medication The updated medication
+     * @param newDate The new date of the meal
+     * @param updatesDate True if the date has to be updated or false otherwise
+     */
+    void updatePetMedication(Pet pet, Medication medication, String newDate, boolean updatesDate);
+
+    /**
+     * Deletes a medication from a pet.
+     * @param pet The pet from which the medication has to be deleted
+     * @param medication The meal that has to be deleted
+     */
+    void deletePetMedication(Pet pet, Medication medication);
 }
