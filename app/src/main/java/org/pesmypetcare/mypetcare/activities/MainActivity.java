@@ -285,6 +285,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         for (Pet pet : user.getPets()) {
             obtainAllPetMeals(pet);
+            obtainAllPetMedications(pet);
         }
 
         /*for (Pet pet : user.getPets()) {
@@ -1092,6 +1093,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteMedication.setUser(user);
         trDeleteMedication.setPet(pet);
         trDeleteMedication.setMedication(medication);
+        trDeleteMedication.execute();
+    }
+
+    @Override
+    public void obtainAllPetMedications(Pet pet) {
+        trObtainAllPetMedications.setUser(user);
+        trObtainAllPetMedications.setPet(pet);
+        trObtainAllPetMedications.execute();
     }
 
     @Override

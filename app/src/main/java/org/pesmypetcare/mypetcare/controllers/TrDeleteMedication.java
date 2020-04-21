@@ -4,7 +4,6 @@ import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.MedicationManagerService;
-import org.pesmypetcare.mypetcare.services.StubMedicationService;
 
 /**
  * @author Xavier Campos
@@ -17,9 +16,6 @@ public class TrDeleteMedication {
 
     public TrDeleteMedication(MedicationManagerService medicationManagerService) {
         this.medicationManagerService = medicationManagerService;
-    }
-
-    public TrDeleteMedication(StubMedicationService medicationManagerService) {
     }
 
     /**

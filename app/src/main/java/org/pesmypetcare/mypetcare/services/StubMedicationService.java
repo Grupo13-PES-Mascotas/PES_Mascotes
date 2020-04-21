@@ -6,6 +6,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,6 +16,7 @@ public class StubMedicationService implements MedicationManagerService{
     private static List<Medication> medications;
 
     static {
+        medications = new ArrayList<>();
         StubMedicationService.medications.add(new Medication("Capstar", 3, 2, 25,
             DateTime.Builder.buildDateString("2020-04-15")));
         StubMedicationService.medications.add(new Medication("Espiruvet", 1, 1, 14,
@@ -51,7 +53,7 @@ public class StubMedicationService implements MedicationManagerService{
     public void updateMedicationDate(User user, Pet pet, String newDate, String oldDate) {
         for (Medication staticMed : medications) {
             if (staticMed.getMedicationDate().toString().equals(oldDate)) {
-                staticMed.setMedicationDate(DateTime.Builder.buildDateString(newDate));
+                staticMed.setMedicationDate(DateTime.Builder.buildFullString(newDate));
             }
         }
     }

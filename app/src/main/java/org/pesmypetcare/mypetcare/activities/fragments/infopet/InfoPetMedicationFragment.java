@@ -285,7 +285,6 @@ public class InfoPetMedicationFragment extends Fragment {
     private void initializeMedicationsLayoutView() {
         ArrayList<Event> medicationsList = (ArrayList<Event>) pet.getMedicationEvents();
         medicationDisplay.removeAllViews();
-
         for (Event medication : medicationsList) {
             initializeMealComponent(medication);
         }
@@ -310,7 +309,7 @@ public class InfoPetMedicationFragment extends Fragment {
     private void initializeButtonLogic(Medication medication, MaterialButton medicationButton) {
         String medicationButtonText = getString(R.string.medication) + SPACE + medication.getMedicationName() + EOL
             + getString(R.string.quantity) + SPACE + medication.getMedicationQuantity() + EOL
-            + getString(R.string.periodicity) + ": " + medication.getMedicationFrequency();
+            + getString(R.string.periodicity) + " " + medication.getMedicationFrequency();
         medicationButton.setText(medicationButtonText);
         medicationButton.setOnClickListener(v -> {
             InfoPetMedicationFragment.medication = medication;

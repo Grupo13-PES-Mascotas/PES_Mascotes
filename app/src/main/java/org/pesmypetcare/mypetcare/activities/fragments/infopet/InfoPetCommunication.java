@@ -124,4 +124,10 @@ public interface InfoPetCommunication {
      * @param medication The meal that has to be deleted
      */
     void deletePetMedication(Pet pet, Medication medication);
+
+    /**
+     * Obtains all the medications from a pet.
+     * @param pet The pet from which we want to obtain all the medications
+     */
+    void obtainAllPetMedications(Pet pet);
 }
