@@ -277,63 +277,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             obtainAllPetMeals(pet);
         }
 
-        /*for (Pet pet : user.getPets()) {
-            try {
-                byte[] bytes = ImageManager.readImage(ImageManager.PROFILE_IMAGES_PATH,
-                    pet.getOwner().getUsername() + '_' + pet.getName());
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                pet.setProfileImage(bitmap);
-            } catch (IOException e) {
-                Drawable petImageDrawable = getResources().getDrawable(R.drawable.single_paw, null);
-                pet.setProfileImage(((BitmapDrawable) petImageDrawable).getBitmap());
-            }
-        }*/
-
-        Thread askPermissionThread = new Thread(() -> {
-            int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-
-                System.out.println("Start permission while");
-                while (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                    permissionCheck = ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                }
-                System.out.println("Finish permission while");
-            }
-        });
-
-        Thread petsImagesThread = new Thread(() -> {
-            System.out.println("Start the thread for reading the images");
-
-            int imagesNotFound = getPetImages();
-            int nUserPets = user.getPets().size();
-
-            if (imagesNotFound == nUserPets) {
-                getImagesFromServer();
-            }
-
-            System.out.println("Finish the thread for reading the images");
-        });
-
-        Thread updatePetImagesThread = new Thread(() -> {
-            petsImagesThread.start();
-
-            System.out.println("Start waiting");
-            try {
-                petsImagesThread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            System.out.println("Finish waiting");
-
-            if (actualFragment instanceof MyPetsFragment) {
-                changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
-            } else if (actualFragment instanceof InfoPetFragment) {
-                changeFragment(actualFragment);
-            }
-        });
+        Thread askPermissionThread = createAskPermissionThread();
+        Thread petsImagesThread = createPetsImagesThread();
+        Thread updatePetImagesThread = createUpdatePetImagesThread(petsImagesThread);
 
         askPermissionThread.start();
 
@@ -346,6 +292,62 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         updatePetImagesThread.start();
 
         setUpNavigationHeader();
+    }
+
+    /**
+     * Create the update pet images thread.
+     * @param petsImagesThread The thread for getting the pet image
+     * @return The update pet images thread
+     */
+    private Thread createUpdatePetImagesThread(Thread petsImagesThread) {
+        return new Thread(() -> {
+                petsImagesThread.start();
+
+                try {
+                    petsImagesThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                if (actualFragment instanceof MyPetsFragment) {
+                    changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+                } else if (actualFragment instanceof InfoPetFragment) {
+                    changeFragment(actualFragment);
+                }
+            });
+    }
+
+    /**
+     * Create the pets images thread.
+     * @return The pet images thread
+     */
+    private Thread createPetsImagesThread() {
+        return new Thread(() -> {
+                int imagesNotFound = getPetImages();
+                int nUserPets = user.getPets().size();
+
+                if (imagesNotFound == nUserPets) {
+                    getImagesFromServer();
+                }
+            });
+    }
+
+    /**
+     * Create the ask permission thread.
+     * @return The ask permission thread
+     */
+    private Thread createAskPermissionThread() {
+        return new Thread(() -> {
+                int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+                    while (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                        permissionCheck = ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    }
+                }
+            });
     }
 
     /**
