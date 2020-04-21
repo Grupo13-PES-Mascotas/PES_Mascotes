@@ -199,6 +199,9 @@
     <string name="medication">Medication:</string>
     <string name="periodicity">Periodicity:</string>
     <string name="quantity">Quantity:</string>
+    <string name="edit_medication_title">Edit medication</string>
+    <string name="edit_medication_message">Introduce the data of the medication</string>
+    <string name="select_medication_date">Select medication start date</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,16 +19,13 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetMedicationBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
-import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.utilities.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -52,10 +48,11 @@ public class InfoPetMedicationFragment extends Fragment {
     private MaterialButton medicationDate;
     private MaterialDatePicker materialDatePicker;
     private boolean isMedicationDateSelected;
+    private boolean updatesDate;
     private MaterialButton editMedicationButton;
     private TextInputEditText inputMedicationName;
     private TextInputEditText inputMedicationQuantity;
-    private TextInputEditText inputMedicationFrequency;
+    private TextInputEditText inputMedicationDuration;
     private TextInputEditText inputMedicationPeriodicity;
     private MaterialButton deleteMedicationButton;
     private AlertDialog dialog;
@@ -65,120 +62,101 @@ public class InfoPetMedicationFragment extends Fragment {
         binding = FragmentInfoPetMedicationBinding.inflate(inflater, container, false);
         pet = InfoPetFragment.getPet();
 
-        mealDisplay = binding.mealsDisplayLayout;
-        addMealButton = binding.addMealButton;
-        View editMealLayout = prepareDialog();
+        medicationDisplay = binding.medicationDisplayLayout;
+        addMedicationButton = binding.addMedicationButton;
+        View editMedicationLayout = prepareDialog();
         dialog = getBasicMealDialog();
-        dialog.setView(editMealLayout);
+        dialog.setView(editMedicationLayout);
 
-        initializeEditMealButton();
-        initializeRemoveMealButton();
-        initializeIntervalSwitch();
-        initializeAddMealButton();
+        initializeEditMedicationButton();
+        initializeRemoveMedicationButton();
+        initializeAddMedicationButton();
 
         return binding.getRoot();
     }
 
     /**
-     * Method responsible for initializing the add meal button.
+     * Method responsible for initializing the add medication button.
      */
-    private void initializeAddMealButton() {
-        addMealButton.setOnClickListener(v -> {
+    private void initializeAddMedicationButton() {
+        addMedicationButton.setOnClickListener(v -> {
             editing = false;
-            deleteMealButton.setVisibility(View.INVISIBLE);
-            inputMealName.setText("");
-            inputMealCal.setText("");
-            mealDate.setText(R.string.meal_date);
-            mealTime.setText(R.string.meal_time);
-            editMealButton.setText(R.string.add_meal_button);
-            dialog.setTitle(R.string.add_meal_button);
+            deleteMedicationButton.setVisibility(View.INVISIBLE);
+            inputMedicationName.setText("");
+            inputMedicationQuantity.setText("");
+            inputMedicationDuration.setText("");
+            inputMedicationPeriodicity.setText("");
+            medicationDate.setText(R.string.medication_inidate);
+            editMedicationButton.setText(R.string.add_medication_button);
+            dialog.setTitle(R.string.add_medication_button);
             dialog.show();
         });
     }
 
     /**
-     * Create the basic meal dialog.
-     * @return The basic mani dialog
+     * Create the basic medication dialog.
+     * @return The basic main dialog
      */
     private AlertDialog getBasicMealDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()),
             R.style.AlertDialogTheme);
-        dialog.setTitle(R.string.edit_meal_title);
-        dialog.setMessage(R.string.edit_meal_message);
+        dialog.setTitle(R.string.edit_medication_title);
+        dialog.setMessage(R.string.edit_medication_message);
         return dialog.create();
     }
 
     /**
-     * Prepare the male dialog.
+     * Prepare the medication dialog.
      * @return The layout of the main dialog
      */
     private View prepareDialog() {
-        View editMealLayout = getLayoutInflater().inflate(R.layout.edit_meal, null);
-        inputMealName = editMealLayout.findViewById(R.id.inputMealName);
-        inputMealCal = editMealLayout.findViewById(R.id.inputMealCal);
-        editMealButton = editMealLayout.findViewById(R.id.editMealButton);
-        deleteMealButton = editMealLayout.findViewById(R.id.deleteMealButton);
-        mealDate = editMealLayout.findViewById(R.id.inputMealDate);
-        mealTime = editMealLayout.findViewById(R.id.inputMealTime);
+        View editMedicationLayout = getLayoutInflater().inflate(R.layout.edit_medication, null);
+        inputMedicationName = editMedicationLayout.findViewById(R.id.inputMedicationName);
+        inputMedicationQuantity = editMedicationLayout.findViewById(R.id.inputMedicationQuantity);
+        inputMedicationDuration = editMedicationLayout.findViewById(R.id.inputMedicationDuration);
+        inputMedicationPeriodicity = editMedicationLayout.findViewById(R.id.inputMedicationPeriodicity);
+        editMedicationButton = editMedicationLayout.findViewById(R.id.editMedicationButton);
+        deleteMedicationButton = editMedicationLayout.findViewById(R.id.deleteMedicationButton);
+        medicationDate = editMedicationLayout.findViewById(R.id.inputMedicationIniDate);
 
         setCalendarPicker();
-        setTimePicker();
-        return editMealLayout;
+        return editMedicationLayout;
     }
 
     /**
-     * Method responsible for initializing the remove meal button.
+     * Method responsible for initializing the remove medication button.
      */
-    private void initializeRemoveMealButton() {
-        deleteMealButton.setOnClickListener(v -> {
-            InfoPetFragment.getCommunication().deletePetMeal(pet, meal);
-            initializeMealsLayoutView();
+    private void initializeRemoveMedicationButton() {
+        deleteMedicationButton.setOnClickListener(v -> {
+            InfoPetFragment.getCommunication().deletePetMedication(pet, medication);
+            initializeMedicationsLayoutView();
             dialog.dismiss();
         });
     }
 
     /**
-     * Method responsible for initializing the string for the inputMealDate button.
-     * @param mealDate The date of the meal
+     * Method responsible for initializing the string for the inputMedicationDate button.
+     * @param medicationIniDate The date of the medication
      */
-    private void showMealDate(DateTime mealDate) {
+    private void showMedicationIniDate(DateTime medicationIniDate) {
         StringBuilder dateString = new StringBuilder();
-        dateString.append(mealDate.getYear()).append(DATESEPARATOR);
-        if (mealDate.getMonth() < FIRST_TWO_DIGITS) {
+        dateString.append(medicationIniDate.getYear()).append(DATESEPARATOR);
+        if (medicationIniDate.getMonth() < FIRST_TWO_DIGITS) {
             dateString.append('0');
         }
-        dateString.append(mealDate.getMonth()).append(DATESEPARATOR);
-        if (mealDate.getDay() < FIRST_TWO_DIGITS) {
+        dateString.append(medicationIniDate.getMonth()).append(DATESEPARATOR);
+        if (medicationIniDate.getDay() < FIRST_TWO_DIGITS) {
             dateString.append('0');
         }
-        dateString.append(mealDate.getDay());
-        this.mealDate.setText(dateString);
+        dateString.append(medicationIniDate.getDay());
+        this.medicationDate.setText(dateString);
     }
 
     /**
-     * Method responsible for initializing the string for the inputMealTime button.
-     * @param mealDate The date of the meal
+     * Initialize the edit medication button.
      */
-    private void showMealTime(DateTime mealDate) {
-        StringBuilder timeString = new StringBuilder();
-        if (mealDate.getHour() < FIRST_TWO_DIGITS) {
-            timeString.append('0');
-        }
-        timeString.append(mealDate.getHour()).append(TIMESEPARATOR);
-        if (mealDate.getMinutes() < FIRST_TWO_DIGITS) {
-            timeString.append('0');
-        }
-        timeString.append(mealDate.getMinutes()).append(TIMESEPARATOR).append(DEFAULT_SECONDS);
-        mealTime.setText(timeString);
-        selectedHour = mealDate.getHour();
-        selectedMin = mealDate.getMinutes();
-    }
-
-    /**
-     * Initialize the edit meal button.
-     */
-    private void initializeEditMealButton() {
-        editMealButton.setOnClickListener(v -> {
+    private void initializeEditMedicationButton() {
+        editMedicationButton.setOnClickListener(v -> {
             if (isAnyFieldBlank()) {
                 showErrorMessage();
             } else {
@@ -189,7 +167,7 @@ public class InfoPetMedicationFragment extends Fragment {
                 }
 
                 dialog.dismiss();
-                initializeMealsLayoutView();
+                initializeMedicationsLayoutView();
             }
         });
     }
@@ -206,13 +184,19 @@ public class InfoPetMedicationFragment extends Fragment {
      * Method responsible for initializing the addButton listener.
      */
     private void initializeAddButtonListener() {
-        DateTime mealDate = getDateTime();
-        double kcal = Double.parseDouble(Objects.requireNonNull(inputMealCal.getText()).toString());
-        String mealName = Objects.requireNonNull(inputMealName.getText()).toString();
-        meal = new Meals(mealDate, kcal, mealName);
+        DateTime medicationIniDate = getDateTime();
+        String medicationName = Objects.requireNonNull(inputMedicationName.getText()).toString();
+        int medicationQuantity = Integer.parseInt(Objects.requireNonNull
+            (inputMedicationQuantity.getText()).toString());
+        double medicationPeriodicity = Double.parseDouble(Objects.requireNonNull
+            (inputMedicationPeriodicity.getText()).toString());
+        int medicationDuration = Integer.parseInt(Objects.requireNonNull
+            (inputMedicationDuration.getText()).toString());
+        medication = new Medication(medicationName, medicationQuantity, medicationPeriodicity,
+            medicationDuration, medicationIniDate);
         try {
-            InfoPetFragment.getCommunication().addPetMeal(pet, meal);
-        } catch (MealAlreadyExistingException e) {
+            InfoPetFragment.getCommunication().addPetMedication(pet, medication);
+        } catch (MedicationAlreadyExistingException e) {
             e.printStackTrace();
         }
     }
@@ -222,29 +206,27 @@ public class InfoPetMedicationFragment extends Fragment {
      */
     private void initializeEditButtonListener() {
         String newDate = getDateTime().toString();
-        String mealName = Objects.requireNonNull(inputMealName.getText()).toString();
-        double kcal = Double.parseDouble(Objects.requireNonNull(inputMealCal.getText()).toString());
-        meal.setMealName(mealName);
-        meal.setKcal(kcal);
-        InfoPetFragment.getCommunication().updatePetMeal(pet, meal, newDate, updatesDate);
+        String medicationName = Objects.requireNonNull(inputMedicationName.getText()).toString();
+        int medicationQuantity = Integer.parseInt(Objects.requireNonNull
+            (inputMedicationQuantity.getText()).toString());
+        double medicationPeriodicity = Double.parseDouble(Objects.requireNonNull
+            (inputMedicationPeriodicity.getText()).toString());
+        int medicationDuration = Integer.parseInt(Objects.requireNonNull
+            (inputMedicationDuration.getText()).toString());
+        medication.setMedicationName(medicationName);
+        medication.setMedicationQuantity(medicationQuantity);
+        medication.setMedicationFrequency(medicationPeriodicity);
+        medication.setMedicationDuration(medicationDuration);
+        InfoPetFragment.getCommunication().updatePetMedication(pet, medication, newDate, updatesDate);
     }
 
     /**
-     * Method responsible for obtaining the date of the meal in the current format.
-     * @return The dateTime of the meal
+     * Method responsible for obtaining the date of the medication in the current format.
+     * @return The dateTime of the medication
      */
     private DateTime getDateTime() {
-        StringBuilder dateString = new StringBuilder(mealDate.getText().toString());
-        dateString.append('T');
-        if (selectedHour < FIRST_TWO_DIGITS) {
-            dateString.append('0');
-        }
-        dateString.append(selectedHour).append(':');
-        if (selectedMin < FIRST_TWO_DIGITS) {
-            dateString.append('0');
-        }
-        dateString.append(selectedMin).append(':').append(DEFAULT_SECONDS);
-        return new DateTime(dateString.toString());
+        String dateString = medicationDate.getText().toString();
+        return DateTime.Builder.buildDateString(dateString);
     }
 
     /**
@@ -252,70 +234,30 @@ public class InfoPetMedicationFragment extends Fragment {
      * @return True if there is any empty field or false otherwise
      */
     private boolean isAnyFieldBlank() {
-        boolean mealNameEmpty = "".equals(Objects.requireNonNull(inputMealName.getText()).toString());
-        boolean mealKcalEmpty = "".equals(Objects.requireNonNull(inputMealCal.getText()).toString());
+        boolean medicationNameEmpty = "".equals(Objects.requireNonNull(inputMedicationName.getText()).toString());
+        boolean medicationQuantityEmpty = "".equals(Objects.requireNonNull
+            (inputMedicationQuantity.getText()).toString());
+        boolean medicationPeriodicityEmpty = "".equals(Objects.requireNonNull
+            (inputMedicationPeriodicity.getText()).toString());
+        boolean medicationDurationEmpty = "".equals(Objects.requireNonNull
+            (inputMedicationDuration.getText()).toString());
+        boolean quantityNameEmpty = medicationNameEmpty || medicationQuantityEmpty;
+        boolean periodicityDurationEmpty = medicationPeriodicityEmpty || medicationDurationEmpty;
         if (editing) {
-            return mealKcalEmpty || mealNameEmpty;
+            return quantityNameEmpty || periodicityDurationEmpty;
         }
-        return mealNameEmpty || mealKcalEmpty || !isMealDateSelected || !isMealTimeSelected;
+        return quantityNameEmpty || periodicityDurationEmpty || !isMedicationDateSelected;
     }
 
-    /**
-     * Sets the time picker.
-     */
-    private void setTimePicker() {
-        Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int min = calendar.get(Calendar.MINUTE);
-
-        mealTime.setOnClickListener(v -> {
-            TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), (view, hourOfDay, minute) ->
-                initializeTimePickerDialog(hourOfDay, minute), hour, min, true);
-            timePickerDialog.show();
-        });
-
-    }
-
-    /**
-     * Method responsible for initializing the timePickerDialog.
-     * @param hourOfDay The selected value for the hour
-     * @param minute The selected value for the minutes
-     */
-    private void initializeTimePickerDialog(int hourOfDay, int minute) {
-        selectedHour = hourOfDay;
-        selectedMin = minute;
-        StringBuilder time = formatTimePickerText();
-        mealTime.setText(time);
-        isMealTimeSelected = true;
-        updatesDate = true;
-    }
-
-    /**
-     * Method responsible for formatting the text for the time picker.
-     * @return An stringbuilder containing the time in the correct format
-     */
-    private StringBuilder formatTimePickerText() {
-        StringBuilder time = new StringBuilder();
-        if (selectedHour < FIRST_TWO_DIGITS) {
-            time.append('0');
-        }
-        time.append(selectedHour).append(':');
-        if (selectedMin < FIRST_TWO_DIGITS) {
-            time.append('0');
-        }
-        time.append(selectedMin).append(':').append(DEFAULT_SECONDS);
-        return time;
-    }
-
-    /**
+     /**
      * Sets the calendar picker.
      */
     private void setCalendarPicker() {
         MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
-        builder.setTitleText(getString(R.string.select_meal_date));
+        builder.setTitleText(getString(R.string.select_medication_date));
         materialDatePicker = builder.build();
 
-        mealDate.setOnClickListener(v ->
+        medicationDate.setOnClickListener(v ->
             materialDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
 
         materialDatePicker.addOnPositiveButtonClickListener(this::initializeOnPositiveButtonClickListener);
@@ -326,124 +268,91 @@ public class InfoPetMedicationFragment extends Fragment {
      * @param selection The selected value
      */
     private void initializeOnPositiveButtonClickListener(Object selection) {
-        mealDate.setText(materialDatePicker.getHeaderText());
+        medicationDate.setText(materialDatePicker.getHeaderText());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(selection.toString()));
         String formattedDate = simpleDateFormat.format(calendar.getTime());
-        mealDate.setText(formattedDate);
-        isMealDateSelected = true;
+        medicationDate.setText(formattedDate);
+        isMedicationDateSelected = true;
         updatesDate = true;
     }
 
     /**
-     * Method responsible for initializing the interval switch.
+     * Method responsible for initializing the medication layout view.
      */
-    private void initializeIntervalSwitch() {
-        intervalSelector = binding.mealIntervalSelector;
-        intervalSelector.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            isWeeklyInterval = intervalSelector.isChecked();
-            initializeMealsLayoutView();
-        });
-    }
+    private void initializeMedicationsLayoutView() {
+        ArrayList<Event> medicationsList = (ArrayList<Event>) pet.getMedicationEvents();
+        medicationDisplay.removeAllViews();
 
-    /**
-     * Method responsible for initializing the meals layout view.
-     */
-    private void initializeMealsLayoutView() {
-        ArrayList<Event> mealsList;
-        mealDisplay.removeAllViews();
-
-        if (isWeeklyInterval) {
-            mealsList = (ArrayList<Event>) getLastWeekMeals();
-        } else {
-            mealsList = (ArrayList<Event>) pet.getMealEvents();
-        }
-
-        for (Event meal : mealsList) {
-            initializeMealComponent(meal);
+        for (Event medication : medicationsList) {
+            initializeMealComponent(medication);
         }
     }
 
     /**
-     * Method responsible for initializing each meal component.
-     * @param meal The meal for which we want to initialize the component
+     * Method responsible for initializing each medication component.
+     * @param medication The medication for which we want to initialize the component
      */
-    private void initializeMealComponent(Event meal) {
-        MaterialButton mealButton = new MaterialButton(Objects.requireNonNull(this.getActivity()), null);
-        initializeButtonParams(mealButton);
-        initializeButtonLogic((Meals) meal, mealButton);
-        mealDisplay.addView(mealButton);
+    private void initializeMealComponent(Event medication) {
+        MaterialButton medicationButton = new MaterialButton(Objects.requireNonNull(this.getActivity()), null);
+        initializeButtonParams(medicationButton);
+        initializeButtonLogic((Medication) medication, medicationButton);
+        medicationDisplay.addView(medicationButton);
     }
 
     /**
      * Method responsible for initializing the button logic.
-     * @param meal The meal for which we want to initialize a button
-     * @param mealButton The button that has to be initialized
+     * @param medication The medication for which we want to initialize a button
+     * @param medicationButton The button that has to be initialized
      */
-    private void initializeButtonLogic(Meals meal, MaterialButton mealButton) {
-        String mealButtonText = getString(R.string.meal) + SPACE + meal.getMealName() + EOL
-            + getString(R.string.from_date) + SPACE + meal.getDateTime() + EOL + getString(R.string.meal_kcal)
-            + ": " + meal.getKcal();
-        mealButton.setText(mealButtonText);
-        mealButton.setOnClickListener(v -> {
-            InfoPetMealsFragment.meal = meal;
+    private void initializeButtonLogic(Medication medication, MaterialButton medicationButton) {
+        String medicationButtonText = getString(R.string.medication) + SPACE + medication.getMedicationName() + EOL
+            + getString(R.string.quantity) + SPACE + medication.getMedicationQuantity() + EOL
+            + getString(R.string.periodicity) + ": " + medication.getMedicationFrequency();
+        medicationButton.setText(medicationButtonText);
+        medicationButton.setOnClickListener(v -> {
+            InfoPetMedicationFragment.medication = medication;
             editing = true;
             initializeEditDialog();
-            deleteMealButton.setVisibility(View.VISIBLE);
-            dialog.setTitle(R.string.edit_meal_title);
+            deleteMedicationButton.setVisibility(View.VISIBLE);
+            dialog.setTitle(R.string.edit_medication_title);
             dialog.show();
         });
     }
 
     /**
-     * Method responsible for initializing the edit meal dialog.
+     * Method responsible for initializing the edit medication dialog.
      */
     private void initializeEditDialog() {
-        editMealButton.setText(R.string.update_meal);
-        inputMealName.setText(meal.getMealName());
-        inputMealCal.setText(String.valueOf(meal.getKcal()));
+        editMedicationButton.setText(R.string.update_medication);
+        inputMedicationName.setText(medication.getMedicationName());
+        inputMedicationQuantity.setText(String.valueOf(medication.getMedicationQuantity()));
+        inputMedicationPeriodicity.setText(String.valueOf(medication.getMedicationFrequency()));
+        inputMedicationDuration.setText(String.valueOf(medication.getMedicationDuration()));
         updatesDate = false;
-        DateTime mealDate = meal.getMealDate();
-        showMealDate(mealDate);
-        showMealTime(mealDate);
+        DateTime medicationDate = medication.getMedicationDate();
+        showMedicationIniDate(medicationDate);
+        showMedicationIniDate(medicationDate);
     }
 
     /**
      * Method responsible for initializing the button parameters.
-     * @param mealButton The button that has to be initialized
+     * @param medicationButton The button that has to be initialized
      */
-    private void initializeButtonParams(MaterialButton mealButton) {
-        mealButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+    private void initializeButtonParams(MaterialButton medicationButton) {
+        medicationButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT));
-        mealButton.setBackgroundColor(getResources().getColor(R.color.white));
-        mealButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        mealButton.setStrokeColorResource(R.color.colorAccent);
-        mealButton.setStrokeWidth(STROKE_WIDTH);
-        mealButton.setGravity(Gravity.START);
-    }
-
-    /**
-     * Method responsible for obtaining all the meals from the last week.
-     * @return All the meals from the last week
-     */
-    private List<Event> getLastWeekMeals() {
-        ArrayList<Event> result = new ArrayList<>();
-        result.clear();
-        List<Event> aux = pet.getMealEvents();
-        for (Event e:aux) {
-            boolean calc = DateTime.isLastWeek(e.getDateTime());
-            if (calc) {
-                result.add(e);
-            }
-        }
-        return result;
+        medicationButton.setBackgroundColor(getResources().getColor(R.color.white));
+        medicationButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        medicationButton.setStrokeColorResource(R.color.colorAccent);
+        medicationButton.setStrokeWidth(STROKE_WIDTH);
+        medicationButton.setGravity(Gravity.START);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        initializeMealsLayoutView();
+        initializeMedicationsLayoutView();
     }
-}
 }

@@ -11,16 +11,16 @@ public class Medication extends Event{
     private String medicationName;
     private int medicationQuantity;
     private double medicationFrequency;
-    private int medicationPeriodicity;
+    private int medicationDuration;
     private DateTime medicationDate;
 
     public Medication(String medicationName, int medicationQuantity, double medicationFrequency,
-                      int medicationPeriodicity, DateTime medicationDate) {
+                      int medicationDuration, DateTime medicationDate) {
         super(MEDICATION + medicationName + WITH_START_DATE + medicationName, medicationDate.toString());
         this.medicationName = medicationName;
         this.medicationQuantity = medicationQuantity;
         this.medicationFrequency = medicationFrequency;
-        this.medicationPeriodicity = medicationPeriodicity;
+        this.medicationDuration = medicationDuration;
         this.medicationDate = medicationDate;
     }
 
@@ -73,19 +73,19 @@ public class Medication extends Event{
     }
 
     /**
-     * Getter of the medicationFrequency attribute.
-     * @return The periodicity of the medication
+     * Getter of the medicationDuration attribute.
+     * @return The duration of the medication
      */
-    public int getMedicationPeriodicity() {
-        return medicationPeriodicity;
+    public int getMedicationDuration() {
+        return medicationDuration;
     }
 
     /**
-     * Setter of the medicationPeriodicity attribute.
-     * @param medicationPeriodicity The new medication periodicity to set
+     * Setter of the medicationDuration attribute.
+     * @param medicationDuration The new medication duration to set
      */
-    public void setMedicationPeriodicity(int medicationPeriodicity) {
-        this.medicationPeriodicity = medicationPeriodicity;
+    public void setMedicationDuration(int medicationDuration) {
+        this.medicationDuration = medicationDuration;
     }
 
     /**

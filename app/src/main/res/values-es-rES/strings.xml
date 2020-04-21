@@ -200,6 +200,9 @@
     <string name="medication">Medicación:</string>
     <string name="periodicity">Frecuencia:</string>
     <string name="quantity">Cantidad:</string>
+    <string name="edit_medication_title">Editar medicacióm</string>
+    <string name="edit_medication_message">Introduce los datos de la medicación</string>
+    <string name="select_medication_date">Seleciona la fecha de inicio de la medicación</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
