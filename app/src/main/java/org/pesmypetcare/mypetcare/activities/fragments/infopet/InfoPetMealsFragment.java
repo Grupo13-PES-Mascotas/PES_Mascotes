@@ -33,6 +33,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+
+/**
+ * @author Xavier Campos
+ */
 public class InfoPetMealsFragment extends Fragment {
     private static final String EOL = "\n";
     private static final int STROKE_WIDTH = 5;
