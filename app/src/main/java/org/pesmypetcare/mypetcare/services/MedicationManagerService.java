@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.pets.Medication;
+import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * @author Xavier Campos
  */
-public interface MedicationManagerAdapter {
+public interface MedicationManagerService {
 
     /**
      * Method that creates a new medication and assigns it to the indicated pet of the indicated user.
@@ -17,7 +18,7 @@ public interface MedicationManagerAdapter {
      * @param pet The pet to which we want to add the medication
      * @param medication The medication that has to be added to the pet
      */
-    void createMedication(User user, Pet pet, Medication medication);
+    void createMedication(User user, Pet pet, Medication medication) throws MedicationAlreadyExistingException;
 
     /**
      * Method that updates the body of the indicated medication.
@@ -45,16 +46,17 @@ public interface MedicationManagerAdapter {
     void deleteMedication(User user, Pet pet, Medication medication);
 
     /**
-     * Method that obtains all the medications of the indicated pet.
-     * @param user The owner of the pet
-     * @param pet The pet from which we want to obtain all the medications
-     * @return A list containing all the medication of the pet
-     */
-    List<Medication> findMedicationByPet(User user, Pet pet);
-    /**
      * Method that deletes all the medications from the indicated pet.
      * @param user The owner of the pet.
      * @param pet The pet from which we want to delete all the medications
      */
-    void deleteMedicationFromPet(User user, Pet pet);
+    void deleteMedicationsFromPet(User user, Pet pet);
+
+    /**
+     * Method that obtains all the medications of the indicated pet.
+     * @param user The owner of the pet
+     * @param pet The pet from which we want to obtain all the medications
+     * @return A list containing all the medications of the pet
+     */
+    List<Medication> findMedicationsByPet(User user, Pet pet);
 }

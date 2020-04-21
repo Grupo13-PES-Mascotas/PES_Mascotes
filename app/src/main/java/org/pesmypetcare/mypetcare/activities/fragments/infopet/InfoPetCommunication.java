@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Medication;
+import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 
@@ -106,7 +107,7 @@ public interface InfoPetCommunication {
      * @param pet The pet from which the medication has to be added
      * @param medication The medication that has to be added to the pet
      */
-    void addPetMedication(Pet pet, Medication medication);
+    void addPetMedication(Pet pet, Medication medication) throws MedicationAlreadyExistingException;
 
     /**
      * Updates the data of a medication of a pet.

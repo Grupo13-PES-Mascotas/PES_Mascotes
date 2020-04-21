@@ -441,7 +441,7 @@ public class Pet {
      * Get the list of medication of the pet.
      * @return The list of medication of the pet
      */
-    public List<Event> getAllMedicationEvents() {
+    public List<Event> getMedicationEvents() {
         ArrayList<Event> medicationEvents = new ArrayList<>();
 
         for (Event event : events) {

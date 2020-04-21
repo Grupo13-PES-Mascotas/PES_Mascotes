@@ -110,6 +110,7 @@ import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Medication;
+import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
@@ -436,12 +437,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     /**
-     * Initialize the medication controllers
-     */
-    private void initializeMedicationControllers() {
-    }
-
-    /**
      * Initialize the pet controllers.
      */
     private void initializePetControllers() {
@@ -503,6 +498,17 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddSubscription = ControllersFactory.createTrAddSubscription();
         trDeleteSubscription = ControllersFactory.createTrDeleteSubscription();
     }
+
+    /**
+     * Initialize the medication controllers
+     */
+    private void initializeMedicationControllers() {
+        trNewPetMedication = ControllersFactory.createTrNewPetMedication();
+        trObtainAllPetMedications = ControllersFactory.createTrObtainAllPetMedications();
+        trDeleteMedication = ControllersFactory.createTrDeleteMedication();
+        trUpdateMedication = ControllersFactory.createTrUpdateMedication();
+    }
+
 
     /**
      * Initialize the views of this activity.
@@ -1063,18 +1069,29 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void addPetMedication(Pet pet, Medication medication) {
-
+    public void addPetMedication(Pet pet, Medication medication) throws MedicationAlreadyExistingException {
+        trNewPetMedication.setUser(user);
+        trNewPetMedication.setPet(pet);
+        trNewPetMedication.setMedication(medication);
+        trNewPetMedication.execute();
     }
 
     @Override
     public void updatePetMedication(Pet pet, Medication medication, String newDate, boolean updatesDate) {
-
+        trUpdateMedication.setUser(user);
+        trUpdateMedication.setPet(pet);
+        trUpdateMedication.setMedication(medication);
+        if (updatesDate) {
+            trUpdateMedication.setNewDate(newDate);
+        }
+        trUpdateMedication.execute();
     }
 
     @Override
     public void deletePetMedication(Pet pet, Medication medication) {
-
+        trDeleteMedication.setUser(user);
+        trDeleteMedication.setPet(pet);
+        trDeleteMedication.setMedication(medication);
     }
 
     @Override

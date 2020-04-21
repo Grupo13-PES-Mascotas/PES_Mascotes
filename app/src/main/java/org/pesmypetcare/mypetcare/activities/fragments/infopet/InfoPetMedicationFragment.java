@@ -283,7 +283,7 @@ public class InfoPetMedicationFragment extends Fragment {
      * Method responsible for initializing the medication layout view.
      */
     private void initializeMedicationsLayoutView() {
-        ArrayList<Event> medicationsList = (ArrayList<Event>) pet.getAllMedicationEvents();
+        ArrayList<Event> medicationsList = (ArrayList<Event>) pet.getMedicationEvents();
         medicationDisplay.removeAllViews();
 
         for (Event medication : medicationsList) {
