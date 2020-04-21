@@ -24,6 +24,8 @@ public class GetPetImageRunnable implements Runnable {
     public void run() {
         Bitmap petImage = null;
 
+        System.out.println("Start reading image " + actual);
+
         try {
             byte[] bytes = ImageManager.readImage(ImageManager.PET_PROFILE_IMAGES_PATH, username + '_' + petName);
             petImage = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -32,5 +34,7 @@ public class GetPetImageRunnable implements Runnable {
         } finally {
             MainActivity.setPetBitmapImage(actual, petImage);
         }
+
+        System.out.println("Finish reading image " + actual);
     }
 }

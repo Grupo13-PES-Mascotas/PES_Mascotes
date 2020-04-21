@@ -156,6 +156,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static NavigationView navigationView;
     private static int[] countImagesNotFound;
     private static List<Group> groups;
+    private static int notificationId;
+    private static int requestCode;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -188,8 +190,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeleteGroup trDeleteGroup;
     private TrAddSubscription trAddSubscription;
     private TrDeleteSubscription trDeleteSubscription;
-    private static int notificationId;
-    private static int requestCode;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -289,12 +289,37 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             }
         }*/
 
-        int imagesNotFound = getPetImages();
-        int nUserPets = user.getPets().size();
+        Thread petsImagesThread = new Thread(() -> {
+            System.out.println("Start the thread for reading the images");
 
-        if (imagesNotFound == nUserPets) {
-            getImagesFromServer();
-        }
+            int imagesNotFound = getPetImages();
+            int nUserPets = user.getPets().size();
+
+            if (imagesNotFound == nUserPets) {
+                getImagesFromServer();
+            }
+
+            System.out.println("Finish the thread for reading the images");
+        });
+
+        Thread updatePetImagesThread = new Thread(() -> {
+            petsImagesThread.start();
+
+            System.out.println("Start waiting");
+            try {
+                petsImagesThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("Finish waiting");
+
+            if (actualFragment instanceof MyPetsFragment) {
+                changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+            }
+        });
+
+        updatePetImagesThread.start();
 
         setUpNavigationHeader();
     }
