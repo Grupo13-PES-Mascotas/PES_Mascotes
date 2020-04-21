@@ -185,11 +185,20 @@
     <string name="edit_meal_title">Edit meal</string>
     <string name="edit_meal_message">Introduce the data of the meal</string>
     <string name="select_meal_date">Select meal date</string>
-
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>
-
     <string name="unsubscribe_owner">You cannot unsubscribe from your own group</string>
+    <string name="add_medication_button">Add medication</string>
+    <string name="medication_name">Medication name</string>
+    <string name="medication_duration">Medication duration</string>
+    <string name="medication_inidate">Medication start date</string>
+    <string name="medication_quantity">Medication quantity</string>
+    <string name="medication_periodicity">Medication periodicity</string>
+    <string name="update_medication">Update medication</string>
+    <string name="delete_current_medication">Delete medication</string>
+    <string name="medication">Medication:</string>
+    <string name="periodicity">Periodicity:</string>
+    <string name="quantity">Quantity:</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

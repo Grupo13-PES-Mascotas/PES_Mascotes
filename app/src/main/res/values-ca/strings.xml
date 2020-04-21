@@ -186,11 +186,20 @@
     <string name="edit_meal_title">Editar l\'àpat</string>
     <string name="edit_meal_message">Introdueix la informació de l\'àpat</string>
     <string name="select_meal_date">Selecciona la data de l\'àpat</string>
-
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>
-
     <string name="unsubscribe_owner">No et pots eliminar la subscripció del teu propi grup</string>
+    <string name="add_medication_button">Afegir medicació</string>
+    <string name="medication_name">Nom de la medicació</string>
+    <string name="medication_duration">Duració de la medicació</string>
+    <string name="medication_inidate">Data d\'inici de la medicació</string>
+    <string name="medication_quantity">Quantitat de la medicació</string>
+    <string name="medication_periodicity">Freqüència de la medicació</string>
+    <string name="update_medication">Actualitzar medicació</string>
+    <string name="delete_current_medication">Esborrar medicació</string>
+    <string name="medication">Medicació:</string>
+    <string name="periodicity">Freqüència:</string>
+    <string name="quantity">Quantitat:</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment;
 
 import org.pesmypetcare.mypetcare.R;
 
+/**
+ * @author Xavier Campos
+ */
 public class InfoPetMedicationFragment extends Fragment {
 
     @Override
