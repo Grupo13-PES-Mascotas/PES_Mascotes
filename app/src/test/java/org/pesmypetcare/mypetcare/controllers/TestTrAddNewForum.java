@@ -81,7 +81,7 @@ public class TestTrAddNewForum {
         trAddNewForum.setCreationDate(DateTime.Builder.buildFullString("2020-04-16T15:00:00"));
         trAddNewForum.execute();
 
-        assertEquals("Should create a new forum", 2, group.getForums().size());
+        assertEquals("Should create a new forum", 1, group.getForums().size());
     }
 
     @After
