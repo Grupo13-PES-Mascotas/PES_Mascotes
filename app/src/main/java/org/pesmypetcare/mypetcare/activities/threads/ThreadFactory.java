@@ -11,6 +11,10 @@ import androidx.core.content.ContextCompat;
  * @author Albert Pinto
  */
 public class ThreadFactory {
+    private ThreadFactory() {
+
+    }
+
     public static Thread createWriteImageThread(String storagePath, String imageName, byte[] imageBytes) {
         return new Thread(new WriteImagesRunnable(storagePath, imageName, imageBytes));
     }
