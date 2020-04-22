@@ -243,12 +243,12 @@ public class InfoPetMedicationFragment extends Fragment {
      */
     private boolean isAnyFieldBlank() {
         boolean medicationNameEmpty = "".equals(Objects.requireNonNull(inputMedicationName.getText()).toString());
-        boolean medicationQuantityEmpty = "".equals(Objects.requireNonNull
-            (inputMedicationQuantity.getText()).toString());
-        boolean medicationPeriodicityEmpty = "".equals(Objects.requireNonNull
-            (inputMedicationPeriodicity.getText()).toString());
-        boolean medicationDurationEmpty = "".equals(Objects.requireNonNull
-            (inputMedicationDuration.getText()).toString());
+        boolean medicationQuantityEmpty = "".equals(Objects.requireNonNull(
+            inputMedicationQuantity.getText()).toString());
+        boolean medicationPeriodicityEmpty = "".equals(Objects.requireNonNull(
+            inputMedicationPeriodicity.getText()).toString());
+        boolean medicationDurationEmpty = "".equals(Objects.requireNonNull(
+            inputMedicationDuration.getText()).toString());
         boolean quantityNameEmpty = medicationNameEmpty || medicationQuantityEmpty;
         boolean periodicityDurationEmpty = medicationPeriodicityEmpty || medicationDurationEmpty;
         if (editing) {

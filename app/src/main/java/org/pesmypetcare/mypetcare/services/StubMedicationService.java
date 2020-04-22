@@ -19,16 +19,17 @@ public class StubMedicationService implements MedicationManagerService{
     private static final int MEDICATION_DURATION1 = 14;
     private static final int MEDICATION_DURATION2 = 7;
     private static final int MEDICATION_DURATION3 = 31;
+    private static final double MEDICATION_FREQUENCY = 0.5;
 
     static {
         medications = new ArrayList<>();
-        StubMedicationService.medications.add(new Medication("Capstar", 3, 2, MEDICATION_DURATION,
+        StubMedicationService.medications.add(new Medication("Capstar", 2, 2, MEDICATION_DURATION,
             DateTime.Builder.buildDateString("2020-04-15")));
         StubMedicationService.medications.add(new Medication("Espiruvet", 1, 1, MEDICATION_DURATION1,
             DateTime.Builder.buildDateString("2020-01-12")));
         StubMedicationService.medications.add(new Medication("Effipro Duo", 1, 2, MEDICATION_DURATION2,
             DateTime.Builder.buildDateString("2018-11-02")));
-        StubMedicationService.medications.add(new Medication("Prevender", 1, 0.5, MEDICATION_DURATION3,
+        StubMedicationService.medications.add(new Medication("Prevender", 1, MEDICATION_FREQUENCY, MEDICATION_DURATION3,
             DateTime.Builder.buildDateString("2019-05-22")));
     }
 
