@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
@@ -111,16 +112,31 @@ public class PetManagerAdapter implements PetManagerService {
 
         if (pet.getProfileImage() != null) {
             bytesImage = ImageManager.getImageBytes(newPetImage);
-            ImageManager.writeImage(ImageManager.PET_PROFILE_IMAGES_PATH, user.getUsername() + '_' + pet.getName(),
-                bytesImage);
+            Thread writeImageThread = ThreadFactory.createWriteImageThread(ImageManager.PET_PROFILE_IMAGES_PATH,
+                ImageManager.getPetImageName(user.getUsername(), pet.getName()), bytesImage);
+            writeImageThread.start();
         }
 
-        try {
-            ServiceLocator.getInstance().getPetManagerClient().saveProfileImage(user.getToken(), user.getUsername(),
-                pet.getName(), bytesImage);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        Thread savePetImageThread = createSavePetImageThread(user, pet, bytesImage);
+        savePetImageThread.start();
+    }
+
+    /**
+     * Create the save pet image thread.
+     * @param user The user
+     * @param pet The pet
+     * @param finalBytesImage The image bytes
+     * @return The thread for saving the pet image
+     */
+    private Thread createSavePetImageThread(User user, Pet pet, byte[] finalBytesImage) {
+        return new Thread(() -> {
+                try {
+                    ServiceLocator.getInstance().getPetManagerClient().saveProfileImage(user.getToken(),
+                        user.getUsername(), pet.getName(), finalBytesImage);
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
     }
 
     @Override
@@ -153,8 +169,6 @@ public class PetManagerAdapter implements PetManagerService {
     @Override
     public List<Pet> findPetsByOwner(User user) throws PetRepeatException {
         List<org.pesmypetcare.usermanagerlib.datacontainers.Pet> userPets = null;
-
-        System.out.println(user.getUsername());
 
         try {
             userPets = ServiceLocator.getInstance().getPetManagerClient().getAllPets(user.getToken(),

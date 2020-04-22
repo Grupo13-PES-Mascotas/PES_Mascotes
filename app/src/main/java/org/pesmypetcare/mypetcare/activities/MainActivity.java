@@ -1,12 +1,10 @@
 package org.pesmypetcare.mypetcare.activities;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -31,8 +29,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -64,6 +60,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetFr
 import org.pesmypetcare.mypetcare.activities.fragments.settings.NewPasswordInterface;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFragment;
+import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.TrAddNewWashFrequency;
@@ -156,6 +153,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static NavigationView navigationView;
     private static int[] countImagesNotFound;
     private static List<Group> groups;
+    private static int notificationId;
+    private static int requestCode;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -188,8 +187,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeleteGroup trDeleteGroup;
     private TrAddSubscription trAddSubscription;
     private TrDeleteSubscription trDeleteSubscription;
-    private static int notificationId;
-    private static int requestCode;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -277,26 +274,59 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             obtainAllPetMeals(pet);
         }
 
-        /*for (Pet pet : user.getPets()) {
-            try {
-                byte[] bytes = ImageManager.readImage(ImageManager.PROFILE_IMAGES_PATH,
-                    pet.getOwner().getUsername() + '_' + pet.getName());
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                pet.setProfileImage(bitmap);
-            } catch (IOException e) {
-                Drawable petImageDrawable = getResources().getDrawable(R.drawable.single_paw, null);
-                pet.setProfileImage(((BitmapDrawable) petImageDrawable).getBitmap());
-            }
-        }*/
+        Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
+        Thread petsImagesThread = createPetsImagesThread();
+        Thread updatePetImagesThread = createUpdatePetImagesThread(petsImagesThread);
 
-        int imagesNotFound = getPetImages();
-        int nUserPets = user.getPets().size();
+        askPermissionThread.start();
 
-        if (imagesNotFound == nUserPets) {
-            getImagesFromServer();
+        try {
+            askPermissionThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
+        updatePetImagesThread.start();
+
         setUpNavigationHeader();
+    }
+
+    /**
+     * Create the update pet images thread.
+     * @param petsImagesThread The thread for getting the pet image
+     * @return The update pet images thread
+     */
+    private Thread createUpdatePetImagesThread(Thread petsImagesThread) {
+        return new Thread(() -> {
+                petsImagesThread.start();
+
+                try {
+                    petsImagesThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                if (actualFragment instanceof MyPetsFragment) {
+                    changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+                } else if (actualFragment instanceof InfoPetFragment) {
+                    changeFragment(actualFragment);
+                }
+            });
+    }
+
+    /**
+     * Create the pets images thread.
+     * @return The pet images thread
+     */
+    private Thread createPetsImagesThread() {
+        return new Thread(() -> {
+            int imagesNotFound = getPetImages();
+            int nUserPets = user.getPets().size();
+
+            if (imagesNotFound == nUserPets) {
+                getImagesFromServer();
+            }
+        });
     }
 
     /**
@@ -1069,21 +1099,29 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     private void galleryImageZoom(@Nullable Intent data) {
         String imagePath = getImagePath(data);
+        Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+        askPermissionThread.start();
+
+        try {
+            askPermissionThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+        Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+        ((ImageZoomFragment) actualFragment).setDrawable(drawable);
+        ImageZoomFragment.setIsDefaultImage(false);
+
+        if (ImageZoomFragment.isMainActivity()) {
+            updateUserImage(drawable);
         } else {
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            Drawable drawable = new BitmapDrawable(getResources(), bitmap);
-            ((ImageZoomFragment) actualFragment).setDrawable(drawable);
-            ImageZoomFragment.setIsDefaultImage(false);
+            InfoPetFragment.setIsDefaultPetImage(false);
+        }
 
-            if (ImageZoomFragment.isMainActivity()) {
-                updateUserProfileImage(bitmap);
-            } else {
-                InfoPetFragment.setIsDefaultPetImage(false);
-            }
+        if (ImageZoomFragment.isMainActivity()) {
+            updateUserProfileImage(user.getUserProfileImage());
         }
     }
 
@@ -1095,7 +1133,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         user.setUserProfileImage(bitmap);
         setUpNavigationHeader();
         byte[] imageBytes = ImageManager.getImageBytes(bitmap);
-        ImageManager.writeImage(ImageManager.USER_PROFILE_IMAGES_PATH, user.getUsername(), imageBytes);
+        Thread writeUserImageThread = ThreadFactory.createWriteImageThread(ImageManager.USER_PROFILE_IMAGES_PATH,
+            user.getUsername(), imageBytes);
+        writeUserImageThread.start();
     }
 
     /**

@@ -165,8 +165,8 @@ public class InfoPetFragment extends Fragment {
             Bitmap bitmap = null;
 
             if (pet.getProfileImage() == null) {
-                ImageManager.deleteImage(ImageManager.PET_PROFILE_IMAGES_PATH, pet.getOwner().getUsername() + '_'
-                    + pet.getName());
+                Thread deleteImageThread = createDeleteImageThread();
+                deleteImageThread.start();
             }
 
             if (!isDefaultPetImage) {
@@ -175,5 +175,14 @@ public class InfoPetFragment extends Fragment {
 
             communication.updatePetImage(pet, bitmap);
         }
+    }
+
+    /**
+     * Create delete image thread.
+     * @return The thread for deleting the image
+     */
+    private Thread createDeleteImageThread() {
+        return new Thread(() -> ImageManager.deleteImage(ImageManager.PET_PROFILE_IMAGES_PATH,
+            pet.getOwner().getUsername() + '_' + pet.getName()));
     }
 }
