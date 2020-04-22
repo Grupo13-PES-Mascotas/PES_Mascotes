@@ -6,7 +6,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
  * @author Xavier Campos
  */
 public class Medication extends Event {
-    private static String MEDICATION = "Medication";
+    private static final String MEDICATION = "Medication ";
     private static final String WITH_START_DATE = " with start date ";
     private String medicationName;
     private int medicationQuantity;
@@ -16,7 +16,7 @@ public class Medication extends Event {
 
     public Medication(String medicationName, int medicationQuantity, double medicationFrequency,
                       int medicationDuration, DateTime medicationDate) {
-        super(MEDICATION + " " + medicationName + WITH_START_DATE + medicationName, medicationDate.toString());
+        super(MEDICATION + medicationName + WITH_START_DATE + medicationName, medicationDate.toString());
         this.medicationName = medicationName;
         this.medicationQuantity = medicationQuantity;
         this.medicationFrequency = medicationFrequency;
