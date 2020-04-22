@@ -12,7 +12,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.List;
 
 public class ImageManager {
     public static final String PET_PROFILE_IMAGES_PATH = "petProfileImages";
@@ -85,19 +84,6 @@ public class ImageManager {
     }
 
     /**
-     * Converts an ArrayList of bytes to an array of bytes.
-     * @param bytesList The ArrayList of bytes
-     * @return The array that contains the bytes from the ArrayList
-     */
-    private static byte[] convertToByteArray(List<Byte> bytesList) {
-        byte[] bytes = new byte[bytesList.size()];
-        for (int actual = 0; actual < bytes.length; ++actual) {
-            bytes[actual] = bytesList.get(actual);
-        }
-        return bytes;
-    }
-
-    /**
      * Set the public default image of the pet.
      * @param drawable The default image of the pet
      */
@@ -130,6 +116,16 @@ public class ImageManager {
      */
     public static byte[] getDefaultBytesPetImage() {
         return defaultBytesPetImage;
+    }
+
+    /**
+     * Get the pet image name.
+     * @param username The username that is the owner of the pet
+     * @param petName The pet name
+     * @return The pet image name
+     */
+    public static String getPetImageName(String username, String petName) {
+        return username + "_" + petName;
     }
 
     /*FileInputStream input = new FileInputStream(PATH + File.separator + relativePath + File.separator
