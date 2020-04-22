@@ -138,6 +138,10 @@ public class Forum implements Comparable<Forum> {
 
     @Override
     public int compareTo(Forum forum) {
-        return creationDate.compareTo(forum.getCreationDate());
+        if (!creationDate.equals(forum.getCreationDate())) {
+            return creationDate.compareTo(forum.getCreationDate());
+        }
+
+        return name.compareTo(forum.name);
     }
 }

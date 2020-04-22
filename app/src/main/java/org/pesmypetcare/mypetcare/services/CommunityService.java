@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.services;
 
+import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
@@ -49,4 +50,6 @@ public interface CommunityService {
      * @param group The group
      */
     void deleteSubscriber(User user, Group group);
+
+    void createForum(User user, Group group, Forum forum);
 }

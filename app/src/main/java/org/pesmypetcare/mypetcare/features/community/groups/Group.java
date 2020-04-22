@@ -14,7 +14,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class Group implements Comparable<Group> {
     private String name;
@@ -24,7 +26,7 @@ public class Group implements Comparable<Group> {
     private Bitmap groupIcon;
     private List<String> participants;
     private Map<String, DateTime> subscribers;
-    private List<Forum> forums;
+    private SortedSet<Forum> forums;
     private List<String> tags;
 
     public Group(String name, String ownerUsername, DateTime creationDate) {
@@ -32,7 +34,7 @@ public class Group implements Comparable<Group> {
         this.ownerUsername = ownerUsername;
         this.creationDate = creationDate;
         this.participants = new ArrayList<>();
-        this.forums = new ArrayList<>();
+        this.forums = new TreeSet<>();
         this.tags = new ArrayList<>();
         this.subscribers = new TreeMap<>();
 
@@ -155,7 +157,7 @@ public class Group implements Comparable<Group> {
      * Get the forums.
      * @return The forums
      */
-    public List<Forum> getForums() {
+    public SortedSet<Forum> getForums() {
         return forums;
     }
 

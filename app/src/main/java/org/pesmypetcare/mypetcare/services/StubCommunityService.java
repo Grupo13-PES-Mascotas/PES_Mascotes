@@ -97,4 +97,10 @@ public class StubCommunityService implements CommunityService {
         int index = groups.indexOf(group);
         groups.get(index).removeSubscriber(user);
     }
+
+    @Override
+    public void createForum(User user, Group group, Forum forum) {
+        int index = groups.indexOf(group);
+        groups.get(index).addForum(forum);
+    }
 }
