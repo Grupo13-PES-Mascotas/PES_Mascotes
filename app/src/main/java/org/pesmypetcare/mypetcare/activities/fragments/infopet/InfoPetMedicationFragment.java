@@ -187,12 +187,12 @@ public class InfoPetMedicationFragment extends Fragment {
     private void initializeAddButtonListener() {
         DateTime medicationIniDate = getDateTime();
         String medicationName = Objects.requireNonNull(inputMedicationName.getText()).toString();
-        int medicationQuantity = Integer.parseInt(Objects.requireNonNull
-            (inputMedicationQuantity.getText()).toString());
-        double medicationPeriodicity = Double.parseDouble(Objects.requireNonNull
-            (inputMedicationPeriodicity.getText()).toString());
-        int medicationDuration = Integer.parseInt(Objects.requireNonNull
-            (inputMedicationDuration.getText()).toString());
+        int medicationQuantity = Integer.parseInt(Objects.requireNonNull(
+            inputMedicationQuantity.getText()).toString());
+        double medicationPeriodicity = Double.parseDouble(Objects.requireNonNull(
+            inputMedicationPeriodicity.getText()).toString());
+        int medicationDuration = Integer.parseInt(Objects.requireNonNull(
+            inputMedicationDuration.getText()).toString());
         medication = new Medication(medicationName, medicationQuantity, medicationPeriodicity,
             medicationDuration, medicationIniDate);
         communicateAddition();

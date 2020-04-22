@@ -27,7 +27,7 @@ public class TestTrDeleteMedication {
     public void setUp() {
         user = new User("johnDoe", "johndoe@gmail.com", "PASSWORD");
         linux = new Pet("Linux");
-        originalMedication = new Medication("Filoproffin", 3, 2, MEDICATION_DURATION,
+        originalMedication = new Medication("Filoproffin", 2, 2, MEDICATION_DURATION,
             DateTime.Builder.buildDateString("2020-04-15"));
         stubMedicationService = new StubMedicationService();
         trDeleteMedication = new TrDeleteMedication(stubMedicationService);
@@ -36,7 +36,7 @@ public class TestTrDeleteMedication {
 
     @Test
     public void shouldDeleteMedication() throws MedicationAlreadyExistingException {
-        int before = stubMedicationService.nMedications();
+        final int before = stubMedicationService.nMedications();
         trNewPetMedication.setUser(user);
         trNewPetMedication.setPet(linux);
         trNewPetMedication.setMedication(originalMedication);

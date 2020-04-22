@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author Xavier Campos
  */
-public class StubMedicationService implements MedicationManagerService{
+public class StubMedicationService implements MedicationManagerService {
     private static List<Medication> medications;
     private static Medication currentMedication;
     private static final int MEDICATION_DURATION = 25;
