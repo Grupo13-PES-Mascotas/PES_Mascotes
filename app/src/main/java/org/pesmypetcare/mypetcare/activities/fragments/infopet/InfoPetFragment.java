@@ -177,6 +177,10 @@ public class InfoPetFragment extends Fragment {
         }
     }
 
+    /**
+     * Create delete image thread.
+     * @return The thread for deleting the image
+     */
     private Thread createDeleteImageThread() {
         return new Thread(() -> ImageManager.deleteImage(ImageManager.PET_PROFILE_IMAGES_PATH,
             pet.getOwner().getUsername() + '_' + pet.getName()));

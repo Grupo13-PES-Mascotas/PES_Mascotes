@@ -114,17 +114,20 @@ public class PetManagerAdapter implements PetManagerService {
             bytesImage = ImageManager.getImageBytes(newPetImage);
             Thread writeImageThread = ThreadFactory.createWriteImageThread(ImageManager.PET_PROFILE_IMAGES_PATH,
                 ImageManager.getPetImageName(user.getUsername(), pet.getName()), bytesImage);
-            System.out.println("Start write image thread");
             writeImageThread.start();
         }
 
-        System.out.println("Start server communication ");
         Thread savePetImageThread = createSavePetImageThread(user, pet, bytesImage);
         savePetImageThread.start();
-
-        System.out.println("Finish the adapter method");
     }
 
+    /**
+     * Create the save pet image thread.
+     * @param user The user
+     * @param pet The pet
+     * @param finalBytesImage The image bytes
+     * @return The thread for saving the pet image
+     */
     private Thread createSavePetImageThread(User user, Pet pet, byte[] finalBytesImage) {
         return new Thread(() -> {
                 try {
@@ -166,8 +169,6 @@ public class PetManagerAdapter implements PetManagerService {
     @Override
     public List<Pet> findPetsByOwner(User user) throws PetRepeatException {
         List<org.pesmypetcare.usermanagerlib.datacontainers.Pet> userPets = null;
-
-        System.out.println(user.getUsername());
 
         try {
             userPets = ServiceLocator.getInstance().getPetManagerClient().getAllPets(user.getToken(),
