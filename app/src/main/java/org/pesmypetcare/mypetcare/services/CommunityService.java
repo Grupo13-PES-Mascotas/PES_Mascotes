@@ -1,6 +1,8 @@
 package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
+import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
+import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
@@ -52,4 +54,12 @@ public interface CommunityService {
     void deleteSubscriber(User user, Group group);
 
     void createForum(User user, Group group, Forum forum);
+
+    /**
+     * Remove a forum from the group.
+     * @param user The creator of the forum
+     * @param group The group where the forum is posted
+     * @param forum The forum to delete
+     */
+    void deleteForum(User user, Group group, Forum forum) throws ForumNotFoundException, NotForumOwnerException;
 }

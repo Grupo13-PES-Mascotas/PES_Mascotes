@@ -1,6 +1,8 @@
 package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
+import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
+import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
@@ -50,6 +52,10 @@ public class StubCommunityService implements CommunityService {
         Forum forum = new Forum("Cleaning", "John Doe", DateTime.Builder.buildFullString("2020-04-21T20:50:10"),
             StubCommunityService.groups.get(HUSKY));
         forum.addTag("important");
+        new Forum("Washing", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:00:00"),
+            StubCommunityService.groups.get(DINOSAURS));
+        new Forum("Sickling", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:10:00"),
+            StubCommunityService.groups.get(DINOSAURS));
     }
 
     @Override
@@ -102,5 +108,30 @@ public class StubCommunityService implements CommunityService {
     public void createForum(User user, Group group, Forum forum) {
         int index = groups.indexOf(group);
         groups.get(index).addForum(forum);
+    }
+
+    @Override
+    public void deleteForum(User user, Group group, Forum forum) throws ForumNotFoundException, NotForumOwnerException {
+        boolean found = false;
+        for (Group g : groups) {
+            if (g.getName().equals(group.getName())) {
+                System.out.println(g.getForums());
+                System.out.println(forum.getName());
+                for (Forum f : g.getForums()) {
+                    if (f.getName().equals(forum.getName())) {
+                        found = true;
+                        g.removeForum(forum);
+                        break;
+                    }
+                }
+            }
+        }
+        if (!found) {
+            throw new ForumNotFoundException();
+        }
+        if (!forum.getOwnerUsername().equals(user.getUsername())) {
+            throw new NotForumOwnerException();
+        }
+        group.removeForum(forum);
     }
 }

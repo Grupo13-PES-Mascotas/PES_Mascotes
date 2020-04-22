@@ -32,5 +32,9 @@ public interface InfoGroupCommunication {
      */
     void removeSubscription(Group group);
 
+    /**
+     * Remove the forum from its group.
+     * @param forum The forum that has to be removed
+     */
     void deleteForum(Forum forum);
 }

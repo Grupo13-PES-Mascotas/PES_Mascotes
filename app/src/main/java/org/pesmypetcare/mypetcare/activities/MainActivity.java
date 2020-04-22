@@ -72,6 +72,7 @@ import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.TrChangeUsername;
 import org.pesmypetcare.mypetcare.controllers.TrCreateNewGroup;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteForum;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteGroup;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
@@ -95,6 +96,8 @@ import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumCreatedBeforeGroupException;
+import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
+import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerException;
 import org.pesmypetcare.mypetcare.features.community.forums.UserNotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
@@ -194,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrAddSubscription trAddSubscription;
     private TrDeleteSubscription trDeleteSubscription;
     private TrAddNewForum trAddNewForum;
+    private TrDeleteForum trDeleteForum;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -524,6 +528,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddSubscription = ControllersFactory.createTrAddSubscription();
         trDeleteSubscription = ControllersFactory.createTrDeleteSubscription();
         trAddNewForum = ControllersFactory.createTrAddNewForum();
+        trDeleteForum = ControllersFactory.createTrDeleteForum();
     }
 
     /**
@@ -969,7 +974,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void deleteForum(Forum forum) {
-
+        trDeleteForum.setUser(user);
+        trDeleteForum.setGroup(forum.getGroup());
+        trDeleteForum.setForum(forum);
+        try {
+            trDeleteForum.execute();
+        } catch (ForumNotFoundException | NotForumOwnerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

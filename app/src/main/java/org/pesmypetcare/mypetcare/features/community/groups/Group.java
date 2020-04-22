@@ -206,6 +206,14 @@ public class Group implements Comparable<Group> {
         subscribers.remove(subscriber.getUsername());
     }
 
+    /**
+     * Remove a forum.
+     * @param forum The forum to remove
+     */
+    public void removeForum(Forum forum) {
+        forums.remove(forum);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

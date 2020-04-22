@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
+import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -41,6 +42,11 @@ public class CommunityAdapter implements CommunityService {
 
     @Override
     public void createForum(User user, Group group, Forum forum) {
+        // Not implemented yet
+    }
+
+    @Override
+    public void deleteForum(User user, Group group, Forum forum) throws ForumNotFoundException {
         // Not implemented yet
     }
 }

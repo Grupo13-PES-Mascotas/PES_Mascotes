@@ -123,5 +123,9 @@ public class ControllersFactory {
     public static TrAddNewForum createTrAddNewForum() {
         return new TrAddNewForum(new StubCommunityService());
     }
+
+    public static TrDeleteForum createTrDeleteForum() {
+        return new TrDeleteForum(new StubCommunityService());
+    }
 }
 
