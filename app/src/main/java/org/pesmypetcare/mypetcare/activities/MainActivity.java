@@ -47,6 +47,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunic
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.community.GroupsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommunication;
@@ -537,10 +538,19 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         floatingActionButton.setOnClickListener(v -> {
             if (actualFragment instanceof MyPetsFragment) {
                 addPet();
-            } else {
+            } else if (actualFragment instanceof GroupsFragment){
                 createGroupDialog();
+            } else {
+                createForumDialog();
             }
         });
+    }
+
+    /**
+     * Create the forum dialog.
+     */
+    private void createForumDialog() {
+
     }
 
     /**
@@ -1320,7 +1330,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void showGroupFragment(InfoGroupFragment infoGroupFragment) {
-        floatingActionButton.hide();
         changeFragment(infoGroupFragment);
     }
 }
