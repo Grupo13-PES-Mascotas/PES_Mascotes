@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 public class EventView extends PetComponentView {
     private Event event;
@@ -34,7 +35,18 @@ public class EventView extends PetComponentView {
 
     @Override
     protected String getSecondLineText(Pet pet) {
-
-        return DateConversion.getHourMinutes(event.getDateTime());
+        DateTime dt = event.getDateTime();
+        StringBuilder time = new StringBuilder();
+        int h = dt.getHour();
+        int min = dt.getMinutes();
+        if (h < 10) {
+            time.append('0');
+        }
+        time.append(h).append(':');
+        if (min < 10) {
+            time.append('0');
+        }
+        time.append(min);
+        return time.toString();
     }
 }

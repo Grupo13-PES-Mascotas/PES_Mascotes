@@ -34,6 +34,7 @@ import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
+import java.sql.SQLOutput;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -160,16 +161,15 @@ public class CalendarFragment extends Fragment {
                                             Spinner sp_pets, Spinner sp_period) throws ParseException, InvalidFormatException {
         String petName = sp_pets.getSelectedItem().toString();
         String periodicity = sp_period.getSelectedItem().toString();
-        System.out.println(periodicity);
         int period = setPeriodicity(periodicity);
         int periodDay;
         DateTime dateTime = DateTime.Builder.buildDateTimeString(dateText.getText().toString(),
-                timeText.getText().toString());;
+                timeText.getText().toString());
+        int month = dateTime.getMonth();
+        dateTime.setMonth(month+1);
         getPet(petName);
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
-            System.out.println(period);
             periodDay = getPeriodicityDay(dateTime.toString(), period);
-            System.out.println(periodDay);
             selectedPet.addPeriodicNotification(new Event(reasonText.getText().toString(), dateTime), period, periodDay);
             communication.newPeriodicNotification(selectedPet, period, reasonText.getText().toString(), dateTime.toString());
             Calendar c = Calendar.getInstance();
@@ -326,7 +326,6 @@ public class CalendarFragment extends Fragment {
      */
     private void calendarAlarmInitialization(DateTime date, Calendar c) {
         String dateTime = date.toString();
-        System.out.println(dateTime.toString());
         int year = Integer.parseInt(dateTime.substring(0,4));
         int month = Integer.parseInt(dateTime.substring(5,7));
         int day = Integer.parseInt(dateTime.substring(8,10));
@@ -493,7 +492,6 @@ public class CalendarFragment extends Fragment {
         selectedDate = dateTime.substring(0, dateTime.indexOf('T'));
         binding.eventInfoLayout.removeAllViews();
         for (Pet pet : pets) {
-            System.out.println("entra aqui bien");
             CalendarEventsView calendarEventsView = new CalendarEventsView(getContext(), null);
             calendarEventsView.showEvents(pet, selectedDate);
             List<PetComponentView> petComponents = calendarEventsView.getPetComponents();
@@ -516,10 +514,16 @@ public class CalendarFragment extends Fragment {
         Event event = ((EventView) p).getEvent();
         deleteEvent.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
             pet.deleteEvent(event);
+            try {
+                pet.deletePeriodicNotification(event.getDateTime().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             communication.deletePersonalEvent(pet, event);
         });
         deleteEvent.setNegativeButton(getString(R.string.no), (dialog, which) -> {
         });
         deleteEvent.show();
     }
+
 }

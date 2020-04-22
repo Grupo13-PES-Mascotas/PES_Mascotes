@@ -41,13 +41,10 @@ public class CalendarEventsView extends LinearLayout {
         List<Event> periodicEvents = pet.getPeriodicNotificationDay(date);
         events.addAll(periodicEvents);
         for (Event event : events) {
-            System.out.println("entra en bucle events");
             PetComponentView petComponentView = new EventView(context, null, event).initializePetComponent(pet);
             addView(petComponentView);
             this.petComponents.add(petComponentView);
-            System.out.println("acaba");
         }
-        System.out.println("y aqui");
     }
 
     /**

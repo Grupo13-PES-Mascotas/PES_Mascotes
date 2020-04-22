@@ -40,7 +40,7 @@ public class TrDeletePeriodicNotification {
 
     public void execute() throws ParseException {
         result = false;
-        pet.deletePeriodicNotification(event.getDateTime(), period, event.getDescription());
+        pet.deletePeriodicNotification(event.getDateTime().toString());
         result = true;
     }
 
