@@ -195,6 +195,13 @@ public class InfoPetMedicationFragment extends Fragment {
             (inputMedicationDuration.getText()).toString());
         medication = new Medication(medicationName, medicationQuantity, medicationPeriodicity,
             medicationDuration, medicationIniDate);
+        communicateAddition();
+    }
+
+    /**
+     * Method responsible for communicating the pet addition to the server.
+     */
+    private void communicateAddition() {
         try {
             InfoPetFragment.getCommunication().addPetMedication(pet, medication);
         } catch (MedicationAlreadyExistingException e) {
@@ -206,14 +213,14 @@ public class InfoPetMedicationFragment extends Fragment {
      * Method responsible for initializing the editButton listener.
      */
     private void initializeEditButtonListener() {
-        String newDate = getDateTime().toString();
+        final String newDate = getDateTime().toString();
         String medicationName = Objects.requireNonNull(inputMedicationName.getText()).toString();
-        int medicationQuantity = Integer.parseInt(Objects.requireNonNull
-            (inputMedicationQuantity.getText()).toString());
-        double medicationPeriodicity = Double.parseDouble(Objects.requireNonNull
-            (inputMedicationPeriodicity.getText()).toString());
-        int medicationDuration = Integer.parseInt(Objects.requireNonNull
-            (inputMedicationDuration.getText()).toString());
+        int medicationQuantity = Integer.parseInt(Objects.requireNonNull(
+            inputMedicationQuantity.getText()).toString());
+        double medicationPeriodicity = Double.parseDouble(Objects.requireNonNull(
+            inputMedicationPeriodicity.getText()).toString());
+        int medicationDuration = Integer.parseInt(Objects.requireNonNull(
+            inputMedicationDuration.getText()).toString());
         medication.setMedicationName(medicationName);
         medication.setMedicationQuantity(medicationQuantity);
         medication.setMedicationFrequency(medicationPeriodicity);
@@ -250,7 +257,7 @@ public class InfoPetMedicationFragment extends Fragment {
         return quantityNameEmpty || periodicityDurationEmpty || !isMedicationDateSelected;
     }
 
-     /**
+    /**
      * Sets the calendar picker.
      */
     private void setCalendarPicker() {
@@ -309,7 +316,7 @@ public class InfoPetMedicationFragment extends Fragment {
     private void initializeButtonLogic(Medication medication, MaterialButton medicationButton) {
         String medicationButtonText = getString(R.string.medication) + SPACE + medication.getMedicationName() + EOL
             + getString(R.string.quantity) + SPACE + medication.getMedicationQuantity() + EOL
-            + getString(R.string.periodicity) + " " + medication.getMedicationFrequency();
+            + getString(R.string.periodicity) + SPACE + medication.getMedicationFrequency();
         medicationButton.setText(medicationButtonText);
         medicationButton.setOnClickListener(v -> {
             InfoPetMedicationFragment.medication = medication;

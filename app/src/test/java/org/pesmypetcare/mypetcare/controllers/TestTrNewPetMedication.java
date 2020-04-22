@@ -17,6 +17,7 @@ import static org.junit.Assert.assertTrue;
  * @author Xavier Campos
  */
 public class TestTrNewPetMedication {
+    private static final int MEDICATION_DURATION = 14;
     private User user;
     private Pet pet;
     private TrNewPetMedication trNewPetMedication;
@@ -44,7 +45,7 @@ public class TestTrNewPetMedication {
     }
 
     private Medication getTestMedication(String s) {
-        return new Medication("Filoprofen", 1, 1, 14,
+        return new Medication("Filoprofen", 1, 1, MEDICATION_DURATION,
             DateTime.Builder.buildDateString(s));
     }
 

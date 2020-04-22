@@ -15,6 +15,7 @@ import static org.junit.Assert.assertEquals;
  * @author Xavier Campos
  */
 public class TestTrDeleteMedication {
+    private static final int MEDICATION_DURATION = 25;
     private User user;
     private Pet linux;
     private Medication originalMedication;
@@ -26,7 +27,7 @@ public class TestTrDeleteMedication {
     public void setUp() {
         user = new User("johnDoe", "johndoe@gmail.com", "PASSWORD");
         linux = new Pet("Linux");
-        originalMedication = new Medication("Filoproffin", 3, 2, 25,
+        originalMedication = new Medication("Filoproffin", 3, 2, MEDICATION_DURATION,
             DateTime.Builder.buildDateString("2020-04-15"));
         stubMedicationService = new StubMedicationService();
         trDeleteMedication = new TrDeleteMedication(stubMedicationService);
@@ -44,7 +45,7 @@ public class TestTrDeleteMedication {
         trDeleteMedication.setPet(linux);
         trDeleteMedication.setMedication(originalMedication);
         trDeleteMedication.execute();
-        assertEquals("Should be equal", before , stubMedicationService.nMedications());
+        assertEquals("Should have the same value", before, stubMedicationService.nMedications());
     }
 
     @Test

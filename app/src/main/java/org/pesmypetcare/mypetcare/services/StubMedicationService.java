@@ -14,24 +14,28 @@ import java.util.List;
  */
 public class StubMedicationService implements MedicationManagerService{
     private static List<Medication> medications;
-    public static Medication currentMedication;
+    private static Medication currentMedication;
+    private static final int MEDICATION_DURATION = 25;
+    private static final int MEDICATION_DURATION1 = 14;
+    private static final int MEDICATION_DURATION2 = 7;
+    private static final int MEDICATION_DURATION3 = 31;
 
     static {
         medications = new ArrayList<>();
-        StubMedicationService.medications.add(new Medication("Capstar", 3, 2, 25,
+        StubMedicationService.medications.add(new Medication("Capstar", 3, 2, MEDICATION_DURATION,
             DateTime.Builder.buildDateString("2020-04-15")));
-        StubMedicationService.medications.add(new Medication("Espiruvet", 1, 1, 14,
+        StubMedicationService.medications.add(new Medication("Espiruvet", 1, 1, MEDICATION_DURATION1,
             DateTime.Builder.buildDateString("2020-01-12")));
-        StubMedicationService.medications.add(new Medication("Effipro Duo", 1, 2, 7,
+        StubMedicationService.medications.add(new Medication("Effipro Duo", 1, 2, MEDICATION_DURATION2,
             DateTime.Builder.buildDateString("2018-11-02")));
-        StubMedicationService.medications.add(new Medication("Prevender", 1, 0.5, 31,
+        StubMedicationService.medications.add(new Medication("Prevender", 1, 0.5, MEDICATION_DURATION3,
             DateTime.Builder.buildDateString("2019-05-22")));
     }
 
     @Override
     public void createMedication(User user, Pet pet, Medication medication) throws MedicationAlreadyExistingException {
         for (Medication staticMed : medications) {
-            if (staticMed == medication) {
+            if (staticMed.equals(medication)) {
                 throw new MedicationAlreadyExistingException();
             }
         }
@@ -81,5 +85,13 @@ public class StubMedicationService implements MedicationManagerService{
      */
     public int nMedications() {
         return medications.size();
+    }
+
+    /**
+     * Returns the medication that is being updated.
+     * @return The medication that is being updated
+     */
+    public static Medication getCurrentMedication() {
+        return currentMedication;
     }
 }

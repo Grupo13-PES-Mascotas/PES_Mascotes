@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Xavier Campos
  */
-public class MedicationAdapter implements MedicationManagerService{
+public class MedicationAdapter implements MedicationManagerService {
     @Override
     public void createMedication(User user, Pet pet, Medication medication) throws MedicationAlreadyExistingException {
         //Not implemented

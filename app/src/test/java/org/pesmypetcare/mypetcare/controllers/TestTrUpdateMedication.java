@@ -15,20 +15,22 @@ import static org.junit.Assert.assertEquals;
  * @author Xavier Campos
  */
 public class TestTrUpdateMedication {
+    private static final int MEDICATION_DURATION = 14;
+    private static final int MEDICATION_QUANTITY = 150000;
+    private static final String SHOULD_BE_THE_SAME_MEDICATION = "Should be the same medication";
     private User user;
     private Pet pet;
     private Medication medication;
     private TrUpdateMedication trUpdateMedication;
     private TrNewPetMedication trNewPetMedication;
-    private StubMedicationService stubMedicationService;
 
     @Before
     public void setUp() {
         user = new User("johnDoe", "johndoe@gmail.com", "PASSWORD");
         pet = new Pet("Linux");
-        medication = new Medication("Filoproffin", 1, 1, 14,
+        medication = new Medication("Filoproffin", 1, 1, MEDICATION_DURATION,
             DateTime.Builder.buildDateString("2020-01-12"));
-        stubMedicationService = new StubMedicationService();
+        StubMedicationService stubMedicationService = new StubMedicationService();
         trNewPetMedication = new TrNewPetMedication(stubMedicationService);
         trUpdateMedication = new TrUpdateMedication(stubMedicationService);
     }
@@ -39,12 +41,12 @@ public class TestTrUpdateMedication {
         trNewPetMedication.setPet(pet);
         trNewPetMedication.setMedication(medication);
         trNewPetMedication.execute();
-        medication.setMedicationQuantity(150000);
+        medication.setMedicationQuantity(MEDICATION_QUANTITY);
         trUpdateMedication.setUser(user);
         trUpdateMedication.setPet(pet);
         trUpdateMedication.setMedication(medication);
         trUpdateMedication.execute();
-        assertEquals("Should be the same medication", medication, StubMedicationService.currentMedication);
+        assertEquals(SHOULD_BE_THE_SAME_MEDICATION, medication, StubMedicationService.getCurrentMedication());
     }
 
     @Test
@@ -58,6 +60,6 @@ public class TestTrUpdateMedication {
         trUpdateMedication.setPet(pet);
         trUpdateMedication.setMedication(medication);
         trUpdateMedication.execute();
-        assertEquals("Should be the same medication", medication, StubMedicationService.currentMedication);
+        assertEquals(SHOULD_BE_THE_SAME_MEDICATION, medication, StubMedicationService.getCurrentMedication());
     }
 }
