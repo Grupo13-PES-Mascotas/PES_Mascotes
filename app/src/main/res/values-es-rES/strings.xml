@@ -193,6 +193,7 @@
     <string name="forum_created_on">Creado el</string>
     <string name="forum_created_at">a las</string>
     <string name="forum_created_by">por</string>
+    <string name="should_be_subscribed">Tienes que estar suscrito al grupo</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>

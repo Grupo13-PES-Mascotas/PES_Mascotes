@@ -119,5 +119,9 @@ public class ControllersFactory {
     public static TrDeleteSubscription createTrDeleteSubscription() {
         return new TrDeleteSubscription(new StubCommunityService());
     }
+
+    public static TrAddNewForum createTrAddNewForum() {
+        return new TrAddNewForum(new StubCommunityService());
+    }
 }
 

@@ -144,4 +144,11 @@ public class Forum implements Comparable<Forum> {
 
         return name.compareTo(forum.name);
     }
+
+    @Override
+    public String toString() {
+        return "Forum{"
+            + "name='" + name + '\''
+            + '}';
+    }
 }

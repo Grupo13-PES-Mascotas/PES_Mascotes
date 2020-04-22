@@ -47,7 +47,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunic
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityFragment;
-import org.pesmypetcare.mypetcare.activities.fragments.community.GroupsFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.community.groups.ForumsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommunication;
@@ -64,6 +64,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFrag
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.TrAddNewForum;
 import org.pesmypetcare.mypetcare.controllers.TrAddNewWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.TrAddNewWeight;
 import org.pesmypetcare.mypetcare.controllers.TrAddSubscription;
@@ -92,6 +93,8 @@ import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
+import org.pesmypetcare.mypetcare.features.community.forums.ForumCreatedBeforeGroupException;
+import org.pesmypetcare.mypetcare.features.community.forums.UserNotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingException;
@@ -122,6 +125,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -188,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeleteGroup trDeleteGroup;
     private TrAddSubscription trAddSubscription;
     private TrDeleteSubscription trDeleteSubscription;
+    private TrAddNewForum trAddNewForum;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -517,6 +522,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteGroup = ControllersFactory.createTrDeleteGroup();
         trAddSubscription = ControllersFactory.createTrAddSubscription();
         trDeleteSubscription = ControllersFactory.createTrDeleteSubscription();
+        trAddNewForum = ControllersFactory.createTrAddNewForum();
     }
 
     /**
@@ -538,10 +544,15 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         floatingActionButton.setOnClickListener(v -> {
             if (actualFragment instanceof MyPetsFragment) {
                 addPet();
-            } else if (actualFragment instanceof GroupsFragment){
+            } else if (actualFragment instanceof CommunityFragment){
                 createGroupDialog();
-            } else {
-                createForumDialog();
+            } else if (actualFragment instanceof InfoGroupFragment){
+                if (InfoGroupFragment.getGroup().isUserSubscriber(user)) {
+                    createForumDialog();
+                } else {
+                    Toast toast = Toast.makeText(this, getString(R.string.should_be_subscribed), Toast.LENGTH_LONG);
+                    toast.show();
+                }
             }
         });
     }
@@ -578,6 +589,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 createForum(InfoGroupFragment.getGroup(), Objects.requireNonNull(forumName.getEditText()).getText()
                         .toString(), new ArrayList<>(Arrays.asList(tags)));
                 alertDialog.dismiss();
+                ForumsFragment.showGroups();
             }
         });
     }
@@ -589,8 +601,23 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @param forumTags The tags of the forum
      */
     private void createForum(Group group, String forumName, List<String> forumTags) {
-        System.out.println("Creating forum " + forumName + " in group " + group.getName() + " with tags "
-            + forumTags.toString());
+        trAddNewForum.setUser(user);
+        trAddNewForum.setForumName(forumName);
+        trAddNewForum.setTags(forumTags);
+        trAddNewForum.setGroup(group);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d'T'hh:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        String strData = dateFormat.format(date);
+
+        trAddNewForum.setCreationDate(DateTime.Builder.buildFullString(strData));
+
+        try {
+            trAddNewForum.execute();
+        } catch (UserNotSubscribedException | GroupNotExistingException | ForumCreatedBeforeGroupException e) {
+            Toast toast = Toast.makeText(this, getString(R.string.should_be_subscribed), Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 
     /**

@@ -16,6 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.views.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.GroupComponentView;
@@ -282,5 +283,11 @@ public class GroupsFragment extends Fragment {
             Objects.requireNonNull(binding.inputGroupSearch.getEditText()).setText("");
             binding.groupInfoLayout.removeAllViews();
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity.showFloatingButton();
     }
 }

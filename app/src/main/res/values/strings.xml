@@ -192,6 +192,7 @@
     <string name="forum_created_on">Created on</string>
     <string name="forum_created_at">at</string>
     <string name="forum_created_by">by</string>
+    <string name="should_be_subscribed">You must be subscribed to the group</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>

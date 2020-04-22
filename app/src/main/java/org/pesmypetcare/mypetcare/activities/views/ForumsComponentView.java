@@ -66,10 +66,20 @@ public class ForumsComponentView extends CircularEntryView {
             forumAuthorDate.append('0');
         }
 
-        forumAuthorDate.append(creationDate.getMonth()).append(creationDate.getDay()).append(' ')
-            .append(getResources().getString(R.string.forum_created_at)).append(' ').append(creationDate.getHour())
-            .append(':').append(creationDate.getHour()).append(' ').append('\n').append(getResources()
-            .getString(R.string.forum_created_by)).append(' ').append(forum.getOwnerUsername());
+        forumAuthorDate.append(creationDate.getMonth()).append('-').append(creationDate.getDay()).append(' ')
+            .append(getResources().getString(R.string.forum_created_at)).append(' ');
+
+        if (creationDate.getHour() < 10) {
+            forumAuthorDate.append('0');
+        }
+
+        forumAuthorDate.append(creationDate.getHour()).append(':');
+
+        if (creationDate.getMinutes() < 10) {
+            forumAuthorDate.append('0');
+        }
+
+        forumAuthorDate.append(creationDate.getMinutes());
 
         return forumAuthorDate.toString();
     }
