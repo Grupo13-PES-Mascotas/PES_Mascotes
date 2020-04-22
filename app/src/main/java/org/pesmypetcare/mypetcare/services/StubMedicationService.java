@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class StubMedicationService implements MedicationManagerService{
     private static List<Medication> medications;
+    public static Medication currentMedication;
 
     static {
         medications = new ArrayList<>();
@@ -47,6 +48,7 @@ public class StubMedicationService implements MedicationManagerService{
                 staticMed.setMedicationDuration(medication.getMedicationDuration());
             }
         }
+        currentMedication = medication;
     }
 
     @Override
@@ -71,5 +73,13 @@ public class StubMedicationService implements MedicationManagerService{
     @Override
     public List<Medication> findMedicationsByPet(User user, Pet pet) {
         return medications;
+    }
+
+    /**
+     * Returns the number of medications.
+     * @return The number of medications
+     */
+    public int nMedications() {
+        return medications.size();
     }
 }
