@@ -2,7 +2,7 @@ package org.pesmypetcare.mypetcare.features.users;
 
 import android.graphics.Bitmap;
 
-import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 

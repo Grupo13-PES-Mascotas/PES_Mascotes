@@ -1,25 +1,31 @@
-package org.pesmypetcare.mypetcare.features.community;
+package org.pesmypetcare.mypetcare.features.community.forums;
 
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
+import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Forum {
+public class Forum implements Comparable<Forum> {
     private String name;
     private String ownerUsername;
     private DateTime creationDate;
     private List<String> participants;
     private List<Post> posts;
     private List<String> tags;
+    private Group group;
 
-    public Forum(String name, String ownerUsername, DateTime creationDate) {
+    public Forum(String name, String ownerUsername, DateTime creationDate, Group group) {
         this.name = name;
         this.ownerUsername = ownerUsername;
         this.creationDate = creationDate;
         this.participants = new ArrayList<>();
         this.posts = new ArrayList<>();
         this.tags = new ArrayList<>();
+        this.group = group;
+
+        this.group.addForum(this);
     }
 
     /**
@@ -116,5 +122,22 @@ public class Forum {
      */
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
+
+    /**
+     * Get the group.
+     * @return The group
+     */
+    public Group getGroup() {
+        return group;
+    }
+
+    @Override
+    public int compareTo(Forum forum) {
+        return creationDate.compareTo(forum.getCreationDate());
     }
 }

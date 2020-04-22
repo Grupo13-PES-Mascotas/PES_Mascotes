@@ -92,12 +92,12 @@ import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
-import org.pesmypetcare.mypetcare.features.community.Group;
-import org.pesmypetcare.mypetcare.features.community.GroupAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.community.GroupNotExistingException;
-import org.pesmypetcare.mypetcare.features.community.GroupNotFoundException;
-import org.pesmypetcare.mypetcare.features.community.NotSubscribedException;
-import org.pesmypetcare.mypetcare.features.community.OwnerCannotDeleteSubscriptionException;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
+import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingException;
+import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
+import org.pesmypetcare.mypetcare.features.community.groups.NotSubscribedException;
+import org.pesmypetcare.mypetcare.features.community.groups.OwnerCannotDeleteSubscriptionException;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
@@ -550,7 +550,47 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Create the forum dialog.
      */
     private void createForumDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(this),
+            R.style.AlertDialogTheme);
+        dialog.setTitle(R.string.add_new_forum_title);
+        dialog.setMessage(R.string.add_new_forum_description);
 
+        View newForumDialog = getLayoutInflater().inflate(R.layout.new_forum_dialog, null);
+        dialog.setView(newForumDialog);
+
+        AlertDialog alertDialog = dialog.create();
+        setAddForumButtonListener(alertDialog, newForumDialog);
+
+        alertDialog.show();
+    }
+
+    private void setAddForumButtonListener(AlertDialog alertDialog, View newForumDialog) {
+        MaterialButton btnAddForum = newForumDialog.findViewById(R.id.btnAddForum);
+        btnAddForum.setOnClickListener(v -> {
+            TextInputLayout forumName = newForumDialog.findViewById(R.id.addForumName);
+            TextInputLayout forumTags = newForumDialog.findViewById(R.id.addForumTags);
+
+            boolean isCorrect = checkEmptyTitle(forumName);
+            isCorrect = isCorrect && checkTagPattern(forumTags);
+
+            if (isCorrect) {
+                String[] tags = Objects.requireNonNull(forumTags.getEditText()).getText().toString().split(",");
+                createForum(InfoGroupFragment.getGroup(), Objects.requireNonNull(forumName.getEditText()).getText()
+                        .toString(), new ArrayList<>(Arrays.asList(tags)));
+                alertDialog.dismiss();
+            }
+        });
+    }
+
+    /**
+     * Create the forum.
+     * @param group The group to add the forum
+     * @param forumName The name of the forum
+     * @param forumTags The tags of the forum
+     */
+    private void createForum(Group group, String forumName, List<String> forumTags) {
+        System.out.println("Creating forum " + forumName + " in group " + group.getName() + " with tags "
+            + forumTags.toString());
     }
 
     /**
@@ -599,13 +639,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     /**
      * Check whether the tag follows the correct pattern.
-     * @param groupTags Tags of the group
+     * @param tags Tags to check
      * @return True if the pattern is followed
      */
-    private boolean checkTagPattern(TextInputLayout groupTags) {
-        if (!Objects.requireNonNull(groupTags.getEditText()).getText().toString().matches(TAG_REGEX)) {
-            groupTags.setErrorEnabled(true);
-            groupTags.setError(getString(R.string.tag_not_valid));
+    private boolean checkTagPattern(TextInputLayout tags) {
+        if (!Objects.requireNonNull(tags.getEditText()).getText().toString().matches(TAG_REGEX)) {
+            tags.setErrorEnabled(true);
+            tags.setError(getString(R.string.tag_not_valid));
             return false;
         }
         return true;
@@ -613,13 +653,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     /**
      * Check whether the title is empty.
-     * @param groupName The name of the group
+     * @param name The name to check
      * @return True if the field is not empty
      */
-    private boolean checkEmptyTitle(TextInputLayout groupName) {
-        if ("".equals(Objects.requireNonNull(groupName.getEditText()).getText().toString())) {
-            groupName.setErrorEnabled(true);
-            groupName.setError(getString(R.string.non_empty_field));
+    private boolean checkEmptyTitle(TextInputLayout name) {
+        if ("".equals(Objects.requireNonNull(name.getEditText()).getText().toString())) {
+            name.setErrorEnabled(true);
+            name.setError(getString(R.string.non_empty_field));
             return false;
         }
 

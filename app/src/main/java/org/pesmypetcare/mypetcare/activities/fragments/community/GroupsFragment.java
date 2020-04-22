@@ -20,7 +20,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGrou
 import org.pesmypetcare.mypetcare.activities.views.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.GroupComponentView;
 import org.pesmypetcare.mypetcare.databinding.FragmentGroupsBinding;
-import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
 
 import java.util.ArrayList;
 import java.util.Arrays;

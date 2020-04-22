@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.features.community;
+package org.pesmypetcare.mypetcare.features.community.posts;
 
 import android.graphics.Bitmap;
 

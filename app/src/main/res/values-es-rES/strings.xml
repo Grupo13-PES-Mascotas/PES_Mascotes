@@ -186,6 +186,13 @@
     <string name="edit_meal_title">Editar la comida</string>
     <string name="edit_meal_message">Introduce los datos de la comida</string>
     <string name="select_meal_date">Selecciona la fecha de la comida</string>
+    <string name="add_new_forum_title">Añadir nuevo foro</string>
+    <string name="add_new_forum_description">Introduce los datos del nuevo foro</string>
+    <string name="forum_name">Nombre del foro</string>
+    <string name="forum_tags">Etiquetas del foro (con comas, opcional)</string>
+    <string name="forum_created_on">Creado el</string>
+    <string name="forum_created_at">a las</string>
+    <string name="forum_created_by">por</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>

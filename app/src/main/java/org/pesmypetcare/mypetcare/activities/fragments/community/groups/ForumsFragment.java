@@ -15,6 +15,7 @@ public class ForumsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentForumsBinding.inflate(inflater, container, false);
+        binding.forumsViewLayout.showForums(InfoGroupFragment.getGroup());
 
         return binding.getRoot();
     }

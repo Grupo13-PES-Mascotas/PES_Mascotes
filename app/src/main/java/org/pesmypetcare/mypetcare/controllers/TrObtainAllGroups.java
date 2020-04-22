@@ -1,6 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers;
 
-import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.services.CommunityService;
 
 import java.util.SortedSet;

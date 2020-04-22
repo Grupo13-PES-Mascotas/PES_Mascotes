@@ -15,7 +15,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGrou
 import org.pesmypetcare.mypetcare.activities.views.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.SubscriptionComponentView;
 import org.pesmypetcare.mypetcare.databinding.FragmentUserSubscriptionsBinding;
-import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.List;

@@ -2,8 +2,8 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.mypetcare.features.community.Group;
-import org.pesmypetcare.mypetcare.features.community.GroupNotExistingException;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
+import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;

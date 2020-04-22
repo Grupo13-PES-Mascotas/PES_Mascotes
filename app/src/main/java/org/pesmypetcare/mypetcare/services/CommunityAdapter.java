@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
-import org.pesmypetcare.mypetcare.features.community.Group;
-import org.pesmypetcare.mypetcare.features.community.GroupNotFoundException;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
+import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.SortedSet;

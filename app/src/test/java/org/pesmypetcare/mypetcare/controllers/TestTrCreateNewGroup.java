@@ -2,7 +2,7 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.mypetcare.features.community.GroupAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;

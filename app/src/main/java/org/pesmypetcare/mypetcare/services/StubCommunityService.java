@@ -1,8 +1,9 @@
 package org.pesmypetcare.mypetcare.services;
 
-import org.pesmypetcare.mypetcare.features.community.Group;
-import org.pesmypetcare.mypetcare.features.community.GroupAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.community.GroupNotFoundException;
+import org.pesmypetcare.mypetcare.features.community.forums.Forum;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
+import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
@@ -20,6 +21,10 @@ public class StubCommunityService implements CommunityService {
     private static List<Group> groups;
 
     static {
+        addStubDefaultData();
+    }
+
+    public static void addStubDefaultData() {
         StubCommunityService.groups = new ArrayList<>();
         StubCommunityService.groups.add(new Group("Husky", "John Doe",
             DateTime.Builder.buildDateString("2020-04-15")));
@@ -39,6 +44,12 @@ public class StubCommunityService implements CommunityService {
         StubCommunityService.groups.get(ELEPHANTS).addTag("savanna");
         StubCommunityService.groups.get(ELEPHANTS).addTag("Africa");
         StubCommunityService.groups.get(DINOSAURS).addTag("extinct");
+
+        new Forum("Washing", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:00:00"),
+            StubCommunityService.groups.get(HUSKY));
+        Forum forum = new Forum("Cleaning", "John Doe", DateTime.Builder.buildFullString("2020-04-21T20:50:10"),
+            StubCommunityService.groups.get(HUSKY));
+        forum.addTag("important");
     }
 
     @Override

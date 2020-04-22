@@ -1,6 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.fragments.community.groups;
 
-import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 /**

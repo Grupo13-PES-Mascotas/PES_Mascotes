@@ -8,22 +8,22 @@ import android.widget.Space;
 
 import androidx.annotation.Nullable;
 
+import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
 
-public class GroupsView extends LinearLayout {
+public class ForumsView extends LinearLayout {
     public static final int MIN_SPACE_SIZE = 20;
     private Context context;
-    private List<CircularEntryView> groupComponents;
+    private List<CircularEntryView> forumComponents;
 
-    public GroupsView(Context context, @Nullable AttributeSet attrs) {
+    public ForumsView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         this.context = context;
-        this.groupComponents = new ArrayList<>();
+        this.forumComponents = new ArrayList<>();
         setOrientation(VERTICAL);
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
             LayoutParams.MATCH_PARENT);
@@ -32,14 +32,15 @@ public class GroupsView extends LinearLayout {
     }
 
     /**
-     * Show the specified groups.
-     * @param groups The groups to display
+     * Show the specified group subscribers.
+     * @param group The group to display the subscribers
      */
-    public void showGroups(SortedSet<Group> groups) {
-        for (Group group : groups) {
-            CircularEntryView circularEntryView = new GroupComponentView(context, null, group).initializeComponent();
+    public void showForums(Group group) {
+        for (Forum forum : group.getForums()) {
+            CircularEntryView circularEntryView = new ForumsComponentView(context, null, forum);
+            circularEntryView.initializeComponent();
             addView(circularEntryView);
-            groupComponents.add(circularEntryView);
+            forumComponents.add(circularEntryView);
 
             Space space = createSpace();
             addView(space);
@@ -61,7 +62,7 @@ public class GroupsView extends LinearLayout {
      * Get the group components.
      * @return The group components
      */
-    public List<CircularEntryView> getGroupComponents() {
-        return groupComponents;
+    public List<CircularEntryView> getForumComponents() {
+        return forumComponents;
     }
 }

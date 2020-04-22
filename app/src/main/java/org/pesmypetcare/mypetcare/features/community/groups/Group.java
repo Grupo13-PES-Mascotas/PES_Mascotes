@@ -1,7 +1,8 @@
-package org.pesmypetcare.mypetcare.features.community;
+package org.pesmypetcare.mypetcare.features.community.groups;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
@@ -151,11 +152,27 @@ public class Group implements Comparable<Group> {
     }
 
     /**
+     * Get the forums.
+     * @return The forums
+     */
+    public List<Forum> getForums() {
+        return forums;
+    }
+
+    /**
      * Add a tag.
      * @param tag The tag to add
      */
     public void addTag(String tag) {
         tags.add(tag);
+    }
+
+    /**
+     * Add a forum.
+     * @param forum The forum to add
+     */
+    public void addForum(Forum forum) {
+        forums.add(forum);
     }
 
     /**

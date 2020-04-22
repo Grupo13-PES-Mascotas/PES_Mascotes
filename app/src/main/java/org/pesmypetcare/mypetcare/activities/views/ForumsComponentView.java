@@ -7,23 +7,21 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.features.community.groups.Group;
-import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.features.community.forums.Forum;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.List;
 
-public class SubscriptionComponentView extends CircularEntryView {
-    private User user;
-    private Group group;
+public class ForumsComponentView extends CircularEntryView {
+    private Forum forum;
 
-    public SubscriptionComponentView(Context context, AttributeSet attrs) {
+    public ForumsComponentView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SubscriptionComponentView(Context context, AttributeSet attrs, User user, Group group) {
+    public ForumsComponentView(Context context, AttributeSet attrs, Forum forum) {
         super(context, attrs);
-        this.user = user;
-        this.group = group;
+        this.forum = forum;
     }
 
     @Override
@@ -42,23 +40,42 @@ public class SubscriptionComponentView extends CircularEntryView {
 
     @Override
     public Object getObject() {
-        return group;
+        return forum;
     }
 
     @Override
     protected String getFirstLineText() {
-        StringBuilder groupName = new StringBuilder(group.getName());
+        StringBuilder forumName = new StringBuilder(forum.getName());
+        String tags = getTags();
 
-        if (group.getOwnerUsername().equals(user.getUsername())) {
-            groupName.append(' ').append(getResources().getString(R.string.owner));
+        if (tags != null) {
+            forumName.append(' ').append(tags);
         }
 
-        return groupName.toString();
+        return forumName.toString();
     }
 
     @Override
     protected String getSecondLineText() {
-        List<String> tags = group.getTags();
+        StringBuilder forumAuthorDate = new StringBuilder(getResources().getString(R.string.forum_created_on));
+        DateTime creationDate = forum.getCreationDate();
+
+        forumAuthorDate.append(' ').append(creationDate.getYear()).append('-');
+
+        if (creationDate.getMonth() < 10) {
+            forumAuthorDate.append('0');
+        }
+
+        forumAuthorDate.append(creationDate.getMonth()).append(creationDate.getDay()).append(' ')
+            .append(getResources().getString(R.string.forum_created_at)).append(' ').append(creationDate.getHour())
+            .append(':').append(creationDate.getHour()).append(' ').append('\n').append(getResources()
+            .getString(R.string.forum_created_by)).append(' ').append(forum.getOwnerUsername());
+
+        return forumAuthorDate.toString();
+    }
+
+    private String getTags() {
+        List<String> tags = forum.getTags();
         StringBuilder strTags = new StringBuilder("");
 
         for (int actual = 0; actual < tags.size(); ++actual) {
@@ -66,7 +83,7 @@ public class SubscriptionComponentView extends CircularEntryView {
         }
 
         if (strTags.length() == 0) {
-            strTags.append(getResources().getString(R.string.no_tags));
+            return null;
         }
 
         return strTags.toString();

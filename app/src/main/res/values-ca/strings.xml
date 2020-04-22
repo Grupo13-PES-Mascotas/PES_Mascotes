@@ -186,6 +186,13 @@
     <string name="edit_meal_title">Editar l\'àpat</string>
     <string name="edit_meal_message">Introdueix la informació de l\'àpat</string>
     <string name="select_meal_date">Selecciona la data de l\'àpat</string>
+    <string name="add_new_forum_title">Afegir un nou fòrum</string>
+    <string name="add_new_forum_description">Introdueix la informació del fòrum</string>
+    <string name="forum_name">Nom del fòrum</string>
+    <string name="forum_tags">Tags del fòrum (amb comes, opcional)</string>
+    <string name="forum_created_on">Creat el</string>
+    <string name="forum_created_at">a les</string>
+    <string name="forum_created_by">per</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>
