@@ -93,6 +93,7 @@ import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
+import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumCreatedBeforeGroupException;
 import org.pesmypetcare.mypetcare.features.community.forums.UserNotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
@@ -964,6 +965,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (GroupNotExistingException | NotSubscribedException | OwnerCannotDeleteSubscriptionException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void deleteForum(Forum forum) {
+
     }
 
     @Override
