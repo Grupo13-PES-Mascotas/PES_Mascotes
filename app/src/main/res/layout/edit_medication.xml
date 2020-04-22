@@ -23,9 +23,9 @@
         <com.google.android.material.textfield.TextInputLayout style="@style/inputPetContainer">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputMealName"
+                android:id="@+id/inputMedicationName"
                 style="@style/inputPetField"
-                android:hint="@string/meal_name"
+                android:hint="@string/medication_name"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -33,9 +33,33 @@
         <com.google.android.material.textfield.TextInputLayout style="@style/inputPetContainer">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputMealCal"
+                android:id="@+id/inputMedicationQuantity"
                 style="@style/inputPetField"
-                android:hint="@string/meal_kcal"
+                android:hint="@string/medication_quantity"
+                android:inputType="numberDecimal">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout style="@style/inputPetContainer">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputMedicationDuration"
+                style="@style/inputPetField"
+                android:hint="@string/medication_duration"
+                android:inputType="numberDecimal">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout style="@style/inputPetContainer">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputMedicationPeriodicity"
+                style="@style/inputPetField"
+                android:hint="@string/medication_periodicity"
                 android:inputType="numberDecimal">
 
             </com.google.android.material.textfield.TextInputEditText>
@@ -47,10 +71,10 @@
             android:layout_height="20dp"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/inputMealDate"
+            android:id="@+id/inputMedicationIniDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/meal_date"
+            android:hint="@string/medication_inidate"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="16sp"
@@ -61,25 +85,11 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/inputMealTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/meal_time"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="16sp"
-            app:icon="@drawable/time_icon"
-            app:iconSize="24dp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp"/>
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/mealButtonLayout"
+        android:id="@+id/medicationButtonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -91,12 +101,12 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/deleteMealButton"
+            android:id="@+id/deleteMedicationButton"
             style="@style/rounded_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/red"
-            android:text="@string/delete_current_meal"
+            android:text="@string/delete_current_medication"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:icon="@drawable/baseline_delete_black_18dp"
@@ -108,12 +118,12 @@
             android:layout_height="20dp"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/editMealButton"
+            android:id="@+id/editMedicationButton"
             style="@style/rounded_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"
-            android:text="@string/add_meal_button"
+            android:text="@string/add_medication_button"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:icon="@drawable/icon_add"

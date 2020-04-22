@@ -33,6 +33,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+
+/**
+ * @author Xavier Campos
+ */
 public class InfoPetMealsFragment extends Fragment {
     private static final String EOL = "\n";
     private static final int STROKE_WIDTH = 5;
@@ -102,7 +106,7 @@ public class InfoPetMealsFragment extends Fragment {
 
     /**
      * Create the basic meal dialog.
-     * @return The basic mani dialog
+     * @return The basic main dialog
      */
     private AlertDialog getBasicMealDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()),
@@ -113,7 +117,7 @@ public class InfoPetMealsFragment extends Fragment {
     }
 
     /**
-     * Prepare the male dialog.
+     * Prepare the meal dialog.
      * @return The layout of the main dialog
      */
     private View prepareDialog() {
