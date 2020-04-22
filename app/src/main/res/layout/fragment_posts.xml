@@ -3,19 +3,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.fragments.community.groups.PostsFragment">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <org.pesmypetcare.mypetcare.activities.views.PostView
-            android:id="@+id/postsViewLayout"
+        <LinearLayout
+            android:id="@+id/layoutForumInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
 
-    </ScrollView>
+            <org.pesmypetcare.mypetcare.activities.views.CircularImageView
+                android:id="@+id/imgForum"
+                android:layout_gravity="center"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/single_paw" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/forumName"
+                    style="@style/TextAppearance.MaterialComponents.Headline1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_horizontal"
+                    app:startIconContentDescription="Group name"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:textColorHint="@color/white"
+                    app:boxBackgroundColor="@color/colorAccent"
+                    android:textStyle="bold"
+                    android:textColor="@color/design_default_color_surface">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txtForumName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/design_default_color_surface"
+                        android:focusable="false"
+                        android:singleLine="true"
+                        android:textSize="24sp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <org.pesmypetcare.mypetcare.activities.views.PostView
+                android:id="@+id/postsViewLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </ScrollView>
+
+    </LinearLayout>
 
 </FrameLayout>

@@ -31,7 +31,7 @@ public class ForumsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentForumsBinding.inflate(inflater, container, false);
         binding.forumsViewLayout.showForums(InfoGroupFragment.getGroup());
-        showGroups();
+        showForums();
 
         deleteForumTitle = getString(R.string.delete_forum_title);
         deleteForumMessage = getString(R.string.delete_group_message);
@@ -53,6 +53,7 @@ public class ForumsFragment extends Fragment {
     private static void setForumOnClickEvent(PostsFragment postsFragment, CircularEntryView component) {
         PostsFragment.setForum((Forum) component.getObject());
         InfoGroupFragment.getCommunication().showForum(postsFragment);
+        MainActivity.hideFloatingButton();
     }
 
     private static boolean setForumLongClickEvent(CircularEntryView component) {
@@ -94,9 +95,10 @@ public class ForumsFragment extends Fragment {
     private static void setDeleteGroupPositiveButton(Forum forum, DialogInterface dialog1) {
         InfoGroupFragment.getCommunication().deleteForum(forum);
         dialog1.dismiss();
+        showForums();
     }
 
-    public static void showGroups() {
+    public static void showForums() {
         binding.forumsViewLayout.removeAllViews();
         binding.forumsViewLayout.showForums(InfoGroupFragment.getGroup());
         setListenersForumsView();

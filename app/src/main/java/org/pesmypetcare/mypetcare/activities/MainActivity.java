@@ -596,7 +596,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 createForum(InfoGroupFragment.getGroup(), Objects.requireNonNull(forumName.getEditText()).getText()
                         .toString(), new ArrayList<>(Arrays.asList(tags)));
                 alertDialog.dismiss();
-                ForumsFragment.showGroups();
+                ForumsFragment.showForums();
             }
         });
     }
