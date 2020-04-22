@@ -6,13 +6,15 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class Forum implements Comparable<Forum> {
     private String name;
     private String ownerUsername;
     private DateTime creationDate;
     private List<String> participants;
-    private List<Post> posts;
+    private SortedSet<Post> posts;
     private List<String> tags;
     private Group group;
 
@@ -21,7 +23,7 @@ public class Forum implements Comparable<Forum> {
         this.ownerUsername = ownerUsername;
         this.creationDate = creationDate;
         this.participants = new ArrayList<>();
-        this.posts = new ArrayList<>();
+        this.posts = new TreeSet<>();
         this.tags = new ArrayList<>();
         this.group = group;
 
@@ -96,7 +98,7 @@ public class Forum implements Comparable<Forum> {
      * Get the posts of the forum.
      * @return The posts
      */
-    public List<Post> getPosts() {
+    public SortedSet<Post> getPosts() {
         return posts;
     }
 
@@ -104,7 +106,7 @@ public class Forum implements Comparable<Forum> {
      * Set the posts of the forum.
      * @param posts The posts of the forum to set
      */
-    public void setPosts(List<Post> posts) {
+    public void setPosts(SortedSet<Post> posts) {
         this.posts = posts;
     }
 
@@ -134,6 +136,10 @@ public class Forum implements Comparable<Forum> {
      */
     public Group getGroup() {
         return group;
+    }
+
+    public void addPost(Post post) {
+        posts.add(post);
     }
 
     @Override

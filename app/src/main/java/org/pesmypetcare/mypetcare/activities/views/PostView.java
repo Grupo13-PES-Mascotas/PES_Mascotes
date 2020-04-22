@@ -9,21 +9,21 @@ import android.widget.Space;
 import androidx.annotation.Nullable;
 
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
-import org.pesmypetcare.mypetcare.features.community.groups.Group;
+import org.pesmypetcare.mypetcare.features.community.posts.Post;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ForumsView extends LinearLayout {
+public class PostView extends LinearLayout {
     public static final int MIN_SPACE_SIZE = 20;
     private Context context;
-    private List<CircularEntryView> forumComponents;
+    private List<CircularEntryView> postComponents;
 
-    public ForumsView(Context context, @Nullable AttributeSet attrs) {
+    public PostView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         this.context = context;
-        this.forumComponents = new ArrayList<>();
+        this.postComponents = new ArrayList<>();
         setOrientation(VERTICAL);
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
             LayoutParams.MATCH_PARENT);
@@ -33,14 +33,14 @@ public class ForumsView extends LinearLayout {
 
     /**
      * Show the specified group subscribers.
-     * @param group The group to display the forum
+     * @param forum The forum to display the posts
      */
-    public void showForums(Group group) {
-        for (Forum forum : group.getForums()) {
-            CircularEntryView circularEntryView = new ForumsComponentView(context, null, forum);
+    public void showPosts(Forum forum) {
+        for (Post post : forum.getPosts()) {
+            CircularEntryView circularEntryView = new PostComponentView(context, null, post);
             circularEntryView.initializeComponent();
             addView(circularEntryView);
-            forumComponents.add(circularEntryView);
+            postComponents.add(circularEntryView);
 
             Space space = createSpace();
             addView(space);
@@ -62,7 +62,7 @@ public class ForumsView extends LinearLayout {
      * Get the group components.
      * @return The group components
      */
-    public List<CircularEntryView> getForumComponents() {
-        return forumComponents;
+    public List<CircularEntryView> getPostComponents() {
+        return postComponents;
     }
 }

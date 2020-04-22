@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.text.Layout;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
@@ -19,13 +23,15 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 public abstract class CircularEntryView extends ConstraintLayout {
-    private Context currentActivity;
-    private Pet pet;
     private final int PADDING = 15;
     private final int IMAGE_LAYOUT_MARGIN = 10;
     private final int PET_INFO_IMAGE_MARGIN = 40;
-
     private final int IMAGE_DIMESIONS = 150;
+
+    private Context currentActivity;
+    private Pet pet;
+    private TextPaint secondLinePaint;
+    private int secondLineWidth;
 
     public CircularEntryView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -134,6 +140,7 @@ public abstract class CircularEntryView extends ConstraintLayout {
         infoText.setText(getSecondLineText());
         infoText.setGravity(Gravity.START + Gravity.CENTER_VERTICAL);
         infoText.setTextColor(Color.BLACK);
+        infoText.setBreakStrategy(Layout.BREAK_STRATEGY_BALANCED);
         info.addView(infoText);
     }
 
@@ -141,13 +148,23 @@ public abstract class CircularEntryView extends ConstraintLayout {
      * Method responsible for creating the text view that will contain the pet name.
      * @param info The parent layout
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void firstLineTextInitializer(LinearLayout info) {
         TextView nameText = new TextView(currentActivity);
         nameText.setText(getFirstLineText());
         nameText.setTypeface(null, Typeface.BOLD);
         nameText.setGravity(Gravity.START + Gravity.CENTER_VERTICAL);
         nameText.setTextColor(Color.BLACK);
+        nameText.setBreakStrategy(Layout.BREAK_STRATEGY_BALANCED);
         info.addView(nameText);
+    }
+
+    protected TextPaint getSecondLinePaint() {
+        return secondLinePaint;
+    }
+
+    protected int getSecondLineWidth() {
+        return secondLineWidth;
     }
 
     public Context getCurrentActivity() {

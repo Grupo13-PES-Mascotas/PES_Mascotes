@@ -50,6 +50,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityFragme
 import org.pesmypetcare.mypetcare.activities.fragments.community.groups.ForumsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.community.groups.PostsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
@@ -887,6 +888,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 floatingActionButton.show();
                 changeFragment(new CommunityFragment());
                 return true;
+            } else if (actualFragment instanceof PostsFragment) {
+                Group group = PostsFragment.getForum().getGroup();
+                toolbar.setTitle(group.getName());
+                InfoGroupFragment.setGroup(group);
+                changeFragment(new InfoGroupFragment());
+                return true;
             } else if (!(actualFragment instanceof MyPetsFragment)){
                 changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
                 setUpNewFragment(getString(R.string.navigation_my_pets), NAVIGATION_OPTIONS[0]);
@@ -982,6 +989,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (ForumNotFoundException | NotForumOwnerException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void showForum(PostsFragment postsFragment) {
+        changeFragment(postsFragment);
     }
 
     @Override

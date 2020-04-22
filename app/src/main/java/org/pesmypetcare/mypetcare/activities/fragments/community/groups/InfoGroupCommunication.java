@@ -37,4 +37,6 @@ public interface InfoGroupCommunication {
      * @param forum The forum that has to be removed
      */
     void deleteForum(Forum forum);
+
+    void showForum(PostsFragment postsFragment);
 }

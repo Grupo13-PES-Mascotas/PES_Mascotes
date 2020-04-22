@@ -79,7 +79,8 @@ public class ForumsComponentView extends CircularEntryView {
             forumAuthorDate.append('0');
         }
 
-        forumAuthorDate.append(creationDate.getMinutes());
+        forumAuthorDate.append(creationDate.getMinutes()).append('\n')
+            .append(getResources().getString(R.string.forum_created_by)).append(' ').append(forum.getOwnerUsername());
 
         return forumAuthorDate.toString();
     }

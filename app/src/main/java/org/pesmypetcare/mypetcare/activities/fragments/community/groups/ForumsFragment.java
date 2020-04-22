@@ -42,13 +42,20 @@ public class ForumsFragment extends Fragment {
 
     private static void setListenersForumsView() {
         List<CircularEntryView> components = binding.forumsViewLayout.getForumComponents();
+        PostsFragment postsFragment = new PostsFragment();
 
         for (CircularEntryView component : components) {
-            component.setOnLongClickListener(v -> setForumLongListener(component));
+            component.setOnLongClickListener(v -> setForumLongClickEvent(component));
+            component.setOnClickListener(v -> setForumOnClickEvent(postsFragment, component));
         }
     }
 
-    private static boolean setForumLongListener(CircularEntryView component) {
+    private static void setForumOnClickEvent(PostsFragment postsFragment, CircularEntryView component) {
+        PostsFragment.setForum((Forum) component.getObject());
+        InfoGroupFragment.getCommunication().showForum(postsFragment);
+    }
+
+    private static boolean setForumLongClickEvent(CircularEntryView component) {
         Forum forum = (Forum) component.getObject();
         String username = InfoGroupFragment.getCommunication().getUser().getUsername();
 

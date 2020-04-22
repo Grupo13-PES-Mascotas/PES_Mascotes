@@ -6,6 +6,7 @@ import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerExcepti
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
+import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
@@ -56,6 +57,10 @@ public class StubCommunityService implements CommunityService {
             StubCommunityService.groups.get(DINOSAURS));
         new Forum("Sickling", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:10:00"),
             StubCommunityService.groups.get(DINOSAURS));
+        forum.addPost(new Post("John Doe", "I think that the huskies have to be kept cleaned. What do you think?",
+            DateTime.Builder.buildFullString("2020-04-21T20:55:10"), forum));
+        forum.addPost(new Post("John Doe", "I'm very interested in your answers",
+            DateTime.Builder.buildFullString("2020-04-21T21:15:22"), forum));
     }
 
     @Override

@@ -2,9 +2,10 @@ package org.pesmypetcare.mypetcare.features.community.posts;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
-public class Post {
+public class Post implements Comparable<Post> {
     private String username;
     private String text;
     private int likes;
@@ -13,11 +14,15 @@ public class Post {
     private DateTime creationDate;
     private Bitmap userImage;
     private Bitmap postImage;
+    private Forum forum;
 
-    public Post(String username, String text, DateTime creationDate) {
+    public Post(String username, String text, DateTime creationDate, Forum forum) {
         this.username = username;
         this.text = text;
         this.creationDate = creationDate;
+        this.forum = forum;
+
+        this.forum.addPost(this);
     }
 
     /**
@@ -146,5 +151,14 @@ public class Post {
      */
     public void setPostImage(Bitmap postImage) {
         this.postImage = postImage;
+    }
+
+    @Override
+    public int compareTo(Post post) {
+        if (!creationDate.equals(post.getCreationDate())) {
+            return creationDate.compareTo(post.getCreationDate());
+        }
+
+        return username.compareTo(post.getUsername());
     }
 }
