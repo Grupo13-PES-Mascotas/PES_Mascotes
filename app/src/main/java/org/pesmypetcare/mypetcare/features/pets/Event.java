@@ -1,12 +1,14 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+
 import java.util.Objects;
 
 public class Event {
     private String description;
-    private String dateTime;
+    private DateTime dateTime;
 
-    public Event(String description, String dateTime) {
+    public Event(String description, DateTime dateTime) {
         this.description = description;
         this.dateTime = dateTime;
     }
@@ -31,7 +33,7 @@ public class Event {
      * Get the dateTime.
      * @return The getTime.
      */
-    public String getDateTime() {
+    public DateTime getDateTime() {
         return dateTime;
     }
 
@@ -39,7 +41,7 @@ public class Event {
      * Set the dateTime.
      * @param dateTime The datetime to set.
      */
-    public void setDateTime(String dateTime) {
+    public void setDateTime(DateTime dateTime) {
         this.dateTime = dateTime;
     }
 

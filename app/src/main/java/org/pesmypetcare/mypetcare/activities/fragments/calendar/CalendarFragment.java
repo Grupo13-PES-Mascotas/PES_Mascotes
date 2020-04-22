@@ -31,6 +31,8 @@ import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -68,7 +70,11 @@ public class CalendarFragment extends Fragment {
         binding = FragmentCalendarBinding.inflate(inflater, container, false);
         communication = (CalendarCommunication) getActivity();
         user = Objects.requireNonNull(communication).getUser();
-        setUpCalendar();
+        try {
+            setUpCalendar();
+        } catch (ParseException | InvalidFormatException e) {
+            e.printStackTrace();
+        }
 
         binding.btnAddPersonalEvent.setOnClickListener(v -> {
             try {
@@ -138,7 +144,7 @@ public class CalendarFragment extends Fragment {
                 if (reasonText.getText().toString().length() != 0) {
                     try {
                         createPeriodicNotification(reasonText, dateText, timeText, sp_pets, sp_period);
-                    } catch (ParseException e) {
+                    } catch (ParseException | InvalidFormatException e) {
                         e.printStackTrace();
                     }
                 } else {
@@ -151,18 +157,20 @@ public class CalendarFragment extends Fragment {
     }
 
     private void createPeriodicNotification(EditText reasonText, TextView dateText, EditText timeText,
-                                            Spinner sp_pets, Spinner sp_period) throws ParseException {
+                                            Spinner sp_pets, Spinner sp_period) throws ParseException, InvalidFormatException {
         String petName = sp_pets.getSelectedItem().toString();
         String periodicity = sp_period.getSelectedItem().toString();
+        System.out.println(periodicity);
         int period = setPeriodicity(periodicity);
         int periodDay;
-        StringBuilder dateTime = new StringBuilder(dateText.getText());
-        dateTime.append('T');
-        dateTime.append(timeText.getText());
+        DateTime dateTime = DateTime.Builder.buildDateTimeString(dateText.getText().toString(),
+                timeText.getText().toString());;
         getPet(petName);
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
+            System.out.println(period);
             periodDay = getPeriodicityDay(dateTime.toString(), period);
-            selectedPet.addPeriodicNotification(new Event(reasonText.getText().toString(), dateTime.toString()), period, periodDay);
+            System.out.println(periodDay);
+            selectedPet.addPeriodicNotification(new Event(reasonText.getText().toString(), dateTime), period, periodDay);
             communication.newPeriodicNotification(selectedPet, period, reasonText.getText().toString(), dateTime.toString());
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(dateTime, c);
@@ -174,7 +182,7 @@ public class CalendarFragment extends Fragment {
     }
 
     private int getPeriodicityDay(String dateTime, int period) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = formatter.parse(dateTime.replaceAll("Z$", "+0000"));
         DateFormat dfWeek = new SimpleDateFormat("u", Locale.ENGLISH);
         DateFormat dfMonth = new SimpleDateFormat("dd", Locale.ENGLISH);
@@ -193,20 +201,12 @@ public class CalendarFragment extends Fragment {
     }
 
     private int setPeriodicity(String periodicity) {
-        switch (periodicity) {
-            case "Every day":
-                return 1;
-            case "Every week":
-                return 7;
-            case "Every 2 weeks":
-                return 14;
-            case "Every month":
-                return -1;
-            case "Every 3 months":
-                return -3;
-            default:
-                return 0;
-        }
+        if(getString(R.string.one_day) == periodicity) return 1;
+        else if(getString(R.string.one_week) == periodicity) return 7;
+        else if(getString(R.string.two_weeks) == periodicity) return 14;
+        else if(getString(R.string.one_month) == periodicity) return -1;
+        else if(getString(R.string.three_months) == periodicity) return -3;
+        else return 0;
     }
 
     private Spinner initializeSpinnerPeriod(LinearLayout layout) {
@@ -308,12 +308,11 @@ public class CalendarFragment extends Fragment {
      */
     private void createPersonalEvent(EditText reasonText, TextView dateText, EditText timeText, Spinner sp) {
         String petName = sp.getSelectedItem().toString();
-        StringBuilder dateTime = new StringBuilder(dateText.getText());
-        dateTime.append('T');
-        dateTime.append(timeText.getText());
+        DateTime dateTime = DateTime.Builder.buildDateTimeString(dateText.getText().toString(),
+                timeText.getText().toString());;
         getPet(petName);
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
-            selectedPet.addEvent(new Event(reasonText.getText().toString(), dateTime.toString()));
+            selectedPet.addEvent(new Event(reasonText.getText().toString(), dateTime));
             communication.newPersonalEvent(selectedPet, reasonText.getText().toString(), dateTime.toString());
         } else {
             toastText(getString(R.string.incorrect_entry));
@@ -322,10 +321,12 @@ public class CalendarFragment extends Fragment {
 
     /**
      * Initializes the calendar of a alarm.
-     * @param dateTime The time and date of the alarm
+     * @param date The time and date of the alarm
      * @param c The calendar
      */
-    private void calendarAlarmInitialization(StringBuilder dateTime, Calendar c) {
+    private void calendarAlarmInitialization(DateTime date, Calendar c) {
+        String dateTime = date.toString();
+        System.out.println(dateTime.toString());
         int year = Integer.parseInt(dateTime.substring(0,4));
         int month = Integer.parseInt(dateTime.substring(5,7));
         int day = Integer.parseInt(dateTime.substring(8,10));
@@ -465,7 +466,7 @@ public class CalendarFragment extends Fragment {
     /**
      * Set up the calendar.
      */
-    private void setUpCalendar() {
+    private void setUpCalendar() throws ParseException, InvalidFormatException {
         calendar = binding.calendar;
         Date currentTime = Calendar.getInstance().getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
@@ -474,17 +475,25 @@ public class CalendarFragment extends Fragment {
         addComponents(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(5, 7)),
             Integer.parseInt(date.substring(9, 10)));
 
-        calendar.setOnDateChangeListener((view, year, month, dayOfMonth) -> addComponents(year, month, dayOfMonth));
+        calendar.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+            try {
+                addComponents(year, month, dayOfMonth);
+            } catch (ParseException | InvalidFormatException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
      * Set up the components.
      */
-    private void addComponents(int year, int month, int dayOfMonth) {
+    private void addComponents(int year, int month, int dayOfMonth) throws ParseException, InvalidFormatException {
         ArrayList<Pet> pets = user.getPets();
-        selectedDate = DateConversion.getDate(year, month, dayOfMonth);
+        String dateTime = (DateTime.Builder.build(year, month, dayOfMonth)).toString();
+        selectedDate = dateTime.substring(0, dateTime.indexOf('T'));
         binding.eventInfoLayout.removeAllViews();
         for (Pet pet : pets) {
+            System.out.println("entra aqui bien");
             CalendarEventsView calendarEventsView = new CalendarEventsView(getContext(), null);
             calendarEventsView.showEvents(pet, selectedDate);
             List<PetComponentView> petComponents = calendarEventsView.getPetComponents();

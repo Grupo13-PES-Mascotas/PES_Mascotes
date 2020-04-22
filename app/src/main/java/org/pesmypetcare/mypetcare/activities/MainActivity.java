@@ -824,6 +824,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert manager != null;
         if (period == 0) period = 1;
+        else if (period == -1) {
+            period = 30;
+        }
+        else if (period == -3) {
+            period = 90;
+        }
         manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, time,
                 AlarmManager.INTERVAL_DAY*period, pending);
     }

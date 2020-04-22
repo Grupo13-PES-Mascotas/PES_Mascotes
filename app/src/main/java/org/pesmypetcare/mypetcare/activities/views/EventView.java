@@ -34,6 +34,7 @@ public class EventView extends PetComponentView {
 
     @Override
     protected String getSecondLineText(Pet pet) {
+
         return DateConversion.getHourMinutes(event.getDateTime());
     }
 }

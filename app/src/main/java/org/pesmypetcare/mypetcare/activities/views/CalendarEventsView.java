@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,14 +35,19 @@ public class CalendarEventsView extends LinearLayout {
      * @param pet The pet that has got the event
      * @param date The date to obtain the events from
      */
-    public void showEvents(Pet pet, String date) {
+    public void showEvents(Pet pet, String date) throws ParseException {
         //pet.addEvent(new Event("Take to vet", "2020-04-03T10:30:00"));
         List<Event> events = pet.getEvents(date);
+        List<Event> periodicEvents = pet.getPeriodicNotificationDay(date);
+        events.addAll(periodicEvents);
         for (Event event : events) {
+            System.out.println("entra en bucle events");
             PetComponentView petComponentView = new EventView(context, null, event).initializePetComponent(pet);
             addView(petComponentView);
             this.petComponents.add(petComponentView);
+            System.out.println("acaba");
         }
+        System.out.println("y aqui");
     }
 
     /**

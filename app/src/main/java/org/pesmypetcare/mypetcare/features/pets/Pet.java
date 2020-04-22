@@ -408,8 +408,10 @@ public class Pet {
 
     public void addPeriodicNotification(Event event, int period, int day) throws ParseException {
         if (period == 7 || period == 14) {
+            System.out.println("entra para añadir");
             putInPeriodsWeek(period, day);
             eventPeriodWeek.add(day-1, event);
+            System.out.println("añadido");
         }
         else if (period == -1 || period == -3) {
             putInPeriodsMonth(period, day);
@@ -418,8 +420,7 @@ public class Pet {
         else if(period == 0) {
             dailyNotification = true;
             String date = event.getDateTime();
-            String[] separate = date.split("'T'");
-            String time = separate[1];
+            String time = "12:00:00";
             dailyEvents.add(new  Pair<String, String>(time, event.getDescription()));
         }
     }
@@ -442,33 +443,38 @@ public class Pet {
         }
     }
 
-    public Event getPeriodicNotificationDay(String dateText) throws ParseException {
+    public ArrayList<Event> getPeriodicNotificationDay(String dateText) throws ParseException {
+        System.out.println(dateText);
+        ArrayList<Event> list = new ArrayList<Event>();
         int dayOfWeek = getDayOfWeek(dateText);
         int dayOfMonth = getDayOfMonth(dateText);
+        System.out.println(dayOfWeek);
         if (dailyNotification) {
             getDailyNotifications();
         }
         if (periodsWeek.containsKey(dayOfWeek)) {
+            System.out.println("contiene");
             if (periodsWeek.get(dayOfWeek) == 0) {
-                return eventPeriodWeek.get(dayOfWeek - 1);
+                System.out.println("antes de añadir a la lista");
+                list.add(eventPeriodWeek.get(dayOfWeek - 1));
             }
             else if (periodsWeek.get(dayOfWeek) == 1) {
                 if (itsthedayWeek(eventPeriodWeek.get(dayOfWeek - 1), dateText)) {
-                    return eventPeriodWeek.get(dayOfWeek - 1);
+                    list.add(eventPeriodWeek.get(dayOfWeek - 1));
                 }
             }
         }
         if (periodsMonth.containsKey(dayOfMonth)) {
             if (periodsMonth.get(dayOfMonth) == 0) {
-                return eventPeriodMonth.get(dayOfMonth - 1);
+                list.add(eventPeriodMonth.get(dayOfMonth - 1));
             }
             else if (periodsMonth.get(dayOfMonth) == 2) {
                 if (itsthedayMonth(eventPeriodMonth.get(dayOfMonth - 1), dateText)) {
-                    return eventPeriodMonth.get(dayOfMonth - 1);
+                    list.add(eventPeriodMonth.get(dayOfMonth - 1));
                 }
             }
         }
-        return null;
+        return list;
     }
 
     private void getDailyNotifications() {
@@ -477,16 +483,16 @@ public class Pet {
 
     private boolean itsthedayMonth(Event event, String actualDate) throws ParseException {
         String dateTime = event.getDateTime();
-        Date date1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(dateTime);
-        Date dateActual = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(actualDate);
+        Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(dateTime);
+        Date dateActual = new SimpleDateFormat("yyyy-MM-dd").parse(actualDate);
         int diff =(int) ((dateActual.getTime()-date1.getTime())/86400000);
         return (diff % 90) < 15;
     }
 
     private boolean itsthedayWeek(Event event, String actualDate) throws ParseException {
         String dateTime = event.getDateTime();
-        Date date1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(dateTime);
-        Date dateActual = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(actualDate);
+        Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(dateTime);
+        Date dateActual = new SimpleDateFormat("yyyy-MM-dd").parse(actualDate);
         int diff =(int) ((dateActual.getTime()-date1.getTime())/86400000);
         return (diff % 14) == 0;
     }
@@ -498,14 +504,14 @@ public class Pet {
     }
 
     private int getDayOfWeek(String dateString) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = formatter.parse(dateString.replaceAll("Z$", "+0000"));
         DateFormat dfWeek = new SimpleDateFormat("u", Locale.ENGLISH);
         return Integer.parseInt(dfWeek.format(date));
     }
 
     private int getDayOfMonth(String dateString) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = formatter.parse(dateString.replaceAll("Z$", "+0000"));
         DateFormat dfMonth = new SimpleDateFormat("dd", Locale.ENGLISH);
         return Integer.parseInt(dfMonth.format(date));
@@ -513,21 +519,23 @@ public class Pet {
 
     public void deletePeriodicNotification(String date, int period, String desc) throws ParseException {
         int day;
-        Event e = getPeriodicNotificationDay(date);
-        if (eventPeriodWeek.contains(e)) {
-            day = getDayOfWeek(date);
-            eventPeriodWeek.remove(day);
-            periodsWeek.remove(day);
-        }
-        if (eventPeriodMonth.contains(e)) {
-            day = getDayOfMonth(date);
-            eventPeriodMonth.remove(day);
-            periodsMonth.remove(day);
-        }
-        if (period == 0) {
-            String[] separate = date.split("'T'");
-            String time = separate[1];
-            dailyEvents.remove(new Pair<String, String> (time, desc));
+        ArrayList<Event> events = getPeriodicNotificationDay(date);
+        for (Event e: events) {
+            if (eventPeriodWeek.contains(e)) {
+                day = getDayOfWeek(date);
+                eventPeriodWeek.remove(day);
+                periodsWeek.remove(day);
+            }
+            if (eventPeriodMonth.contains(e)) {
+                day = getDayOfMonth(date);
+                eventPeriodMonth.remove(day);
+                periodsMonth.remove(day);
+            }
+            if (period == 0) {
+                String[] separate = date.split("'T'");
+                String time = separate[1];
+                dailyEvents.remove(new Pair<String, String>(time, desc));
+            }
         }
     }
 }
