@@ -22,7 +22,6 @@ public class TestTrUpdateMedication {
     private Pet pet;
     private Medication medication;
     private TrUpdateMedication trUpdateMedication;
-    private TrNewPetMedication trNewPetMedication;
 
     @Before
     public void setUp() {
@@ -31,16 +30,12 @@ public class TestTrUpdateMedication {
         medication = new Medication("Filoproffin", 1, 1, MEDICATION_DURATION,
             DateTime.Builder.buildDateString("2020-01-12"));
         StubMedicationService stubMedicationService = new StubMedicationService();
-        trNewPetMedication = new TrNewPetMedication(stubMedicationService);
         trUpdateMedication = new TrUpdateMedication(stubMedicationService);
     }
 
     @Test
     public void shouldUpdateMedicationBody() throws MedicationAlreadyExistingException {
-        trNewPetMedication.setUser(user);
-        trNewPetMedication.setPet(pet);
-        trNewPetMedication.setMedication(medication);
-        trNewPetMedication.execute();
+
         medication.setMedicationQuantity(MEDICATION_QUANTITY);
         trUpdateMedication.setUser(user);
         trUpdateMedication.setPet(pet);
@@ -51,10 +46,6 @@ public class TestTrUpdateMedication {
 
     @Test
     public void shouldUpdateMedicationDate() throws MedicationAlreadyExistingException {
-        trNewPetMedication.setUser(user);
-        trNewPetMedication.setPet(pet);
-        trNewPetMedication.setMedication(medication);
-        trNewPetMedication.execute();
         medication.setMedicationDate(DateTime.Builder.buildDateString("2077-11-11"));
         trUpdateMedication.setUser(user);
         trUpdateMedication.setPet(pet);
