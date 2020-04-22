@@ -197,8 +197,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainAllPetMedications trObtainAllPetMedications;
     private TrDeleteMedication trDeleteMedication;
     private TrUpdateMedication trUpdateMedication;
-    private static int notificationId;
-    private static int requestCode;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -533,7 +531,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     /**
-     * Initialize the medication controllers
+     * Initialize the medication controllers.
      */
     private void initializeMedicationControllers() {
         trNewPetMedication = ControllersFactory.createTrNewPetMedication();
