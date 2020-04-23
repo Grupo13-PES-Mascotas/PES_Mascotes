@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.activities.fragments.community.groups;
 
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
+import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
@@ -40,8 +41,8 @@ public interface InfoGroupCommunication {
     void deleteForum(Forum forum);
 
     /**
-     *
-     * @param postsFragment
+     * Shows a forum.
+     * @param postsFragment The fragment to show
      */
     void showForum(PostsFragment postsFragment);
 
@@ -57,4 +58,11 @@ public interface InfoGroupCommunication {
      * @param postCreationDate The creation date of the post that has to be deleted
      */
     void deletePost(Forum forum, DateTime postCreationDate);
+
+    /**
+     * Updates the given post with the given text.
+     * @param postToUpdate The post to update
+     * @param newText The new text of the post
+     */
+    void updatePost(Post postToUpdate, String newText);
 }
