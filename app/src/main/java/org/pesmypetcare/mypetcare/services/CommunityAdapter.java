@@ -6,6 +6,7 @@ import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.SortedSet;
 
@@ -53,6 +54,11 @@ public class CommunityAdapter implements CommunityService {
 
     @Override
     public void createPost(User user, Forum forum, Post post) {
+        // Not implemented yet
+    }
+
+    @Override
+    public void deletePost(User user, Forum forum, DateTime postCreationDate) {
         // Not implemented yet
     }
 }

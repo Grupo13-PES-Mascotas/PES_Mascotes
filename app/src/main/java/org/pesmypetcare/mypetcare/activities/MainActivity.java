@@ -79,6 +79,7 @@ import org.pesmypetcare.mypetcare.controllers.TrDeleteGroup;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
+import org.pesmypetcare.mypetcare.controllers.TrDeletePost;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteSubscription;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteWashFrequency;
@@ -109,6 +110,7 @@ import org.pesmypetcare.mypetcare.features.community.groups.NotSubscribedExcepti
 import org.pesmypetcare.mypetcare.features.community.groups.OwnerCannotDeleteSubscriptionException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostCreatedBeforeForumException;
+import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
@@ -203,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrAddNewForum trAddNewForum;
     private TrDeleteForum trDeleteForum;
     private TrAddNewPost trAddNewPost;
+    private TrDeletePost trDeletePost;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -535,6 +538,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewForum = ControllersFactory.createTrAddNewForum();
         trDeleteForum = ControllersFactory.createTrDeleteForum();
         trAddNewPost = ControllersFactory.createTrAddNewPost();
+        trDeletePost = ControllersFactory.createTrDeletePost();
     }
 
     /**
@@ -1010,6 +1014,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trAddNewPost.execute();
         } catch (PostAlreadyExistingException | ForumNotFoundException | PostCreatedBeforeForumException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deletePost(Forum forum, DateTime postCreationDate) {
+        trDeletePost.setUser(user);
+        trDeletePost.setPostCreationDate(postCreationDate);
+        trDeletePost.setForum(forum);
+        try {
+            trDeletePost.execute();
+        } catch (ForumNotFoundException | PostNotFoundException e) {
             e.printStackTrace();
         }
     }

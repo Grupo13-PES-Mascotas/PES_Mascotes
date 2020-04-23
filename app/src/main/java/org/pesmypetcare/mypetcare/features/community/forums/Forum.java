@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.features.community.forums;
 
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
+import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
@@ -138,8 +139,39 @@ public class Forum implements Comparable<Forum> {
         return group;
     }
 
+    /**
+     * Adds the given post to the forum.
+     * @param post The post that has to be added to the forum
+     */
     public void addPost(Post post) {
         posts.add(post);
+    }
+
+    /**
+     * Removes a post from the forum.
+     * @param user The author of the post that has to be removed
+     * @param creationDate The creation date of the post that has to be removed
+     */
+    public void removePost(User user, DateTime creationDate) {
+        Post aux = findPost(user, creationDate);
+        if (aux != null) {
+            posts.remove(aux);
+        }
+    }
+
+    /**
+     * Obtains a post from its author and creation date.
+     * @param author The author of the post that we want to find
+     * @param creationDate The creation date of the post that we want to find
+     * @return The post if it exists in the forum or false otherwise
+     */
+    private Post findPost(User author, DateTime creationDate) {
+        for (Post p : posts) {
+            if (p.getCreationDate().equals(creationDate) && p.getUsername().equals(author.getUsername())) {
+                return p;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -157,4 +189,6 @@ public class Forum implements Comparable<Forum> {
             + "name='" + name + '\''
             + '}';
     }
+
+
 }
