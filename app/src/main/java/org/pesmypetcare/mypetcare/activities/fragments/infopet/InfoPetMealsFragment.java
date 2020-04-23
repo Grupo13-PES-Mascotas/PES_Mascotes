@@ -24,7 +24,7 @@ import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.utilities.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -235,6 +235,9 @@ public class InfoPetMealsFragment extends Fragment {
         meal.setMealName(mealName);
         meal.setKcal(kcal);
         InfoPetFragment.getCommunication().updatePetMeal(pet, meal, newDate, updatesDate);
+        if (updatesDate) {
+            meal.setMealDate(DateTime.Builder.buildFullString(newDate));
+        }
     }
 
     /**
@@ -252,7 +255,7 @@ public class InfoPetMealsFragment extends Fragment {
             dateString.append('0');
         }
         dateString.append(selectedMin).append(':').append(DEFAULT_SECONDS);
-        return new DateTime(dateString.toString());
+        return DateTime.Builder.buildFullString(dateString.toString());
     }
 
     /**

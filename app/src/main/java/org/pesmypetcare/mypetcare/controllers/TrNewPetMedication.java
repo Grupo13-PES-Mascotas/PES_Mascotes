@@ -6,6 +6,8 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.MedicationManagerService;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * @author Xavier Campos
  */
@@ -55,7 +57,7 @@ public class TrNewPetMedication {
     /**
      * Executes the transaction.
      */
-    public void execute() throws MedicationAlreadyExistingException {
+    public void execute() throws MedicationAlreadyExistingException, ExecutionException, InterruptedException {
         result = false;
         if (medicationHasAlreadyBeenAdded()) {
             throw new MedicationAlreadyExistingException();

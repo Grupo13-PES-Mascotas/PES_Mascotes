@@ -5,6 +5,8 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.MedicationManagerService;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * @author Xavier Campos
  */
@@ -45,7 +47,7 @@ public class TrDeleteMedication {
     /**
      * Executes the transaction.
      */
-    public void execute() {
+    public void execute() throws ExecutionException, InterruptedException {
         medicationManagerService.deleteMedication(user, pet, medication);
         pet.deleteEvent(medication);
     }

@@ -50,6 +50,7 @@ public class InfoPetMedicationFragment extends Fragment {
     private MaterialDatePicker materialDatePicker;
     private boolean isMedicationDateSelected;
     private boolean updatesDate;
+    private boolean updatesName;
     private MaterialButton editMedicationButton;
     private TextInputEditText inputMedicationName;
     private TextInputEditText inputMedicationQuantity;
@@ -187,9 +188,9 @@ public class InfoPetMedicationFragment extends Fragment {
     private void initializeAddButtonListener() {
         DateTime medicationIniDate = getDateTime();
         String medicationName = Objects.requireNonNull(inputMedicationName.getText()).toString();
-        int medicationQuantity = Integer.parseInt(Objects.requireNonNull(
+        double medicationQuantity = Double.parseDouble(Objects.requireNonNull(
             inputMedicationQuantity.getText()).toString());
-        double medicationPeriodicity = Double.parseDouble(Objects.requireNonNull(
+        int medicationPeriodicity = Integer.parseInt(Objects.requireNonNull(
             inputMedicationPeriodicity.getText()).toString());
         int medicationDuration = Integer.parseInt(Objects.requireNonNull(
             inputMedicationDuration.getText()).toString());
@@ -215,17 +216,17 @@ public class InfoPetMedicationFragment extends Fragment {
     private void initializeEditButtonListener() {
         final String newDate = getDateTime().toString();
         String medicationName = Objects.requireNonNull(inputMedicationName.getText()).toString();
-        int medicationQuantity = Integer.parseInt(Objects.requireNonNull(
+        double medicationQuantity = Double.parseDouble(Objects.requireNonNull(
             inputMedicationQuantity.getText()).toString());
-        double medicationPeriodicity = Double.parseDouble(Objects.requireNonNull(
+        int medicationPeriodicity = Integer.parseInt(Objects.requireNonNull(
             inputMedicationPeriodicity.getText()).toString());
         int medicationDuration = Integer.parseInt(Objects.requireNonNull(
             inputMedicationDuration.getText()).toString());
-        medication.setMedicationName(medicationName);
         medication.setMedicationQuantity(medicationQuantity);
         medication.setMedicationFrequency(medicationPeriodicity);
         medication.setMedicationDuration(medicationDuration);
-        InfoPetFragment.getCommunication().updatePetMedication(pet, medication, newDate, updatesDate);
+        InfoPetFragment.getCommunication().updatePetMedication(pet, medication, newDate, updatesDate, medicationName,
+            updatesName);
     }
 
     /**

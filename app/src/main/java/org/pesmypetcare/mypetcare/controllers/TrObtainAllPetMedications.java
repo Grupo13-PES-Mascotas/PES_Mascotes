@@ -7,6 +7,7 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.MedicationManagerService;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Xavier Campos
@@ -48,7 +49,7 @@ public class TrObtainAllPetMedications {
     /**
      * Method responsible for executing the transaction.
      */
-    public void execute() {
+    public void execute() throws ExecutionException, InterruptedException {
         result = medicationManagerService.findMedicationsByPet(user, pet);
         for (Event e:result) {
             pet.addEvent(e);

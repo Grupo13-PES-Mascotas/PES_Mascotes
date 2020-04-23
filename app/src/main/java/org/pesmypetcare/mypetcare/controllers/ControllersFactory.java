@@ -1,9 +1,9 @@
 package org.pesmypetcare.mypetcare.controllers;
 
 import org.pesmypetcare.mypetcare.services.MealManagerAdapter;
+import org.pesmypetcare.mypetcare.services.MedicationManagerAdapter;
 import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
-import org.pesmypetcare.mypetcare.services.StubMedicationService;
 import org.pesmypetcare.mypetcare.services.UserManagerAdapter;
 
 public class ControllersFactory {
@@ -24,11 +24,12 @@ public class ControllersFactory {
     }
 
     public static TrDeleteUser createTrDeleteUser() {
-        return new TrDeleteUser(new UserManagerAdapter(), new PetManagerAdapter(), new MealManagerAdapter());
+        return new TrDeleteUser(new UserManagerAdapter(), new PetManagerAdapter(), new MealManagerAdapter(),
+            new MedicationManagerAdapter());
     }
 
     public static TrDeletePet createTrDeletePet() {
-        return new TrDeletePet(new PetManagerAdapter(), new MealManagerAdapter());
+        return new TrDeletePet(new PetManagerAdapter(), new MealManagerAdapter(), new MedicationManagerAdapter());
     }
 
     public static TrObtainUser createTrObtainUser() {
@@ -122,19 +123,19 @@ public class ControllersFactory {
     }
 
     public static TrNewPetMedication createTrNewPetMedication() {
-        return new TrNewPetMedication(new StubMedicationService());
+        return new TrNewPetMedication(new MedicationManagerAdapter());
     }
 
     public static TrObtainAllPetMedications createTrObtainAllPetMedications() {
-        return new TrObtainAllPetMedications(new StubMedicationService());
+        return new TrObtainAllPetMedications(new MedicationManagerAdapter());
     }
 
     public static TrDeleteMedication createTrDeleteMedication() {
-        return new TrDeleteMedication(new StubMedicationService());
+        return new TrDeleteMedication(new MedicationManagerAdapter());
     }
 
     public static TrUpdateMedication createTrUpdateMedication() {
-        return new TrUpdateMedication(new StubMedicationService());
+        return new TrUpdateMedication(new MedicationManagerAdapter());
     }
 }
 

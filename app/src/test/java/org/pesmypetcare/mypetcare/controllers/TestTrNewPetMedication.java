@@ -10,6 +10,7 @@ import org.pesmypetcare.mypetcare.services.StubMedicationService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertTrue;
 
@@ -35,7 +36,7 @@ public class TestTrNewPetMedication {
     }
 
     @Test(expected = MedicationAlreadyExistingException.class)
-    public void shouldNotAddAlreadyExistingMedication() throws MedicationAlreadyExistingException {
+    public void shouldNotAddAlreadyExistingMedication() throws MedicationAlreadyExistingException, ExecutionException, InterruptedException {
         Medication medication = getTestMedication("2020-01-12");
         trNewPetMedication.setUser(user);
         trNewPetMedication.setPet(pet);
@@ -50,7 +51,7 @@ public class TestTrNewPetMedication {
     }
 
     @Test
-    public void shouldAddMedication() throws MedicationAlreadyExistingException {
+    public void shouldAddMedication() throws MedicationAlreadyExistingException, ExecutionException, InterruptedException {
         Medication medication = getTestMedication("2017-03-10");
         trNewPetMedication.setUser(user);
         trNewPetMedication.setPet(pet);
