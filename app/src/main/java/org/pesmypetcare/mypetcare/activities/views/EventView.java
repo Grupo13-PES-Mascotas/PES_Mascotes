@@ -46,7 +46,7 @@ public class EventView extends CircularEntryView {
 
     @Override
     public Object getObject() {
-        return event;
+        return pet;
     }
 
     /**
@@ -64,6 +64,6 @@ public class EventView extends CircularEntryView {
 
     @Override
     protected String getSecondLineText() {
-        return DateConversion.getHourMinutes(event.getDateTime());
+        return DateConversion.getHourMinutes(event.getDateTime().toString());
     }
 }

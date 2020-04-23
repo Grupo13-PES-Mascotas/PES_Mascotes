@@ -35,7 +35,7 @@ public class TestTrNewPersonalEvent {
 
     @Test
     public void shouldAddOneEvent() {
-        Event e = new Event("Hello", "2020-04-03T10:30:00");
+        Event e = new Event("Hello", DateTime.Builder.buildFullString("2020-04-03T10:30:00"));
         pet.addEvent(e);
         System.out.println(e);
         System.out.println(pet.getEvents(DATE));
@@ -44,7 +44,7 @@ public class TestTrNewPersonalEvent {
 
     @Test
     public void shouldCommunicateWithService() {
-        Event e = new Event("Hello2", "2020-04-03T10:40:00");
+        Event e = new Event("Hello2", DateTime.Builder.buildFullString("2020-04-03T10:40:00"));
         pet.addEvent(e);
         trNewPersonalEvent.setPet(pet);
         trNewPersonalEvent.setEvent(e);

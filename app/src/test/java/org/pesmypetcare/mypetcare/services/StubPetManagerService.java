@@ -7,6 +7,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -127,5 +128,21 @@ public class StubPetManagerService implements PetManagerService {
         ArrayList<Pet> pets = data.get(user.getUsername());
         int petIndex = Objects.requireNonNull(pets).indexOf(pet);
         pets.get(petIndex).deleteWashFrequencyForDate(dateTime);
+    }
+
+    @Override
+    public void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) throws ParseException {
+        ArrayList<Pet> pets = data.get(user.getUsername());
+        assert pets != null;
+        int index = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(index).addPeriodicNotification(event, period);
+    }
+
+    @Override
+    public void deletePeriodicEvent(User user, Pet pet, Event event) throws ParseException {
+        ArrayList<Pet> pets = data.get(user.getUsername());
+        assert pets != null;
+        int index = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(index).deletePeriodicNotification(event);
     }
 }

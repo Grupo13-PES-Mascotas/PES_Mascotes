@@ -20,9 +20,9 @@ public class TestPet {
     public void setUp() throws PetRepeatException {
         user = new User("johnDoe", "johndoe@gmail.com", "1234");
         pet = getLinuxPet();
-        pet.addEvent(new Event("Take to vet", "2020-04-02T10:30:00"));
-        pet.addEvent(new Event("Take to my mother's house", "2020-04-02T11:00:00"));
-        pet.addEvent(new Event("Take to hairdresser", "2020-04-03T10:30:00"));
+        pet.addEvent(new Event("Take to vet", DateTime.Builder.buildFullString("2020-04-02T10:30:00")));
+        pet.addEvent(new Event("Take to my mother's house", DateTime.Builder.buildFullString("2020-04-02T11:00:00")));
+        pet.addEvent(new Event("Take to hairdresser", DateTime.Builder.buildFullString("2020-04-03T10:30:00")));
 
         user.addPet(pet);
     }
@@ -31,7 +31,7 @@ public class TestPet {
     public void shouldDisplayEventDate() {
         List<Event> events = pet.getEvents(DATE);
         assertEquals("Should display event date", DATE,
-            DateConversion.getDate(events.get(0).getDateTime()));
+            DateConversion.getDate(events.get(0).getDateTime().toString()));
     }
 
     private Pet getLinuxPet() throws PetRepeatException {

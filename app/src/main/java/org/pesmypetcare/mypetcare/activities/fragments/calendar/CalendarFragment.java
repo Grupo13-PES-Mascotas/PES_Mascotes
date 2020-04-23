@@ -29,9 +29,13 @@ import org.pesmypetcare.mypetcare.databinding.FragmentCalendarBinding;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.utilities.DateConversion;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,6 +62,7 @@ public class CalendarFragment extends Fragment {
     private User user;
     private Pet selectedPet;
     private CalendarCommunication communication;
+    private String selectedDate;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -65,16 +70,35 @@ public class CalendarFragment extends Fragment {
         binding = FragmentCalendarBinding.inflate(inflater, container, false);
         communication = (CalendarCommunication) getActivity();
         user = Objects.requireNonNull(communication).getUser();
-        setUpCalendar();
+        try {
+            setUpCalendar();
+        } catch (ParseException | InvalidFormatException e) {
+            e.printStackTrace();
+        }
 
-        binding.btnAddPersonalEvent.setOnClickListener(v -> initializeDialog());
+        binding.btnAddPersonalEvent.setOnClickListener(v -> {
+            try {
+                initializeDialog();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+        binding.btnAddPeriodicEvent.setOnClickListener(v -> {
+            try {
+                initializePeriodicDialog();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+
         return binding.getRoot();
     }
+
 
     /**
      * Initialize the dialog for a new personal event.
      */
-    private void initializeDialog() {
+    private void initializeDialog() throws ParseException {
         MaterialAlertDialogBuilder newPersonal = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()),
                 R.style.AlertDialogTheme);
         initializeDialogComponents(newPersonal);
@@ -82,9 +106,153 @@ public class CalendarFragment extends Fragment {
     }
 
     /**
+     * Initialize the dialog for a new periodic notification.
+     */
+    private void initializePeriodicDialog() throws ParseException {
+        MaterialAlertDialogBuilder newPeriodic = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()),
+                R.style.AlertDialogTheme);
+        initializeDialogComponentsPeriodic(newPeriodic);
+        newPeriodic.show();
+    }
+
+    /**
+     * Initialize the components of the dialog for a new periodic notification.
+     */
+    private void initializeDialogComponentsPeriodic(MaterialAlertDialogBuilder newPeriodic) throws ParseException {
+        LinearLayout layout = new LinearLayout(getContext());
+        EditText reasonText = initializeDialogLayout(layout);
+        reasonText.setContentDescription(getString(R.string.reasonText));
+        LinearLayout time = new LinearLayout(getContext());
+        TextView dateText = initializeTimeLayout(time);
+        EditText timeText = putHourTimeLayout(time);
+        timeText.setContentDescription(getString(R.string.timeText));
+        layout.addView(time);
+        Spinner sp_pets = initializeSpinner(layout);
+        sp_pets.setContentDescription(getString(R.string.selectPet));
+        Spinner sp_period = initializeSpinnerPeriod(layout);
+        sp_period.setContentDescription(getString(R.string.selectPeriodicity));
+        dialogElementsPeriodic(newPeriodic, layout, reasonText, dateText, timeText, sp_pets, sp_period);
+    }
+
+    /**
+     * Initialize and set more components of the dialog
+     */
+    private void dialogElementsPeriodic(MaterialAlertDialogBuilder newPeriodic, LinearLayout layout, EditText
+            reasonText, TextView dateText, EditText timeText, Spinner sp_pets, Spinner sp_period) {
+        newPeriodic.setTitle(R.string.periodic_notification_title);
+        newPeriodic.setMessage(R.string.dialog_new_periodic_message);
+        newPeriodic.setView(layout);
+        cancelDialog(newPeriodic);
+        createPeriodicEventListener(newPeriodic, reasonText, dateText, timeText, sp_pets, sp_period);
+    }
+
+    /**
+     * Listener of the create button of the periodic notificationdialog.
+     * @param newPeriodic The dialog
+     * @param dateText The date of the event
+     * @param reasonText The reason of the event
+     * @param timeText The hour of the even
+     * @param sp_pets The spinner for pet selection
+     * @param sp_period The spinner for period selection
+     */
+    private void createPeriodicEventListener(MaterialAlertDialogBuilder newPeriodic, EditText reasonText, TextView
+            dateText, EditText timeText, Spinner sp_pets, Spinner sp_period) {
+        newPeriodic.setPositiveButton(getString(R.string.create), (dialog, which) -> {
+            if (sp_pets.getSelectedItem() != null) {
+                if (reasonText.getText().toString().length() != 0) {
+                    try {
+                        createPeriodicNotification(reasonText, dateText, timeText, sp_pets, sp_period);
+                    } catch (ParseException | InvalidFormatException | UserIsNotOwnerException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    toastText(getString(R.string.no_description));
+                }
+            } else {
+                toastText(getString(R.string.add_a_pet));
+            }
+        });
+    }
+
+    /**
+     * Create a new periodic notification event.
+     * @param dateText The date of the event
+     * @param reasonText The reason of the event
+     * @param sp_pets The spinner for pet selection
+     * @param sp_period The spinner for the period selection
+     * @param timeText The hour of the event
+     */
+    private void createPeriodicNotification(EditText reasonText, TextView dateText, EditText timeText,
+                                            Spinner sp_pets, Spinner sp_period) throws ParseException, InvalidFormatException, UserIsNotOwnerException {
+        String petName = sp_pets.getSelectedItem().toString();
+        String periodicity = sp_period.getSelectedItem().toString();
+        int period = setPeriodicity(periodicity);
+        DateTime dateTime = DateTime.Builder.buildDateTimeString(dateText.getText().toString(),
+                timeText.getText().toString());
+        getPet(petName);
+        if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
+            //selectedPet.addPeriodicNotification(new Event(reasonText.getText().toString(), dateTime), period);
+            communication.newPeriodicNotification(selectedPet, period, reasonText.getText().toString(), dateTime);
+            Calendar c = Calendar.getInstance();
+            calendarAlarmInitialization(dateTime, c);
+            communication.schedulePeriodicNotification(getContext(), c.getTimeInMillis(),
+                    selectedPet.getName(), reasonText.getText().toString(), period);
+            setUpCalendar();
+        } else {
+            toastText(getString(R.string.incorrect_entry));
+        }
+    }
+
+    /**
+     * Set the period number
+     * @param periodicity the period selected on the spinner
+     * @return the period number
+     */
+    private int setPeriodicity(String periodicity) {
+        if(getString(R.string.one_day) == periodicity) return 1;
+        else if(getString(R.string.one_week) == periodicity) return 7;
+        else if(getString(R.string.two_weeks) == periodicity) return 14;
+        else if(getString(R.string.one_month) == periodicity) return 30;
+        else if(getString(R.string.three_months) == periodicity) return 90;
+        else return 0;
+    }
+
+    /**
+     * Initialize the period spinner of the dialog.
+     * @param layout The layout to put the spinner
+     * @return The period spinner
+     */
+    private Spinner initializeSpinnerPeriod(LinearLayout layout) {
+        final ArrayAdapter<String> adp = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
+                android.R.layout.simple_spinner_item, (List<String>) getPeriodicityOptions());
+        Spinner sp = new Spinner(getContext());
+        sp.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        sp.setAdapter(adp);
+        layout.addView(sp);
+        return sp;
+    }
+
+
+    /**
+     * Gets all the periodic options of a periodic notification we can choose.
+     * @return An string array with the period options
+     */
+    private ArrayList<?> getPeriodicityOptions() {
+        ArrayList<String> PeriodOpt = new ArrayList<>();
+
+        PeriodOpt.add(getString(R.string.two_weeks));
+        PeriodOpt.add(getString(R.string.one_week));
+        PeriodOpt.add(getString(R.string.one_day));
+        PeriodOpt.add(getString(R.string.one_month));
+        PeriodOpt.add(getString(R.string.three_months));
+        return PeriodOpt;
+    }
+
+    /**
      * Initialize the dialog components for a new personal event.
      */
-    private void initializeDialogComponents(MaterialAlertDialogBuilder newPersonal) {
+    private void initializeDialogComponents(MaterialAlertDialogBuilder newPersonal) throws ParseException {
         LinearLayout layout = new LinearLayout(getContext());
         EditText reasonText = initializeDialogLayout(layout);
         reasonText.setContentDescription(getString(R.string.reasonText));
@@ -129,7 +297,11 @@ public class CalendarFragment extends Fragment {
         newPersonal.setPositiveButton(getString(R.string.create), (dialog, which) -> {
             if (sp.getSelectedItem() != null) {
                 if (reasonText.getText().toString().length() != 0) {
-                    createPersonalEvent(reasonText, dateText, timeText, sp);
+                    try {
+                        createPersonalEvent(reasonText, dateText, timeText, sp);
+                    } catch (ParseException | InvalidFormatException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     toastText(getString(R.string.no_description));
                 }
@@ -156,14 +328,14 @@ public class CalendarFragment extends Fragment {
      * @param sp The spinner for pet selection
      * @param timeText The hour of the event
      */
-    private void createPersonalEvent(EditText reasonText, TextView dateText, EditText timeText, Spinner sp) {
+    private void createPersonalEvent(EditText reasonText, TextView dateText, EditText timeText, Spinner sp) throws
+            ParseException, InvalidFormatException {
         String petName = sp.getSelectedItem().toString();
-        StringBuilder dateTime = new StringBuilder(dateText.getText());
-        dateTime.append('T');
-        dateTime.append(timeText.getText());
+        DateTime dateTime = DateTime.Builder.buildDateTimeString(dateText.getText().toString(),
+                timeText.getText().toString());;
         getPet(petName);
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
-            selectedPet.addEvent(new Event(reasonText.getText().toString(), dateTime.toString()));
+            selectedPet.addEvent(new Event(reasonText.getText().toString(), dateTime));
             communication.newPersonalEvent(selectedPet, reasonText.getText().toString(), dateTime.toString());
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(dateTime, c);
@@ -176,10 +348,11 @@ public class CalendarFragment extends Fragment {
 
     /**
      * Initializes the calendar of a alarm.
-     * @param dateTime The time and date of the alarm
+     * @param date The time and date of the alarm
      * @param c The calendar
      */
-    private void calendarAlarmInitialization(StringBuilder dateTime, Calendar c) {
+    private void calendarAlarmInitialization(DateTime date, Calendar c) {
+        String dateTime = date.toString();
         int year = Integer.parseInt(dateTime.substring(0,4));
         int month = Integer.parseInt(dateTime.substring(5,7));
         int day = Integer.parseInt(dateTime.substring(8,10));
@@ -238,12 +411,13 @@ public class CalendarFragment extends Fragment {
      * @param time The layout to put the time and date
      * @return The dateText
      */
-    private TextView initializeTimeLayout(LinearLayout time) {
+    private TextView initializeTimeLayout(LinearLayout time) throws ParseException {
         time.setOrientation(LinearLayout.HORIZONTAL);
         time.setGravity(Gravity.CENTER_HORIZONTAL);
         time.setWeightSum(2);
         TextView dateText = new TextView(new ContextThemeWrapper(getContext(), R.style.HintStyle));
-        Date currentTime = Calendar.getInstance().getTime();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-d");
+        Date currentTime = format.parse(selectedDate);
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
         dateText.setText(dateFormat.format(currentTime));
         dateText.setTextColor(Color.parseColor(PRIMARY_COLOR));
@@ -318,28 +492,36 @@ public class CalendarFragment extends Fragment {
     /**
      * Set up the calendar.
      */
-    private void setUpCalendar() {
+    private void setUpCalendar() throws ParseException, InvalidFormatException {
         calendar = binding.calendar;
         Date currentTime = Calendar.getInstance().getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
         String date = dateFormat.format(currentTime);
 
         addComponents(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(5, 7)),
-            Integer.parseInt(date.substring(9, 10)));
+                Integer.parseInt(date.substring(9, 10)));
 
-        calendar.setOnDateChangeListener((view, year, month, dayOfMonth) -> addComponents(year, month, dayOfMonth));
+        calendar.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+            try {
+                addComponents(year, month, dayOfMonth);
+            } catch (ParseException | InvalidFormatException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
      * Set up the components.
      */
-    private void addComponents(int year, int month, int dayOfMonth) {
+    private void addComponents(int year, int month, int dayOfMonth) throws ParseException, InvalidFormatException {
         ArrayList<Pet> pets = user.getPets();
-        String date = DateConversion.getDate(year, month, dayOfMonth);
+        ++month;
+        String dateTime = (DateTime.Builder.build(year, month, dayOfMonth)).toString();
+        selectedDate = dateTime.substring(0, dateTime.indexOf('T'));
         binding.eventInfoLayout.removeAllViews();
         for (Pet pet : pets) {
             CalendarEventsView calendarEventsView = new CalendarEventsView(getContext(), null);
-            calendarEventsView.showEvents(pet, date);
+            calendarEventsView.showEvents(pet, selectedDate);
             List<CircularEntryView> petComponents = calendarEventsView.getPetComponents();
             for (CircularEntryView p : petComponents) {
                 p.setOnClickListener(v -> deleteEventDialog(p));
@@ -372,13 +554,24 @@ public class CalendarFragment extends Fragment {
         Pet pet = (Pet) circularEntryView.getObject();
         Event event = ((EventView) circularEntryView).getEvent();
         deleteEvent.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-            setUpCalendar();
+            try {
+                setUpCalendar();
+            } catch (ParseException | InvalidFormatException e) {
+                e.printStackTrace();
+            }
             pet.deleteEvent(event);
             communication.deletePersonalEvent(pet, event);
             Calendar c = Calendar.getInstance();
-            calendarAlarmInitialization(new StringBuilder(event.getDateTime()), c);
+            calendarAlarmInitialization(event.getDateTime(), c);
             communication.cancelNotification(getContext(), new Notification(event.getDescription(),
                     new Date(c.getTimeInMillis()), pet.getName()));
+            try {
+                //pet.deletePeriodicNotification(event);
+                communication.deletePeriodicNotification(pet, event, user);
+            } catch (ParseException | UserIsNotOwnerException e) {
+                e.printStackTrace();
+            }
         });
     }
+
 }

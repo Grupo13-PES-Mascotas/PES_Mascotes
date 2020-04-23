@@ -136,5 +136,13 @@ public class ControllersFactory {
     public static TrUpdateMedication createTrUpdateMedication() {
         return new TrUpdateMedication(new StubMedicationService());
     }
+
+    public static TrNewPeriodicNotification createTrNewPeriodicNotification() {
+        return new TrNewPeriodicNotification(new PetManagerAdapter());
+    }
+
+    public static TrDeletePeriodicNotification createTrDeletePeriodicNotification() {
+        return new TrDeletePeriodicNotification(new PetManagerAdapter());
+    }
 }
 

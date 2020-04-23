@@ -57,7 +57,7 @@ public class TrUpdateMeal {
     public void execute() {
         mealManagerService.updateMealBody(user, pet, meal);
         if (updatesDate) {
-            mealManagerService.updateMealDate(user, pet, newDate, meal.getDateTime());
+            mealManagerService.updateMealDate(user, pet, newDate, meal.getDateTime().toString());
         }
     }
 }

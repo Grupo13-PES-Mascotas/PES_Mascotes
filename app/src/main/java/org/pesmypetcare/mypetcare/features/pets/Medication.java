@@ -16,7 +16,7 @@ public class Medication extends Event {
 
     public Medication(String medicationName, int medicationQuantity, double medicationFrequency,
                       int medicationDuration, DateTime medicationDate) {
-        super(MEDICATION + medicationName + WITH_START_DATE + medicationName, medicationDate.toString());
+        super(MEDICATION + medicationName + WITH_START_DATE + medicationName, medicationDate);
         this.medicationName = medicationName;
         this.medicationQuantity = medicationQuantity;
         this.medicationFrequency = medicationFrequency;

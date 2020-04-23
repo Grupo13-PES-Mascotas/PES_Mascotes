@@ -37,7 +37,7 @@ public class TestTrDeleteWeight {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date date = new Date();
         String strData = dateFormat.format(date);
-        dateTime = new DateTime(strData);
+        dateTime = DateTime.Builder.buildFullString(strData);
         dateTime.setHour(0);
         dateTime.setMinutes(0);
         dateTime.setSeconds(0);
@@ -67,7 +67,7 @@ public class TestTrDeleteWeight {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date date = new Date();
         String strData = dateFormat.format(date);
-        return new DateTime(strData);
+        return DateTime.Builder.buildFullString(strData);
     }
 
     private Pet getDinkyPet() throws PetRepeatException {

@@ -60,7 +60,7 @@ public class TrUpdateMedication {
     public void execute() {
         medicationManagerService.updateMedicationBody(user, pet, medication);
         if (updatesDate) {
-            medicationManagerService.updateMedicationDate(user, pet, newDate, medication.getDateTime());
+            medicationManagerService.updateMedicationDate(user, pet, newDate, medication.getDateTime().toString());
         }
     }
 }

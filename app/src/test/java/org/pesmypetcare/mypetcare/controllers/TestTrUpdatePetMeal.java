@@ -7,8 +7,8 @@ import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
-import org.pesmypetcare.mypetcare.utilities.DateTime;
 import org.pesmypetcare.mypetcare.utilities.InvalidFormatException;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import static org.junit.Assert.assertEquals;
 
@@ -44,12 +44,13 @@ public class TestTrUpdatePetMeal {
     }
 
     @Test
-    public void shouldUpdateMealDate() throws MealAlreadyExistingException, InvalidFormatException {
+    public void shouldUpdateMealDate() throws MealAlreadyExistingException, InvalidFormatException,
+            org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException {
         trNewPetMeal.setUser(user);
         trNewPetMeal.setPet(linux);
         trNewPetMeal.setMeal(originalMeal);
         trNewPetMeal.execute();
-        originalMeal.setMealDate(new DateTime(2011, 5, 27, 11, 15, 1));
+        originalMeal.setMealDate(DateTime.Builder.build(2011, 5, 27, 11, 15, 1));
         trUpdateMeal.setUser(user);
         trUpdateMeal.setPet(linux);
         trUpdateMeal.setMeal(originalMeal);
@@ -60,8 +61,8 @@ public class TestTrUpdatePetMeal {
     private Meals getTestMeal() {
         DateTime date = null;
         try {
-            date = new DateTime(2020, 2, 26, 15, 23, 56);
-        } catch (InvalidFormatException e) {
+            date = DateTime.Builder.build(2020, 2, 26, 15, 23, 56);
+        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
             e.printStackTrace();
         }
         assert date != null;

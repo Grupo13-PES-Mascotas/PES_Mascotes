@@ -36,7 +36,7 @@ public class TestTrDeletePersonalEvent {
 
     @Test
     public void shouldDeleteOneEvent() {
-        Event e = new Event("Hello", DATE_TIME);
+        Event e = new Event("Hello", DateTime.Builder.buildFullString(DATE_TIME));
         pet.addEvent(e);
         pet.deleteEvent(e);
         assertFalse("should add one event", pet.getEvents(DATE_TIME).contains(e));
@@ -44,7 +44,7 @@ public class TestTrDeletePersonalEvent {
 
     @Test
     public void shouldCommunicateWithService() {
-        Event e = new Event("Hello2", DATE_TIME);
+        Event e = new Event("Hello2", DateTime.Builder.buildFullString(DATE_TIME));
         pet.addEvent(e);
         trDeletePersonalEvent.setPet(pet);
         trDeletePersonalEvent.setEvent(e);

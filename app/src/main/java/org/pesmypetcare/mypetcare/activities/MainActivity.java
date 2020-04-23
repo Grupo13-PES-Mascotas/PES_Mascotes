@@ -73,6 +73,7 @@ import org.pesmypetcare.mypetcare.controllers.TrCreateNewGroup;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteGroup;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteMedication;
+import org.pesmypetcare.mypetcare.controllers.TrDeletePeriodicNotification;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteSubscription;
@@ -80,6 +81,7 @@ import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteWeight;
 import org.pesmypetcare.mypetcare.controllers.TrExistsUsername;
+import org.pesmypetcare.mypetcare.controllers.TrNewPeriodicNotification;
 import org.pesmypetcare.mypetcare.controllers.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrNewPetMeal;
 import org.pesmypetcare.mypetcare.controllers.TrNewPetMedication;
@@ -122,6 +124,7 @@ import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -197,6 +200,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainAllPetMedications trObtainAllPetMedications;
     private TrDeleteMedication trDeleteMedication;
     private TrUpdateMedication trUpdateMedication;
+    private TrNewPeriodicNotification trNewPeriodicNotification;
+    private TrDeletePeriodicNotification trDeletePeriodicNotification;
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -484,6 +490,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private void initializeEventControllers() {
         trNewPersonalEvent = ControllersFactory.createTrNewPersonalEvent();
         trDeletePersonalEvent = ControllersFactory.createTrDeletePersonalEvent();
+        trNewPeriodicNotification = ControllersFactory.createTrNewPeriodicNotification();
+        trDeletePeriodicNotification = ControllersFactory.createTrDeletePeriodicNotification();
     }
 
     /**
@@ -1257,6 +1265,57 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert manager != null;
         manager.cancel(pending);
+    }
+
+    @Override
+    public void newPeriodicNotification(Pet selectedPet, int periodicity, String reasonText, DateTime dateTime)
+            throws ParseException, UserIsNotOwnerException {
+
+        trNewPeriodicNotification.setUser(user);
+        trNewPeriodicNotification.setPeriodicity(periodicity);
+        trNewPeriodicNotification.setPet(selectedPet);
+        trNewPeriodicNotification.setEvent(new Event(reasonText, dateTime));
+        trNewPeriodicNotification.execute();
+
+    }
+
+    @Override
+    public void deletePeriodicNotification(Pet selectedPet, Event event, User user)
+            throws ParseException, UserIsNotOwnerException {
+
+        trDeletePeriodicNotification.setUser(user);
+        trDeletePeriodicNotification.setPet(selectedPet);
+        trDeletePeriodicNotification.setEvent(event);
+        trDeletePeriodicNotification.execute();
+
+    }
+
+    /**
+     * Schedule a periodic notification.
+     * @param context The context
+     * @param text The notification's text
+     * @param title The notification's title
+     * @param time The alarm time of the notification
+     * @param period The period of the alarm
+     */
+    @Override
+    public void schedulePeriodicNotification(Context context, long time, String title, String text, int period) {
+        Notification notification = new Notification(title, text, new Date(time), Long.toString(time));
+        notification.setNotificationID(notificationId);
+        notification.setRequestCode(requestCode);
+        user.addNotification(notification);
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        intent.putExtra(getString(R.string.title), title);
+        intent.putExtra(getString(R.string.text), text);
+        intent.putExtra(getString(R.string.notificationid), Integer.toString(notificationId));
+        notificationId++;
+        PendingIntent pending = PendingIntent.getBroadcast(context, requestCode, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        requestCode++;
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        assert manager != null;
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, time,
+                AlarmManager.INTERVAL_DAY*period, pending);
     }
 
     @Override
