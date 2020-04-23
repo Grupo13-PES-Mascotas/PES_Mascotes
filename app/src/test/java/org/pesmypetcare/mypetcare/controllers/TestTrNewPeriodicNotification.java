@@ -13,7 +13,6 @@ import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.text.ParseException;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TestTrNewPeriodicNotification {
@@ -22,8 +21,7 @@ public class TestTrNewPeriodicNotification {
     private static final String DATE_2_WEEKS = "2020-05-27";
     private static final String DATE_3_MONTHS = "2020-08-13";
     private static final String DESC = "Hello";
-    private final int WEDNESDAY = 3;
-    private final int DATE13 = 13;
+    private static final String BIRTH = "2 MAR 2010";
     private final int periodWeek = 7;
     private final int period2Weeks = 14;
     private final int periodMonth = -1;
@@ -34,7 +32,6 @@ public class TestTrNewPeriodicNotification {
     private Pet pet;
     private Pet pet2;
     private User user;
-    private User user2;
     private TrNewPeriodicNotification trNewPeriodicNotification;
 
     @Before
@@ -42,24 +39,29 @@ public class TestTrNewPeriodicNotification {
         pet = new Pet();
         pet2 = new Pet();
         user = new User("johnDoe", "", "");
-        user2 = new User("Paco", "", "");
         pet.setName(NAME);
         pet.setGender(GenderType.Female);
-        pet.setBirthDate("2 MAR 2010");
+        pet.setBirthDate(BIRTH);
         pet.setBreed(HUSKY);
         pet.setRecommendedDailyKiloCalories(2);
         pet.setWashFrequency(2);
         pet.setWeight(2);
         pet.setOwner(user);
+        pet2 = new Pet();
+        setPet2();
+        trNewPeriodicNotification = new TrNewPeriodicNotification(new StubPetManagerService());
+    }
+
+    private void setPet2() throws PetRepeatException {
+        User user2 = new User("Paco", "", "");
         pet2.setName(NAME2);
         pet2.setGender(GenderType.Female);
-        pet2.setBirthDate("2 MAR 2010");
+        pet2.setBirthDate(BIRTH);
         pet2.setBreed(HUSKY);
         pet2.setRecommendedDailyKiloCalories(2);
         pet2.setWashFrequency(2);
         pet2.setWeight(2);
         pet2.setOwner(user2);
-        trNewPeriodicNotification = new TrNewPeriodicNotification(new StubPetManagerService());
     }
     @Test
     public void shouldAddOneNotificationEveryWeek() throws ParseException, UserIsNotOwnerException {

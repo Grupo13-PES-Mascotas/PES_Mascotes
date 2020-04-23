@@ -22,7 +22,9 @@ public class TrDeletePeriodicNotification {
         this.petManagerService = petManagerService;
     }
 
-    public void setUser(User user) { this.user = user; }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public void setPet(Pet selectedPet) {
         this.pet = selectedPet;

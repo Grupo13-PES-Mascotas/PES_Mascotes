@@ -10,6 +10,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 public class EventView extends PetComponentView {
     private Event event;
+    private int TEN = 10;
 
     public EventView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -39,11 +40,11 @@ public class EventView extends PetComponentView {
         StringBuilder time = new StringBuilder();
         int h = dt.getHour();
         int min = dt.getMinutes();
-        if (h < 10) {
+        if (h < TEN) {
             time.append('0');
         }
         time.append(h).append(':');
-        if (min < 10) {
+        if (min < TEN) {
             time.append('0');
         }
         time.append(min);

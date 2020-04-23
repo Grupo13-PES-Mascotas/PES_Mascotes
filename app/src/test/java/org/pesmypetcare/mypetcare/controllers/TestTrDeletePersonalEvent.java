@@ -46,7 +46,7 @@ public class TestTrDeletePersonalEvent {
     @Test
     public void shouldCommunicateWithService() {
         DateTime date = DateTime.Builder.buildFullString(DATE_TIME);
-        Event e = new Event("Hello", date);
+        Event e = new Event("Hello2", date);
         pet.addEvent(e);
         trDeletePersonalEvent.setPet(pet);
         trDeletePersonalEvent.setEvent(e);

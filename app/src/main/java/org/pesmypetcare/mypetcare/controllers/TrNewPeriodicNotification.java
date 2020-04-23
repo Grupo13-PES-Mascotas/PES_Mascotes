@@ -20,7 +20,8 @@ public class TrNewPeriodicNotification {
         this.petManagerService = petManagerService;
     }
 
-    public void setUser(User user) { this.user = user; }
+    public void setUser(User user) {
+        this.user = user; }
 
 
     public void setPet(Pet selectedPet) {

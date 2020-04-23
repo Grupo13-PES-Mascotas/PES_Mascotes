@@ -400,7 +400,6 @@ public class Pet {
         String desc = event.getDescription();
         PeriodEvent pe = new PeriodEvent(desc, dateTime, 0);
         periodEvents.remove(pe);
-        System.out.println(periodEvents);
     }
 
 
