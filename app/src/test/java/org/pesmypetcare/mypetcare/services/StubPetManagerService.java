@@ -98,11 +98,21 @@ public class StubPetManagerService implements PetManagerService {
         int index = Objects.requireNonNull(pets).indexOf(pet);
         pets.get(index).deleteEvent(event);
     }
+
     @Override
-    public void registerNewPeriodicNotification(Pet pet, Event event, int period, int periodDay) throws ParseException {
-        ArrayList<Pet> pets = data.get(pet.getOwner().getUsername());
+    public void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) throws ParseException {
+        ArrayList<Pet> pets = data.get(user.getUsername());
         assert pets != null;
         int index = Objects.requireNonNull(pets).indexOf(pet);
-        pets.get(index).addPeriodicNotification(event, period, periodDay);
+        pets.get(index).addPeriodicNotification(event, period);
     }
+
+    @Override
+    public void deletePeriodicEvent(User user, Pet pet, Event event) throws ParseException {
+        ArrayList<Pet> pets = data.get(user.getUsername());
+        assert pets != null;
+        int index = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(index).deletePeriodicNotification(event);
+    }
+
 }

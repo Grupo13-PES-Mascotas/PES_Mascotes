@@ -209,8 +209,14 @@ public class PetManagerAdapter implements PetManagerService {
         // Not implemented yet
     }
 
-    public void registerNewPeriodicNotification(Pet pet, Event event, int period, int periodDay) throws ParseException {
+    @Override
+    public void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) throws ParseException {
+        // Not implemented yet
+    }
 
+    @Override
+    public void deletePeriodicEvent(User user, Pet pet, Event event) {
+        // Not implemented yet
     }
 
     /**

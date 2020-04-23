@@ -114,8 +114,8 @@
     <string name="two_weeks">Every 2 weeks</string>
     <string name="one_week">Every week</string>
     <string name="one_day">Every day</string>
-    <string name="one_month">Every month</string>
-    <string name="three_months">Every 3 months</string>
+    <string name="one_month">Every 30 days</string>
+    <string name="three_months">Every 90 days</string>
     <string name="dialog_new_periodic_message">Enter the event description, its periodicity, its time and select the pet that will participate.</string>
 
 

@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class CalendarEventsView extends LinearLayout {
     public void showEvents(Pet pet, String date) throws ParseException {
         //pet.addEvent(new Event("Take to vet", "2020-04-03T10:30:00"));
         List<Event> events = pet.getEvents(date);
-        List<Event> periodicEvents = pet.getPeriodicNotificationDay(date);
+        List<Event> periodicEvents = pet.getPeriodicEvents(date);
         events.addAll(periodicEvents);
         for (Event event : events) {
             PetComponentView petComponentView = new EventView(context, null, event).initializePetComponent(pet);

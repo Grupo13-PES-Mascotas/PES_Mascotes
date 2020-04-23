@@ -2,10 +2,8 @@ package org.pesmypetcare.mypetcare.features.pets;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Pair;
 
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.mypetcare.utilities.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
@@ -14,11 +12,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Pet {
     public static final String BUNDLE_NAME = "petName";
@@ -40,24 +35,13 @@ public class Pet {
     private String previousName;
     private Bitmap profileImage;
     private ArrayList<Event> events;
-    private HashMap<Integer, Integer> periodsWeek;
-    private HashMap<Integer,Integer> periodsMonth;
-    private boolean dailyNotification;
-    private ArrayList<Event> eventPeriodWeek;
-    private ArrayList<Event> eventPeriodMonth;
-    private ArrayList<Event> dailyEvents;
+    private ArrayList<PeriodEvent> periodEvents;
 
 
     public Pet() {
         this.events = new ArrayList<>();
         this.healthInfo = new PetHealthInfo();
-        this.periodsWeek = new HashMap<Integer, Integer>();
-        this.periodsMonth = new HashMap<Integer, Integer>();
-        this.dailyNotification = false;
-        this.eventPeriodWeek = new ArrayList<>(7);
-        this.eventPeriodMonth = new ArrayList<>(31);
-        this.dailyEvents = new ArrayList<Event>();
-        initializeEventsPeriod();
+        this.periodEvents = new ArrayList<>();
     }
 
     public Pet(Bundle petInfo) {
@@ -66,12 +50,7 @@ public class Pet {
         this.birthDate = petInfo.getString(BUNDLE_BIRTH_DATE);
         initializeHealthInfo(petInfo);
         this.events = new ArrayList<>();
-        this.periodsWeek = new HashMap<Integer, Integer>();
-        this.periodsMonth = new HashMap<Integer, Integer>();
-        this.dailyNotification = false;
-        this.eventPeriodWeek = new ArrayList<>(7);
-        this.eventPeriodMonth = new ArrayList<>(31);
-        initializeEventsPeriod();
+        this.periodEvents = new ArrayList<>();
 
         if (isMale(petInfo)) {
             this.gender = GenderType.Male;
@@ -112,12 +91,7 @@ public class Pet {
         this.birthDate = petInfo.getString(BUNDLE_BIRTH_DATE);
         initializeHealthInfo(petInfo);
         this.events = new ArrayList<>();
-        this.periodsWeek = new HashMap<Integer, Integer>();
-        this.periodsMonth = new HashMap<Integer, Integer>();
-        this.dailyNotification = false;
-        this.eventPeriodWeek = new ArrayList<>(7);
-        this.eventPeriodMonth = new ArrayList<>(31);
-        initializeEventsPeriod();
+        this.periodEvents = new ArrayList<>();
 
 
         if (isMale(petInfo)) {
@@ -134,12 +108,7 @@ public class Pet {
     public Pet(String name) {
         this.name = name;
         this.events = new ArrayList<>();
-        this.periodsWeek = new HashMap<Integer, Integer>();
-        this.periodsMonth = new HashMap<Integer, Integer>();
-        this.dailyNotification = false;
-        this.eventPeriodWeek = new ArrayList<>(7);
-        this.eventPeriodMonth = new ArrayList<>(31);
-        initializeEventsPeriod();
+        this.periodEvents = new ArrayList<>();
 
     }
 
@@ -406,136 +375,33 @@ public class Pet {
         return "{" + name + ", " + (profileImage == null ? "NULL" : "NO_NULL") + "}";
     }
 
-    public void addPeriodicNotification(Event event, int period, int day) throws ParseException {
-        if (period == 7 || period == 14) {
-            putInPeriodsWeek(period, day);
-            eventPeriodWeek.add(day-1, event);
-        }
-        else if (period == -1 || period == -3) {
-            putInPeriodsMonth(period, day);
-            eventPeriodMonth.add(day-1, event);
-        }
-        else if(period == 1) {
-            dailyNotification = true;
-            dailyEvents.add(event);
-        }
+    public void addPeriodicNotification(Event event, int period) throws ParseException {
+        PeriodEvent pe = new PeriodEvent(event.getDescription(), event.getDateTime(), period);
+        periodEvents.add(pe);
     }
 
-    private void putInPeriodsMonth(int period, int day) {
-        if (period == -1) {
-            periodsMonth.put(day, 0);
-        }
-        else {
-            periodsMonth.put(day, 2);
-        }
-    }
-
-    private void putInPeriodsWeek(int period, int day) {
-        if (period == 7) {
-            periodsWeek.put(day, 0);
-        }
-        else {
-            periodsWeek.put(day, 1);
-        }
-    }
-
-    public ArrayList<Event> getPeriodicNotificationDay(String dateText) throws ParseException {
-        ArrayList<Event> list = new ArrayList<Event>();
-        org.pesmypetcare.usermanagerlib.datacontainers.DateTime dt =
-                org.pesmypetcare.usermanagerlib.datacontainers.DateTime.Builder.buildDateString(dateText);
-        int month = dt.getMonth();
-        dt.setMonth(month+1);
-        dateText = dt.toString();
-        int dayOfWeek = getDayOfWeek(dateText);
-        int dayOfMonth = getDayOfMonth(dateText);
-        if (dailyNotification) {
-            list.addAll(getDailyNotifications());
-        }
-        if (periodsWeek.containsKey(dayOfWeek)) {
-            if (periodsWeek.get(dayOfWeek) == 0) {
-                list.add(eventPeriodWeek.get(dayOfWeek - 1));
-            }
-            else if (periodsWeek.get(dayOfWeek) == 1) {
-                if (itsthedayWeek(eventPeriodWeek.get(dayOfWeek - 1), dateText)) {
-                    list.add(eventPeriodWeek.get(dayOfWeek - 1));
-                }
+    public ArrayList<Event> getPeriodicEvents(String date) throws ParseException {
+        Date dateActual = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        ArrayList<Event> selectedEvents = new ArrayList<>();
+        for (PeriodEvent event : periodEvents) {
+            String eventDate = (event.getDateTime()).toString().substring(0,
+                    event.getDateTime().toString().indexOf('T'));
+            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(eventDate);
+            int diff = (int) ((dateActual.getTime() - date1.getTime()) / 86400000);
+            if(diff % event.getPeriod() == 0) {
+                selectedEvents.add(new Event(event.getDescription(), event.getDateTime()));
             }
         }
-        if (periodsMonth.containsKey(dayOfMonth)) {
-            if (periodsMonth.get(dayOfMonth) == 0) {
-                list.add(eventPeriodMonth.get(dayOfMonth - 1));
-            }
-            else if (periodsMonth.get(dayOfMonth) == 2) {
-                if (itsthedayMonth(eventPeriodMonth.get(dayOfMonth - 1), dateText)) {
-                    list.add(eventPeriodMonth.get(dayOfMonth - 1));
-                }
-            }
-        }
-        return list;
+        return selectedEvents;
     }
 
-    public ArrayList<Event> getDailyNotifications() {
-        return dailyEvents;
+    public void deletePeriodicNotification(Event event) throws ParseException {
+        org.pesmypetcare.usermanagerlib.datacontainers.DateTime dateTime = event.getDateTime();
+        String desc = event.getDescription();
+        PeriodEvent pe = new PeriodEvent(desc, dateTime, 0);
+        periodEvents.remove(pe);
+        System.out.println(periodEvents);
     }
 
-    private boolean itsthedayMonth(Event event, String actualDate) throws ParseException {
-        String dateTime = event.getDateTime().toString();
-        Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(dateTime);
-        Date dateActual = new SimpleDateFormat("yyyy-MM-dd").parse(actualDate);
-        int diff = (int) ((dateActual.getTime() - date1.getTime()) / 86400000);
-        return (diff % 90) < 15;
-    }
 
-    private boolean itsthedayWeek(Event event, String actualDate) throws ParseException {
-        String dateTime = event.getDateTime().toString();
-        Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(dateTime);
-        Date dateActual = new SimpleDateFormat("yyyy-MM-dd").parse(actualDate);
-        int diff = (int) ((dateActual.getTime() - date1.getTime()) / 86400000);
-        return (diff % 14) == 0;
-    }
-
-    private void initializeEventsPeriod() {
-        Event e = new Event("", null);
-        for (int i = 0; i < 6; ++i) eventPeriodWeek.add(i, e);
-        for (int i = 0; i < 30; ++i) eventPeriodMonth.add(i, e);
-    }
-
-    private int getDayOfWeek(String dateString) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        Date date = formatter.parse(dateString.replaceAll("Z$", "+0000"));
-        DateFormat dfWeek = new SimpleDateFormat("u", Locale.ENGLISH);
-        return Integer.parseInt(dfWeek.format(date));
-    }
-
-    private int getDayOfMonth(String dateString) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        Date date = formatter.parse(dateString.replaceAll("Z$", "+0000"));
-        DateFormat dfMonth = new SimpleDateFormat("dd", Locale.ENGLISH);
-        return Integer.parseInt(dfMonth.format(date));
-    }
-
-    public void deletePeriodicNotification(String date) throws ParseException {
-        int day;
-        String dateToDelete = date.substring(0,date.indexOf('T'));
-        org.pesmypetcare.usermanagerlib.datacontainers.DateTime dt =
-                org.pesmypetcare.usermanagerlib.datacontainers.DateTime.Builder.buildDateString(dateToDelete);
-        int month = dt.getMonth();
-        dt.setMonth(month-1);
-        dateToDelete = dt.toString();
-        dateToDelete = dateToDelete.substring(0,date.indexOf('T'));
-        ArrayList<Event> events = getPeriodicNotificationDay(dateToDelete);
-        for (Event e: events) {
-            if (eventPeriodWeek.contains(e)) {
-                day = getDayOfWeek(date);
-                eventPeriodWeek.remove(day);
-                periodsWeek.remove(day);
-            }
-            if (eventPeriodMonth.contains(e)) {
-                day = getDayOfMonth(date);
-                eventPeriodMonth.remove(day);
-                periodsMonth.remove(day);
-            }
-            dailyEvents.remove(e);
-        }
-    }
 }

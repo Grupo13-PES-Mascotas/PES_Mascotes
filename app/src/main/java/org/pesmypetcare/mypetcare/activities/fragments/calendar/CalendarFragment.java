@@ -162,50 +162,29 @@ public class CalendarFragment extends Fragment {
         String petName = sp_pets.getSelectedItem().toString();
         String periodicity = sp_period.getSelectedItem().toString();
         int period = setPeriodicity(periodicity);
-        int periodDay;
         DateTime dateTime = DateTime.Builder.buildDateTimeString(dateText.getText().toString(),
                 timeText.getText().toString());
-        int month = dateTime.getMonth();
-        dateTime.setMonth(month+1);
         getPet(petName);
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
-            periodDay = getPeriodicityDay(dateTime.toString(), period);
-            selectedPet.addPeriodicNotification(new Event(reasonText.getText().toString(), dateTime), period, periodDay);
+            selectedPet.addPeriodicNotification(new Event(reasonText.getText().toString(), dateTime), period);
             communication.newPeriodicNotification(selectedPet, period, reasonText.getText().toString(), dateTime.toString());
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(dateTime, c);
-            communication.schedulePeriodicNotification(getContext(), c.getTimeInMillis() , selectedPet.getName(), reasonText.getText().toString(), period);
+            communication.schedulePeriodicNotification(getContext(), c.getTimeInMillis() ,
+                    selectedPet.getName(), reasonText.getText().toString(), period);
             setUpCalendar();
         } else {
             toastText(getString(R.string.incorrect_entry));
         }
     }
 
-    private int getPeriodicityDay(String dateTime, int period) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        Date date = formatter.parse(dateTime.replaceAll("Z$", "+0000"));
-        DateFormat dfWeek = new SimpleDateFormat("u", Locale.ENGLISH);
-        DateFormat dfMonth = new SimpleDateFormat("dd", Locale.ENGLISH);
-        switch (period) {
-            case 1:
-                return 0;
-            case 7:
-            case 14:
-                return Integer.parseInt(dfWeek.format(date));
-            case -1:
-            case -3:
-                return Integer.parseInt(dfMonth.format(date));
-            default:
-                return -1;
-        }
-    }
 
     private int setPeriodicity(String periodicity) {
         if(getString(R.string.one_day) == periodicity) return 1;
         else if(getString(R.string.one_week) == periodicity) return 7;
         else if(getString(R.string.two_weeks) == periodicity) return 14;
-        else if(getString(R.string.one_month) == periodicity) return -1;
-        else if(getString(R.string.three_months) == periodicity) return -3;
+        else if(getString(R.string.one_month) == periodicity) return 30;
+        else if(getString(R.string.three_months) == periodicity) return 90;
         else return 0;
     }
 
@@ -488,6 +467,7 @@ public class CalendarFragment extends Fragment {
      */
     private void addComponents(int year, int month, int dayOfMonth) throws ParseException, InvalidFormatException {
         ArrayList<Pet> pets = user.getPets();
+        ++month;
         String dateTime = (DateTime.Builder.build(year, month, dayOfMonth)).toString();
         selectedDate = dateTime.substring(0, dateTime.indexOf('T'));
         binding.eventInfoLayout.removeAllViews();
@@ -515,7 +495,7 @@ public class CalendarFragment extends Fragment {
         deleteEvent.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
             pet.deleteEvent(event);
             try {
-                pet.deletePeriodicNotification(event.getDateTime().toString());
+                pet.deletePeriodicNotification(event);
             } catch (ParseException e) {
                 e.printStackTrace();
             }

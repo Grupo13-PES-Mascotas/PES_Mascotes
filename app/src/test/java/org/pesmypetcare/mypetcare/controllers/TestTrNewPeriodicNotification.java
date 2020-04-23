@@ -5,8 +5,10 @@ import org.junit.Test;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
+import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.text.ParseException;
@@ -27,13 +29,20 @@ public class TestTrNewPeriodicNotification {
     private final int periodMonth = -1;
     private final int period3Months = -3;
     private final String NAME = "Dinky";
+    private final String NAME2 = "Pinky";
     private final String HUSKY = "Husky";
     private Pet pet;
+    private Pet pet2;
+    private User user;
+    private User user2;
     private TrNewPeriodicNotification trNewPeriodicNotification;
 
     @Before
     public void setUp() throws PetRepeatException {
         pet = new Pet();
+        pet2 = new Pet();
+        user = new User("johnDoe", "", "");
+        user2 = new User("Paco", "", "");
         pet.setName(NAME);
         pet.setGender(GenderType.Female);
         pet.setBirthDate("2 MAR 2010");
@@ -41,48 +50,76 @@ public class TestTrNewPeriodicNotification {
         pet.setRecommendedDailyKiloCalories(2);
         pet.setWashFrequency(2);
         pet.setWeight(2);
-        pet.setOwner(new User("johnDoe", "", ""));
+        pet.setOwner(user);
+        pet2.setName(NAME2);
+        pet2.setGender(GenderType.Female);
+        pet2.setBirthDate("2 MAR 2010");
+        pet2.setBreed(HUSKY);
+        pet2.setRecommendedDailyKiloCalories(2);
+        pet2.setWashFrequency(2);
+        pet2.setWeight(2);
+        pet2.setOwner(user2);
         trNewPeriodicNotification = new TrNewPeriodicNotification(new StubPetManagerService());
     }
     @Test
-    public void shouldAddOneNotificationEveryWeek() throws ParseException {
-        Event e = new Event(DESC, DATE);
+    public void shouldAddOneNotificationEveryWeek() throws ParseException, UserIsNotOwnerException {
+        DateTime date = DateTime.Builder.buildDateString(DATE);
+        Event e = new Event(DESC, date);
+        trNewPeriodicNotification.setUser(user);
         trNewPeriodicNotification.setPet(pet);
         trNewPeriodicNotification.setEvent(e);
-        trNewPeriodicNotification.setPeriodicity(periodWeek, WEDNESDAY);
+        trNewPeriodicNotification.setPeriodicity(periodWeek);
         trNewPeriodicNotification.execute();
-        assertTrue("should add one periodic notification weekly", pet.getPeriodicNotificationDay(DATE).contains(e));
+        assertTrue("should add one periodic notification weekly", pet.getPeriodicEvents(DATE).contains(e));
     }
 
     @Test
-    public void shouldAddOneNotificationEvery2Weeks() throws ParseException {
-        Event e = new Event(DESC, DATE2);
+    public void shouldAddOneNotificationEvery2Weeks() throws ParseException, UserIsNotOwnerException {
+        DateTime date = DateTime.Builder.buildDateString(DATE);
+        Event e = new Event(DESC, date);
+        trNewPeriodicNotification.setUser(user);
         trNewPeriodicNotification.setPet(pet);
         trNewPeriodicNotification.setEvent(e);
-        trNewPeriodicNotification.setPeriodicity(period2Weeks, WEDNESDAY);
+        trNewPeriodicNotification.setPeriodicity(period2Weeks);
         trNewPeriodicNotification.execute();
         assertTrue("should add one periodic notification every 2 weeks",
-                pet.getPeriodicNotificationDay(DATE_2_WEEKS).contains(e));
+                pet.getPeriodicEvents(DATE_2_WEEKS).contains(e));
     }
 
     @Test
-    public void shouldAddOneNotificationEveryMonth() throws ParseException {
-        Event e = new Event(DESC, DATE2);
+    public void shouldAddOneNotificationEveryMonth() throws ParseException, UserIsNotOwnerException {
+        DateTime date = DateTime.Builder.buildDateString(DATE);
+        Event e = new Event(DESC, date);
+        trNewPeriodicNotification.setUser(user);
         trNewPeriodicNotification.setPet(pet);
         trNewPeriodicNotification.setEvent(e);
-        trNewPeriodicNotification.setPeriodicity(periodMonth, DATE13);
+        trNewPeriodicNotification.setPeriodicity(periodMonth);
         trNewPeriodicNotification.execute();
-        assertTrue("should add one periodic notification monthly", pet.getPeriodicNotificationDay(DATE2).contains(e));
+        assertTrue("should add one periodic notification monthly", pet.getPeriodicEvents(DATE2).contains(e));
     }
 
     @Test
-    public void shouldAddOneNotificationEvery3Months() throws ParseException {
-        Event e = new Event(DESC, DATE2);
+    public void shouldAddOneNotificationEvery3Months() throws ParseException, UserIsNotOwnerException {
+        DateTime date = DateTime.Builder.buildDateString(DATE);
+        Event e = new Event(DESC, date);
+        trNewPeriodicNotification.setUser(user);
         trNewPeriodicNotification.setPet(pet);
         trNewPeriodicNotification.setEvent(e);
-        trNewPeriodicNotification.setPeriodicity(period3Months, DATE13);
+        trNewPeriodicNotification.setPeriodicity(period3Months);
         trNewPeriodicNotification.execute();
         assertTrue("should add one periodic notification every 3 months",
-                pet.getPeriodicNotificationDay(DATE_3_MONTHS).contains(e));
+                pet.getPeriodicEvents(DATE_3_MONTHS).contains(e));
+    }
+
+    @Test(expected = UserIsNotOwnerException.class)
+    public void shouldNoDeleteOneNotificationIfNotOwner() throws ParseException, UserIsNotOwnerException {
+        DateTime date = DateTime.Builder.buildDateString(DATE);
+        Event e = new Event(DESC, date);
+        pet.addPeriodicNotification(e, periodWeek);
+        trNewPeriodicNotification.setUser(user);
+        trNewPeriodicNotification.setPet(pet2);
+        trNewPeriodicNotification.setEvent(e);
+        trNewPeriodicNotification.setPeriodicity(periodWeek);
+        trNewPeriodicNotification.execute();
     }
 }

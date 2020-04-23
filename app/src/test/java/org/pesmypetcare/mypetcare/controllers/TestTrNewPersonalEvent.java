@@ -7,6 +7,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import static org.junit.Assert.assertTrue;
@@ -34,7 +35,8 @@ public class TestTrNewPersonalEvent {
 
     @Test
     public void shouldAddOneEvent() {
-        Event e = new Event("Hello", "2020-04-03T10:30:00");
+        DateTime date = DateTime.Builder.buildFullString("2020-04-03T10:30:00");
+        Event e = new Event("Hello", date);
         pet.addEvent(e);
         System.out.println(e);
         System.out.println(pet.getEvents(DATE));
@@ -43,7 +45,8 @@ public class TestTrNewPersonalEvent {
 
     @Test
     public void shouldCommunicateWithService() {
-        Event e = new Event("Hello2", "2020-04-03T10:40:00");
+        DateTime date = DateTime.Builder.buildFullString("2020-04-03T10:40:00");
+        Event e = new Event("Hello2", date);
         pet.addEvent(e);
         trNewPersonalEvent.setPet(pet);
         trNewPersonalEvent.setEvent(e);

@@ -78,5 +78,7 @@ public interface PetManagerService {
      */
     void deleteEvent(Pet pet, Event event);
 
-    void registerNewPeriodicNotification(Pet pet, Event event, int period, int periodDay) throws ParseException;
+    void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) throws ParseException;
+
+    void deletePeriodicEvent(User user, Pet pet, Event event) throws ParseException;
 }

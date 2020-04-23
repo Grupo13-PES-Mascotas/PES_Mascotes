@@ -7,6 +7,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import static org.junit.Assert.assertFalse;
@@ -35,7 +36,8 @@ public class TestTrDeletePersonalEvent {
 
     @Test
     public void shouldDeleteOneEvent() {
-        Event e = new Event("Hello", DATE_TIME);
+        DateTime date = DateTime.Builder.buildFullString(DATE_TIME);
+        Event e = new Event("Hello", date);
         pet.addEvent(e);
         pet.deleteEvent(e);
         assertFalse("should add one event", pet.getEvents(DATE_TIME).contains(e));
@@ -43,7 +45,8 @@ public class TestTrDeletePersonalEvent {
 
     @Test
     public void shouldCommunicateWithService() {
-        Event e = new Event("Hello2", DATE_TIME);
+        DateTime date = DateTime.Builder.buildFullString(DATE_TIME);
+        Event e = new Event("Hello", date);
         pet.addEvent(e);
         trDeletePersonalEvent.setPet(pet);
         trDeletePersonalEvent.setEvent(e);
