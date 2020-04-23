@@ -158,10 +158,9 @@ public class StubCommunityService implements CommunityService {
                         for (Post p : f.getPosts()) {
                             if (p.getUsername().equals(post.getUsername()) && p.getCreationDate().equals(post.getCreationDate())) {
                                 throw new PostAlreadyExistingException();
-                            } else {
-                                f.addPost(post);
                             }
                         }
+                        f.addPost(post);
                     }
                 }
             }
