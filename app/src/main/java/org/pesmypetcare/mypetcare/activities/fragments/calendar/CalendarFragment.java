@@ -26,6 +26,7 @@ import org.pesmypetcare.mypetcare.activities.views.CalendarEventsView;
 import org.pesmypetcare.mypetcare.activities.views.EventView;
 import org.pesmypetcare.mypetcare.activities.views.PetComponentView;
 import org.pesmypetcare.mypetcare.databinding.FragmentCalendarBinding;
+import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -295,7 +296,11 @@ public class CalendarFragment extends Fragment {
         newPersonal.setPositiveButton(getString(R.string.create), (dialog, which) -> {
             if (sp.getSelectedItem() != null) {
                 if (reasonText.getText().toString().length() != 0) {
-                    createPersonalEvent(reasonText, dateText, timeText, sp);
+                    try {
+                        createPersonalEvent(reasonText, dateText, timeText, sp);
+                    } catch (ParseException | InvalidFormatException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     toastText(getString(R.string.no_description));
                 }
@@ -322,7 +327,8 @@ public class CalendarFragment extends Fragment {
      * @param sp The spinner for pet selection
      * @param timeText The hour of the event
      */
-    private void createPersonalEvent(EditText reasonText, TextView dateText, EditText timeText, Spinner sp) {
+    private void createPersonalEvent(EditText reasonText, TextView dateText, EditText timeText, Spinner sp) throws
+            ParseException, InvalidFormatException {
         String petName = sp.getSelectedItem().toString();
         DateTime dateTime = DateTime.Builder.buildDateTimeString(dateText.getText().toString(),
                 timeText.getText().toString());;
@@ -330,6 +336,11 @@ public class CalendarFragment extends Fragment {
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
             selectedPet.addEvent(new Event(reasonText.getText().toString(), dateTime));
             communication.newPersonalEvent(selectedPet, reasonText.getText().toString(), dateTime.toString());
+            Calendar c = Calendar.getInstance();
+            calendarAlarmInitialization(dateTime, c);
+            communication.scheduleNotification(getContext(), c.getTimeInMillis() ,
+                    selectedPet.getName(), reasonText.getText().toString());
+            setUpCalendar();
         } else {
             toastText(getString(R.string.incorrect_entry));
         }
@@ -530,13 +541,22 @@ public class CalendarFragment extends Fragment {
         Pet pet = p.getPet();
         Event event = ((EventView) p).getEvent();
         deleteEvent.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+            try {
+                setUpCalendar();
+            } catch (ParseException | InvalidFormatException e) {
+                e.printStackTrace();
+            }
             pet.deleteEvent(event);
+            communication.deletePersonalEvent(pet, event);
+            Calendar c = Calendar.getInstance();
+            calendarAlarmInitialization(event.getDateTime(), c);
+            communication.cancelNotification(getContext(), new Notification(event.getDescription(),
+                    new Date(c.getTimeInMillis()), pet.getName()));
             try {
                 pet.deletePeriodicNotification(event);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            communication.deletePersonalEvent(pet, event);
         });
         deleteEvent.setNegativeButton(getString(R.string.no), (dialog, which) -> {
         });

@@ -21,6 +21,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        System.out.println("HOLLLLLLLLLLLLA");
         NotificationCompat.Builder builder = getBuilder(context, intent);
         PendingIntent notifyPendingIntent = getPendingIntent(context);
         NotificationManager notificationManager = getNotificationManager(context, builder, notifyPendingIntent);
