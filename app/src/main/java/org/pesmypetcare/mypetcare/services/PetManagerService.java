@@ -88,11 +88,11 @@ public interface PetManagerService {
     void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) throws ParseException;
 
     /**
-     * Delete a periodic notification event from a pet
+     * Delete a periodic notification event from a pet.
      * @param user The user who want to delete the periodic notification
      * @param pet The pet which the user want to delete the periodic notification
      * @param event The event to delete
-     * @throws ParseException
+     * @throws ParseException exception generated when the data format is not correct and is not parseable
      */
     void deletePeriodicEvent(User user, Pet pet, Event event) throws ParseException;
 }
