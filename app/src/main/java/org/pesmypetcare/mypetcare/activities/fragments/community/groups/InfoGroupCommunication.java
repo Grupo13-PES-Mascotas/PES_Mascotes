@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.activities.fragments.community.groups;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 /**
  * @author Albert Pinto
@@ -49,4 +50,11 @@ public interface InfoGroupCommunication {
      * @param forum The forum were the post will be added
      */
     void addNewPost(Forum forum, String postText);
+
+    /**
+     * Deletes a post from the given forum.
+     * @param forum The forum from where the post has to be deleted
+     * @param postCreationDate The creation date of the post that has to be deleted
+     */
+    void deletePost(Forum forum, DateTime postCreationDate);
 }

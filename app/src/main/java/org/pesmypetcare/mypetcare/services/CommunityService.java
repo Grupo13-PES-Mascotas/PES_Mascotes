@@ -8,7 +8,9 @@ import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExisting
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.SortedSet;
 
@@ -78,4 +80,12 @@ public interface CommunityService {
      * @param post The post to add
      */
     void createPost(User user, Forum forum, Post post) throws ForumNotFoundException, PostAlreadyExistingException;
+
+    /**
+     * Deletes a post from the forum.
+     * @param user The user that wants to delete the post
+     * @param forum The forum from where the post has to be deleted
+     * @param postCreationDate The creation date of the post that has to be deleted
+     */
+    void deletePost(User user, Forum forum, DateTime postCreationDate) throws ForumNotFoundException, PostNotFoundException;
 }

@@ -8,6 +8,7 @@ import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExisting
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
@@ -161,6 +162,32 @@ public class StubCommunityService implements CommunityService {
                             }
                         }
                         f.addPost(post);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void deletePost(User user, Forum forum, DateTime postCreationDate) throws ForumNotFoundException, PostNotFoundException {
+        if (!forumExists(forum.getGroup(), forum)) {
+            throw new ForumNotFoundException();
+        }
+        for (Group g : groups) {
+            if (g.getName().equals(forum.getGroup().getName())) {
+                for (Forum f : g.getForums()) {
+                    if (f.getName().equals(forum.getName())) {
+                        boolean found = false;
+                        for (Post p : f.getPosts()) {
+                            if (p.getUsername().equals(user.getUsername()) &&
+                                p.getCreationDate().equals(postCreationDate)) {
+                                found = true;
+                                f.removePost(user, postCreationDate);
+                            }
+                        }
+                        if (!found) {
+                            throw new PostNotFoundException();
+                        }
                     }
                 }
             }
