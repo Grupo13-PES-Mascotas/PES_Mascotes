@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers;
 
+import org.pesmypetcare.mypetcare.services.CommunityAdapter;
 import org.pesmypetcare.mypetcare.services.MealManagerAdapter;
 import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
@@ -101,11 +102,11 @@ public class ControllersFactory {
     }
 
     public static TrObtainAllGroups createTrObtainAllGroups() {
-        return new TrObtainAllGroups(new StubCommunityService());
+        return new TrObtainAllGroups(new CommunityAdapter());
     }
 
     public static TrCreateNewGroup createTrObtainNewGroup() {
-        return new TrCreateNewGroup(new StubCommunityService());
+        return new TrCreateNewGroup(new CommunityAdapter());
     }
 
     public static TrDeleteGroup createTrDeleteGroup() {

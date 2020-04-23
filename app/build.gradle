@@ -87,6 +87,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.3.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation project(path: ':usermanagerlib')
+    implementation project(path: ':httptools')
+    implementation project(path: ':usermanagerlib-community')
+    implementation project(path: ':communitymanager')
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {

@@ -1420,7 +1420,15 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public SortedSet<Group> getAllGroups() {
         trObtainAllGroups.execute();
-        return trObtainAllGroups.getResult();
+        SortedSet<Group> groups = trObtainAllGroups.getResult();
+
+        for (Group group : groups) {
+            if (group.getSubscribers().containsKey(user.getUsername())) {
+                user.addSubscribedGroupSimple(group);
+            }
+        }
+
+        return groups;
     }
 
     /**

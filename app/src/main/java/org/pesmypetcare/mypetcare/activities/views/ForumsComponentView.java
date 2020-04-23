@@ -109,7 +109,7 @@ public class ForumsComponentView extends CircularEntryView {
     private void addActualTag(List<String> tags, StringBuilder strTags, int actual) {
         if (!tags.get(actual).equals("")) {
             if (actual != 0) {
-                strTags.append(',');
+                strTags.append(' ');
             }
 
             strTags.append('#').append(tags.get(actual));

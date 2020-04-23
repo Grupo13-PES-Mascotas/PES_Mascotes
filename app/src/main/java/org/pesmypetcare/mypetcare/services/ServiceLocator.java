@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.services;
 
+import org.pesmypetcare.communitymanager.managers.GroupManager;
 import org.pesmypetcare.usermanagerlib.clients.MealManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
@@ -10,10 +11,13 @@ public class ServiceLocator {
     private PetManagerClient petManagerClient;
     private MealManagerClient mealManagerClient;
 
+    private GroupManager groupManager;
+
     private ServiceLocator() {
         userManagerClient = new UserManagerClient();
         petManagerClient = new PetManagerClient();
         mealManagerClient = new MealManagerClient();
+        groupManager = new GroupManager();
     }
 
     public static ServiceLocator getInstance() {
@@ -34,5 +38,9 @@ public class ServiceLocator {
 
     public MealManagerClient getMealManagerClient() {
         return mealManagerClient;
+    }
+
+    public GroupManager getGroupManager() {
+        return groupManager;
     }
 }

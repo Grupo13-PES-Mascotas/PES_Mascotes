@@ -72,7 +72,7 @@ public class GroupComponentView extends CircularEntryView {
     private void appendTags(List<String> tags, StringBuilder strTags, int actual) {
         if (!tags.get(actual).equals("")) {
             if (actual != 0) {
-                strTags.append(',');
+                strTags.append(' ');
             }
 
             strTags.append('#').append(tags.get(actual));

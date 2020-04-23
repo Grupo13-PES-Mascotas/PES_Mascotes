@@ -206,6 +206,10 @@ public class User {
         group.addSubscriber(this);
     }
 
+    public void addSubscribedGroupSimple(Group group) {
+        subscribedGroups.add(group.getName());
+    }
+
     /**
      * Remove a subscription to a group
      * @param group The group to remove the subscription to

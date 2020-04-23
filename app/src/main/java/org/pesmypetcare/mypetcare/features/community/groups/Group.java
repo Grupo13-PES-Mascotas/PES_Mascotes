@@ -2,6 +2,8 @@ package org.pesmypetcare.mypetcare.features.community.groups;
 
 import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
@@ -190,6 +192,15 @@ public class Group implements Comparable<Group> {
     }
 
     /**
+     * Add a subscriber.
+     * @param username The username of the subscriber
+     * @param date The date of the subscription
+     */
+    public void addSubscriber(String username, DateTime date) {
+        subscribers.put(username, date);
+    }
+
+    /**
      * Check if the user is a subscriber.
      * @param user The user
      * @return True if the user is a subscriber
@@ -226,16 +237,20 @@ public class Group implements Comparable<Group> {
         return name.equals(group.name);
     }
 
+    @NonNull
     @Override
-    public int hashCode() {
-        return Objects.hash(name);
+    public String toString() {
+        return "Group{" +
+            "name='" + name + '\'' +
+            ", ownerUsername='" + ownerUsername + '\'' +
+            ", description='" + description + '\'' +
+            ", creationDate=" + creationDate +
+            '}';
     }
 
     @Override
-    public String toString() {
-        return "Group{"
-            + "name='" + name + '\''
-            + '}';
+    public int hashCode() {
+        return Objects.hash(name);
     }
 
     @Override
