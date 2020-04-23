@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class StubPetManagerService implements PetManagerService {
     private static final String JOHN_DOE = "johnDoe";
@@ -116,10 +117,11 @@ public class StubPetManagerService implements PetManagerService {
     }
 
     @Override
-    public void addWashFrequency(User user, Pet pet, int newWashFrequency) {
+    public void addWashFrequency(User user, Pet pet, int newWashFrequency, DateTime dateTime) throws ExecutionException,
+        InterruptedException {
         ArrayList<Pet> pets = data.get(user.getUsername());
         int petIndex = Objects.requireNonNull(pets).indexOf(pet);
-        pets.get(petIndex).setWashFrequency(newWashFrequency);
+        pets.get(petIndex).setWashFrequencyForDate(newWashFrequency, dateTime);
     }
 
     @Override

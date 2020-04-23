@@ -7,8 +7,7 @@ import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
-import org.pesmypetcare.mypetcare.utilities.DateTime;
-import org.pesmypetcare.mypetcare.utilities.InvalidFormatException;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import static org.junit.Assert.assertEquals;
 
@@ -60,8 +59,8 @@ public class TestTrDeleteMeal {
     private Meals getTestMeal() {
         DateTime date = null;
         try {
-            date = new DateTime(2020, 2, 26, 15, 23, 56);
-        } catch (InvalidFormatException e) {
+            date = DateTime.Builder.build(2011, 2, 26, 15, 23, 56);
+        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
             e.printStackTrace();
         }
         assert date != null;
@@ -71,8 +70,8 @@ public class TestTrDeleteMeal {
     private Meals getTestMeal2() {
         DateTime date = null;
         try {
-            date = new DateTime(2011, 2, 26, 15, 23, 56);
-        } catch (InvalidFormatException e) {
+            date = DateTime.Builder.build(2011, 2, 26, 15, 23, 56);
+        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
             e.printStackTrace();
         }
         assert date != null;

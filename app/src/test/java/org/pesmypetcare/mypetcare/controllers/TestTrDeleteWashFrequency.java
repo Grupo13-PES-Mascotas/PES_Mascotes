@@ -13,6 +13,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -44,7 +45,8 @@ public class TestTrDeleteWashFrequency {
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotDeleteWashFrequencyToNonOwnerPet() throws NotPetOwnerException {
+    public void shouldNotDeleteWashFrequencyToNonOwnerPet() throws NotPetOwnerException, ExecutionException,
+        InterruptedException {
         trDeleteWashFrequency.setUser(new User("johnSmith", "johnSmith@gmail.com", "5678"));
         trDeleteWashFrequency.setPet(pet);
         trDeleteWashFrequency.setDateTime(dateTime);
@@ -52,7 +54,7 @@ public class TestTrDeleteWashFrequency {
     }
 
     @Test
-    public void shouldDeleteWashFrequencyData() throws NotPetOwnerException {
+    public void shouldDeleteWashFrequencyData() throws NotPetOwnerException, ExecutionException, InterruptedException {
         pet.setWashFrequency(2);
 
         trDeleteWashFrequency.setUser(user);
