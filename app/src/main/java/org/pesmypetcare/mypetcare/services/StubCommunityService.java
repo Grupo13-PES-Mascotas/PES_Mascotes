@@ -180,7 +180,7 @@ public class StubCommunityService implements CommunityService {
                         boolean found = false;
                         for (Post p : f.getPosts()) {
                             if (p.getUsername().equals(user.getUsername()) &&
-                                p.getCreationDate().equals(postCreationDate)) {
+                                p.getCreationDate().compareTo(postCreationDate) == 0) {
                                 found = true;
                                 f.removePost(user, postCreationDate);
                             }

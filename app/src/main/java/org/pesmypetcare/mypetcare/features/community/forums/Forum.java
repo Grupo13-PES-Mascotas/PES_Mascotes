@@ -167,7 +167,7 @@ public class Forum implements Comparable<Forum> {
      */
     private Post findPost(User author, DateTime creationDate) {
         for (Post p : posts) {
-            if (p.getCreationDate().equals(creationDate) && p.getUsername().equals(author.getUsername())) {
+            if (p.getCreationDate().compareTo(creationDate) == 0 && p.getUsername().equals(author.getUsername())) {
                 return p;
             }
         }
