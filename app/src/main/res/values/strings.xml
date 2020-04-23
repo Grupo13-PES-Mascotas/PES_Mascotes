@@ -195,6 +195,7 @@
     <string name="should_be_subscribed">You must be subscribed to the group</string>
     <string name="delete_forum_title">Delete forum</string>
     <string name="delete_forum_message">Are you sure you want to delete</string>
+    <string name="type_message">Type your message</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>
