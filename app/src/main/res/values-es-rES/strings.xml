@@ -197,6 +197,11 @@
     <string name="delete_forum_title">Eliminar foro</string>
     <string name="delete_forum_message">Estás seguro que quieres eliminar</string>
     <string name="type_message">Escribe tu mensaje</string>
+    <string name="text_message">Mensaje del post</string>
+    <string name="delete_post">Eliminar post</string>
+    <string name="update_post">Actualizar post</string>
+    <string name="edit_post_title">Editar post</string>
+    <string name="edit_post_message">Introduce el nuevo texto del post</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>

@@ -255,7 +255,7 @@ public class PetManagerAdapter implements PetManagerService {
         pet.setName(userPet.getName());
         pet.setGender(petData.getGender());
         pet.setBirthDate(DateTime.Builder.buildDateString(petData.getBirth()));
-        pet.setWeight(petData.getWeight());
+        //pet.setWeight(petData.getWeight());
         pet.setWashFrequency(petData.getWashFreq());
         pet.setRecommendedDailyKiloCalories(petData.getRecommendedKcal());
         pet.setBreed(petData.getBreed());

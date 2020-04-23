@@ -197,6 +197,11 @@
     <string name="delete_forum_title">Eliminar fòrum</string>
     <string name="delete_forum_message">Estàs segur que vols eliminar</string>
     <string name="type_message">Escriu el teu missatge</string>
+    <string name="text_message">Missatge del post</string>
+    <string name="delete_post">Eliminar post</string>
+    <string name="update_post">Actualitzar post</string>
+    <string name="edit_post_title">Editar post</string>
+    <string name="edit_post_message">Introdueix el nou text pel post</string>
 
     <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>
