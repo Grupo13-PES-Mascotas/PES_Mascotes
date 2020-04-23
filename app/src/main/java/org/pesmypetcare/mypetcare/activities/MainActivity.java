@@ -95,6 +95,7 @@ import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdateMeal;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
+import org.pesmypetcare.mypetcare.controllers.TrUpdatePost;
 import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
@@ -108,6 +109,8 @@ import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingExce
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.NotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.OwnerCannotDeleteSubscriptionException;
+import org.pesmypetcare.mypetcare.features.community.posts.NotPostOwnerException;
+import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostCreatedBeforeForumException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
@@ -206,6 +209,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeleteForum trDeleteForum;
     private TrAddNewPost trAddNewPost;
     private TrDeletePost trDeletePost;
+    private TrUpdatePost trUpdatePost;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -539,6 +543,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteForum = ControllersFactory.createTrDeleteForum();
         trAddNewPost = ControllersFactory.createTrAddNewPost();
         trDeletePost = ControllersFactory.createTrDeletePost();
+        trUpdatePost = ControllersFactory.createTrUpdatePost();
     }
 
     /**
@@ -1027,6 +1032,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trDeletePost.execute();
         } catch (ForumNotFoundException | PostNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updatePost(Post postToUpdate, String newText) {
+        trUpdatePost.setUser(user);
+        trUpdatePost.setPost(postToUpdate);
+        trUpdatePost.setNewText(newText);
+        try {
+            trUpdatePost.execute();
+        } catch (NotPostOwnerException | ForumNotFoundException | PostNotFoundException e) {
             e.printStackTrace();
         }
     }

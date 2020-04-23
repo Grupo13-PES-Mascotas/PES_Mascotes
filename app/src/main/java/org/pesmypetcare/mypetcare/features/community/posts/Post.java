@@ -153,6 +153,15 @@ public class Post implements Comparable<Post> {
         this.postImage = postImage;
     }
 
+    /**
+     * Getter of the forum of the post.
+     * @return The forum of the post
+     */
+    public Forum getForum() {
+        return forum;
+    }
+
+
     @Override
     public int compareTo(Post post) {
         if (!creationDate.equals(post.getCreationDate())) {

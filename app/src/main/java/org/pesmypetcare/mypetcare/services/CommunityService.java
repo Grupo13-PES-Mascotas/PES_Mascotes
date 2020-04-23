@@ -88,4 +88,12 @@ public interface CommunityService {
      * @param postCreationDate The creation date of the post that has to be deleted
      */
     void deletePost(User user, Forum forum, DateTime postCreationDate) throws ForumNotFoundException, PostNotFoundException;
+
+    /**
+     * Updates the text from the given post.
+     * @param user The user that wants to edit the post
+     * @param post The post that has to be edited
+     * @param newText The text that has to be set
+     */
+    void updatePost(User user, Post post, String newText) throws ForumNotFoundException, PostNotFoundException;
 }

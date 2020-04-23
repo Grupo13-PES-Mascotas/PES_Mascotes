@@ -193,4 +193,32 @@ public class StubCommunityService implements CommunityService {
             }
         }
     }
+
+    @Override
+    public void updatePost(User user, Post post, String newText) throws ForumNotFoundException, PostNotFoundException {
+        Forum postForum = post.getForum();
+        Group postGroup = postForum.getGroup();
+        if (!forumExists(postGroup, postForum)) {
+            throw new ForumNotFoundException();
+        }
+        for (Group g : groups) {
+            if (g.getName().equals(postGroup.getName())) {
+                for (Forum f : g.getForums()) {
+                    if (f.getName().equals(postForum.getName())) {
+                        boolean found = false;
+                        for (Post p : f.getPosts()) {
+                            if (p.getUsername().equals(user.getUsername()) &&
+                            p.getCreationDate().compareTo(post.getCreationDate()) == 0) {
+                                found = true;
+                                p.setText(newText);
+                            }
+                        }
+                        if (!found) {
+                            throw new PostNotFoundException();
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

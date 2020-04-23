@@ -136,5 +136,9 @@ public class ControllersFactory {
     public static TrDeletePost createTrDeletePost() {
         return new TrDeletePost(new StubCommunityService());
     }
+
+    public static TrUpdatePost createTrUpdatePost() {
+        return new TrUpdatePost(new StubCommunityService());
+    }
 }
 

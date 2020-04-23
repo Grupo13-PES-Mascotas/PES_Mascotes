@@ -126,4 +126,9 @@ public class CommunityAdapter implements CommunityService {
     public void deletePost(User user, Forum forum, DateTime postCreationDate) {
         // Not implemented yet
     }
+
+    @Override
+    public void updatePost(User user, Post post, String newText) {
+        // Not implemented yet
+    }
 }
