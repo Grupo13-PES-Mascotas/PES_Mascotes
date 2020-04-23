@@ -6,6 +6,8 @@ import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerExcepti
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
+import org.pesmypetcare.mypetcare.features.community.posts.Post;
+import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.SortedSet;
@@ -53,6 +55,12 @@ public interface CommunityService {
      */
     void deleteSubscriber(User user, Group group);
 
+    /**
+     * Add a forum to the group.
+     * @param user The author of the forum
+     * @param group The group were the forum will be added
+     * @param forum The forum that has to be added to the group
+     */
     void createForum(User user, Group group, Forum forum);
 
     /**
@@ -62,4 +70,12 @@ public interface CommunityService {
      * @param forum The forum to delete
      */
     void deleteForum(User user, Group group, Forum forum) throws ForumNotFoundException, NotForumOwnerException;
+
+    /**
+     * Add a post to a forum.
+     * @param user The author of the post
+     * @param forum The forum were the post will be added
+     * @param post The post to add
+     */
+    void createPost(User user, Forum forum, Post post) throws ForumNotFoundException, PostAlreadyExistingException;
 }

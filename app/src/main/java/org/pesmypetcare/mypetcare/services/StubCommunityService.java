@@ -7,6 +7,7 @@ import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
+import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
@@ -117,26 +118,53 @@ public class StubCommunityService implements CommunityService {
 
     @Override
     public void deleteForum(User user, Group group, Forum forum) throws ForumNotFoundException, NotForumOwnerException {
-        boolean found = false;
-        for (Group g : groups) {
-            if (g.getName().equals(group.getName())) {
-                System.out.println(g.getForums());
-                System.out.println(forum.getName());
-                for (Forum f : g.getForums()) {
-                    if (f.getName().equals(forum.getName())) {
-                        found = true;
-                        g.removeForum(forum);
-                        break;
-                    }
-                }
-            }
-        }
-        if (!found) {
+        if (!forumExists(group, forum)) {
             throw new ForumNotFoundException();
         }
         if (!forum.getOwnerUsername().equals(user.getUsername())) {
             throw new NotForumOwnerException();
         }
         group.removeForum(forum);
+    }
+
+    /**
+     * Checks whether a forum exists or not.
+     * @param group The group where the forum should be.
+     * @param forum The forum to check
+     * @return True if the forum was found or false otherwise
+     */
+    private boolean forumExists(Group group, Forum forum) {
+        for (Group g : groups) {
+            if (g.getName().equals(group.getName())) {
+                for (Forum f : g.getForums()) {
+                    if (f.getName().equals(forum.getName())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void createPost(User user, Forum forum, Post post) throws ForumNotFoundException, PostAlreadyExistingException {
+        if (!forumExists(forum.getGroup(), forum)) {
+            throw new ForumNotFoundException();
+        }
+        for (Group g : groups) {
+            if (g.getName().equals(forum.getGroup().getName())) {
+                for (Forum f : g.getForums()) {
+                    if (f.getName().equals(forum.getName())) {
+                        for (Post p : f.getPosts()) {
+                            if (p.getUsername().equals(post.getUsername()) && p.getCreationDate().equals(post.getCreationDate())) {
+                                throw new PostAlreadyExistingException();
+                            } else {
+                                f.addPost(post);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

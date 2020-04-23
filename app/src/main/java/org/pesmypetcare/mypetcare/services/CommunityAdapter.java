@@ -4,6 +4,7 @@ import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
+import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.SortedSet;
@@ -47,6 +48,11 @@ public class CommunityAdapter implements CommunityService {
 
     @Override
     public void deleteForum(User user, Group group, Forum forum) throws ForumNotFoundException {
+        // Not implemented yet
+    }
+
+    @Override
+    public void createPost(User user, Forum forum, Post post) {
         // Not implemented yet
     }
 }

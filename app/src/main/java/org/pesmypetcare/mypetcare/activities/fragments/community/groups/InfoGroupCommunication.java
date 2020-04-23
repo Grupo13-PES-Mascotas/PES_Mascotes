@@ -38,5 +38,15 @@ public interface InfoGroupCommunication {
      */
     void deleteForum(Forum forum);
 
+    /**
+     *
+     * @param postsFragment
+     */
     void showForum(PostsFragment postsFragment);
+
+    /**
+     * Add a new post to the forum.
+     * @param forum The forum were the post will be added
+     */
+    void addNewPost(Forum forum, String postText);
 }
