@@ -66,6 +66,7 @@ import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.TrAddNewForum;
+import org.pesmypetcare.mypetcare.controllers.TrAddNewPost;
 import org.pesmypetcare.mypetcare.controllers.TrAddNewWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.TrAddNewWeight;
 import org.pesmypetcare.mypetcare.controllers.TrAddSubscription;
@@ -106,6 +107,8 @@ import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingExce
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.NotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.OwnerCannotDeleteSubscriptionException;
+import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.posts.PostCreatedBeforeForumException;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
@@ -199,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeleteSubscription trDeleteSubscription;
     private TrAddNewForum trAddNewForum;
     private TrDeleteForum trDeleteForum;
+    private TrAddNewPost trAddNewPost;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -530,6 +534,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteSubscription = ControllersFactory.createTrDeleteSubscription();
         trAddNewForum = ControllersFactory.createTrAddNewForum();
         trDeleteForum = ControllersFactory.createTrDeleteForum();
+        trAddNewPost = ControllersFactory.createTrAddNewPost();
     }
 
     /**
@@ -994,6 +999,19 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void showForum(PostsFragment postsFragment) {
         changeFragment(postsFragment);
+    }
+
+    @Override
+    public void addNewPost(Forum forum, String postText) {
+        trAddNewPost.setUser(user);
+        trAddNewPost.setPostText(postText);
+        trAddNewPost.setPostCreationDate(DateTime.Builder.buildFullString("2020-04-22T10:10:00"));
+        trAddNewPost.setForum(forum);
+        try {
+            trAddNewPost.execute();
+        } catch (PostAlreadyExistingException | ForumNotFoundException | PostCreatedBeforeForumException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
