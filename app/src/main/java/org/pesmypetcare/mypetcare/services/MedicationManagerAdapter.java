@@ -31,7 +31,8 @@ public class MedicationManagerAdapter implements MedicationManagerService {
     }
 
     @Override
-    public void updateMedicationBody(User user, Pet pet, Medication medication) throws ExecutionException, InterruptedException {
+    public void updateMedicationBody(User user, Pet pet, Medication medication) throws ExecutionException,
+        InterruptedException {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();

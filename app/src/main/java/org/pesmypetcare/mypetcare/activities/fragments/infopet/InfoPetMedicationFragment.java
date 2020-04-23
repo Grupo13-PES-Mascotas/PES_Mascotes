@@ -222,16 +222,35 @@ public class InfoPetMedicationFragment extends Fragment {
             inputMedicationPeriodicity.getText()).toString());
         int medicationDuration = Integer.parseInt(Objects.requireNonNull(
             inputMedicationDuration.getText()).toString());
-        medication.setMedicationQuantity(medicationQuantity);
-        medication.setMedicationFrequency(medicationPeriodicity);
-        medication.setMedicationDuration(medicationDuration);
+        updateMedicationBody(medicationQuantity, medicationPeriodicity, medicationDuration);
         if (!medicationName.equals(medication.getMedicationName())) {
             updatesName = true;
         }
         InfoPetFragment.getCommunication().updatePetMedication(pet, medication, newDate, updatesDate, medicationName,
             updatesName);
+        updateMedicationKey(newDate, medicationName);
+    }
+
+    /**
+     * Updates the medication key.
+     * @param newDate The new date of the medication
+     * @param medicationName The new name of the medication
+     */
+    private void updateMedicationKey(String newDate, String medicationName) {
         medication.setMedicationName(medicationName);
         medication.setMedicationDate(DateTime.Builder.buildFullString(newDate));
+    }
+
+    /**
+     * Updates the body of the medication.
+     * @param medicationQuantity The new medication quantity
+     * @param medicationPeriodicity The new medication periodicity
+     * @param medicationDuration The new medication duration
+     */
+    private void updateMedicationBody(double medicationQuantity, int medicationPeriodicity, int medicationDuration) {
+        medication.setMedicationQuantity(medicationQuantity);
+        medication.setMedicationFrequency(medicationPeriodicity);
+        medication.setMedicationDuration(medicationDuration);
     }
 
     /**

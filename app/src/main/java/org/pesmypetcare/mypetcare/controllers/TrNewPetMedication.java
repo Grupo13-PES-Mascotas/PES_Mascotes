@@ -75,8 +75,8 @@ public class TrNewPetMedication {
     private boolean medicationHasAlreadyBeenAdded() {
         boolean found = false;
         for (Event e : pet.getMedicationEvents()) {
-            if (e.getDateTime().compareTo(medication.getDateTime()) == 0 &&
-                ((Medication) e).getMedicationName().equals(medication.getMedicationName())) {
+            if (e.getDateTime().compareTo(medication.getDateTime()) == 0
+                && ((Medication) e).getMedicationName().equals(medication.getMedicationName())) {
                 found = true;
                 break;
             }

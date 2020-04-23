@@ -1054,6 +1054,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (NotPetOwnerException e) {
             Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
             toast.show();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
 
         hideWindowSoftKeyboard();

@@ -245,13 +245,14 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public void addWashFrequency(User user, Pet pet, int newWashFrequency) {
+    public void addWashFrequency(User user, Pet pet, int newWashFrequency, DateTime dateTime)
+        throws ExecutionException, InterruptedException {
         String accessToken = user.getToken();
         String userName = user.getUsername();
         String petName = pet.getName();
         FreqWash freqWash = new FreqWash(new FreqWashData(newWashFrequency));
-        /*ServiceLocator.getInstance().getFreqWashManagerClient().createFreqWash(accessToken, userName, petName,
-            freqWash, );*/
+        ServiceLocator.getInstance().getFreqWashManagerClient().createFreqWash(accessToken, userName, petName,
+            freqWash, dateTime);
     }
 
     @Override

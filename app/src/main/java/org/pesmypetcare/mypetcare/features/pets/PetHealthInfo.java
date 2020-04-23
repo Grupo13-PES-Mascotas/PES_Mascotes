@@ -273,6 +273,22 @@ public class PetHealthInfo {
      * @param kcal The kcal to add for a given date
      */
     public void addWeeklyKiloCalAverageForDate(DateTime date, double kcal) {
+        obtainDateMonday(date);
+        if (weeklyKiloCaloriesAverage.containsKey(date)) {
+            //int n = weeklyMeals.get(date);
+            double storedKcal = weeklyKiloCaloriesAverage.get(date);
+            weeklyKiloCaloriesAverage.put(date, storedKcal + kcal);
+        } else {
+            this.weeklyKiloCaloriesAverage.put(date, kcal);
+            this.weeklyMeals.put(date, 1);
+        }
+    }
+
+    /**
+     * Obtains the monday of the indicated day.
+     * @param date The date for which we want to find the monday
+     */
+    private void obtainDateMonday(DateTime date) {
         Calendar c = Calendar.getInstance();
         c.set(date.getYear(), date.getMonth(), date.getDay());
         int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
@@ -282,14 +298,6 @@ public class PetHealthInfo {
         date.setHour(0);
         date.setMinutes(0);
         date.setSeconds(0);
-        if (weeklyKiloCaloriesAverage.containsKey(date)) {
-            int n = weeklyMeals.get(date);
-            double storedKcal = weeklyKiloCaloriesAverage.get(date);
-            weeklyKiloCaloriesAverage.put(date, storedKcal + kcal);
-        } else {
-            this.weeklyKiloCaloriesAverage.put(date, kcal);
-            this.weeklyMeals.put(date, 1);
-        }
     }
 
     /**

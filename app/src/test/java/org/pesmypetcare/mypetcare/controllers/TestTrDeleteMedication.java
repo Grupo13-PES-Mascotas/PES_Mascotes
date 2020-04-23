@@ -37,7 +37,8 @@ public class TestTrDeleteMedication {
     }
 
     @Test
-    public void shouldDeleteMedication() throws MedicationAlreadyExistingException, ExecutionException, InterruptedException {
+    public void shouldDeleteMedication() throws MedicationAlreadyExistingException, ExecutionException,
+        InterruptedException {
         final int before = stubMedicationService.nMedications();
         trNewPetMedication.setUser(user);
         trNewPetMedication.setPet(linux);
