@@ -7,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Layout;
-import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -30,8 +29,6 @@ public abstract class CircularEntryView extends ConstraintLayout {
 
     private Context currentActivity;
     private Pet pet;
-    private TextPaint secondLinePaint;
-    private int secondLineWidth;
 
     public CircularEntryView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -157,14 +154,6 @@ public abstract class CircularEntryView extends ConstraintLayout {
         nameText.setTextColor(Color.BLACK);
         nameText.setBreakStrategy(Layout.BREAK_STRATEGY_BALANCED);
         info.addView(nameText);
-    }
-
-    protected TextPaint getSecondLinePaint() {
-        return secondLinePaint;
-    }
-
-    protected int getSecondLineWidth() {
-        return secondLineWidth;
     }
 
     public Context getCurrentActivity() {
