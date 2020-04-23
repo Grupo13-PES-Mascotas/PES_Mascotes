@@ -76,7 +76,7 @@ public class TestTrAddNewWeight {
         trAddNewWeight.setNewWeight(15.0);
         trAddNewWeight.execute();
 
-        assertEquals("Should only have one weight per day", 1,pet.getHealthInfo().getWeight().size());
+        assertEquals("Should only have one weight per day", 1, pet.getHealthInfo().getWeight().size());
     }
 
     private Pet getDinkyPet() throws PetRepeatException {

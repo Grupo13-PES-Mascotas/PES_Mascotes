@@ -42,7 +42,8 @@ public class TestTrAddNewWashFrequency {
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotAddWeightToNonOwnerPet() throws NotPetOwnerException, ExecutionException, InterruptedException {
+    public void shouldNotAddWeightToNonOwnerPet() throws NotPetOwnerException, ExecutionException,
+        InterruptedException {
         trAddNewWashFrequency.setUser(new User("johnSmith", "johnSmith@gmail.com", "5678"));
         trAddNewWashFrequency.setPet(pet);
         trAddNewWashFrequency.setNewWashFrequency(2);
@@ -62,7 +63,8 @@ public class TestTrAddNewWashFrequency {
     }
 
     @Test
-    public void shouldOnlyHaveOneWashFrequencyPerDay() throws NotPetOwnerException, ExecutionException, InterruptedException {
+    public void shouldOnlyHaveOneWashFrequencyPerDay() throws NotPetOwnerException, ExecutionException,
+            InterruptedException {
         trAddNewWashFrequency.setUser(user);
         trAddNewWashFrequency.setPet(pet);
         trAddNewWashFrequency.setNewWashFrequency(2);
