@@ -802,8 +802,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         PendingIntent pending = PendingIntent.getBroadcast(context, requestCode, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         requestCode++;
-        Date maik = new Date(time);
-        System.out.println("HOLA " + maik.toString());
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert manager != null;
         manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pending);
