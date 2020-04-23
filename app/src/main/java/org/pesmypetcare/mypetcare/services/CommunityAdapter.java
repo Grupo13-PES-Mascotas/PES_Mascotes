@@ -17,6 +17,7 @@ import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CommunityAdapter implements CommunityService {
@@ -73,8 +74,6 @@ public class CommunityAdapter implements CommunityService {
         GroupData groupData = new GroupData(group.getName(), group.getOwnerUsername(),
             group.getCreationDate().toString(), group.getDescription(), group.getTags());
 
-        System.out.println("GROUP: " + group.toString());
-
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
@@ -89,22 +88,69 @@ public class CommunityAdapter implements CommunityService {
 
     @Override
     public void deleteGroup(String groupName) throws GroupNotFoundException {
-        // Not implemented yet
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getGroupManager().deleteGroup(groupName);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+
+        executorService.shutdown();
     }
 
     @Override
     public boolean isGroupExisting(Group group) {
-        return false;
+        AtomicBoolean isGroupExisting = new AtomicBoolean(true);
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getGroupManager().getGroup(group.getName());
+            } catch (MyPetCareException e) {
+                isGroupExisting.set(false);
+            }
+        });
+
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(20, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return isGroupExisting.get();
     }
 
     @Override
     public void addSubscriber(User user, Group group) {
-        // Not implemented yet
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getGroupManager().subscribe(user.getToken(), group.getName(),
+                    user.getUsername());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+
+        executorService.shutdown();
     }
 
     @Override
     public void deleteSubscriber(User user, Group group) {
-        //Not implemented yet
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getGroupManager().unsubscribe(user.getToken(), group.getName(),
+                    user.getUsername());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+
+        executorService.shutdown();
     }
 
     @Override

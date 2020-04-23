@@ -206,6 +206,10 @@ public class User {
         group.addSubscriber(this);
     }
 
+    /**
+     * Subscribe to the group but not include it to the group
+     * @param group The group to add
+     */
     public void addSubscribedGroupSimple(Group group) {
         subscribedGroups.add(group.getName());
     }

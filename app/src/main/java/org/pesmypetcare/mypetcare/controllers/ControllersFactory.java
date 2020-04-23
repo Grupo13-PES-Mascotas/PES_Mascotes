@@ -110,15 +110,15 @@ public class ControllersFactory {
     }
 
     public static TrDeleteGroup createTrDeleteGroup() {
-        return new TrDeleteGroup(new StubCommunityService());
+        return new TrDeleteGroup(new CommunityAdapter());
     }
 
     public static TrAddSubscription createTrAddSubscription() {
-        return new TrAddSubscription(new StubCommunityService());
+        return new TrAddSubscription(new CommunityAdapter());
     }
 
     public static TrDeleteSubscription createTrDeleteSubscription() {
-        return new TrDeleteSubscription(new StubCommunityService());
+        return new TrDeleteSubscription(new CommunityAdapter());
     }
 
     public static TrAddNewForum createTrAddNewForum() {
