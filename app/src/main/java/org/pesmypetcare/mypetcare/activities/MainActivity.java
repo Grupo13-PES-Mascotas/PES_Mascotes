@@ -134,6 +134,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -1269,7 +1270,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void newPeriodicNotification(Pet selectedPet, int periodicity, String reasonText, DateTime dateTime)
-            throws ParseException, UserIsNotOwnerException {
+            throws ParseException, UserIsNotOwnerException, ExecutionException, InterruptedException {
 
         trNewPeriodicNotification.setUser(user);
         trNewPeriodicNotification.setPeriodicity(periodicity);
@@ -1281,7 +1282,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void deletePeriodicNotification(Pet selectedPet, Event event, User user)
-            throws ParseException, UserIsNotOwnerException {
+            throws ParseException, UserIsNotOwnerException, ExecutionException, InterruptedException {
 
         trDeletePeriodicNotification.setUser(user);
         trDeletePeriodicNotification.setPet(selectedPet);

@@ -10,6 +10,7 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.text.ParseException;
+import java.util.concurrent.ExecutionException;
 
 public interface CalendarCommunication {
 
@@ -58,7 +59,7 @@ public interface CalendarCommunication {
      * @param dateTime The date of the event
      */
     void newPeriodicNotification(Pet selectedPet, int periodicity, String reasonText, DateTime dateTime)
-            throws ParseException, UserIsNotOwnerException;
+            throws ParseException, UserIsNotOwnerException, ExecutionException, InterruptedException;
 
     /**
      * Delete a periodic notification.
@@ -67,7 +68,7 @@ public interface CalendarCommunication {
      * @param user The user that wants to delete a periodic notification
      */
     void deletePeriodicNotification(Pet selectedPet, Event event, User user)
-            throws ParseException, UserIsNotOwnerException;
+            throws ParseException, UserIsNotOwnerException, ExecutionException, InterruptedException;
 
     /**
      * Creates a periodic notification.

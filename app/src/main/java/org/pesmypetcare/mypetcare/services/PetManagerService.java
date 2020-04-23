@@ -12,6 +12,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public interface PetManagerService {
 
@@ -119,7 +120,7 @@ public interface PetManagerService {
      * @param event The period event
      * @param period The periodicity of the period event
      */
-    void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) throws ParseException;
+    void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) throws ParseException, ExecutionException, InterruptedException;
 
     /**
      * Delete a periodic event of pet.
@@ -127,5 +128,5 @@ public interface PetManagerService {
      * @param pet The pet which the user wants to delete a periodic event
      * @param event The period event that user wants to delete
      */
-    void deletePeriodicEvent(User user, Pet pet, Event event) throws ParseException;
+    void deletePeriodicEvent(User user, Pet pet, Event event) throws ParseException, ExecutionException, InterruptedException;
 }

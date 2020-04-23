@@ -43,6 +43,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class CalendarFragment extends Fragment {
     private static final int PADDING_20 = 20;
@@ -164,6 +165,10 @@ public class CalendarFragment extends Fragment {
                         createPeriodicNotification(reasonText, dateText, timeText, sp_pets, sp_period);
                     } catch (ParseException | InvalidFormatException | UserIsNotOwnerException e) {
                         e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
                     }
                 } else {
                     toastText(getString(R.string.no_description));
@@ -183,7 +188,7 @@ public class CalendarFragment extends Fragment {
      * @param timeText The hour of the event
      */
     private void createPeriodicNotification(EditText reasonText, TextView dateText, EditText timeText,
-                                            Spinner sp_pets, Spinner sp_period) throws ParseException, InvalidFormatException, UserIsNotOwnerException {
+                                            Spinner sp_pets, Spinner sp_period) throws ParseException, InvalidFormatException, UserIsNotOwnerException, ExecutionException, InterruptedException {
         String petName = sp_pets.getSelectedItem().toString();
         String periodicity = sp_period.getSelectedItem().toString();
         int period = setPeriodicity(periodicity);
@@ -569,6 +574,10 @@ public class CalendarFragment extends Fragment {
                 //pet.deletePeriodicNotification(event);
                 communication.deletePeriodicNotification(pet, event, user);
             } catch (ParseException | UserIsNotOwnerException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
                 e.printStackTrace();
             }
         });

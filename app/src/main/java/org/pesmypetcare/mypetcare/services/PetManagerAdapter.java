@@ -10,6 +10,7 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.EventData;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
 import java.util.ArrayList;
@@ -248,13 +249,30 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) {
-        // Not implemented yet
+    public void registerNewPeriodicNotification(User user, Pet pet, Event event, int period)
+            throws ExecutionException, InterruptedException {
+        EventData ev = new EventData();
+        ev.setStartDate(event.getDateTime().toString());
+        ev.setDescription(event.getDescription());
+        ev.setRepetitionInterval(period);
+        ServiceLocator.getInstance().getGoogleCalendarManagerClient().createEvent(user.getToken(),
+                user.getUsername(), pet.getName(), ev);
     }
 
     @Override
-    public void deletePeriodicEvent(User user, Pet pet, Event event) {
-        // Not implemented yet
+    public void deletePeriodicEvent(User user, Pet pet, Event event) throws ExecutionException, InterruptedException {
+        EventData ev = new EventData();
+        ev.setStartDate(event.getDateTime().toString());
+        ev.setDescription(event.getDescription());
+        List<EventData> eventsList = ServiceLocator.getInstance().getGoogleCalendarManagerClient()
+                .getAllEventsFromCalendar(user.getToken(), user.getUsername(), pet.getName());
+        for (EventData eventData : eventsList) {
+            if(eventData.getDescription().equals(ev.getDescription())
+                    & eventData.getStartDate().equals(ev.getStartDate())) {
+                ServiceLocator.getInstance().getGoogleCalendarManagerClient()
+                        .deleteEvent(user.getToken(), user.getUsername(), pet.getName(), eventData.getId());
+            }
+        }
     }
 
     /**
