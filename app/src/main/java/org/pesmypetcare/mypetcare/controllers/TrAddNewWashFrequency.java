@@ -58,7 +58,7 @@ public class TrAddNewWashFrequency {
             throw new NotPetOwnerException();
         }
 
-        petManagerService.updateWashFrequency(user, pet, newWashFrequency);
+        petManagerService.addWashFrequency(user, pet, newWashFrequency);
         pet.setWashFrequencyForDate(newWashFrequency, dateTime);
     }
 }

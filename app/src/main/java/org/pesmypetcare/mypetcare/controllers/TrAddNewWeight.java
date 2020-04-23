@@ -6,6 +6,8 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
+import java.util.concurrent.ExecutionException;
+
 public class TrAddNewWeight {
     private PetManagerService petManagerService;
     private User user;
@@ -53,12 +55,12 @@ public class TrAddNewWeight {
      * Execute the transaction.
      * @throws NotPetOwnerException The pet does not belong to the user
      */
-    public void execute() throws NotPetOwnerException {
+    public void execute() throws NotPetOwnerException, ExecutionException, InterruptedException {
         if (!pet.isOwner(user)) {
             throw new NotPetOwnerException();
         }
 
-        petManagerService.updateWeight(user, pet, newWeight, dateTime);
+        petManagerService.addWeight(user, pet, newWeight, dateTime);
         pet.setWeightForDate(newWeight, dateTime);
     }
 }

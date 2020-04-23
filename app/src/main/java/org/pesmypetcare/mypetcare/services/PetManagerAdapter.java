@@ -10,7 +10,11 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.FreqWash;
+import org.pesmypetcare.usermanagerlib.datacontainers.FreqWashData;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
+import org.pesmypetcare.usermanagerlib.datacontainers.Weight;
+import org.pesmypetcare.usermanagerlib.datacontainers.WeightData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -223,23 +227,39 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public void updateWeight(User user, Pet pet, double newWeight, DateTime dateTime) {
-
+    public void addWeight(User user, Pet pet, double newWeight, DateTime dateTime) throws ExecutionException, InterruptedException {
+        String accessToken = user.getToken();
+        String userName = user.getUsername();
+        String petName = pet.getName();
+        Weight weight = new Weight(new WeightData(newWeight));
+        ServiceLocator.getInstance().getWeightManagerClient().createWeight(accessToken, userName, petName,
+            weight, dateTime);
     }
 
     @Override
-    public void deletePetWeight(User user, Pet pet, DateTime dateTime) {
-
+    public void deletePetWeight(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException {
+        String accessToken = user.getToken();
+        String userName = user.getUsername();
+        String petName = pet.getName();
+        ServiceLocator.getInstance().getWeightManagerClient().deleteByDate(accessToken, userName, petName, dateTime);
     }
 
     @Override
-    public void updateWashFrequency(User user, Pet pet, int newWashFrequency) {
-
+    public void addWashFrequency(User user, Pet pet, int newWashFrequency) {
+        String accessToken = user.getToken();
+        String userName = user.getUsername();
+        String petName = pet.getName();
+        FreqWash freqWash = new FreqWash(new FreqWashData(newWashFrequency));
+        /*ServiceLocator.getInstance().getFreqWashManagerClient().createFreqWash(accessToken, userName, petName,
+            freqWash, );*/
     }
 
     @Override
-    public void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) {
-
+    public void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException {
+        String accessToken = user.getToken();
+        String userName = user.getUsername();
+        String petName = pet.getName();
+        ServiceLocator.getInstance().getFreqWashManagerClient().deleteByDate(accessToken, userName, petName, dateTime);
     }
 
     /**
