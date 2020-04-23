@@ -66,7 +66,8 @@ public interface CalendarCommunication {
      * @param event The event that the user wants to delete
      * @param user The user that wants to delete a periodic notification
      */
-    void deletePeriodicNotification(Pet selectedPet, Event event, User user) throws ParseException, UserIsNotOwnerException;
+    void deletePeriodicNotification(Pet selectedPet, Event event, User user)
+            throws ParseException, UserIsNotOwnerException;
 
     /**
      * Creates a periodic notification.

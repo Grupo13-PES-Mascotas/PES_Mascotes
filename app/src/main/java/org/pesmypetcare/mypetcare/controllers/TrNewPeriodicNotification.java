@@ -48,7 +48,7 @@ public class TrNewPeriodicNotification {
     }
 
     /**
-     * Set the period of the periodic notification that will be added
+     * Set the period of the periodic notification that will be added.
      * @param period the period selected
      */
     public void setPeriodicity(int period) {

@@ -57,7 +57,6 @@ public class TestTrNewPeriodicNotification {
     }
 
     private void setPet2() throws PetRepeatException {
-        User user2 = new User("Paco", "", "");
         pet2.setName(NAME2);
         pet2.setGender(GenderType.Female);
         pet.setBirthDate(DateTime.Builder.buildDateString(BIRTH));
@@ -65,6 +64,7 @@ public class TestTrNewPeriodicNotification {
         pet2.setRecommendedDailyKiloCalories(2);
         pet2.setWashFrequency(2);
         pet2.setWeight(2);
+        User user2 = new User("Paco", "", "");
         pet2.setOwner(user2);
     }
     @Test
