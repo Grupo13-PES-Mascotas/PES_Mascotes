@@ -78,7 +78,21 @@ public interface PetManagerService {
      */
     void deleteEvent(Pet pet, Event event);
 
+    /**
+     * Add a periodic notification event to a pet.
+     * @param pet The pet which the user want to add the periodic notification
+     * @param event The event to add
+     * @param user The user who want to add the periodic notification
+     * @param period The period
+     */
     void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) throws ParseException;
 
+    /**
+     * Delete a periodic notification event from a pet
+     * @param user The user who want to delete the periodic notification
+     * @param pet The pet which the user want to delete the periodic notification
+     * @param event The event to delete
+     * @throws ParseException
+     */
     void deletePeriodicEvent(User user, Pet pet, Event event) throws ParseException;
 }

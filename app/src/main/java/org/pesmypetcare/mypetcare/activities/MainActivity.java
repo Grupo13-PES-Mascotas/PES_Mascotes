@@ -807,6 +807,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pending);
     }
 
+    /**
+     * Schedule a periodic notification.
+     * @param context The context
+     * @param text The notification's text
+     * @param title The notification's title
+     * @param time The alarm time of the notification
+     * @param period The period of the alarm
+     */
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void schedulePeriodicNotification(Context context, long time, String title, String text, int period) {
         Notification notification = new Notification(title, text, new Date(time), Long.toString(time));

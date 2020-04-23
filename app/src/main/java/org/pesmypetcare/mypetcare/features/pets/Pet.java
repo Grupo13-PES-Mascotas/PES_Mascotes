@@ -375,11 +375,21 @@ public class Pet {
         return "{" + name + ", " + (profileImage == null ? "NULL" : "NO_NULL") + "}";
     }
 
+    /**
+     * Add a periodic notification to the pet.
+     * @param event The event of the pet to set
+     * @param period The period of the notification
+     */
     public void addPeriodicNotification(Event event, int period) throws ParseException {
         PeriodEvent pe = new PeriodEvent(event.getDescription(), event.getDateTime(), period);
         periodEvents.add(pe);
     }
 
+    /**
+     * Get the list of periodic notification events on a date.
+     * @param date The date of the events
+     * @return The list of periodic notification events on the given date
+     */
     public ArrayList<Event> getPeriodicEvents(String date) throws ParseException {
         Date dateActual = new SimpleDateFormat("yyyy-MM-dd").parse(date);
         ArrayList<Event> selectedEvents = new ArrayList<>();
@@ -395,12 +405,15 @@ public class Pet {
         return selectedEvents;
     }
 
+    /**
+     * Delete a periodic notification event of the pet.
+     * @param event The event to delete
+     */
     public void deletePeriodicNotification(Event event) throws ParseException {
         org.pesmypetcare.usermanagerlib.datacontainers.DateTime dateTime = event.getDateTime();
         String desc = event.getDescription();
         PeriodEvent pe = new PeriodEvent(desc, dateTime, 0);
         periodEvents.remove(pe);
     }
-
 
 }

@@ -118,6 +118,10 @@
     <string name="one_month">Cada mes</string>
     <string name="three_months">Cada 3 mesos</string>
     <string name="dialog_new_periodic_message">Introdueix la descripció de l\'event, la seva periodicitat i la seva hora i selecciona la mascota que participarà.</string>
+    <string name="notificationid">NOTIFICATIO_ID</string>
+    <string name="notificationChannelName">NOM_CANAL_NOTIFICACIO</string>
+    <string name="title">Títol</string>
+    <string name="text">text</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

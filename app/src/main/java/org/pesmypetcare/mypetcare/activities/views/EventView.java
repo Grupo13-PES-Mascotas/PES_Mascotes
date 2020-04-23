@@ -9,7 +9,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 public class EventView extends PetComponentView {
     private Event event;
-    private static final int TEN = 10;
+    private  final int TEN = 10;
 
     public EventView(Context context, AttributeSet attrs) {
         super(context, attrs);

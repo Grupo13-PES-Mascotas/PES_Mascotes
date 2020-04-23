@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.activities.fragments.calendar;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -30,11 +29,9 @@ import org.pesmypetcare.mypetcare.databinding.FragmentCalendarBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
-import java.sql.SQLOutput;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -106,6 +103,9 @@ public class CalendarFragment extends Fragment {
         newPersonal.show();
     }
 
+    /**
+     * Initialize the dialog for a new periodic notification.
+     */
     private void initializePeriodicDialog() throws ParseException {
         MaterialAlertDialogBuilder newPeriodic = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()),
                 R.style.AlertDialogTheme);
@@ -113,6 +113,9 @@ public class CalendarFragment extends Fragment {
         newPeriodic.show();
     }
 
+    /**
+     * Initialize the components of the dialog for a new periodic notification.
+     */
     private void initializeDialogComponentsPeriodic(MaterialAlertDialogBuilder newPeriodic) throws ParseException {
         LinearLayout layout = new LinearLayout(getContext());
         EditText reasonText = initializeDialogLayout(layout);
@@ -129,6 +132,9 @@ public class CalendarFragment extends Fragment {
         dialogElementsPeriodic(newPeriodic, layout, reasonText, dateText, timeText, sp_pets, sp_period);
     }
 
+    /**
+     * Initialize and set more components of the dialog
+     */
     private void dialogElementsPeriodic(MaterialAlertDialogBuilder newPeriodic, LinearLayout layout, EditText
             reasonText, TextView dateText, EditText timeText, Spinner sp_pets, Spinner sp_period) {
         newPeriodic.setTitle(R.string.periodic_notification_title);
@@ -138,6 +144,15 @@ public class CalendarFragment extends Fragment {
         createPeriodicEventListener(newPeriodic, reasonText, dateText, timeText, sp_pets, sp_period);
     }
 
+    /**
+     * Listener of the create button of the periodic notificationdialog.
+     * @param newPeriodic The dialog
+     * @param dateText The date of the event
+     * @param reasonText The reason of the event
+     * @param timeText The hour of the even
+     * @param sp_pets The spinner for pet selection
+     * @param sp_period The spinner for period selection
+     */
     private void createPeriodicEventListener(MaterialAlertDialogBuilder newPeriodic, EditText reasonText, TextView
             dateText, EditText timeText, Spinner sp_pets, Spinner sp_period) {
         newPeriodic.setPositiveButton(getString(R.string.create), (dialog, which) -> {
@@ -157,6 +172,14 @@ public class CalendarFragment extends Fragment {
         });
     }
 
+    /**
+     * Create a new periodic notification event.
+     * @param dateText The date of the event
+     * @param reasonText The reason of the event
+     * @param sp_pets The spinner for pet selection
+     * @param sp_period The spinner for the period selection
+     * @param timeText The hour of the event
+     */
     private void createPeriodicNotification(EditText reasonText, TextView dateText, EditText timeText,
                                             Spinner sp_pets, Spinner sp_period) throws ParseException, InvalidFormatException {
         String petName = sp_pets.getSelectedItem().toString();
@@ -178,7 +201,11 @@ public class CalendarFragment extends Fragment {
         }
     }
 
-
+    /**
+     * Set the period number
+     * @param periodicity the period selected on the spinner
+     * @return the period number
+     */
     private int setPeriodicity(String periodicity) {
         if(getString(R.string.one_day) == periodicity) return 1;
         else if(getString(R.string.one_week) == periodicity) return 7;
@@ -188,6 +215,11 @@ public class CalendarFragment extends Fragment {
         else return 0;
     }
 
+    /**
+     * Initialize the period spinner of the dialog.
+     * @param layout The layout to put the spinner
+     * @return The period spinner
+     */
     private Spinner initializeSpinnerPeriod(LinearLayout layout) {
         final ArrayAdapter<String> adp = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
                 android.R.layout.simple_spinner_item, (List<String>) getPeriodicityOptions());
@@ -199,6 +231,11 @@ public class CalendarFragment extends Fragment {
         return sp;
     }
 
+
+    /**
+     * Gets all the periodic options of a periodic notification we can choose.
+     * @return An string array with the period options
+     */
     private ArrayList<?> getPeriodicityOptions() {
         ArrayList<String> PeriodOpt = new ArrayList<>();
 

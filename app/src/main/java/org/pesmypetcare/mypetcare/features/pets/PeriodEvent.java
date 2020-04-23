@@ -13,10 +13,18 @@ public class PeriodEvent extends Event {
         this.period = period;
     }
 
+    /**
+     * Get the period.
+     * @return The period.
+     */
     public int getPeriod() {
         return period;
     }
 
+    /**
+     * Set the period.
+     * @param period The datetime to set.
+     */
     public void setPeriod(int period) {
         this.period = period;
     }

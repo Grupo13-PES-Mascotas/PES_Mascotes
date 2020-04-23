@@ -38,7 +38,6 @@ public class TrDeletePet {
         if (pet.getOwner() != user) {
             throw new UserIsNotOwnerException();
         }
-
         petManagerService.deletePet(pet, user);
         user.deletePet(pet);
     }
