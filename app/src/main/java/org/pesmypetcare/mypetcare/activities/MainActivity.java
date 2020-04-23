@@ -1011,6 +1011,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewPost.setPostText(postText);
         trAddNewPost.setPostCreationDate(DateTime.Builder.buildFullString("2020-04-22T10:10:00"));
         trAddNewPost.setForum(forum);
+
         try {
             trAddNewPost.execute();
         } catch (PostAlreadyExistingException | ForumNotFoundException | PostCreatedBeforeForumException e) {

@@ -161,4 +161,12 @@ public class Post implements Comparable<Post> {
 
         return username.compareTo(post.getUsername());
     }
+
+    @Override
+    public String toString() {
+        return "Post{"
+            + "username='" + username + '\''
+            + ", text='" + text + '\''
+            + '}';
+    }
 }
