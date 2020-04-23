@@ -5,12 +5,11 @@ import android.util.AttributeSet;
 
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 public class EventView extends PetComponentView {
     private Event event;
-    private int TEN = 10;
+    private static final int TEN = 10;
 
     public EventView(Context context, AttributeSet attrs) {
         super(context, attrs);

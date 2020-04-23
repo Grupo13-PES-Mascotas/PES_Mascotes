@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.text.ParseException;
 import java.util.ArrayList;

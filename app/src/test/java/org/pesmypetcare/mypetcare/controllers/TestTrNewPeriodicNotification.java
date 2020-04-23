@@ -37,7 +37,6 @@ public class TestTrNewPeriodicNotification {
     @Before
     public void setUp() throws PetRepeatException {
         pet = new Pet();
-        pet2 = new Pet();
         user = new User("johnDoe", "", "");
         pet.setName(NAME);
         pet.setGender(GenderType.Female);
