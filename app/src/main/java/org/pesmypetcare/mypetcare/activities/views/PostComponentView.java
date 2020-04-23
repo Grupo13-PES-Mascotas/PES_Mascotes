@@ -42,7 +42,11 @@ public class PostComponentView extends CircularEntryView {
 
     @Override
     protected String getFirstLineText() {
-        return post.getUsername();
+        String strCreationDate = post.getCreationDate().toString();
+        String[] dateTimeParts = strCreationDate.split("T");
+
+        return post.getUsername() + " " + dateTimeParts[0] + " "
+            + dateTimeParts[1].substring(0, dateTimeParts[1].lastIndexOf(':'));
     }
 
     @Override
