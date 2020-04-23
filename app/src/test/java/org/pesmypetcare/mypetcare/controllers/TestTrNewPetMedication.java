@@ -36,7 +36,8 @@ public class TestTrNewPetMedication {
     }
 
     @Test(expected = MedicationAlreadyExistingException.class)
-    public void shouldNotAddAlreadyExistingMedication() throws MedicationAlreadyExistingException, ExecutionException, InterruptedException {
+    public void shouldNotAddAlreadyExistingMedication() throws MedicationAlreadyExistingException, ExecutionException,
+        InterruptedException {
         Medication medication = getTestMedication("2020-01-12");
         trNewPetMedication.setUser(user);
         trNewPetMedication.setPet(pet);
@@ -51,7 +52,8 @@ public class TestTrNewPetMedication {
     }
 
     @Test
-    public void shouldAddMedication() throws MedicationAlreadyExistingException, ExecutionException, InterruptedException {
+    public void shouldAddMedication() throws MedicationAlreadyExistingException, ExecutionException,
+        InterruptedException {
         Medication medication = getTestMedication("2017-03-10");
         trNewPetMedication.setUser(user);
         trNewPetMedication.setPet(pet);

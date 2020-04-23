@@ -45,7 +45,8 @@ public class TestTrDeleteWeight {
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotDeleteWeightToNonOwnerPet() throws NotPetOwnerException, ExecutionException, InterruptedException {
+    public void shouldNotDeleteWeightToNonOwnerPet() throws NotPetOwnerException, ExecutionException,
+        InterruptedException {
         trDeleteWeight.setUser(new User("johnSmith", "johnSmith@gmail.com", "5678"));
         trDeleteWeight.setPet(pet);
         trDeleteWeight.setDateTime(dateTime);

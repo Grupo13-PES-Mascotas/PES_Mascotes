@@ -104,7 +104,8 @@ public interface PetManagerService {
      * @param newWashFrequency The new wash frequency
      * @param dateTime The date time of the new wash frequency
      */
-    void addWashFrequency(User user, Pet pet, int newWashFrequency, DateTime dateTime) throws ExecutionException, InterruptedException;
+    void addWashFrequency(User user, Pet pet, int newWashFrequency, DateTime dateTime) throws ExecutionException,
+        InterruptedException;
 
     /**
      * Delete the pet wash frequency of a date.
