@@ -10,6 +10,10 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 
 public class PostComponentView extends CircularEntryView {
+    private static final int DATE = 0;
+    private static final int HOUR = 1;
+    public static final String DATE_TIME_SEPARATOR = "T";
+    public static final char HOUR_SEPARATOR = ':';
     private Post post;
 
     public PostComponentView(Context context, AttributeSet attrs) {
@@ -43,10 +47,10 @@ public class PostComponentView extends CircularEntryView {
     @Override
     protected String getFirstLineText() {
         String strCreationDate = post.getCreationDate().toString();
-        String[] dateTimeParts = strCreationDate.split("T");
+        String[] dateTimeParts = strCreationDate.split(DATE_TIME_SEPARATOR);
 
-        return post.getUsername() + " " + dateTimeParts[0] + " "
-            + dateTimeParts[1].substring(0, dateTimeParts[1].lastIndexOf(':'));
+        return post.getUsername() + " " + dateTimeParts[DATE] + " "
+            + dateTimeParts[HOUR].substring(0, dateTimeParts[HOUR].lastIndexOf(HOUR_SEPARATOR));
     }
 
     @Override
