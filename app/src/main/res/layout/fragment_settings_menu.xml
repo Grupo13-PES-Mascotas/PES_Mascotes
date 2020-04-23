@@ -12,7 +12,9 @@
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,29 +46,56 @@
             android:layout_height="20dp" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/changeUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/change_username"
+            android:textColorHint="@color/colorPrimary"
+            app:boxBackgroundColor="@color/white"
+            app:boxStrokeColor="@color/colorAccent"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary" />
+
+            <Button
+                android:id="@+id/changeUsernameButton"
+                style="@style/rounded_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/save_username"
+                android:textColor="@color/white" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/changeEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/change_email"
             android:textColorHint="@color/colorPrimary"
-            app:hintEnabled="true"
+            app:boxBackgroundColor="@color/white"
+            app:boxStrokeColor="@color/colorAccent"
             app:hintAnimationEnabled="true"
-            app:boxStrokeColor = "@color/colorAccent"
-            app:boxBackgroundColor="@color/white">
+            app:hintEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/colorPrimary" />
 
             <Button
                 android:id="@+id/changeEmailButton"
+                style="@style/rounded_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorPrimary"
                 android:text="@string/save_email"
-                android:textColor="@color/white"
-                style="@style/rounded_button"/>
+                android:textColor="@color/white" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,12 +105,12 @@
 
         <Button
             android:id="@+id/changePasswordButton"
+            style="@style/rounded_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"
             android:text="@string/change_password"
-            android:textColor="@color/white"
-            style="@style/rounded_button"/>
+            android:textColor="@color/white" />
 
         <Space
             android:layout_width="match_parent"
@@ -102,17 +131,13 @@
 
         <Button
             android:id="@+id/deleteAccountButton"
+            style="@style/rounded_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"
             android:backgroundTint="@color/red"
             android:text="@string/delete_account"
-            android:textColor="@color/white"
-            style="@style/rounded_button"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/version"

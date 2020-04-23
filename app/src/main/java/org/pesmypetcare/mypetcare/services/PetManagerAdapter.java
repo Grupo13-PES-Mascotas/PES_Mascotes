@@ -2,13 +2,14 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
 import java.text.ParseException;
@@ -112,16 +113,31 @@ public class PetManagerAdapter implements PetManagerService {
 
         if (pet.getProfileImage() != null) {
             bytesImage = ImageManager.getImageBytes(newPetImage);
-            ImageManager.writeImage(ImageManager.PET_PROFILE_IMAGES_PATH, user.getUsername() + '_' + pet.getName(),
-                bytesImage);
+            Thread writeImageThread = ThreadFactory.createWriteImageThread(ImageManager.PET_PROFILE_IMAGES_PATH,
+                ImageManager.getPetImageName(user.getUsername(), pet.getName()), bytesImage);
+            writeImageThread.start();
         }
 
-        try {
-            ServiceLocator.getInstance().getPetManagerClient().saveProfileImage(user.getToken(), user.getUsername(),
-                pet.getName(), bytesImage);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        Thread savePetImageThread = createSavePetImageThread(user, pet, bytesImage);
+        savePetImageThread.start();
+    }
+
+    /**
+     * Create the save pet image thread.
+     * @param user The user
+     * @param pet The pet
+     * @param finalBytesImage The image bytes
+     * @return The thread for saving the pet image
+     */
+    private Thread createSavePetImageThread(User user, Pet pet, byte[] finalBytesImage) {
+        return new Thread(() -> {
+                try {
+                    ServiceLocator.getInstance().getPetManagerClient().saveProfileImage(user.getToken(),
+                        user.getUsername(), pet.getName(), finalBytesImage);
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
     }
 
     @Override
@@ -154,8 +170,6 @@ public class PetManagerAdapter implements PetManagerService {
     @Override
     public List<Pet> findPetsByOwner(User user) throws PetRepeatException {
         List<org.pesmypetcare.usermanagerlib.datacontainers.Pet> userPets = null;
-
-        System.out.println(user.getUsername());
 
         try {
             userPets = ServiceLocator.getInstance().getPetManagerClient().getAllPets(user.getToken(),
@@ -219,6 +233,25 @@ public class PetManagerAdapter implements PetManagerService {
         // Not implemented yet
     }
 
+    public void updateWeight(User user, Pet pet, double newWeight, DateTime dateTime) {
+
+    }
+
+    @Override
+    public void deletePetWeight(User user, Pet pet, DateTime dateTime) {
+
+    }
+
+    @Override
+    public void updateWashFrequency(User user, Pet pet, int newWashFrequency) {
+
+    }
+
+    @Override
+    public void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) {
+
+    }
+
     /**
      * Decodes the pet information from the server.
      * @param userPet The information from the server
@@ -231,7 +264,7 @@ public class PetManagerAdapter implements PetManagerService {
 
         pet.setName(userPet.getName());
         pet.setGender(petData.getGender());
-        pet.setBirthDate(DateConversion.convertToApp(petData.getBirth().toString()));
+        pet.setBirthDate(DateTime.Builder.buildDateString(petData.getBirth()));
         pet.setWeight(petData.getWeight());
         pet.setWashFrequency(petData.getWashFreq());
         pet.setRecommendedDailyKiloCalories(petData.getRecommendedKcal());

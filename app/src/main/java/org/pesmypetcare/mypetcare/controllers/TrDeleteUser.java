@@ -1,19 +1,24 @@
 package org.pesmypetcare.mypetcare.controllers;
 
+import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.MealManagerService;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
 import org.pesmypetcare.mypetcare.services.UserManagerService;
 
 public class TrDeleteUser {
     private UserManagerService userManagerService;
     private PetManagerService petManagerService;
+    private MealManagerService mealManagerService;
     private User user;
     private Boolean result;
 
-    public TrDeleteUser(UserManagerService userManagerService, PetManagerService petManagerService) {
+    public TrDeleteUser(UserManagerService userManagerService, PetManagerService petManagerService,
+                        MealManagerService mealManagerService) {
         this.userManagerService = userManagerService;
         this.petManagerService = petManagerService;
+        this.mealManagerService = mealManagerService;
     }
 
     /**
@@ -32,6 +37,9 @@ public class TrDeleteUser {
         result = false;
         if (!userHasAlreadyBeenRegistered()) {
             throw new NotValidUserException();
+        }
+        for (Pet p:user.getPets()) {
+            mealManagerService.deleteMealsFromPet(user, p);
         }
         userManagerService.deleteUser(user);
         petManagerService.deletePetsFromUser(user);

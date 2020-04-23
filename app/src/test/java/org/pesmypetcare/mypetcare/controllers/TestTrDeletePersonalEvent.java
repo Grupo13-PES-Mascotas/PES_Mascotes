@@ -25,7 +25,7 @@ public class TestTrDeletePersonalEvent {
         pet = new Pet();
         pet.setName(NAME);
         pet.setGender(GenderType.Female);
-        pet.setBirthDate("2 MAR 2010");
+        pet.setBirthDate(DateTime.Builder.buildDateString("2020-03-02"));
         pet.setBreed(HUSKY);
         pet.setRecommendedDailyKiloCalories(2);
         pet.setWashFrequency(2);

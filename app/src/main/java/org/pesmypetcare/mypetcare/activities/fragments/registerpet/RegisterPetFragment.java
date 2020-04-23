@@ -19,8 +19,9 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentRegisterPetBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.utilities.DateConversion;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Objects;
 
 @SuppressWarnings("unchecked")
@@ -69,8 +70,7 @@ public class RegisterPetFragment extends Fragment {
         petInfo.putString(Pet.BUNDLE_NAME, Objects.requireNonNull(binding.inputPetName.getText()).toString());
         petInfo.putString(Pet.BUNDLE_GENDER, Objects.requireNonNull(binding.inputGender.getText()).toString());
         petInfo.putString(Pet.BUNDLE_BREED, Objects.requireNonNull(binding.inputBreed.getText()).toString());
-        petInfo.putString(Pet.BUNDLE_BIRTH_DATE, DateConversion.convertToServer(binding.inputBirthMonth.getText()
-            .toString()));
+        petInfo.putString(Pet.BUNDLE_BIRTH_DATE, binding.inputBirthMonth.getText().toString());
         petInfo.putFloat(Pet.BUNDLE_WEIGHT, Float.parseFloat(Objects.requireNonNull(binding.inputWeight.getText())
             .toString()));
         petInfo.putString(Pet.BUNDLE_PATHOLOGIES, Objects.requireNonNull(binding.inputPathologies.getText())
@@ -126,7 +126,11 @@ public class RegisterPetFragment extends Fragment {
             materialDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
 
         materialDatePicker.addOnPositiveButtonClickListener(selection -> {
-            birthDate.setText(materialDatePicker.getHeaderText());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-d");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(Long.parseLong(selection.toString()));
+            String formattedDate = simpleDateFormat.format(calendar.getTime());
+            birthDate.setText(formattedDate);
             isBirthDateSelected = true;
         });
     }

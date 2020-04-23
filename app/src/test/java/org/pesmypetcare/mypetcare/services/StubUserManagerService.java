@@ -55,8 +55,13 @@ public class StubUserManagerService implements UserManagerService {
     }
 
     @Override
-    public void createUser(String uid, String email, String password) {
+    public void createUser(String s, String uid, String email, String password) {
         data.add(new User(uid, email, password));
+    }
+
+    @Override
+    public void deleteUserFromDatabase(String username) {
+        data.remove(new User(username, "", ""));
     }
 
     @Override
@@ -64,6 +69,26 @@ public class StubUserManagerService implements UserManagerService {
         for (User nextUser : data) {
             if (user.equals(nextUser)) {
                 nextUser.setUserProfileImage(bitmap);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public boolean usernameExists(String username) {
+        for (User nextUser : data) {
+            if (username.equals(nextUser.getUsername())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void changeUsername(User user, String newUsername) {
+        for (User nextUser : data) {
+            if (user.equals(nextUser)) {
+                nextUser.setUsername(newUsername);
                 break;
             }
         }

@@ -15,10 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,9 +35,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import java.util.Locale;
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SettingsMenuFragment extends Fragment {
     private static final String EN_GB = "en-GB";
     private static final String CA_ES = "ca-ES";
@@ -50,6 +49,8 @@ public class SettingsMenuFragment extends Fragment {
     private User user;
     private String oldMail;
     private String newEmail;
+    private String oldUsername;
+    private String newUsername;
     private boolean isChangeLanguageActivated;
 
     static {
@@ -65,8 +66,10 @@ public class SettingsMenuFragment extends Fragment {
         user = communication.getUserForSettings();
         setEmail();
         changeEmail();
+        setUsername();
+        changeUsername();
         isChangeLanguageActivated = false;
-        binding.changeEmail.getEditText().setText(user.getEmail());
+        Objects.requireNonNull(binding.changeEmail.getEditText()).setText(user.getEmail());
         return binding.getRoot();
     }
 
@@ -148,29 +151,63 @@ public class SettingsMenuFragment extends Fragment {
     }
 
     /**
+     * Sets the existent username.
+     */
+    private void setUsername() {
+        oldUsername = user.getUsername();
+        Objects.requireNonNull(binding.changeUsername.getEditText()).setText(oldUsername);
+    }
+
+    /**
      * Changes the email.
      */
     private void changeEmail() {
         binding.changeEmailButton.setOnClickListener(v -> {
             binding.changeEmail.addOnEditTextAttachedListener(textInputLayout -> {
                 oldMail = user.getEmail();
-                Objects.requireNonNull(binding.changeEmail.getEditText()).setText(oldMail);
                 newEmail = Objects.requireNonNull(binding.changeEmail.getEditText()).getText().toString();
                 if (!(oldMail.equals(newEmail))) {
                     communication.changeMail(newEmail);
+                    Objects.requireNonNull(binding.changeEmail.getEditText()).setText(newEmail);
                 }
             });
         });
     }
 
+    /**
+     * Changes the username.
+     */
+    private void changeUsername() {
+        binding.changeUsernameButton.setOnClickListener(v -> {
+            binding.changeUsername.addOnEditTextAttachedListener(textInputLayout -> {
+                newUsername = Objects.requireNonNull(binding.changeUsername.getEditText()).getText().toString();
+                if (!(oldUsername.equals(newUsername))) {
+                    tryChangeUsername();
+                }
+            });
+        });
+    }
+
+    /**
+     * Try to change the username.
+     */
+    private void tryChangeUsername() {
+        if (!communication.usernameExists(newUsername)) {
+            communication.changeUsername(newUsername);
+            user.setUsername(newUsername);
+            Objects.requireNonNull(binding.changeUsername.getEditText()).setText(newUsername);
+        } else {
+            setUsername();
+            Toast errorMsg = Toast.makeText(getActivity(), R.string.repeatedUsername, Toast.LENGTH_LONG);
+            errorMsg.show();
+        }
+    }
 
     /**
      * Initializes the listeners of the Delete Account button.
      */
     private void deleteAccountListener() {
-        binding.deleteAccountButton.setOnClickListener(v -> {
-            showAlertDialogDeleteAccount();
-        });
+        binding.deleteAccountButton.setOnClickListener(v -> showAlertDialogDeleteAccount());
     }
 
     /**
@@ -223,6 +260,7 @@ public class SettingsMenuFragment extends Fragment {
      */
     private void logOutListener() {
         binding.logoutButton.setOnClickListener(v -> {
+            LoginManager.getInstance().logOut();
             mAuth.signOut();
             startActivity(new Intent(getActivity(), LoginActivity.class));
             Objects.requireNonNull(getActivity()).finish();

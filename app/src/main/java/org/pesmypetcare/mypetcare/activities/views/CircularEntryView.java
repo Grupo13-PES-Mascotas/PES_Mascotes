@@ -18,15 +18,16 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
-public abstract class PetComponentView extends ConstraintLayout {
+public abstract class CircularEntryView extends ConstraintLayout {
     private Context currentActivity;
     private Pet pet;
     private final int PADDING = 15;
-    private final int IMAGELAYOUTMARGIN = 10;
-    private final int PETINFOIMAGEMARGIN = 40;
-    private final int IMAGEDIMESIONS = 150;
+    private final int IMAGE_LAYOUT_MARGIN = 10;
+    private final int PET_INFO_IMAGE_MARGIN = 40;
 
-    public PetComponentView(Context context, AttributeSet attrs) {
+    private final int IMAGE_DIMESIONS = 150;
+
+    public CircularEntryView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.currentActivity = context;
         this.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -35,16 +36,27 @@ public abstract class PetComponentView extends ConstraintLayout {
         this.setId(View.generateViewId());
     }
 
+    public CircularEntryView initializeComponent() {
+        CircularImageView image = getImage();
+        addView(image);
+        LinearLayout info = getInfo();
+        addView(info);
+        generateConstraints(image.getId(), info.getId(), getId(), this);
+        return this;
+    }
+
+    protected abstract CircularImageView getImage();
+
     /**
      * Method responsible of the initialization of an pet component for a specific pet.
      * @param currentPet The pet that has to be shown in the component
      * @return The initialized component
      */
-    public PetComponentView initializePetComponent(Pet currentPet) {
+    public CircularEntryView initializePetComponent(Pet currentPet) {
         pet = currentPet;
         CircularImageView image = addPetImage();
         this.addView(image);
-        LinearLayout petInfo = addPetInfo();
+        LinearLayout petInfo = getInfo();
         this.addView(petInfo);
         generateConstraints(image.getId(), petInfo.getId(), this.getId(), this);
         return this;
@@ -58,21 +70,23 @@ public abstract class PetComponentView extends ConstraintLayout {
         return pet;
     }
 
+    public abstract Object getObject();
+
     /**
      * Method responsible for generating the appropriate constraints.
      * @param imageId The id of the circular image view
      * @param petId The id of the linear layout that contains the pet info
      * @param layoutId The id of the container
-     * @param petComponentView The container where we want to set the constraints
+     * @param circularEntryView The container where we want to set the constraints
      */
-    private void generateConstraints(int imageId, int petId, int layoutId, PetComponentView petComponentView) {
+    private void generateConstraints(int imageId, int petId, int layoutId, CircularEntryView circularEntryView) {
         ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone(petComponentView);
-        constraintSet.connect(imageId, ConstraintSet.LEFT, layoutId, ConstraintSet.LEFT, IMAGELAYOUTMARGIN);
-        constraintSet.connect(petId, ConstraintSet.LEFT, imageId, ConstraintSet.RIGHT, PETINFOIMAGEMARGIN);
+        constraintSet.clone(circularEntryView);
+        constraintSet.connect(imageId, ConstraintSet.LEFT, layoutId, ConstraintSet.LEFT, IMAGE_LAYOUT_MARGIN);
+        constraintSet.connect(petId, ConstraintSet.LEFT, imageId, ConstraintSet.RIGHT, PET_INFO_IMAGE_MARGIN);
         constraintSet.connect(petId, ConstraintSet.TOP, layoutId, ConstraintSet.TOP,
-            PETINFOIMAGEMARGIN - IMAGELAYOUTMARGIN);
-        constraintSet.applyTo(petComponentView);
+            PET_INFO_IMAGE_MARGIN - IMAGE_LAYOUT_MARGIN);
+        constraintSet.applyTo(circularEntryView);
     }
 
     /**
@@ -88,7 +102,7 @@ public abstract class PetComponentView extends ConstraintLayout {
         }
 
         image.setDrawable(petImageDrawable);
-        image.setLayoutParams(new LinearLayout.LayoutParams(IMAGEDIMESIONS, IMAGEDIMESIONS));
+        image.setLayoutParams(new LinearLayout.LayoutParams(IMAGE_DIMESIONS, IMAGE_DIMESIONS));
         int imageId = View.generateViewId();
         image.setId(imageId);
 
@@ -99,56 +113,62 @@ public abstract class PetComponentView extends ConstraintLayout {
      * Method responsible for generating the linear layout that contains the pet info.
      * @return The linear layout that contains the pet info
      */
-    private LinearLayout addPetInfo() {
-        LinearLayout petInfo = new LinearLayout(currentActivity);
-        petInfo.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+    private LinearLayout getInfo() {
+        LinearLayout info = new LinearLayout(currentActivity);
+        info.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT));
-        petInfo.setOrientation(LinearLayout.VERTICAL);
-        firstLineTextInitializer(petInfo);
-        secondLineTextInitializer(petInfo);
-        int petInfoId = View.generateViewId();
-        petInfo.setId(petInfoId);
-        return petInfo;
+        info.setOrientation(LinearLayout.VERTICAL);
+        firstLineTextInitializer(info);
+        secondLineTextInitializer(info);
+        int infoId = View.generateViewId();
+        info.setId(infoId);
+        return info;
     }
 
     /**
      * Method responsible for creating the text view that will contain the pet info.
-     * @param petInfo The parent layout
+     * @param info The parent layout
      */
-    private void secondLineTextInitializer(LinearLayout petInfo) {
+    private void secondLineTextInitializer(LinearLayout info) {
         TextView infoText = new TextView(currentActivity);
-        infoText.setText(getSecondLineText(pet));
+        infoText.setText(getSecondLineText());
         infoText.setGravity(Gravity.START + Gravity.CENTER_VERTICAL);
         infoText.setTextColor(Color.BLACK);
-        petInfo.addView(infoText);
+        info.addView(infoText);
     }
 
     /**
      * Method responsible for creating the text view that will contain the pet name.
-     * @param petInfo The parent layout
+     * @param info The parent layout
      */
-    private void firstLineTextInitializer(LinearLayout petInfo) {
+    private void firstLineTextInitializer(LinearLayout info) {
         TextView nameText = new TextView(currentActivity);
-        nameText.setText(getFirstLineText(pet));
+        nameText.setText(getFirstLineText());
         nameText.setTypeface(null, Typeface.BOLD);
         nameText.setGravity(Gravity.START + Gravity.CENTER_VERTICAL);
         nameText.setTextColor(Color.BLACK);
-        petInfo.addView(nameText);
+        info.addView(nameText);
+    }
+
+    public Context getCurrentActivity() {
+        return currentActivity;
+    }
+
+    public int getImageDimensions() {
+        return IMAGE_DIMESIONS;
     }
 
     /**
      * Get the first line of the component text.
-     * @param pet The pet that appears in the component
      * @return The first line of the component text.
      */
-    protected abstract String getFirstLineText(Pet pet);
+    protected abstract String getFirstLineText();
 
     /**
      * Get the second line of the component text.
-     * @param pet The pet that appears in the component
      * @return The second line of the component text.
      */
-    protected abstract String getSecondLineText(Pet pet);
+    protected abstract String getSecondLineText();
 
     /*if (pet.getProfileImage() == null) {
             try {

@@ -40,14 +40,14 @@ public class NotificationReceiver extends BroadcastReceiver {
      * @return The Notification Manager
      */
     private NotificationManager getNotificationManager(Context context, NotificationCompat.Builder builder,
-                                                       PendingIntent notifyPendingIntent) {
+        PendingIntent notifyPendingIntent) {
         builder.setContentIntent(notifyPendingIntent);
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context. NOTIFICATION_SERVICE);
         if (android.os.Build.VERSION. SDK_INT >= android.os.Build.VERSION_CODES. O) {
             int importance = NotificationManager. IMPORTANCE_HIGH;
             NotificationChannel notificationChannel = new NotificationChannel(channelId,
-                    context.getString(R.string.notificationChannelName), importance);
+                context.getString(R.string.notificationChannelName), importance);
             assert notificationManager != null;
             notificationManager.createNotificationChannel(notificationChannel);
         }
@@ -78,10 +78,9 @@ public class NotificationReceiver extends BroadcastReceiver {
      */
     private NotificationCompat.Builder getBuilder(Context context, Intent intent) {
         return new NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(intent.getStringExtra(context.getString(R.string.title)))
-                .setContentText(intent.getStringExtra(context.getString(R.string.text)))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle(intent.getStringExtra(context.getString(R.string.title)))
+            .setContentText(intent.getStringExtra(context.getString(R.string.text)))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
     }
-
 }

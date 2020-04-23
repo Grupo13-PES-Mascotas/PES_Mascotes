@@ -2,11 +2,14 @@ package org.pesmypetcare.mypetcare.features.users;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.mypetcare.features.community.Group;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class User {
     private String username;
@@ -16,6 +19,7 @@ public class User {
     private Bitmap userProfileImage;
     private String token;
     private ArrayList<Notification> notifications;
+    private SortedSet<String> subscribedGroups;
 
     public User(String username, String email, String passwd) {
         this.username = username;
@@ -24,6 +28,7 @@ public class User {
         this.pets = new ArrayList<>();
         this.notifications = new ArrayList<>();
         this.token = "token";
+        this.subscribedGroups = new TreeSet<>();
     }
 
     public String getToken() {
@@ -119,7 +124,7 @@ public class User {
     }
 
     /**
-     * Method responsible for deleting a new pet to the user.
+     * Method responsible for deleting a pet from the user.
      * @param pet The pet to be deleted from the user
      */
     public void deletePet(Pet pet) {
@@ -190,5 +195,31 @@ public class User {
         }
 
         return -1;
+    }
+
+    /**
+     * Subscribe to the group.
+     * @param group The group to subscribe
+     */
+    public void addSubscribedGroup(Group group) {
+        subscribedGroups.add(group.getName());
+        group.addSubscriber(this);
+    }
+
+    /**
+     * Remove a subscription to a group
+     * @param group The group to remove the subscription to
+     */
+    public void removeSubscribedGroup(Group group) {
+        subscribedGroups.remove(group.getName());
+        group.removeSubscriber(this);
+    }
+
+    /**
+     * Get the subscribed groups.
+     * @return The subscribed groups
+     */
+    public SortedSet<String> getSubscribedGroups() {
+        return subscribedGroups;
     }
 }

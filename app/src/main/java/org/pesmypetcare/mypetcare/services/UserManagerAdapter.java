@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.services;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import org.json.JSONException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
@@ -54,14 +55,13 @@ public class UserManagerAdapter implements UserManagerService {
             user.setUserProfileImage(BitmapFactory.decodeByteArray(userProfileImageBytes, 0,
                 userProfileImageBytes.length));
         } catch (ExecutionException | InterruptedException ignored) {
-
+            
         }
     }
 
     @Override
     public boolean userExists(User user) {
         UserData userData = null;
-
         try {
             userData = ServiceLocator.getInstance().getUserManagerClient().getUser(user.getToken(), user.getUsername());
         } catch (ExecutionException | InterruptedException e) {
@@ -90,6 +90,8 @@ public class UserManagerAdapter implements UserManagerService {
     public void deleteUser(User user) {
         try {
             ServiceLocator.getInstance().getUserManagerClient().deleteUser(user.getToken(), user.getUsername());
+            ServiceLocator.getInstance().getUserManagerClient().deleteUserFromDatabase(user.getToken(),
+                    user.getUsername());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -107,9 +109,19 @@ public class UserManagerAdapter implements UserManagerService {
     }
 
     @Override
-    public void createUser(String uid, String email, String password) {
+    public void createUser(String uid, String username, String email, String password) {
         try {
-            ServiceLocator.getInstance().getUserManagerClient().signUp(uid, password, email);
+            ServiceLocator.getInstance().getUserManagerClient().createUser(uid,
+                    new UserData(username, email, password));
+        } catch (ExecutionException | InterruptedException | JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteUserFromDatabase(String username) {
+        try {
+            ServiceLocator.getInstance().getUserManagerClient().deleteUserFromDatabase("token", username);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -121,6 +133,21 @@ public class UserManagerAdapter implements UserManagerService {
         try {
             ServiceLocator.getInstance().getUserManagerClient().saveProfileImage(user.getToken(), user.getUsername(),
                 imageBytes);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean usernameExists(String username) throws ExecutionException, InterruptedException {
+        return ServiceLocator.getInstance().getUserManagerClient().usernameAlreadyExists(username);
+    }
+
+    @Override
+    public void changeUsername(User user, String newUsername) {
+        try {
+            ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(), user.getUsername(),
+                    UserManagerClient.USERNAME, newUsername);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }

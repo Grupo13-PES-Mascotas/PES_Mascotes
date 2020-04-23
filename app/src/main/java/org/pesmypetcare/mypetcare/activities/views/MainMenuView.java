@@ -3,7 +3,6 @@ package org.pesmypetcare.mypetcare.activities.views;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Space;
 
@@ -17,7 +16,7 @@ import java.util.List;
 
 public class MainMenuView extends LinearLayout {
     private Context currentActivity;
-    private List<PetComponentView> petComponents;
+    private List<CircularEntryView> petComponents;
     private final int SPACE_SIZE = 40;
 
     public MainMenuView(Context context, @Nullable AttributeSet attrs) {
@@ -52,7 +51,7 @@ public class MainMenuView extends LinearLayout {
     private void initializeComponent(List<Pet> userPets) {
         Space space;
         Pet currentPet = userPets.remove(0);
-        PetComponentView component = new PetsInfoView(currentActivity, null).initializePetComponent(currentPet);
+        CircularEntryView component = new PetsInfoView(currentActivity, null, currentPet).initializeComponent();
         this.addView(component);
         this.petComponents.add(component);
         space = initializeSpacer();
@@ -74,7 +73,7 @@ public class MainMenuView extends LinearLayout {
      * Getter of the pet components arraylist.
      * @return The arraylist containing all the pet components
      */
-    public List<PetComponentView> getPetComponents() {
+    public List<CircularEntryView> getPetComponents() {
         return petComponents;
     }
 }

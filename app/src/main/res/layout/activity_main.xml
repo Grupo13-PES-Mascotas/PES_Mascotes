@@ -52,11 +52,9 @@
             app:tint="@color/white"
             app:fabSize="auto"
             android:src="@drawable/icon_add"
-            style="@style/Widget.MaterialComponents.FloatingActionButton"
-            android:onClick="addPet"/>
+            style="@style/Widget.MaterialComponents.FloatingActionButton" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 
 </LinearLayout>
 

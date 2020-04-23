@@ -16,7 +16,7 @@ import java.util.List;
 
 public class CalendarEventsView extends LinearLayout {
     private Context context;
-    private List<PetComponentView> petComponents;
+    private List<CircularEntryView> petComponents;
 
     public CalendarEventsView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -41,9 +41,9 @@ public class CalendarEventsView extends LinearLayout {
         List<Event> periodicEvents = pet.getPeriodicEvents(date);
         events.addAll(periodicEvents);
         for (Event event : events) {
-            PetComponentView petComponentView = new EventView(context, null, event).initializePetComponent(pet);
-            addView(petComponentView);
-            this.petComponents.add(petComponentView);
+            CircularEntryView circularEntryView = new EventView(context, null, pet, event).initializeComponent();
+            addView(circularEntryView);
+            this.petComponents.add(circularEntryView);
         }
     }
 
@@ -51,7 +51,7 @@ public class CalendarEventsView extends LinearLayout {
      * Get all the views of the pets.
      * @return All the views of the pets
      */
-    public List<PetComponentView> getPetComponents() {
+    public List<CircularEntryView> getPetComponents() {
         return petComponents;
     }
 }
