@@ -59,6 +59,7 @@ public class MedicationManagerAdapter implements MedicationManagerService {
         Medication currentMedication = new Medication(oldName, medicationData.getQuantity(),
             medicationData.getPeriodicity(), medicationData.getDuration(), oldDateTime);
         deleteMedication(user, pet, currentMedication);
+        System.out.println("New name : " + newName + " new date " + newDate);
         currentMedication.setMedicationName(newName);
         currentMedication.setMedicationDate(DateTime.Builder.buildFullString(newDate));
         createMedication(user, pet, currentMedication);

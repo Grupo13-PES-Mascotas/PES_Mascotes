@@ -115,7 +115,15 @@ public class PetHealthInfo {
      * @param kCal The recommendedDailyKiloCalories of the pet in that date
      */
     public void addRecommendedDailyKiloCaloriesForDate(DateTime date, double kCal) {
-        this.recommendedDailyKiloCalories.put(date, kCal);
+        date.setHour(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        if (recommendedDailyKiloCalories.containsKey(date)) {
+            double storedKcal = recommendedDailyKiloCalories.get(date);
+            recommendedDailyKiloCalories.put(date, storedKcal + kCal);
+        } else {
+            this.recommendedDailyKiloCalories.put(date, kCal);
+        }
     }
 
     /**

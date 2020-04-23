@@ -66,7 +66,7 @@ public class TrUpdateMedication {
      */
     public void setNewName(String newName) {
         this.updatesName = true;
-        this.newDate = newName;
+        this.newName = newName;
     }
 
     /**

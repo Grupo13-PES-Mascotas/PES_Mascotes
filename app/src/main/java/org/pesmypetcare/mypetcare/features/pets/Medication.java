@@ -112,6 +112,7 @@ public class Medication extends Event {
      * @param medicationDate The new medication date to set
      */
     public void setMedicationDate(DateTime medicationDate) {
+        super.setDateTime(medicationDate.toString());
         this.medicationDate = medicationDate;
     }
 }

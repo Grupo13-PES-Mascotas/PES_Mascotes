@@ -225,8 +225,13 @@ public class InfoPetMedicationFragment extends Fragment {
         medication.setMedicationQuantity(medicationQuantity);
         medication.setMedicationFrequency(medicationPeriodicity);
         medication.setMedicationDuration(medicationDuration);
+        if (!medicationName.equals(medication.getMedicationName())) {
+            updatesName = true;
+        }
         InfoPetFragment.getCommunication().updatePetMedication(pet, medication, newDate, updatesDate, medicationName,
             updatesName);
+        medication.setMedicationName(medicationName);
+        medication.setMedicationDate(DateTime.Builder.buildFullString(newDate));
     }
 
     /**
@@ -339,6 +344,7 @@ public class InfoPetMedicationFragment extends Fragment {
         inputMedicationPeriodicity.setText(String.valueOf(medication.getMedicationFrequency()));
         inputMedicationDuration.setText(String.valueOf(medication.getMedicationDuration()));
         updatesDate = false;
+        updatesName = false;
         DateTime medicationDate = medication.getMedicationDate();
         showMedicationIniDate(medicationDate);
         showMedicationIniDate(medicationDate);

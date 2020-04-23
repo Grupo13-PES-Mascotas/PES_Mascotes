@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers;
 
+import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
@@ -72,6 +73,14 @@ public class TrNewPetMedication {
      * @return True if the medication has already been added or false otherwise
      */
     private boolean medicationHasAlreadyBeenAdded() {
-        return pet.getMedicationEvents().contains(medication);
+        boolean found = false;
+        for (Event e : pet.getMedicationEvents()) {
+            if (e.getDateTime().compareTo(medication.getDateTime()) == 0 &&
+                ((Medication) e).getMedicationName().equals(medication.getMedicationName())) {
+                found = true;
+                break;
+            }
+        }
+        return found;
     }
 }
