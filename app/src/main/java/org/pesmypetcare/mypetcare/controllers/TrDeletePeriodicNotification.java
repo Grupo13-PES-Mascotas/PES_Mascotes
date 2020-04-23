@@ -68,5 +68,4 @@ public class TrDeletePeriodicNotification {
         petManagerService.deletePeriodicEvent(user, pet, event);
         result = true;
     }
-
 }
