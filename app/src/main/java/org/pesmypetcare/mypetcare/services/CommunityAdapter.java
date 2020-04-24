@@ -133,9 +133,9 @@ public class CommunityAdapter implements CommunityService {
     }
 
     /**
-     * Create the executor service for get all groups
-     * @param groupsData
-     * @return
+     * Create the executor service to get all groups.
+     * @param groupsData The data of the groups
+     * @return The executor service to get all groups
      */
     private ExecutorService getExecutorServiceForGetAllGroups(AtomicReference<List<GroupData>> groupsData) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
