@@ -233,8 +233,8 @@ public class Pet {
      * @param recommendedDailyKiloCalories The recommended daily kilo calories of the pet to set
      */
     public void setRecommendedDailyKiloCalories(double recommendedDailyKiloCalories) {
-        DateTime dateTime = getActualDateTime();
-        healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, recommendedDailyKiloCalories);
+        /*DateTime dateTime = getActualDateTime();
+        healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, recommendedDailyKiloCalories);*/
     }
 
     /**
@@ -344,12 +344,12 @@ public class Pet {
     public void addEvent(Event event) {
         events.add(event);
 
-        /*if (event instanceof Meals) {
+        if (event instanceof Meals) {
             DateTime eventDate = DateTime.Builder.buildFullString(event.getDateTime());
             double kcal = ((Meals) event).getKcal();
 
             healthInfo.addRecommendedDailyKiloCaloriesForDate(eventDate, kcal);
-        }*/
+        }
     }
 
     /**
@@ -437,6 +437,37 @@ public class Pet {
         return mealEvents;
     }
 
+    /**
+     * Get the list of medication of the pet.
+     * @return The list of medication of the pet
+     */
+    public List<Event> getMedicationEvents() {
+        ArrayList<Event> medicationEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof Medication) {
+                medicationEvents.add(event);
+            }
+        }
+        return medicationEvents;
+    }
+
+    /**
+     * Get the list of medications of the pet for a given date.
+     * @return The list of medications of the pet for a given date
+     */
+    public List<Event> getMedicationEventsForDate(String dateTime) {
+        ArrayList<Event> medicationEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            String eventDate = DateConversion.getDate(event.getDateTime());
+            if (event instanceof Medication && eventDate.equals(dateTime)) {
+                medicationEvents.add(event);
+            }
+        }
+        return medicationEvents;
+    }
+
     @Override
     public String toString() {
         return "Pet{"
@@ -451,4 +482,6 @@ public class Pet {
             ", events=" + events
             + '}';
     }
+
+
 }

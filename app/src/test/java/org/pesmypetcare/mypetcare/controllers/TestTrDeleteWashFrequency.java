@@ -13,6 +13,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,14 +38,15 @@ public class TestTrDeleteWashFrequency {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date date = new Date();
         String strData = dateFormat.format(date);
-        dateTime = new DateTime(strData);
+        dateTime = DateTime.Builder.buildFullString(strData);
         dateTime.setHour(0);
         dateTime.setMinutes(0);
         dateTime.setSeconds(0);
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotDeleteWashFrequencyToNonOwnerPet() throws NotPetOwnerException {
+    public void shouldNotDeleteWashFrequencyToNonOwnerPet() throws NotPetOwnerException, ExecutionException,
+        InterruptedException {
         trDeleteWashFrequency.setUser(new User("johnSmith", "johnSmith@gmail.com", "5678"));
         trDeleteWashFrequency.setPet(pet);
         trDeleteWashFrequency.setDateTime(dateTime);
@@ -52,7 +54,7 @@ public class TestTrDeleteWashFrequency {
     }
 
     @Test
-    public void shouldDeleteWashFrequencyData() throws NotPetOwnerException {
+    public void shouldDeleteWashFrequencyData() throws NotPetOwnerException, ExecutionException, InterruptedException {
         pet.setWashFrequency(2);
 
         trDeleteWashFrequency.setUser(user);
@@ -67,7 +69,7 @@ public class TestTrDeleteWashFrequency {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date date = new Date();
         String strData = dateFormat.format(date);
-        return new DateTime(strData);
+        return DateTime.Builder.buildFullString(strData);
     }
 
     private Pet getDinkyPet() throws PetRepeatException {

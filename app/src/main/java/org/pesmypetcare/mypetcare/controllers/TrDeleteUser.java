@@ -4,21 +4,26 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.MealManagerService;
+import org.pesmypetcare.mypetcare.services.MedicationManagerService;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
 import org.pesmypetcare.mypetcare.services.UserManagerService;
+
+import java.util.concurrent.ExecutionException;
 
 public class TrDeleteUser {
     private UserManagerService userManagerService;
     private PetManagerService petManagerService;
     private MealManagerService mealManagerService;
+    private MedicationManagerService medicationManagerService;
     private User user;
     private Boolean result;
 
     public TrDeleteUser(UserManagerService userManagerService, PetManagerService petManagerService,
-                        MealManagerService mealManagerService) {
+                        MealManagerService mealManagerService, MedicationManagerService medicationManagerService) {
         this.userManagerService = userManagerService;
         this.petManagerService = petManagerService;
         this.mealManagerService = mealManagerService;
+        this.medicationManagerService = medicationManagerService;
     }
 
     /**
@@ -33,13 +38,14 @@ public class TrDeleteUser {
      * Execute the transaction.
      * @throws NotValidUserException The user doesn't exist
      */
-    public void execute() throws NotValidUserException {
+    public void execute() throws NotValidUserException, ExecutionException, InterruptedException {
         result = false;
         if (!userHasAlreadyBeenRegistered()) {
             throw new NotValidUserException();
         }
         for (Pet p:user.getPets()) {
             mealManagerService.deleteMealsFromPet(user, p);
+            medicationManagerService.deleteMedicationsFromPet(user, p);
         }
         userManagerService.deleteUser(user);
         petManagerService.deletePetsFromUser(user);

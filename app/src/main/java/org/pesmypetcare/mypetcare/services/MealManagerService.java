@@ -48,6 +48,7 @@ public interface MealManagerService {
      * @return A list containing all the meal of the pet
      */
     List<Meals> findMealsByPet(User user, Pet pet);
+
     /**
      * Method that deletes all the meals from the indicated pet.
      * @param user The owner of the pet.

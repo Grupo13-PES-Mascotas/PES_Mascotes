@@ -2,9 +2,12 @@ package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
 import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
+import org.pesmypetcare.usermanagerlib.clients.FreqWashManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.MealManagerClient;
+import org.pesmypetcare.usermanagerlib.clients.MedicationManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
+import org.pesmypetcare.usermanagerlib.clients.WeightManagerClient;
 
 public class ServiceLocator {
     private static ServiceLocator instance;
@@ -13,6 +16,9 @@ public class ServiceLocator {
     private MealManagerClient mealManagerClient;
     private GroupManagerClient groupManagerClient;
     private ForumManagerClient forumManagerClient;
+    private MedicationManagerClient medicationManagerClient;
+    private WeightManagerClient weightManagerClient;
+    private FreqWashManagerClient freqWashManagerClient;
 
     private ServiceLocator() {
         userManagerClient = new UserManagerClient();
@@ -20,6 +26,9 @@ public class ServiceLocator {
         mealManagerClient = new MealManagerClient();
         groupManagerClient = new GroupManagerClient();
         forumManagerClient = new ForumManagerClient();
+        medicationManagerClient = new MedicationManagerClient();
+        weightManagerClient = new WeightManagerClient();
+        freqWashManagerClient = new FreqWashManagerClient();
     }
 
     public static ServiceLocator getInstance() {
@@ -48,5 +57,17 @@ public class ServiceLocator {
 
     public ForumManagerClient getForumManagerClient() {
         return forumManagerClient;
+    }
+    
+    public MedicationManagerClient getMedicationManagerClient() {
+        return medicationManagerClient;
+    }
+
+    public WeightManagerClient getWeightManagerClient() {
+        return weightManagerClient;
+    }
+
+    public FreqWashManagerClient getFreqWashManagerClient() {
+        return freqWashManagerClient;
     }
 }

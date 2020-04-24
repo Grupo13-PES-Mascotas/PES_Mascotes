@@ -24,7 +24,7 @@ import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.utilities.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +33,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+
+/**
+ * @author Xavier Campos
+ */
 public class InfoPetMealsFragment extends Fragment {
     private static final String EOL = "\n";
     private static final int STROKE_WIDTH = 5;
@@ -102,7 +106,7 @@ public class InfoPetMealsFragment extends Fragment {
 
     /**
      * Create the basic meal dialog.
-     * @return The basic mani dialog
+     * @return The basic main dialog
      */
     private AlertDialog getBasicMealDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()),
@@ -113,7 +117,7 @@ public class InfoPetMealsFragment extends Fragment {
     }
 
     /**
-     * Prepare the male dialog.
+     * Prepare the meal dialog.
      * @return The layout of the main dialog
      */
     private View prepareDialog() {
@@ -231,6 +235,9 @@ public class InfoPetMealsFragment extends Fragment {
         meal.setMealName(mealName);
         meal.setKcal(kcal);
         InfoPetFragment.getCommunication().updatePetMeal(pet, meal, newDate, updatesDate);
+        if (updatesDate) {
+            meal.setMealDate(DateTime.Builder.buildFullString(newDate));
+        }
     }
 
     /**
@@ -248,7 +255,7 @@ public class InfoPetMealsFragment extends Fragment {
             dateString.append('0');
         }
         dateString.append(selectedMin).append(':').append(DEFAULT_SECONDS);
-        return new DateTime(dateString.toString());
+        return DateTime.Builder.buildFullString(dateString.toString());
     }
 
     /**

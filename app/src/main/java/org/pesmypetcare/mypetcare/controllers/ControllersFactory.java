@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.pesmypetcare.mypetcare.services.CommunityAdapter;
 import org.pesmypetcare.mypetcare.services.MealManagerAdapter;
+import org.pesmypetcare.mypetcare.services.MedicationManagerAdapter;
 import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
 import org.pesmypetcare.mypetcare.services.UserManagerAdapter;
 
@@ -23,11 +24,12 @@ public class ControllersFactory {
     }
 
     public static TrDeleteUser createTrDeleteUser() {
-        return new TrDeleteUser(new UserManagerAdapter(), new PetManagerAdapter(), new MealManagerAdapter());
+        return new TrDeleteUser(new UserManagerAdapter(), new PetManagerAdapter(), new MealManagerAdapter(),
+            new MedicationManagerAdapter());
     }
 
     public static TrDeletePet createTrDeletePet() {
-        return new TrDeletePet(new PetManagerAdapter(), new MealManagerAdapter());
+        return new TrDeletePet(new PetManagerAdapter(), new MealManagerAdapter(), new MedicationManagerAdapter());
     }
 
     public static TrObtainUser createTrObtainUser() {
@@ -138,6 +140,22 @@ public class ControllersFactory {
 
     public static TrUpdatePost createTrUpdatePost() {
         return new TrUpdatePost(new CommunityAdapter());
+    }
+
+    public static TrNewPetMedication createTrNewPetMedication() {
+        return new TrNewPetMedication(new MedicationManagerAdapter());
+    }
+
+    public static TrObtainAllPetMedications createTrObtainAllPetMedications() {
+        return new TrObtainAllPetMedications(new MedicationManagerAdapter());
+    }
+
+    public static TrDeleteMedication createTrDeleteMedication() {
+        return new TrDeleteMedication(new MedicationManagerAdapter());
+    }
+
+    public static TrUpdateMedication createTrUpdateMedication() {
+        return new TrUpdateMedication(new MedicationManagerAdapter());
     }
 }
 

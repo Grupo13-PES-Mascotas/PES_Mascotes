@@ -10,7 +10,11 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.FreqWash;
+import org.pesmypetcare.usermanagerlib.datacontainers.FreqWashData;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
+import org.pesmypetcare.usermanagerlib.datacontainers.Weight;
+import org.pesmypetcare.usermanagerlib.datacontainers.WeightData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +59,8 @@ public class PetManagerAdapter implements PetManagerService {
         String ownerUsername = pet.getOwner().getUsername();
         String userToken = pet.getOwner().getToken();
 
-        ServiceLocator.getInstance().getPetManagerClient().updateField(userToken, ownerUsername, name,
-            PetManagerClient.WEIGHT, pet.getWeight());
+        /*ServiceLocator.getInstance().getPetManagerClient().updateField(userToken, ownerUsername, name,
+            PetManagerClient.WEIGHT, pet.getWeight());*/
 
         /*ServiceLocator.getInstance().getPetManagerClient().updateWeight(pet.getOwner().getToken(), ownerUsername,
             name, pet.getWeight());
@@ -100,8 +104,8 @@ public class PetManagerAdapter implements PetManagerService {
         petData.setGender(pet.getGender());
         petData.setPathologies(pet.getPathologies());
         petData.setRecommendedKcal(pet.getRecommendedDailyKiloCalories());
-        petData.setWashFreq(pet.getWashFrequency());
-        petData.setWeight(pet.getWeight());
+        //petData.setWashFreq(pet.getWashFrequency());
+        //petData.setWeight(pet.getWeight());
         registerPet.setBody(petData);
         return registerPet;
     }
@@ -223,23 +227,40 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public void updateWeight(User user, Pet pet, double newWeight, DateTime dateTime) {
-
+    public void addWeight(User user, Pet pet, double newWeight, DateTime dateTime) throws ExecutionException, InterruptedException {
+        String accessToken = user.getToken();
+        String userName = user.getUsername();
+        String petName = pet.getName();
+        Weight weight = new Weight(new WeightData(newWeight));
+        ServiceLocator.getInstance().getWeightManagerClient().createWeight(accessToken, userName, petName,
+            weight, dateTime);
     }
 
     @Override
-    public void deletePetWeight(User user, Pet pet, DateTime dateTime) {
-
+    public void deletePetWeight(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException {
+        String accessToken = user.getToken();
+        String userName = user.getUsername();
+        String petName = pet.getName();
+        ServiceLocator.getInstance().getWeightManagerClient().deleteByDate(accessToken, userName, petName, dateTime);
     }
 
     @Override
-    public void updateWashFrequency(User user, Pet pet, int newWashFrequency) {
-
+    public void addWashFrequency(User user, Pet pet, int newWashFrequency, DateTime dateTime)
+        throws ExecutionException, InterruptedException {
+        String accessToken = user.getToken();
+        String userName = user.getUsername();
+        String petName = pet.getName();
+        FreqWash freqWash = new FreqWash(new FreqWashData(newWashFrequency));
+        ServiceLocator.getInstance().getFreqWashManagerClient().createFreqWash(accessToken, userName, petName,
+            freqWash, dateTime);
     }
 
     @Override
-    public void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) {
-
+    public void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException {
+        String accessToken = user.getToken();
+        String userName = user.getUsername();
+        String petName = pet.getName();
+        ServiceLocator.getInstance().getFreqWashManagerClient().deleteByDate(accessToken, userName, petName, dateTime);
     }
 
     /**
@@ -255,8 +276,8 @@ public class PetManagerAdapter implements PetManagerService {
         pet.setName(userPet.getName());
         pet.setGender(petData.getGender());
         pet.setBirthDate(DateTime.Builder.buildDateString(petData.getBirth()));
-        //pet.setWeight(petData.getWeight());
-        pet.setWashFrequency(petData.getWashFreq());
+        /*pet.setWeight(petData.getWeight());
+        pet.setWashFrequency(petData.getWashFreq());*/
         pet.setRecommendedDailyKiloCalories(petData.getRecommendedKcal());
         pet.setBreed(petData.getBreed());
         pet.setPathologies(petData.getPathologies());

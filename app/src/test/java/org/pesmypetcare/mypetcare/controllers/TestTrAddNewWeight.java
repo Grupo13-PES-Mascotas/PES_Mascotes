@@ -13,6 +13,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
@@ -41,7 +42,8 @@ public class TestTrAddNewWeight {
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotAddWeightToNonOwnerPet() throws NotPetOwnerException {
+    public void shouldNotAddWeightToNonOwnerPet() throws NotPetOwnerException, ExecutionException,
+        InterruptedException {
         trAddNewWeight.setUser(new User("johnSmith", "johnSmith@gmail.com", "5678"));
         trAddNewWeight.setPet(pet);
         trAddNewWeight.setNewWeight(10.0);
@@ -50,7 +52,7 @@ public class TestTrAddNewWeight {
     }
 
     @Test
-    public void shouldChangePetWeight() throws NotPetOwnerException {
+    public void shouldChangePetWeight() throws NotPetOwnerException, ExecutionException, InterruptedException {
         trAddNewWeight.setUser(user);
         trAddNewWeight.setPet(pet);
         trAddNewWeight.setNewWeight(10.0);
@@ -61,7 +63,7 @@ public class TestTrAddNewWeight {
     }
 
     @Test
-    public void shouldOnlyHaveOneWeightPerDay() throws NotPetOwnerException {
+    public void shouldOnlyHaveOneWeightPerDay() throws NotPetOwnerException, ExecutionException, InterruptedException {
         trAddNewWeight.setUser(user);
         trAddNewWeight.setPet(pet);
         trAddNewWeight.setNewWeight(10.0);

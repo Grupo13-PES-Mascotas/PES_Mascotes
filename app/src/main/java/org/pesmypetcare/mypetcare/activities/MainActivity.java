@@ -77,6 +77,7 @@ import org.pesmypetcare.mypetcare.controllers.TrCreateNewGroup;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteForum;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteGroup;
 import org.pesmypetcare.mypetcare.controllers.TrDeleteMeal;
+import org.pesmypetcare.mypetcare.controllers.TrDeleteMedication;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
 import org.pesmypetcare.mypetcare.controllers.TrDeletePost;
@@ -87,12 +88,15 @@ import org.pesmypetcare.mypetcare.controllers.TrDeleteWeight;
 import org.pesmypetcare.mypetcare.controllers.TrExistsUsername;
 import org.pesmypetcare.mypetcare.controllers.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.TrNewPetMeal;
+import org.pesmypetcare.mypetcare.controllers.TrNewPetMedication;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllGroups;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetImages;
 import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetMeals;
+import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetMedications;
 import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
 import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdateMeal;
+import org.pesmypetcare.mypetcare.controllers.TrUpdateMedication;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
 import org.pesmypetcare.mypetcare.controllers.TrUpdatePost;
@@ -119,6 +123,8 @@ import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
+import org.pesmypetcare.mypetcare.features.pets.Medication;
+import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
@@ -143,6 +149,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -210,6 +217,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrAddNewPost trAddNewPost;
     private TrDeletePost trDeletePost;
     private TrUpdatePost trUpdatePost;
+    private TrNewPetMedication trNewPetMedication;
+    private TrObtainAllPetMedications trObtainAllPetMedications;
+    private TrDeleteMedication trDeleteMedication;
+    private TrUpdateMedication trUpdateMedication;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -295,6 +306,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         for (Pet pet : user.getPets()) {
             obtainAllPetMeals(pet);
+            obtainAllPetMedications(pet);
         }
 
         Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
@@ -476,6 +488,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializePetHealthControllers();
         initializeMealsControllers();
         initializeCommunityControllers();
+        initializeMedicationControllers();
     }
 
     /**
@@ -545,6 +558,17 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeletePost = ControllersFactory.createTrDeletePost();
         trUpdatePost = ControllersFactory.createTrUpdatePost();
     }
+
+    /**
+     * Initialize the medication controllers.
+     */
+    private void initializeMedicationControllers() {
+        trNewPetMedication = ControllersFactory.createTrNewPetMedication();
+        trObtainAllPetMedications = ControllersFactory.createTrObtainAllPetMedications();
+        trDeleteMedication = ControllersFactory.createTrDeleteMedication();
+        trUpdateMedication = ControllersFactory.createTrUpdateMedication();
+    }
+
 
     /**
      * Initialize the views of this activity.
@@ -1129,6 +1153,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (UserIsNotOwnerException e) {
             Toast toast = Toast.makeText(this, getString(R.string.error_user_not_owner), Toast.LENGTH_LONG);
             toast.show();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
 
         changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
@@ -1159,6 +1185,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (NotPetOwnerException e) {
             Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
             toast.show();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
 
         hideWindowSoftKeyboard();
@@ -1174,6 +1202,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (NotPetOwnerException e) {
             Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
             toast.show();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
     }
 
@@ -1188,6 +1218,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (NotPetOwnerException e) {
             Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
             toast.show();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
 
         hideWindowSoftKeyboard();
@@ -1203,6 +1235,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (NotPetOwnerException e) {
             Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
             toast.show();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
     }
 
@@ -1219,6 +1253,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdateMeal.setUser(user);
         trUpdateMeal.setPet(pet);
         trUpdateMeal.setMeal(meal);
+        System.out.println("Meal date : " + meal.getDateTime() + " meal name : " + meal.getMealName());
         if (updatesDate) {
             trUpdateMeal.setNewDate(newDate);
         }
@@ -1238,6 +1273,60 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainAllPetMeals.setUser(user);
         trObtainAllPetMeals.setPet(pet);
         trObtainAllPetMeals.execute();
+    }
+
+    @Override
+    public void addPetMedication(Pet pet, Medication medication) {
+        trNewPetMedication.setUser(user);
+        trNewPetMedication.setPet(pet);
+        trNewPetMedication.setMedication(medication);
+        try {
+            trNewPetMedication.execute();
+        } catch (MedicationAlreadyExistingException | ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updatePetMedication(Pet pet, Medication medication, String newDate, boolean updatesDate,
+                                    String newName, boolean updatesName) {
+        trUpdateMedication.setUser(user);
+        trUpdateMedication.setPet(pet);
+        trUpdateMedication.setMedication(medication);
+        if (updatesDate) {
+            trUpdateMedication.setNewDate(newDate);
+        }
+        if (updatesName) {
+            trUpdateMedication.setNewName(newName);
+        }
+        try {
+            trUpdateMedication.execute();
+        } catch (InterruptedException | ExecutionException | MedicationAlreadyExistingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deletePetMedication(Pet pet, Medication medication) {
+        trDeleteMedication.setUser(user);
+        trDeleteMedication.setPet(pet);
+        trDeleteMedication.setMedication(medication);
+        try {
+            trDeleteMedication.execute();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void obtainAllPetMedications(Pet pet) {
+        trObtainAllPetMedications.setUser(user);
+        trObtainAllPetMedications.setPet(pet);
+        try {
+            trObtainAllPetMedications.execute();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -1387,6 +1476,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (NotValidUserException e) {
             Toast toast = Toast.makeText(this, "Not valid user", Toast.LENGTH_LONG);
             toast.show();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
     }
 
