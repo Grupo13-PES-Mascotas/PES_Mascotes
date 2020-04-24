@@ -22,7 +22,7 @@ import java.util.Objects;
 
 public class ForumsFragment extends Fragment {
     private static final String INTERROGATION_SIGN = "?";
-    public static final String WHITE_SPACE = " ";
+    private static final String WHITE_SPACE = " ";
     private static FragmentForumsBinding binding;
     private static String deleteForumTitle;
     private static String deleteForumMessage;

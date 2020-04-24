@@ -239,7 +239,7 @@ public class StubCommunityService implements CommunityService {
      * @param post The post
      * @param newText The new text
      * @param postForum The forum of the post
-     * @param group The grouo
+     * @param group The group
      * @throws PostNotFoundException The post is not found
      */
     private void updateForums(User user, Post post, String newText, Forum postForum, Group group)
