@@ -118,7 +118,7 @@ public class PetHealthInfo {
      * @param kCal The recommendedDailyKiloCalories of the pet in that date
      */
     public void addRecommendedDailyKiloCaloriesForDate(DateTime date, double kCal) {
-        date.setHour(0);
+        /*date.setHour(0);
         date.setMinutes(0);
         date.setSeconds(0);
         if (dailyKiloCalories.containsKey(date)) {
@@ -127,7 +127,7 @@ public class PetHealthInfo {
         } else {
             this.dailyKiloCalories.put(date, kCal);
         }
-        this.addWeeklyKiloCalAverageForDate(date, kCal);
+        this.addWeeklyKiloCalAverageForDate(date, kCal);*/
     }
 
     /**
@@ -273,7 +273,7 @@ public class PetHealthInfo {
      * @param kcal The kcal to add for a given date
      */
     public void addWeeklyKiloCalAverageForDate(DateTime date, double kcal) {
-        obtainDateMonday(date);
+        /*obtainDateMonday(date);
         if (weeklyKiloCaloriesAverage.containsKey(date)) {
             //int n = weeklyMeals.get(date);
             double storedKcal = weeklyKiloCaloriesAverage.get(date);
@@ -281,7 +281,7 @@ public class PetHealthInfo {
         } else {
             this.weeklyKiloCaloriesAverage.put(date, kcal);
             this.weeklyMeals.put(date, 1);
-        }
+        }*/
     }
 
     /**
