@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.List;

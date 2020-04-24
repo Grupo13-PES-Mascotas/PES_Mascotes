@@ -1,7 +1,10 @@
-package org.pesmypetcare.mypetcare.features.community;
+package org.pesmypetcare.mypetcare.features.community.groups;
 
 import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+
+import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
@@ -13,7 +16,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class Group implements Comparable<Group> {
     private String name;
@@ -23,7 +28,7 @@ public class Group implements Comparable<Group> {
     private Bitmap groupIcon;
     private List<String> participants;
     private Map<String, DateTime> subscribers;
-    private List<Forum> forums;
+    private SortedSet<Forum> forums;
     private List<String> tags;
 
     public Group(String name, String ownerUsername, DateTime creationDate) {
@@ -31,7 +36,7 @@ public class Group implements Comparable<Group> {
         this.ownerUsername = ownerUsername;
         this.creationDate = creationDate;
         this.participants = new ArrayList<>();
-        this.forums = new ArrayList<>();
+        this.forums = new TreeSet<>();
         this.tags = new ArrayList<>();
         this.subscribers = new TreeMap<>();
 
@@ -151,11 +156,27 @@ public class Group implements Comparable<Group> {
     }
 
     /**
+     * Get the forums.
+     * @return The forums
+     */
+    public SortedSet<Forum> getForums() {
+        return forums;
+    }
+
+    /**
      * Add a tag.
      * @param tag The tag to add
      */
     public void addTag(String tag) {
         tags.add(tag);
+    }
+
+    /**
+     * Add a forum.
+     * @param forum The forum to add
+     */
+    public void addForum(Forum forum) {
+        forums.add(forum);
     }
 
     /**
@@ -168,6 +189,15 @@ public class Group implements Comparable<Group> {
         String strData = dateFormat.format(date);
 
         subscribers.put(subscriber.getUsername(), DateTime.Builder.buildDateString(strData));
+    }
+
+    /**
+     * Add a subscriber.
+     * @param username The username of the subscriber
+     * @param date The date of the subscription
+     */
+    public void addSubscriber(String username, DateTime date) {
+        subscribers.put(username, date);
     }
 
     /**
@@ -187,6 +217,14 @@ public class Group implements Comparable<Group> {
         subscribers.remove(subscriber.getUsername());
     }
 
+    /**
+     * Remove a forum.
+     * @param forum The forum to remove
+     */
+    public void removeForum(Forum forum) {
+        forums.remove(forum);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -199,16 +237,20 @@ public class Group implements Comparable<Group> {
         return name.equals(group.name);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
-
+    @NonNull
     @Override
     public String toString() {
         return "Group{"
             + "name='" + name + '\''
+            + ", ownerUsername='" + ownerUsername + '\''
+            + ", description='" + description + '\''
+            + ", creationDate=" + creationDate
             + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 
     @Override

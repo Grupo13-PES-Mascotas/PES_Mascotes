@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
+import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
+import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.FreqWashManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.MealManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.MedicationManagerClient;
@@ -12,6 +14,8 @@ public class ServiceLocator {
     private UserManagerClient userManagerClient;
     private PetManagerClient petManagerClient;
     private MealManagerClient mealManagerClient;
+    private GroupManagerClient groupManagerClient;
+    private ForumManagerClient forumManagerClient;
     private MedicationManagerClient medicationManagerClient;
     private WeightManagerClient weightManagerClient;
     private FreqWashManagerClient freqWashManagerClient;
@@ -20,6 +24,8 @@ public class ServiceLocator {
         userManagerClient = new UserManagerClient();
         petManagerClient = new PetManagerClient();
         mealManagerClient = new MealManagerClient();
+        groupManagerClient = new GroupManagerClient();
+        forumManagerClient = new ForumManagerClient();
         medicationManagerClient = new MedicationManagerClient();
         weightManagerClient = new WeightManagerClient();
         freqWashManagerClient = new FreqWashManagerClient();
@@ -45,6 +51,14 @@ public class ServiceLocator {
         return mealManagerClient;
     }
 
+    public GroupManagerClient getGroupManagerClient() {
+        return groupManagerClient;
+    }
+
+    public ForumManagerClient getForumManagerClient() {
+        return forumManagerClient;
+    }
+    
     public MedicationManagerClient getMedicationManagerClient() {
         return medicationManagerClient;
     }

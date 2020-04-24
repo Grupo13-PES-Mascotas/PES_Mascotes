@@ -1,9 +1,9 @@
 package org.pesmypetcare.mypetcare.controllers;
 
+import org.pesmypetcare.mypetcare.services.CommunityAdapter;
 import org.pesmypetcare.mypetcare.services.MealManagerAdapter;
 import org.pesmypetcare.mypetcare.services.MedicationManagerAdapter;
 import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
-import org.pesmypetcare.mypetcare.services.StubCommunityService;
 import org.pesmypetcare.mypetcare.services.UserManagerAdapter;
 
 public class ControllersFactory {
@@ -103,23 +103,43 @@ public class ControllersFactory {
     }
 
     public static TrObtainAllGroups createTrObtainAllGroups() {
-        return new TrObtainAllGroups(new StubCommunityService());
+        return new TrObtainAllGroups(new CommunityAdapter());
     }
 
     public static TrCreateNewGroup createTrObtainNewGroup() {
-        return new TrCreateNewGroup(new StubCommunityService());
+        return new TrCreateNewGroup(new CommunityAdapter());
     }
 
     public static TrDeleteGroup createTrDeleteGroup() {
-        return new TrDeleteGroup(new StubCommunityService());
+        return new TrDeleteGroup(new CommunityAdapter());
     }
 
     public static TrAddSubscription createTrAddSubscription() {
-        return new TrAddSubscription(new StubCommunityService());
+        return new TrAddSubscription(new CommunityAdapter());
     }
 
     public static TrDeleteSubscription createTrDeleteSubscription() {
-        return new TrDeleteSubscription(new StubCommunityService());
+        return new TrDeleteSubscription(new CommunityAdapter());
+    }
+
+    public static TrAddNewForum createTrAddNewForum() {
+        return new TrAddNewForum(new CommunityAdapter());
+    }
+
+    public static TrDeleteForum createTrDeleteForum() {
+        return new TrDeleteForum(new CommunityAdapter());
+    }
+
+    public static TrAddNewPost createTrAddNewPost() {
+        return new TrAddNewPost(new CommunityAdapter());
+    }
+
+    public static TrDeletePost createTrDeletePost() {
+        return new TrDeletePost(new CommunityAdapter());
+    }
+
+    public static TrUpdatePost createTrUpdatePost() {
+        return new TrUpdatePost(new CommunityAdapter());
     }
 
     public static TrNewPetMedication createTrNewPetMedication() {

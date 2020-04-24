@@ -13,7 +13,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoGroupBinding;
-import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
 
 public class InfoGroupFragment extends Fragment {
     private static InfoGroupCommunication communication;

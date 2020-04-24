@@ -8,7 +8,7 @@ import android.widget.Space;
 
 import androidx.annotation.Nullable;
 
-import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
 
 import java.util.ArrayList;
 import java.util.List;

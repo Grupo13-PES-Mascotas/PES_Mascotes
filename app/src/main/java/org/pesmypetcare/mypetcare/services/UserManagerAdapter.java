@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import org.json.JSONException;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
@@ -19,7 +20,8 @@ public class UserManagerAdapter implements UserManagerService {
         UserData userData = null;
 
         try {
-            userData = ServiceLocator.getInstance().getUserManagerClient().getUser("token", username);
+            userData = ServiceLocator.getInstance().getUserManagerClient().getUser("token",
+                Objects.requireNonNull(MainActivity.getmAuth().getCurrentUser()).getUid());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }

@@ -5,4 +5,19 @@
     android:layout_height="match_parent"
     tools:context=".activities.fragments.community.groups.ForumsFragment">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <org.pesmypetcare.mypetcare.activities.views.ForumsView
+                android:id="@+id/forumsViewLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </ScrollView>
+
 </FrameLayout>
+
+
