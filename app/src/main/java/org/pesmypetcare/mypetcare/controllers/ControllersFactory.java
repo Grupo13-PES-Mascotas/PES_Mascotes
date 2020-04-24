@@ -3,7 +3,6 @@ package org.pesmypetcare.mypetcare.controllers;
 import org.pesmypetcare.mypetcare.services.CommunityAdapter;
 import org.pesmypetcare.mypetcare.services.MealManagerAdapter;
 import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
-import org.pesmypetcare.mypetcare.services.StubCommunityService;
 import org.pesmypetcare.mypetcare.services.UserManagerAdapter;
 
 public class ControllersFactory {
@@ -122,23 +121,23 @@ public class ControllersFactory {
     }
 
     public static TrAddNewForum createTrAddNewForum() {
-        return new TrAddNewForum(new StubCommunityService());
+        return new TrAddNewForum(new CommunityAdapter());
     }
 
     public static TrDeleteForum createTrDeleteForum() {
-        return new TrDeleteForum(new StubCommunityService());
+        return new TrDeleteForum(new CommunityAdapter());
     }
 
     public static TrAddNewPost createTrAddNewPost() {
-        return new TrAddNewPost(new StubCommunityService());
+        return new TrAddNewPost(new CommunityAdapter());
     }
 
     public static TrDeletePost createTrDeletePost() {
-        return new TrDeletePost(new StubCommunityService());
+        return new TrDeletePost(new CommunityAdapter());
     }
 
     public static TrUpdatePost createTrUpdatePost() {
-        return new TrUpdatePost(new StubCommunityService());
+        return new TrUpdatePost(new CommunityAdapter());
     }
 }
 

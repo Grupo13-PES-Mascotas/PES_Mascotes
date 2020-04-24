@@ -1014,8 +1014,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void addNewPost(Forum forum, String postText) {
         trAddNewPost.setUser(user);
         trAddNewPost.setPostText(postText);
-        trAddNewPost.setPostCreationDate(DateTime.Builder.buildFullString("2020-04-22T10:10:00"));
         trAddNewPost.setForum(forum);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date date = new Date();
+        String strData = dateFormat.format(date);
+
+        trAddNewPost.setPostCreationDate(DateTime.Builder.buildFullString(strData));
 
         try {
             trAddNewPost.execute();

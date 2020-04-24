@@ -130,7 +130,8 @@ public class PostsFragment extends Fragment {
         AlertDialog editPostDialog = dialog.create();
 
         btnUpdatePost.setOnClickListener(v -> {
-            // Not implemented yet
+            InfoGroupFragment.getCommunication().updatePost(post,
+                Objects.requireNonNull(editPostMessage.getText()).toString());
         });
 
         btnDeletePost.setOnClickListener(v -> {
