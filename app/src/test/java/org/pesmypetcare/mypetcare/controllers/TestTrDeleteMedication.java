@@ -9,6 +9,8 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMedicationService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
+import java.util.concurrent.ExecutionException;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -35,7 +37,8 @@ public class TestTrDeleteMedication {
     }
 
     @Test
-    public void shouldDeleteMedication() throws MedicationAlreadyExistingException {
+    public void shouldDeleteMedication() throws MedicationAlreadyExistingException, ExecutionException,
+        InterruptedException {
         final int before = stubMedicationService.nMedications();
         trNewPetMedication.setUser(user);
         trNewPetMedication.setPet(linux);

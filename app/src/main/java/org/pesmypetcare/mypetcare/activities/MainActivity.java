@@ -131,6 +131,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -988,6 +989,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (UserIsNotOwnerException e) {
             Toast toast = Toast.makeText(this, getString(R.string.error_user_not_owner), Toast.LENGTH_LONG);
             toast.show();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
 
         changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
@@ -1018,6 +1021,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (NotPetOwnerException e) {
             Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
             toast.show();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
 
         hideWindowSoftKeyboard();
@@ -1033,6 +1038,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (NotPetOwnerException e) {
             Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
             toast.show();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
     }
 
@@ -1047,6 +1054,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (NotPetOwnerException e) {
             Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
             toast.show();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
 
         hideWindowSoftKeyboard();
@@ -1062,6 +1071,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (NotPetOwnerException e) {
             Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
             toast.show();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
     }
 
@@ -1078,6 +1089,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdateMeal.setUser(user);
         trUpdateMeal.setPet(pet);
         trUpdateMeal.setMeal(meal);
+        System.out.println("Meal date : " + meal.getDateTime() + " meal name : " + meal.getMealName());
         if (updatesDate) {
             trUpdateMeal.setNewDate(newDate);
         }
@@ -1100,22 +1112,34 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void addPetMedication(Pet pet, Medication medication) throws MedicationAlreadyExistingException {
+    public void addPetMedication(Pet pet, Medication medication) {
         trNewPetMedication.setUser(user);
         trNewPetMedication.setPet(pet);
         trNewPetMedication.setMedication(medication);
-        trNewPetMedication.execute();
+        try {
+            trNewPetMedication.execute();
+        } catch (MedicationAlreadyExistingException | ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void updatePetMedication(Pet pet, Medication medication, String newDate, boolean updatesDate) {
+    public void updatePetMedication(Pet pet, Medication medication, String newDate, boolean updatesDate,
+                                    String newName, boolean updatesName) {
         trUpdateMedication.setUser(user);
         trUpdateMedication.setPet(pet);
         trUpdateMedication.setMedication(medication);
         if (updatesDate) {
             trUpdateMedication.setNewDate(newDate);
         }
-        trUpdateMedication.execute();
+        if (updatesName) {
+            trUpdateMedication.setNewName(newName);
+        }
+        try {
+            trUpdateMedication.execute();
+        } catch (InterruptedException | ExecutionException | MedicationAlreadyExistingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -1123,14 +1147,22 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteMedication.setUser(user);
         trDeleteMedication.setPet(pet);
         trDeleteMedication.setMedication(medication);
-        trDeleteMedication.execute();
+        try {
+            trDeleteMedication.execute();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void obtainAllPetMedications(Pet pet) {
         trObtainAllPetMedications.setUser(user);
         trObtainAllPetMedications.setPet(pet);
-        trObtainAllPetMedications.execute();
+        try {
+            trObtainAllPetMedications.execute();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -1280,6 +1312,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (NotValidUserException e) {
             Toast toast = Toast.makeText(this, "Not valid user", Toast.LENGTH_LONG);
             toast.show();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
     }
 

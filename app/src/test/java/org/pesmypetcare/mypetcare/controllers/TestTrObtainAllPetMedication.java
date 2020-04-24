@@ -6,6 +6,8 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMedicationService;
 
+import java.util.concurrent.ExecutionException;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -26,7 +28,7 @@ public class TestTrObtainAllPetMedication {
     }
 
     @Test
-    public void shouldReturnAllPetMedication() {
+    public void shouldReturnAllPetMedication() throws ExecutionException, InterruptedException {
         trObtainAllPetMedications.setUser(user);
         trObtainAllPetMedications.setPet(pet);
         trObtainAllPetMedications.execute();

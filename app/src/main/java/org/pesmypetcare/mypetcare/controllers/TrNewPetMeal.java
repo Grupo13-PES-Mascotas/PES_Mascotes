@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers;
 
+import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
@@ -67,8 +68,12 @@ public class TrNewPetMeal {
      * @return True if the meal has already been added or false otherwise
      */
     private boolean mealHasAlreadyBeenAdded() {
-        return pet.getMealEvents().contains(meal);
+        for (Event e : pet.getMealEvents()) {
+            Meals m = (Meals) e;
+            if (m.getDateTime().equals(meal.getMealDate().toString())) {
+                return true;
+            }
+        }
+        return false;
     }
-
-
 }

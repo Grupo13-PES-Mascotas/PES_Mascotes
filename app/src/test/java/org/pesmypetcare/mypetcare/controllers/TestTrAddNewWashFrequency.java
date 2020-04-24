@@ -13,6 +13,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
@@ -41,7 +42,8 @@ public class TestTrAddNewWashFrequency {
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotAddWeightToNonOwnerPet() throws NotPetOwnerException {
+    public void shouldNotAddWeightToNonOwnerPet() throws NotPetOwnerException, ExecutionException,
+        InterruptedException {
         trAddNewWashFrequency.setUser(new User("johnSmith", "johnSmith@gmail.com", "5678"));
         trAddNewWashFrequency.setPet(pet);
         trAddNewWashFrequency.setNewWashFrequency(2);
@@ -50,7 +52,7 @@ public class TestTrAddNewWashFrequency {
     }
 
     @Test
-    public void shouldAddWashFrequency() throws NotPetOwnerException {
+    public void shouldAddWashFrequency() throws NotPetOwnerException, ExecutionException, InterruptedException {
         trAddNewWashFrequency.setUser(user);
         trAddNewWashFrequency.setPet(pet);
         trAddNewWashFrequency.setNewWashFrequency(2);
@@ -61,7 +63,8 @@ public class TestTrAddNewWashFrequency {
     }
 
     @Test
-    public void shouldOnlyHaveOneWashFrequencyPerDay() throws NotPetOwnerException {
+    public void shouldOnlyHaveOneWashFrequencyPerDay() throws NotPetOwnerException, ExecutionException,
+            InterruptedException {
         trAddNewWashFrequency.setUser(user);
         trAddNewWashFrequency.setPet(pet);
         trAddNewWashFrequency.setNewWashFrequency(2);

@@ -9,19 +9,30 @@ public class Medication extends Event {
     private static final String MEDICATION = "Medication ";
     private static final String WITH_START_DATE = " with start date ";
     private String medicationName;
-    private int medicationQuantity;
-    private double medicationFrequency;
+    private double medicationQuantity;
+    private int medicationFrequency;
     private int medicationDuration;
     private DateTime medicationDate;
 
-    public Medication(String medicationName, int medicationQuantity, double medicationFrequency,
+    public Medication(String medicationName, double medicationQuantity, int medicationFrequency,
                       int medicationDuration, DateTime medicationDate) {
-        super(MEDICATION + medicationName + WITH_START_DATE + medicationName, medicationDate.toString());
+        super(MEDICATION + medicationName + WITH_START_DATE + medicationDate.toString(),
+            medicationDate.toString());
         this.medicationName = medicationName;
         this.medicationQuantity = medicationQuantity;
         this.medicationFrequency = medicationFrequency;
         this.medicationDuration = medicationDuration;
         this.medicationDate = medicationDate;
+    }
+
+    public Medication(org.pesmypetcare.usermanagerlib.datacontainers.Medication libraryMedication) {
+        super(MEDICATION + libraryMedication.getName() + WITH_START_DATE + libraryMedication.getDate(),
+            libraryMedication.getDate());
+        this.medicationName = libraryMedication.getName();
+        this.medicationQuantity = libraryMedication.getBody().getQuantity();
+        this.medicationFrequency = libraryMedication.getBody().getPeriodicity();
+        this.medicationDuration = libraryMedication.getBody().getDuration();
+        this.medicationDate = DateTime.Builder.buildFullString(libraryMedication.getDate());
     }
 
     /**
@@ -44,7 +55,7 @@ public class Medication extends Event {
      * Getter of the medicationQuantity attribute.
      * @return The quantity of the medication
      */
-    public int getMedicationQuantity() {
+    public double getMedicationQuantity() {
         return medicationQuantity;
     }
 
@@ -52,7 +63,7 @@ public class Medication extends Event {
      * Setter of the medicationQuantity attribute.
      * @param medicationQuantity The new quantity of medication to set
      */
-    public void setMedicationQuantity(int medicationQuantity) {
+    public void setMedicationQuantity(double medicationQuantity) {
         this.medicationQuantity = medicationQuantity;
     }
 
@@ -60,7 +71,7 @@ public class Medication extends Event {
      * Getter of the medicationFrequency attribute.
      * @return The frequency of the medication
      */
-    public double getMedicationFrequency() {
+    public int getMedicationFrequency() {
         return medicationFrequency;
     }
 
@@ -68,7 +79,7 @@ public class Medication extends Event {
      * Setter of the medicationFrequency attribute.
      * @param medicationFrequency The new medication frequency to set
      */
-    public void setMedicationFrequency(double medicationFrequency) {
+    public void setMedicationFrequency(int medicationFrequency) {
         this.medicationFrequency = medicationFrequency;
     }
 
@@ -101,6 +112,7 @@ public class Medication extends Event {
      * @param medicationDate The new medication date to set
      */
     public void setMedicationDate(DateTime medicationDate) {
+        super.setDateTime(medicationDate.toString());
         this.medicationDate = medicationDate;
     }
 }

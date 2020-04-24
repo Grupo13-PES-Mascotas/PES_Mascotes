@@ -1,9 +1,12 @@
 package org.pesmypetcare.mypetcare.controllers;
 
 import org.pesmypetcare.mypetcare.features.pets.Medication;
+import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.MedicationManagerService;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Xavier Campos
@@ -15,10 +18,13 @@ public class TrUpdateMedication {
     private Medication medication;
     private String newDate;
     private boolean updatesDate;
+    private String newName;
+    private boolean updatesName;
 
     public TrUpdateMedication(MedicationManagerService medicationManagerService) {
         this.medicationManagerService = medicationManagerService;
         this.updatesDate = false;
+        this.updatesName = false;
     }
 
     /**
@@ -55,12 +61,28 @@ public class TrUpdateMedication {
     }
 
     /**
+     * Setter of the new name of the medication.
+     * @param newName The new name of the medication
+     */
+    public void setNewName(String newName) {
+        this.updatesName = true;
+        this.newName = newName;
+    }
+
+    /**
      * Execute the transaction.
      */
-    public void execute() {
+    public void execute() throws InterruptedException, ExecutionException, MedicationAlreadyExistingException {
         medicationManagerService.updateMedicationBody(user, pet, medication);
-        if (updatesDate) {
-            medicationManagerService.updateMedicationDate(user, pet, newDate, medication.getDateTime());
+        if (updatesDate || updatesName) {
+            if (!updatesDate) {
+                newDate = medication.getDateTime();
+            }
+            if (!updatesName) {
+                newName = medication.getMedicationName();
+            }
+            medicationManagerService.updateMedicationKey(user, pet, newDate, medication.getDateTime(),
+                newName, medication.getMedicationName());
         }
     }
 }

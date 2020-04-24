@@ -7,9 +7,12 @@ import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
+import org.pesmypetcare.mypetcare.services.StubMedicationService;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertFalse;
 
@@ -23,11 +26,13 @@ public class TestTrDeletePet {
         user = new User("johnDoe", "johndoe@gmail.com", "1234");
         pet = getDinkyPet();
         user.addPet(pet);
-        trDeletePet = new TrDeletePet(new StubPetManagerService(), new StubMealManagerService());
+        trDeletePet = new TrDeletePet(new StubPetManagerService(), new StubMealManagerService(),
+            new StubMedicationService());
     }
 
     @Test(expected = UserIsNotOwnerException.class)
-    public void shouldNotDeletePetIfNotOwner() throws UserIsNotOwnerException {
+    public void shouldNotDeletePetIfNotOwner() throws UserIsNotOwnerException, ExecutionException,
+        InterruptedException {
         User user2 = new User("Albert", "albert69@gmail.com", "6969");
         trDeletePet.setUser(user2);
         trDeletePet.setPet(pet);
@@ -35,7 +40,7 @@ public class TestTrDeletePet {
     }
 
     @Test
-    public void shouldDeletePet() throws UserIsNotOwnerException {
+    public void shouldDeletePet() throws UserIsNotOwnerException, ExecutionException, InterruptedException {
         trDeletePet.setUser(user);
         trDeletePet.setPet(pet);
         trDeletePet.execute();
