@@ -21,8 +21,6 @@ public class Post implements Comparable<Post> {
         this.text = text;
         this.creationDate = creationDate;
         this.forum = forum;
-
-        this.forum.addPost(this);
     }
 
     /**

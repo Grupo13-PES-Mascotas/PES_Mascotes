@@ -8,16 +8,20 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.pesmypetcare.communitymanager.ChatException;
+import org.pesmypetcare.communitymanager.ChatModel;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.CircularEntryView;
 import org.pesmypetcare.mypetcare.databinding.FragmentPostsBinding;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.List;
 import java.util.Objects;
@@ -31,7 +35,7 @@ public class PostsFragment extends Fragment {
         binding = FragmentPostsBinding.inflate(inflater, container, false);
         binding.forumName.setHint(forum.getName());
 
-        showPosts();
+        //showPosts();
         setForumName();
 
         binding.btnSentMessage.setOnClickListener(v -> sendMessage());
@@ -51,7 +55,6 @@ public class PostsFragment extends Fragment {
             toast.show();
         } else if (!isMessageEmpty(message)) {
             InfoGroupFragment.getCommunication().addNewPost(forum, message);
-            showPosts();
             binding.postMessage.setText("");
         }
     }
@@ -178,7 +181,6 @@ public class PostsFragment extends Fragment {
 
         btnDeletePost.setOnClickListener(v -> {
             InfoGroupFragment.getCommunication().deletePost(forum, post.getCreationDate());
-            showPosts();
             editPostDialog.dismiss();
         });
     }
@@ -187,6 +189,18 @@ public class PostsFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        showPosts();
+        ChatModel chatModel = new ViewModelProvider(requireActivity()).get(ChatModel.class);
+        chatModel.getMessage().observe(requireActivity(), messageData -> {
+            Post post = new Post(messageData.getCreator(), messageData.getText(),
+                DateTime.Builder.buildFullString(messageData.getPublicationDate()), forum);
+            forum.addPost(post);
+            showPosts();
+        });
+
+        try {
+            chatModel.doAction(forum.getGroup().getName(), forum.getName());
+        } catch (ChatException e) {
+            e.printStackTrace();
+        }
     }
 }

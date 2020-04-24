@@ -77,7 +77,6 @@ public class TrAddNewPost {
         }
         Post post = new Post(user.getUsername(), postText, postCreationDate, forum);
         communityService.createPost(user, forum, post);
-        forum.addPost(post);
         result = true;
     }
 }

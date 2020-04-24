@@ -74,7 +74,7 @@
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="450dp"
                 android:padding="20dp">
 
                 <org.pesmypetcare.mypetcare.activities.views.PostView
