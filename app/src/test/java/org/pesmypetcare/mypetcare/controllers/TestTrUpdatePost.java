@@ -23,7 +23,6 @@ public class TestTrUpdatePost {
     private TrUpdatePost trUpdatePost;
     private TrAddNewPost trAddNewPost;
     private User user;
-    private Group group;
     private Forum forum;
     private Post post;
     private String newText;
@@ -33,7 +32,7 @@ public class TestTrUpdatePost {
         this.trUpdatePost = new TrUpdatePost(new StubCommunityService());
         this.trAddNewPost = new TrAddNewPost(new StubCommunityService());
         user = new User("John Doe", "johndoe@gmail.com", "1234");
-        group = new Group("Dinosaur", "Gradle",
+        Group group = new Group("Dinosaur", "Gradle",
             DateTime.Builder.buildDateString("2019-11-23"));
         forum = new Forum("Sickling", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:10:00"),
             group);
@@ -44,7 +43,8 @@ public class TestTrUpdatePost {
     }
 
     @Test(expected = ForumNotFoundException.class)
-    public void shouldNotUpdatePostIfForumNotFound() throws ForumNotFoundException, NotPostOwnerException, PostNotFoundException {
+    public void shouldNotUpdatePostIfForumNotFound() throws ForumNotFoundException, NotPostOwnerException,
+        PostNotFoundException {
         forum.setName("Potato");
         trUpdatePost.setUser(user);
         trUpdatePost.setPost(post);

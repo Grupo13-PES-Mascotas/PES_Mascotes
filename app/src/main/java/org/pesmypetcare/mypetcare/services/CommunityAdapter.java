@@ -24,6 +24,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class CommunityAdapter implements CommunityService {
 
+    public static final int TIME = 20;
+
     @Override
     public SortedSet<Group> getAllGroups() {
         List<GroupData> groupsData = getAllGroupsFromServer();
@@ -67,6 +69,25 @@ public class CommunityAdapter implements CommunityService {
     private void addForums(Group group) {
         AtomicReference<List<ForumData>> forumsData = new AtomicReference<>();
 
+        ExecutorService executorService = createAddForumsExecutorService(group, forumsData);
+
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        createForums(group, forumsData);
+    }
+
+    /**
+     * Create the add forums executor service.
+     * @param group The group
+     * @param forumsData The forums data
+     * @return The executor service for adding a new forum
+     */
+    private ExecutorService createAddForumsExecutorService(Group group, AtomicReference<List<ForumData>> forumsData) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
@@ -75,15 +96,7 @@ public class CommunityAdapter implements CommunityService {
                 e.printStackTrace();
             }
         });
-
-        executorService.shutdown();
-        try {
-            executorService.awaitTermination(20, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        createForums(group, forumsData);
+        return executorService;
     }
 
     /**
@@ -107,6 +120,24 @@ public class CommunityAdapter implements CommunityService {
     private List<GroupData> getAllGroupsFromServer() {
         AtomicReference<List<GroupData>> groupsData = new AtomicReference<>();
 
+        ExecutorService executorService = getExecutorServiceForGetAllGroups(groupsData);
+
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return groupsData.get();
+    }
+
+    /**
+     * Create the executor service for get all groups
+     * @param groupsData
+     * @return
+     */
+    private ExecutorService getExecutorServiceForGetAllGroups(AtomicReference<List<GroupData>> groupsData) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
@@ -115,15 +146,7 @@ public class CommunityAdapter implements CommunityService {
                 e.printStackTrace();
             }
         });
-
-        executorService.shutdown();
-        try {
-            executorService.awaitTermination(20, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return groupsData.get();
+        return executorService;
     }
 
     @Override
@@ -172,7 +195,7 @@ public class CommunityAdapter implements CommunityService {
 
         executorService.shutdown();
         try {
-            executorService.awaitTermination(20, TimeUnit.SECONDS);
+            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -272,6 +295,25 @@ public class CommunityAdapter implements CommunityService {
 
     @Override
     public void updatePost(User user, Post post, String newText) {
+        ExecutorService executorService = getExecutorServiceForDeletingPost(user, post);
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        executorService = getCreatePostExecutorService(user, post);
+        executorService.shutdown();
+    }
+
+    /**
+     * Create the executor service for deleting post.
+     * @param user The user
+     * @param post The post
+     * @return The executor service for deleting a post
+     */
+    private ExecutorService getExecutorServiceForDeletingPost(User user, Post post) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
@@ -282,15 +324,7 @@ public class CommunityAdapter implements CommunityService {
                 e.printStackTrace();
             }
         });
-        executorService.shutdown();
-        try {
-            executorService.awaitTermination(20, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        executorService = getCreatePostExecutorService(user, post);
-        executorService.shutdown();
+        return executorService;
     }
 
     /**

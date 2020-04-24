@@ -116,19 +116,26 @@ public class PostsFragment extends Fragment {
         List<CircularEntryView> components = binding.postsViewLayout.getPostComponents();
 
         for (CircularEntryView component : components) {
-            component.setOnLongClickListener(v -> {
-                Post post = (Post) component.getObject();
-                User user = InfoGroupFragment.getCommunication().getUser();
-
-                if (post.getUsername().equals(user.getUsername())) {
-                    AlertDialog dialog = createEditPostDialog(component);
-                    dialog.show();
-                    return true;
-                }
-
-                return false;
-            });
+            component.setOnLongClickListener(v -> setLongClickEvent(component));
         }
+    }
+
+    /**
+     * Set the long click event.
+     * @param component The component to add the event
+     * @return True if the click is valid or false otherwise
+     */
+    private boolean setLongClickEvent(CircularEntryView component) {
+        Post post = (Post) component.getObject();
+        User user = InfoGroupFragment.getCommunication().getUser();
+
+        if (post.getUsername().equals(user.getUsername())) {
+            AlertDialog dialog = createEditPostDialog(component);
+            dialog.show();
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -145,15 +152,25 @@ public class PostsFragment extends Fragment {
 
         View editPostLayout = getLayoutInflater().inflate(R.layout.edit_post, null);
         TextInputEditText editPostMessage = editPostLayout.findViewById(R.id.editPostMessage);
-        MaterialButton btnUpdatePost = editPostLayout.findViewById(R.id.updatePostButton);
-        MaterialButton btnDeletePost = editPostLayout.findViewById(R.id.deletePostButton);
 
         editPostMessage.setText(post.getText());
-
         dialog.setView(editPostLayout);
-
         AlertDialog editPostDialog = dialog.create();
+        addButtonsListeners(post, editPostMessage, editPostLayout, editPostDialog);
+        return editPostDialog;
+    }
 
+    /**
+     * Add the buttons listeners.
+     * @param post The post
+     * @param editPostMessage The message
+     * @param editPostLayout The layout
+     * @param editPostDialog The edit post dialog
+     */
+    private void addButtonsListeners(Post post, TextInputEditText editPostMessage, View editPostLayout,
+                                     AlertDialog editPostDialog) {
+        MaterialButton btnUpdatePost = editPostLayout.findViewById(R.id.updatePostButton);
+        MaterialButton btnDeletePost = editPostLayout.findViewById(R.id.deletePostButton);
         btnUpdatePost.setOnClickListener(v -> {
             InfoGroupFragment.getCommunication().updatePost(post,
                 Objects.requireNonNull(editPostMessage.getText()).toString());
@@ -164,8 +181,6 @@ public class PostsFragment extends Fragment {
             showPosts();
             editPostDialog.dismiss();
         });
-
-        return editPostDialog;
     }
 
     @Override

@@ -87,7 +87,8 @@ public interface CommunityService {
      * @param forum The forum from where the post has to be deleted
      * @param postCreationDate The creation date of the post that has to be deleted
      */
-    void deletePost(User user, Forum forum, DateTime postCreationDate) throws ForumNotFoundException, PostNotFoundException;
+    void deletePost(User user, Forum forum, DateTime postCreationDate) throws ForumNotFoundException,
+        PostNotFoundException;
 
     /**
      * Updates the text from the given post.

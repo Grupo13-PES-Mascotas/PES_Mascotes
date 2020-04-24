@@ -10,15 +10,12 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
-import static org.junit.Assert.assertTrue;
-
 /**
  * @author Xavier Campos
  */
 public class TestTrDeleteForum {
     private static final String JOHN_DOE = "John Doe";
     private TrDeleteForum trDeleteForum;
-    private TrAddNewForum trAddNewForum;
     private User user;
     private Group group;
     private Forum newForum;
@@ -27,11 +24,10 @@ public class TestTrDeleteForum {
 
     @Before
     public void setUp() {
-        trAddNewForum = new TrAddNewForum(new StubCommunityService());
         trDeleteForum = new TrDeleteForum(new StubCommunityService());
         user = new User("John Smith", "johnsmith@gmail.com", "1234");
         group = new Group("Dinosaur", "Gradle", DateTime.Builder.buildDateString("2019-11-23"));
-        newForum =  new Forum("El Foro", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:00:00"),
+        newForum = new Forum("El Foro", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:00:00"),
             group);
         existingForum1 = new Forum("Washing", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:00:00"),
             group);
@@ -61,6 +57,5 @@ public class TestTrDeleteForum {
         trDeleteForum.setGroup(group);
         trDeleteForum.setForum(existingForum2);
         trDeleteForum.execute();
-        assertTrue("Should be true", true);
     }
 }

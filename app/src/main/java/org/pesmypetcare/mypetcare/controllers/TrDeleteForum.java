@@ -17,9 +17,10 @@ public class TrDeleteForum {
     private Forum forum;
     private boolean result;
 
-    public TrDeleteForum (CommunityService communityService) {
+    public TrDeleteForum(CommunityService communityService) {
         this.communityService = communityService;
     }
+
     /**
      * Setter of the author of the forum to delete.
      * @param user The author of the forum to delete

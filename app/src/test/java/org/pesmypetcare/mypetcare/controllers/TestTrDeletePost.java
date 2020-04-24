@@ -13,8 +13,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
-import static org.junit.Assert.assertTrue;
-
 /**
  * @author Xavier Campos
  */
@@ -22,7 +20,6 @@ public class TestTrDeletePost {
     private TrDeletePost trDeletePost;
     private TrAddNewPost trAddNewPost;
     private User user;
-    private Group group;
     private Forum forum;
     private Post post;
 
@@ -31,7 +28,7 @@ public class TestTrDeletePost {
         trDeletePost = new TrDeletePost(new StubCommunityService());
         trAddNewPost = new TrAddNewPost(new StubCommunityService());
         user = new User("John Doe", "johndoe@gmail.com", "1234");
-        group = new Group("Dinosaur", "Gradle",
+        Group group = new Group("Dinosaur", "Gradle",
             DateTime.Builder.buildDateString("2019-11-23"));
         forum = new Forum("Sickling", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:10:00"),
             group);
@@ -69,6 +66,5 @@ public class TestTrDeletePost {
         trDeletePost.setForum(forum);
         trDeletePost.setPostCreationDate(post.getCreationDate());
         trDeletePost.execute();
-        assertTrue("Should be true there are no exceptions", true);
     }
 }

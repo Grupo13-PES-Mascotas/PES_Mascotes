@@ -29,27 +29,19 @@ public class StubCommunityService implements CommunityService {
         addStubDefaultData();
     }
 
+    /**
+     * Add the default data for the stub.
+     */
     public static void addStubDefaultData() {
-        StubCommunityService.groups = new ArrayList<>();
-        StubCommunityService.groups.add(new Group("Husky", "John Doe",
-            DateTime.Builder.buildDateString("2020-04-15")));
-        StubCommunityService.groups.add(new Group("Turtles", "John Doe",
-            DateTime.Builder.buildDateString("2020-04-16")));
-        StubCommunityService.groups.add(new Group("Elephants", "Enric",
-            DateTime.Builder.buildDateString("2020-04-14")));
-        StubCommunityService.groups.get(HUSKY).addSubscriber(new User("John Smith",
-            "johnSmith@gmail.com", "1234"));
-        StubCommunityService.groups.add(new Group("Dinosaur", "Gradle",
-            DateTime.Builder.buildDateString("2019-11-23")));
+        addGroups();
+        addTags();
+        addFroums();
+    }
 
-        StubCommunityService.groups.get(HUSKY).addTag("dog");
-        StubCommunityService.groups.get(HUSKY).addTag("domestic");
-        StubCommunityService.groups.get(TURTLES).addTag("turtle");
-        StubCommunityService.groups.get(TURTLES).addTag("wild");
-        StubCommunityService.groups.get(ELEPHANTS).addTag("savanna");
-        StubCommunityService.groups.get(ELEPHANTS).addTag("Africa");
-        StubCommunityService.groups.get(DINOSAURS).addTag("extinct");
-
+    /**
+     * Add the forums.
+     */
+    private static void addFroums() {
         new Forum("Washing", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:00:00"),
             StubCommunityService.groups.get(HUSKY));
         Forum forum = new Forum("Cleaning", "John Doe", DateTime.Builder.buildFullString("2020-04-21T20:50:10"),
@@ -63,6 +55,36 @@ public class StubCommunityService implements CommunityService {
             DateTime.Builder.buildFullString("2020-04-21T20:55:10"), forum));
         forum.addPost(new Post("John Doe", "I'm very interested in your answers",
             DateTime.Builder.buildFullString("2020-04-21T21:15:22"), forum));
+    }
+
+    /**
+     * Add the tags.
+     */
+    private static void addTags() {
+        StubCommunityService.groups.get(HUSKY).addTag("dog");
+        StubCommunityService.groups.get(HUSKY).addTag("domestic");
+        StubCommunityService.groups.get(TURTLES).addTag("turtle");
+        StubCommunityService.groups.get(TURTLES).addTag("wild");
+        StubCommunityService.groups.get(ELEPHANTS).addTag("savanna");
+        StubCommunityService.groups.get(ELEPHANTS).addTag("Africa");
+        StubCommunityService.groups.get(DINOSAURS).addTag("extinct");
+    }
+
+    /**
+     * Add the groups.
+     */
+    private static void addGroups() {
+        StubCommunityService.groups = new ArrayList<>();
+        StubCommunityService.groups.add(new Group("Husky", "John Doe",
+            DateTime.Builder.buildDateString("2020-04-15")));
+        StubCommunityService.groups.add(new Group("Turtles", "John Doe",
+            DateTime.Builder.buildDateString("2020-04-16")));
+        StubCommunityService.groups.add(new Group("Elephants", "Enric",
+            DateTime.Builder.buildDateString("2020-04-14")));
+        StubCommunityService.groups.get(HUSKY).addSubscriber(new User("John Smith",
+            "johnSmith@gmail.com", "1234"));
+        StubCommunityService.groups.add(new Group("Dinosaur", "Gradle",
+            DateTime.Builder.buildDateString("2019-11-23")));
     }
 
     @Override
@@ -148,7 +170,8 @@ public class StubCommunityService implements CommunityService {
     }
 
     @Override
-    public void createPost(User user, Forum forum, Post post) throws ForumNotFoundException, PostAlreadyExistingException {
+    public void createPost(User user, Forum forum, Post post) throws ForumNotFoundException,
+        PostAlreadyExistingException {
         if (!forumExists(forum.getGroup(), forum)) {
             throw new ForumNotFoundException();
         }
@@ -157,7 +180,8 @@ public class StubCommunityService implements CommunityService {
                 for (Forum f : g.getForums()) {
                     if (f.getName().equals(forum.getName())) {
                         for (Post p : f.getPosts()) {
-                            if (p.getUsername().equals(post.getUsername()) && p.getCreationDate().equals(post.getCreationDate())) {
+                            if (p.getUsername().equals(post.getUsername())
+                                && p.getCreationDate().equals(post.getCreationDate())) {
                                 throw new PostAlreadyExistingException();
                             }
                         }
@@ -169,7 +193,8 @@ public class StubCommunityService implements CommunityService {
     }
 
     @Override
-    public void deletePost(User user, Forum forum, DateTime postCreationDate) throws ForumNotFoundException, PostNotFoundException {
+    public void deletePost(User user, Forum forum, DateTime postCreationDate) throws ForumNotFoundException,
+        PostNotFoundException {
         if (!forumExists(forum.getGroup(), forum)) {
             throw new ForumNotFoundException();
         }
@@ -179,8 +204,8 @@ public class StubCommunityService implements CommunityService {
                     if (f.getName().equals(forum.getName())) {
                         boolean found = false;
                         for (Post p : f.getPosts()) {
-                            if (p.getUsername().equals(user.getUsername()) &&
-                                p.getCreationDate().compareTo(postCreationDate) == 0) {
+                            if (p.getUsername().equals(user.getUsername())
+                                && p.getCreationDate().compareTo(postCreationDate) == 0) {
                                 found = true;
                                 f.removePost(user, postCreationDate);
                             }
@@ -203,20 +228,34 @@ public class StubCommunityService implements CommunityService {
         }
         for (Group g : groups) {
             if (g.getName().equals(postGroup.getName())) {
-                for (Forum f : g.getForums()) {
-                    if (f.getName().equals(postForum.getName())) {
-                        boolean found = false;
-                        for (Post p : f.getPosts()) {
-                            if (p.getUsername().equals(user.getUsername()) &&
-                            p.getCreationDate().compareTo(post.getCreationDate()) == 0) {
-                                found = true;
-                                p.setText(newText);
-                            }
-                        }
-                        if (!found) {
-                            throw new PostNotFoundException();
-                        }
+                updateForums(user, post, newText, postForum, g);
+            }
+        }
+    }
+
+    /**
+     * Update the forums.
+     * @param user The user
+     * @param post The post
+     * @param newText The new text
+     * @param postForum The forum of the post
+     * @param group The grouo
+     * @throws PostNotFoundException The post is not found
+     */
+    private void updateForums(User user, Post post, String newText, Forum postForum, Group group)
+        throws PostNotFoundException {
+        for (Forum f : group.getForums()) {
+            if (f.getName().equals(postForum.getName())) {
+                boolean found = false;
+                for (Post p : f.getPosts()) {
+                    if (p.getUsername().equals(user.getUsername())
+                        && p.getCreationDate().compareTo(post.getCreationDate()) == 0) {
+                        found = true;
+                        p.setText(newText);
                     }
+                }
+                if (!found) {
+                    throw new PostNotFoundException();
                 }
             }
         }

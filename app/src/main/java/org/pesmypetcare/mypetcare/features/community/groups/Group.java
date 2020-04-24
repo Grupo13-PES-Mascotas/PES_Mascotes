@@ -240,12 +240,12 @@ public class Group implements Comparable<Group> {
     @NonNull
     @Override
     public String toString() {
-        return "Group{" +
-            "name='" + name + '\'' +
-            ", ownerUsername='" + ownerUsername + '\'' +
-            ", description='" + description + '\'' +
-            ", creationDate=" + creationDate +
-            '}';
+        return "Group{"
+            + "name='" + name + '\''
+            + ", ownerUsername='" + ownerUsername + '\''
+            + ", description='" + description + '\''
+            + ", creationDate=" + creationDate
+            + '}';
     }
 
     @Override

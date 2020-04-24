@@ -83,6 +83,11 @@ public class TrAddNewForum {
         }
 
         Forum forum = new Forum(forumName, user.getUsername(), creationDate, group);
+
+        for (String tag : tags) {
+            forum.addTag(tag);
+        }
+
         communityService.createForum(user, group, forum);
         group.addForum(forum);
     }

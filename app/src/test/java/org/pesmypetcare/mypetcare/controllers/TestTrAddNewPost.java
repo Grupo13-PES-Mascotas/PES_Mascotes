@@ -19,7 +19,6 @@ import static org.junit.Assert.assertTrue;
  */
 public class TestTrAddNewPost {
     private User user;
-    private Group group;
     private Forum forum;
     private Post post;
     private TrAddNewPost trAddNewPost;
@@ -27,7 +26,7 @@ public class TestTrAddNewPost {
     @Before
     public void setUp() {
         user = new User("John Doe", "johndoe@gmail.com", "1234");
-        group = new Group("Dinosaur", "Gradle",
+        Group group = new Group("Dinosaur", "Gradle",
             DateTime.Builder.buildDateString("2019-11-23"));
         forum = new Forum("Sickling", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:10:00"),
             group);
@@ -37,7 +36,8 @@ public class TestTrAddNewPost {
     }
 
     @Test(expected = ForumNotFoundException.class)
-    public void shouldNotAddIfForumDoesNotExist() throws PostAlreadyExistingException, ForumNotFoundException, PostCreatedBeforeForumException {
+    public void shouldNotAddIfForumDoesNotExist() throws PostAlreadyExistingException, ForumNotFoundException,
+        PostCreatedBeforeForumException {
         forum.setName("Pepe");
         trAddNewPost.setUser(user);
         trAddNewPost.setPostCreationDate(post.getCreationDate());

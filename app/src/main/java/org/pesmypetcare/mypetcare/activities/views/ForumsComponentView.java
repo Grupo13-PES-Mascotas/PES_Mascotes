@@ -13,6 +13,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import java.util.List;
 
 public class ForumsComponentView extends CircularEntryView {
+    public static final int TEN = 10;
     private Forum forum;
 
     public ForumsComponentView(Context context, AttributeSet attrs) {
@@ -59,30 +60,38 @@ public class ForumsComponentView extends CircularEntryView {
     protected String getSecondLineText() {
         StringBuilder forumAuthorDate = new StringBuilder(getResources().getString(R.string.forum_created_on));
         DateTime creationDate = forum.getCreationDate();
+        addText(forumAuthorDate, creationDate);
 
+        return forumAuthorDate.toString();
+    }
+
+    /**
+     * Add the text to display.
+     * @param forumAuthorDate The StringBuilder to add the text
+     * @param creationDate The creation date
+     */
+    private void addText(StringBuilder forumAuthorDate, DateTime creationDate) {
         forumAuthorDate.append(' ').append(creationDate.getYear()).append('-');
 
-        if (creationDate.getMonth() < 10) {
+        if (creationDate.getMonth() < TEN) {
             forumAuthorDate.append('0');
         }
 
         forumAuthorDate.append(creationDate.getMonth()).append('-').append(creationDate.getDay()).append(' ')
             .append(getResources().getString(R.string.forum_created_at)).append(' ');
 
-        if (creationDate.getHour() < 10) {
+        if (creationDate.getHour() < TEN) {
             forumAuthorDate.append('0');
         }
 
         forumAuthorDate.append(creationDate.getHour()).append(':');
 
-        if (creationDate.getMinutes() < 10) {
+        if (creationDate.getMinutes() < TEN) {
             forumAuthorDate.append('0');
         }
 
         forumAuthorDate.append(creationDate.getMinutes()).append('\n')
             .append(getResources().getString(R.string.forum_created_by)).append(' ').append(forum.getOwnerUsername());
-
-        return forumAuthorDate.toString();
     }
 
     private String getTags() {

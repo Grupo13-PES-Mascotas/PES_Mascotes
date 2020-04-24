@@ -14,10 +14,6 @@ public class ServiceLocator {
     private GroupManagerClient groupManagerClient;
     private ForumManagerClient forumManagerClient;
 
-    public ForumManagerClient getForumManagerClient() {
-        return forumManagerClient;
-    }
-
     private ServiceLocator() {
         userManagerClient = new UserManagerClient();
         petManagerClient = new PetManagerClient();
@@ -48,5 +44,9 @@ public class ServiceLocator {
 
     public GroupManagerClient getGroupManagerClient() {
         return groupManagerClient;
+    }
+
+    public ForumManagerClient getForumManagerClient() {
+        return forumManagerClient;
     }
 }

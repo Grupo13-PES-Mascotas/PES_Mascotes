@@ -22,6 +22,7 @@ import java.util.Objects;
 
 public class ForumsFragment extends Fragment {
     private static final String INTERROGATION_SIGN = "?";
+    public static final String WHITE_SPACE = " ";
     private static FragmentForumsBinding binding;
     private static String deleteForumTitle;
     private static String deleteForumMessage;
@@ -91,8 +92,8 @@ public class ForumsFragment extends Fragment {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(Objects.requireNonNull(context),
             R.style.AlertDialogTheme);
         Forum forum = (Forum) circularEntryView.getObject();
-        dialog.setTitle(deleteForumTitle + " " + forum.getName() + INTERROGATION_SIGN);
-        dialog.setMessage(deleteForumMessage + " " + forum.getName() + INTERROGATION_SIGN);
+        dialog.setTitle(deleteForumTitle + WHITE_SPACE + forum.getName() + INTERROGATION_SIGN);
+        dialog.setMessage(deleteForumMessage + WHITE_SPACE + forum.getName() + INTERROGATION_SIGN);
 
         dialog.setPositiveButton(R.string.yes, (dialog1, which) -> {
             setDeleteGroupPositiveButton(forum, dialog1);
