@@ -22,10 +22,10 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 public abstract class CircularEntryView extends ConstraintLayout {
-    private final int PADDING = 15;
-    private final int IMAGE_LAYOUT_MARGIN = 10;
-    private final int PET_INFO_IMAGE_MARGIN = 40;
-    private final int IMAGE_DIMESIONS = 150;
+    private static final int PADDING = 15;
+    private static final int IMAGE_LAYOUT_MARGIN = 10;
+    private static final int PET_INFO_IMAGE_MARGIN = 40;
+    private static final int IMAGE_DIMENSIONS = 150;
 
     private Context currentActivity;
     private Pet pet;
@@ -105,7 +105,7 @@ public abstract class CircularEntryView extends ConstraintLayout {
         }
 
         image.setDrawable(petImageDrawable);
-        image.setLayoutParams(new LinearLayout.LayoutParams(IMAGE_DIMESIONS, IMAGE_DIMESIONS));
+        image.setLayoutParams(new LinearLayout.LayoutParams(IMAGE_DIMENSIONS, IMAGE_DIMENSIONS));
         int imageId = View.generateViewId();
         image.setId(imageId);
 
@@ -161,7 +161,7 @@ public abstract class CircularEntryView extends ConstraintLayout {
     }
 
     public int getImageDimensions() {
-        return IMAGE_DIMESIONS;
+        return IMAGE_DIMENSIONS;
     }
 
     /**

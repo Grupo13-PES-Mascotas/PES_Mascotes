@@ -69,6 +69,7 @@ public class PostsFragment extends Fragment {
 
     /**
      * Method responsible for checking if a message is empty.
+     * @param message The message to check
      * @return True if the message is empty or false otherwise
      */
     private boolean isMessageEmpty(String message) {

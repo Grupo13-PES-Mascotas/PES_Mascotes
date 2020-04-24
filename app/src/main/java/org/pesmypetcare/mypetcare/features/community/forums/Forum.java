@@ -127,6 +127,10 @@ public class Forum implements Comparable<Forum> {
         this.tags = tags;
     }
 
+    /**
+     * Add a tag to the forum.
+     * @param tag The tag to add
+     */
     public void addTag(String tag) {
         tags.add(tag);
     }
