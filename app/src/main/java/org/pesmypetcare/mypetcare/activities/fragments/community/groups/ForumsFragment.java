@@ -40,6 +40,9 @@ public class ForumsFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Method responsible for setting the listeners of the forum view.
+     */
     private static void setListenersForumsView() {
         List<CircularEntryView> components = binding.forumsViewLayout.getForumComponents();
         PostsFragment postsFragment = new PostsFragment();
@@ -50,12 +53,22 @@ public class ForumsFragment extends Fragment {
         }
     }
 
+    /**
+     * Method responsible for setting the on click event of a component of the view.
+     * @param postsFragment The post fragment to load
+     * @param component The component where the listener will be added
+     */
     private static void setForumOnClickEvent(PostsFragment postsFragment, CircularEntryView component) {
         PostsFragment.setForum((Forum) component.getObject());
         InfoGroupFragment.getCommunication().showForum(postsFragment);
         MainActivity.hideFloatingButton();
     }
 
+    /**
+     * Setter of the long click event of a component.
+     * @param component The component for which we want to add the long click event
+     * @return True if the user is the forum owner or false otherwise
+     */
     private static boolean setForumLongClickEvent(CircularEntryView component) {
         Forum forum = (Forum) component.getObject();
         String username = InfoGroupFragment.getCommunication().getUser().getUsername();
@@ -92,12 +105,20 @@ public class ForumsFragment extends Fragment {
         return dialog;
     }
 
+    /**
+     * Setter of the delete forum listener.
+     * @param forum The forum to delete
+     * @param dialog1 The dialog to hide
+     */
     private static void setDeleteGroupPositiveButton(Forum forum, DialogInterface dialog1) {
         InfoGroupFragment.getCommunication().deleteForum(forum);
         dialog1.dismiss();
         showForums();
     }
 
+    /**
+     * Method responsible for showing all the forums.
+     */
     public static void showForums() {
         binding.forumsViewLayout.removeAllViews();
         binding.forumsViewLayout.showForums(InfoGroupFragment.getGroup());

@@ -39,6 +39,9 @@ public class PostsFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Method responsible for sending a message.
+     */
     private void sendMessage() {
         String message = Objects.requireNonNull(binding.postMessage.getText()).toString();
 
@@ -53,14 +56,25 @@ public class PostsFragment extends Fragment {
         }
     }
 
+    /**
+     * Method responsible for checking if a user is a subscriber.
+     * @return True if the user is subscriber or false otherwise
+     */
     private boolean isUserSubscriber() {
         return forum.getGroup().isUserSubscriber(InfoGroupFragment.getCommunication().getUser());
     }
 
+    /**
+     * Method responsible for checking if a message is empty.
+     * @return True if the message is empty or false otherwise
+     */
     private boolean isMessageEmpty(String message) {
         return "".equals(message);
     }
 
+    /**
+     * Method responsible for setting the forum name.
+     */
     private void setForumName() {
         binding.txtForumName.setText(R.string.no_tags);
 
@@ -76,14 +90,25 @@ public class PostsFragment extends Fragment {
         }
     }
 
+    /**
+     * Getter of the current forum.
+     * @return The current forum
+     */
     public static Forum getForum() {
         return forum;
     }
 
+    /**
+     * Setter of the forum of the fragment.
+     * @param forum The forum to set to the fragment
+     */
     public static void setForum(Forum forum) {
         PostsFragment.forum = forum;
     }
 
+    /**
+     * Method responsible for showing all the posts of the forum.
+     */
     private void showPosts() {
         binding.postsViewLayout.removeAllViews();
         binding.postsViewLayout.showPosts(forum);

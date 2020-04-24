@@ -10,7 +10,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 /**
  * @author Xavier Campos
  */
-public class TrDeletePost {
+public class    TrDeletePost {
     private CommunityService communityService;
     private User user;
     private Forum forum;
@@ -53,6 +53,11 @@ public class TrDeletePost {
         return result;
     }
 
+    /**
+     * Executes the transaction.
+     * @throws ForumNotFoundException Exception thrown when the forum is not found
+     * @throws PostNotFoundException Exception thrown when the post is not found
+     */
     public void execute() throws ForumNotFoundException, PostNotFoundException {
         result = false;
         communityService.deletePost(user, forum, postCreationDate);
