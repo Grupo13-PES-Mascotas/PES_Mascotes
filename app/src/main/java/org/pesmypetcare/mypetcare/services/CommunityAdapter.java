@@ -39,6 +39,11 @@ public class CommunityAdapter implements CommunityService {
         return groups;
     }
 
+    /**
+     * Create the group.
+     * @param groupData The data of the group
+     * @return The created group
+     */
     private Group createGroup(GroupData groupData) {
         Group group = new Group(groupData.getName(), groupData.getCreator(),
             DateTime.Builder.buildFullString(groupData.getCreationDate()));
@@ -55,6 +60,10 @@ public class CommunityAdapter implements CommunityService {
         return group;
     }
 
+    /**
+     * Add the forums to the group.
+     * @param group The group to which the forums have to be added
+     */
     private void addForums(Group group) {
         AtomicReference<List<ForumData>> forumsData = new AtomicReference<>();
 
@@ -77,6 +86,11 @@ public class CommunityAdapter implements CommunityService {
         createForums(group, forumsData);
     }
 
+    /**
+     * Create the forums.
+     * @param group The group to add the forums
+     * @param forumsData The data of the forums
+     */
     private void createForums(Group group, AtomicReference<List<ForumData>> forumsData) {
         for (ForumData forumData : forumsData.get()) {
             Forum forum = new Forum(forumData.getName(), forumData.getCreator(),
@@ -86,6 +100,10 @@ public class CommunityAdapter implements CommunityService {
         }
     }
 
+    /**
+     * Get all the groups from server.
+     * @return The groups from the server
+     */
     private List<GroupData> getAllGroupsFromServer() {
         AtomicReference<List<GroupData>> groupsData = new AtomicReference<>();
 
@@ -275,6 +293,12 @@ public class CommunityAdapter implements CommunityService {
         executorService.shutdown();
     }
 
+    /**
+     * Get the create post executor service.
+     * @param user The user
+     * @param post The post
+     * @return The executor service to create the post
+     */
     private ExecutorService getCreatePostExecutorService(User user, Post post) {
         ExecutorService executorService;
         executorService = Executors.newSingleThreadExecutor();
@@ -287,6 +311,7 @@ public class CommunityAdapter implements CommunityService {
                 e.printStackTrace();
             }
         });
+
         return executorService;
     }
 }

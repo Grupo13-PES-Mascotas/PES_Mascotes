@@ -64,6 +64,12 @@ public class TrAddNewPost {
         return result;
     }
 
+    /**
+     * Execute the transaction.
+     * @throws PostAlreadyExistingException The post already exists
+     * @throws ForumNotFoundException The forum is not found
+     * @throws PostCreatedBeforeForumException The post is created before the forum
+     */
     public void execute() throws PostAlreadyExistingException, ForumNotFoundException, PostCreatedBeforeForumException {
         result = false;
         if (postCreationDate.compareTo(forum.getCreationDate()) < 0) {

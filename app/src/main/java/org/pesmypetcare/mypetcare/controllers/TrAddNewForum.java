@@ -26,26 +26,52 @@ public class TrAddNewForum {
         this.communityService = communityService;
     }
 
+    /**
+     * Set the user.
+     * @param user The user to set
+     */
     public void setUser(User user) {
         this.user = user;
     }
 
+    /**
+     * Set the group.
+     * @param group The group to set
+     */
     public void setGroup(Group group) {
         this.group = group;
     }
 
+    /**
+     * Set the forum name.
+     * @param forumName The forum name to set
+     */
     public void setForumName(String forumName) {
         this.forumName = forumName;
     }
 
+    /**
+     * Set the tags.
+     * @param tags The tags to set
+     */
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
+    /**
+     * Set the creation date.
+     * @param creationDate The creation date to set
+     */
     public void setCreationDate(DateTime creationDate) {
         this.creationDate = creationDate;
     }
 
+    /**
+     * Execute the transaction.
+     * @throws UserNotSubscribedException The user is not subscribed
+     * @throws GroupNotExistingException The group does not exist
+     * @throws ForumCreatedBeforeGroupException The forum has been created before the group
+     */
     public void execute() throws UserNotSubscribedException, GroupNotExistingException,
         ForumCreatedBeforeGroupException {
         if (!communityService.isGroupExisting(group)) {
