@@ -120,7 +120,8 @@ public interface PetManagerService {
      * @param event The period event
      * @param period The periodicity of the period event
      */
-    void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) throws ParseException, ExecutionException, InterruptedException;
+    void registerNewPeriodicNotification(User user, Pet pet, Event event, int period)
+            throws ParseException, ExecutionException, InterruptedException;
 
     /**
      * Delete a periodic event of pet.
@@ -128,5 +129,6 @@ public interface PetManagerService {
      * @param pet The pet which the user wants to delete a periodic event
      * @param event The period event that user wants to delete
      */
-    void deletePeriodicEvent(User user, Pet pet, Event event) throws ParseException, ExecutionException, InterruptedException;
+    void deletePeriodicEvent(User user, Pet pet, Event event)
+            throws ParseException, ExecutionException, InterruptedException;
 }

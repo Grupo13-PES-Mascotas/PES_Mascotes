@@ -12,6 +12,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.text.ParseException;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -65,7 +66,8 @@ public class TestTrDeletePeriodicNotification {
     }
 
     @Test
-    public void shouldDeleteOneNotificationEveryWeek() throws ParseException, UserIsNotOwnerException {
+    public void shouldDeleteOneNotificationEveryWeek() throws ParseException,
+            UserIsNotOwnerException, ExecutionException, InterruptedException {
         DateTime date = DateTime.Builder.buildFullString(DATE);
         Event e = new Event(DESC, date);
         pet.addPeriodicNotification(e, periodWeek);
@@ -77,7 +79,8 @@ public class TestTrDeletePeriodicNotification {
     }
 
     @Test
-    public void shouldDeleteOneNotificationEvery2Weeks() throws ParseException, UserIsNotOwnerException {
+    public void shouldDeleteOneNotificationEvery2Weeks() throws ParseException,
+            UserIsNotOwnerException, ExecutionException, InterruptedException {
         DateTime date = DateTime.Builder.buildFullString(DATE2);
         Event e = new Event(DESC, date);
         pet.addPeriodicNotification(e, period2Weeks);
@@ -90,7 +93,8 @@ public class TestTrDeletePeriodicNotification {
     }
 
     @Test
-    public void shouldDeleteOneNotificationEveryMonth() throws ParseException, UserIsNotOwnerException {
+    public void shouldDeleteOneNotificationEveryMonth() throws ParseException,
+            UserIsNotOwnerException, ExecutionException, InterruptedException {
         DateTime date = DateTime.Builder.buildFullString(DATE);
         Event e = new Event(DESC, date);
         pet.addPeriodicNotification(e, periodWeek);
@@ -101,7 +105,8 @@ public class TestTrDeletePeriodicNotification {
         assertFalse("should delete one periodic notification monthly", pet.getPeriodicEvents(DATE).contains(e));
     }
     @Test(expected = UserIsNotOwnerException.class)
-    public void shouldNoDeleteOneNotificationIfNotOwner() throws ParseException, UserIsNotOwnerException {
+    public void shouldNoDeleteOneNotificationIfNotOwner() throws ParseException,
+            UserIsNotOwnerException, ExecutionException, InterruptedException {
         DateTime date = DateTime.Builder.buildFullString(DATE);
         Event e = new Event(DESC, date);
         pet.addPeriodicNotification(e, periodWeek);

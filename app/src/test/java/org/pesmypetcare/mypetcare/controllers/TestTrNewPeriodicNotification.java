@@ -13,6 +13,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.text.ParseException;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertTrue;
 
@@ -68,7 +69,8 @@ public class TestTrNewPeriodicNotification {
         pet2.setOwner(user2);
     }
     @Test
-    public void shouldAddOneNotificationEveryWeek() throws ParseException, UserIsNotOwnerException {
+    public void shouldAddOneNotificationEveryWeek() throws ParseException,
+            UserIsNotOwnerException, ExecutionException, InterruptedException {
         DateTime date = DateTime.Builder.buildDateString(DATE);
         Event e = new Event(DESC, date);
         trNewPeriodicNotification.setUser(user);
@@ -80,7 +82,8 @@ public class TestTrNewPeriodicNotification {
     }
 
     @Test
-    public void shouldAddOneNotificationEvery2Weeks() throws ParseException, UserIsNotOwnerException {
+    public void shouldAddOneNotificationEvery2Weeks() throws ParseException,
+            UserIsNotOwnerException, ExecutionException, InterruptedException {
         DateTime date = DateTime.Builder.buildDateString(DATE);
         Event e = new Event(DESC, date);
         trNewPeriodicNotification.setUser(user);
@@ -93,7 +96,8 @@ public class TestTrNewPeriodicNotification {
     }
 
     @Test
-    public void shouldAddOneNotificationEveryMonth() throws ParseException, UserIsNotOwnerException {
+    public void shouldAddOneNotificationEveryMonth() throws ParseException,
+            UserIsNotOwnerException, ExecutionException, InterruptedException {
         DateTime date = DateTime.Builder.buildDateString(DATE);
         Event e = new Event(DESC, date);
         trNewPeriodicNotification.setUser(user);
@@ -105,7 +109,8 @@ public class TestTrNewPeriodicNotification {
     }
 
     @Test
-    public void shouldAddOneNotificationEvery3Months() throws ParseException, UserIsNotOwnerException {
+    public void shouldAddOneNotificationEvery3Months() throws ParseException,
+            UserIsNotOwnerException, ExecutionException, InterruptedException {
         DateTime date = DateTime.Builder.buildDateString(DATE);
         Event e = new Event(DESC, date);
         trNewPeriodicNotification.setUser(user);
@@ -118,7 +123,8 @@ public class TestTrNewPeriodicNotification {
     }
 
     @Test(expected = UserIsNotOwnerException.class)
-    public void shouldNoDeleteOneNotificationIfNotOwner() throws ParseException, UserIsNotOwnerException {
+    public void shouldNoDeleteOneNotificationIfNotOwner() throws ParseException,
+            UserIsNotOwnerException, ExecutionException, InterruptedException {
         DateTime date = DateTime.Builder.buildDateString(DATE);
         Event e = new Event(DESC, date);
         pet.addPeriodicNotification(e, periodWeek);
