@@ -90,10 +90,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
-    implementation project(path: ':usermanagerlib')
     implementation project(path: ':httptools')
     implementation project(path: ':usermanagerlib-community')
     implementation project(path: ':communitymanager')
+    implementation project(path: ':usermanagerlib')
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
