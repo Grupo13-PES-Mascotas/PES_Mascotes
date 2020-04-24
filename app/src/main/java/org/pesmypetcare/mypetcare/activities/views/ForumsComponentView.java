@@ -94,6 +94,10 @@ public class ForumsComponentView extends CircularEntryView {
             .append(getResources().getString(R.string.forum_created_by)).append(' ').append(forum.getOwnerUsername());
     }
 
+    /**
+     * Get the tags.
+     * @return The tags
+     */
     private String getTags() {
         List<String> tags = forum.getTags();
         StringBuilder strTags = new StringBuilder("");

@@ -620,6 +620,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         alertDialog.show();
     }
 
+    /**
+     * Set the add button listener.
+     * @param alertDialog The alert dialog
+     * @param newForumDialog The new forum dialog
+     */
     private void setAddForumButtonListener(AlertDialog alertDialog, View newForumDialog) {
         MaterialButton btnAddForum = newForumDialog.findViewById(R.id.btnAddForum);
         btnAddForum.setOnClickListener(v -> {
