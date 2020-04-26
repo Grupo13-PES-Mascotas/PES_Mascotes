@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.views;
+package org.pesmypetcare.mypetcare.activities.views.circularentry.petsinfo;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,18 +8,19 @@ import android.widget.Space;
 
 import androidx.annotation.Nullable;
 
+import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainMenuView extends LinearLayout {
+public class PetsInfoComponentView extends LinearLayout {
     private Context currentActivity;
     private List<CircularEntryView> petComponents;
     private final int SPACE_SIZE = 40;
 
-    public MainMenuView(Context context, @Nullable AttributeSet attrs) {
+    public PetsInfoComponentView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.currentActivity = context;
         this.petComponents = new ArrayList<>();

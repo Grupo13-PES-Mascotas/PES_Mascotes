@@ -10,7 +10,7 @@
     android:paddingStart="20dp"
     tools:ignore="RtlSymmetry">
 
-    <org.pesmypetcare.mypetcare.activities.views.CircularImageView
+    <org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView
         android:id="@+id/imgUser"
         android:layout_width="75dp"
         android:layout_height="75dp"/>

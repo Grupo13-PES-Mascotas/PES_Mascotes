@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.views;
+package org.pesmypetcare.mypetcare.activities.views.circularentry;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

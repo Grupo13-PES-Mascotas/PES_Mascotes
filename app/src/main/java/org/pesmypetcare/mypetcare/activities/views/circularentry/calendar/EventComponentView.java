@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.views;
+package org.pesmypetcare.mypetcare.activities.views.circularentry.calendar;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
@@ -14,11 +15,11 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CalendarEventsView extends LinearLayout {
+public class EventComponentView extends LinearLayout {
     private Context context;
     private List<CircularEntryView> petComponents;
 
-    public CalendarEventsView(Context context, @Nullable AttributeSet attrs) {
+    public EventComponentView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         this.context = context;

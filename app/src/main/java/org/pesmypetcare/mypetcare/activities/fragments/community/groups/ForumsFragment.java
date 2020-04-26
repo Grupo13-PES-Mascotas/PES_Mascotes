@@ -13,7 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
-import org.pesmypetcare.mypetcare.activities.views.CircularEntryView;
+import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.databinding.FragmentForumsBinding;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 

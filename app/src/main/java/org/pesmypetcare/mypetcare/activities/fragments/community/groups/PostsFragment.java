@@ -16,7 +16,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.pesmypetcare.communitymanager.ChatException;
 import org.pesmypetcare.communitymanager.ChatModel;
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.activities.views.CircularEntryView;
+import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.databinding.FragmentPostsBinding;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;

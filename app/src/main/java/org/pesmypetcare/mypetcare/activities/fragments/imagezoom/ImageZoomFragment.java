@@ -16,7 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
-import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
+import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.databinding.FragmentImageZoomBinding;
 
 import java.util.Objects;

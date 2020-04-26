@@ -18,7 +18,7 @@
             android:background="@color/colorAccent"
             android:orientation="horizontal">
 
-            <org.pesmypetcare.mypetcare.activities.views.CircularImageView
+            <org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView
                 android:id="@+id/imgGroup"
                 android:layout_gravity="center"
                 android:layout_width="75dp"

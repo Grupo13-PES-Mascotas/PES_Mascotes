@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.views;
+package org.pesmypetcare.mypetcare.activities.views.circularentry.petsinfo;
 
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
+import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 public class PetsInfoView extends CircularEntryView {

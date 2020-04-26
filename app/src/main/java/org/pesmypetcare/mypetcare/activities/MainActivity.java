@@ -63,7 +63,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.settings.NewPasswordInter
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
-import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
+import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.community.CommunityControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewForum;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewPost;

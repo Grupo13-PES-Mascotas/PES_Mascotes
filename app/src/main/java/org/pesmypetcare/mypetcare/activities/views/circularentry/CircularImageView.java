@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.views;
+package org.pesmypetcare.mypetcare.activities.views.circularentry;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

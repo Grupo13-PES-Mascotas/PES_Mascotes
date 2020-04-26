@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.activities.views;
+package org.pesmypetcare.mypetcare.activities.views.circularentry.subscriber;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,22 +8,24 @@ import android.widget.Space;
 
 import androidx.annotation.Nullable;
 
-import org.pesmypetcare.mypetcare.features.community.forums.Forum;
-import org.pesmypetcare.mypetcare.features.community.posts.Post;
+import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class PostView extends LinearLayout {
+public class SubscribersView extends LinearLayout {
     public static final int MIN_SPACE_SIZE = 20;
     private Context context;
-    private List<CircularEntryView> postComponents;
+    private List<CircularEntryView> groupComponents;
 
-    public PostView(Context context, @Nullable AttributeSet attrs) {
+    public SubscribersView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         this.context = context;
-        this.postComponents = new ArrayList<>();
+        this.groupComponents = new ArrayList<>();
         setOrientation(VERTICAL);
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
             LayoutParams.MATCH_PARENT);
@@ -33,14 +35,17 @@ public class PostView extends LinearLayout {
 
     /**
      * Show the specified group subscribers.
-     * @param forum The forum to display the posts
+     * @param group The group to display the subscribers
      */
-    public void showPosts(Forum forum) {
-        for (Post post : forum.getPosts()) {
-            CircularEntryView circularEntryView = new PostComponentView(context, null, post);
+    public void showSubscribers(Group group) {
+        for (Map.Entry<String, DateTime> subscription : group.getSubscribers().entrySet()) {
+            String username = subscription.getKey();
+            DateTime subscriptionDate = subscription.getValue();
+            CircularEntryView circularEntryView = new SubscriberComponentView(context, null, username,
+                subscriptionDate, group);
             circularEntryView.initializeComponent();
             addView(circularEntryView);
-            postComponents.add(circularEntryView);
+            groupComponents.add(circularEntryView);
 
             Space space = createSpace();
             addView(space);
@@ -62,7 +67,7 @@ public class PostView extends LinearLayout {
      * Get the group components.
      * @return The group components
      */
-    public List<CircularEntryView> getPostComponents() {
-        return postComponents;
+    public List<CircularEntryView> getGroupComponents() {
+        return groupComponents;
     }
 }

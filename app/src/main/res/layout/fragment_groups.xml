@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <org.pesmypetcare.mypetcare.activities.views.GroupsView
+            <org.pesmypetcare.mypetcare.activities.views.circularentry.groups.GroupsView
                 android:id="@+id/groupInfoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

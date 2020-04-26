@@ -22,9 +22,9 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.activities.views.CalendarEventsView;
-import org.pesmypetcare.mypetcare.activities.views.CircularEntryView;
-import org.pesmypetcare.mypetcare.activities.views.EventView;
+import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
+import org.pesmypetcare.mypetcare.activities.views.circularentry.calendar.EventComponentView;
+import org.pesmypetcare.mypetcare.activities.views.circularentry.calendar.EventView;
 import org.pesmypetcare.mypetcare.databinding.FragmentCalendarBinding;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Event;
@@ -525,13 +525,13 @@ public class CalendarFragment extends Fragment {
         selectedDate = dateTime.substring(0, dateTime.indexOf('T'));
         binding.eventInfoLayout.removeAllViews();
         for (Pet pet : pets) {
-            CalendarEventsView calendarEventsView = new CalendarEventsView(getContext(), null);
-            calendarEventsView.showEvents(pet, selectedDate);
-            List<CircularEntryView> petComponents = calendarEventsView.getPetComponents();
+            EventComponentView eventComponentView = new EventComponentView(getContext(), null);
+            eventComponentView.showEvents(pet, selectedDate);
+            List<CircularEntryView> petComponents = eventComponentView.getPetComponents();
             for (CircularEntryView p : petComponents) {
                 p.setOnClickListener(v -> deleteEventDialog(p));
             }
-            binding.eventInfoLayout.addView(calendarEventsView);
+            binding.eventInfoLayout.addView(eventComponentView);
         }
     }
 

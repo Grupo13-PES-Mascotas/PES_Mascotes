@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
-import org.pesmypetcare.mypetcare.activities.views.CircularEntryView;
+import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.databinding.FragmentMyPetsBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
