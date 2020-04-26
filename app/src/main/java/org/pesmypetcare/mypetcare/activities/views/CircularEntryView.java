@@ -1,11 +1,11 @@
 package org.pesmypetcare.mypetcare.activities.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.text.Layout;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
@@ -132,6 +131,7 @@ public abstract class CircularEntryView extends ConstraintLayout {
      * Method responsible for creating the text view that will contain the pet info.
      * @param info The parent layout
      */
+    @SuppressLint("WrongConstant")
     private void secondLineTextInitializer(LinearLayout info) {
         TextView infoText = new TextView(currentActivity);
         infoText.setText(getSecondLineText());
@@ -145,7 +145,7 @@ public abstract class CircularEntryView extends ConstraintLayout {
      * Method responsible for creating the text view that will contain the pet name.
      * @param info The parent layout
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @SuppressLint("WrongConstant")
     private void firstLineTextInitializer(LinearLayout info) {
         TextView nameText = new TextView(currentActivity);
         nameText.setText(getFirstLineText());

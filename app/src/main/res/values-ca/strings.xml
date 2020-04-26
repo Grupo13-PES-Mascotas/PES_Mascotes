@@ -150,6 +150,18 @@
     <string name="meal">Àpat:</string>
     <string name="from_date">Del:</string>
     <string name="notificationid">NOTIFICATION_ID</string>
+    <string name="selectPet">Selecciona la mascota</string>
+    <string name="selectPeriodicity">Selecciona la periodicitat</string>
+    <string name="periodic_notification_title">Notificació periòdica</string>
+    <string name="two_weeks">Cada 2 setmanes</string>
+    <string name="one_week">Cada setmana</string>
+    <string name="one_day">Cada dia</string>
+    <string name="one_month">Cada 30 dies</string>
+    <string name="three_months">Cada 90 dies</string>
+    <string name="dialog_new_periodic_message">
+        Introdueix la descripció de l\'esdeveniment, la seva periodicitat, la seva hora i selecciona la mascota que
+        participarà.
+    </string>
     <string name="text">text</string>
     <string name="title">title</string>
     <string name="notificationChannelName">NOTIFICATION_CHANNEL_NAME</string>
