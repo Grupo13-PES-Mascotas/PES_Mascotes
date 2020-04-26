@@ -8,7 +8,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
 import org.pesmypetcare.mypetcare.utilities.InvalidFormatException;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import static org.junit.Assert.assertEquals;
 
@@ -45,7 +45,7 @@ public class TestTrUpdatePetMeal {
 
     @Test
     public void shouldUpdateMealDate() throws MealAlreadyExistingException,
-        org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException {
+        org.pesmypetcare.usermanager.exceptions.InvalidFormatException {
         trNewPetMeal.setUser(user);
         trNewPetMeal.setPet(linux);
         trNewPetMeal.setMeal(originalMeal);
@@ -62,7 +62,7 @@ public class TestTrUpdatePetMeal {
         DateTime date = null;
         try {
             date = DateTime.Builder.build(2020, 2, 26, 15, 23, 56);
-        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
+        } catch (org.pesmypetcare.usermanager.exceptions.InvalidFormatException e) {
             e.printStackTrace();
         }
         assert date != null;

@@ -77,8 +77,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
     implementation 'com.facebook.android:facebook-android-sdk:6.3.0'
-    implementation 'com.google.firebase:firebase-firestore:21.4.2'
-    implementation 'com.google.firebase:firebase-analytics:17.3.0'
+    implementation 'com.google.firebase:firebase-firestore:21.4.3'
+    implementation 'com.google.firebase:firebase-analytics:17.4.0'
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.mockito:mockito-core:3.3.3'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
@@ -90,10 +90,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
-    implementation project(path: ':httptools')
-    implementation project(path: ':usermanagerlib-community')
-    implementation project(path: ':communitymanager')
-    implementation project(path: ':usermanagerlib')
+    implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:b6d72e81d'
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {

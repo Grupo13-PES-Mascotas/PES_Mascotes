@@ -3,7 +3,7 @@ package org.pesmypetcare.mypetcare.features.community.posts;
 import android.graphics.Bitmap;
 
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 public class Post implements Comparable<Post> {
     private String username;

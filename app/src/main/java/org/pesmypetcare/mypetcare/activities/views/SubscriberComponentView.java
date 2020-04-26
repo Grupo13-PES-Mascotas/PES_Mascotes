@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 public class SubscriberComponentView extends CircularEntryView {
     private static final String HYPHEN = "-";

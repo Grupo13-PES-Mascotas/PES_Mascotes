@@ -4,8 +4,8 @@ import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.MedicationData;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanager.datacontainers.pet.MedicationData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +23,8 @@ public class MedicationManagerAdapter implements MedicationManagerService {
         String petName = pet.getName();
         MedicationData libraryMedicationData = new MedicationData(medication.getMedicationQuantity(),
             medication.getMedicationDuration(), medication.getMedicationFrequency());
-        org.pesmypetcare.usermanagerlib.datacontainers.Medication libraryMedication =
-            new org.pesmypetcare.usermanagerlib.datacontainers.Medication(medication.getMedicationDate().toString(),
+        org.pesmypetcare.usermanager.datacontainers.pet.Medication libraryMedication =
+            new org.pesmypetcare.usermanager.datacontainers.pet.Medication(medication.getMedicationDate().toString(),
                 medication.getMedicationName(), libraryMedicationData);
         ServiceLocator.getInstance().getMedicationManagerClient().createMedication(accessToken, owner, petName,
             libraryMedication);
@@ -89,10 +89,10 @@ public class MedicationManagerAdapter implements MedicationManagerService {
         String owner = user.getUsername();
         String petName = pet.getName();
         List<Medication> result = new ArrayList<>();
-        List<org.pesmypetcare.usermanagerlib.datacontainers.Medication> serverMedications = new ArrayList<>();
+        List<org.pesmypetcare.usermanager.datacontainers.pet.Medication> serverMedications = new ArrayList<>();
         serverMedications = ServiceLocator.getInstance().getMedicationManagerClient().getAllMedicationData(accessToken,
             owner, petName);
-        for (org.pesmypetcare.usermanagerlib.datacontainers.Medication serverMedication : serverMedications) {
+        for (org.pesmypetcare.usermanager.datacontainers.pet.Medication serverMedication : serverMedications) {
             Medication med = new Medication(serverMedication);
             result.add(med);
         }

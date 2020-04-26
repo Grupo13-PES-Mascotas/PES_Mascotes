@@ -8,13 +8,13 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
-import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.FreqWash;
-import org.pesmypetcare.usermanagerlib.datacontainers.FreqWashData;
-import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
-import org.pesmypetcare.usermanagerlib.datacontainers.Weight;
-import org.pesmypetcare.usermanagerlib.datacontainers.WeightData;
+import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanager.datacontainers.pet.FreqWash;
+import org.pesmypetcare.usermanager.datacontainers.pet.FreqWashData;
+import org.pesmypetcare.usermanager.datacontainers.pet.PetData;
+import org.pesmypetcare.usermanager.datacontainers.pet.Weight;
+import org.pesmypetcare.usermanager.datacontainers.pet.WeightData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public class PetManagerAdapter implements PetManagerService {
             pet.getName(), pet.getGender().toString(), pet.getBreed(), pet.getBirthDate(), pet.getWeight(),
             pet.getPathologies(), pet.getRecommendedDailyKiloCalories(), pet.getWashFrequency());*/
 
-        org.pesmypetcare.usermanagerlib.datacontainers.Pet registerPet = getRegisterPet(pet);
+        org.pesmypetcare.usermanager.datacontainers.pet.Pet registerPet = getRegisterPet(pet);
 
         try {
             ServiceLocator.getInstance().getPetManagerClient()
@@ -92,9 +92,9 @@ public class PetManagerAdapter implements PetManagerService {
      * @param pet The pet from he application
      * @return The pet to be registered in the system
      */
-    private org.pesmypetcare.usermanagerlib.datacontainers.Pet getRegisterPet(Pet pet) {
-        org.pesmypetcare.usermanagerlib.datacontainers.Pet registerPet;
-        registerPet = new org.pesmypetcare.usermanagerlib.datacontainers.Pet();
+    private org.pesmypetcare.usermanager.datacontainers.pet.Pet getRegisterPet(Pet pet) {
+        org.pesmypetcare.usermanager.datacontainers.pet.Pet registerPet;
+        registerPet = new org.pesmypetcare.usermanager.datacontainers.pet.Pet();
         PetData petData = new PetData();
 
         registerPet.setName(pet.getName());
@@ -172,7 +172,7 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public List<Pet> findPetsByOwner(User user) throws PetRepeatException {
-        List<org.pesmypetcare.usermanagerlib.datacontainers.Pet> userPets = null;
+        List<org.pesmypetcare.usermanager.datacontainers.pet.Pet> userPets = null;
 
         try {
             userPets = ServiceLocator.getInstance().getPetManagerClient().getAllPets(user.getToken(),
@@ -190,11 +190,11 @@ public class PetManagerAdapter implements PetManagerService {
      * @return The instances of the pets of our application
      * @throws PetRepeatException The pet is repeated
      */
-    private List<Pet> getPets(List<org.pesmypetcare.usermanagerlib.datacontainers.Pet> userPets)
+    private List<Pet> getPets(List<org.pesmypetcare.usermanager.datacontainers.pet.Pet> userPets)
         throws PetRepeatException {
         List<Pet> pets = new ArrayList<>();
 
-        for (org.pesmypetcare.usermanagerlib.datacontainers.Pet userPet : Objects.requireNonNull(userPets)) {
+        for (org.pesmypetcare.usermanager.datacontainers.pet.Pet userPet : Objects.requireNonNull(userPets)) {
             if (userPet != null) {
                 pets.add(decodePet(userPet));
             }
@@ -279,7 +279,7 @@ public class PetManagerAdapter implements PetManagerService {
      * @return The pet associated with that information
      * @throws PetRepeatException The pet is repeated.
      */
-    private Pet decodePet(org.pesmypetcare.usermanagerlib.datacontainers.Pet userPet) throws PetRepeatException {
+    private Pet decodePet(org.pesmypetcare.usermanager.datacontainers.pet.Pet userPet) throws PetRepeatException {
         PetData petData = userPet.getBody();
         Pet pet = new Pet();
 

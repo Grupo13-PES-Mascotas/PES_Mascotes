@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.util.List;
 

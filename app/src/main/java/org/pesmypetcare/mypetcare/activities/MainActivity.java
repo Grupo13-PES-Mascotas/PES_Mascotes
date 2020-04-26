@@ -138,7 +138,7 @@ import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.text.DateFormat;
 import java.text.ParseException;
