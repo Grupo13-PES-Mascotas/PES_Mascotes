@@ -1,9 +1,10 @@
-package org.pesmypetcare.mypetcare.utilities;
+package org.pesmypetcare.mypetcare.activities.threads;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import org.pesmypetcare.mypetcare.activities.MainActivity;
+import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
 import java.io.IOException;
 
