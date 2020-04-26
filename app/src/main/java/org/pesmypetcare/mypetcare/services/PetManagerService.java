@@ -87,7 +87,8 @@ public interface PetManagerService {
      * @param newWeight The new weight
      * @param dateTime The dateTime
      */
-    void updateWeight(User user, Pet pet, double newWeight, DateTime dateTime);
+    void addWeight(User user, Pet pet, double newWeight, DateTime dateTime) throws ExecutionException,
+        InterruptedException;
 
     /**
      * Delete the weight of a date.
@@ -95,15 +96,17 @@ public interface PetManagerService {
      * @param pet The pet
      * @param dateTime The dateTime
      */
-    void deletePetWeight(User user, Pet pet, DateTime dateTime);
+    void deletePetWeight(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException;
 
     /**
      * Update the wash frequency for a pet.
      * @param user The user
      * @param pet The pet
      * @param newWashFrequency The new wash frequency
+     * @param dateTime The date time of the new wash frequency
      */
-    void updateWashFrequency(User user, Pet pet, int newWashFrequency);
+    void addWashFrequency(User user, Pet pet, int newWashFrequency, DateTime dateTime) throws ExecutionException,
+        InterruptedException;
 
     /**
      * Delete the pet wash frequency of a date.
@@ -111,7 +114,7 @@ public interface PetManagerService {
      * @param pet The pet
      * @param dateTime The dateTime
      */
-    void deletePetWashFrequency(User user, Pet pet, DateTime dateTime);
+    void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException;
 
     /**
      * Add a periodic event to pet.

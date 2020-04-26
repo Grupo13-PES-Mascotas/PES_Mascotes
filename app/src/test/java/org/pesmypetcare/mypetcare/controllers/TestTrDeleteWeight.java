@@ -13,6 +13,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -44,7 +45,8 @@ public class TestTrDeleteWeight {
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotDeleteWeightToNonOwnerPet() throws NotPetOwnerException {
+    public void shouldNotDeleteWeightToNonOwnerPet() throws NotPetOwnerException, ExecutionException,
+        InterruptedException {
         trDeleteWeight.setUser(new User("johnSmith", "johnSmith@gmail.com", "5678"));
         trDeleteWeight.setPet(pet);
         trDeleteWeight.setDateTime(dateTime);
@@ -52,7 +54,7 @@ public class TestTrDeleteWeight {
     }
 
     @Test
-    public void shouldDeleteWeightData() throws NotPetOwnerException {
+    public void shouldDeleteWeightData() throws NotPetOwnerException, ExecutionException, InterruptedException {
         pet.setWeight(10.0);
 
         trDeleteWeight.setUser(user);

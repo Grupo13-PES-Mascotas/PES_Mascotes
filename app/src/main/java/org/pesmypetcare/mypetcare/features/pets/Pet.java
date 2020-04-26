@@ -240,8 +240,8 @@ public class Pet {
      * @param recommendedDailyKiloCalories The recommended daily kilo calories of the pet to set
      */
     public void setRecommendedDailyKiloCalories(double recommendedDailyKiloCalories) {
-        DateTime dateTime = getActualDateTime();
-        healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, recommendedDailyKiloCalories);
+        /*DateTime dateTime = getActualDateTime();
+        healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, recommendedDailyKiloCalories);*/
     }
 
     /**
@@ -351,12 +351,12 @@ public class Pet {
     public void addEvent(Event event) {
         events.add(event);
 
-        /*if (event instanceof Meals) {
+        if (event instanceof Meals) {
             DateTime eventDate = DateTime.Builder.buildFullString(event.getDateTime());
             double kcal = ((Meals) event).getKcal();
 
             healthInfo.addRecommendedDailyKiloCaloriesForDate(eventDate, kcal);
-        }*/
+        }
     }
 
     /**

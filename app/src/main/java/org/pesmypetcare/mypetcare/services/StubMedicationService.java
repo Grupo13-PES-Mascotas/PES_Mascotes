@@ -19,7 +19,7 @@ public class StubMedicationService implements MedicationManagerService {
     private static final int MEDICATION_DURATION1 = 14;
     private static final int MEDICATION_DURATION2 = 7;
     private static final int MEDICATION_DURATION3 = 31;
-    private static final double MEDICATION_FREQUENCY = 0.5;
+    private static final int MEDICATION_FREQUENCY = 5;
 
     static {
         medications = new ArrayList<>();
@@ -57,10 +57,12 @@ public class StubMedicationService implements MedicationManagerService {
     }
 
     @Override
-    public void updateMedicationDate(User user, Pet pet, String newDate, String oldDate) {
+    public void updateMedicationKey(User user, Pet pet, String newDate, String oldDate, String oldName,
+                                    String newName) {
         for (Medication staticMed : medications) {
             if (staticMed.getMedicationDate().toString().equals(oldDate)) {
                 staticMed.setMedicationDate(DateTime.Builder.buildFullString(newDate));
+                staticMed.setMedicationName(newName);
             }
         }
     }

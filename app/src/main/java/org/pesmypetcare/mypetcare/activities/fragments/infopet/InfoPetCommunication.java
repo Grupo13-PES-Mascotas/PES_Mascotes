@@ -113,10 +113,13 @@ public interface InfoPetCommunication {
      * Updates the data of a medication of a pet.
      * @param pet The pet from which we want to update the medication
      * @param medication The updated medication
-     * @param newDate The new date of the meal
+     * @param newDate The new date of the medication
      * @param updatesDate True if the date has to be updated or false otherwise
+     * @param newName The new name of the medication
+     * @param updatesName True if the name has to be updated or false otherwise
      */
-    void updatePetMedication(Pet pet, Medication medication, String newDate, boolean updatesDate);
+    void updatePetMedication(Pet pet, Medication medication, String newDate, boolean updatesDate, String newName,
+                             boolean updatesName);
 
     /**
      * Deletes a medication from a pet.

@@ -44,8 +44,8 @@ public class TestTrUpdatePetMeal {
     }
 
     @Test
-    public void shouldUpdateMealDate() throws MealAlreadyExistingException, InvalidFormatException,
-            org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException {
+    public void shouldUpdateMealDate() throws MealAlreadyExistingException,
+        org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException {
         trNewPetMeal.setUser(user);
         trNewPetMeal.setPet(linux);
         trNewPetMeal.setMeal(originalMeal);

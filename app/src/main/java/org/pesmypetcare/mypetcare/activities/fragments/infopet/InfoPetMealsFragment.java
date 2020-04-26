@@ -235,6 +235,9 @@ public class InfoPetMealsFragment extends Fragment {
         meal.setMealName(mealName);
         meal.setKcal(kcal);
         InfoPetFragment.getCommunication().updatePetMeal(pet, meal, newDate, updatesDate);
+        if (updatesDate) {
+            meal.setMealDate(DateTime.Builder.buildFullString(newDate));
+        }
     }
 
     /**

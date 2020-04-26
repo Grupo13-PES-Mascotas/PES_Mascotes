@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButton;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoGroupSubscriptionsBinding;
 import org.pesmypetcare.mypetcare.features.users.User;
 
@@ -95,6 +96,7 @@ public class InfoGroupSubscriptionsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         showSubscribers();
+        MainActivity.hideFloatingButton();
     }
 
     /**

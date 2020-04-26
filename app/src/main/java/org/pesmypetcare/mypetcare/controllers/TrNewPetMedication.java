@@ -1,10 +1,13 @@
 package org.pesmypetcare.mypetcare.controllers;
 
+import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.MedicationManagerService;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Xavier Campos
@@ -55,7 +58,7 @@ public class TrNewPetMedication {
     /**
      * Executes the transaction.
      */
-    public void execute() throws MedicationAlreadyExistingException {
+    public void execute() throws MedicationAlreadyExistingException, ExecutionException, InterruptedException {
         result = false;
         if (medicationHasAlreadyBeenAdded()) {
             throw new MedicationAlreadyExistingException();
@@ -70,6 +73,14 @@ public class TrNewPetMedication {
      * @return True if the medication has already been added or false otherwise
      */
     private boolean medicationHasAlreadyBeenAdded() {
-        return pet.getMedicationEvents().contains(medication);
+        boolean found = false;
+        for (Event e : pet.getMedicationEvents()) {
+            if (e.getDateTime().compareTo(medication.getDateTime()) == 0
+                && ((Medication) e).getMedicationName().equals(medication.getMedicationName())) {
+                found = true;
+                break;
+            }
+        }
+        return found;
     }
 }

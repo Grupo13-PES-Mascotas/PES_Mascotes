@@ -4,17 +4,23 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.MealManagerService;
+import org.pesmypetcare.mypetcare.services.MedicationManagerService;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
+
+import java.util.concurrent.ExecutionException;
 
 public class TrDeletePet {
     private PetManagerService petManagerService;
     private MealManagerService mealManagerService;
+    private MedicationManagerService medicationManagerService;
     private User user;
     private Pet pet;
 
-    public TrDeletePet(PetManagerService petManagerService, MealManagerService mealManagerService) {
+    public TrDeletePet(PetManagerService petManagerService, MealManagerService mealManagerService,
+                       MedicationManagerService medicationManagerService) {
         this.petManagerService = petManagerService;
         this.mealManagerService = mealManagerService;
+        this.medicationManagerService = medicationManagerService;
     }
 
     /**
@@ -37,11 +43,12 @@ public class TrDeletePet {
      * Execute the transaction.
      * @throws UserIsNotOwnerException The user is not the owner of the pet
      */
-    public void execute() throws UserIsNotOwnerException {
+    public void execute() throws UserIsNotOwnerException, ExecutionException, InterruptedException {
         if (pet.getOwner() != user) {
             throw new UserIsNotOwnerException();
         }
         mealManagerService.deleteMealsFromPet(user, pet);
+        medicationManagerService.deleteMedicationsFromPet(user, pet);
         petManagerService.deletePet(pet, user);
         user.deletePet(pet);
     }

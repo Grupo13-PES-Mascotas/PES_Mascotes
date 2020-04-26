@@ -2,7 +2,7 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.mypetcare.features.community.GroupNotFoundException;
+import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
 
 import static org.junit.Assert.assertTrue;

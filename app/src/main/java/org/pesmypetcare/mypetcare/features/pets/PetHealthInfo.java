@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.features.pets;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -11,22 +12,24 @@ import java.util.TreeMap;
 
 public class PetHealthInfo {
     private Map<DateTime, Double> weight;
-    private Map<DateTime, Double> recommendedDailyKiloCalories;
+    private Map<DateTime, Double> dailyKiloCalories;
     private Map<DateTime, Integer> exerciseFrequency;
     private Map<DateTime, Integer> weeklyExercise;
     private Map<DateTime, Double> weeklyKiloCaloriesAverage;
     private Map<DateTime, Integer> washFrequency;
+    private Map<DateTime, Integer> weeklyMeals;
     private String pathologies;
     private List<String> petNeeds;
 
     public PetHealthInfo() {
         this.weight = new TreeMap<>(new TreeComparator());
-        this.recommendedDailyKiloCalories = new TreeMap<>(new TreeComparator());
+        this.dailyKiloCalories = new TreeMap<>(new TreeComparator());
         this.exerciseFrequency = new TreeMap<>(new TreeComparator());
         this.weeklyExercise = new TreeMap<>(new TreeComparator());
         this.weeklyKiloCaloriesAverage = new TreeMap<>(new TreeComparator());
         this.washFrequency = new TreeMap<>(new TreeComparator());
         this.petNeeds = new ArrayList<>();
+        this.weeklyMeals = new TreeMap<>(new TreeComparator());
     }
 
     /**
@@ -81,8 +84,8 @@ public class PetHealthInfo {
      * Getter of the recommendedDailyKiloCalories attribute.
      * @return The recommendedDailyKiloCalories attribute
      */
-    public Map<DateTime, Double> getRecommendedDailyKiloCalories() {
-        return recommendedDailyKiloCalories;
+    public Map<DateTime, Double> getDailyKiloCalories() {
+        return dailyKiloCalories;
     }
 
     /**
@@ -91,10 +94,10 @@ public class PetHealthInfo {
      * or -1 if the pet does not have any recommended daily kilocalories stored
      */
     public double getLastRecommendedDailyKiloCalories() {
-        if (recommendedDailyKiloCalories.isEmpty()) {
+        if (dailyKiloCalories.isEmpty()) {
             return -1;
         }
-        return ((TreeMap<DateTime, Double>) recommendedDailyKiloCalories).lastEntry().getValue();
+        return ((TreeMap<DateTime, Double>) dailyKiloCalories).lastEntry().getValue();
     }
 
     /**
@@ -103,8 +106,8 @@ public class PetHealthInfo {
      * @return The recommendedDailyKiloCalories of the pet for the specified date or -1 if the date was not found
      */
     public double getRecommendedDailyKiloCaloriesForDate(DateTime date) {
-        if (recommendedDailyKiloCalories.containsKey(date)) {
-            return recommendedDailyKiloCalories.get(date);
+        if (dailyKiloCalories.containsKey(date)) {
+            return dailyKiloCalories.get(date);
         }
         return -1;
     }
@@ -115,7 +118,16 @@ public class PetHealthInfo {
      * @param kCal The recommendedDailyKiloCalories of the pet in that date
      */
     public void addRecommendedDailyKiloCaloriesForDate(DateTime date, double kCal) {
-        this.recommendedDailyKiloCalories.put(date, kCal);
+        /*date.setHour(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        if (dailyKiloCalories.containsKey(date)) {
+            double storedKcal = dailyKiloCalories.get(date);
+            dailyKiloCalories.put(date, storedKcal + kCal);
+        } else {
+            this.dailyKiloCalories.put(date, kCal);
+        }
+        this.addWeeklyKiloCalAverageForDate(date, kCal);*/
     }
 
     /**
@@ -123,8 +135,9 @@ public class PetHealthInfo {
      * @param date The date for which we want to remove the recommendedDailyKiloCalories of the pet
      */
     public void deleteRecommendedDailyKiloCaloriesForDate(DateTime date) {
-        this.recommendedDailyKiloCalories.remove(date);
+        this.dailyKiloCalories.remove(date);
     }
+
     /**
      * Getter of the exerciseFrequency attribute.
      * @return The exerciseFrequency attribute
@@ -257,10 +270,34 @@ public class PetHealthInfo {
     /**
      * Method that adds, or replaces if present, the weeklyKiloCalAvg for a given date.
      * @param date The date for which we want to add the weeklyKiloCalAvg
-     * @param kcalAvg The weeklyKiloCalAvg to add for a given date
+     * @param kcal The kcal to add for a given date
      */
-    public void addWeeklyKiloCalAverageForDate(DateTime date, double kcalAvg) {
-        this.weeklyKiloCaloriesAverage.put(date, kcalAvg);
+    public void addWeeklyKiloCalAverageForDate(DateTime date, double kcal) {
+        /*obtainDateMonday(date);
+        if (weeklyKiloCaloriesAverage.containsKey(date)) {
+            //int n = weeklyMeals.get(date);
+            double storedKcal = weeklyKiloCaloriesAverage.get(date);
+            weeklyKiloCaloriesAverage.put(date, storedKcal + kcal);
+        } else {
+            this.weeklyKiloCaloriesAverage.put(date, kcal);
+            this.weeklyMeals.put(date, 1);
+        }*/
+    }
+
+    /**
+     * Obtains the monday of the indicated day.
+     * @param date The date for which we want to find the monday
+     */
+    private void obtainDateMonday(DateTime date) {
+        Calendar c = Calendar.getInstance();
+        c.set(date.getYear(), date.getMonth(), date.getDay());
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        while (dayOfWeek != Calendar.MONDAY) {
+            date.decreaseDay();
+        }
+        date.setHour(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
     }
 
     /**
@@ -367,7 +404,7 @@ public class PetHealthInfo {
     public String toString() {
         return "PetHealthInfo{"
             + "weight=" + weight
-            + ", recommendedDailyKiloCalories=" + recommendedDailyKiloCalories
+            + ", recommendedDailyKiloCalories=" + dailyKiloCalories
             + ", exerciseFrequency=" + exerciseFrequency
             + ", weeklyExercise=" + weeklyExercise
             + ", weeklyKiloCaloriesAverage=" + weeklyKiloCaloriesAverage

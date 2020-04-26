@@ -33,7 +33,8 @@ public class MealManagerAdapter implements MealManagerService {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
-        DateTime mealDate = DateTime.Builder.buildFullString(meal.getDateTime().toString());
+      
+        DateTime mealDate = DateTime.Builder.buildFullString(meal.getDateTime());
         updateMealName(meal, accessToken, owner, petName, mealDate);
         updateMealKCal(meal, accessToken, owner, petName, mealDate);
     }
@@ -112,7 +113,8 @@ public class MealManagerAdapter implements MealManagerService {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
-        DateTime dateTime = DateTime.Builder.buildFullString(meal.getDateTime().toString());
+      
+        DateTime dateTime = DateTime.Builder.buildFullString(meal.getDateTime());
         try {
             ServiceLocator.getInstance().getMealManagerClient().deleteByDate(accessToken, owner, petName, dateTime);
         } catch (ExecutionException | InterruptedException e) {

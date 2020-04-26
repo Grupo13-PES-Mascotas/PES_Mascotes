@@ -2,7 +2,7 @@ package org.pesmypetcare.mypetcare.features.users;
 
 import android.graphics.Bitmap;
 
-import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
@@ -204,6 +204,14 @@ public class User {
     public void addSubscribedGroup(Group group) {
         subscribedGroups.add(group.getName());
         group.addSubscriber(this);
+    }
+
+    /**
+     * Subscribe to the group but not include it to the group
+     * @param group The group to add
+     */
+    public void addSubscribedGroupSimple(Group group) {
+        subscribedGroups.add(group.getName());
     }
 
     /**

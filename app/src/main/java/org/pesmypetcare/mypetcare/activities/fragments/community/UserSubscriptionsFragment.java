@@ -11,11 +11,12 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.views.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.SubscriptionComponentView;
 import org.pesmypetcare.mypetcare.databinding.FragmentUserSubscriptionsBinding;
-import org.pesmypetcare.mypetcare.features.community.Group;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.List;
@@ -124,5 +125,6 @@ public class UserSubscriptionsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         showSubscriptions();
+        MainActivity.hideFloatingButton();
     }
 }

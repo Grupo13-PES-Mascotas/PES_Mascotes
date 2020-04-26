@@ -9,6 +9,8 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMedicationService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
+import java.util.concurrent.ExecutionException;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -34,7 +36,8 @@ public class TestTrUpdateMedication {
     }
 
     @Test
-    public void shouldUpdateMedicationBody() throws MedicationAlreadyExistingException {
+    public void shouldUpdateMedicationBody() throws MedicationAlreadyExistingException, ExecutionException,
+        InterruptedException {
 
         medication.setMedicationQuantity(MEDICATION_QUANTITY);
         trUpdateMedication.setUser(user);
@@ -45,7 +48,8 @@ public class TestTrUpdateMedication {
     }
 
     @Test
-    public void shouldUpdateMedicationDate() throws MedicationAlreadyExistingException {
+    public void shouldUpdateMedicationDate() throws MedicationAlreadyExistingException, ExecutionException,
+        InterruptedException {
         medication.setMedicationDate(DateTime.Builder.buildDateString("2077-11-11"));
         trUpdateMedication.setUser(user);
         trUpdateMedication.setPet(pet);
