@@ -72,6 +72,7 @@ public class StubMealManagerService implements MealManagerService {
                 }
             }
         }
+
         this.createMeal(user, pet, new Meals(DateTime.Builder.buildFullString(newDate), mealKcal,
             MEAL_NAME + MINUTES));
     }

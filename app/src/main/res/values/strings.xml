@@ -149,6 +149,15 @@
     <string name="meal">Meal:</string>
     <string name="from_date">From:</string>
     <string name="notificationid">NOTIFICATION_ID</string>
+    <string name="selectPet">Select pet</string>
+    <string name="selectPeriodicity">Select periodicity</string>
+    <string name="periodic_notification_title">Periodic notification</string>
+    <string name="two_weeks">Every 2 weeks</string>
+    <string name="one_week">Every week</string>
+    <string name="one_day">Every day</string>
+    <string name="one_month">Every 30 days</string>
+    <string name="three_months">Every 90 days</string>
+    <string name="dialog_new_periodic_message">Enter the event description, its periodicity, its time and select the pet that will participate.</string>
     <string name="text">text</string>
     <string name="title">title</string>
     <string name="notificationChannelName">NOTIFICATION_CHANNEL_NAME</string>

@@ -443,7 +443,7 @@ public class InfoPetMealsFragment extends Fragment {
         result.clear();
         List<Event> aux = pet.getMealEvents();
         for (Event e:aux) {
-            boolean calc = DateTime.isLastWeek(e.getDateTime());
+            boolean calc = DateTime.isLastWeek(e.getDateTime().toString());
             if (calc) {
                 result.add(e);
             }

@@ -76,12 +76,12 @@ public class TrUpdateMedication {
         medicationManagerService.updateMedicationBody(user, pet, medication);
         if (updatesDate || updatesName) {
             if (!updatesDate) {
-                newDate = medication.getDateTime();
+                newDate = medication.getDateTime().toString();
             }
             if (!updatesName) {
                 newName = medication.getMedicationName();
             }
-            medicationManagerService.updateMedicationKey(user, pet, newDate, medication.getDateTime(),
+            medicationManagerService.updateMedicationKey(user, pet, newDate, medication.getDateTime().toString(),
                 newName, medication.getMedicationName());
         }
     }

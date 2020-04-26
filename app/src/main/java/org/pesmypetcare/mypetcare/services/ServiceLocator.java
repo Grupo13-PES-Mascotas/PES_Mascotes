@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.services;
 
+import org.pesmypetcare.usermanagerlib.clients.GoogleCalendarManagerClient;
 import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
 import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.FreqWashManagerClient;
@@ -14,6 +15,7 @@ public class ServiceLocator {
     private UserManagerClient userManagerClient;
     private PetManagerClient petManagerClient;
     private MealManagerClient mealManagerClient;
+    private GoogleCalendarManagerClient googleCalendarManagerClient;
     private GroupManagerClient groupManagerClient;
     private ForumManagerClient forumManagerClient;
     private MedicationManagerClient medicationManagerClient;
@@ -24,6 +26,7 @@ public class ServiceLocator {
         userManagerClient = new UserManagerClient();
         petManagerClient = new PetManagerClient();
         mealManagerClient = new MealManagerClient();
+        googleCalendarManagerClient = new GoogleCalendarManagerClient();
         groupManagerClient = new GroupManagerClient();
         forumManagerClient = new ForumManagerClient();
         medicationManagerClient = new MedicationManagerClient();
@@ -51,6 +54,10 @@ public class ServiceLocator {
         return mealManagerClient;
     }
 
+    public GoogleCalendarManagerClient getGoogleCalendarManagerClient() {
+        return googleCalendarManagerClient;
+    }
+    
     public GroupManagerClient getGroupManagerClient() {
         return groupManagerClient;
     }

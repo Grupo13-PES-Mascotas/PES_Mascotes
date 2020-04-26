@@ -11,14 +11,15 @@ public class Meals extends Event {
     private DateTime mealDate;
 
     public Meals(DateTime dateTime, Double kcal, String mealName) {
-        super(MEAL + mealName + OF_THE_DAY + dateTime.toString(), dateTime.toString());
+        super(MEAL + mealName + OF_THE_DAY + dateTime.toString(), dateTime);
         this.mealDate = dateTime;
         this.mealName = mealName;
         this.kcal = kcal;
     }
 
     public Meals(Meal meal) {
-        super(MEAL + meal.getBody().getMealName() + OF_THE_DAY + meal.getDate(), meal.getDate());
+        super(MEAL + meal.getBody().getMealName() + OF_THE_DAY + meal.getDate(),
+            DateTime.Builder.buildFullString(meal.getDate()));
         this.mealDate = DateTime.Builder.buildFullString(meal.getDate());
         this.mealName = meal.getBody().getMealName();
         this.kcal = meal.getBody().getKcal();
@@ -69,7 +70,7 @@ public class Meals extends Event {
      * @param mealDate The new date of the meal
      */
     public void setMealDate(DateTime mealDate) {
-        super.setDateTime(mealDate.toString());
+        super.setDateTime(mealDate);
         this.mealDate = mealDate;
     }
 }

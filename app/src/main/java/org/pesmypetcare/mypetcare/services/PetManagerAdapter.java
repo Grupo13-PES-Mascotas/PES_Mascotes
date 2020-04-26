@@ -61,7 +61,6 @@ public class PetManagerAdapter implements PetManagerService {
 
         /*ServiceLocator.getInstance().getPetManagerClient().updateField(userToken, ownerUsername, name,
             PetManagerClient.WEIGHT, pet.getWeight());*/
-
         /*ServiceLocator.getInstance().getPetManagerClient().updateWeight(pet.getOwner().getToken(), ownerUsername,
             name, pet.getWeight());
         ServiceLocator.getInstance().getPetManagerClient().updateRecKcal(pet.getOwner().getToken(), ownerUsername,
@@ -106,6 +105,7 @@ public class PetManagerAdapter implements PetManagerService {
         petData.setRecommendedKcal(pet.getRecommendedDailyKiloCalories());
         //petData.setWashFreq(pet.getWashFrequency());
         //petData.setWeight(pet.getWeight());
+      
         registerPet.setBody(petData);
         return registerPet;
     }
@@ -261,6 +261,16 @@ public class PetManagerAdapter implements PetManagerService {
         String userName = user.getUsername();
         String petName = pet.getName();
         ServiceLocator.getInstance().getFreqWashManagerClient().deleteByDate(accessToken, userName, petName, dateTime);
+    }
+
+    @Override
+    public void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) {
+        //Not implemented yet
+    }
+
+    @Override
+    public void deletePeriodicEvent(User user, Pet pet, Event event) {
+        //Not implemented yet
     }
 
     /**

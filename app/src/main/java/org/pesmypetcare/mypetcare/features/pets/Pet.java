@@ -11,6 +11,7 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,11 +38,13 @@ public class Pet {
     private String previousName;
     private Bitmap profileImage;
     private ArrayList<Event> events;
+    private ArrayList<PeriodEvent> periodEvents;
 
     public Pet() {
         this.events = new ArrayList<>();
         this.healthInfo = new PetHealthInfo();
         this.birthDate = DateTime.Builder.buildDateString("2020-01-1");
+        this.periodEvents = new ArrayList<>();
     }
 
     public Pet(Bundle petInfo) {
@@ -50,6 +53,7 @@ public class Pet {
         this.birthDate = DateTime.Builder.buildDateString(Objects.requireNonNull(petInfo.getString(BUNDLE_BIRTH_DATE)));
         initializeHealthInfo(petInfo);
         this.events = new ArrayList<>();
+        this.periodEvents = new ArrayList<>();
 
         if (isMale(petInfo)) {
             this.gender = GenderType.Male;
@@ -88,6 +92,7 @@ public class Pet {
         this.birthDate = DateTime.Builder.buildDateString(Objects.requireNonNull(petInfo.getString(BUNDLE_BIRTH_DATE)));
         initializeHealthInfo(petInfo);
         this.events = new ArrayList<>();
+        this.periodEvents = new ArrayList<>();
 
         if (isMale(petInfo)) {
             this.gender = GenderType.Male;
@@ -105,6 +110,8 @@ public class Pet {
         this.events = new ArrayList<>();
         this.healthInfo = new PetHealthInfo();
         this.birthDate = DateTime.Builder.buildDateString("2020-01-1");
+        this.periodEvents = new ArrayList<>();
+
     }
 
     /**
@@ -345,7 +352,7 @@ public class Pet {
         events.add(event);
 
         if (event instanceof Meals) {
-            DateTime eventDate = DateTime.Builder.buildFullString(event.getDateTime());
+            DateTime eventDate = event.getDateTime();
             double kcal = ((Meals) event).getKcal();
 
             healthInfo.addRecommendedDailyKiloCaloriesForDate(eventDate, kcal);
@@ -369,7 +376,7 @@ public class Pet {
         ArrayList<Event> selectedEvents = new ArrayList<>();
 
         for (Event event : events) {
-            String eventDate = DateConversion.getDate(event.getDateTime());
+            String eventDate = DateConversion.getDate(event.getDateTime().toString());
             if (eventDate.equals(date)) {
                 selectedEvents.add(event);
             }
@@ -429,7 +436,7 @@ public class Pet {
         ArrayList<Event> mealEvents = new ArrayList<>();
 
         for (Event event : events) {
-            String eventDate = DateConversion.getDate(event.getDateTime());
+            String eventDate = DateConversion.getDate(event.getDateTime().toString());
             if (event instanceof Meals && eventDate.equals(dateTime)) {
                 mealEvents.add(event);
             }
@@ -460,7 +467,7 @@ public class Pet {
         ArrayList<Event> medicationEvents = new ArrayList<>();
 
         for (Event event : events) {
-            String eventDate = DateConversion.getDate(event.getDateTime());
+            String eventDate = DateConversion.getDate(event.getDateTime().toString());
             if (event instanceof Medication && eventDate.equals(dateTime)) {
                 medicationEvents.add(event);
             }
@@ -483,5 +490,44 @@ public class Pet {
             + '}';
     }
 
+    /**
+     * Add a periodic notification to the pet.
+     * @param event The event of the pet to set
+     * @param period The period of the notification
+     */
+    public void addPeriodicNotification(Event event, int period) throws ParseException {
+        PeriodEvent pe = new PeriodEvent(event.getDescription(), event.getDateTime(), period);
+        periodEvents.add(pe);
+    }
 
+    /**
+     * Get the list of periodic notification events on a date.
+     * @param date The date of the events
+     * @return The list of periodic notification events on the given date
+     */
+    public ArrayList<Event> getPeriodicEvents(String date) throws ParseException {
+        Date dateActual = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        ArrayList<Event> selectedEvents = new ArrayList<>();
+        for (PeriodEvent event : periodEvents) {
+            String eventDate = (event.getDateTime()).toString().substring(0,
+                    event.getDateTime().toString().indexOf('T'));
+            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(eventDate);
+            int diff = (int) ((dateActual.getTime() - date1.getTime()) / 86400000);
+            if(diff % event.getPeriod() == 0) {
+                selectedEvents.add(new Event(event.getDescription(), event.getDateTime()));
+            }
+        }
+        return selectedEvents;
+    }
+
+    /**
+     * Delete a periodic notification event of the pet.
+     * @param event The event to delete
+     */
+    public void deletePeriodicNotification(Event event) throws ParseException {
+        org.pesmypetcare.usermanagerlib.datacontainers.DateTime dateTime = event.getDateTime();
+        String desc = event.getDescription();
+        PeriodEvent pe = new PeriodEvent(desc, dateTime, 0);
+        periodEvents.remove(pe);
+    }
 }

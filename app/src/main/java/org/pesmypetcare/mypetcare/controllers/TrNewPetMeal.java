@@ -70,7 +70,7 @@ public class TrNewPetMeal {
     private boolean mealHasAlreadyBeenAdded() {
         for (Event e : pet.getMealEvents()) {
             Meals m = (Meals) e;
-            if (m.getDateTime().equals(meal.getMealDate().toString())) {
+            if (m.getDateTime().compareTo(meal.getMealDate()) == 0) {
                 return true;
             }
         }
