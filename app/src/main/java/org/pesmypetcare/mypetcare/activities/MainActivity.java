@@ -406,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         Arrays.fill(countImagesNotFound, 0);
 
         ExecutorService executorService = Executors.newCachedThreadPool();
-        startRunnable(nUserPets, defaultBitmap, executorService);
+        startRunnable(nUserPets, executorService);
         executorService.shutdown();
 
         try {
@@ -434,13 +434,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     /**
      * Start the runnable to obtain the images of the pets.
      * @param nUserPets The number of pets the user has
-     * @param defaultBitmap The default image that should be assigned if there is not any one
      * @param executorService The executor service of the runnable
      */
-    private void startRunnable(int nUserPets, Bitmap defaultBitmap, ExecutorService executorService) {
+    private void startRunnable(int nUserPets, ExecutorService executorService) {
         for (int actual = 0; actual < nUserPets; ++actual) {
             executorService.execute(new GetPetImageRunnable(actual, user.getUsername(),
-                user.getPets().get(actual).getName(), defaultBitmap));
+                user.getPets().get(actual).getName()));
         }
     }
 

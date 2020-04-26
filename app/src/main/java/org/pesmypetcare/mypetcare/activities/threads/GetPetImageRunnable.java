@@ -12,13 +12,11 @@ public class GetPetImageRunnable implements Runnable {
     private int actual;
     private String username;
     private String petName;
-    private Bitmap defaultBitmap;
 
-    public GetPetImageRunnable(int actual, String username, String petName, Bitmap defaultBitmap) {
+    public GetPetImageRunnable(int actual, String username, String petName) {
         this.actual = actual;
         this.username = username;
         this.petName = petName;
-        this.defaultBitmap = defaultBitmap;
     }
 
     @Override
