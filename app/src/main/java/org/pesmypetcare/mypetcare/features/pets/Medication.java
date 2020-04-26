@@ -16,8 +16,7 @@ public class Medication extends Event {
 
     public Medication(String medicationName, double medicationQuantity, int medicationFrequency,
                       int medicationDuration, DateTime medicationDate) {
-        super(MEDICATION + medicationName + WITH_START_DATE + medicationDate.toString(),
-            medicationDate.toString());
+        super(MEDICATION + medicationName + WITH_START_DATE + medicationDate.toString(), medicationDate);
         this.medicationName = medicationName;
         this.medicationQuantity = medicationQuantity;
         this.medicationFrequency = medicationFrequency;
@@ -27,7 +26,7 @@ public class Medication extends Event {
 
     public Medication(org.pesmypetcare.usermanagerlib.datacontainers.Medication libraryMedication) {
         super(MEDICATION + libraryMedication.getName() + WITH_START_DATE + libraryMedication.getDate(),
-            libraryMedication.getDate());
+            DateTime.Builder.buildFullString(libraryMedication.getDate()));
         this.medicationName = libraryMedication.getName();
         this.medicationQuantity = libraryMedication.getBody().getQuantity();
         this.medicationFrequency = libraryMedication.getBody().getPeriodicity();
@@ -112,7 +111,7 @@ public class Medication extends Event {
      * @param medicationDate The new medication date to set
      */
     public void setMedicationDate(DateTime medicationDate) {
-        super.setDateTime(medicationDate.toString());
+        super.setDateTime(medicationDate);
         this.medicationDate = medicationDate;
     }
 }
