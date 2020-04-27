@@ -2,12 +2,14 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.mypetcare.controllers.pet.TrUpdatePet;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
-import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -31,7 +33,7 @@ public class TestTrUpdatePet {
         pet = new Pet();
         pet.setName(NAME);
         pet.setGender(GenderType.Female);
-        pet.setBirthDate("2 MAR 2010");
+        pet.setBirthDate(DateTime.Builder.buildDateString("2020-03-02"));
         pet.setBreed(HUSKY);
         pet.setRecommendedDailyKiloCalories(2);
         pet.setWashFrequency(2);
@@ -103,7 +105,7 @@ public class TestTrUpdatePet {
         Pet pet2 = new Pet();
         pet2.setName(petName);
         pet2.setGender(GenderType.Male);
-        pet2.setBirthDate("2 MAR 2020");
+        pet2.setBirthDate(DateTime.Builder.buildDateString("2020-03-02"));
         pet2.setBreed(HUSKY);
         pet2.setRecommendedDailyKiloCalories(2);
         pet2.setWashFrequency(2);
