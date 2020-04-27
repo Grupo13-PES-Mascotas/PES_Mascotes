@@ -233,8 +233,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrNewPeriodicNotification trNewPeriodicNotification;
     private TrDeletePeriodicNotification trDeletePeriodicNotification;
 
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
