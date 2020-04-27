@@ -44,7 +44,7 @@
             app:layout_constraintTop_toBottomOf="@+id/calendarLayout"
             app:layout_constraintVertical_bias="0.0">
 
-            <org.pesmypetcare.mypetcare.activities.views.CalendarEventsView
+            <org.pesmypetcare.mypetcare.activities.views.circularentry.calendar.EventComponentView
                 android:id="@+id/eventInfoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

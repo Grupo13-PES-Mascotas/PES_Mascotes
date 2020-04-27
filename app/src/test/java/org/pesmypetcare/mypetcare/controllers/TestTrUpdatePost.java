@@ -2,6 +2,8 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.mypetcare.controllers.community.TrAddNewPost;
+import org.pesmypetcare.mypetcare.controllers.community.TrUpdatePost;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;

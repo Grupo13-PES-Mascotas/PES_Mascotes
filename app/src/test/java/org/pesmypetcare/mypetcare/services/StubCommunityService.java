@@ -176,17 +176,28 @@ public class StubCommunityService implements CommunityService {
             throw new ForumNotFoundException();
         }
         for (Group g : groups) {
-            if (g.getName().equals(forum.getGroup().getName())) {
-                for (Forum f : g.getForums()) {
-                    if (f.getName().equals(forum.getName())) {
-                        for (Post p : f.getPosts()) {
-                            if (p.getUsername().equals(post.getUsername())
-                                && p.getCreationDate().equals(post.getCreationDate())) {
-                                throw new PostAlreadyExistingException();
-                            }
+            createPostInGroup(forum, post, g);
+        }
+    }
+
+    /**
+     * Creates a post in the group.
+     * @param forum The forum
+     * @param post The post
+     * @param group The group
+     * @throws PostAlreadyExistingException The post already exists
+     */
+    private void createPostInGroup(Forum forum, Post post, Group group) throws PostAlreadyExistingException {
+        if (group.getName().equals(forum.getGroup().getName())) {
+            for (Forum f : group.getForums()) {
+                if (f.getName().equals(forum.getName())) {
+                    for (Post p : f.getPosts()) {
+                        if (p.getUsername().equals(post.getUsername())
+                            && p.getCreationDate().equals(post.getCreationDate())) {
+                            throw new PostAlreadyExistingException();
                         }
-                        f.addPost(post);
                     }
+                    f.addPost(post);
                 }
             }
         }
@@ -199,20 +210,33 @@ public class StubCommunityService implements CommunityService {
             throw new ForumNotFoundException();
         }
         for (Group g : groups) {
-            if (g.getName().equals(forum.getGroup().getName())) {
-                for (Forum f : g.getForums()) {
-                    if (f.getName().equals(forum.getName())) {
-                        boolean found = false;
-                        for (Post p : f.getPosts()) {
-                            if (p.getUsername().equals(user.getUsername())
-                                && p.getCreationDate().compareTo(postCreationDate) == 0) {
-                                found = true;
-                                f.removePost(user, postCreationDate);
-                            }
+            deleteGroupPosts(user, forum, postCreationDate, g);
+        }
+    }
+
+    /**
+     * Deletes the posts form a group.
+     * @param user The user
+     * @param forum The forum
+     * @param postCreationDate The creation date of a post
+     * @param group The group
+     * @throws PostNotFoundException The post is not found
+     */
+    private void deleteGroupPosts(User user, Forum forum, DateTime postCreationDate, Group group)
+        throws PostNotFoundException {
+        if (group.getName().equals(forum.getGroup().getName())) {
+            for (Forum f : group.getForums()) {
+                if (f.getName().equals(forum.getName())) {
+                    boolean found = false;
+                    for (Post p : f.getPosts()) {
+                        if (p.getUsername().equals(user.getUsername())
+                            && p.getCreationDate().compareTo(postCreationDate) == 0) {
+                            found = true;
+                            f.removePost(user, postCreationDate);
                         }
-                        if (!found) {
-                            throw new PostNotFoundException();
-                        }
+                    }
+                    if (!found) {
+                        throw new PostNotFoundException();
                     }
                 }
             }

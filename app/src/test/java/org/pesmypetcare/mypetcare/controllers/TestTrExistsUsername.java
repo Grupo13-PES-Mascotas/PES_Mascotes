@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.mypetcare.controllers.user.TrExistsUsername;
 import org.pesmypetcare.mypetcare.services.StubUserManagerService;
 
 import static org.junit.Assert.assertFalse;

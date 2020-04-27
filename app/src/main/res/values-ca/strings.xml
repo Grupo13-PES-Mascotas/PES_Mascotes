@@ -46,7 +46,7 @@
     <string name="languages">Idiomes</string>
     <string name="change_password">Modificar Contrasenya</string>
     <string name="change_username">Modificar Username</string>
-    <string name="current_version">Versió: 1.0.1</string>
+    <string name="current_version">Versió: 1.1.0</string>
     <string name="old_password">Contrasenya Antiga</string>
     <string name="new_password">Nova Contrasenya</string>
     <string name="confirm_new_password">Confirma la nova contrasenya</string>

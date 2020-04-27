@@ -62,47 +62,54 @@ import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetFr
 import org.pesmypetcare.mypetcare.activities.fragments.settings.NewPasswordInterface;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFragment;
+import org.pesmypetcare.mypetcare.activities.threads.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
-import org.pesmypetcare.mypetcare.activities.views.CircularImageView;
-import org.pesmypetcare.mypetcare.controllers.ControllersFactory;
-import org.pesmypetcare.mypetcare.controllers.TrAddNewForum;
-import org.pesmypetcare.mypetcare.controllers.TrAddNewPost;
-import org.pesmypetcare.mypetcare.controllers.TrAddNewWashFrequency;
-import org.pesmypetcare.mypetcare.controllers.TrAddNewWeight;
-import org.pesmypetcare.mypetcare.controllers.TrAddSubscription;
-import org.pesmypetcare.mypetcare.controllers.TrChangeMail;
-import org.pesmypetcare.mypetcare.controllers.TrChangePassword;
-import org.pesmypetcare.mypetcare.controllers.TrChangeUsername;
-import org.pesmypetcare.mypetcare.controllers.TrCreateNewGroup;
-import org.pesmypetcare.mypetcare.controllers.TrDeleteForum;
-import org.pesmypetcare.mypetcare.controllers.TrDeleteGroup;
-import org.pesmypetcare.mypetcare.controllers.TrDeleteMeal;
-import org.pesmypetcare.mypetcare.controllers.TrDeleteMedication;
-import org.pesmypetcare.mypetcare.controllers.TrDeletePeriodicNotification;
-import org.pesmypetcare.mypetcare.controllers.TrDeletePersonalEvent;
-import org.pesmypetcare.mypetcare.controllers.TrDeletePet;
-import org.pesmypetcare.mypetcare.controllers.TrDeletePost;
-import org.pesmypetcare.mypetcare.controllers.TrDeleteSubscription;
-import org.pesmypetcare.mypetcare.controllers.TrDeleteUser;
-import org.pesmypetcare.mypetcare.controllers.TrDeleteWashFrequency;
-import org.pesmypetcare.mypetcare.controllers.TrDeleteWeight;
-import org.pesmypetcare.mypetcare.controllers.TrExistsUsername;
-import org.pesmypetcare.mypetcare.controllers.TrNewPeriodicNotification;
-import org.pesmypetcare.mypetcare.controllers.TrNewPersonalEvent;
-import org.pesmypetcare.mypetcare.controllers.TrNewPetMeal;
-import org.pesmypetcare.mypetcare.controllers.TrNewPetMedication;
-import org.pesmypetcare.mypetcare.controllers.TrObtainAllGroups;
-import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetImages;
-import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetMeals;
-import org.pesmypetcare.mypetcare.controllers.TrObtainAllPetMedications;
-import org.pesmypetcare.mypetcare.controllers.TrObtainUser;
-import org.pesmypetcare.mypetcare.controllers.TrRegisterNewPet;
-import org.pesmypetcare.mypetcare.controllers.TrUpdateMeal;
-import org.pesmypetcare.mypetcare.controllers.TrUpdateMedication;
-import org.pesmypetcare.mypetcare.controllers.TrUpdatePet;
-import org.pesmypetcare.mypetcare.controllers.TrUpdatePetImage;
-import org.pesmypetcare.mypetcare.controllers.TrUpdatePost;
-import org.pesmypetcare.mypetcare.controllers.TrUpdateUserImage;
+import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
+import org.pesmypetcare.mypetcare.controllers.community.CommunityControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.community.TrAddNewForum;
+import org.pesmypetcare.mypetcare.controllers.community.TrAddNewPost;
+import org.pesmypetcare.mypetcare.controllers.community.TrAddSubscription;
+import org.pesmypetcare.mypetcare.controllers.community.TrCreateNewGroup;
+import org.pesmypetcare.mypetcare.controllers.community.TrDeleteForum;
+import org.pesmypetcare.mypetcare.controllers.community.TrDeleteGroup;
+import org.pesmypetcare.mypetcare.controllers.community.TrDeletePost;
+import org.pesmypetcare.mypetcare.controllers.community.TrDeleteSubscription;
+import org.pesmypetcare.mypetcare.controllers.community.TrObtainAllGroups;
+import org.pesmypetcare.mypetcare.controllers.community.TrUpdatePost;
+import org.pesmypetcare.mypetcare.controllers.event.EventControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.event.TrDeletePeriodicNotification;
+import org.pesmypetcare.mypetcare.controllers.event.TrDeletePersonalEvent;
+import org.pesmypetcare.mypetcare.controllers.event.TrNewPeriodicNotification;
+import org.pesmypetcare.mypetcare.controllers.event.TrNewPersonalEvent;
+import org.pesmypetcare.mypetcare.controllers.meals.MealsControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.meals.TrDeleteMeal;
+import org.pesmypetcare.mypetcare.controllers.meals.TrNewPetMeal;
+import org.pesmypetcare.mypetcare.controllers.meals.TrObtainAllPetMeals;
+import org.pesmypetcare.mypetcare.controllers.meals.TrUpdateMeal;
+import org.pesmypetcare.mypetcare.controllers.medication.MedicationControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.medication.TrDeleteMedication;
+import org.pesmypetcare.mypetcare.controllers.medication.TrNewPetMedication;
+import org.pesmypetcare.mypetcare.controllers.medication.TrObtainAllPetMedications;
+import org.pesmypetcare.mypetcare.controllers.medication.TrUpdateMedication;
+import org.pesmypetcare.mypetcare.controllers.pet.PetControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.pet.TrDeletePet;
+import org.pesmypetcare.mypetcare.controllers.pet.TrObtainAllPetImages;
+import org.pesmypetcare.mypetcare.controllers.pet.TrRegisterNewPet;
+import org.pesmypetcare.mypetcare.controllers.pet.TrUpdatePet;
+import org.pesmypetcare.mypetcare.controllers.pet.TrUpdatePetImage;
+import org.pesmypetcare.mypetcare.controllers.pethealth.PetHealthControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.pethealth.TrAddNewWashFrequency;
+import org.pesmypetcare.mypetcare.controllers.pethealth.TrAddNewWeight;
+import org.pesmypetcare.mypetcare.controllers.pethealth.TrDeleteWashFrequency;
+import org.pesmypetcare.mypetcare.controllers.pethealth.TrDeleteWeight;
+import org.pesmypetcare.mypetcare.controllers.user.TrChangeMail;
+import org.pesmypetcare.mypetcare.controllers.user.TrChangePassword;
+import org.pesmypetcare.mypetcare.controllers.user.TrChangeUsername;
+import org.pesmypetcare.mypetcare.controllers.user.TrDeleteUser;
+import org.pesmypetcare.mypetcare.controllers.user.TrExistsUsername;
+import org.pesmypetcare.mypetcare.controllers.user.TrObtainUser;
+import org.pesmypetcare.mypetcare.controllers.user.TrUpdateUserImage;
+import org.pesmypetcare.mypetcare.controllers.user.UserControllersFactory;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumCreatedBeforeGroupException;
@@ -136,7 +143,6 @@ import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.utilities.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
@@ -400,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         Arrays.fill(countImagesNotFound, 0);
 
         ExecutorService executorService = Executors.newCachedThreadPool();
-        startRunnable(nUserPets, defaultBitmap, executorService);
+        startRunnable(nUserPets, executorService);
         executorService.shutdown();
 
         try {
@@ -428,13 +434,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     /**
      * Start the runnable to obtain the images of the pets.
      * @param nUserPets The number of pets the user has
-     * @param defaultBitmap The default image that should be assigned if there is not any one
      * @param executorService The executor service of the runnable
      */
-    private void startRunnable(int nUserPets, Bitmap defaultBitmap, ExecutorService executorService) {
+    private void startRunnable(int nUserPets, ExecutorService executorService) {
         for (int actual = 0; actual < nUserPets; ++actual) {
             executorService.execute(new GetPetImageRunnable(actual, user.getUsername(),
-                user.getPets().get(actual).getName(), defaultBitmap));
+                user.getPets().get(actual).getName()));
         }
     }
 
@@ -501,80 +506,80 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Initialize the pet controllers.
      */
     private void initializePetControllers() {
-        trRegisterNewPet = ControllersFactory.createTrRegisterNewPet();
-        trUpdatePetImage = ControllersFactory.createTrUpdatePetImage();
-        trDeletePet = ControllersFactory.createTrDeletePet();
-        trUpdatePet = ControllersFactory.createTrUpdatePet();
-        trObtainAllPetImages = ControllersFactory.createTrObtainAllPetImages();
+        trRegisterNewPet = PetControllersFactory.createTrRegisterNewPet();
+        trUpdatePetImage = PetControllersFactory.createTrUpdatePetImage();
+        trDeletePet = PetControllersFactory.createTrDeletePet();
+        trUpdatePet = PetControllersFactory.createTrUpdatePet();
+        trObtainAllPetImages = PetControllersFactory.createTrObtainAllPetImages();
     }
 
     /**
      * Initialize the event controllers.
      */
     private void initializeEventControllers() {
-        trNewPersonalEvent = ControllersFactory.createTrNewPersonalEvent();
-        trDeletePersonalEvent = ControllersFactory.createTrDeletePersonalEvent();
-        trNewPeriodicNotification = ControllersFactory.createTrNewPeriodicNotification();
-        trDeletePeriodicNotification = ControllersFactory.createTrDeletePeriodicNotification();
+        trNewPersonalEvent = EventControllersFactory.createTrNewPersonalEvent();
+        trDeletePersonalEvent = EventControllersFactory.createTrDeletePersonalEvent();
+        trNewPeriodicNotification = EventControllersFactory.createTrNewPeriodicNotification();
+        trDeletePeriodicNotification = EventControllersFactory.createTrDeletePeriodicNotification();
     }
 
     /**
      * Initialize the user controllers.
      */
     private void initializeUserControllers() {
-        trUpdateUserImage = ControllersFactory.createTrUpdateUserImage();
-        trDeleteUser = ControllersFactory.createTrDeleteUser();
-        trObtainUser = ControllersFactory.createTrObtainUser();
-        trChangePassword = ControllersFactory.createTrChangePassword();
-        trChangeMail = ControllersFactory.createTrChangeMail();
-        trChangeUsername = ControllersFactory.createTrChangeUsername();
-        trExistsUsername = ControllersFactory.createTrExistsUsername();
+        trUpdateUserImage = UserControllersFactory.createTrUpdateUserImage();
+        trDeleteUser = UserControllersFactory.createTrDeleteUser();
+        trObtainUser = UserControllersFactory.createTrObtainUser();
+        trChangePassword = UserControllersFactory.createTrChangePassword();
+        trChangeMail = UserControllersFactory.createTrChangeMail();
+        trChangeUsername = UserControllersFactory.createTrChangeUsername();
+        trExistsUsername = UserControllersFactory.createTrExistsUsername();
     }
 
     /**
      * Initialize the pet health controllers.
      */
     private void initializePetHealthControllers() {
-        trAddNewWeight = ControllersFactory.createTrAddNewWeight();
-        trDeleteWeight = ControllersFactory.createTrDeleteWeight();
-        trAddNewWashFrequency = ControllersFactory.createTrAddNewWashFrequency();
-        trDeleteWashFrequency = ControllersFactory.createTrDeleteWashFrequency();
+        trAddNewWeight = PetHealthControllersFactory.createTrAddNewWeight();
+        trDeleteWeight = PetHealthControllersFactory.createTrDeleteWeight();
+        trAddNewWashFrequency = PetHealthControllersFactory.createTrAddNewWashFrequency();
+        trDeleteWashFrequency = PetHealthControllersFactory.createTrDeleteWashFrequency();
     }
 
     /**
      * Initialize the meal controllers.
      */
     private void initializeMealsControllers() {
-        trNewPetMeal = ControllersFactory.createTrNewPetMeal();
-        trObtainAllPetMeals = ControllersFactory.createTrObtainAllPetMeals();
-        trDeleteMeal = ControllersFactory.createTrDeleteMeal();
-        trUpdateMeal = ControllersFactory.createTrUpdateMeal();
+        trNewPetMeal = MealsControllersFactory.createTrNewPetMeal();
+        trObtainAllPetMeals = MealsControllersFactory.createTrObtainAllPetMeals();
+        trDeleteMeal = MealsControllersFactory.createTrDeleteMeal();
+        trUpdateMeal = MealsControllersFactory.createTrUpdateMeal();
     }
 
     /**
      * Initialize the community controllers.
      */
     private void initializeCommunityControllers() {
-        trObtainAllGroups = ControllersFactory.createTrObtainAllGroups();
-        trCreateNewGroup = ControllersFactory.createTrObtainNewGroup();
-        trDeleteGroup = ControllersFactory.createTrDeleteGroup();
-        trAddSubscription = ControllersFactory.createTrAddSubscription();
-        trDeleteSubscription = ControllersFactory.createTrDeleteSubscription();
-        trAddNewForum = ControllersFactory.createTrAddNewForum();
-        trDeleteForum = ControllersFactory.createTrDeleteForum();
-        trAddNewPost = ControllersFactory.createTrAddNewPost();
-        trDeletePost = ControllersFactory.createTrDeletePost();
-        trUpdatePost = ControllersFactory.createTrUpdatePost();
+        trObtainAllGroups = CommunityControllersFactory.createTrObtainAllGroups();
+        trCreateNewGroup = CommunityControllersFactory.createTrCreateNewGroup();
+        trDeleteGroup = CommunityControllersFactory.createTrDeleteGroup();
+        trAddSubscription = CommunityControllersFactory.createTrAddSubscription();
+        trDeleteSubscription = CommunityControllersFactory.createTrDeleteSubscription();
+        trAddNewForum = CommunityControllersFactory.createTrAddNewForum();
+        trDeleteForum = CommunityControllersFactory.createTrDeleteForum();
+        trAddNewPost = CommunityControllersFactory.createTrAddNewPost();
+        trDeletePost = CommunityControllersFactory.createTrDeletePost();
+        trUpdatePost = CommunityControllersFactory.createTrUpdatePost();
     }
 
     /**
      * Initialize the medication controllers.
      */
     private void initializeMedicationControllers() {
-        trNewPetMedication = ControllersFactory.createTrNewPetMedication();
-        trObtainAllPetMedications = ControllersFactory.createTrObtainAllPetMedications();
-        trDeleteMedication = ControllersFactory.createTrDeleteMedication();
-        trUpdateMedication = ControllersFactory.createTrUpdateMedication();
+        trNewPetMedication = MedicationControllersFactory.createTrNewPetMedication();
+        trObtainAllPetMedications = MedicationControllersFactory.createTrObtainAllPetMedications();
+        trDeleteMedication = MedicationControllersFactory.createTrDeleteMedication();
+        trUpdateMedication = MedicationControllersFactory.createTrUpdateMedication();
     }
 
 

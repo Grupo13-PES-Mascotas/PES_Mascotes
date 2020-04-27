@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.controllers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.mypetcare.controllers.community.TrAddNewForum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumCreatedBeforeGroupException;
 import org.pesmypetcare.mypetcare.features.community.forums.UserNotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;

@@ -50,6 +50,9 @@ public class InfoPetFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Set up the pet.
+     */
     private void setUpPet() {
         Objects.requireNonNull(binding.petName.getEditText()).setText(pet.getName());
         setPetProfileImage();
@@ -83,6 +86,9 @@ public class InfoPetFragment extends Fragment {
         }
     }
 
+    /**
+     * Set up the view pager.
+     */
     private void setUpViewPager() {
         infoPetFragmentAdapter = new InfoPetFragmentAdapter(this);
         viewPager = binding.pager;
@@ -111,10 +117,18 @@ public class InfoPetFragment extends Fragment {
         tabLayoutMediator.attach();
     }
 
+    /**
+     * Get the pet.
+     * @return The pet
+     */
     public static Pet getPet() {
         return pet;
     }
 
+    /**
+     * Set the pet.
+     * @param pet The pet to set
+     */
     public static void setPet(Pet pet) {
         InfoPetFragment.pet = pet;
         Drawable drawable = new BitmapDrawable(resources, ImageManager.getDefaultPetImage());
@@ -129,14 +143,25 @@ public class InfoPetFragment extends Fragment {
         petProfileDrawable = drawable;
     }
 
+    /**
+     * Get the communication.
+     * @return The communication
+     */
     public static InfoPetCommunication getCommunication() {
         return communication;
     }
 
+    /**
+     * Set if the pet is deleted.
+     * @param isPetDeleted The pet is deleted state
+     */
     public static void setIsPetDeleted(boolean isPetDeleted) {
         InfoPetFragment.isPetDeleted = isPetDeleted;
     }
 
+    /**
+     * Set the default pet image.
+     */
     public static void setDefaultPetImage() {
         pet.setProfileImage(null);
     }

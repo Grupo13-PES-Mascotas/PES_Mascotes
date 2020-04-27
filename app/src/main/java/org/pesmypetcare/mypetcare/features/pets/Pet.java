@@ -64,28 +64,6 @@ public class Pet {
         }
     }
 
-    /**
-     * Method that initializes the health info of the pet.
-     * @param petInfo A bundle containing all the information of the pet
-     */
-    public void initializeHealthInfo(Bundle petInfo) {
-        DateTime dateTime = getActualDateTime();
-
-        this.healthInfo = new PetHealthInfo();
-        this.healthInfo.addWeightForDate(dateTime, petInfo.getFloat(BUNDLE_WEIGHT));
-        this.healthInfo.setPathologies(petInfo.getString(BUNDLE_PATHOLOGIES));
-        this.healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, calculateRecommendedKiloCalories());
-        this.healthInfo.addWashFrequencyForDate(dateTime, petInfo.getInt(BUNDLE_WASH));
-    }
-
-    /**
-     * Calculate the recommended kilocalories for the pet
-     * @return The recommended kilocalories
-     */
-    private double calculateRecommendedKiloCalories() {
-        return healthInfo.getLastWeight() * FACTOR_PES_1 + FACTOR_PES_2;
-    }
-
     public Pet(Bundle petInfo, User user) {
         this.name = petInfo.getString(BUNDLE_NAME);
         this.breed = petInfo.getString(BUNDLE_BREED);
@@ -112,6 +90,28 @@ public class Pet {
         this.birthDate = DateTime.Builder.buildDateString("2020-01-1");
         this.periodEvents = new ArrayList<>();
 
+    }
+
+    /**
+     * Method that initializes the health info of the pet.
+     * @param petInfo A bundle containing all the information of the pet
+     */
+    public void initializeHealthInfo(Bundle petInfo) {
+        DateTime dateTime = getActualDateTime();
+
+        this.healthInfo = new PetHealthInfo();
+        this.healthInfo.addWeightForDate(dateTime, petInfo.getFloat(BUNDLE_WEIGHT));
+        this.healthInfo.setPathologies(petInfo.getString(BUNDLE_PATHOLOGIES));
+        this.healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, calculateRecommendedKiloCalories());
+        this.healthInfo.addWashFrequencyForDate(dateTime, petInfo.getInt(BUNDLE_WASH));
+    }
+
+    /**
+     * Calculate the recommended kilocalories for the pet.
+     * @return The recommended kilocalories
+     */
+    private double calculateRecommendedKiloCalories() {
+        return healthInfo.getLastWeight() * FACTOR_PES_1 + FACTOR_PES_2;
     }
 
     /**

@@ -2,12 +2,13 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.mypetcare.controllers.meals.TrNewPetMeal;
+import org.pesmypetcare.mypetcare.controllers.meals.TrUpdateMeal;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
-import org.pesmypetcare.mypetcare.utilities.InvalidFormatException;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import static org.junit.Assert.assertEquals;
