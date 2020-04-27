@@ -176,17 +176,28 @@ public class StubCommunityService implements CommunityService {
             throw new ForumNotFoundException();
         }
         for (Group g : groups) {
-            if (g.getName().equals(forum.getGroup().getName())) {
-                for (Forum f : g.getForums()) {
-                    if (f.getName().equals(forum.getName())) {
-                        for (Post p : f.getPosts()) {
-                            if (p.getUsername().equals(post.getUsername())
-                                && p.getCreationDate().equals(post.getCreationDate())) {
-                                throw new PostAlreadyExistingException();
-                            }
+            createPostInGroup(forum, post, g);
+        }
+    }
+
+    /**
+     * Creates a post in the group.
+     * @param forum The forum
+     * @param post The post
+     * @param group The group
+     * @throws PostAlreadyExistingException The post already exists
+     */
+    private void createPostInGroup(Forum forum, Post post, Group group) throws PostAlreadyExistingException {
+        if (group.getName().equals(forum.getGroup().getName())) {
+            for (Forum f : group.getForums()) {
+                if (f.getName().equals(forum.getName())) {
+                    for (Post p : f.getPosts()) {
+                        if (p.getUsername().equals(post.getUsername())
+                            && p.getCreationDate().equals(post.getCreationDate())) {
+                            throw new PostAlreadyExistingException();
                         }
-                        f.addPost(post);
                     }
+                    f.addPost(post);
                 }
             }
         }
