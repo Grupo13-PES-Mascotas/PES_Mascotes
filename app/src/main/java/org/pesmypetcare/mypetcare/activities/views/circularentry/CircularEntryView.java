@@ -38,6 +38,10 @@ public abstract class CircularEntryView extends ConstraintLayout {
         this.setId(View.generateViewId());
     }
 
+    /**
+     * Initialize the component.
+     * @return The actual circular entry view
+     */
     public CircularEntryView initializeComponent() {
         CircularImageView image = getImage();
         addView(image);
@@ -46,8 +50,6 @@ public abstract class CircularEntryView extends ConstraintLayout {
         generateConstraints(image.getId(), info.getId(), getId(), this);
         return this;
     }
-
-    protected abstract CircularImageView getImage();
 
     /**
      * Method responsible of the initialization of an pet component for a specific pet.
@@ -71,8 +73,6 @@ public abstract class CircularEntryView extends ConstraintLayout {
     public Pet getPet() {
         return pet;
     }
-
-    public abstract Object getObject();
 
     /**
      * Method responsible for generating the appropriate constraints.
@@ -156,13 +156,33 @@ public abstract class CircularEntryView extends ConstraintLayout {
         info.addView(nameText);
     }
 
+    /**
+     * Get the current activity.
+     * @return The current activity
+     */
     public Context getCurrentActivity() {
         return currentActivity;
     }
 
+    /**
+     * Get the image dimensions.
+     * @return The image dimensions
+     */
     public int getImageDimensions() {
         return IMAGE_DIMENSIONS;
     }
+
+    /**
+     * Get the image of the circular entry view.
+     * @return The image of the circular entry view
+     */
+    protected abstract CircularImageView getImage();
+
+    /**
+     * Get the object of the circular entry view.
+     * @return The object of the circular entry view
+     */
+    public abstract Object getObject();
 
     /**
      * Get the first line of the component text.
@@ -175,24 +195,4 @@ public abstract class CircularEntryView extends ConstraintLayout {
      * @return The second line of the component text.
      */
     protected abstract String getSecondLineText();
-
-    /*if (pet.getProfileImage() == null) {
-            try {
-                System.out.println("TRY");
-                byte[] bytes = ImageManager.readImage(ImageManager.PROFILE_IMAGES_PATH,
-                    pet.getOwner().getUsername() + '_' + pet.getName());
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                pet.setProfileImage(bitmap);
-                petImageDrawable = new BitmapDrawable(getResources(), bitmap);
-            } catch (IOException e) {
-                System.out.println("CATCH");
-                petImageDrawable = getResources().getDrawable(R.drawable.single_paw, null);
-                pet.setProfileImage(((BitmapDrawable) petImageDrawable).getBitmap());
-            } finally {
-                MainActivity.setPetImage(pet);
-            }
-        } else {
-            System.out.println("ELSE");
-            petImageDrawable = new BitmapDrawable(getResources(), pet.getProfileImage());
-        }*/
 }
