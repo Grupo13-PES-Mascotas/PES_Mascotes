@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.pesmypetcare.mypetcare.R;
@@ -59,5 +60,15 @@ public class PostComponentView extends CircularEntryView {
     @Override
     protected String getSecondLineText() {
         return post.getText();
+    }
+
+    @Override
+    protected ImageView getRightImage() {
+        ImageView likeImage = new ImageView(getContext(), null);
+        likeImage.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_like, null));
+        likeImage.setId(View.generateViewId());
+
+        return likeImage;
     }
 }

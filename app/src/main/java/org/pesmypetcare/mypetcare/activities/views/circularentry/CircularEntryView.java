@@ -4,30 +4,26 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.text.Layout;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
-import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.features.pets.Pet;
-
 public abstract class CircularEntryView extends ConstraintLayout {
     private static final int PADDING = 15;
     private static final int IMAGE_LAYOUT_MARGIN = 10;
     private static final int PET_INFO_IMAGE_MARGIN = 40;
+    private static final int RIGHT_IMAGE_MARGIN = 40;
     private static final int IMAGE_DIMENSIONS = 150;
 
     private Context currentActivity;
-    private Pet pet;
 
     public CircularEntryView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,32 +43,19 @@ public abstract class CircularEntryView extends ConstraintLayout {
         addView(image);
         LinearLayout info = getInfo();
         addView(info);
-        generateConstraints(image.getId(), info.getId(), getId(), this);
+        ImageView rightImage = getRightImage();
+        int rightImageId = -1;
+
+        if (rightImage != null) {
+            addView(rightImage);
+            rightImageId = rightImage.getId();
+        }
+
+        generateConstraints(image.getId(), info.getId(), rightImageId, getId(), this);
         return this;
     }
 
-    /**
-     * Method responsible of the initialization of an pet component for a specific pet.
-     * @param currentPet The pet that has to be shown in the component
-     * @return The initialized component
-     */
-    public CircularEntryView initializePetComponent(Pet currentPet) {
-        pet = currentPet;
-        CircularImageView image = addPetImage();
-        this.addView(image);
-        LinearLayout petInfo = getInfo();
-        this.addView(petInfo);
-        generateConstraints(image.getId(), petInfo.getId(), this.getId(), this);
-        return this;
-    }
-
-    /**
-     * Get the current pet.
-     * @return The current pet
-     */
-    public Pet getPet() {
-        return pet;
-    }
+    protected abstract ImageView getRightImage();
 
     /**
      * Method responsible for generating the appropriate constraints.
@@ -81,34 +64,21 @@ public abstract class CircularEntryView extends ConstraintLayout {
      * @param layoutId The id of the container
      * @param circularEntryView The container where we want to set the constraints
      */
-    private void generateConstraints(int imageId, int petId, int layoutId, CircularEntryView circularEntryView) {
+    private void generateConstraints(int imageId, int petId, int rightImageId, int layoutId,
+                                     CircularEntryView circularEntryView) {
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(circularEntryView);
         constraintSet.connect(imageId, ConstraintSet.LEFT, layoutId, ConstraintSet.LEFT, IMAGE_LAYOUT_MARGIN);
         constraintSet.connect(petId, ConstraintSet.LEFT, imageId, ConstraintSet.RIGHT, PET_INFO_IMAGE_MARGIN);
-        constraintSet.connect(petId, ConstraintSet.TOP, layoutId, ConstraintSet.TOP,
-            PET_INFO_IMAGE_MARGIN - IMAGE_LAYOUT_MARGIN);
-        constraintSet.applyTo(circularEntryView);
-    }
+        constraintSet.connect(petId, ConstraintSet.TOP, layoutId, ConstraintSet.TOP, PET_INFO_IMAGE_MARGIN);
 
-    /**
-     * Method responsible for handling the pet image.
-     * @return The Circular image view containing the pet image
-     */
-    private CircularImageView addPetImage() {
-        CircularImageView image = new CircularImageView(currentActivity, null);
-        Drawable petImageDrawable = getResources().getDrawable(R.drawable.single_paw);
-
-        if (pet.getProfileImage() != null) {
-            petImageDrawable = new BitmapDrawable(getResources(), pet.getProfileImage());
+        if (rightImageId != -1) {
+            constraintSet.connect(rightImageId, ConstraintSet.RIGHT, layoutId, ConstraintSet.RIGHT);
+            constraintSet.connect(rightImageId, ConstraintSet.TOP, layoutId, ConstraintSet.TOP,
+                RIGHT_IMAGE_MARGIN - IMAGE_LAYOUT_MARGIN);
         }
 
-        image.setDrawable(petImageDrawable);
-        image.setLayoutParams(new LinearLayout.LayoutParams(IMAGE_DIMENSIONS, IMAGE_DIMENSIONS));
-        int imageId = View.generateViewId();
-        image.setId(imageId);
-
-        return image;
+        constraintSet.applyTo(circularEntryView);
     }
 
     /**

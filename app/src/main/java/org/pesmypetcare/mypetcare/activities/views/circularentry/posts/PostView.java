@@ -26,8 +26,7 @@ public class PostView extends LinearLayout {
         this.context = context;
         this.postComponents = new ArrayList<>();
         setOrientation(VERTICAL);
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
-            LayoutParams.MATCH_PARENT);
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         params.gravity = Gravity.START;
         setLayoutParams(params);
     }
@@ -37,14 +36,17 @@ public class PostView extends LinearLayout {
      * @param forum The forum to display the posts
      */
     public void showPosts(Forum forum) {
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.START;
+
         for (Post post : forum.getPosts()) {
             CircularEntryView circularEntryView = new PostComponentView(context, null, post);
             circularEntryView.initializeComponent();
             addView(circularEntryView);
             postComponents.add(circularEntryView);
 
-            Space space = createSpace();
-            addView(space);
+            Space verticalSpace = createSpace();
+            addView(verticalSpace);
         }
     }
 
