@@ -52,7 +52,8 @@ public class PetsInfoView extends LinearLayout {
     private void initializeComponent(List<Pet> userPets) {
         Space space;
         Pet currentPet = userPets.remove(0);
-        CircularEntryView component = new PetsInfoComponentView(currentActivity, null, currentPet).initializeComponent();
+        CircularEntryView component = new PetsInfoComponentView(currentActivity, null, currentPet)
+            .initializeComponent();
         this.addView(component);
         this.petComponents.add(component);
         space = initializeSpacer();

@@ -36,13 +36,13 @@ public class StubCommunityService implements CommunityService {
     public static void addStubDefaultData() {
         addGroups();
         addTags();
-        addFroums();
+        addForums();
     }
 
     /**
      * Add the forums.
      */
-    private static void addFroums() {
+    private static void addForums() {
         new Forum("Washing", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:00:00"),
             StubCommunityService.groups.get(HUSKY));
         Forum forum = new Forum("Cleaning", "John Doe", DateTime.Builder.buildFullString("2020-04-21T20:50:10"),

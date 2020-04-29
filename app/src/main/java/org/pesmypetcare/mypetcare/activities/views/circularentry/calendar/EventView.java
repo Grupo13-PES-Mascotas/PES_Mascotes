@@ -42,7 +42,8 @@ public class EventView extends LinearLayout {
         List<Event> periodicEvents = pet.getPeriodicEvents(date);
         events.addAll(periodicEvents);
         for (Event event : events) {
-            CircularEntryView circularEntryView = new EventComponentView(context, null, pet, event).initializeComponent();
+            CircularEntryView circularEntryView = new EventComponentView(context, null, pet, event)
+                .initializeComponent();
             addView(circularEntryView);
             this.petComponents.add(circularEntryView);
         }

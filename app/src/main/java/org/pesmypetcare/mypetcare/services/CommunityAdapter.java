@@ -310,8 +310,8 @@ public class CommunityAdapter implements CommunityService {
     @Override
     public void likePost(String likerName, String authorName, DateTime creationDate, String forumName,
                          String groupName) throws PostNotFoundException {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        /*executorService.execute(() -> {
+        /*ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
             try {
                 ServiceLocator.getInstance().getForumManagerClient().likePost(...);
             } catch (MyPetCareException e) {

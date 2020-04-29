@@ -1,9 +1,8 @@
-package org.pesmypetcare.mypetcare.controllers;
+package org.pesmypetcare.mypetcare.controllers.community;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.mypetcare.controllers.community.TrLikePost;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
@@ -52,10 +51,10 @@ public class TestTrLikePost {
 
     @Test
     public void shouldLikePost() throws PostAlreadyLikedException, PostNotFoundException {
-        int postLikes = post.getLikes();
         trLikePost.setUser(user);
         user.setUsername("Tomas Roncero");
         trLikePost.setPost(post);
+        int postLikes = post.getLikes();
         trLikePost.execute();
         assertEquals("Likes should have increased by 1", postLikes + 1, post.getLikes());
     }
