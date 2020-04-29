@@ -202,7 +202,7 @@ public class PostsFragment extends Fragment {
 
         View reportPostLayout = getLayoutInflater().inflate(R.layout.report_options, null);
         dialog.setView(reportPostLayout);
-        AlertDialog editPostDialog = dialog.create();
+        AlertDialog reportPostDialog = dialog.create();
 
         RadioGroup reportOptions = reportPostLayout.findViewById(R.id.reportButtons);
         TextInputEditText otherMessage = reportPostLayout.findViewById(R.id.otherMessage);
@@ -210,20 +210,23 @@ public class PostsFragment extends Fragment {
 
         setOtherMessageListener(otherMessage);
         setRadioButtonsListeners(reportOptions);
-        setConfirmReportListener(circularEntryView, confirmReport);
+        setConfirmReportListener(circularEntryView, confirmReport, reportPostDialog);
 
-        return editPostDialog;
+        return reportPostDialog;
     }
 
     /**
      * Set the confirm report listener.
      * @param circularEntryView The component of the post
      * @param confirmReport The button
+     * @param reportPostDialog The alert dialog that is currently displayed
      */
-    private void setConfirmReportListener(CircularEntryView circularEntryView, MaterialButton confirmReport) {
+    private void setConfirmReportListener(CircularEntryView circularEntryView, MaterialButton confirmReport,
+                                          AlertDialog reportPostDialog) {
         confirmReport.setOnClickListener(v -> {
             Post post = (Post) circularEntryView.getObject();
             InfoGroupFragment.getCommunication().reportPost(post, reportMessage);
+            reportPostDialog.dismiss();
         });
     }
 
