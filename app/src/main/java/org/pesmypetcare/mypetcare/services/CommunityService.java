@@ -8,6 +8,7 @@ import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExisting
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyLikedException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
@@ -97,4 +98,22 @@ public interface CommunityService {
      * @param newText The text that has to be set
      */
     void updatePost(User user, Post post, String newText) throws ForumNotFoundException, PostNotFoundException;
+
+    /**
+     * The indicated user likes the indicated post.
+     * @param likerName The username of the owner who wants to like the post
+     * @param authorName The username of the author of the post to like
+     * @param creationDate The creation date of the author of the post to like
+     * @param forumName The name of the forum where the post is
+     * @param groupName The name of the group where the forum of the post iss
+     */
+    void likePost(String likerName, String authorName, DateTime creationDate, String forumName, String groupName)
+        throws PostNotFoundException, PostAlreadyLikedException;
+
+    /**
+     * Unlike the post.
+     * @param user The user that wants to unlike the post
+     * @param post The post that has ti have the user removes from liker username
+     */
+    void unlikePost(User user, Post post);
 }

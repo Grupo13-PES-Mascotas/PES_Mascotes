@@ -525,13 +525,13 @@ public class CalendarFragment extends Fragment {
         selectedDate = dateTime.substring(0, dateTime.indexOf('T'));
         binding.eventInfoLayout.removeAllViews();
         for (Pet pet : pets) {
-            EventComponentView eventComponentView = new EventComponentView(getContext(), null);
-            eventComponentView.showEvents(pet, selectedDate);
-            List<CircularEntryView> petComponents = eventComponentView.getPetComponents();
+            EventView eventView = new EventView(getContext(), null);
+            eventView.showEvents(pet, selectedDate);
+            List<CircularEntryView> petComponents = eventView.getPetComponents();
             for (CircularEntryView p : petComponents) {
                 p.setOnClickListener(v -> deleteEventDialog(p));
             }
-            binding.eventInfoLayout.addView(eventComponentView);
+            binding.eventInfoLayout.addView(eventView);
         }
     }
 
@@ -557,7 +557,7 @@ public class CalendarFragment extends Fragment {
     private void initializePositiveButtonDialog(CircularEntryView circularEntryView,
                                                 MaterialAlertDialogBuilder deleteEvent) {
         Pet pet = (Pet) circularEntryView.getObject();
-        Event event = ((EventView) circularEntryView).getEvent();
+        Event event = ((EventComponentView) circularEntryView).getEvent();
         deleteEvent.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
             try {
                 setUpCalendar();

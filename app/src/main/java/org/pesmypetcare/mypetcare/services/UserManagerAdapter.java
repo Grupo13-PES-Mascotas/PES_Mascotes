@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import org.json.JSONException;
+import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
@@ -13,8 +14,14 @@ import org.pesmypetcare.usermanager.datacontainers.user.UserData;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UserManagerAdapter implements UserManagerService {
+    private static final int TIME = 20;
+
     @Override
     public User findUserByUsername(String username) {
         UserData userData = null;
@@ -142,7 +149,21 @@ public class UserManagerAdapter implements UserManagerService {
 
     @Override
     public boolean usernameExists(String username) throws ExecutionException, InterruptedException {
-        return ServiceLocator.getInstance().getUserManagerClient().usernameAlreadyExists(username);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        AtomicBoolean exists = new AtomicBoolean(false);
+
+        executorService.execute(() -> {
+            try {
+                exists.set(ServiceLocator.getInstance().getUserManagerClient().usernameAlreadyExists(username));
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+
+        executorService.shutdown();
+        executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+
+        return exists.get();
     }
 
     @Override

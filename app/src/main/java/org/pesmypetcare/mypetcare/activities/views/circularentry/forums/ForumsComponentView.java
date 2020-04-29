@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.pesmypetcare.mypetcare.R;
@@ -65,6 +66,11 @@ public class ForumsComponentView extends CircularEntryView {
         addText(forumAuthorDate, creationDate);
 
         return forumAuthorDate.toString();
+    }
+
+    @Override
+    protected ImageView getRightImage() {
+        return null;
     }
 
     /**

@@ -65,4 +65,16 @@ public interface InfoGroupCommunication {
      * @param newText The new text of the post
      */
     void updatePost(Post postToUpdate, String newText);
+
+    /**
+     * The current user likes the given post.
+     * @param postToLike The post that the current user wants to like
+     */
+    void likePost(Post postToLike);
+
+    /**
+     * The current user unlikes the given post.
+     * @param post The post that the current user wants to unlike
+     */
+    void unlikePost(Post post);
 }

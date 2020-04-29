@@ -87,10 +87,9 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test:core:1.2.0'
     implementation 'com.google.firebase:firebase-core:17.4.0'
-    implementation 'com.google.code.gson:gson:2.8.6'
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
-    implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:b6d72e81d'
+    implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:e0b4779ca5'
 }
 
 configurations.all {
