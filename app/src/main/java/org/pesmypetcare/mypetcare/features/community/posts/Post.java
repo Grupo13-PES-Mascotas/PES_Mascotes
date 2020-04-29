@@ -226,4 +226,11 @@ public class Post implements Comparable<Post> {
             + ", text='" + text + '\''
             + '}';
     }
+
+    /**
+     * Increases the number of reports of the post.
+     */
+    public void reportPost() {
+        reportsCount++;
+    }
 }

@@ -105,4 +105,12 @@ public class CommunityControllersFactory {
     public static TrUnlikePost createTrUnlikePost() {
         return new TrUnlikePost(new CommunityAdapter());
     }
+
+    /**
+     * Create the transaction to report a post.
+     * @return The transaction to report a post
+     */
+    public static TrReportPost createTrReportPost() {
+        return new TrReportPost(new CommunityAdapter());
+    }
 }
