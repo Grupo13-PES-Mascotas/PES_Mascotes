@@ -135,9 +135,15 @@ public class SignUpFragment extends Fragment {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                     if (task.isSuccessful()) {
-                        userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
-                                mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getEmail(),
-                                "");
+                        try {
+                            if (!userManagerService.usernameExists(mAuth.getCurrentUser().getDisplayName())) {
+                                userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
+                                        mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getEmail(),
+                                        "");
+                            }
+                        } catch (ExecutionException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         startActivity(new Intent(getActivity(), MainActivity.class));
                         Objects.requireNonNull(getActivity()).finish();
                     }
@@ -176,8 +182,14 @@ public class SignUpFragment extends Fragment {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                     if (task.isSuccessful()) {
-                        userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
-                                acct.getDisplayName(), acct.getEmail(), "");
+                        try {
+                            if (!userManagerService.usernameExists(mAuth.getCurrentUser().getDisplayName())) {
+                                userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
+                                        acct.getDisplayName(), acct.getEmail(), "");
+                            }
+                        } catch (ExecutionException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         startActivity(new Intent(getActivity(), MainActivity.class));
                         Objects.requireNonNull(getActivity()).finish();
                     }
