@@ -122,17 +122,26 @@ public class PostsFragment extends Fragment {
 
         for (CircularEntryView component : components) {
             component.setOnLongClickListener(v -> setLongClickEvent(component));
-            component.setOnClickListener(v -> {
-                Post post = (Post) component.getObject();
+            component.setOnClickListener(v -> setOnClickEvent(user, component));
+        }
+    }
 
-                if (post.isLikedByUser(user.getUsername())) {
-                    InfoGroupFragment.getCommunication().unlikePost(post);
-                } else {
-                    InfoGroupFragment.getCommunication().likePost(post);
-                }
+    /**
+     * Set the on click event to the post.
+     * @param user The actual user
+     * @param component The component with the post
+     */
+    private void setOnClickEvent(User user, CircularEntryView component) {
+        Post post = (Post) component.getObject();
 
-                showPosts();
-            });
+        if (!post.getUsername().equals(user.getUsername())) {
+            if (post.isLikedByUser(user.getUsername())) {
+                InfoGroupFragment.getCommunication().unlikePost(post);
+            } else {
+                InfoGroupFragment.getCommunication().likePost(post);
+            }
+
+            showPosts();
         }
     }
 

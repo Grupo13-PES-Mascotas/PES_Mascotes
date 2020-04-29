@@ -1105,6 +1105,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void likePost(Post postToLike) {
         trLikePost.setUser(user);
         trLikePost.setPost(postToLike);
+
         try {
             trLikePost.execute();
         } catch (PostNotFoundException | PostAlreadyLikedException e) {
