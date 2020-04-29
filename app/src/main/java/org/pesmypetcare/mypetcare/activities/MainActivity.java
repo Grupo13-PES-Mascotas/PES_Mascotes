@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -148,6 +149,7 @@ import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -187,6 +189,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static Fragment actualFragment;
     private static User user;
     private static GoogleSignInAccount googleAccount;
+    private static SharedPreferences sharedpreferences;
     private static Resources resources;
     private static NavigationView navigationView;
     private static int[] countImagesNotFound;
@@ -246,6 +249,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setContentView(binding.getRoot());
         resources = getResources();
 
+        sharedpreferences = getSharedPreferences("GoogleCalendar", Context.MODE_PRIVATE);
+
         notificationId = 0;
         requestCode = 0;
 
@@ -280,8 +285,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Refresh the google calendar token.
      */
     private void refreshGoogleCalendarToken() {
-        this.getGoogleToken();
-        //
+        String tokenCalendar = sharedpreferences.getString("GoogleCalendarToken", "");
+        if ("".equals(tokenCalendar)) {
+            this.getGoogleToken();
+        } else {
+            user.setGoogleCalendarToken(tokenCalendar);
+        }
     }
 
     /**
@@ -1124,7 +1133,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void newPersonalEvent(Pet pet, String description, String dateTime) throws ExecutionException, InterruptedException {
+    public void newPersonalEvent(Pet pet, String description, String dateTime) throws ExecutionException, InterruptedException, InvalidFormatException {
         System.out.println("Token " + pet.getOwner().getGoogleCalendarToken());
         trNewPersonalEvent.setPet(pet);
         trNewPersonalEvent.setEvent(new Event(description, DateTime.Builder.buildFullString(dateTime)));
@@ -1683,6 +1692,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     public static void setGoogleCalendarToken(String googleCalendarToken) {
         user.setGoogleCalendarToken(googleCalendarToken);
+
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+
+        editor.putString("GoogleCalendarToken", googleCalendarToken);
+
+        editor.apply();
     }
 
     /**

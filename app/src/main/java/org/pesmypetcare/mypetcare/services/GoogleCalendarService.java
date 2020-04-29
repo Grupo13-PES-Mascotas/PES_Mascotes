@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.services;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
 
 import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
@@ -16,7 +17,7 @@ public interface GoogleCalendarService {
      * @param pet The pet
      * @param event The event
      */
-    void registerNewEvent(Pet pet, Event event) throws ExecutionException, InterruptedException;
+    void registerNewEvent(Pet pet, Event event) throws ExecutionException, InterruptedException, InvalidFormatException;
 
     /**
      * Delete a event from a pet.

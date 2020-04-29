@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.controllers.event;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
+import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
 
@@ -43,7 +44,7 @@ public class TrNewPersonalEvent {
     /**
      * Execute the transaction.
      */
-    public void execute() throws ExecutionException, InterruptedException {
+    public void execute() throws ExecutionException, InterruptedException, InvalidFormatException {
         result = false;
         pet.addEvent(event);
         googleCalendarService.registerNewEvent(pet, event);

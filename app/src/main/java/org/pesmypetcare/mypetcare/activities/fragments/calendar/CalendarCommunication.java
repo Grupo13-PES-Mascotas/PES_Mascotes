@@ -8,6 +8,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
 
 import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
@@ -26,7 +27,7 @@ public interface CalendarCommunication {
      * @param description The description of the event
      * @param dateTime The date and time of the event
      */
-    void newPersonalEvent(Pet pet, String description, String dateTime) throws ExecutionException, InterruptedException;
+    void newPersonalEvent(Pet pet, String description, String dateTime) throws ExecutionException, InterruptedException, InvalidFormatException;
 
     /**
      * Passes the information to delete a personal event to the main activity.
