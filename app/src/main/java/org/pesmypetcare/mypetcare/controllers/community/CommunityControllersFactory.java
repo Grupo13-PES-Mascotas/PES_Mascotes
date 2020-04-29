@@ -101,6 +101,6 @@ public class CommunityControllersFactory {
      * @return The transaction to unlike a post
      */
     public static TrUnlikePost createTrUnlikePost() {
-        return new TrUnlikePost(null);
+        return new TrUnlikePost(new StubCommunityService());
     }
 }

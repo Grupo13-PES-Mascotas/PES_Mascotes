@@ -118,9 +118,21 @@ public class PostsFragment extends Fragment {
         binding.postsViewLayout.showPosts(forum);
 
         List<CircularEntryView> components = binding.postsViewLayout.getPostComponents();
+        User user = InfoGroupFragment.getCommunication().getUser();
 
         for (CircularEntryView component : components) {
             component.setOnLongClickListener(v -> setLongClickEvent(component));
+            component.setOnClickListener(v -> {
+                Post post = (Post) component.getObject();
+
+                if (post.isLikedByUser(user.getUsername())) {
+                    InfoGroupFragment.getCommunication().unlikePost(post);
+                } else {
+                    InfoGroupFragment.getCommunication().likePost(post);
+                }
+
+                showPosts();
+            });
         }
     }
 

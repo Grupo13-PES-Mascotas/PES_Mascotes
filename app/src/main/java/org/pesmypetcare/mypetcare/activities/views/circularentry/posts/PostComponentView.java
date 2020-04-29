@@ -11,6 +11,7 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
+import org.pesmypetcare.mypetcare.features.users.User;
 
 public class PostComponentView extends CircularEntryView {
     private static final int DATE = 0;
@@ -19,20 +20,22 @@ public class PostComponentView extends CircularEntryView {
     private static final char HOUR_SEPARATOR = ':';
     private static final String WHITE_SPACE = " ";
     private Post post;
+    private User user;
 
     public PostComponentView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public PostComponentView(Context context, AttributeSet attrs, Post post) {
+    public PostComponentView(Context context, AttributeSet attrs, Post post, User user) {
         super(context, attrs);
         this.post = post;
+        this.user = user;
     }
 
     @Override
     protected CircularImageView getImage() {
         CircularImageView image = new CircularImageView(getCurrentActivity(), null);
-        Drawable groupDrawable = getResources().getDrawable(R.drawable.single_paw);
+        Drawable groupDrawable = getResources().getDrawable(R.drawable.single_paw, null);
 
         image.setDrawable(groupDrawable);
         int imageDimensions = getImageDimensions();
@@ -66,8 +69,13 @@ public class PostComponentView extends CircularEntryView {
     protected ImageView getRightImage() {
         ImageView likeImage = new ImageView(getContext(), null);
         likeImage.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_like, null));
         likeImage.setId(View.generateViewId());
+
+        if (post.isLikedByUser(user.getUsername())) {
+            likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_like_blue, null));
+        } else {
+            likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_like, null));
+        }
 
         return likeImage;
     }

@@ -124,6 +124,7 @@ import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingExce
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.NotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.OwnerCannotDeleteSubscriptionException;
+import org.pesmypetcare.mypetcare.features.community.posts.NotLikedPostException;
 import org.pesmypetcare.mypetcare.features.community.posts.NotPostOwnerException;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingException;
@@ -1107,6 +1108,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trLikePost.execute();
         } catch (PostNotFoundException | PostAlreadyLikedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void unlikePost(Post post) {
+        trUnlikePost.setUser(user);
+        trUnlikePost.setPost(post);
+
+        try {
+            trUnlikePost.execute();
+        } catch (NotLikedPostException e) {
             e.printStackTrace();
         }
     }
