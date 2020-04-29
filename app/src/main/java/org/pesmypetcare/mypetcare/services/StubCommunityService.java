@@ -56,6 +56,8 @@ public class StubCommunityService implements CommunityService {
             DateTime.Builder.buildFullString("2020-04-21T20:55:10"), forum));
         forum.addPost(new Post("John Doe", "I'm very interested in your answers",
             DateTime.Builder.buildFullString("2020-04-21T21:15:22"), forum));
+        forum.addPost(new Post("Manolo Lama", "I would love to clean the Bicho",
+            DateTime.Builder.buildFullString("2020-04-28T12:00:00"), forum));
     }
 
     /**
