@@ -229,6 +229,15 @@
     <string name="edit_medication_title">Edit medication</string>
     <string name="edit_medication_message">Introduce the data of the medication</string>
     <string name="select_medication_date">Select medication start date</string>
+    <string name="post_options_title">Post options</string>
+    <string name="post_options_message">Select an action to perform on the post</string>
+    <string name="post_report">Report post</string>
+    <string name="report_reason_sexual_content">Sexual content</string>
+    <string name="report_reason_violent_or_repulsive_content">Violent or repulsive content</string>
+    <string name="report_reason_abusive_or_hate_content">Hateful or abusive content</string>
+    <string name="report_reason_spam_or_misleading_content">Spam or misleading content</string>
+    <string name="report_reason_infringe_my_rights">Infringe my rights</string>
+    <string name="report_reason_other">Other</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

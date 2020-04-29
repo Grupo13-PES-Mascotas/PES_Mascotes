@@ -1126,6 +1126,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
+    public void reportPost(Post post, String reportMessage) {
+
+    }
+
+    @Override
     public void changePetProfileImage(Pet actualPet) {
         user.updatePetProfileImage(actualPet);
     }
