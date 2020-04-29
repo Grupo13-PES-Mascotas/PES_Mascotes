@@ -34,6 +34,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -55,6 +56,8 @@ import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommun
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.login.AsyncResponse;
+import org.pesmypetcare.mypetcare.activities.fragments.login.MyAsyncTask;
 import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsComunication;
 import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetCommunication;
@@ -165,7 +168,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
     InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
-    CommunityCommunication, InfoGroupCommunication {
+    CommunityCommunication, InfoGroupCommunication, AsyncResponse {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
@@ -183,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static FirebaseAuth mAuth;
     private static Fragment actualFragment;
     private static User user;
-    private static String googleCalendarToken;
+    private static GoogleSignInAccount googleAccount;
     private static Resources resources;
     private static NavigationView navigationView;
     private static int[] countImagesNotFound;
@@ -263,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         if (mAuth.getCurrentUser() != null) {
             try {
                 initializeUser();
-                user.setGoogleCalendarToken(googleCalendarToken);
+                refreshGoogleCalendarToken();
                 //changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
             } catch (PetRepeatException e) {
                 Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing),
@@ -271,6 +274,22 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 toast.show();
             }
         }
+    }
+
+    /**
+     * Refresh the google calendar token.
+     */
+    private void refreshGoogleCalendarToken() {
+        this.getGoogleToken();
+    }
+
+    /**
+     * Get the google calendar token.
+     */
+    public void getGoogleToken() {
+        MyAsyncTask asyncTask = new MyAsyncTask(googleAccount, this.getBaseContext());
+        asyncTask.delegate = this;
+        asyncTask.execute();
     }
 
     /**
@@ -1662,6 +1681,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @param googleCalendarToken The google calendar token to set
      */
     public static void setGoogleCalendarToken(String googleCalendarToken) {
-        MainActivity.googleCalendarToken = googleCalendarToken;
+        user.setGoogleCalendarToken(googleCalendarToken);
+    }
+
+    /**
+     * Setter of the google account attribute.
+     * @param acct The google account to set
+     */
+    public static void setGoogleAccount(GoogleSignInAccount acct) {
+        MainActivity.googleAccount = acct;
+    }
+
+    @Override
+    public void processFinish(String token) {
+        System.out.println("JOLIN"+token);
+        setGoogleCalendarToken(token);
     }
 }

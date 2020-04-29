@@ -46,7 +46,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SignUpFragment extends Fragment implements AsyncResponse{
+public class SignUpFragment extends Fragment {
     private final int MIN_PASS_LENTGH = 6;
     private final int PASS_POSITION = 2;
     private FragmentSignUpBinding binding;
@@ -143,7 +143,7 @@ public class SignUpFragment extends Fragment implements AsyncResponse{
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                     if (task.isSuccessful()) {
                         try {
-                            if (!userManagerService.usernameExists(mAuth.getCurrentUser().getDisplayName())) {
+                            if (!userManagerService.usernameExists(Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName())) {
                                 userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
                                         mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getEmail(),
                                         "");
@@ -188,12 +188,13 @@ public class SignUpFragment extends Fragment implements AsyncResponse{
      */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), acct.getIdToken());
-        getGoogleToken(acct);
+        MainActivity.setGoogleAccount(acct);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                     if (task.isSuccessful()) {
                         try {
-                            if (!userManagerService.usernameExists(mAuth.getCurrentUser().getDisplayName())) {
+                            System.out.println(acct.getDisplayName());
+                            if (!userManagerService.usernameExists(acct.getDisplayName())) {
                                 userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
                                         acct.getDisplayName(), acct.getEmail(), "");
                             }
@@ -204,14 +205,6 @@ public class SignUpFragment extends Fragment implements AsyncResponse{
                         Objects.requireNonNull(getActivity()).finish();
                     }
                 });
-    }
-
-    private void getGoogleToken(GoogleSignInAccount acct) {
-        MyAsyncTask asyncTask = new MyAsyncTask(acct, getContext());
-        asyncTask.delegate = this;
-        asyncTask.execute();
-        //task.doInBackground();
-        //MainActivity.setToken(task.getToken());
     }
 
     /**
@@ -461,10 +454,5 @@ public class SignUpFragment extends Fragment implements AsyncResponse{
         Toast toast1 = Toast.makeText(getActivity(), s, Toast.LENGTH_LONG);
         toast1.setGravity(Gravity.CENTER, 0, 0);
         toast1.show();
-    }
-
-    @Override
-    public void processFinish(String token) {
-        MainActivity.setGoogleCalendarToken(token);
     }
 }
