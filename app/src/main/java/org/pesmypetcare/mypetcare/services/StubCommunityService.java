@@ -8,6 +8,7 @@ import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExisting
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyLikedException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
@@ -35,13 +36,13 @@ public class StubCommunityService implements CommunityService {
     public static void addStubDefaultData() {
         addGroups();
         addTags();
-        addForums();
+        addFroums();
     }
 
     /**
      * Add the forums.
      */
-    private static void addForums() {
+    private static void addFroums() {
         new Forum("Washing", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:00:00"),
             StubCommunityService.groups.get(HUSKY));
         Forum forum = new Forum("Cleaning", "John Doe", DateTime.Builder.buildFullString("2020-04-21T20:50:10"),
@@ -254,6 +255,34 @@ public class StubCommunityService implements CommunityService {
             if (g.getName().equals(postGroup.getName())) {
                 updateForums(user, post, newText, postForum, g);
             }
+        }
+    }
+
+    @Override
+    public void likePost(String likerName, String authorName, DateTime creationDate, String forumName,
+                         String groupName) throws PostNotFoundException, PostAlreadyLikedException {
+        boolean found = false;
+        for (Group g : groups) {
+            if (g.getName().equals(groupName)) {
+                for (Forum f : g.getForums()) {
+                    if (f.getName().equals(forumName)) {
+                        for (Post p : f.getPosts()) {
+                            if (p.getUsername().equals(authorName)
+                                && p.getCreationDate().compareTo(creationDate) == 0) {
+                                if (p.getLikerUsername().contains(likerName)) {
+                                    throw new PostAlreadyLikedException();
+                                }
+                                p.addLikerUsername(likerName);
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (!found) {
+            throw new PostNotFoundException();
         }
     }
 

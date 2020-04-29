@@ -9,6 +9,7 @@ import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundExcepti
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
+import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
@@ -304,6 +305,19 @@ public class CommunityAdapter implements CommunityService {
 
         executorService = getCreatePostExecutorService(user, post);
         executorService.shutdown();
+    }
+
+    @Override
+    public void likePost(String likerName, String authorName, DateTime creationDate, String forumName,
+                         String groupName) throws PostNotFoundException {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        /*executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getForumManagerClient().likePost(...);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });*/
     }
 
     @Override

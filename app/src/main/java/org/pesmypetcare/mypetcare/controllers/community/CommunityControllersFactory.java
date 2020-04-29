@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.controllers.community;
 
 import org.pesmypetcare.mypetcare.controllers.TrUnlikePost;
 import org.pesmypetcare.mypetcare.services.CommunityAdapter;
+import org.pesmypetcare.mypetcare.services.StubCommunityService;
 
 /**
  * @author Albert Pinto
@@ -89,6 +90,10 @@ public class CommunityControllersFactory {
      */
     public static TrUpdatePost createTrUpdatePost() {
         return new TrUpdatePost(new CommunityAdapter());
+    }
+
+    public static TrLikePost createTrLikePost() {
+        return new TrLikePost(new StubCommunityService());
     }
 
     /**
