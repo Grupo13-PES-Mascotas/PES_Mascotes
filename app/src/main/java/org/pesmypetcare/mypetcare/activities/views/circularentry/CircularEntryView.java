@@ -55,8 +55,6 @@ public abstract class CircularEntryView extends ConstraintLayout {
         return this;
     }
 
-    protected abstract ImageView getRightImage();
-
     /**
      * Method responsible for generating the appropriate constraints.
      * @param imageId The id of the circular image view
@@ -165,4 +163,10 @@ public abstract class CircularEntryView extends ConstraintLayout {
      * @return The second line of the component text.
      */
     protected abstract String getSecondLineText();
+
+    /**
+     * Get the right image if it is defined or null otherwise.
+     * @return The right image
+     */
+    protected abstract ImageView getRightImage();
 }

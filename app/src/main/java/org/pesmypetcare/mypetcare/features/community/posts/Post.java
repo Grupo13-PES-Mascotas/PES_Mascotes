@@ -5,12 +5,15 @@ import android.graphics.Bitmap;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
+import java.util.List;
+
 public class Post implements Comparable<Post> {
     private String username;
     private String text;
     private int likes;
     private int reportsCount;
     private boolean isBanned;
+    private List<String> likerUsername;
     private DateTime creationDate;
     private Bitmap userImage;
     private Bitmap postImage;
@@ -21,6 +24,8 @@ public class Post implements Comparable<Post> {
         this.text = text;
         this.creationDate = creationDate;
         this.forum = forum;
+        this.likerUsername.add(username);
+        this.likes = 1;
     }
 
     /**
@@ -157,6 +162,22 @@ public class Post implements Comparable<Post> {
      */
     public Forum getForum() {
         return forum;
+    }
+
+    public List<String> getLikerUsername() {
+        return likerUsername;
+    }
+
+    public void setLikerUsername(List<String> likerUsername) {
+        this.likerUsername = likerUsername;
+    }
+
+    public void addLikerUsername(String username) {
+        likerUsername.add(username);
+    }
+
+    public void removeLikerUsername(String username) {
+        likerUsername.remove(username);
     }
 
 
