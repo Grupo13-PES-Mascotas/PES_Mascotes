@@ -281,6 +281,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     private void refreshGoogleCalendarToken() {
         this.getGoogleToken();
+        //
     }
 
     /**
