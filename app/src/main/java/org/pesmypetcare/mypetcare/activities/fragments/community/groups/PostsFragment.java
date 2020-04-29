@@ -2,9 +2,13 @@ package org.pesmypetcare.mypetcare.activities.fragments.community.groups;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -29,13 +33,13 @@ import java.util.Objects;
 public class PostsFragment extends Fragment {
     private static Forum forum;
     private FragmentPostsBinding binding;
+    private String reportMessage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentPostsBinding.inflate(inflater, container, false);
         binding.forumName.setHint(forum.getName());
 
-        //showPosts();
         setForumName();
 
         binding.btnSentMessage.setOnClickListener(v -> sendMessage());
@@ -153,18 +157,152 @@ public class PostsFragment extends Fragment {
     private boolean setLongClickEvent(CircularEntryView component) {
         Post post = (Post) component.getObject();
         User user = InfoGroupFragment.getCommunication().getUser();
+        AlertDialog dialog;
 
         if (post.getUsername().equals(user.getUsername())) {
-            AlertDialog dialog = createEditPostDialog(component);
-            dialog.show();
-            return true;
+            dialog = createEditPostDialog(component);
+        } else {
+            dialog = createOptionsPostDialog(component);
         }
 
-        return false;
+        dialog.show();
+
+        return true;
     }
 
     /**
-     * Create a dialog to delete the group.
+     * Create a dialog for the options of the post.
+     * @param circularEntryView The entry to which the dialog is associated to
+     * @return The dialog that is associated with the entry
+     */
+    private AlertDialog createOptionsPostDialog(CircularEntryView circularEntryView) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()),
+            R.style.AlertDialogTheme);
+        dialog.setTitle(R.string.post_options_title);
+        dialog.setMessage(R.string.post_options_message);
+
+        View optionsPostLayout = getLayoutInflater().inflate(R.layout.post_options, null);
+        dialog.setView(optionsPostLayout);
+        AlertDialog editPostDialog = dialog.create();
+
+        MaterialButton btnReport = optionsPostLayout.findViewById(R.id.reportPostButtons);
+        btnReport.setOnClickListener(v -> {
+            addReportButtonListener(circularEntryView, editPostDialog);
+        });
+
+        return editPostDialog;
+    }
+
+    /**
+     * Add the report button listener.
+     * @param circularEntryView The component for the post
+     * @param editPostDialog The dialog
+     */
+    private void addReportButtonListener(CircularEntryView circularEntryView, AlertDialog editPostDialog) {
+        editPostDialog.dismiss();
+        AlertDialog reportDialog = createReportDialog(circularEntryView);
+        reportDialog.show();
+    }
+
+    /**
+     * Create the report dialog.
+     * @param circularEntryView The component of the post
+     * @return The report dialog
+     */
+    private AlertDialog createReportDialog(CircularEntryView circularEntryView) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()),
+            R.style.AlertDialogTheme);
+        dialog.setTitle(R.string.post_options_title);
+        dialog.setMessage(R.string.post_options_message);
+
+        View reportPostLayout = getLayoutInflater().inflate(R.layout.report_options, null);
+        dialog.setView(reportPostLayout);
+        AlertDialog reportPostDialog = dialog.create();
+
+        RadioGroup reportOptions = reportPostLayout.findViewById(R.id.reportButtons);
+        TextInputEditText otherMessage = reportPostLayout.findViewById(R.id.otherMessage);
+        MaterialButton confirmReport = reportPostLayout.findViewById(R.id.confirmReportPost);
+
+        setListeners(circularEntryView, reportPostDialog, reportOptions, otherMessage, confirmReport);
+
+        return reportPostDialog;
+    }
+
+    /**
+     * Set the listeners to the components.
+     * @param circularEntryView The component of the post
+     * @param reportPostDialog The report dialog
+     * @param reportOptions The report options
+     * @param otherMessage The other message edit text
+     * @param confirmReport The confirm report button
+     */
+    private void setListeners(CircularEntryView circularEntryView, AlertDialog reportPostDialog,
+                              RadioGroup reportOptions, TextInputEditText otherMessage, MaterialButton confirmReport) {
+        setOtherMessageListener(otherMessage);
+        setRadioButtonsListeners(reportOptions);
+        setConfirmReportListener(circularEntryView, confirmReport, reportPostDialog);
+    }
+
+    /**
+     * Set the confirm report listener.
+     * @param circularEntryView The component of the post
+     * @param confirmReport The button
+     * @param reportPostDialog The alert dialog that is currently displayed
+     */
+    private void setConfirmReportListener(CircularEntryView circularEntryView, MaterialButton confirmReport,
+                                          AlertDialog reportPostDialog) {
+        confirmReport.setOnClickListener(v -> {
+            Post post = (Post) circularEntryView.getObject();
+            InfoGroupFragment.getCommunication().reportPost(post, reportMessage);
+            reportPostDialog.dismiss();
+        });
+    }
+
+    /**
+     * Set the radio buttons listeners.
+     * @param reportOptions The radio button group
+     */
+    private void setRadioButtonsListeners(RadioGroup reportOptions) {
+        for (int actual = 0; actual < reportOptions.getChildCount(); ++actual) {
+            if (reportOptions.getChildAt(actual) instanceof RadioButton) {
+                RadioButton reportButton = (RadioButton) reportOptions.getChildAt(actual);
+                boolean isOtherMessage = reportButton.getText().toString()
+                    .equals(getString(R.string.report_reason_other));
+
+                reportButton.setOnClickListener(v -> {
+                    if (!isOtherMessage) {
+                        reportMessage = reportButton.getText().toString();
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * Set the other message listener.
+     * @param otherMessage The other message text field
+     */
+    private void setOtherMessageListener(TextInputEditText otherMessage) {
+        otherMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not implemented
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                reportMessage = s.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Not implemented
+            }
+        });
+    }
+
+    /**
+     * Create a dialog to delete the post.
      * @param circularEntryView The entry to which the dialog is associated to
      * @return The dialog that is associated with the entry
      */

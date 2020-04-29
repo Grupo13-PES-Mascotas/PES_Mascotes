@@ -76,6 +76,7 @@ import org.pesmypetcare.mypetcare.controllers.community.TrDeletePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteSubscription;
 import org.pesmypetcare.mypetcare.controllers.community.TrLikePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrObtainAllGroups;
+import org.pesmypetcare.mypetcare.controllers.community.TrReportPost;
 import org.pesmypetcare.mypetcare.controllers.community.TrUnlikePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrUpdatePost;
 import org.pesmypetcare.mypetcare.controllers.event.EventControllersFactory;
@@ -131,6 +132,7 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingEx
 import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyLikedException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostCreatedBeforeForumException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
+import org.pesmypetcare.mypetcare.features.community.posts.PostReportedByAuthorException;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
@@ -238,6 +240,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeletePeriodicNotification trDeletePeriodicNotification;
     private TrLikePost trLikePost;
     private TrUnlikePost trUnlikePost;
+    private TrReportPost trReportPost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -576,6 +579,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdatePost = CommunityControllersFactory.createTrUpdatePost();
         trLikePost = CommunityControllersFactory.createTrLikePost();
         trUnlikePost = CommunityControllersFactory.createTrUnlikePost();
+        trReportPost = CommunityControllersFactory.createTrReportPost();
     }
 
     /**
@@ -1121,6 +1125,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trUnlikePost.execute();
         } catch (NotLikedPostException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void reportPost(Post post, String reportMessage) {
+        trReportPost.setUser(user);
+        trReportPost.setPost(post);
+        trReportPost.setReportMessage(reportMessage);
+        try {
+            trReportPost.execute();
+        } catch (PostReportedByAuthorException e) {
             e.printStackTrace();
         }
     }

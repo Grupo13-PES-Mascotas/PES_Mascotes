@@ -77,4 +77,11 @@ public interface InfoGroupCommunication {
      * @param post The post that the current user wants to unlike
      */
     void unlikePost(Post post);
+
+    /**
+     * Report the post.
+     * @param post The post
+     * @param reportMessage The report message
+     */
+    void reportPost(Post post, String reportMessage);
 }

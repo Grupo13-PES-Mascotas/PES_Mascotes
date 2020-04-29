@@ -116,4 +116,12 @@ public interface CommunityService {
      * @param post The post that has ti have the user removes from liker username
      */
     void unlikePost(User user, Post post);
+
+    /**
+     * The indicated user reports the given post.
+     * @param user The user who wants to report a post
+     * @param post The post that has been reported
+     * @param reportMessage The message of the report
+     */
+    void reportPost(User user, Post post, String reportMessage);
 }

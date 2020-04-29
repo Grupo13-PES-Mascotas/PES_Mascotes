@@ -325,6 +325,11 @@ public class CommunityAdapter implements CommunityService {
         // Not implemented yet
     }
 
+    @Override
+    public void reportPost(User user, Post post, String reportMessage) {
+        // Not implemented yet
+    }
+
     /**
      * Create the executor service for deleting post.
      * @param user The user

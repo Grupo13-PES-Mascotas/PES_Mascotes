@@ -230,6 +230,15 @@
     <string name="edit_medication_title">Editar medicacióm</string>
     <string name="edit_medication_message">Introduce los datos de la medicación</string>
     <string name="select_medication_date">Seleciona la fecha de inicio de la medicación</string>
+    <string name="post_options_title">Opciones del post</string>
+    <string name="post_options_message">Selecciona una acción para realizar en el post</string>
+    <string name="post_report">Reportar post</string>
+    <string name="report_reason_sexual_content">Contenido sexual</string>
+    <string name="report_reason_violent_or_repulsive_content">Contenido violento o repulsivo</string>
+    <string name="report_reason_abusive_or_hate_content">Contenido abusivo o que incita al odio</string>
+    <string name="report_reason_spam_or_misleading_content">Contenido basura o engañoso</string>
+    <string name="report_reason_infringe_my_rights">Infracción de mis derechos de autor</string>
+    <string name="report_reason_other">Otros</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
