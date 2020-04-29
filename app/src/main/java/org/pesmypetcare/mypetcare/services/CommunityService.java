@@ -97,4 +97,6 @@ public interface CommunityService {
      * @param newText The text that has to be set
      */
     void updatePost(User user, Post post, String newText) throws ForumNotFoundException, PostNotFoundException;
+
+    void unlikePost(User user, Post post);
 }

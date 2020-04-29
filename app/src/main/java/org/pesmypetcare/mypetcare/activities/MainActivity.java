@@ -65,6 +65,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFrag
 import org.pesmypetcare.mypetcare.activities.threads.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
+import org.pesmypetcare.mypetcare.controllers.TrUnlikePost;
 import org.pesmypetcare.mypetcare.controllers.community.CommunityControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewForum;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewPost;
@@ -232,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrUpdateMedication trUpdateMedication;
     private TrNewPeriodicNotification trNewPeriodicNotification;
     private TrDeletePeriodicNotification trDeletePeriodicNotification;
+    private TrUnlikePost trUnlikePost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -568,6 +570,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewPost = CommunityControllersFactory.createTrAddNewPost();
         trDeletePost = CommunityControllersFactory.createTrDeletePost();
         trUpdatePost = CommunityControllersFactory.createTrUpdatePost();
+        trUnlikePost = CommunityControllersFactory.createTrUnlikePost();
     }
 
     /**

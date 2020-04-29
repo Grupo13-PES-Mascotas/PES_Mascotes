@@ -35,13 +35,13 @@ public class StubCommunityService implements CommunityService {
     public static void addStubDefaultData() {
         addGroups();
         addTags();
-        addFroums();
+        addForums();
     }
 
     /**
      * Add the forums.
      */
-    private static void addFroums() {
+    private static void addForums() {
         new Forum("Washing", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:00:00"),
             StubCommunityService.groups.get(HUSKY));
         Forum forum = new Forum("Cleaning", "John Doe", DateTime.Builder.buildFullString("2020-04-21T20:50:10"),
@@ -253,6 +253,21 @@ public class StubCommunityService implements CommunityService {
         for (Group g : groups) {
             if (g.getName().equals(postGroup.getName())) {
                 updateForums(user, post, newText, postForum, g);
+            }
+        }
+    }
+
+    @Override
+    public void unlikePost(User user, Post post) {
+        int groupIndex = groups.indexOf(post.getForum().getGroup());
+
+        for (Forum forum : groups.get(groupIndex).getForums()) {
+            if (forum.equals(post.getForum())) {
+                for (Post forumPost : forum.getPosts()) {
+                    if (forumPost.equals(post)) {
+                        forumPost.removeLikerUsername(user.getUsername());
+                    }
+                }
             }
         }
     }

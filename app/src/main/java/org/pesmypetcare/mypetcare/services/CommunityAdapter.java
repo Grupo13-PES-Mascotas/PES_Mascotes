@@ -23,7 +23,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CommunityAdapter implements CommunityService {
-
     public static final int TIME = 20;
 
     @Override
@@ -305,6 +304,11 @@ public class CommunityAdapter implements CommunityService {
 
         executorService = getCreatePostExecutorService(user, post);
         executorService.shutdown();
+    }
+
+    @Override
+    public void unlikePost(User user, Post post) {
+        // Not implemented yet
     }
 
     /**
