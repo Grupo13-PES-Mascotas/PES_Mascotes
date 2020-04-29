@@ -3,7 +3,6 @@ package org.pesmypetcare.mypetcare.controllers.community;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.mypetcare.controllers.TrUnlikePost;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.posts.NotLikedPostException;

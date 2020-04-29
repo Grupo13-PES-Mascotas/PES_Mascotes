@@ -65,7 +65,6 @@ import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFrag
 import org.pesmypetcare.mypetcare.activities.threads.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
-import org.pesmypetcare.mypetcare.controllers.TrUnlikePost;
 import org.pesmypetcare.mypetcare.controllers.community.CommunityControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewForum;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewPost;
@@ -77,6 +76,7 @@ import org.pesmypetcare.mypetcare.controllers.community.TrDeletePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteSubscription;
 import org.pesmypetcare.mypetcare.controllers.community.TrLikePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrObtainAllGroups;
+import org.pesmypetcare.mypetcare.controllers.community.TrUnlikePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrUpdatePost;
 import org.pesmypetcare.mypetcare.controllers.event.EventControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.event.TrDeletePeriodicNotification;

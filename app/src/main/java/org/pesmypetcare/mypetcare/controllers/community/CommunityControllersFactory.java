@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.controllers.community;
 
-import org.pesmypetcare.mypetcare.controllers.TrUnlikePost;
 import org.pesmypetcare.mypetcare.services.CommunityAdapter;
 
 /**
@@ -91,6 +90,10 @@ public class CommunityControllersFactory {
         return new TrUpdatePost(new CommunityAdapter());
     }
 
+    /**
+     * Create the transaction to like a post.
+     * @return The transaction to like a post
+     */
     public static TrLikePost createTrLikePost() {
         return new TrLikePost(new CommunityAdapter());
     }
