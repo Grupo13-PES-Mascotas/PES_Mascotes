@@ -187,13 +187,28 @@ public class PostsFragment extends Fragment {
 
         MaterialButton btnReport = optionsPostLayout.findViewById(R.id.reportPostButtons);
         btnReport.setOnClickListener(v -> {
-            editPostDialog.dismiss();
-            AlertDialog reportDialog = createReportDialog(circularEntryView);
-            reportDialog.show();
+            addReportButtonListener(circularEntryView, editPostDialog);
         });
+
         return editPostDialog;
     }
 
+    /**
+     * Add the report button listener.
+     * @param circularEntryView The component for the post
+     * @param editPostDialog The dialog
+     */
+    private void addReportButtonListener(CircularEntryView circularEntryView, AlertDialog editPostDialog) {
+        editPostDialog.dismiss();
+        AlertDialog reportDialog = createReportDialog(circularEntryView);
+        reportDialog.show();
+    }
+
+    /**
+     * Create the report dialog.
+     * @param circularEntryView The component of the post
+     * @return The report dialog
+     */
     private AlertDialog createReportDialog(CircularEntryView circularEntryView) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()),
             R.style.AlertDialogTheme);
@@ -208,11 +223,24 @@ public class PostsFragment extends Fragment {
         TextInputEditText otherMessage = reportPostLayout.findViewById(R.id.otherMessage);
         MaterialButton confirmReport = reportPostLayout.findViewById(R.id.confirmReportPost);
 
+        setListeners(circularEntryView, reportPostDialog, reportOptions, otherMessage, confirmReport);
+
+        return reportPostDialog;
+    }
+
+    /**
+     * Set the listeners to the components.
+     * @param circularEntryView The component of the post
+     * @param reportPostDialog The report dialog
+     * @param reportOptions The report options
+     * @param otherMessage The other message edit text
+     * @param confirmReport The confirm report button
+     */
+    private void setListeners(CircularEntryView circularEntryView, AlertDialog reportPostDialog,
+                              RadioGroup reportOptions, TextInputEditText otherMessage, MaterialButton confirmReport) {
         setOtherMessageListener(otherMessage);
         setRadioButtonsListeners(reportOptions);
         setConfirmReportListener(circularEntryView, confirmReport, reportPostDialog);
-
-        return reportPostDialog;
     }
 
     /**
