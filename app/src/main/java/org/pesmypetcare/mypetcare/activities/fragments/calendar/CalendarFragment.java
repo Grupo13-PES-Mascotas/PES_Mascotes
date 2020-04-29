@@ -304,7 +304,7 @@ public class CalendarFragment extends Fragment {
                 if (reasonText.getText().toString().length() != 0) {
                     try {
                         createPersonalEvent(reasonText, dateText, timeText, sp);
-                    } catch (ParseException | InvalidFormatException e) {
+                    } catch (ParseException | InvalidFormatException | ExecutionException | InterruptedException e) {
                         e.printStackTrace();
                     }
                 } else {
@@ -334,7 +334,7 @@ public class CalendarFragment extends Fragment {
      * @param timeText The hour of the event
      */
     private void createPersonalEvent(EditText reasonText, TextView dateText, EditText timeText, Spinner sp) throws
-            ParseException, InvalidFormatException {
+            ParseException, InvalidFormatException, ExecutionException, InterruptedException {
         String petName = sp.getSelectedItem().toString();
         DateTime dateTime = DateTime.Builder.buildDateTimeString(dateText.getText().toString(),
                 timeText.getText().toString());;
@@ -565,7 +565,11 @@ public class CalendarFragment extends Fragment {
                 e.printStackTrace();
             }
             pet.deleteEvent(event);
-            communication.deletePersonalEvent(pet, event);
+            try {
+                communication.deletePersonalEvent(pet, event);
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(event.getDateTime(), c);
             communication.cancelNotification(getContext(), new Notification(event.getDescription(),
@@ -573,11 +577,7 @@ public class CalendarFragment extends Fragment {
             try {
                 //pet.deletePeriodicNotification(event);
                 communication.deletePeriodicNotification(pet, event, user);
-            } catch (ParseException | UserIsNotOwnerException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (ParseException | UserIsNotOwnerException | InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         });

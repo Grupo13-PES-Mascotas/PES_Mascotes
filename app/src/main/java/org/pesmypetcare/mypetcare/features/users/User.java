@@ -18,6 +18,7 @@ public class User {
     private ArrayList<Pet> pets;
     private Bitmap userProfileImage;
     private String token;
+    private String googleCalendarToken;
     private ArrayList<Notification> notifications;
     private SortedSet<String> subscribedGroups;
 
@@ -229,5 +230,21 @@ public class User {
      */
     public SortedSet<String> getSubscribedGroups() {
         return subscribedGroups;
+    }
+
+    /**
+     * Setter of the google calendar token attribute.
+     * @param googleCalendarToken The google calendar token to set
+     */
+    public void setGoogleCalendarToken(String googleCalendarToken) {
+        this.googleCalendarToken = googleCalendarToken;
+    }
+
+    /**
+     * Getter of the google calendar token attribute.
+     * @return The google calendar token attribute to set
+     */
+    public String getGoogleCalendarToken() {
+        return this.googleCalendarToken;
     }
 }

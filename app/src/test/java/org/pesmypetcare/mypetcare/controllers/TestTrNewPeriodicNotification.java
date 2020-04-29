@@ -9,7 +9,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.StubPetManagerService;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 
@@ -55,7 +55,7 @@ public class TestTrNewPeriodicNotification {
         pet.setOwner(user);
         pet2 = new Pet();
         setPet2();
-        trNewPeriodicNotification = new TrNewPeriodicNotification(new StubPetManagerService());
+        trNewPeriodicNotification = new TrNewPeriodicNotification(new StubGoogleCalendarService());
     }
 
     private void setPet2() throws PetRepeatException {

@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static FirebaseAuth mAuth;
     private static Fragment actualFragment;
     private static User user;
+    private static String googleCalendarToken;
     private static Resources resources;
     private static NavigationView navigationView;
     private static int[] countImagesNotFound;
@@ -233,7 +234,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrNewPeriodicNotification trNewPeriodicNotification;
     private TrDeletePeriodicNotification trDeletePeriodicNotification;
 
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         if (mAuth.getCurrentUser() != null) {
             try {
                 initializeUser();
+                user.setGoogleCalendarToken(googleCalendarToken);
                 //changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
             } catch (PetRepeatException e) {
                 Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing),
@@ -987,6 +988,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing), Toast.LENGTH_LONG);
             toast.show();
             return;
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
 
         changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
@@ -1099,22 +1102,21 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void changePetProfileImage(Pet actualPet) {
         user.updatePetProfileImage(actualPet);
     }
-    
-    public void newPersonalEvent(Pet pet, String description, String dateTime) {
-        /*
+
+    @Override
+    public void newPersonalEvent(Pet pet, String description, String dateTime) throws ExecutionException, InterruptedException {
+        System.out.println("Token " + pet.getOwner().getGoogleCalendarToken());
         trNewPersonalEvent.setPet(pet);
-        trNewPersonalEvent.setEvent(new Event(description, dateTime));
+        trNewPersonalEvent.setEvent(new Event(description, DateTime.Builder.buildFullString(dateTime)));
         trNewPersonalEvent.execute();
-        */
+
     }
 
     @Override
-    public void deletePersonalEvent(Pet pet, Event event) {
-        /*
+    public void deletePersonalEvent(Pet pet, Event event) throws ExecutionException, InterruptedException {
         trDeletePersonalEvent.setPet(pet);
         trDeletePersonalEvent.setEvent(event);
         trDeletePersonalEvent.execute();
-         */
     }
 
 
@@ -1653,5 +1655,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void showGroupFragment(InfoGroupFragment infoGroupFragment) {
         changeFragment(infoGroupFragment);
+    }
+
+    /**
+     * Setter of the google calendar token attribute.
+     * @param googleCalendarToken The google calendar token to set
+     */
+    public static void setGoogleCalendarToken(String googleCalendarToken) {
+        MainActivity.googleCalendarToken = googleCalendarToken;
     }
 }

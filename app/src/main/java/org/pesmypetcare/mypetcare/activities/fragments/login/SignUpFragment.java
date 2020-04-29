@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.activities.fragments.login;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -25,7 +26,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -46,7 +46,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SignUpFragment extends Fragment {
+public class SignUpFragment extends Fragment implements AsyncResponse{
     private final int MIN_PASS_LENTGH = 6;
     private final int PASS_POSITION = 2;
     private FragmentSignUpBinding binding;
@@ -56,9 +56,13 @@ public class SignUpFragment extends Fragment {
     private CallbackManager mCallbackManager;
     private String email;
     private String password;
+    private String token;
+    private static AsyncTask<Void, Void, String> task2;
     private static UserManagerService userManagerService = new UserManagerAdapter();
     private String username;
     private static int RC_CODE;
+    public static final String SCOPES = "https://www.googleapis.com/auth/plus.login "
+            + "https://www.googleapis.com/auth/calendar";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -98,10 +102,13 @@ public class SignUpFragment extends Fragment {
      */
     private void signUpWithGoogle() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestScopes(new Scope("https://www.googleapis.com/auth/calendar"))
-                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
+                .requestProfile()
+                .requestId()
+                .requestIdToken(getString(R.string.default_web_client_id))
+                //.requestScopes(new Scope("https://www.googleapis.com/auth/calendar"))
                 .build();
+
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(Objects.requireNonNull(getActivity()), gso);
         binding.signupGoogleButton.setOnClickListener(v -> {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -163,13 +170,15 @@ public class SignUpFragment extends Fragment {
         if (requestCode == RC_CODE) {
             ++RC_CODE;
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                assert account != null;
-                firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
-                e.printStackTrace();
-            }
+            task.addOnCompleteListener(task1 -> {
+                try {
+                    GoogleSignInAccount account = task1.getResult(ApiException.class);
+                    assert account != null;
+                    firebaseAuthWithGoogle(account);
+                } catch (ApiException e) {
+                    e.printStackTrace();
+                }
+            });
         }
     }
 
@@ -178,7 +187,8 @@ public class SignUpFragment extends Fragment {
      * @param acct The Google account
      */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), acct.getIdToken());
+        getGoogleToken(acct);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                     if (task.isSuccessful()) {
@@ -196,14 +206,22 @@ public class SignUpFragment extends Fragment {
                 });
     }
 
+    private void getGoogleToken(GoogleSignInAccount acct) {
+        MyAsyncTask asyncTask = new MyAsyncTask(acct, getContext());
+        asyncTask.delegate = this;
+        asyncTask.execute();
+        //task.doInBackground();
+        //MainActivity.setToken(task.getToken());
+    }
+
     /**
      * This method declares the editText and InputLayout.
      */
     private void editTextAndInputLayoutDeclaration() {
         editText = new TextInputEditText[] {binding.signUpUsernameText,
-            binding.signUpMailText, binding.signUpPasswordText, binding.signUpRepPasswordText};
+                binding.signUpMailText, binding.signUpPasswordText, binding.signUpRepPasswordText};
         inputLayout = new TextInputLayout[] {binding.signUpUsernameLayout,
-            binding.signUpMailLayout, binding.signUpPasswordLayout, binding.signUpRepPasswordLayout};
+                binding.signUpMailLayout, binding.signUpPasswordLayout, binding.signUpRepPasswordLayout};
     }
 
     /**
@@ -312,7 +330,7 @@ public class SignUpFragment extends Fragment {
         if (password.length() < MIN_PASS_LENTGH) {
             testToast("Password is too short (<6)");
             weakPassHandler(binding.signUpPasswordText, binding.signUpPasswordLayout,
-                getResources().getString(R.string.shortPassword));
+                    getResources().getString(R.string.shortPassword));
             return true;
         }
         return false;
@@ -343,7 +361,7 @@ public class SignUpFragment extends Fragment {
             return false;
         }
         weakPassHandler(binding.signUpPasswordText, binding.signUpPasswordLayout,
-            getResources().getString(R.string.weakPassword));
+                getResources().getString(R.string.weakPassword));
         return true;
     }
 
@@ -414,9 +432,9 @@ public class SignUpFragment extends Fragment {
     private boolean diffPass() {
         if (!password.equals(Objects.requireNonNull(binding.signUpRepPasswordText.getText()).toString())) {
             diffPassHandler(binding.signUpPasswordText, binding.signUpPasswordLayout,
-                getResources().getString(R.string.differentPasswords));
+                    getResources().getString(R.string.differentPasswords));
             diffPassHandler(binding.signUpRepPasswordText, binding.signUpRepPasswordLayout,
-                getResources().getString(R.string.differentPasswords));
+                    getResources().getString(R.string.differentPasswords));
             testToast("Passwords don't match");
             return true;
         }
@@ -443,5 +461,10 @@ public class SignUpFragment extends Fragment {
         Toast toast1 = Toast.makeText(getActivity(), s, Toast.LENGTH_LONG);
         toast1.setGravity(Gravity.CENTER, 0, 0);
         toast1.show();
+    }
+
+    @Override
+    public void processFinish(String token) {
+        MainActivity.setGoogleCalendarToken(token);
     }
 }

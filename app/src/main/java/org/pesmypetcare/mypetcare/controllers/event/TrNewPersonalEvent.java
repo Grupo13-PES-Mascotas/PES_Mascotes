@@ -2,16 +2,18 @@ package org.pesmypetcare.mypetcare.controllers.event;
 
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.services.PetManagerService;
+import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
+
+import java.util.concurrent.ExecutionException;
 
 public class TrNewPersonalEvent {
-    private PetManagerService petManagerService;
+    private GoogleCalendarService googleCalendarService;
     private Pet pet;
     private Event event;
     private boolean result;
 
-    public TrNewPersonalEvent(PetManagerService petManagerService) {
-        this.petManagerService = petManagerService;
+    public TrNewPersonalEvent(GoogleCalendarService googleCalendarService) {
+        this.googleCalendarService = googleCalendarService;
     }
 
     /**
@@ -41,10 +43,10 @@ public class TrNewPersonalEvent {
     /**
      * Execute the transaction.
      */
-    public void execute() {
+    public void execute() throws ExecutionException, InterruptedException {
         result = false;
         pet.addEvent(event);
-        petManagerService.registerNewEvent(pet, event);
+        googleCalendarService.registerNewEvent(pet, event);
         result = true;
     }
 }
