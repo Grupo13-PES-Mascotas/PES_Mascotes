@@ -166,24 +166,45 @@ public class Post implements Comparable<Post> {
         return forum;
     }
 
+    /**
+     * Get the liker username.
+     * @return The liker username
+     */
     public List<String> getLikerUsername() {
         return likerUsername;
     }
 
+    /**
+     * Set the liker username.
+     * @param likerUsername The liker username to set
+     */
     public void setLikerUsername(List<String> likerUsername) {
         this.likerUsername = likerUsername;
     }
 
+    /**
+     * Add a liker username.
+     * @param username The liker username
+     */
     public void addLikerUsername(String username) {
         likerUsername.add(username);
         ++likes;
     }
 
+    /**
+     * Remove the liker username.
+     * @param username The liker username
+     */
     public void removeLikerUsername(String username) {
         likerUsername.remove(username);
         --likes;
     }
 
+    /**
+     * Check whether the user has given a like to the post.
+     * @param username The username
+     * @return True if the user has given a like to the post
+     */
     public boolean isLikedByUser(String username) {
         return likerUsername.contains(username);
     }

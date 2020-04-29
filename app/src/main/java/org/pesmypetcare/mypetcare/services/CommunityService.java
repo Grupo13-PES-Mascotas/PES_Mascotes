@@ -100,6 +100,11 @@ public interface CommunityService {
     void updatePost(User user, Post post, String newText) throws ForumNotFoundException, PostNotFoundException;
 
     /**
+     * Unlike the post.
+     * @param user The user that wants to unlike the post
+     * @param post The post that has ti have the user removes from liker usernames
+     */
+    /**
      * The indicated user likes the indicated post.
      * @param likerName The username of the owner who wants to like the post
      * @param authorName The username of the author of the post to like
