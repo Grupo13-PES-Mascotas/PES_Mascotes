@@ -5,8 +5,6 @@ import android.os.AsyncTask;
 
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.common.api.Scope;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -15,24 +13,21 @@ import java.util.Objects;
  * @author Enric Hernando
  */
 public class MyAsyncTask extends AsyncTask<Void, Void, String> {
-    private GoogleSignInAccount acct;
     private Context context;
+    private String googleEmail;
+    private String scopes;
     public AsyncResponse delegate = null;
 
-    public MyAsyncTask(GoogleSignInAccount acct, Context context) {
-        this.acct = acct;
+    public MyAsyncTask(String googleEmail, String scopes, Context context) {
+        this.googleEmail = googleEmail;
+        this.scopes = scopes;
         this.context = context;
     }
 
     @Override
     protected String doInBackground(Void... params) {
-        StringBuilder scopes = new StringBuilder();
-        for (Scope s : acct.getRequestedScopes())
-            scopes.append(s.toString()).append(" ");
-        scopes = new StringBuilder(scopes.substring(0, scopes.toString().lastIndexOf(' ')));
         try {
-            return GoogleAuthUtil.getToken(Objects.requireNonNull(context),
-                    Objects.requireNonNull(acct.getEmail()), "oauth2:" + scopes.toString());
+            return GoogleAuthUtil.getToken(Objects.requireNonNull(context), googleEmail, "oauth2:" + this.scopes);
 
         } catch (IOException | GoogleAuthException e) {
             e.printStackTrace();

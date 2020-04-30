@@ -163,11 +163,7 @@ public class CalendarFragment extends Fragment {
                 if (reasonText.getText().toString().length() != 0) {
                     try {
                         createPeriodicNotification(reasonText, dateText, timeText, sp_pets, sp_period);
-                    } catch (ParseException | InvalidFormatException | UserIsNotOwnerException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
+                    } catch (ParseException | InvalidFormatException | UserIsNotOwnerException | ExecutionException | InterruptedException e) {
                         e.printStackTrace();
                     }
                 } else {
@@ -196,7 +192,6 @@ public class CalendarFragment extends Fragment {
                 timeText.getText().toString());
         getPet(petName);
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
-            //selectedPet.addPeriodicNotification(new Event(reasonText.getText().toString(), dateTime), period);
             communication.newPeriodicNotification(selectedPet, period, reasonText.getText().toString(), dateTime);
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(dateTime, c);
@@ -340,7 +335,6 @@ public class CalendarFragment extends Fragment {
                 timeText.getText().toString());;
         getPet(petName);
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
-            selectedPet.addEvent(new Event(reasonText.getText().toString(), dateTime));
             communication.newPersonalEvent(selectedPet, reasonText.getText().toString(), dateTime.toString());
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(dateTime, c);

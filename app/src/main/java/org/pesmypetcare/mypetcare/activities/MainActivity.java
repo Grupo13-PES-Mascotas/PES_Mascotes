@@ -36,6 +36,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -285,19 +286,16 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Refresh the google calendar token.
      */
     private void refreshGoogleCalendarToken() {
-        String tokenCalendar = sharedpreferences.getString("GoogleCalendarToken", "");
-        if ("".equals(tokenCalendar)) {
-            this.getGoogleToken();
-        } else {
-            user.setGoogleCalendarToken(tokenCalendar);
-        }
+        this.getGoogleToken();
     }
 
     /**
      * Get the google calendar token.
      */
     public void getGoogleToken() {
-        MyAsyncTask asyncTask = new MyAsyncTask(googleAccount, this.getBaseContext());
+        String googleEmail = sharedpreferences.getString("GoogleEmail", "");
+        String scopes = sharedpreferences.getString("GoogleScopes", "");
+        MyAsyncTask asyncTask = new MyAsyncTask(googleEmail, scopes, this.getBaseContext());
         asyncTask.delegate = this;
         asyncTask.execute();
     }
@@ -1134,7 +1132,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void newPersonalEvent(Pet pet, String description, String dateTime) throws ExecutionException, InterruptedException, InvalidFormatException {
-        System.out.println("Token " + pet.getOwner().getGoogleCalendarToken());
         trNewPersonalEvent.setPet(pet);
         trNewPersonalEvent.setEvent(new Event(description, DateTime.Builder.buildFullString(dateTime)));
         trNewPersonalEvent.execute();
@@ -1687,29 +1684,29 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     /**
-     * Setter of the google calendar token attribute.
-     * @param googleCalendarToken The google calendar token to set
+     * Initializes the SharedPreferences.
+     * @param acct The google account
      */
-    public static void setGoogleCalendarToken(String googleCalendarToken) {
-        user.setGoogleCalendarToken(googleCalendarToken);
-
+    public static void setGoogleAccount(GoogleSignInAccount acct) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("GoogleEmail", acct.getEmail());
 
-        editor.putString("GoogleCalendarToken", googleCalendarToken);
+        StringBuilder scopes = new StringBuilder();
+        for (Scope s : acct.getRequestedScopes())
+            scopes.append(s.toString()).append(" ");
+        scopes = new StringBuilder(scopes.substring(0, scopes.toString().lastIndexOf(' ')));
+
+        editor.putString("GoogleScopes", scopes.toString());
 
         editor.apply();
     }
 
     /**
-     * Setter of the google account attribute.
-     * @param acct The google account to set
+     * Setter of the Google Calendar Token after the refresh.
+     * @param token The token
      */
-    public static void setGoogleAccount(GoogleSignInAccount acct) {
-        MainActivity.googleAccount = acct;
-    }
-
     @Override
     public void processFinish(String token) {
-        setGoogleCalendarToken(token);
+        user.setGoogleCalendarToken(token);
     }
 }
