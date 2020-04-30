@@ -10,6 +10,7 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
+import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
 
@@ -46,7 +47,7 @@ public class TestTrNewPersonalEvent {
     }
 
     @Test
-    public void shouldCommunicateWithService() throws ExecutionException, InterruptedException {
+    public void shouldCommunicateWithService() throws ExecutionException, InterruptedException, InvalidFormatException {
         Event e = new Event("Hello2", DateTime.Builder.buildFullString("2020-04-03T10:40:00"));
         pet.addEvent(e);
         trNewPersonalEvent.setPet(pet);
