@@ -3,9 +3,7 @@ package org.pesmypetcare.mypetcare.services;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 import org.pesmypetcare.usermanager.datacontainers.EventData;
-import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
 
@@ -14,18 +12,23 @@ import java.util.concurrent.ExecutionException;
  */
 public class GoogleCalendarAdapter implements GoogleCalendarService{
     @Override
-    public void registerNewEvent(Pet pet, Event event) throws ExecutionException, InterruptedException, InvalidFormatException {
-        System.out.println(DateTime.Builder.build(2000,4,29,19,30,0).toString());
-        ServiceLocator.getInstance().getGoogleCalendarManagerClient().createEvent(pet.getOwner().getGoogleCalendarToken(),
-                pet.getOwner().getUsername(), pet.getName(), new EventData((pet.getName()+event.getDateTime()+event.getDescription()).toLowerCase(), pet.getName().toString(),
-                        "A really pretty Location", event.getDescription(), EventData.BASIL, 10, 5,
-                        event.getDateTime().toString(), event.getDateTime().toString()));
+    public void registerNewEvent(Pet pet, Event event) throws ExecutionException, InterruptedException {
+        String id = (pet.getName() + event.getDateTime().getDay() + event.getDateTime().getMonth()
+                + event.getDateTime().getYear() + event.getDescription()).toLowerCase();
+        EventData eventData = new EventData(id, pet.getName(), "A really pretty Location",
+                event.getDescription(), EventData.BLUEBERRY, 0, 0,
+                event.getDateTime().toString(), event.getDateTime().toString());
+        ServiceLocator.getInstance().getGoogleCalendarManagerClient().createEvent(pet.getOwner().
+                        getGoogleCalendarToken(),pet.getOwner().getUsername(), pet.getName(), eventData);
+
     }
 
     @Override
     public void deleteEvent(Pet pet, Event event) throws ExecutionException, InterruptedException {
+        String id = (pet.getName() + event.getDateTime().getDay() + event.getDateTime().getMonth()
+                + event.getDateTime().getYear() + event.getDescription()).toLowerCase();
         ServiceLocator.getInstance().getGoogleCalendarManagerClient().deleteEvent(pet.getOwner().getGoogleCalendarToken(),
-                pet.getOwner().getUsername(), pet.getName(), (pet.getName()+event.getDateTime()+event.getDescription()).toLowerCase());
+                pet.getOwner().getUsername(), pet.getName(), id);
     }
 
     @Override

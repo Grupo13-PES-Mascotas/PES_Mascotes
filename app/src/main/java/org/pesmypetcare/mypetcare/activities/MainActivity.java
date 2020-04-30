@@ -1710,7 +1710,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void processFinish(String token) {
-        System.out.println("JOLIN"+token);
         setGoogleCalendarToken(token);
     }
 }

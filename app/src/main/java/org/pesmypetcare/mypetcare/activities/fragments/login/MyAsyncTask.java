@@ -32,7 +32,8 @@ public class MyAsyncTask extends AsyncTask<Void, Void, String> {
         scopes = new StringBuilder(scopes.substring(0, scopes.toString().lastIndexOf(' ')));
         try {
             return GoogleAuthUtil.getToken(Objects.requireNonNull(context),
-                    Objects.requireNonNull(acct.getAccount()), "oauth2:" + scopes.toString());
+                    Objects.requireNonNull(acct.getEmail()), "oauth2:" + scopes.toString());
+
         } catch (IOException | GoogleAuthException e) {
             e.printStackTrace();
         }

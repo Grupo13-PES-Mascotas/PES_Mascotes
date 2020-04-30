@@ -188,12 +188,12 @@ public class SignUpFragment extends Fragment {
      */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), acct.getIdToken());
+        System.out.println("HOLAaaaa");
         MainActivity.setGoogleAccount(acct);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                     if (task.isSuccessful()) {
                         try {
-                            System.out.println(acct.getDisplayName());
                             if (!userManagerService.usernameExists(acct.getDisplayName())) {
                                 userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
                                         acct.getDisplayName(), acct.getEmail(), "");
