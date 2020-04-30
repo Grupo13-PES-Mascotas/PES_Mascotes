@@ -27,7 +27,8 @@ public interface CalendarCommunication {
      * @param description The description of the event
      * @param dateTime The date and time of the event
      */
-    void newPersonalEvent(Pet pet, String description, String dateTime) throws ExecutionException, InterruptedException, InvalidFormatException;
+    void newPersonalEvent(Pet pet, String description, String dateTime) throws ExecutionException, InterruptedException,
+            InvalidFormatException;
 
     /**
      * Passes the information to delete a personal event to the main activity.

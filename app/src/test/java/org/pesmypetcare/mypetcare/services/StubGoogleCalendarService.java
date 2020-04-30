@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * @author Enric Hernando
  */
-public class StubGoogleCalendarService implements GoogleCalendarService{
+public class StubGoogleCalendarService implements GoogleCalendarService {
     private static final String JOHN_DOE = "johnDoe";
     private static final String JOHN_DOE_2 = "johnDoe2";
     private static final String DINKY = "Dinky";
