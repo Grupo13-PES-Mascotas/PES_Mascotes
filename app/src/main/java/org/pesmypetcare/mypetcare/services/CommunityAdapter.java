@@ -13,6 +13,7 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -29,16 +30,36 @@ public class CommunityAdapter implements CommunityService {
     @Override
     public SortedSet<Group> getAllGroups() {
         List<GroupData> groupsData = getAllGroupsFromServer();
-        SortedSet<Group> groups = new TreeSet<>();
+        Group[] groupArray = new Group[groupsData.size()];
 
-        for (GroupData groupData : groupsData) {
-            Group group = createGroup(groupData);
-            addForums(group);
+        ExecutorService executorService = Executors.newCachedThreadPool();
 
-            groups.add(group);
+        for (int actual = 0; actual < groupsData.size(); ++actual) {
+            int finalActual = actual;
+            executorService.execute(() -> createActualGroup(groupsData, groupArray, finalActual));
         }
 
-        return groups;
+        executorService.shutdown();
+
+        try {
+            executorService.awaitTermination(2, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return new TreeSet<>(Arrays.asList(groupArray));
+    }
+
+    /**
+     * Create the actual group.
+     * @param groupsData The groups from the server
+     * @param groupArray The actual groups created
+     * @param actual The actual group
+     */
+    private void createActualGroup(List<GroupData> groupsData, Group[] groupArray, int actual) {
+        Group group = createGroup(groupsData.get(actual));
+        addForums(group);
+        groupArray[actual] = group;
     }
 
     /**
