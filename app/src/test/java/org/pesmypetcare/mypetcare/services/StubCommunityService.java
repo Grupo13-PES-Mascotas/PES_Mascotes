@@ -327,9 +327,10 @@ public class StubCommunityService implements CommunityService {
         boolean found = false;
 
         for (Forum forum : groups.get(groupIndex).getForums()) {
-            if (forum.equals(post.getForum())) {
+            if (forum.getName().equals(post.getForum().getName())) {
                 for (Post forumPost : forum.getPosts()) {
-                    if (forumPost.equals(post)) {
+                    if (forumPost.getUsername().equals(post.getUsername())
+                    && forumPost.getCreationDate().compareTo(post.getCreationDate()) == 0) {
                         post.setPostImage(image);
                         found = true;
                         break;
