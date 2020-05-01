@@ -1,59 +1,81 @@
 package org.pesmypetcare.mypetcare.activities.views.circularentry.petsinfo;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.Gravity;
 import android.widget.LinearLayout;
+import android.widget.Space;
 
-import org.pesmypetcare.mypetcare.R;
+import androidx.annotation.Nullable;
+
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
-import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.users.User;
 
-public class PetsInfoView extends CircularEntryView {
-    private Pet pet;
+import java.util.ArrayList;
+import java.util.List;
 
-    public PetsInfoView(Context context, AttributeSet attrs) {
+public class PetsInfoView extends LinearLayout {
+    private Context currentActivity;
+    private List<CircularEntryView> petComponents;
+    private final int SPACE_SIZE = 40;
+
+    public PetsInfoView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        this.currentActivity = context;
+        this.petComponents = new ArrayList<>();
+        this.setOrientation(VERTICAL);
+        LinearLayout.LayoutParams params = new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+            LayoutParams.MATCH_PARENT);
+        params.gravity = Gravity.START;
+        this.setLayoutParams(params);
     }
 
-    public PetsInfoView(Context context, AttributeSet attrs, Pet pet) {
-        super(context, attrs);
-        this.pet = pet;
-    }
-
-    @Override
-    protected CircularImageView getImage() {
-        CircularImageView image = new CircularImageView(getCurrentActivity(), null);
-        Drawable petImageDrawable = getResources().getDrawable(R.drawable.single_paw);
-
-        if (pet.getProfileImage() != null) {
-            petImageDrawable = new BitmapDrawable(getResources(), pet.getProfileImage());
+    /**
+     * Method responsible for showing all the pets from the current user.
+     * @param currentUser The current user of the application
+     */
+    public void showPets(User currentUser) {
+        List<Pet> userPets = new ArrayList<>(currentUser.getPets());
+        Space space;
+        space = initializeSpacer();
+        this.addView(space);
+        while (!userPets.isEmpty()) {
+            initializeComponent(userPets);
         }
-
-        image.setDrawable(petImageDrawable);
-        int imageDimensions = getImageDimensions();
-        image.setLayoutParams(new LinearLayout.LayoutParams(imageDimensions, imageDimensions));
-        int imageId = View.generateViewId();
-        image.setId(imageId);
-
-        return image;
     }
 
-    @Override
-    public Object getObject() {
-        return pet;
+    /**
+     * Method responsible for creating and adding all the required pet components.
+     * @param userPets The list containing all the pets
+     */
+    private void initializeComponent(List<Pet> userPets) {
+        Space space;
+        Pet currentPet = userPets.remove(0);
+        CircularEntryView component = new PetsInfoComponentView(currentActivity, null, currentPet)
+            .initializeComponent();
+        this.addView(component);
+        this.petComponents.add(component);
+        space = initializeSpacer();
+        this.addView(space);
     }
 
-    @Override
-    protected String getFirstLineText() {
-        return pet.getName();
+    /**
+     * Method responsible for initializing the spacers.
+     * @return The initialized spacer;
+     */
+    private Space initializeSpacer() {
+        Space space;
+        space = new Space(currentActivity);
+        space.setMinimumHeight(SPACE_SIZE);
+        return space;
     }
 
-    @Override
-    protected String getSecondLineText() {
-        return String.format("%s - %s", pet.getBreed(), pet.getBirthDate());
+    /**
+     * Getter of the pet components arraylist.
+     * @return The arraylist containing all the pet components
+     */
+    public List<CircularEntryView> getPetComponents() {
+        return petComponents;
     }
 }

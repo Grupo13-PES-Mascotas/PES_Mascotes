@@ -9,6 +9,7 @@ import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundExcepti
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
+import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
@@ -23,7 +24,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CommunityAdapter implements CommunityService {
-
     public static final int TIME = 20;
 
     @Override
@@ -305,6 +305,29 @@ public class CommunityAdapter implements CommunityService {
 
         executorService = getCreatePostExecutorService(user, post);
         executorService.shutdown();
+    }
+
+    @Override
+    public void likePost(String likerName, String authorName, DateTime creationDate, String forumName,
+                         String groupName) throws PostNotFoundException {
+        /*ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getForumManagerClient().likePost(...);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });*/
+    }
+
+    @Override
+    public void unlikePost(User user, Post post) {
+        // Not implemented yet
+    }
+
+    @Override
+    public void reportPost(User user, Post post, String reportMessage) {
+        // Not implemented yet
     }
 
     /**

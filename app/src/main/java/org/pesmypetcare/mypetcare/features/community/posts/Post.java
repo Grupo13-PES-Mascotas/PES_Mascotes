@@ -5,12 +5,16 @@ import android.graphics.Bitmap;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Post implements Comparable<Post> {
     private String username;
     private String text;
     private int likes;
     private int reportsCount;
     private boolean isBanned;
+    private List<String> likerUsername;
     private DateTime creationDate;
     private Bitmap userImage;
     private Bitmap postImage;
@@ -21,6 +25,9 @@ public class Post implements Comparable<Post> {
         this.text = text;
         this.creationDate = creationDate;
         this.forum = forum;
+        this.likerUsername = new ArrayList<>();
+        this.likerUsername.add(username);
+        this.likes = 1;
     }
 
     /**
@@ -159,6 +166,49 @@ public class Post implements Comparable<Post> {
         return forum;
     }
 
+    /**
+     * Get the liker username.
+     * @return The liker username
+     */
+    public List<String> getLikerUsername() {
+        return likerUsername;
+    }
+
+    /**
+     * Set the liker username.
+     * @param likerUsername The liker username to set
+     */
+    public void setLikerUsername(List<String> likerUsername) {
+        this.likerUsername = likerUsername;
+    }
+
+    /**
+     * Add a liker username.
+     * @param username The liker username
+     */
+    public void addLikerUsername(String username) {
+        likerUsername.add(username);
+        ++likes;
+    }
+
+    /**
+     * Remove the liker username.
+     * @param username The liker username
+     */
+    public void removeLikerUsername(String username) {
+        likerUsername.remove(username);
+        --likes;
+    }
+
+    /**
+     * Check whether the user has given a like to the post.
+     * @param username The username
+     * @return True if the user has given a like to the post
+     */
+    public boolean isLikedByUser(String username) {
+        return likerUsername.contains(username);
+    }
+
 
     @Override
     public int compareTo(Post post) {
@@ -175,5 +225,12 @@ public class Post implements Comparable<Post> {
             + "username='" + username + '\''
             + ", text='" + text + '\''
             + '}';
+    }
+
+    /**
+     * Increases the number of reports of the post.
+     */
+    public void reportPost() {
+        reportsCount++;
     }
 }

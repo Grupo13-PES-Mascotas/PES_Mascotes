@@ -231,6 +231,15 @@
     <string name="edit_medication_title">Editar medicació</string>
     <string name="edit_medication_message">Introdueix la informació de la medicació</string>
     <string name="select_medication_date">Selecciona la data d\'inici de la medicació</string>
+    <string name="post_options_title">Opcions del post</string>
+    <string name="post_options_message">Selecciona una acció per realitzar en el post</string>
+    <string name="post_report">Reportar un post</string>
+    <string name="report_reason_sexual_content">Contingut sexual</string>
+    <string name="report_reason_violent_or_repulsive_content">Contingut violent o repulsiu</string>
+    <string name="report_reason_abusive_or_hate_content">Contingut abussiu o que incita a l\'odi</string>
+    <string name="report_reason_spam_or_misleading_content">Contingut brossa o enganyós</string>
+    <string name="report_reason_infringe_my_rights">Infracció dels drets d\'autor</string>
+    <string name="report_reason_other">Altres</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

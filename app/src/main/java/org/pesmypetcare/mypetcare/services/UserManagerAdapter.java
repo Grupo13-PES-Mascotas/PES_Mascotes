@@ -20,6 +20,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UserManagerAdapter implements UserManagerService {
+    private static final int TIME = 20;
+
     @Override
     public User findUserByUsername(String username) {
         UserData userData = null;
@@ -159,7 +161,7 @@ public class UserManagerAdapter implements UserManagerService {
         });
 
         executorService.shutdown();
-        executorService.awaitTermination(20, TimeUnit.SECONDS);
+        executorService.awaitTermination(TIME, TimeUnit.SECONDS);
 
         return exists.get();
     }

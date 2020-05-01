@@ -89,4 +89,28 @@ public class CommunityControllersFactory {
     public static TrUpdatePost createTrUpdatePost() {
         return new TrUpdatePost(new CommunityAdapter());
     }
+
+    /**
+     * Create the transaction to like a post.
+     * @return The transaction to like a post
+     */
+    public static TrLikePost createTrLikePost() {
+        return new TrLikePost(new CommunityAdapter());
+    }
+
+    /**
+     * Create the transaction to unlike a post.
+     * @return The transaction to unlike a post
+     */
+    public static TrUnlikePost createTrUnlikePost() {
+        return new TrUnlikePost(new CommunityAdapter());
+    }
+
+    /**
+     * Create the transaction to report a post.
+     * @return The transaction to report a post
+     */
+    public static TrReportPost createTrReportPost() {
+        return new TrReportPost(new CommunityAdapter());
+    }
 }

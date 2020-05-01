@@ -79,7 +79,10 @@ import org.pesmypetcare.mypetcare.controllers.community.TrDeleteForum;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteGroup;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeletePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteSubscription;
+import org.pesmypetcare.mypetcare.controllers.community.TrLikePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrObtainAllGroups;
+import org.pesmypetcare.mypetcare.controllers.community.TrReportPost;
+import org.pesmypetcare.mypetcare.controllers.community.TrUnlikePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrUpdatePost;
 import org.pesmypetcare.mypetcare.controllers.event.EventControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.event.TrDeletePeriodicNotification;
@@ -127,11 +130,14 @@ import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingExce
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.NotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.OwnerCannotDeleteSubscriptionException;
+import org.pesmypetcare.mypetcare.features.community.posts.NotLikedPostException;
 import org.pesmypetcare.mypetcare.features.community.posts.NotPostOwnerException;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyLikedException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostCreatedBeforeForumException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
+import org.pesmypetcare.mypetcare.features.community.posts.PostReportedByAuthorException;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
@@ -240,8 +246,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrUpdateMedication trUpdateMedication;
     private TrNewPeriodicNotification trNewPeriodicNotification;
     private TrDeletePeriodicNotification trDeletePeriodicNotification;
+    private TrLikePost trLikePost;
+    private TrUnlikePost trUnlikePost;
+    private TrReportPost trReportPost;
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
@@ -599,6 +607,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewPost = CommunityControllersFactory.createTrAddNewPost();
         trDeletePost = CommunityControllersFactory.createTrDeletePost();
         trUpdatePost = CommunityControllersFactory.createTrUpdatePost();
+        trLikePost = CommunityControllersFactory.createTrLikePost();
+        trUnlikePost = CommunityControllersFactory.createTrUnlikePost();
+        trReportPost = CommunityControllersFactory.createTrReportPost();
     }
 
     /**
@@ -1122,6 +1133,42 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trUpdatePost.execute();
         } catch (NotPostOwnerException | ForumNotFoundException | PostNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void likePost(Post postToLike) {
+        trLikePost.setUser(user);
+        trLikePost.setPost(postToLike);
+
+        try {
+            trLikePost.execute();
+        } catch (PostNotFoundException | PostAlreadyLikedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void unlikePost(Post post) {
+        trUnlikePost.setUser(user);
+        trUnlikePost.setPost(post);
+
+        try {
+            trUnlikePost.execute();
+        } catch (NotLikedPostException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void reportPost(Post post, String reportMessage) {
+        trReportPost.setUser(user);
+        trReportPost.setPost(post);
+        trReportPost.setReportMessage(reportMessage);
+        try {
+            trReportPost.execute();
+        } catch (PostReportedByAuthorException e) {
             e.printStackTrace();
         }
     }

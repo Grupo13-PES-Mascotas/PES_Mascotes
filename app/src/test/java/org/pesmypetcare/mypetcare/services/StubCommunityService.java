@@ -8,6 +8,7 @@ import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExisting
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyLikedException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
@@ -35,13 +36,13 @@ public class StubCommunityService implements CommunityService {
     public static void addStubDefaultData() {
         addGroups();
         addTags();
-        addFroums();
+        addForums();
     }
 
     /**
      * Add the forums.
      */
-    private static void addFroums() {
+    private static void addForums() {
         new Forum("Washing", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:00:00"),
             StubCommunityService.groups.get(HUSKY));
         Forum forum = new Forum("Cleaning", "John Doe", DateTime.Builder.buildFullString("2020-04-21T20:50:10"),
@@ -55,6 +56,8 @@ public class StubCommunityService implements CommunityService {
             DateTime.Builder.buildFullString("2020-04-21T20:55:10"), forum));
         forum.addPost(new Post("John Doe", "I'm very interested in your answers",
             DateTime.Builder.buildFullString("2020-04-21T21:15:22"), forum));
+        forum.addPost(new Post("Manolo Lama", "I would love to clean the Bicho",
+            DateTime.Builder.buildFullString("2020-04-28T12:00:00"), forum));
     }
 
     /**
@@ -253,6 +256,65 @@ public class StubCommunityService implements CommunityService {
         for (Group g : groups) {
             if (g.getName().equals(postGroup.getName())) {
                 updateForums(user, post, newText, postForum, g);
+            }
+        }
+    }
+
+    @Override
+    public void likePost(String likerName, String authorName, DateTime creationDate, String forumName,
+                         String groupName) throws PostNotFoundException, PostAlreadyLikedException {
+        boolean found = false;
+        for (Group g : groups) {
+            if (g.getName().equals(groupName)) {
+                for (Forum f : g.getForums()) {
+                    if (f.getName().equals(forumName)) {
+                        for (Post p : f.getPosts()) {
+                            if (p.getUsername().equals(authorName)
+                                && p.getCreationDate().compareTo(creationDate) == 0) {
+                                if (p.getLikerUsername().contains(likerName)) {
+                                    throw new PostAlreadyLikedException();
+                                }
+                                p.addLikerUsername(likerName);
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (!found) {
+            throw new PostNotFoundException();
+        }
+    }
+
+    @Override
+    public void unlikePost(User user, Post post) {
+        int groupIndex = groups.indexOf(post.getForum().getGroup());
+
+        for (Forum forum : groups.get(groupIndex).getForums()) {
+            if (forum.equals(post.getForum())) {
+                for (Post forumPost : forum.getPosts()) {
+                    if (forumPost.equals(post)) {
+                        forumPost.removeLikerUsername(user.getUsername());
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void reportPost(User user, Post post, String reportMessage) {
+        int groupIndex = groups.indexOf(post.getForum().getGroup());
+
+        for (Forum forum : groups.get(groupIndex).getForums()) {
+            if (forum.equals(post.getForum())) {
+                for (Post forumPost : forum.getPosts()) {
+                    if (forumPost.equals(post)) {
+                        forumPost.reportPost();
+                        System.out.println("Report Message : " + reportMessage);
+                    }
+                }
             }
         }
     }
