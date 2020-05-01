@@ -15,7 +15,7 @@ import org.pesmypetcare.mypetcare.databinding.FragmentInfoGroupSubscriptionsBind
 import org.pesmypetcare.mypetcare.features.users.User;
 
 public class InfoGroupSubscriptionsFragment extends Fragment {
-    private FragmentInfoGroupSubscriptionsBinding binding;
+    private static FragmentInfoGroupSubscriptionsBinding binding;
     private MaterialButton btnSubscribe;
 
     @Override
@@ -102,7 +102,7 @@ public class InfoGroupSubscriptionsFragment extends Fragment {
     /**
      * Show the subscribers of the group.
      */
-    private void showSubscribers() {
+    public static void showSubscribers() {
         binding.subscribersViewLayout.removeAllViews();
         binding.subscribersViewLayout.showSubscribers(InfoGroupFragment.getGroup());
     }

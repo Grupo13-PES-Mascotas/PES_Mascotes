@@ -26,8 +26,10 @@ public class Group implements Comparable<Group> {
     private String description;
     private DateTime creationDate;
     private Bitmap groupIcon;
+    private DateTime lastGroupImage;
     private List<String> participants;
     private Map<String, DateTime> subscribers;
+    private Map<String, Bitmap> subscribersImages;
     private SortedSet<Forum> forums;
     private List<String> tags;
 
@@ -39,6 +41,7 @@ public class Group implements Comparable<Group> {
         this.forums = new TreeSet<>();
         this.tags = new ArrayList<>();
         this.subscribers = new TreeMap<>();
+        this.subscribersImages = new TreeMap<>();
 
         this.subscribers.put(ownerUsername, creationDate);
     }
@@ -223,6 +226,26 @@ public class Group implements Comparable<Group> {
      */
     public void removeForum(Forum forum) {
         forums.remove(forum);
+    }
+
+    public Map<String, Bitmap> getSubscribersImages() {
+        return subscribersImages;
+    }
+
+    public void addSubscriberImage(String username, Bitmap image) {
+        subscribersImages.put(username, image);
+    }
+
+    public Bitmap getUserImage(String username) {
+        return subscribersImages.get(username);
+    }
+
+    public DateTime getLastGroupImage() {
+        return lastGroupImage;
+    }
+
+    public void setLastGroupImage(DateTime lastGroupImage) {
+        this.lastGroupImage = lastGroupImage;
     }
 
     @Override
