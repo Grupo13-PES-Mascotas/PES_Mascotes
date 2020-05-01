@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
+import android.graphics.Bitmap;
+
 import org.pesmypetcare.communitymanager.datacontainers.ForumData;
 import org.pesmypetcare.communitymanager.datacontainers.GroupData;
 import org.pesmypetcare.communitymanager.datacontainers.MessageData;
@@ -348,6 +350,11 @@ public class CommunityAdapter implements CommunityService {
 
     @Override
     public void reportPost(User user, Post post, String reportMessage) {
+        // Not implemented yet
+    }
+
+    @Override
+    public void addPostImage(User user, Post post, Bitmap image) throws PostNotFoundException {
         // Not implemented yet
     }
 

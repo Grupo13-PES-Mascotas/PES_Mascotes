@@ -113,4 +113,12 @@ public class CommunityControllersFactory {
     public static TrReportPost createTrReportPost() {
         return new TrReportPost(new CommunityAdapter());
     }
+
+    /**
+     * Create the transaction to add an image to a post.
+     * @return The transaction to add an image to a post.
+     */
+    public static TrAddPostImage createTrAddPostImage() {
+        return new TrAddPostImage(new CommunityAdapter());
+    }
 }

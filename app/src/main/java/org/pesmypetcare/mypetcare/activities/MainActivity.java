@@ -69,6 +69,7 @@ import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageVi
 import org.pesmypetcare.mypetcare.controllers.community.CommunityControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewForum;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewPost;
+import org.pesmypetcare.mypetcare.controllers.community.TrAddPostImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddSubscription;
 import org.pesmypetcare.mypetcare.controllers.community.TrCreateNewGroup;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteForum;
@@ -245,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrUnlikePost trUnlikePost;
     private TrReportPost trReportPost;
     private TrObtainUserImage trObtainUserImage;
+    private TrAddPostImage trAddPostImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -584,6 +586,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trLikePost = CommunityControllersFactory.createTrLikePost();
         trUnlikePost = CommunityControllersFactory.createTrUnlikePost();
         trReportPost = CommunityControllersFactory.createTrReportPost();
+        trAddPostImage = CommunityControllersFactory.createTrAddPostImage();
     }
 
     /**
@@ -1159,6 +1162,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             result = BitmapFactory.decodeResource(getResources(), R.drawable.user_icon);
         }
         return result;
+    }
+
+    @Override
+    public void addPostImage(Post post, Bitmap image) {
+        trAddPostImage.setUser(user);
+        trAddPostImage.setPost(post);
+        trAddPostImage.setImage(image);
+        try {
+            trAddPostImage.execute();
+        } catch (NotPostOwnerException | PostNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

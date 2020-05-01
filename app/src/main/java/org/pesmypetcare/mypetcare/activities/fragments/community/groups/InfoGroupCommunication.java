@@ -93,4 +93,11 @@ public interface InfoGroupCommunication {
      * @return The user image
      */
     Bitmap findImageByUser(String username);
+
+    /**
+     * Add the given image to the post.
+     * @param post The post where the image has to be added
+     * @param image The image that has to be added to the post
+     */
+    void addPostImage(Post post, Bitmap image);
 }

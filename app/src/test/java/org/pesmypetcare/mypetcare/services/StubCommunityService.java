@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
+import android.graphics.Bitmap;
+
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerException;
@@ -316,6 +318,27 @@ public class StubCommunityService implements CommunityService {
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public void addPostImage(User user, Post post, Bitmap image) throws PostNotFoundException {
+        int groupIndex = groups.indexOf(post.getForum().getGroup());
+        boolean found = false;
+
+        for (Forum forum : groups.get(groupIndex).getForums()) {
+            if (forum.equals(post.getForum())) {
+                for (Post forumPost : forum.getPosts()) {
+                    if (forumPost.equals(post)) {
+                        post.setPostImage(image);
+                        found = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!found) {
+            throw new PostNotFoundException();
         }
     }
 

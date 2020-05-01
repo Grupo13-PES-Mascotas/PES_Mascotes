@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
+import android.graphics.Bitmap;
+
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerException;
@@ -124,4 +126,12 @@ public interface CommunityService {
      * @param reportMessage The message of the report
      */
     void reportPost(User user, Post post, String reportMessage);
+
+    /**
+     * The given user add the given image to the indicated post.
+     * @param user The user that wants to add the image to the post
+     * @param post The post where the image has to be added
+     * @param image The image that has to be added to the post
+     */
+    void addPostImage(User user, Post post, Bitmap image) throws PostNotFoundException;
 }
