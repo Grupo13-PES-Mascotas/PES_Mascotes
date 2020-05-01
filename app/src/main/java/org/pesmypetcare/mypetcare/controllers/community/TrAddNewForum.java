@@ -4,7 +4,7 @@ import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumCreatedBeforeGroupException;
 import org.pesmypetcare.mypetcare.features.community.forums.UserNotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
-import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingException;
+import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.CommunityService;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
@@ -69,13 +69,13 @@ public class TrAddNewForum {
     /**
      * Execute the transaction.
      * @throws UserNotSubscribedException The user is not subscribed
-     * @throws GroupNotExistingException The group does not exist
+     * @throws GroupNotFoundException The group does not exist
      * @throws ForumCreatedBeforeGroupException The forum has been created before the group
      */
-    public void execute() throws UserNotSubscribedException, GroupNotExistingException,
+    public void execute() throws UserNotSubscribedException, GroupNotFoundException,
         ForumCreatedBeforeGroupException {
         if (!communityService.isGroupExisting(group)) {
-            throw new GroupNotExistingException();
+            throw new GroupNotFoundException();
         } else if (!group.isUserSubscriber(user)) {
             throw new UserNotSubscribedException();
         } else if (group.getCreationDate().compareTo(creationDate) > 0) {

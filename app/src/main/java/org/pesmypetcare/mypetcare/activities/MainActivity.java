@@ -126,7 +126,6 @@ import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerExcepti
 import org.pesmypetcare.mypetcare.features.community.forums.UserNotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingException;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.NotGroupOwnerException;
 import org.pesmypetcare.mypetcare.features.community.groups.NotSubscribedException;
@@ -715,7 +714,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trAddNewForum.execute();
-        } catch (UserNotSubscribedException | GroupNotExistingException | ForumCreatedBeforeGroupException e) {
+        } catch (UserNotSubscribedException | GroupNotFoundException | ForumCreatedBeforeGroupException e) {
             Toast toast = Toast.makeText(this, getString(R.string.should_be_subscribed), Toast.LENGTH_LONG);
             toast.show();
         }
@@ -1085,7 +1084,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trAddSubscription.execute();
-        } catch (GroupNotExistingException e) {
+        } catch (GroupNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -1096,7 +1095,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteSubscription.setGroup(group);
         try {
             trDeleteSubscription.execute();
-        } catch (GroupNotExistingException | NotSubscribedException | OwnerCannotDeleteSubscriptionException e) {
+        } catch (GroupNotFoundException | NotSubscribedException | OwnerCannotDeleteSubscriptionException e) {
             e.printStackTrace();
         }
     }
