@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.views.circularentry.subscriber;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.LinearLayout;
@@ -8,6 +9,7 @@ import android.widget.Space;
 
 import androidx.annotation.Nullable;
 
+import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
@@ -15,6 +17,8 @@ import org.pesmypetcare.usermanager.datacontainers.DateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SubscribersView extends LinearLayout {
     public static final int MIN_SPACE_SIZE = 20;
@@ -38,11 +42,29 @@ public class SubscribersView extends LinearLayout {
      * @param group The group to display the subscribers
      */
     public void showSubscribers(Group group) {
+        List<Map.Entry<String, DateTime>> subscriptions = new ArrayList<>(group.getSubscribers().entrySet());
+        CircularEntryView[] components = new CircularEntryView[subscriptions.size()];
+        ExecutorService executorService = Executors.newCachedThreadPool();
+
+        for (int actual = 0; actual < subscriptions.size(); ++actual) {
+            int finalActual = actual;
+            executorService.execute(() -> {
+                String username = subscriptions.get(finalActual).getKey();
+                DateTime subscriptionDate = subscriptions.get(finalActual).getValue();
+                Bitmap userImage = InfoGroupFragment.getCommunication().findImageByUser(username);
+
+                components[finalActual] = new SubscriberComponentView(context, null, username,
+                    subscriptionDate, group);
+            });
+        }
+
+
         for (Map.Entry<String, DateTime> subscription : group.getSubscribers().entrySet()) {
             String username = subscription.getKey();
             DateTime subscriptionDate = subscription.getValue();
             CircularEntryView circularEntryView = new SubscriberComponentView(context, null, username,
                 subscriptionDate, group);
+
             circularEntryView.initializeComponent();
             addView(circularEntryView);
             groupComponents.add(circularEntryView);

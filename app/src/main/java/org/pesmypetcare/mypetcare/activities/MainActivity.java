@@ -1141,6 +1141,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
+    public Bitmap findImageByUser(String username) {
+        return null;
+    }
+
+    @Override
     public void changePetProfileImage(Pet actualPet) {
         user.updatePetProfileImage(actualPet);
     }

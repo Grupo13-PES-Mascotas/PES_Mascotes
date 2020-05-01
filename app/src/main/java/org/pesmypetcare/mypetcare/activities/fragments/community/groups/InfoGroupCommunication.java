@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.fragments.community.groups;
 
+import android.graphics.Bitmap;
+
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
@@ -84,4 +86,11 @@ public interface InfoGroupCommunication {
      * @param reportMessage The report message
      */
     void reportPost(Post post, String reportMessage);
+
+    /**
+     * Get the image from the user.
+     * @param username The username
+     * @return The user image
+     */
+    Bitmap findImageByUser(String username);
 }
