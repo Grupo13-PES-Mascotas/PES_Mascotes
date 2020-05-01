@@ -263,16 +263,6 @@ public class PetManagerAdapter implements PetManagerService {
         ServiceLocator.getInstance().getFreqWashManagerClient().deleteByDate(accessToken, userName, petName, dateTime);
     }
 
-    @Override
-    public void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) {
-        //Not implemented yet
-    }
-
-    @Override
-    public void deletePeriodicEvent(User user, Pet pet, Event event) {
-        //Not implemented yet
-    }
-
     /**
      * Decodes the pet information from the server.
      * @param userPet The information from the server

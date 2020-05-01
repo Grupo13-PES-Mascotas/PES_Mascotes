@@ -3,16 +3,21 @@ package org.pesmypetcare.mypetcare.controllers.pet;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
+
+import java.util.concurrent.ExecutionException;
 
 public class TrRegisterNewPet {
     private PetManagerService petManagerService;
+    private GoogleCalendarService googleCalendarService;
     private User user;
     private Pet pet;
     private boolean result;
 
-    public TrRegisterNewPet(PetManagerService petManagerService) {
+    public TrRegisterNewPet(PetManagerService petManagerService, GoogleCalendarService googleCalendarService) {
         this.petManagerService = petManagerService;
+        this.googleCalendarService = googleCalendarService;
     }
 
     /**
@@ -35,7 +40,7 @@ public class TrRegisterNewPet {
      * Execute the transaction.
      * @throws PetAlreadyExistingException The pet has already been registered by the user
      */
-    public void execute() throws PetAlreadyExistingException {
+    public void execute() throws PetAlreadyExistingException, ExecutionException, InterruptedException {
         result = false;
         if (petHasAlreadyBeenRegistered()) {
             throw new PetAlreadyExistingException();
@@ -43,6 +48,7 @@ public class TrRegisterNewPet {
 
         user.addPet(pet);
         petManagerService.registerNewPet(user, pet);
+        googleCalendarService.newSecondaryCalendar(pet);
         result = true;
     }
 

@@ -163,11 +163,7 @@ public class CalendarFragment extends Fragment {
                 if (reasonText.getText().toString().length() != 0) {
                     try {
                         createPeriodicNotification(reasonText, dateText, timeText, sp_pets, sp_period);
-                    } catch (ParseException | InvalidFormatException | UserIsNotOwnerException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
+                    } catch (ParseException | InvalidFormatException | UserIsNotOwnerException | ExecutionException | InterruptedException e) {
                         e.printStackTrace();
                     }
                 } else {
@@ -196,7 +192,6 @@ public class CalendarFragment extends Fragment {
                 timeText.getText().toString());
         getPet(petName);
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
-            //selectedPet.addPeriodicNotification(new Event(reasonText.getText().toString(), dateTime), period);
             communication.newPeriodicNotification(selectedPet, period, reasonText.getText().toString(), dateTime);
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(dateTime, c);
@@ -304,7 +299,7 @@ public class CalendarFragment extends Fragment {
                 if (reasonText.getText().toString().length() != 0) {
                     try {
                         createPersonalEvent(reasonText, dateText, timeText, sp);
-                    } catch (ParseException | InvalidFormatException e) {
+                    } catch (ParseException | InvalidFormatException | ExecutionException | InterruptedException e) {
                         e.printStackTrace();
                     }
                 } else {
@@ -334,13 +329,12 @@ public class CalendarFragment extends Fragment {
      * @param timeText The hour of the event
      */
     private void createPersonalEvent(EditText reasonText, TextView dateText, EditText timeText, Spinner sp) throws
-            ParseException, InvalidFormatException {
+            ParseException, InvalidFormatException, ExecutionException, InterruptedException {
         String petName = sp.getSelectedItem().toString();
         DateTime dateTime = DateTime.Builder.buildDateTimeString(dateText.getText().toString(),
                 timeText.getText().toString());;
         getPet(petName);
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
-            selectedPet.addEvent(new Event(reasonText.getText().toString(), dateTime));
             communication.newPersonalEvent(selectedPet, reasonText.getText().toString(), dateTime.toString());
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(dateTime, c);
@@ -564,22 +558,21 @@ public class CalendarFragment extends Fragment {
             } catch (ParseException | InvalidFormatException e) {
                 e.printStackTrace();
             }
-            pet.deleteEvent(event);
-            communication.deletePersonalEvent(pet, event);
+            try {
+                //pet.deletePeriodicNotification(event);
+                communication.deletePeriodicNotification(pet, event, user);
+            } catch (ParseException | UserIsNotOwnerException | InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+            try {
+                communication.deletePersonalEvent(pet, event);
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(event.getDateTime(), c);
             communication.cancelNotification(getContext(), new Notification(event.getDescription(),
                     new Date(c.getTimeInMillis()), pet.getName()));
-            try {
-                //pet.deletePeriodicNotification(event);
-                communication.deletePeriodicNotification(pet, event, user);
-            } catch (ParseException | UserIsNotOwnerException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
         });
     }
 

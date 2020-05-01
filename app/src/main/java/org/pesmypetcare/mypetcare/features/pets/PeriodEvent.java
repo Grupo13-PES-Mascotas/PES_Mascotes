@@ -28,4 +28,12 @@ public class PeriodEvent extends Event {
     public void setPeriod(int period) {
         this.period = period;
     }
+
+    /**
+     * Check the type of the event.
+     * @return True if is periodic, false otherwise
+     */
+    public boolean isPeriodic() {
+        return true;
+    }
 }

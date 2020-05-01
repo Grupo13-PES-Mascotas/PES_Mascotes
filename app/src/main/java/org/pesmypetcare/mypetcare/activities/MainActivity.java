@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -34,6 +35,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -55,6 +58,8 @@ import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommun
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.login.AsyncResponse;
+import org.pesmypetcare.mypetcare.activities.fragments.login.MyAsyncTask;
 import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsComunication;
 import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetCommunication;
@@ -151,6 +156,7 @@ import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -171,7 +177,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
     InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
-    CommunityCommunication, InfoGroupCommunication {
+    CommunityCommunication, InfoGroupCommunication, AsyncResponse {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
@@ -189,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static FirebaseAuth mAuth;
     private static Fragment actualFragment;
     private static User user;
+    private static SharedPreferences sharedpreferences;
     private static Resources resources;
     private static NavigationView navigationView;
     private static int[] countImagesNotFound;
@@ -250,6 +257,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setContentView(binding.getRoot());
         resources = getResources();
 
+        sharedpreferences = getSharedPreferences("GoogleCalendar", Context.MODE_PRIVATE);
+
         notificationId = 0;
         requestCode = 0;
 
@@ -270,6 +279,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         if (mAuth.getCurrentUser() != null) {
             try {
                 initializeUser();
+                refreshGoogleCalendarToken();
                 //changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
             } catch (PetRepeatException e) {
                 Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing),
@@ -277,6 +287,24 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 toast.show();
             }
         }
+    }
+
+    /**
+     * Refresh the google calendar token.
+     */
+    private void refreshGoogleCalendarToken() {
+        this.getGoogleToken();
+    }
+
+    /**
+     * Get the google calendar token.
+     */
+    public void getGoogleToken() {
+        String googleEmail = sharedpreferences.getString("GoogleEmail", "");
+        String scopes = sharedpreferences.getString("GoogleScopes", "");
+        MyAsyncTask asyncTask = new MyAsyncTask(googleEmail, scopes, this.getBaseContext());
+        asyncTask.delegate = this;
+        asyncTask.execute();
     }
 
     /**
@@ -997,6 +1025,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing), Toast.LENGTH_LONG);
             toast.show();
             return;
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
 
         changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
@@ -1145,22 +1175,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void changePetProfileImage(Pet actualPet) {
         user.updatePetProfileImage(actualPet);
     }
-    
-    public void newPersonalEvent(Pet pet, String description, String dateTime) {
-        /*
+
+    @Override
+    public void newPersonalEvent(Pet pet, String description, String dateTime) throws ExecutionException, InterruptedException, InvalidFormatException {
         trNewPersonalEvent.setPet(pet);
-        trNewPersonalEvent.setEvent(new Event(description, dateTime));
+        trNewPersonalEvent.setEvent(new Event(description, DateTime.Builder.buildFullString(dateTime)));
         trNewPersonalEvent.execute();
-        */
+
     }
 
     @Override
-    public void deletePersonalEvent(Pet pet, Event event) {
-        /*
+    public void deletePersonalEvent(Pet pet, Event event) throws ExecutionException, InterruptedException {
         trDeletePersonalEvent.setPet(pet);
         trDeletePersonalEvent.setEvent(event);
         trDeletePersonalEvent.execute();
-         */
     }
 
 
@@ -1317,7 +1345,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdateMeal.setUser(user);
         trUpdateMeal.setPet(pet);
         trUpdateMeal.setMeal(meal);
-        System.out.println("Meal date : " + meal.getDateTime() + " meal name : " + meal.getMealName());
         if (updatesDate) {
             trUpdateMeal.setNewDate(newDate);
         }
@@ -1699,5 +1726,32 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void showGroupFragment(InfoGroupFragment infoGroupFragment) {
         changeFragment(infoGroupFragment);
+    }
+
+    /**
+     * Initializes the SharedPreferences.
+     * @param acct The google account
+     */
+    public static void setGoogleAccount(GoogleSignInAccount acct) {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("GoogleEmail", acct.getEmail());
+
+        StringBuilder scopes = new StringBuilder();
+        for (Scope s : acct.getRequestedScopes())
+            scopes.append(s.toString()).append(" ");
+        scopes = new StringBuilder(scopes.substring(0, scopes.toString().lastIndexOf(' ')));
+
+        editor.putString("GoogleScopes", scopes.toString());
+
+        editor.apply();
+    }
+
+    /**
+     * Setter of the Google Calendar Token after the refresh.
+     * @param token The token
+     */
+    @Override
+    public void processFinish(String token) {
+        user.setGoogleCalendarToken(token);
     }
 }
