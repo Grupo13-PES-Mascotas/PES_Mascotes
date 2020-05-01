@@ -505,16 +505,16 @@ public class Pet {
      * @param date The date of the events
      * @return The list of periodic notification events on the given date
      */
-    public ArrayList<PeriodEvent> getPeriodicEvents(String date) throws ParseException {
+    public ArrayList<Event> getPeriodicEvents(String date) throws ParseException {
         Date dateActual = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-        ArrayList<PeriodEvent> selectedEvents = new ArrayList<>();
+        ArrayList<Event> selectedEvents = new ArrayList<>();
         for (PeriodEvent event : periodEvents) {
             String eventDate = (event.getDateTime()).toString().substring(0,
                     event.getDateTime().toString().indexOf('T'));
             Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(eventDate);
             int diff = (int) ((dateActual.getTime() - date1.getTime()) / 86400000);
             if(diff % event.getPeriod() == 0) {
-                selectedEvents.add(event);
+                selectedEvents.add(new Event(event.getDescription(), event.getDateTime()));
             }
         }
         return selectedEvents;

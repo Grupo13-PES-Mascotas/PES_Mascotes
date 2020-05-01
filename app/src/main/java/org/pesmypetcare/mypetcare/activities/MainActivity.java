@@ -195,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static FirebaseAuth mAuth;
     private static Fragment actualFragment;
     private static User user;
-    private static GoogleSignInAccount googleAccount;
     private static SharedPreferences sharedpreferences;
     private static Resources resources;
     private static NavigationView navigationView;
@@ -301,7 +300,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Get the google calendar token.
      */
     public void getGoogleToken() {
-        System.out.println("hola");
         String googleEmail = sharedpreferences.getString("GoogleEmail", "");
         String scopes = sharedpreferences.getString("GoogleScopes", "");
         MyAsyncTask asyncTask = new MyAsyncTask(googleEmail, scopes, this.getBaseContext());

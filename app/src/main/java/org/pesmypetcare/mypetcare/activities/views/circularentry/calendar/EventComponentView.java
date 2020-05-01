@@ -12,7 +12,6 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.features.pets.Event;
-import org.pesmypetcare.mypetcare.features.pets.PeriodEvent;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
 
@@ -28,23 +27,6 @@ public class EventComponentView extends CircularEntryView {
         super(context, attrs);
         this.pet = pet;
         this.event = event;
-    }
-
-    /**
-     * Show the events that the pet has got on a date.
-     * @param pet The pet that has got the event
-     * @param date The date to obtain the events from
-     */
-    public void showEvents(Pet pet, String date) throws ParseException {
-        //pet.addEvent(new Event("Take to vet", "2020-04-03T10:30:00"));
-        List<Event> events = pet.getEvents(date);
-        List<PeriodEvent> periodicEvents = pet.getPeriodicEvents(date);
-        events.addAll(periodicEvents);
-        for (Event event : events) {
-            CircularEntryView circularEntryView = new EventView(context, null, pet, event).initializeComponent();
-            addView(circularEntryView);
-            this.petComponents.add(circularEntryView);
-        }
     }
 
     @Override
