@@ -45,7 +45,7 @@ public class GoogleCalendarAdapter implements GoogleCalendarService {
         String id = (pet.getName() + event.getDateTime().getDay() + event.getDateTime().getMonth()
                 + event.getDateTime().getYear() + event.getDescription()).toLowerCase();
         EventData eventData = new EventData(id, pet.getName(), A_REALLY_PRETTY_LOCATION,
-                event.getDescription(), EventData.BLUEBERRY, EMAIL_REMINDER_MINUTES, period,
+                event.getDescription(), EventData.FLAMINGO, EMAIL_REMINDER_MINUTES, period,
                 event.getDateTime().toString(), event.getDateTime().toString());
         ServiceLocator.getInstance().getGoogleCalendarManagerClient().createEvent(pet.getOwner()
                 .getGoogleCalendarToken(), pet.getOwner().getUsername(), pet.getName(), eventData);
