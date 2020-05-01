@@ -116,9 +116,17 @@ public class CommunityControllersFactory {
 
     /**
      * Create the transaction to add an image to a post.
-     * @return The transaction to add an image to a post.
+     * @return The transaction to add an image to a post
      */
     public static TrAddPostImage createTrAddPostImage() {
         return new TrAddPostImage(new CommunityAdapter());
+    }
+
+    /**
+     * Create the transaction to delete the image from a post.
+     * @return The transaction to delete the image from a post
+     */
+    public static TrDeletePostImage createTrDeletePostImage() {
+        return new TrDeletePostImage(new CommunityAdapter());
     }
 }
