@@ -100,4 +100,10 @@ public interface InfoGroupCommunication {
      * @param image The image that has to be added to the post
      */
     void addPostImage(Post post, Bitmap image);
+
+    /**
+     * Delete post image.
+     * @param post The post to delete the image
+     */
+    void deletePostImage(Post post);
 }

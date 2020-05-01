@@ -352,6 +352,8 @@ public class PostsFragment extends Fragment {
                                      AlertDialog editPostDialog) {
         MaterialButton btnUpdatePost = editPostLayout.findViewById(R.id.updatePostButton);
         MaterialButton btnDeletePost = editPostLayout.findViewById(R.id.deletePostButton);
+        MaterialButton btnDeletePostImage = editPostLayout.findViewById(R.id.deletePostImageButton);
+
         btnUpdatePost.setOnClickListener(v -> {
             InfoGroupFragment.getCommunication().updatePost(post,
                 Objects.requireNonNull(editPostMessage.getText()).toString());
@@ -361,6 +363,18 @@ public class PostsFragment extends Fragment {
             InfoGroupFragment.getCommunication().deletePost(forum, post.getCreationDate());
             editPostDialog.dismiss();
         });
+
+        if (post.getPostImage() != null) {
+            btnDeletePostImage.setVisibility(View.VISIBLE);
+
+            btnDeletePostImage.setOnClickListener(v -> {
+                InfoGroupFragment.getCommunication().deletePostImage(post);
+                editPostDialog.dismiss();
+                showPosts();
+            });
+        } else {
+            btnDeletePostImage.setVisibility(View.GONE);
+        }
     }
 
     @Override

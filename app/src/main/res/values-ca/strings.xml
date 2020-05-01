@@ -240,6 +240,7 @@
     <string name="report_reason_spam_or_misleading_content">Contingut brossa o enganyós</string>
     <string name="report_reason_infringe_my_rights">Infracció dels drets d\'autor</string>
     <string name="report_reason_other">Altres</string>
+    <string name="delete_post_image">Eliminar la imatge del post</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

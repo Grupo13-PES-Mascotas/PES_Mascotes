@@ -93,7 +93,7 @@ public class InfoPetMealsFragment extends Fragment {
     private void initializeAddMealButton() {
         addMealButton.setOnClickListener(v -> {
             editing = false;
-            deleteMealButton.setVisibility(View.INVISIBLE);
+            deleteMealButton.setVisibility(View.GONE);
             inputMealName.setText("");
             inputMealCal.setText("");
             mealDate.setText(R.string.meal_date);

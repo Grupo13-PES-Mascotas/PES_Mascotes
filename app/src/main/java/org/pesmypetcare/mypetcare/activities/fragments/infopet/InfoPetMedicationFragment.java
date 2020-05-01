@@ -83,7 +83,7 @@ public class InfoPetMedicationFragment extends Fragment {
     private void initializeAddMedicationButton() {
         addMedicationButton.setOnClickListener(v -> {
             editing = false;
-            deleteMedicationButton.setVisibility(View.INVISIBLE);
+            deleteMedicationButton.setVisibility(View.GONE);
             inputMedicationName.setText("");
             inputMedicationQuantity.setText("");
             inputMedicationDuration.setText("");
