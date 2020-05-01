@@ -84,8 +84,22 @@ public class ImageZoomFragment extends Fragment {
     private MaterialAlertDialogBuilder createAlertDialog() {
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(
             Objects.requireNonNull(getActivity()));
-        alertDialog.setTitle(R.string.delete_pet_image_title);
-        alertDialog.setMessage(R.string.delete_pet_image_text);
+        switch (origin) {
+            case MainActivity.MAIN_ACTIVITY_ZOOM_IDENTIFIER:
+                alertDialog.setTitle(R.string.delete_user_image_title);
+                alertDialog.setMessage(R.string.delete_user_image_text);
+                break;
+            case InfoPetFragment.INFO_PET_ZOOM_IDENTIFIER:
+                alertDialog.setTitle(R.string.delete_pet_image_title);
+                alertDialog.setMessage(R.string.delete_pet_image_text);
+                break;
+            case InfoGroupFragment.INFO_GROUP_ZOOM_IDENTIFIER:
+                alertDialog.setTitle(R.string.delete_group_image_title);
+                alertDialog.setMessage(R.string.delete_group_image_text);
+                break;
+            default:
+        }
+
         alertDialog.setPositiveButton(R.string.affirmative_response, (dialog, which) -> {
             switch (origin) {
                 case MainActivity.MAIN_ACTIVITY_ZOOM_IDENTIFIER:

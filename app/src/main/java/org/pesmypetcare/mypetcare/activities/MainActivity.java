@@ -1017,6 +1017,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 break;
             case InfoGroupFragment.INFO_GROUP_ZOOM_IDENTIFIER:
                 changeFragment(new InfoGroupFragment());
+                Bitmap bitmap = ((BitmapDrawable) ImageZoomFragment.getDrawable()).getBitmap();
+                updateGroupImage(InfoGroupFragment.getGroup(), bitmap);
                 break;
             default:
         }
@@ -1036,6 +1038,31 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @param group The group where the image has to be added
      * @param image The image that has to be added to the groups
      */
+    private void updateGroupImage(Group group, Bitmap bitmap) {
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        if (group.getGroupIcon() == null) {
+            executorService.execute(() -> {
+                ImageManager.deleteImage(ImageManager.GROUP_IMAGES_PATH, group.getName());
+            });
+
+            editor.remove(group.getName());
+        } else {
+            addGroupImage(group, bitmap);
+            executorService.execute(() -> {
+                byte[] imageBytes = ImageManager.getImageBytes(bitmap);
+                ImageManager.writeImage(ImageManager.GROUP_IMAGES_PATH, group.getName(), imageBytes);
+            });
+
+            editor.putString(group.getName(), DateTime.getCurrentDateTime().toString());
+        }
+
+        executorService.shutdown();
+        editor.apply();
+    }
+
     private void addGroupImage(Group group, Bitmap image) {
         trAddGroupImage.setUser(user);
         trAddGroupImage.setGroup(group);
