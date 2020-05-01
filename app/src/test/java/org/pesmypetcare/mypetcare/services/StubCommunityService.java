@@ -359,7 +359,7 @@ public class StubCommunityService implements CommunityService {
                 boolean found = false;
                 for (Post p : f.getPosts()) {
                     if (p.getUsername().equals(user.getUsername())
-                        && p.getCreationDate().compareTo(post.getCreationDate()) == 0) {
+                            && p.getCreationDate().compareTo(post.getCreationDate()) == 0) {
                         found = true;
                         p.setText(newText);
                     }
