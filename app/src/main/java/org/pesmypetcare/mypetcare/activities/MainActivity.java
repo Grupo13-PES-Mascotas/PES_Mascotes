@@ -1592,6 +1592,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
     }
 
+    /**
+     * Get the galley bitmap.
+     * @param data The data from the gallery
+     * @return The bitmap of the gallery
+     */
     private Bitmap getGalleryBitmap(@Nullable Intent data) {
         String imagePath = getImagePath(data);
         Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
@@ -1766,6 +1771,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return user;
     }
 
+    /**
+     * Get the groups.
+     * @return The groups
+     */
     public List<Group> getGroups() {
         return groups;
     }
@@ -1821,52 +1830,17 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             }
         }
 
+        getAllGroupImages(groups);
+        return groups;
+    }
+
+    /**
+     * Get all the groups images.
+     * @param groups The group images
+     */
+    private void getAllGroupImages(SortedSet<Group> groups) {
         ExecutorService getGroupsImages = Executors.newSingleThreadExecutor();
-        getGroupsImages.execute(() -> {
-            List<Group> groupList = new ArrayList<>(groups);
-            ExecutorService getGroupImage = Executors.newCachedThreadPool();
-
-            for (int actual = 0; actual < groupList.size(); ++actual) {
-                int finalActual = actual;
-                getGroupImage.execute(() -> {
-                    SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-                    Group actualGroup = groupList.get(finalActual);
-                    String currentGroupDate = sharedPreferences.getString(actualGroup.getName(), "");
-                    byte[] bytesImage = new byte[0];
-
-                    if (needToUpdateImage(groupList, finalActual, currentGroupDate)) {
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString(actualGroup.getName(), actualGroup.getLastGroupImage().toString());
-                        editor.apply();
-
-                        bytesImage = getGroupImage(actualGroup.getName());
-                        ImageManager.writeImage(ImageManager.GROUP_IMAGES_PATH, actualGroup.getName(), bytesImage);
-                    } else {
-                        try {
-                            bytesImage = ImageManager.readImage(ImageManager.GROUP_IMAGES_PATH, actualGroup.getName());
-                        } catch (IOException e) {
-                            bytesImage = new byte[0];
-                        }
-                    }
-
-                    if (bytesImage.length == 0) {
-                        groupList.get(finalActual).setGroupIcon(null);
-                    } else {
-                        groupList.get(finalActual).setGroupIcon(BitmapFactory.decodeByteArray(bytesImage, 0,
-                            bytesImage.length));
-                    }
-                });
-            }
-
-            getGroupImage.shutdown();
-            try {
-                getGroupImage.awaitTermination(5, TimeUnit.MINUTES);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            //GroupsFragment.showGroups(groups);
-        });
+        getGroupsImages.execute(() -> getGroupsImages(groups));
 
         getGroupsImages.shutdown();
         try {
@@ -1874,7 +1848,52 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return groups;
+    }
+
+    private void getGroupsImages(SortedSet<Group> groups) {
+        List<Group> groupList = new ArrayList<>(groups);
+        ExecutorService getGroupImage = Executors.newCachedThreadPool();
+
+        for (int actual = 0; actual < groupList.size(); ++actual) {
+            int finalActual = actual;
+            getGroupImage.execute(() -> updateGroupImage(groupList, finalActual));
+        }
+
+        getGroupImage.shutdown();
+        try {
+            getGroupImage.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateGroupImage(List<Group> groupList, int finalActual) {
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        Group actualGroup = groupList.get(finalActual);
+        String currentGroupDate = sharedPreferences.getString(actualGroup.getName(), "");
+        byte[] bytesImage = new byte[0];
+
+        if (needToUpdateImage(groupList, finalActual, currentGroupDate)) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(actualGroup.getName(), actualGroup.getLastGroupImage().toString());
+            editor.apply();
+
+            bytesImage = getGroupImage(actualGroup.getName());
+            ImageManager.writeImage(ImageManager.GROUP_IMAGES_PATH, actualGroup.getName(), bytesImage);
+        } else {
+            try {
+                bytesImage = ImageManager.readImage(ImageManager.GROUP_IMAGES_PATH, actualGroup.getName());
+            } catch (IOException e) {
+                bytesImage = new byte[0];
+            }
+        }
+
+        if (bytesImage.length == 0) {
+            groupList.get(finalActual).setGroupIcon(null);
+        } else {
+            groupList.get(finalActual).setGroupIcon(BitmapFactory.decodeByteArray(bytesImage, 0,
+                bytesImage.length));
+        }
     }
 
     private byte[] getGroupImage(String groupName) {
