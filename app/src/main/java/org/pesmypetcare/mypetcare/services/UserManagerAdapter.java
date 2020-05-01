@@ -175,4 +175,12 @@ public class UserManagerAdapter implements UserManagerService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public Bitmap obtainUserImage(String username, String accessToken) throws ExecutionException, InterruptedException {
+        byte[] userProfileImageBytes = ServiceLocator.getInstance().getUserManagerClient()
+            .downloadProfileImage(username, accessToken);
+        return BitmapFactory.decodeByteArray(userProfileImageBytes, 0,
+            userProfileImageBytes.length);
+    }
 }

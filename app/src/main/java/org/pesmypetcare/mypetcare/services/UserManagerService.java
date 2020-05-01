@@ -79,4 +79,11 @@ public interface UserManagerService {
      * @return True if the change has been done without any problems
      */
     void changeUsername(User user, String newUsername);
+
+    /**
+     * Obtains the image of the given username.
+     * @param username The username from which we want to obtain the image
+     * @param accessToken The access token of the current user
+     */
+    Bitmap obtainUserImage(String username, String accessToken) throws ExecutionException, InterruptedException;
 }

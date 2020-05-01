@@ -93,4 +93,14 @@ public class StubUserManagerService implements UserManagerService {
             }
         }
     }
+
+    @Override
+    public Bitmap obtainUserImage(String username, String accessToken) {
+        for (User nextUser : data) {
+            if (username.equals(nextUser.getUsername())) {
+                return nextUser.getUserProfileImage();
+            }
+        }
+        return null;
+    }
 }

@@ -69,4 +69,12 @@ public class UserControllersFactory {
     public static TrExistsUsername createTrExistsUsername() {
         return new TrExistsUsername(new UserManagerAdapter());
     }
+
+    /**
+     * Create the transaction for obtaining the user image.
+     * @return The transaction for obtaining the user image
+     */
+    public static TrObtainUserImage createTrObtainUserImage() {
+        return new TrObtainUserImage(new UserManagerAdapter());
+    }
 }

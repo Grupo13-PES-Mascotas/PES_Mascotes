@@ -111,6 +111,7 @@ import org.pesmypetcare.mypetcare.controllers.user.TrChangeUsername;
 import org.pesmypetcare.mypetcare.controllers.user.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.user.TrExistsUsername;
 import org.pesmypetcare.mypetcare.controllers.user.TrObtainUser;
+import org.pesmypetcare.mypetcare.controllers.user.TrObtainUserImage;
 import org.pesmypetcare.mypetcare.controllers.user.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.controllers.user.UserControllersFactory;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
@@ -241,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrLikePost trLikePost;
     private TrUnlikePost trUnlikePost;
     private TrReportPost trReportPost;
+    private TrObtainUserImage trObtainUserImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -540,6 +542,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trChangeMail = UserControllersFactory.createTrChangeMail();
         trChangeUsername = UserControllersFactory.createTrChangeUsername();
         trExistsUsername = UserControllersFactory.createTrExistsUsername();
+        trObtainUserImage = UserControllersFactory.createTrObtainUserImage();
     }
 
     /**
@@ -1142,7 +1145,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public Bitmap findImageByUser(String username) {
-        return null;
+        trObtainUserImage.setUsername(username);
+        trObtainUserImage.setAccessToken(user.getToken());
+        try {
+            trObtainUserImage.execute();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        Bitmap result = trObtainUserImage.getResult();
+        if (result == null) {
+            result = BitmapFactory.decodeResource(getResources(), R.drawable.user_icon);
+        }
+        return result;
     }
 
     @Override
