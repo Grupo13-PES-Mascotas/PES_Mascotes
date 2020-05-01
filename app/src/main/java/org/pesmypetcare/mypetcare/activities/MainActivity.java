@@ -636,6 +636,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         hideWindowSoftKeyboard();
     }
 
+    /**
+     * Set the share app button listener.
+     */
     private void setUpShareAppListener() {
         shareAppButton.setOnClickListener(v -> {
             try {
