@@ -16,6 +16,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoGroupBinding;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
+import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.util.ArrayList;
@@ -49,9 +50,13 @@ public class InfoGroupFragment extends Fragment {
             binding.imgGroup.setDrawable(new BitmapDrawable(getResources(), group.getGroupIcon()));
         }
 
-        binding.imgGroup.setOnClickListener(v -> {
-            communication.makeGroupZoomImage(binding.imgGroup.getDrawable());
-        });
+        User user = communication.getUser();
+
+        if (group.getOwnerUsername().equals(user.getUsername())) {
+            binding.imgGroup.setOnClickListener(v -> {
+                communication.makeGroupZoomImage(binding.imgGroup.getDrawable());
+            });
+        }
 
         ExecutorService obtainSubscribersImages = Executors.newCachedThreadPool();
         obtainSubscribersImages.execute(() -> {
