@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.fragments.community.groups;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,9 +42,14 @@ public class InfoGroupFragment extends Fragment {
         String tags = getTagsFromGroup();
         binding.txtGroupTags.setText(tags);
 
+        if (group.getGroupIcon() == null) {
+            binding.imgGroup.setDrawable(getResources().getDrawable(R.drawable.icon_group, null));
+        } else {
+            binding.imgGroup.setDrawable(new BitmapDrawable(getResources(), group.getGroupIcon()));
+        }
+
         ExecutorService obtainSubscribersImages = Executors.newCachedThreadPool();
         obtainSubscribersImages.execute(() -> {
-            System.out.println("START SUBSCRIBERS IMAGES");
             List<Map.Entry<String, DateTime>> subscribers = new ArrayList<>(group.getSubscribers().entrySet());
             String[] username = new String[subscribers.size()];
             Bitmap[] images = new Bitmap[subscribers.size()];

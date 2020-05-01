@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,6 +43,11 @@ public class Group implements Comparable<Group> {
         this.tags = new ArrayList<>();
         this.subscribers = new TreeMap<>();
         this.subscribersImages = new TreeMap<>();
+        try {
+            this.lastGroupImage = DateTime.Builder.build(2020, 1, 1);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
 
         this.subscribers.put(ownerUsername, creationDate);
     }

@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -153,6 +154,7 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -1674,7 +1676,69 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             }
         }
 
+        ExecutorService getGroupsImages = Executors.newSingleThreadExecutor();
+        getGroupsImages.execute(() -> {
+            List<Group> groupList = new ArrayList<>(groups);
+            ExecutorService getGroupImage = Executors.newCachedThreadPool();
+
+            for (int actual = 0; actual < groupList.size(); ++actual) {
+                int finalActual = actual;
+                getGroupImage.execute(() -> {
+                    SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+                    Group actualGroup = groupList.get(finalActual);
+                    String currentGroupDate = sharedPreferences.getString(actualGroup.getName(), "");
+                    byte[] bytesImage = new byte[0];
+
+                    if (needToUpdateImage(groupList, finalActual, currentGroupDate)) {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString(actualGroup.getName(), actualGroup.getLastGroupImage().toString());
+                        editor.apply();
+
+                        bytesImage = getGroupImage(actualGroup.getName());
+                        ImageManager.writeImage(ImageManager.GROUP_IMAGES_PATH, actualGroup.getName(), bytesImage);
+                    } else {
+                        try {
+                            bytesImage = ImageManager.readImage(ImageManager.GROUP_IMAGES_PATH, actualGroup.getName());
+                        } catch (IOException e) {
+                            bytesImage = new byte[0];
+                        }
+                    }
+
+                    if (bytesImage.length == 0) {
+                        groupList.get(finalActual).setGroupIcon(null);
+                    } else {
+                        groupList.get(finalActual).setGroupIcon(BitmapFactory.decodeByteArray(bytesImage, 0,
+                            bytesImage.length));
+                    }
+                });
+            }
+
+            getGroupImage.shutdown();
+            try {
+                getGroupImage.awaitTermination(5, TimeUnit.MINUTES);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            //GroupsFragment.showGroups(groups);
+        });
+
+        getGroupsImages.shutdown();
+        try {
+            getGroupsImages.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return groups;
+    }
+
+    private byte[] getGroupImage(String groupName) {
+        return new byte[0];
+    }
+
+    private boolean needToUpdateImage(List<Group> groupList, int finalActual, String currentGroupDate) {
+        return "".equals(currentGroupDate) || groupList.get(finalActual).getLastGroupImage()
+            .compareTo(DateTime.Builder.buildFullString(currentGroupDate)) > 0;
     }
 
     /**

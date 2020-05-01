@@ -16,6 +16,7 @@ import java.nio.channels.FileChannel;
 public class ImageManager {
     public static final String PET_PROFILE_IMAGES_PATH = "petProfileImages";
     public static final String USER_PROFILE_IMAGES_PATH = "userProfileImages";
+    public static final String GROUP_IMAGES_PATH = "groupImages";
     private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath()
         + File.separator + "MyPetCare";
     private static final String EXTENSION = ".jpg";
@@ -75,6 +76,7 @@ public class ImageManager {
      */
     public static byte[] readImage(String relativePath, String imageName) throws IOException {
         String imagePath = PATH + File.separator + relativePath + File.separator + imageName + EXTENSION;
+        System.out.println("IMAGE PATH: " + imagePath);
         FileChannel channel = new FileInputStream(imagePath).getChannel();
         MappedByteBuffer buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
         byte[] bytes = new byte[buffer.remaining()];
