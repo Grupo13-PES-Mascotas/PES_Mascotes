@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.fragments.community.groups;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
@@ -106,4 +107,10 @@ public interface InfoGroupCommunication {
      * @param post The post to delete the image
      */
     void deletePostImage(Post post);
+
+    /**
+     * Make the zoom image of the group.
+     * @param drawable The image to display
+     */
+    void makeGroupZoomImage(Drawable drawable);
 }

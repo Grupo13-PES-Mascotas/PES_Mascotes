@@ -1006,6 +1006,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 InfoPetFragment.setPetProfileDrawable(ImageZoomFragment.getDrawable());
                 changeFragment(new InfoPetFragment());
                 break;
+            case InfoGroupFragment.INFO_GROUP_ZOOM_IDENTIFIER:
+                changeFragment(new InfoGroupFragment());
+                break;
             default:
         }
         /*
@@ -1207,6 +1210,15 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void deletePostImage(Post post) {
 
+    }
+
+    @Override
+    public void makeGroupZoomImage(Drawable drawable) {
+        floatingActionButton.hide();
+        //ImageZoomFragment.setIsMainActivity(false);
+        ImageZoomFragment.setOrigin(InfoGroupFragment.INFO_GROUP_ZOOM_IDENTIFIER);
+
+        changeFragment(new ImageZoomFragment(drawable));
     }
 
     @Override

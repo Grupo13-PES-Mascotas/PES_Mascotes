@@ -26,6 +26,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class InfoGroupFragment extends Fragment {
+    public static final int INFO_GROUP_ZOOM_IDENTIFIER = 2;
     private static InfoGroupCommunication communication;
     private static Group group;
 
@@ -47,6 +48,10 @@ public class InfoGroupFragment extends Fragment {
         } else {
             binding.imgGroup.setDrawable(new BitmapDrawable(getResources(), group.getGroupIcon()));
         }
+
+        binding.imgGroup.setOnClickListener(v -> {
+            communication.makeGroupZoomImage(binding.imgGroup.getDrawable());
+        });
 
         ExecutorService obtainSubscribersImages = Executors.newCachedThreadPool();
         obtainSubscribersImages.execute(() -> {
@@ -75,7 +80,6 @@ public class InfoGroupFragment extends Fragment {
             }
 
             //InfoGroupSubscriptionsFragment.showSubscribers();
-            System.out.println("FINISH SUBSCRIBERS IMAGES");
         });
 
         obtainSubscribersImages.shutdown();
