@@ -45,7 +45,7 @@ public class TrDeletePersonalEvent {
      */
     public void execute() throws ExecutionException, InterruptedException {
         result = false;
-        pet.addEvent(event);
+        pet.deleteEvent(event);
         googleCalendarService.deleteEvent(pet, event);
         result = true;
     }

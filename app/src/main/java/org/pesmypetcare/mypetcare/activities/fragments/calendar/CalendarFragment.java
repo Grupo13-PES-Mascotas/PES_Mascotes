@@ -558,7 +558,12 @@ public class CalendarFragment extends Fragment {
             } catch (ParseException | InvalidFormatException e) {
                 e.printStackTrace();
             }
-            pet.deleteEvent(event);
+            try {
+                //pet.deletePeriodicNotification(event);
+                communication.deletePeriodicNotification(pet, event, user);
+            } catch (ParseException | UserIsNotOwnerException | InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
             try {
                 communication.deletePersonalEvent(pet, event);
             } catch (ExecutionException | InterruptedException e) {
@@ -568,12 +573,6 @@ public class CalendarFragment extends Fragment {
             calendarAlarmInitialization(event.getDateTime(), c);
             communication.cancelNotification(getContext(), new Notification(event.getDescription(),
                     new Date(c.getTimeInMillis()), pet.getName()));
-            try {
-                //pet.deletePeriodicNotification(event);
-                communication.deletePeriodicNotification(pet, event, user);
-            } catch (ParseException | UserIsNotOwnerException | InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
         });
     }
 

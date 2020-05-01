@@ -293,6 +293,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Get the google calendar token.
      */
     public void getGoogleToken() {
+        System.out.println("hola");
         String googleEmail = sharedpreferences.getString("GoogleEmail", "");
         String scopes = sharedpreferences.getString("GoogleScopes", "");
         MyAsyncTask asyncTask = new MyAsyncTask(googleEmail, scopes, this.getBaseContext());
@@ -1299,7 +1300,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdateMeal.setUser(user);
         trUpdateMeal.setPet(pet);
         trUpdateMeal.setMeal(meal);
-        System.out.println("Meal date : " + meal.getDateTime() + " meal name : " + meal.getMealName());
         if (updatesDate) {
             trUpdateMeal.setNewDate(newDate);
         }

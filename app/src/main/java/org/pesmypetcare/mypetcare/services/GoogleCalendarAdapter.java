@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class GoogleCalendarAdapter implements GoogleCalendarService {
     private static final String A_REALLY_PRETTY_LOCATION = "A really pretty Location";
-    public static final int EMAIL_REMINDER_MINUTES = 10;
+    private static final int EMAIL_REMINDER_MINUTES = 10;
 
     @Override
     public void registerNewEvent(Pet pet, Event event) throws ExecutionException, InterruptedException {
@@ -23,7 +23,6 @@ public class GoogleCalendarAdapter implements GoogleCalendarService {
                 event.getDateTime().toString(), event.getDateTime().toString());
         ServiceLocator.getInstance().getGoogleCalendarManagerClient().createEvent(pet.getOwner()
                 .getGoogleCalendarToken(),pet.getOwner().getUsername(), pet.getName(), eventData);
-
     }
 
     @Override

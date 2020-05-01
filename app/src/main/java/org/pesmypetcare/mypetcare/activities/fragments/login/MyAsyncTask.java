@@ -36,7 +36,6 @@ public class MyAsyncTask extends AsyncTask<Void, Void, String> {
     }
     @Override
     protected void onPostExecute(String result) {
-        System.out.println(result);
         delegate.processFinish(result);
     }
 

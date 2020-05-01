@@ -45,6 +45,14 @@ public class Event {
         this.dateTime = dateTime;
     }
 
+    /**
+     * Check the type of the event.
+     * @return True if is periodic, false otherwise
+     */
+    public boolean isPeriodic() {
+        return false;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
