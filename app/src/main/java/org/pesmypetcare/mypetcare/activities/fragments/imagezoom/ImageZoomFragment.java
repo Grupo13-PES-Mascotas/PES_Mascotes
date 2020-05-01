@@ -18,12 +18,12 @@ import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.databinding.FragmentImageZoomBinding;
+import org.pesmypetcare.mypetcare.utilities.androidservices.GalleryService;
 
 import java.util.Objects;
 
 public class ImageZoomFragment extends Fragment {
-    private static final String[] IMAGE_MIME_TYPES = {"image/jpeg", "image/png"};
-    private static final int GALLERY_ZOOM_REQUEST_CODE = 0;
+    private static final int GALLERY_ZOOM_REQUEST_CODE = 100;
     private static final float RADIUS = 1000.0f;
     private static Drawable drawable;
     private static boolean isMainActivity;
@@ -65,7 +65,8 @@ public class ImageZoomFragment extends Fragment {
         FloatingActionButton flDeleteImage = binding.flDeleteImage;
 
         flModifyImage.setOnClickListener(view -> {
-            Intent imagePicker = getGalleryIntent();
+            Intent imagePicker = GalleryService.getGalleryIntent();
+            MainActivity.setFragmentRequestCode(GALLERY_ZOOM_REQUEST_CODE);
             startActivityForResult(imagePicker, GALLERY_ZOOM_REQUEST_CODE);
         });
 
@@ -102,16 +103,7 @@ public class ImageZoomFragment extends Fragment {
         ImageZoomFragment.isDefaultImage = isDefaultImage;
     }
 
-    /**
-     * Gets the gallery intent.
-     * @return The gallery intent
-     */
-    private Intent getGalleryIntent() {
-        Intent imagePicker = new Intent(Intent.ACTION_PICK);
-        imagePicker.setType("image/*");
-        imagePicker.putExtra(Intent.EXTRA_MIME_TYPES, IMAGE_MIME_TYPES);
-        return imagePicker;
-    }
+
 
     /**
      * Initialize the circular image view.

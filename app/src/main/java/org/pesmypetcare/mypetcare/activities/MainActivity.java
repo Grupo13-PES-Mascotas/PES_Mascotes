@@ -199,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static List<Group> groups;
     private static int notificationId;
     private static int requestCode;
+    private static int fragmentRequestCode;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -314,8 +315,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return mAuth;
     }
 
+    /**
+     * Set the toolbar text.
+     * @param text The text to set
+     */
     public void setToolbarText(String text) {
         toolbar.setTitle(text);
+    }
+
+    /**
+     * Set the fragment request code.
+     * @param fragmentRequestCode The fragment request code to set
+     */
+    public static void setFragmentRequestCode(int fragmentRequestCode) {
+        MainActivity.fragmentRequestCode = fragmentRequestCode;
     }
 
     /**
@@ -1432,8 +1445,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            galleryImageZoom(data);
+            if (fragmentRequestCode == PostsFragment.POST_FRAGMENT_REQUEST_CODE) {
+                galleryPostFragment(data);
+            } else {
+                galleryImageZoom(data);
+            }
         }
+    }
+
+    private void galleryPostFragment(Intent data) {
+        Bitmap bitmap = getGalleryBitmap(data);
+        PostsFragment.getSelectedPost().setPostImage(bitmap);
+        changeFragment(actualFragment);
     }
 
     @Override
@@ -1450,18 +1473,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @param data Data received from the gallery
      */
     private void galleryImageZoom(@Nullable Intent data) {
-        String imagePath = getImagePath(data);
-        Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
-
-        askPermissionThread.start();
-
-        try {
-            askPermissionThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+        Bitmap bitmap = getGalleryBitmap(data);
         Drawable drawable = new BitmapDrawable(getResources(), bitmap);
         ((ImageZoomFragment) actualFragment).setDrawable(drawable);
         ImageZoomFragment.setIsDefaultImage(false);
@@ -1475,6 +1487,21 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         if (ImageZoomFragment.isMainActivity()) {
             updateUserProfileImage(user.getUserProfileImage());
         }
+    }
+
+    private Bitmap getGalleryBitmap(@Nullable Intent data) {
+        String imagePath = getImagePath(data);
+        Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
+
+        askPermissionThread.start();
+
+        try {
+            askPermissionThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return BitmapFactory.decodeFile(imagePath);
     }
 
     /**

@@ -21,6 +21,7 @@ public class PostComponentView extends CircularEntryView {
     private static final String WHITE_SPACE = " ";
     private Post post;
     private User user;
+    private boolean isUserTheOwner;
 
     public PostComponentView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -71,12 +72,23 @@ public class PostComponentView extends CircularEntryView {
         likeImage.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         likeImage.setId(View.generateViewId());
 
-        if (post.isLikedByUser(user.getUsername())) {
-            likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_like_blue, null));
+        if (post.getUsername().equals(user.getUsername())) {
+            likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_camera, null));
+            isUserTheOwner = true;
         } else {
-            likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_like, null));
+            if (post.isLikedByUser(user.getUsername())) {
+                likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_like_blue, null));
+            } else {
+                likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_like, null));
+            }
+
+            isUserTheOwner = false;
         }
 
         return likeImage;
+    }
+
+    public boolean isUserTheOwner() {
+        return isUserTheOwner;
     }
 }
