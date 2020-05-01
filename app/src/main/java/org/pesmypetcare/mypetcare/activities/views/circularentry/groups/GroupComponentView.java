@@ -76,6 +76,11 @@ public class GroupComponentView extends CircularEntryView {
         return null;
     }
 
+    @Override
+    protected ImageView getBottomImage() {
+        return null;
+    }
+
     /**
      * Append the tags to the StringBuilder.
      * @param tags The list of tags

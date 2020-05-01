@@ -62,4 +62,9 @@ public class PetsInfoComponentView extends CircularEntryView {
     protected ImageView getRightImage() {
         return null;
     }
+
+    @Override
+    protected ImageView getBottomImage() {
+        return null;
+    }
 }

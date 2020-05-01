@@ -19,6 +19,8 @@ public class PostComponentView extends CircularEntryView {
     private static final String DATE_TIME_SEPARATOR = "T";
     private static final char HOUR_SEPARATOR = ':';
     private static final String WHITE_SPACE = " ";
+    private static final int BOTTOM_IMAGE_HEIGHT = 500;
+
     private Post post;
     private User user;
     private boolean isUserTheOwner;
@@ -68,9 +70,7 @@ public class PostComponentView extends CircularEntryView {
 
     @Override
     protected ImageView getRightImage() {
-        ImageView likeImage = new ImageView(getContext(), null);
-        likeImage.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        likeImage.setId(View.generateViewId());
+        ImageView likeImage = getBasicImageView();
 
         if (post.getUsername().equals(user.getUsername())) {
             likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_camera, null));
@@ -86,6 +86,31 @@ public class PostComponentView extends CircularEntryView {
         }
 
         return likeImage;
+    }
+
+    /**
+     * Get the basic image view.
+     * @return The basic image view
+     */
+    private ImageView getBasicImageView() {
+        ImageView imageView = new ImageView(getContext(), null);
+        imageView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        imageView.setId(View.generateViewId());
+        return imageView;
+    }
+
+    @Override
+    protected ImageView getBottomImage() {
+        if (post.getPostImage() == null) {
+            return null;
+        }
+
+        ImageView bottomImage = new ImageView(getContext(), null);
+        bottomImage.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, BOTTOM_IMAGE_HEIGHT));
+        bottomImage.setId(View.generateViewId());
+        bottomImage.setImageBitmap(post.getPostImage());
+
+        return bottomImage;
     }
 
     public boolean isUserTheOwner() {

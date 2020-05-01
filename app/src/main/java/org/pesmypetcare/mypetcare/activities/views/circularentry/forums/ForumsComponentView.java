@@ -73,6 +73,11 @@ public class ForumsComponentView extends CircularEntryView {
         return null;
     }
 
+    @Override
+    protected ImageView getBottomImage() {
+        return null;
+    }
+
     /**
      * Add the text to display.
      * @param forumAuthorDate The StringBuilder to add the text

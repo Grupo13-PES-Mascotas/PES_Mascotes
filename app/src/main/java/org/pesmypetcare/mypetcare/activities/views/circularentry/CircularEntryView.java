@@ -21,6 +21,7 @@ public abstract class CircularEntryView extends ConstraintLayout {
     private static final int IMAGE_LAYOUT_MARGIN = 10;
     private static final int PET_INFO_IMAGE_MARGIN = 40;
     private static final int RIGHT_IMAGE_MARGIN = 40;
+    private static final int BOTTOM_IMAGE_MARGIN = 40;
     private static final int IMAGE_DIMENSIONS = 150;
 
     private Context currentActivity;
@@ -51,6 +52,14 @@ public abstract class CircularEntryView extends ConstraintLayout {
             rightImageId = rightImage.getId();
         }
 
+        /*ImageView bottomImage = getBottomImage();
+        int bottomImageId = -1;
+
+        if (bottomImage != null) {
+            addView(bottomImage);
+            bottomImageId = bottomImage.getId();
+        }*/
+
         generateConstraints(image.getId(), info.getId(), rightImageId, getId(), this);
         return this;
     }
@@ -59,6 +68,7 @@ public abstract class CircularEntryView extends ConstraintLayout {
      * Method responsible for generating the appropriate constraints.
      * @param imageId The id of the circular image view
      * @param petId The id of the linear layout that contains the pet info
+     * @param rightImageId The id of the right image
      * @param layoutId The id of the container
      * @param circularEntryView The container where we want to set the constraints
      */
@@ -76,6 +86,13 @@ public abstract class CircularEntryView extends ConstraintLayout {
                 RIGHT_IMAGE_MARGIN - IMAGE_LAYOUT_MARGIN);
         }
 
+        /*if (bottomImageId != -1) {
+            constraintSet.connect(bottomImageId, ConstraintSet.LEFT, layoutId, ConstraintSet.LEFT);
+            constraintSet.connect(bottomImageId, ConstraintSet.RIGHT, layoutId, ConstraintSet.RIGHT);
+            constraintSet.connect(bottomImageId, ConstraintSet.TOP, petId, ConstraintSet.BOTTOM, 20);
+            constraintSet.setVerticalBias(bottomImageId, 0.0f);
+        }*/
+
         constraintSet.applyTo(circularEntryView);
     }
 
@@ -90,9 +107,18 @@ public abstract class CircularEntryView extends ConstraintLayout {
         info.setOrientation(LinearLayout.VERTICAL);
         firstLineTextInitializer(info);
         secondLineTextInitializer(info);
+        bottomImageInitializer(info);
         int infoId = View.generateViewId();
         info.setId(infoId);
         return info;
+    }
+
+    private void bottomImageInitializer(LinearLayout info) {
+        ImageView bottomImage = getBottomImage();
+
+        if (bottomImage != null) {
+            info.addView(bottomImage);
+        }
     }
 
     /**
@@ -169,4 +195,10 @@ public abstract class CircularEntryView extends ConstraintLayout {
      * @return The right image
      */
     protected abstract ImageView getRightImage();
+
+    /**
+     * Get the bottom image if it is defined or null otherwise.
+     * @return The bottom image
+     */
+    protected abstract ImageView getBottomImage();
 }
