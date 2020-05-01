@@ -1034,9 +1034,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     /**
-     * Adds the given image to the indicated group.
-     * @param group The group where the image has to be added
-     * @param image The image that has to be added to the groups
+     * Updates the image of the given group.
+     * @param group The group which image has to be updated
+     * @param bitmap The new image of the group
      */
     private void updateGroupImage(Group group, Bitmap bitmap) {
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
@@ -1063,6 +1063,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         editor.apply();
     }
 
+    /**
+     * Adds the given image to the indicated group.
+     * @param group The group where the image has to be added
+     * @param image The image that has to be added to the groups
+     */
     private void addGroupImage(Group group, Bitmap image) {
         trAddGroupImage.setUser(user);
         trAddGroupImage.setGroup(group);
