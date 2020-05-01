@@ -1457,6 +1457,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         Bitmap bitmap = getGalleryBitmap(data);
         PostsFragment.getSelectedPost().setPostImage(bitmap);
         changeFragment(actualFragment);
+
+        addPostImage(PostsFragment.getSelectedPost(), bitmap);
     }
 
     @Override
