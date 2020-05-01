@@ -75,6 +75,7 @@ import org.pesmypetcare.mypetcare.controllers.community.TrAddSubscription;
 import org.pesmypetcare.mypetcare.controllers.community.TrCreateNewGroup;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteForum;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteGroup;
+import org.pesmypetcare.mypetcare.controllers.community.TrDeleteGroupImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeletePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeletePostImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteSubscription;
@@ -253,6 +254,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrAddPostImage trAddPostImage;
     private TrDeletePostImage trDeletePostImage;
     private TrAddGroupImage trAddGroupImage;
+    private TrDeleteGroupImage trDeleteGroupImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -607,6 +609,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddPostImage = CommunityControllersFactory.createTrAddPostImage();
         trDeletePostImage = CommunityControllersFactory.createTrDeletePostImage();
         trAddGroupImage = CommunityControllersFactory.createTrAddGroupImage();
+        trDeleteGroupImage = CommunityControllersFactory.createTrDeleteGroupImage();
     }
 
     /**
@@ -1028,12 +1031,31 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }*/
     }
 
+    /**
+     * Adds the given image to the indicated group.
+     * @param group The group where the image has to be added
+     * @param image The image that has to be added to the groups
+     */
     private void addGroupImage(Group group, Bitmap image) {
         trAddGroupImage.setUser(user);
         trAddGroupImage.setGroup(group);
         trAddGroupImage.setImage(image);
         try {
             trAddGroupImage.execute();
+        } catch (NotGroupOwnerException | GroupNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Deletes the image from the indicated group.
+     * @param group The group which image has to be deleted
+     */
+    private void deleteGroupImage(Group group) {
+        trDeleteGroupImage.setUser(user);
+        trDeleteGroupImage.setGroup(group);
+        try {
+            trDeleteGroupImage.execute();
         } catch (NotGroupOwnerException | GroupNotFoundException e) {
             e.printStackTrace();
         }

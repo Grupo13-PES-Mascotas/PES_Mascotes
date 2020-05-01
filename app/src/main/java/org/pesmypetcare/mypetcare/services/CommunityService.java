@@ -149,4 +149,11 @@ public interface CommunityService {
      * @param image The image that has to be added
      */
     void addGroupImage(User user, Group group, Bitmap image) throws GroupNotFoundException;
+
+    /**
+     * The given user wants to delete the image from the indicated group.
+     * @param user The user that wants to delete the image from the group
+     * @param group The group from where the image has to be deleted
+     */
+    void deleteGroupImage(User user, Group group) throws GroupNotFoundException;
 }

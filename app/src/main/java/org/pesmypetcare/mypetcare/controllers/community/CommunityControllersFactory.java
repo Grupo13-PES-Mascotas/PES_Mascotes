@@ -130,7 +130,15 @@ public class CommunityControllersFactory {
         return new TrDeletePostImage(new CommunityAdapter());
     }
 
+    /**
+     * Create the transaction to add an image to a group.
+     * @return The transactio to add an image to a group
+     */
     public static TrAddGroupImage createTrAddGroupImage() {
         return new TrAddGroupImage(new CommunityAdapter());
+    }
+
+    public static TrDeleteGroupImage createTrDeleteGroupImage() {
+        return new TrDeleteGroupImage(new CommunityAdapter());
     }
 }

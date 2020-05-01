@@ -375,6 +375,16 @@ public class StubCommunityService implements CommunityService {
         }
     }
 
+    @Override
+    public void deleteGroupImage(User user, Group group) throws GroupNotFoundException {
+        int groupIndex = groups.indexOf(group);
+        if (groupIndex == -1) {
+            throw new GroupNotFoundException();
+        } else {
+            groups.get(groupIndex).setGroupIcon(null);
+        }
+    }
+
     /**
      * Update the forums.
      * @param user The user
