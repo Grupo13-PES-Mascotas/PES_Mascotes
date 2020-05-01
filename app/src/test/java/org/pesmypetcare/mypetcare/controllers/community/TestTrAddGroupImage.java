@@ -43,7 +43,7 @@ public class TestTrAddGroupImage {
     }
 
     @Test(expected = NotGroupOwnerException.class)
-    public void shouldNotAddImageIfNotPostOwner() throws NotGroupOwnerException, GroupNotFoundException {
+    public void shouldNotAddImageIfNotGroupOwner() throws NotGroupOwnerException, GroupNotFoundException {
         trAddGroupImage.setUser(user);
         user.setUsername("Tomas Roncero");
         trAddGroupImage.setGroup(group);
@@ -52,7 +52,7 @@ public class TestTrAddGroupImage {
     }
 
     @Test
-    public void shouldAddPostImage() throws NotGroupOwnerException, GroupNotFoundException {
+    public void shouldAddGroupImage() throws NotGroupOwnerException, GroupNotFoundException {
         trAddGroupImage.setUser(user);
         trAddGroupImage.setGroup(group);
         trAddGroupImage.setImage(image);
