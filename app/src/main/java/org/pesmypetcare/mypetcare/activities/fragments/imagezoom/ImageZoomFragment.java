@@ -15,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
+import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.databinding.FragmentImageZoomBinding;
@@ -95,6 +96,9 @@ public class ImageZoomFragment extends Fragment {
                     setDrawable(getResources().getDrawable(R.drawable.single_paw, null));
                     InfoPetFragment.setDefaultPetImage();
                     InfoPetFragment.setIsDefaultPetImage(true);
+                    break;
+                case InfoGroupFragment.INFO_GROUP_ZOOM_IDENTIFIER:
+                    setDrawable(getResources().getDrawable(R.drawable.icon_group, null));
                     break;
                 default:
             }
