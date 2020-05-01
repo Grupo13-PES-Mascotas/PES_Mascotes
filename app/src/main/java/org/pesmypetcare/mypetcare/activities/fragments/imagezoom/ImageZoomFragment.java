@@ -26,7 +26,6 @@ public class ImageZoomFragment extends Fragment {
     private static final int GALLERY_ZOOM_REQUEST_CODE = 100;
     private static final float RADIUS = 1000.0f;
     private static Drawable drawable;
-    private static boolean isMainActivity;
     private static int origin;
 
     private static boolean isDefaultImage = true;
@@ -87,14 +86,28 @@ public class ImageZoomFragment extends Fragment {
         alertDialog.setTitle(R.string.delete_pet_image_title);
         alertDialog.setMessage(R.string.delete_pet_image_text);
         alertDialog.setPositiveButton(R.string.affirmative_response, (dialog, which) -> {
-            if (isMainActivity) {
+            switch (origin) {
+                case MainActivity.MAIN_ACTIVITY_ZOOM_IDENTIFIER:
+                    setDrawable(getResources().getDrawable(R.drawable.user_icon_sample, null));
+                    MainActivity.setDefaultUserImage();
+                    break;
+                case InfoPetFragment.INFO_PET_ZOOM_IDENTIFIER:
+                    setDrawable(getResources().getDrawable(R.drawable.single_paw, null));
+                    InfoPetFragment.setDefaultPetImage();
+                    InfoPetFragment.setIsDefaultPetImage(true);
+                    break;
+                default:
+            }
+
+            /*
+            if (origin == MainActivity.MAIN_ACTIVITY_ZOOM_IDENTIFIER) {
                 setDrawable(getResources().getDrawable(R.drawable.user_icon_sample, null));
                 MainActivity.setDefaultUserImage();
             } else {
                 setDrawable(getResources().getDrawable(R.drawable.single_paw, null));
                 InfoPetFragment.setDefaultPetImage();
                 InfoPetFragment.setIsDefaultPetImage(true);
-            }
+            }*/
         });
         alertDialog.setNegativeButton(R.string.negative_response, null);
         return alertDialog;
@@ -122,22 +135,6 @@ public class ImageZoomFragment extends Fragment {
     public void setDrawable(Drawable drawable) {
         ImageZoomFragment.drawable = drawable;
         initializeCircularImageView();
-    }
-
-    /**
-     * Getter of the isMainActivity attribute.
-     * @return The value of isMainActivity
-     */
-    public static boolean isMainActivity() {
-        return isMainActivity;
-    }
-
-    /**
-     * Setter of the isMainActivity attribute.
-     * @param isMainActivity The value to set to the isMainActivity attribute
-     */
-    public static void setIsMainActivity(boolean isMainActivity) {
-        ImageZoomFragment.isMainActivity = isMainActivity;
     }
 
     public static int getOrigin() {
