@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.fragments.community.groups;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,14 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoGroupBinding;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class InfoGroupFragment extends Fragment {
     private static InfoGroupCommunication communication;
@@ -31,6 +40,39 @@ public class InfoGroupFragment extends Fragment {
         communication.setToolbar(group.getName());
         String tags = getTagsFromGroup();
         binding.txtGroupTags.setText(tags);
+
+        ExecutorService obtainSubscribersImages = Executors.newCachedThreadPool();
+        obtainSubscribersImages.execute(() -> {
+            System.out.println("START SUBSCRIBERS IMAGES");
+            List<Map.Entry<String, DateTime>> subscribers = new ArrayList<>(group.getSubscribers().entrySet());
+            String[] username = new String[subscribers.size()];
+            Bitmap[] images = new Bitmap[subscribers.size()];
+            ExecutorService obtainSubscriberImage = Executors.newCachedThreadPool();
+
+            for (int actual = 0; actual < subscribers.size(); ++actual) {
+                int finalActual = actual;
+                obtainSubscriberImage.execute(() -> {
+                    username[finalActual] = subscribers.get(finalActual).getKey();
+                    images[finalActual] = InfoGroupFragment.getCommunication().findImageByUser(username[finalActual]);
+                });
+            }
+
+            obtainSubscriberImage.shutdown();
+            try {
+                obtainSubscriberImage.awaitTermination(2, TimeUnit.MINUTES);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            for (int actual = 0; actual < subscribers.size(); ++actual) {
+                group.addSubscriberImage(username[actual], images[actual]);
+            }
+
+            //InfoGroupSubscriptionsFragment.showSubscribers();
+            System.out.println("FINISH SUBSCRIBERS IMAGES");
+        });
+
+        obtainSubscribersImages.shutdown();
 
         return binding.getRoot();
     }

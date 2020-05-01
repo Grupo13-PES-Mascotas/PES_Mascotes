@@ -1,7 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.views.circularentry.subscriber;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.LinearLayout;
@@ -9,7 +8,6 @@ import android.widget.Space;
 
 import androidx.annotation.Nullable;
 
-import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
@@ -19,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class SubscribersView extends LinearLayout {
     public static final int MIN_SPACE_SIZE = 20;
@@ -51,14 +50,28 @@ public class SubscribersView extends LinearLayout {
             executorService.execute(() -> {
                 String username = subscriptions.get(finalActual).getKey();
                 DateTime subscriptionDate = subscriptions.get(finalActual).getValue();
-                Bitmap userImage = InfoGroupFragment.getCommunication().findImageByUser(username);
-
                 components[finalActual] = new SubscriberComponentView(context, null, username,
                     subscriptionDate, group);
+                components[finalActual].initializeComponent();
             });
         }
 
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(2, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
+        for (CircularEntryView component : components) {
+            addView(component);
+            groupComponents.add(component);
+
+            Space space = createSpace();
+            addView(space);
+        }
+
+        /*
         for (Map.Entry<String, DateTime> subscription : group.getSubscribers().entrySet()) {
             String username = subscription.getKey();
             DateTime subscriptionDate = subscription.getValue();
@@ -71,7 +84,7 @@ public class SubscribersView extends LinearLayout {
 
             Space space = createSpace();
             addView(space);
-        }
+        }*/
     }
 
     /**
