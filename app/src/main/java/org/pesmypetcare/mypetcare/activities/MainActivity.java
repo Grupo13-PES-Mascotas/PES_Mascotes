@@ -270,7 +270,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         if (mAuth.getCurrentUser() != null) {
             try {
                 initializeUser();
-                //changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
             } catch (PetRepeatException e) {
                 Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing),
                     Toast.LENGTH_LONG);
