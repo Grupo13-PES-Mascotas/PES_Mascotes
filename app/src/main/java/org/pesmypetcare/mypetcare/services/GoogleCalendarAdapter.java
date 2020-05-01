@@ -22,7 +22,7 @@ public class GoogleCalendarAdapter implements GoogleCalendarService {
                 event.getDescription(), EventData.BLUEBERRY, EMAIL_REMINDER_MINUTES, 0,
                 event.getDateTime().toString(), event.getDateTime().toString());
         ServiceLocator.getInstance().getGoogleCalendarManagerClient().createEvent(pet.getOwner()
-                .getGoogleCalendarToken(),pet.getOwner().getUsername(), pet.getName(), eventData);
+                .getGoogleCalendarToken(), pet.getOwner().getUsername(), pet.getName(), eventData);
     }
 
     @Override
