@@ -67,6 +67,7 @@ import org.pesmypetcare.mypetcare.activities.threads.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.community.CommunityControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.community.TrAddGroupImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewForum;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewPost;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddPostImage;
@@ -127,6 +128,7 @@ import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingException;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
+import org.pesmypetcare.mypetcare.features.community.groups.NotGroupOwnerException;
 import org.pesmypetcare.mypetcare.features.community.groups.NotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.OwnerCannotDeleteSubscriptionException;
 import org.pesmypetcare.mypetcare.features.community.posts.NotLikedPostException;
@@ -251,6 +253,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainUserImage trObtainUserImage;
     private TrAddPostImage trAddPostImage;
     private TrDeletePostImage trDeletePostImage;
+    private TrAddGroupImage trAddGroupImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -604,6 +607,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trReportPost = CommunityControllersFactory.createTrReportPost();
         trAddPostImage = CommunityControllersFactory.createTrAddPostImage();
         trDeletePostImage = CommunityControllersFactory.createTrDeletePostImage();
+        trAddGroupImage = CommunityControllersFactory.createTrAddGroupImage();
     }
 
     /**
@@ -1023,6 +1027,17 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             InfoPetFragment.setPetProfileDrawable(ImageZoomFragment.getDrawable());
             changeFragment(new InfoPetFragment());
         }*/
+    }
+
+    private void addGroupImage(Group group, Bitmap image) {
+        trAddGroupImage.setUser(user);
+        trAddGroupImage.setGroup(group);
+        trAddGroupImage.setImage(image);
+        try {
+            trAddGroupImage.execute();
+        } catch (NotGroupOwnerException | GroupNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

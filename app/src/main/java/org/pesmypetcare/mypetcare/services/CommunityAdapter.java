@@ -363,6 +363,11 @@ public class CommunityAdapter implements CommunityService {
         // Not implemented yet
     }
 
+    @Override
+    public void addGroupImage(User user, Group group, Bitmap image) throws GroupNotFoundException {
+        // Not implemented yet
+    }
+
     /**
      * Create the executor service for deleting post.
      * @param user The user

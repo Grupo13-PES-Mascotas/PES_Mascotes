@@ -129,4 +129,8 @@ public class CommunityControllersFactory {
     public static TrDeletePostImage createTrDeletePostImage() {
         return new TrDeletePostImage(new CommunityAdapter());
     }
+
+    public static TrAddGroupImage createTrAddGroupImage() {
+        return new TrAddGroupImage(new CommunityAdapter());
+    }
 }
