@@ -192,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     private static boolean enableLoginActivity = true;
     private static FloatingActionButton floatingActionButton;
+    private static FloatingActionButton shareAppButton;
     private static FirebaseAuth mAuth;
     private static Fragment actualFragment;
     private static User user;
@@ -314,6 +315,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         drawerLayout = binding.activityMainDrawerLayout;
         navigationView = binding.navigationView;
         floatingActionButton = binding.flAddPet;
+        shareAppButton = binding.flShareApp;
     }
 
     /**
@@ -630,7 +632,23 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setUpNavigationDrawer();
         setStartFragment();
         setFloatingButtonListener();
+        setUpShareAppListener();
         hideWindowSoftKeyboard();
+    }
+
+    private void setUpShareAppListener() {
+        shareAppButton.setOnClickListener(v -> {
+            try {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.app_name));
+                String aux = "Download the app\n";
+                aux = aux + "https://drive.google.com/file/d/11oh5KY-V3GAdRjmZECbD5cOD1T8syDJs/view?usp=sharing" + getBaseContext().getPackageName();
+                i.putExtra(Intent.EXTRA_TEXT, aux);
+                startActivity(i);
+            } catch (Exception e) {
+            }
+        });
     }
 
     /**
@@ -639,6 +657,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private void setFloatingButtonListener() {
         floatingActionButton.setOnClickListener(v -> {
             if (actualFragment instanceof MyPetsFragment) {
+                hideShareAppButton();
                 addPet();
             } else if (actualFragment instanceof CommunityFragment){
                 createGroupDialog();
@@ -816,6 +835,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     /**
+     * Hide the floating button.
+     */
+    public static void hideShareAppButton() {
+        shareAppButton.hide();
+    }
+
+    /**
+     * Show the floating button.
+     */
+    public static void showShareAppButton() {
+        shareAppButton.show();
+    }
+
+    /**
      * Enters the fragment to create a pet.
      */
     public void addPet() {
@@ -880,6 +913,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             ImageZoomFragment imageZoomFragment = new ImageZoomFragment(drawable);
             ImageZoomFragment.setIsMainActivity(true);
             floatingActionButton.hide();
+            hideShareAppButton();
             drawerLayout.closeDrawers();
             changeFragment(imageZoomFragment);
         });
@@ -940,7 +974,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         while (index < NAVIGATION_OPTIONS.length && NAVIGATION_OPTIONS[index] != menuItemId) {
             ++index;
         }
-
+        if (index!=0) {
+            hideShareAppButton();
+        }
         return getFragment(APPLICATION_FRAGMENTS[index]);
     }
 
