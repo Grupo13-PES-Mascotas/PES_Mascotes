@@ -186,8 +186,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         NotImplementedFragment.class, CalendarFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
-    public static final String TAG_REGEX = "^[a-zA-Z0-9,]*$";
 
+    public static final int MAIN_ACTIVITY_ZOOM_IDENTIFIER = 0;
+    private static final String TAG_REGEX = "^[a-zA-Z0-9,]*$";
     private static boolean enableLoginActivity = true;
     private static FloatingActionButton floatingActionButton;
     private static FirebaseAuth mAuth;
@@ -870,7 +871,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             }
 
             ImageZoomFragment imageZoomFragment = new ImageZoomFragment(drawable);
-            ImageZoomFragment.setIsMainActivity(true);
+            //ImageZoomFragment.setIsMainActivity(true);
+            ImageZoomFragment.setOrigin(MAIN_ACTIVITY_ZOOM_IDENTIFIER);
             floatingActionButton.hide();
             drawerLayout.closeDrawers();
             changeFragment(imageZoomFragment);
@@ -994,6 +996,19 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Change to next fragment from an ImageZoomFragment.
      */
     private void changeFromImageZoom() {
+        switch (ImageZoomFragment.getOrigin()) {
+            case MAIN_ACTIVITY_ZOOM_IDENTIFIER:
+                Drawable drawable = ImageZoomFragment.getDrawable();
+                user.setUserProfileImage(((BitmapDrawable) drawable).getBitmap());
+                changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+                break;
+            case InfoPetFragment.INFO_PET_ZOOM_IDENTIFIER:
+                InfoPetFragment.setPetProfileDrawable(ImageZoomFragment.getDrawable());
+                changeFragment(new InfoPetFragment());
+                break;
+            default:
+        }
+        /*
         if (ImageZoomFragment.isMainActivity()) {
             Drawable drawable = ImageZoomFragment.getDrawable();
             user.setUserProfileImage(((BitmapDrawable) drawable).getBitmap());
@@ -1001,7 +1016,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } else {
             InfoPetFragment.setPetProfileDrawable(ImageZoomFragment.getDrawable());
             changeFragment(new InfoPetFragment());
-        }
+        }*/
     }
 
     @Override
@@ -1242,7 +1257,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void makeZoomImage(Drawable drawable) {
         floatingActionButton.hide();
-        ImageZoomFragment.setIsMainActivity(false);
+        //ImageZoomFragment.setIsMainActivity(false);
+        ImageZoomFragment.setOrigin(InfoPetFragment.INFO_PET_ZOOM_IDENTIFIER);
 
         changeFragment(new ImageZoomFragment(drawable));
     }
@@ -1485,7 +1501,17 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         ((ImageZoomFragment) actualFragment).setDrawable(drawable);
         ImageZoomFragment.setIsDefaultImage(false);
 
-        if (ImageZoomFragment.isMainActivity()) {
+        switch (ImageZoomFragment.getOrigin()) {
+            case MAIN_ACTIVITY_ZOOM_IDENTIFIER:
+                updateUserImage(drawable);
+                updateUserProfileImage(user.getUserProfileImage());
+                break;
+            case InfoPetFragment.INFO_PET_ZOOM_IDENTIFIER:
+                InfoPetFragment.setIsDefaultPetImage(false);
+            default:
+        }
+
+        /*if (ImageZoomFragment.isMainActivity()) {
             updateUserImage(drawable);
         } else {
             InfoPetFragment.setIsDefaultPetImage(false);
@@ -1493,7 +1519,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         if (ImageZoomFragment.isMainActivity()) {
             updateUserProfileImage(user.getUserProfileImage());
-        }
+        }*/
     }
 
     private Bitmap getGalleryBitmap(@Nullable Intent data) {

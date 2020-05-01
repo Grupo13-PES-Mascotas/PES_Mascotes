@@ -27,6 +27,7 @@ public class ImageZoomFragment extends Fragment {
     private static final float RADIUS = 1000.0f;
     private static Drawable drawable;
     private static boolean isMainActivity;
+    private static int origin;
 
     private static boolean isDefaultImage = true;
 
@@ -137,5 +138,13 @@ public class ImageZoomFragment extends Fragment {
      */
     public static void setIsMainActivity(boolean isMainActivity) {
         ImageZoomFragment.isMainActivity = isMainActivity;
+    }
+
+    public static int getOrigin() {
+        return origin;
+    }
+
+    public static void setOrigin(int origin) {
+        ImageZoomFragment.origin = origin;
     }
 }

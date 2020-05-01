@@ -24,6 +24,7 @@ import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import java.util.Objects;
 
 public class InfoPetFragment extends Fragment {
+    public static final int INFO_PET_ZOOM_IDENTIFIER = 1;
     private static Pet pet = new Pet("Linux");
     private static Drawable petProfileDrawable;
     private static boolean isImageModified;
