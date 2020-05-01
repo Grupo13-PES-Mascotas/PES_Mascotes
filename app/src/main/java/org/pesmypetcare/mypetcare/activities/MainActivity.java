@@ -75,6 +75,7 @@ import org.pesmypetcare.mypetcare.controllers.community.TrCreateNewGroup;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteForum;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteGroup;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeletePost;
+import org.pesmypetcare.mypetcare.controllers.community.TrDeletePostImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteSubscription;
 import org.pesmypetcare.mypetcare.controllers.community.TrLikePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrObtainAllGroups;
@@ -249,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrReportPost trReportPost;
     private TrObtainUserImage trObtainUserImage;
     private TrAddPostImage trAddPostImage;
+    private TrDeletePostImage trDeletePostImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -601,6 +603,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUnlikePost = CommunityControllersFactory.createTrUnlikePost();
         trReportPost = CommunityControllersFactory.createTrReportPost();
         trAddPostImage = CommunityControllersFactory.createTrAddPostImage();
+        trDeletePostImage = CommunityControllersFactory.createTrDeletePostImage();
     }
 
     /**
@@ -1206,7 +1209,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void deletePostImage(Post post) {
-
+        trDeletePostImage.setUser(user);
+        trDeletePostImage.setPost(post);
+        try {
+            trDeletePostImage.execute();
+        } catch (NotPostOwnerException | PostNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

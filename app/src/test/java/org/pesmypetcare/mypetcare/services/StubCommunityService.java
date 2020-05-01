@@ -343,6 +343,28 @@ public class StubCommunityService implements CommunityService {
         }
     }
 
+    @Override
+    public void deletePostImage(User user, Post post) throws PostNotFoundException {
+        int groupIndex = groups.indexOf(post.getForum().getGroup());
+        boolean found = false;
+
+        for (Forum forum : groups.get(groupIndex).getForums()) {
+            if (forum.getName().equals(post.getForum().getName())) {
+                for (Post forumPost : forum.getPosts()) {
+                    if (forumPost.getUsername().equals(post.getUsername())
+                        && forumPost.getCreationDate().compareTo(post.getCreationDate()) == 0) {
+                        post.setPostImage(null);
+                        found = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!found) {
+            throw new PostNotFoundException();
+        }
+    }
+
     /**
      * Update the forums.
      * @param user The user

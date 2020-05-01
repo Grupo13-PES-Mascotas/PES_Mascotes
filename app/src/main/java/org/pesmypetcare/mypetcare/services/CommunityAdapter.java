@@ -358,6 +358,11 @@ public class CommunityAdapter implements CommunityService {
         // Not implemented yet
     }
 
+    @Override
+    public void deletePostImage(User user, Post post) throws PostNotFoundException {
+        // Not implemented yet
+    }
+
     /**
      * Create the executor service for deleting post.
      * @param user The user

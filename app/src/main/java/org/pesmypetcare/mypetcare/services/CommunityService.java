@@ -134,4 +134,11 @@ public interface CommunityService {
      * @param image The image that has to be added to the post
      */
     void addPostImage(User user, Post post, Bitmap image) throws PostNotFoundException;
+
+    /**
+     * The given user wants to delete the image from the indicated post.
+     * @param user The user that wants to delete the image
+     * @param post The post from where the image has to be deleted
+     */
+    void deletePostImage(User user, Post post) throws PostNotFoundException;
 }
