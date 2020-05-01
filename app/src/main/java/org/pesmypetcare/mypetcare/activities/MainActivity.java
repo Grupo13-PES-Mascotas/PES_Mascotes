@@ -1022,15 +1022,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 break;
             default:
         }
-        /*
-        if (ImageZoomFragment.isMainActivity()) {
-            Drawable drawable = ImageZoomFragment.getDrawable();
-            user.setUserProfileImage(((BitmapDrawable) drawable).getBitmap());
-            changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
-        } else {
-            InfoPetFragment.setPetProfileDrawable(ImageZoomFragment.getDrawable());
-            changeFragment(new InfoPetFragment());
-        }*/
     }
 
     /**
@@ -1043,10 +1034,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         SharedPreferences.Editor editor = sharedPreferences.edit();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        if (group.getGroupIcon() == null) {
-            executorService.execute(() -> {
-                ImageManager.deleteImage(ImageManager.GROUP_IMAGES_PATH, group.getName());
-            });
+        if (ImageZoomFragment.isImageDeleted()) {
+            deleteGroupImage(group);
+            executorService.execute(() -> ImageManager.deleteImage(ImageManager.GROUP_IMAGES_PATH, group.getName()));
 
             editor.remove(group.getName());
         } else {
@@ -1589,6 +1579,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         Drawable drawable = new BitmapDrawable(getResources(), bitmap);
         ((ImageZoomFragment) actualFragment).setDrawable(drawable);
         ImageZoomFragment.setIsDefaultImage(false);
+        ImageZoomFragment.setIsImageDeleted(false);
 
         switch (ImageZoomFragment.getOrigin()) {
             case MAIN_ACTIVITY_ZOOM_IDENTIFIER:
@@ -1599,16 +1590,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 InfoPetFragment.setIsDefaultPetImage(false);
             default:
         }
-
-        /*if (ImageZoomFragment.isMainActivity()) {
-            updateUserImage(drawable);
-        } else {
-            InfoPetFragment.setIsDefaultPetImage(false);
-        }
-
-        if (ImageZoomFragment.isMainActivity()) {
-            updateUserProfileImage(user.getUserProfileImage());
-        }*/
     }
 
     private Bitmap getGalleryBitmap(@Nullable Intent data) {
