@@ -29,6 +29,7 @@ public class MyPetsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMyPetsBinding.inflate(inflater, container, false);
         communication = (MyPetsComunication) getActivity();
+        MainActivity.showShareAppButton();
         if (MainActivity.getmAuth().getCurrentUser() != null) {
             currentUser = Objects.requireNonNull(communication).getUser();
             initializeMainMenuView();
