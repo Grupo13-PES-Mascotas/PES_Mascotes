@@ -152,6 +152,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.pets.VetVisit;
+import org.pesmypetcare.mypetcare.features.pets.VetVisitAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
@@ -1479,6 +1480,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trNewVetVisit.setUser(user);
         trNewVetVisit.setPet(pet);
         trNewVetVisit.setVetVisit(vetVisit);
+        try {
+            trNewVetVisit.execute();
+        } catch (VetVisitAlreadyExistingException | NotPetOwnerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

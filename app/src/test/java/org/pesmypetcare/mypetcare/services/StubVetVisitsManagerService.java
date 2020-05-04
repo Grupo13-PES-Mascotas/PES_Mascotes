@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.VetVisit;
+import org.pesmypetcare.mypetcare.features.pets.VetVisitAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
@@ -48,7 +49,11 @@ public class StubVetVisitsManagerService implements VetVisitsManagerService {
     }
 
     @Override
-    public void createVetVisit(User user, Pet pet, VetVisit vetVisit) {
+    public void createVetVisit(User user, Pet pet, VetVisit vetVisit) throws VetVisitAlreadyExistingException {
+        if (Objects.requireNonNull(data.get(user.getUsername() + " : " + pet.getName())).contains(vetVisit)) {
+            throw new VetVisitAlreadyExistingException();
+        }
+
         data.putIfAbsent(user.getUsername() + " : " + pet.getName(), new ArrayList<>());
         Objects.requireNonNull(data.get(user.getUsername() + " : " + pet.getName())).add(vetVisit);
         nVetVisit++;

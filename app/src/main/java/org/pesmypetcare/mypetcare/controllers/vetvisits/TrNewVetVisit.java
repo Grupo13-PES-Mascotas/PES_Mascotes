@@ -2,6 +2,8 @@ package org.pesmypetcare.mypetcare.controllers.vetvisits;
 
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.VetVisit;
+import org.pesmypetcare.mypetcare.features.pets.VetVisitAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.VetVisitsManagerService;
 
@@ -54,8 +56,11 @@ public class TrNewVetVisit {
     /**
      * Executes the transaction.
      */
-    public void execute() {
+    public void execute() throws VetVisitAlreadyExistingException, NotPetOwnerException {
         result = false;
+        if (!pet.getOwner().getUsername().equals(user.getUsername())) {
+            throw new NotPetOwnerException();
+        }
         vetVisitsManagerService.createVetVisit(user, pet, vetVisit);
         pet.addEvent(vetVisit);
         result = true;

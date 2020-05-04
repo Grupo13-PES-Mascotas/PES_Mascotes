@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.VetVisit;
+import org.pesmypetcare.mypetcare.features.pets.VetVisitAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.List;
@@ -25,5 +26,5 @@ public interface VetVisitsManagerService {
      * @param pet The pet where the vet visits has to be added
      * @param vetVisit The vet visit that has to be added to the pet
      */
-    void createVetVisit(User user, Pet pet, VetVisit vetVisit);
+    void createVetVisit(User user, Pet pet, VetVisit vetVisit) throws VetVisitAlreadyExistingException;
 }
