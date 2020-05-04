@@ -173,7 +173,6 @@ public class PetManagerAdapter implements PetManagerService {
     @Override
     public List<Pet> findPetsByOwner(User user) throws PetRepeatException {
         List<org.pesmypetcare.usermanager.datacontainers.pet.Pet> userPets = null;
-
         try {
             userPets = ServiceLocator.getInstance().getPetManagerClient().getAllPets(user.getToken(),
                 user.getUsername());

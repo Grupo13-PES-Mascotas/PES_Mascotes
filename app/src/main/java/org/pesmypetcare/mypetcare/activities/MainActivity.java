@@ -118,6 +118,8 @@ import org.pesmypetcare.mypetcare.controllers.user.TrExistsUsername;
 import org.pesmypetcare.mypetcare.controllers.user.TrObtainUser;
 import org.pesmypetcare.mypetcare.controllers.user.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.controllers.user.UserControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.vetvisits.TrObtainAllVetVisits;
+import org.pesmypetcare.mypetcare.controllers.vetvisits.VetVisitsControllersFactory;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumCreatedBeforeGroupException;
@@ -250,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrLikePost trLikePost;
     private TrUnlikePost trUnlikePost;
     private TrReportPost trReportPost;
+    private TrObtainAllVetVisits trObtainAllVetVisits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -357,6 +360,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         for (Pet pet : user.getPets()) {
             obtainAllPetMeals(pet);
             obtainAllPetMedications(pet);
+            obtainAllPetVetVisits(pet);
         }
 
         Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
@@ -538,6 +542,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeMealsControllers();
         initializeCommunityControllers();
         initializeMedicationControllers();
+        initializeVetVisitsControllers();
     }
 
     /**
@@ -623,6 +628,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdateMedication = MedicationControllersFactory.createTrUpdateMedication();
     }
 
+    /**
+     * Initialize the vet visits controllers.
+     */
+    private void initializeVetVisitsControllers() {
+        trObtainAllVetVisits = VetVisitsControllersFactory.createTrObtainAllVetVisits();
+    }
 
     /**
      * Initialize the views of this activity.
@@ -1473,6 +1484,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void deletePetVetVisit(Pet pet, VetVisit vetVisit) {
         System.out.println("Eliminar la visita: " + vetVisit.getReason() +  " a la mascota " + pet.getName());
+    }
+
+    @Override
+    public void obtainAllPetVetVisits(Pet pet) {
+        trObtainAllVetVisits.setUser(user);
+        trObtainAllVetVisits.setPet(pet);
+        trObtainAllVetVisits.execute();
     }
 
     @Override

@@ -43,6 +43,7 @@ public class StubMealManagerService implements MealManagerService {
             mealKcal++;
         }
     }
+
     @Override
     public void createMeal(User user, Pet pet, Meals meal) {
         data.putIfAbsent(user.getUsername() + " : " + pet.getName(), new ArrayList<>());

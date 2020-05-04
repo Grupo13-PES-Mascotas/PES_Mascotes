@@ -157,4 +157,11 @@ public interface InfoPetCommunication {
      * @param vetVisit The vet visit that has to be deleted from the given pet
      */
     void deletePetVetVisit(Pet pet, VetVisit vetVisit);
+
+
+    /**
+     * Obtains all the vet visits from a pet.
+     * @param pet The pet from which we want to obtain all the vet visits
+     */
+    void obtainAllPetVetVisits(Pet pet);
 }
