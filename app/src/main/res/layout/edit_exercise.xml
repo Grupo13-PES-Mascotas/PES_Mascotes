@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"/>
 
-        <org.pesmypetcare.mypetcare.utilities.DateButton
+        <org.pesmypetcare.mypetcare.utilities.datetimebuttons.DateButton
             android:id="@+id/inputExerciseDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"/>
 
-        <com.google.android.material.button.MaterialButton
+        <org.pesmypetcare.mypetcare.utilities.datetimebuttons.TimeButton
             android:id="@+id/inputExerciseStartTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"/>
 
-        <com.google.android.material.button.MaterialButton
+        <org.pesmypetcare.mypetcare.utilities.datetimebuttons.TimeButton
             android:id="@+id/inputExerciseEndTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
