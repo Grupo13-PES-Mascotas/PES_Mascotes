@@ -46,5 +46,14 @@ public class StubVetVisitsManagerService implements VetVisitsManagerService {
         }
         return null;
     }
+
+    @Override
+    public void createVetVisit(User user, Pet pet, VetVisit vetVisit) {
+        data.putIfAbsent(user.getUsername() + " : " + pet.getName(), new ArrayList<>());
+        Objects.requireNonNull(data.get(user.getUsername() + " : " + pet.getName())).add(vetVisit);
+        nVetVisit++;
+    }
+
+
 }
 

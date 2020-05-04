@@ -118,6 +118,7 @@ import org.pesmypetcare.mypetcare.controllers.user.TrExistsUsername;
 import org.pesmypetcare.mypetcare.controllers.user.TrObtainUser;
 import org.pesmypetcare.mypetcare.controllers.user.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.controllers.user.UserControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.vetvisits.TrNewVetVisit;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.TrObtainAllVetVisits;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.VetVisitsControllersFactory;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
@@ -253,6 +254,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrUnlikePost trUnlikePost;
     private TrReportPost trReportPost;
     private TrObtainAllVetVisits trObtainAllVetVisits;
+    private TrNewVetVisit trNewVetVisit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -633,6 +635,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     private void initializeVetVisitsControllers() {
         trObtainAllVetVisits = VetVisitsControllersFactory.createTrObtainAllVetVisits();
+        trNewVetVisit = VetVisitsControllersFactory.createTrNewVetVisit();
     }
 
     /**
@@ -1473,7 +1476,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void addPetVetVisit(Pet pet, VetVisit vetVisit) {
-        System.out.println("Añadir la visita: " + vetVisit.getReason() +  " a la mascota " + pet.getName());
+        trNewVetVisit.setUser(user);
+        trNewVetVisit.setPet(pet);
+        trNewVetVisit.setVetVisit(vetVisit);
     }
 
     @Override

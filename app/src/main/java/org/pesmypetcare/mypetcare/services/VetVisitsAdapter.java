@@ -12,7 +12,12 @@ import java.util.List;
 public class VetVisitsAdapter implements VetVisitsManagerService {
     @Override
     public List<VetVisit> findVetVisitsByPet(User user, Pet pet) {
-        //Not implemented yet0
+        //Not implemented yet
         return null;
+    }
+
+    @Override
+    public void createVetVisit(User user, Pet pet, VetVisit vetVisit) {
+        // Not implemented yet
     }
 }
