@@ -22,7 +22,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetVetVisitsBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
-import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.VetVisit;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
@@ -137,8 +136,8 @@ public class InfoPetVetVisits extends Fragment {
      */
     private void initializeRemoveVisitButton() {
         deleteVisitButton.setOnClickListener(v -> {
-            InfoPetFragment.getCommunication().deletePetMeal(pet, vetVisit);
-            initializeVisitLayoutView();
+            InfoPetFragment.getCommunication().deletePetVetVisit(pet, vetVisit);
+            initializeVisitsLayoutView();
             dialog.dismiss();
         });
     }
@@ -195,7 +194,7 @@ public class InfoPetVetVisits extends Fragment {
                 }
 
                 dialog.dismiss();
-                initializeVisitLayoutView();
+                initializeVisitsLayoutView();
             }
         });
     }
@@ -216,11 +215,7 @@ public class InfoPetVetVisits extends Fragment {
         String address = Objects.requireNonNull(inputVisitAddress.getText()).toString();
         String reason = Objects.requireNonNull(inputVisitReason.getText()).toString();
         vetVisit = new VetVisit(visitDate, address, reason);
-        try {
-            InfoPetFragment.getCommunication().addPetVetVisit(pet, vetVisit);
-        } catch (MealAlreadyExistingException e) {
-            e.printStackTrace();
-        }
+        InfoPetFragment.getCommunication().addPetVetVisit(pet, vetVisit);
     }
 
     /**
@@ -366,7 +361,7 @@ public class InfoPetVetVisits extends Fragment {
         if (isPendentVisits) {
             visitList = (ArrayList<Event>) getPendentVisits();
         } else {
-            visitList = (ArrayList<Event>) pet.getVisitEvents();
+            visitList = (ArrayList<Event>) pet.getVetVisitEvents();
         }
 
         for (Event visit : visitList) {

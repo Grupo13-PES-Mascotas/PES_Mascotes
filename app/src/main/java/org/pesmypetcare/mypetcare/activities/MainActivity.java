@@ -148,6 +148,7 @@ import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingExcepti
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
+import org.pesmypetcare.mypetcare.features.pets.VetVisit;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
@@ -254,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     protected void onCreate(Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
         super.onCreate(savedInstanceState);
+        mAuth.signOut();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         resources = getResources();
@@ -1457,6 +1459,21 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void addPetVetVisit(Pet pet, VetVisit vetVisit) {
+        System.out.println("Añadir la visita: " + vetVisit.getReason() +  " a la mascota " + pet.getName());
+    }
+
+    @Override
+    public void updatePetVetVisit(Pet pet, VetVisit vetVisit, String newDate, boolean updatesDate) {
+        System.out.println("Actualizar la visita: " + vetVisit.getReason() +  " a la mascota " + pet.getName());
+    }
+
+    @Override
+    public void deletePetVetVisit(Pet pet, VetVisit vetVisit) {
+        System.out.println("Eliminar la visita: " + vetVisit.getReason() +  " a la mascota " + pet.getName());
     }
 
     @Override

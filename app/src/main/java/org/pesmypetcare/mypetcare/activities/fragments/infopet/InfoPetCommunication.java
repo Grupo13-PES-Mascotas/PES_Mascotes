@@ -9,6 +9,7 @@ import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
+import org.pesmypetcare.mypetcare.features.pets.VetVisit;
 
 public interface InfoPetCommunication {
 
@@ -133,4 +134,27 @@ public interface InfoPetCommunication {
      * @param pet The pet from which we want to obtain all the medications
      */
     void obtainAllPetMedications(Pet pet);
+
+    /**
+     * Add a vet visit to the given pet.
+     * @param pet The pet to whom the vet visit has to be added
+     * @param vetVisit The vet visit to add to the pet
+     */
+    void addPetVetVisit(Pet pet, VetVisit vetVisit);
+
+    /**
+     * Updates a vet visit from a pet.
+     * @param pet The pet from which the vet visit has to be updated
+     * @param vetVisit The vet visit that has to be updated
+     * @param newDate The new date of the vet visit
+     * @param updatesDate True if the date has to be updated or false otherwise
+     */
+    void updatePetVetVisit(Pet pet, VetVisit vetVisit, String newDate, boolean updatesDate);
+
+    /**
+     * Deletes a vet visit from a pet.
+     * @param pet The pet from which the vet visit has to be deleted
+     * @param vetVisit The vet visit that has to be deleted from the given pet
+     */
+    void deletePetVetVisit(Pet pet, VetVisit vetVisit);
 }
