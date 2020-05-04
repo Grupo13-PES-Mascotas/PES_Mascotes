@@ -255,7 +255,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     protected void onCreate(Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
         super.onCreate(savedInstanceState);
-        mAuth.signOut();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         resources = getResources();
