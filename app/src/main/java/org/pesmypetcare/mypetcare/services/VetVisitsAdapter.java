@@ -20,4 +20,9 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
     public void createVetVisit(User user, Pet pet, VetVisit vetVisit) {
         // Not implemented yet
     }
+
+    @Override
+    public void deleteVetVisit(User user, Pet pet, VetVisit vetVisit) {
+        //Not implemented yet
+    }
 }

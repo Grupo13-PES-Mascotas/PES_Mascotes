@@ -118,6 +118,7 @@ import org.pesmypetcare.mypetcare.controllers.user.TrExistsUsername;
 import org.pesmypetcare.mypetcare.controllers.user.TrObtainUser;
 import org.pesmypetcare.mypetcare.controllers.user.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.controllers.user.UserControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.vetvisits.TrDeleteVetVisit;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.TrNewVetVisit;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.TrObtainAllVetVisits;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.VetVisitsControllersFactory;
@@ -256,6 +257,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrReportPost trReportPost;
     private TrObtainAllVetVisits trObtainAllVetVisits;
     private TrNewVetVisit trNewVetVisit;
+    private TrDeleteVetVisit trDeleteVetVisit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -637,6 +639,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private void initializeVetVisitsControllers() {
         trObtainAllVetVisits = VetVisitsControllersFactory.createTrObtainAllVetVisits();
         trNewVetVisit = VetVisitsControllersFactory.createTrNewVetVisit();
+        trDeleteVetVisit = VetVisitsControllersFactory.createTrDeleteVetVisit();
     }
 
     /**
@@ -1494,7 +1497,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void deletePetVetVisit(Pet pet, VetVisit vetVisit) {
-        System.out.println("Eliminar la visita: " + vetVisit.getReason() +  " a la mascota " + pet.getName());
+        trDeleteVetVisit.setUser(user);
+        trDeleteVetVisit.setPet(pet);
+        trDeleteVetVisit.setVetVisit(vetVisit);
+        try {
+            trDeleteVetVisit.execute();
+        } catch (NotPetOwnerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

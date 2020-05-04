@@ -25,4 +25,12 @@ public class VetVisitsControllersFactory {
     public static TrNewVetVisit createTrNewVetVisit() {
         return new TrNewVetVisit(new VetVisitsAdapter());
     }
+
+    /**
+     * Creates the transaction responsible for removing an vet visit from a pet.
+     * @return The transaction responsible for removing an vet visit from a pet
+     */
+    public static TrDeleteVetVisit createTrDeleteVetVisit() {
+        return new TrDeleteVetVisit(new VetVisitsAdapter());
+    }
 }

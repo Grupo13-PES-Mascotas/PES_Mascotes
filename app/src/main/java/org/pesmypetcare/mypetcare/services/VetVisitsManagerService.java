@@ -27,4 +27,12 @@ public interface VetVisitsManagerService {
      * @param vetVisit The vet visit that has to be added to the pet
      */
     void createVetVisit(User user, Pet pet, VetVisit vetVisit) throws VetVisitAlreadyExistingException;
+
+    /**
+     * Deletes the vet visit from the given pet.
+     * @param user The owner of the pet
+     * @param pet The pet from where the vet visit has to be removed
+     * @param vetVisit The vet visit that has to be removed from the pet
+     */
+    void deleteVetVisit(User user, Pet pet, VetVisit vetVisit);
 }

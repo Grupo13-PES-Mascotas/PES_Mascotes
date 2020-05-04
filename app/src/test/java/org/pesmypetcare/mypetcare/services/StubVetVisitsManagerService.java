@@ -59,6 +59,10 @@ public class StubVetVisitsManagerService implements VetVisitsManagerService {
         nVetVisit++;
     }
 
-
+    @Override
+    public void deleteVetVisit(User user, Pet pet, VetVisit vetVisit) {
+        Objects.requireNonNull(data.get(user.getUsername() + " : " + pet.getName())).remove(vetVisit);
+        nVetVisit--;
+    }
 }
 
