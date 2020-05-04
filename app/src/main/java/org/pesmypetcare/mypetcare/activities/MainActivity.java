@@ -57,6 +57,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.community.groups.PostsFra
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
+import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetExercise;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.login.AsyncResponse;
 import org.pesmypetcare.mypetcare.activities.fragments.login.MyAsyncTask;
@@ -143,6 +144,7 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostReportedByAuthorE
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.InvalidPeriodException;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Medication;
@@ -1479,7 +1481,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void addExercise(Pet pet, String exerciseName, String exerciseDescription, DateTime startExerciseDateTime,
                             DateTime endExerciseDateTime) {
+        trAddExercise.setUser(user);
+        trAddExercise.setPet(pet);
+        trAddExercise.setExerciseName(exerciseName);
+        trAddExercise.setExerciseDescription(exerciseDescription);
+        trAddExercise.setStartDateTime(startExerciseDateTime);
+        trAddExercise.setEndDateTime(endExerciseDateTime);
 
+        try {
+            trAddExercise.execute();
+        } catch (NotPetOwnerException | InvalidPeriodException e) {
+            e.printStackTrace();
+        }
+
+        InfoPetExercise.showExercises();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.jetbrains.annotations.Nullable;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.datetimebuttons.DateButton;
 import org.pesmypetcare.mypetcare.activities.views.datetimebuttons.TimeButton;
@@ -28,7 +30,8 @@ import java.util.Objects;
 public class InfoPetExercise extends Fragment {
     private static final int MIN_SPACE_SIZE = 20;
     private static final String[] LABELS = {"Description", "Date", "Start", "End", "Duration"};
-    private FragmentInfoPetExerciseBinding binding;
+    private static FragmentInfoPetExerciseBinding binding;
+    private static Context context;
     private AlertDialog dialog;
 
     @Override
@@ -41,53 +44,68 @@ public class InfoPetExercise extends Fragment {
             dialog.show();
         });
 
-        for (Event event : InfoPetFragment.getPet().getEventsByClass(Exercise.class)) {
-            Exercise exercise = (Exercise) event;
-            EntryView.Builder builder = new EntryView.Builder(getContext());
-            builder.setEntryLabels(LABELS);
-
-            String startDateTime = exercise.getDateTime().toString();
-            String endDateTime = exercise.getEndTime().toString();
-            String date = startDateTime.substring(0, startDateTime.indexOf('T'));
-
-            String[] entries = new String[]{
-                exercise.getDescription(), date, startDateTime.substring(startDateTime.indexOf('T') + 1),
-                endDateTime.substring(endDateTime.indexOf('T') + 1),
-                getMinutes(exercise.getDateTime(), exercise.getEndTime()) + " min"
-            };
-
-            builder.setEntries(entries);
-            builder.setName(exercise.getName());
-            EntryView entryView = null;
-
-            try {
-                entryView = builder.build();
-            } catch (InvalidBuildParameters invalidBuildParameters) {
-                invalidBuildParameters.printStackTrace();
-            }
-
-            if (entryView != null) {
-                binding.exerciseDisplayLayout.addView(entryView);
-                Space space = createSpace();
-                binding.exerciseDisplayLayout.addView(space);
-            }
-        }
+        context = getContext();
+        showExercises();
 
         return binding.getRoot();
+    }
+
+    public static void showExercises() {
+        binding.exerciseDisplayLayout.removeAllViews();
+        for (Event event : InfoPetFragment.getPet().getEventsByClass(Exercise.class)) {
+            showEvent((Exercise) event);
+        }
+    }
+
+    private static void showEvent(Exercise exercise) {
+        EntryView.Builder builder = new EntryView.Builder(context);
+        builder.setEntryLabels(LABELS);
+
+        EntryView entryView = createEntryView(exercise, builder);
+
+        if (entryView != null) {
+            binding.exerciseDisplayLayout.addView(entryView);
+            Space space = createSpace();
+            binding.exerciseDisplayLayout.addView(space);
+        }
+    }
+
+    @Nullable
+    private static EntryView createEntryView(Exercise exercise, EntryView.Builder builder) {
+        String startDateTime = exercise.getDateTime().toString();
+        String endDateTime = exercise.getEndTime().toString();
+        String date = startDateTime.substring(0, startDateTime.indexOf('T'));
+
+        String[] entries = new String[]{
+            exercise.getDescription(), date, startDateTime.substring(startDateTime.indexOf('T') + 1),
+            endDateTime.substring(endDateTime.indexOf('T') + 1),
+            getMinutes(exercise.getDateTime(), exercise.getEndTime()) + " min"
+        };
+
+        builder.setEntries(entries);
+        builder.setName(exercise.getName());
+        EntryView entryView = null;
+
+        try {
+            entryView = builder.build();
+        } catch (InvalidBuildParameters invalidBuildParameters) {
+            invalidBuildParameters.printStackTrace();
+        }
+        return entryView;
     }
 
     /**
      * Method responsible for initializing the spacers.
      * @return The initialized spacer;
      */
-    private Space createSpace() {
+    private static Space createSpace() {
         Space space;
-        space = new Space(getContext());
+        space = new Space(context);
         space.setMinimumHeight(MIN_SPACE_SIZE);
         return space;
     }
 
-    private int getMinutes(DateTime startDateTime, DateTime endDateTime) {
+    private static int getMinutes(DateTime startDateTime, DateTime endDateTime) {
         int startMinutes = startDateTime.getHour() * 60 + startDateTime.getMinutes();
         int endMinutes = endDateTime.getHour() * 60 + endDateTime.getMinutes();
 
@@ -173,5 +191,11 @@ public class InfoPetExercise extends Fragment {
             isValid = false;
         }
         return isValid;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showExercises();
     }
 }
