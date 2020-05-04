@@ -253,4 +253,10 @@
     <string name="exercise_end_hour">Hora de finalització de l\'exercici</string>
     <string name="delete_exercise">Eliminar exercici</string>
     <string name="error_empty_input_field">Aquest camp no pot estar buit</string>
+    <string name="entry_view_exercise_description">Descripció</string>
+    <string name="entry_view_exercise_date">Data</string>
+    <string name="entry_view_exercise_start_hour">Hora d\'inici</string>
+    <string name="entry_view_exercise_end_hour">Hora de finalització</string>
+    <string name="entry_view_exercise_duration">Duració</string>
+
 </resources>

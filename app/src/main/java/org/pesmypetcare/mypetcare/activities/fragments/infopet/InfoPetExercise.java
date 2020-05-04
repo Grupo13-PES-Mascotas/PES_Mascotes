@@ -29,9 +29,9 @@ import java.util.Objects;
 
 public class InfoPetExercise extends Fragment {
     private static final int MIN_SPACE_SIZE = 20;
-    private static final String[] LABELS = {"Description", "Date", "Start", "End", "Duration"};
     private static FragmentInfoPetExerciseBinding binding;
     private static Context context;
+    private static String[] labels;
     private AlertDialog dialog;
 
     @Override
@@ -43,6 +43,12 @@ public class InfoPetExercise extends Fragment {
                 true);
             dialog.show();
         });
+
+        labels = new String[] {
+            getString(R.string.entry_view_exercise_description), getString(R.string.entry_view_exercise_date),
+            getString(R.string.entry_view_exercise_start_hour), getString(R.string.entry_view_exercise_end_hour),
+            getString(R.string.entry_view_exercise_duration)
+        };
 
         context = getContext();
         showExercises();
@@ -59,7 +65,7 @@ public class InfoPetExercise extends Fragment {
 
     private static void showEvent(Exercise exercise) {
         EntryView.Builder builder = new EntryView.Builder(context);
-        builder.setEntryLabels(LABELS);
+        builder.setEntryLabels(labels);
 
         EntryView entryView = createEntryView(exercise, builder);
 

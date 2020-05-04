@@ -252,4 +252,9 @@
     <string name="exercise_end_hour">Fecha de finalizaciñon del ejercicio</string>
     <string name="delete_exercise">Eliminar el ejercicio</string>
     <string name="error_empty_input_field">Este campo no puede estar vacío</string>
+    <string name="entry_view_exercise_description">Descripción</string>
+    <string name="entry_view_exercise_date">Fecha</string>
+    <string name="entry_view_exercise_start_hour">Hora de inicio</string>
+    <string name="entry_view_exercise_end_hour">Hora de finalización</string>
+    <string name="entry_view_exercise_duration">Duración</string>
 </resources>
