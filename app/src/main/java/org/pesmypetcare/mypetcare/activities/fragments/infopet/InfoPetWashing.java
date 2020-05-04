@@ -237,7 +237,7 @@ public class InfoPetWashing extends Fragment {
         String newDate = getDateTime().toString();
         String washName = Objects.requireNonNull(inputWashName.getText()).toString();
         int duration = Integer.parseInt(Objects.requireNonNull(inputWashDuration.getText()).toString());
-        wash.setWashName(washName);
+        wash.setWashDescription(washName);
         wash.setDuration(duration);
         //InfoPetFragment.getCommunication().updatePetWash(pet, wash, newDate, updatesDate);
         if (updatesDate) {
@@ -341,7 +341,7 @@ public class InfoPetWashing extends Fragment {
      * @param washButton The button that has to be initialized
      */
     private void initializeButtonLogic(Wash wash, MaterialButton washButton) {
-        String washButtonText = getString(R.string.wash) + SPACE + wash.getWashName() + EOL
+        String washButtonText = getString(R.string.wash) + SPACE + wash.getWashDescription() + EOL
                 + getString(R.string.from_date) + SPACE + wash.getDateTime() + EOL + getString(R.string.wash_duration)
                 + ": " + wash.getDuration();
         washButton.setText(washButtonText);
@@ -360,7 +360,7 @@ public class InfoPetWashing extends Fragment {
      */
     private void initializeEditDialog() {
         editWashButton.setText(R.string.update_wash);
-        inputWashName.setText(wash.getWashName());
+        inputWashName.setText(wash.getWashDescription());
         inputWashDuration.setText(String.valueOf(wash.getDuration()));
         updatesDate = false;
         DateTime washDate = wash.getWashDate();

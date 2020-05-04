@@ -8,14 +8,14 @@ import org.pesmypetcare.usermanager.datacontainers.DateTime;
 public class Wash extends Event{
     private static final String WASH = "Wash ";
     private static final String OF_THE_DAY = " of the day ";
-    private String washName;
+    private String washDescription;
     private int duration;
     private DateTime washDate;
 
-    public Wash(DateTime dateTime, int duration, String washName) {
-        super(WASH + washName + OF_THE_DAY + dateTime.toString(), dateTime);
+    public Wash(DateTime dateTime, int duration, String washDescription) {
+        super(WASH + washDescription + OF_THE_DAY + dateTime.toString(), dateTime);
         this.washDate = dateTime;
-        this.washName = washName;
+        this.washDescription = washDescription;
         this.duration = duration;
     }
 /*
@@ -33,16 +33,16 @@ public class Wash extends Event{
      * Getter of the washName attribute.
      * @return The name of the meal
      */
-    public String getWashName() {
-        return washName;
+    public String getWashDescription() {
+        return washDescription;
     }
 
     /**
      * Setter of the washName attribute.
-     * @param washName The new name of the wash
+     * @param washDescription The new name of the wash
      */
-    public void setWashName(String washName) {
-        this.washName = washName;
+    public void setWashDescription(String washDescription) {
+        this.washDescription = washDescription;
     }
 
     /**

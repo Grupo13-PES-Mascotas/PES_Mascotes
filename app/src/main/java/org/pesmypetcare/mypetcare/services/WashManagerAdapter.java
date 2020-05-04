@@ -25,7 +25,6 @@ public class WashManagerAdapter implements WashManagerService {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-
          */
     }
 
