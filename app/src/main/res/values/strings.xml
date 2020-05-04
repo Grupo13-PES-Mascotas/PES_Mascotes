@@ -106,10 +106,6 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="no_description">Not introduced description</string>
-    <string name="pet_info_basic">Basic</string>
-    <string name="pet_info_health">Health</string>
-    <string name="pet_info_medication">Medication</string>
-    <string name="pet_info_meal">Meals</string>
     <string name="choose_statistic">Choose the statistic to display</string>
     <string name="health_weight">Weight</string>
     <string name="health_recommended_daily_kilocalories">Daily kilocalories</string>
@@ -238,9 +234,16 @@
     <string name="report_reason_spam_or_misleading_content">Spam or misleading content</string>
     <string name="report_reason_infringe_my_rights">Infringe my rights</string>
     <string name="report_reason_other">Other</string>
+    <string name="pet_info_basic">Basic</string>
+    <string name="pet_info_health">Health</string>
+    <string name="pet_info_meal">Meals</string>
+    <string name="pet_info_exercise">Exercise</string>
+    <string name="pet_info_washing">Washing</string>
+    <string name="pet_info_medical_profile">Medical profile</string>
+    <string name="pet_info_medication">Medication</string>
+    <string name="pet_info_vet_visits">Vet visits</string>
 
     <!-- The next two strings cannot be translated into any other language -->
-    <string name="navigation_view_open">Open</string>
-    <string name="navigation_view_closed">Closed</string>
-
+    <string name="navigation_view_open" translatable="false">Open</string>
+    <string name="navigation_view_closed" translatable="false">Closed</string>
 </resources>

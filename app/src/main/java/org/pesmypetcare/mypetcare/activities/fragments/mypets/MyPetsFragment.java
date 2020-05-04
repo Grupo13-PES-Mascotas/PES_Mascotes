@@ -62,6 +62,7 @@ public class MyPetsFragment extends Fragment {
                 ft.commit();
                 MainActivity.setActualFragment(testFragment);
                 MainActivity.hideFloatingButton();
+                MainActivity.hideShareAppButton();
             });
             ++index;
         }
