@@ -421,6 +421,22 @@ public class Pet {
         return mealEvents;
     }
 
+    @NonNull
+    /**
+     * Get the list of washes of the pet.
+     * @return The list of washes of the pet
+     */
+    public List<Event> getWashEvents() {
+        ArrayList<Event> washEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof Wash) {
+                washEvents.add(event);
+            }
+        }
+        return washEvents;
+    }
+
     /**
      * Method responsible for cleaning the event list of the pet.
      */
