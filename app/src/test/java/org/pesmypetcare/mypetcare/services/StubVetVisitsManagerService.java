@@ -20,7 +20,7 @@ public class StubVetVisitsManagerService implements VetVisitsManagerService {
     private static final String PET1 = "Bichinho";
     private static final String PET2 = "Comandante";
     public static VetVisit currentVisit;
-    public static int nVetVisit = 0;
+    public static int nVetVisit = 3;
     private Map<String, ArrayList<VetVisit>> data;
 
     public StubVetVisitsManagerService() {
