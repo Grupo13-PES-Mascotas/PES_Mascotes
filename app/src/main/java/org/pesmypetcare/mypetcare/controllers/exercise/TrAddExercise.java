@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.controllers.infopet;
+package org.pesmypetcare.mypetcare.controllers.exercise;
 
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.InvalidPeriodException;

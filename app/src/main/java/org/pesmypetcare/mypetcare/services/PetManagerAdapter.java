@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -287,6 +288,10 @@ public class PetManagerAdapter implements PetManagerService {
         pet.setRecommendedDailyKiloCalories(petData.getRecommendedKcal());
         pet.setBreed(petData.getBreed());
         pet.setPathologies(petData.getPathologies());
+
+        pet.addExercise(new Exercise("Frisbee", "Playing at the beach",
+            DateTime.Builder.buildFullString("2020-05-04T10:00:00"),
+            DateTime.Builder.buildFullString("2020-05-04T11:00:00")));
 
         return pet;
     }

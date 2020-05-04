@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Space;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -18,11 +19,15 @@ import org.pesmypetcare.mypetcare.activities.views.datetimebuttons.TimeButton;
 import org.pesmypetcare.mypetcare.activities.views.entryview.EntryView;
 import org.pesmypetcare.mypetcare.activities.views.entryview.InvalidBuildParameters;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetExerciseBinding;
+import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.util.Objects;
 
 public class InfoPetExercise extends Fragment {
+    private static final int MIN_SPACE_SIZE = 20;
+    private static final String[] LABELS = {"Description", "Date", "Start", "End", "Duration"};
     private FragmentInfoPetExerciseBinding binding;
     private AlertDialog dialog;
 
@@ -36,20 +41,57 @@ public class InfoPetExercise extends Fragment {
             dialog.show();
         });
 
-        EntryView.Builder builder = new EntryView.Builder(getContext());
-        builder.setEntryLabels(new String[]{"Description", "Start", "End", "Duration"});
-        builder.setEntries(new String[]{"Hello", "2020-05-04 10:00:00", "2020-05-04 11:00:00", "60 min"});
-        builder.setName("Ansiano training");
-        EntryView entryView = null;
-        try {
-            entryView = builder.build();
-        } catch (InvalidBuildParameters invalidBuildParameters) {
-            invalidBuildParameters.printStackTrace();
+        for (Event event : InfoPetFragment.getPet().getEventsByClass(Exercise.class)) {
+            Exercise exercise = (Exercise) event;
+            EntryView.Builder builder = new EntryView.Builder(getContext());
+            builder.setEntryLabels(LABELS);
+
+            String startDateTime = exercise.getDateTime().toString();
+            String endDateTime = exercise.getEndTime().toString();
+            String date = startDateTime.substring(0, startDateTime.indexOf('T'));
+
+            String[] entries = new String[]{
+                exercise.getDescription(), date, startDateTime.substring(startDateTime.indexOf('T') + 1),
+                endDateTime.substring(endDateTime.indexOf('T') + 1),
+                getMinutes(exercise.getDateTime(), exercise.getEndTime()) + " min"
+            };
+
+            builder.setEntries(entries);
+            builder.setName(exercise.getName());
+            EntryView entryView = null;
+
+            try {
+                entryView = builder.build();
+            } catch (InvalidBuildParameters invalidBuildParameters) {
+                invalidBuildParameters.printStackTrace();
+            }
+
+            if (entryView != null) {
+                binding.exerciseDisplayLayout.addView(entryView);
+                Space space = createSpace();
+                binding.exerciseDisplayLayout.addView(space);
+            }
         }
 
-        binding.exerciseDisplayLayout.addView(entryView);
-
         return binding.getRoot();
+    }
+
+    /**
+     * Method responsible for initializing the spacers.
+     * @return The initialized spacer;
+     */
+    private Space createSpace() {
+        Space space;
+        space = new Space(getContext());
+        space.setMinimumHeight(MIN_SPACE_SIZE);
+        return space;
+    }
+
+    private int getMinutes(DateTime startDateTime, DateTime endDateTime) {
+        int startMinutes = startDateTime.getHour() * 60 + startDateTime.getMinutes();
+        int endMinutes = endDateTime.getHour() * 60 + endDateTime.getMinutes();
+
+        return endMinutes - startMinutes;
     }
 
     private AlertDialog createEditExerciseDialog(int titleId, int messageId, boolean isAdding) {

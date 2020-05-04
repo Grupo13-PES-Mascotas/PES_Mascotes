@@ -89,6 +89,8 @@ import org.pesmypetcare.mypetcare.controllers.event.TrDeletePeriodicNotification
 import org.pesmypetcare.mypetcare.controllers.event.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.event.TrNewPeriodicNotification;
 import org.pesmypetcare.mypetcare.controllers.event.TrNewPersonalEvent;
+import org.pesmypetcare.mypetcare.controllers.exercise.ExerciseControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.exercise.TrAddExercise;
 import org.pesmypetcare.mypetcare.controllers.meals.MealsControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.meals.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.meals.TrNewPetMeal;
@@ -250,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrLikePost trLikePost;
     private TrUnlikePost trUnlikePost;
     private TrReportPost trReportPost;
+    private TrAddExercise trAddExercise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -543,6 +546,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeMealsControllers();
         initializeCommunityControllers();
         initializeMedicationControllers();
+        initializeExerciseControllers();
+    }
+
+    /**
+     * Initialize the exercise controllers
+     */
+    private void initializeExerciseControllers() {
+        trAddExercise = ExerciseControllersFactory.createTrAddExercise();
     }
 
     /**
