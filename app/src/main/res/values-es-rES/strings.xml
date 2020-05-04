@@ -107,10 +107,6 @@
     <string name="yes">Si</string>
     <string name="no">No</string>
     <string name="no_description">Descripción no introducida</string>
-    <string name="pet_info_basic">Básico</string>
-    <string name="pet_info_health">Salud</string>
-    <string name="pet_info_medication">Medicación</string>
-    <string name="pet_info_meal">Comidas</string>
     <string name="choose_statistic">Escoje el estadístico a mostrar</string>
     <string name="health_weight">Peso</string>
     <string name="health_recommended_daily_kilocalories">Kilocalorías diárias</string>
@@ -239,9 +235,12 @@
     <string name="report_reason_spam_or_misleading_content">Contenido basura o engañoso</string>
     <string name="report_reason_infringe_my_rights">Infracción de mis derechos de autor</string>
     <string name="report_reason_other">Otros</string>
-
-    <!-- The next two strings cannot be translated into any other language -->
-    <string name="navigation_view_open">Open</string>
-    <string name="navigation_view_closed">Closed</string>
-
+    <string name="pet_info_basic">Básico</string>
+    <string name="pet_info_health">Salud</string>
+    <string name="pet_info_meal">Comidas</string>
+    <string name="pet_info_exercise">Ejercicio</string>
+    <string name="pet_info_washing">Lavados</string>
+    <string name="pet_info_medical_profile">Perfil médico</string>
+    <string name="pet_info_medication">Medicación</string>
+    <string name="pet_info_vet_visits">Visitas al veterinario</string>
 </resources>

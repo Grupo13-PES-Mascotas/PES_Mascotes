@@ -107,10 +107,6 @@
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="no_description">No s\'ha introduït la descripció</string>
-    <string name="pet_info_basic">Bàsic</string>
-    <string name="pet_info_health">Salut</string>
-    <string name="pet_info_medication">Medicació</string>
-    <string name="pet_info_meal">Àpats</string>
     <string name="choose_statistic">Escull l\'estadístic a mostrar</string>
     <string name="health_weight">Pes</string>
     <string name="health_recommended_daily_kilocalories">Kilocalories diàries</string>
@@ -240,9 +236,12 @@
     <string name="report_reason_spam_or_misleading_content">Contingut brossa o enganyós</string>
     <string name="report_reason_infringe_my_rights">Infracció dels drets d\'autor</string>
     <string name="report_reason_other">Altres</string>
-
-    <!-- The next two strings cannot be translated into any other language -->
-    <string name="navigation_view_open">Open</string>
-    <string name="navigation_view_closed">Closed</string>
-
+    <string name="pet_info_basic">Bàsic</string>
+    <string name="pet_info_health">Salut</string>
+    <string name="pet_info_meal">Àpats</string>
+    <string name="pet_info_exercise">Exercici</string>
+    <string name="pet_info_washing">Rentats</string>
+    <string name="pet_info_medical_profile">Perfil mèdic</string>
+    <string name="pet_info_medication">Medicació</string>
+    <string name="pet_info_vet_visits">Visites al veterinari</string>
 </resources>
