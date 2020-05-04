@@ -13,6 +13,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.views.EntryView;
 import org.pesmypetcare.mypetcare.activities.views.datetimebuttons.DateButton;
 import org.pesmypetcare.mypetcare.activities.views.datetimebuttons.TimeButton;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetExerciseBinding;
@@ -33,6 +34,13 @@ public class InfoPetExercise extends Fragment {
                 true);
             dialog.show();
         });
+
+        EntryView.Builder builder = new EntryView.Builder(getContext());
+        builder.setEntryLabels(new String[]{"Description", "Start", "End", "Duration"});
+        builder.setEntries(new String[]{"Hello", "2020-05-04 10:00:00", "2020-05-04 11:00:00", "60 min"});
+        EntryView entryView = builder.build();
+
+        binding.exerciseDisplayLayout.addView(entryView);
 
         return binding.getRoot();
     }
