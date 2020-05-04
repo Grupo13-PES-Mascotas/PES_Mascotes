@@ -9,6 +9,7 @@ import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 public interface InfoPetCommunication {
 
@@ -133,4 +134,15 @@ public interface InfoPetCommunication {
      * @param pet The pet from which we want to obtain all the medications
      */
     void obtainAllPetMedications(Pet pet);
+
+    /**
+     * Add an exercise to the pet.
+     * @param pet The pet
+     * @param exerciseName The exercise name
+     * @param exerciseDescription The exercise description
+     * @param startExerciseDateTime The exercise start DateTime
+     * @param endExerciseDateTime The exercise end DateTime
+     */
+    void addExercise(Pet pet, String exerciseName, String exerciseDescription, DateTime startExerciseDateTime,
+                     DateTime endExerciseDateTime);
 }

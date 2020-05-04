@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.utilities.datetimebuttons;
+package org.pesmypetcare.mypetcare.activities.views.datetimebuttons;
 
 import android.content.Context;
 import android.content.res.TypedArray;

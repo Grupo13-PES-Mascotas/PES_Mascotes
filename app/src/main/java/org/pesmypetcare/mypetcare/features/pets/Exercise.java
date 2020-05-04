@@ -5,11 +5,11 @@ import org.pesmypetcare.usermanager.datacontainers.DateTime;
 /**
  * @author Albert Pinto
  */
-public class Exercises extends Event {
+public class Exercise extends Event {
     private String name;
     private DateTime endTime;
 
-    public Exercises(String name, String description, DateTime dateTime, DateTime endTime) {
+    public Exercise(String name, String description, DateTime dateTime, DateTime endTime) {
         super(description, dateTime);
         this.name = name;
         this.endTime = endTime;
@@ -29,5 +29,10 @@ public class Exercises extends Event {
 
     public void setEndTime(DateTime endTime) {
         this.endTime = endTime;
+    }
+
+    @Override
+    public String toString() {
+        return "{" + getName() + ", " + getDescription() + ", " + getDateTime() + ", " + getEndTime() + "}";
     }
 }

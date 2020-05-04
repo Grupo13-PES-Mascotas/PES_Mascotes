@@ -130,4 +130,10 @@ public class StubPetManagerService implements PetManagerService {
         int petIndex = Objects.requireNonNull(pets).indexOf(pet);
         pets.get(petIndex).deleteWashFrequencyForDate(dateTime);
     }
+
+    @Override
+    public void addExercise(User user, Pet pet, String exerciseName, String description, DateTime startDateTime,
+                            DateTime endDateTime) {
+
+    }
 }

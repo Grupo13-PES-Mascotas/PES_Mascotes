@@ -14,6 +14,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -529,5 +530,45 @@ public class Pet {
         String desc = event.getDescription();
         PeriodEvent pe = new PeriodEvent(desc, dateTime, 0);
         periodEvents.remove(pe);
+    }
+
+    public List<Event> getEventsByClass(Class eventClass) {
+        ArrayList<Event> selectedEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event.getClass().equals(eventClass)) {
+                selectedEvents.add(event);
+            }
+        }
+        return selectedEvents;
+    }
+
+    public void addExercise(Exercise exercise) {
+        addEvent(exercise);
+        int minutes = getMinutes(exercise.getDateTime(), exercise.getEndTime());
+        String dateTime = exercise.getDateTime().toString();
+        String strDate = dateTime.substring(0, dateTime.indexOf('T'));
+        DateTime date = DateTime.Builder.buildDateString(strDate);
+
+        if (healthInfo.getExerciseFrequency().containsKey(date)) {
+            minutes += healthInfo.getExerciseFrequencyForDate(date);
+        }
+
+        healthInfo.addExerciseFrequencyForDate(date, minutes);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.set(Calendar.YEAR, date.getYear());
+        calendar.set(Calendar.MONTH, date.getMonth());
+        calendar.set(Calendar.DAY_OF_MONTH, date.getDay());
+
+        System.out.println(calendar.get(Calendar.DAY_OF_WEEK));
+    }
+
+    private int getMinutes(DateTime startDateTime, DateTime endDateTime) {
+        int startMinutes = startDateTime.getHour() * 60 + startDateTime.getMinutes();
+        int endMinutes = endDateTime.getHour() * 60 + endDateTime.getMinutes();
+
+        return endMinutes - startMinutes;
     }
 }

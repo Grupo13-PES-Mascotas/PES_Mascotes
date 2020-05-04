@@ -263,6 +263,12 @@ public class PetManagerAdapter implements PetManagerService {
         ServiceLocator.getInstance().getFreqWashManagerClient().deleteByDate(accessToken, userName, petName, dateTime);
     }
 
+    @Override
+    public void addExercise(User user, Pet pet, String exerciseName, String description, DateTime startDateTime,
+                            DateTime endDateTime) {
+        // Not implemented yet
+    }
+
     /**
      * Decodes the pet information from the server.
      * @param userPet The information from the server

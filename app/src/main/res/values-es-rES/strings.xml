@@ -251,4 +251,5 @@
     <string name="exercise_start_hour">Hora de inicio del ejercicio</string>
     <string name="exercise_end_hour">Fecha de finalizaciñon del ejercicio</string>
     <string name="delete_exercise">Eliminar el ejercicio</string>
+    <string name="error_empty_input_field">Este campo no puede estar vacío</string>
 </resources>

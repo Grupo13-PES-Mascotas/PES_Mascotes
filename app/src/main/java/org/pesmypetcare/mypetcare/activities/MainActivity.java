@@ -1466,6 +1466,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
+    public void addExercise(Pet pet, String exerciseName, String exerciseDescription, DateTime startExerciseDateTime,
+                            DateTime endExerciseDateTime) {
+
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
