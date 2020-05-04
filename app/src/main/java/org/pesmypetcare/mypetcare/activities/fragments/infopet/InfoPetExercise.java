@@ -13,9 +13,10 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.activities.views.EntryView;
 import org.pesmypetcare.mypetcare.activities.views.datetimebuttons.DateButton;
 import org.pesmypetcare.mypetcare.activities.views.datetimebuttons.TimeButton;
+import org.pesmypetcare.mypetcare.activities.views.entryview.EntryView;
+import org.pesmypetcare.mypetcare.activities.views.entryview.InvalidBuildParameters;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetExerciseBinding;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
@@ -38,7 +39,13 @@ public class InfoPetExercise extends Fragment {
         EntryView.Builder builder = new EntryView.Builder(getContext());
         builder.setEntryLabels(new String[]{"Description", "Start", "End", "Duration"});
         builder.setEntries(new String[]{"Hello", "2020-05-04 10:00:00", "2020-05-04 11:00:00", "60 min"});
-        EntryView entryView = builder.build();
+        builder.setName("Ansiano training");
+        EntryView entryView = null;
+        try {
+            entryView = builder.build();
+        } catch (InvalidBuildParameters invalidBuildParameters) {
+            invalidBuildParameters.printStackTrace();
+        }
 
         binding.exerciseDisplayLayout.addView(entryView);
 

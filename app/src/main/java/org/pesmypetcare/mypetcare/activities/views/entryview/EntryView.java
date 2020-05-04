@@ -1,7 +1,8 @@
-package org.pesmypetcare.mypetcare.activities.views;
+package org.pesmypetcare.mypetcare.activities.views.entryview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -26,6 +27,7 @@ public class EntryView extends LinearLayout {
 
     private EntryView(Context context, @Nullable AttributeSet attrs, Builder builder) {
         super(context, attrs);
+        this.builder = builder;
 
         setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         setOrientation(LinearLayout.VERTICAL);
@@ -36,16 +38,29 @@ public class EntryView extends LinearLayout {
 
         setPadding(padding, padding, padding, padding);
 
+        String name = builder.getName();
+
+        if (name != null) {
+            name = name.toUpperCase();
+            TextView nameView = getEntryTextView(context, name);
+            nameView.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+            nameView.setTypeface(null, Typeface.BOLD);
+            addView(nameView);
+
+            Space space = createSpace();
+            addView(space);
+        }
+
         String[] entryLabels = builder.getEntryLabels();
         String[] entries = builder.getEntries();
         int nEntries = entryLabels.length;
 
         for (int actual = 0; actual < nEntries; ++actual) {
             LinearLayout layoutEntry = new LinearLayout(context);
-            layoutEntry.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+            layoutEntry.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
             layoutEntry.setOrientation(LinearLayout.HORIZONTAL);
-            layoutEntry.setWeightSum(LAYOUT_WEIGHT_SUM);
+            //layoutEntry.setWeightSum(LAYOUT_WEIGHT_SUM);
 
             TextView entryLabelView = getEntryTextView(context, entryLabels[actual] + ": ");
             entryLabelView.setTextColor(getResources().getColor(R.color.colorPrimary, null));
@@ -77,7 +92,7 @@ public class EntryView extends LinearLayout {
     private TextView getEntryTextView(Context context, String text) {
         TextView entryLabelView = new TextView(context);
         entryLabelView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-            LayoutParams.WRAP_CONTENT, LAYOUT_WEIGHT_SUM / 2.0f));
+            LayoutParams.WRAP_CONTENT/*, LAYOUT_WEIGHT_SUM / 2.0f*/));
         entryLabelView.setBreakStrategy(Layout.BREAK_STRATEGY_BALANCED);
         entryLabelView.setText(text);
         return entryLabelView;
@@ -117,7 +132,10 @@ public class EntryView extends LinearLayout {
             this.name = name;
         }
 
-        public EntryView build() {
+        public EntryView build() throws InvalidBuildParameters {
+            if (entryLabels == null || entries == null || entryLabels.length != entries.length) {
+                throw new InvalidBuildParameters();
+            }
             return new EntryView(context, null, this);
         }
     }
