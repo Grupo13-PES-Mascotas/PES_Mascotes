@@ -34,7 +34,7 @@ public class TestTrDeleteVetVisit {
     @Test(expected = NotPetOwnerException.class)
     public void shouldNotDeleteVetVisitIfNotPetOwner() throws NotPetOwnerException {
         trDeleteVetVisit.setUser(user);
-        pet.setOwner(new User("Tomas Roncero", "tomasAs@gmail.com", "1235"));
+        pet.setOwner(new User("Tomas Roncero", "tomasAS@gmail.com", "1235"));
         trDeleteVetVisit.setPet(pet);
         trDeleteVetVisit.setVetVisit(vetVisit);
         trDeleteVetVisit.execute();
