@@ -242,9 +242,10 @@
     <string name="pet_info_medical_profile">Medical profile</string>
     <string name="pet_info_medication">Medication</string>
     <string name="pet_info_vet_visits">Vet visits</string>
-    <string name="add_exercise">Add exercise</string>
+    <string name="add_exercise_title">Add exercise</string>
+    <string name="add_exercice_message">Input the data of the new exercise</string>
     <string name="exercise_name">Exercise name</string>
-    <string name="exercise_description">Exercise description</string>
+    <string name="exercise_description">Exercise description (optional)</string>
     <string name="exercise_date">Exercise date</string>
     <string name="exercise_start_hour">Exercise start hour</string>
     <string name="exercise_end_hour">Exercise end hour</string>

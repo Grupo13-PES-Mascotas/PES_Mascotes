@@ -203,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static List<Group> groups;
     private static int notificationId;
     private static int requestCode;
+    private static FragmentManager fragmentManager;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -262,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         notificationId = 0;
         requestCode = 0;
+        fragmentManager = getSupportFragmentManager();
 
         makeLogin();
         initializeControllers();
@@ -337,6 +339,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     public static FirebaseAuth getmAuth() {
         return mAuth;
+    }
+
+    public static FragmentManager getApplicationFragmentManager() {
+        return fragmentManager;
     }
 
     public void setToolbarText(String text) {

@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"/>
 
-        <com.google.android.material.button.MaterialButton
+        <org.pesmypetcare.mypetcare.utilities.DateButton
             android:id="@+id/inputExerciseDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,6 +55,7 @@
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="16sp"
+            app:titleText="@string/exercise_date"
             app:icon="@drawable/calendar_icon"
             app:iconSize="24dp" />
 
@@ -129,7 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimary"
-            android:text="@string/add_exercise"
+            android:text="@string/add_exercise_title"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:icon="@drawable/icon_add"
