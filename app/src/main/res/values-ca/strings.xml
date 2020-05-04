@@ -244,4 +244,11 @@
     <string name="pet_info_medical_profile">Perfil mèdic</string>
     <string name="pet_info_medication">Medicació</string>
     <string name="pet_info_vet_visits">Visites al veterinari</string>
+    <string name="add_exercise">Afegir exercici</string>
+    <string name="exercise_name">Nom de l\'exercici</string>
+    <string name="exercise_description">Descripció de l\'exercici</string>
+    <string name="exercise_date">Data de l\'exercici</string>
+    <string name="exercise_start_hour">Hora d\'inici de l\'exercici</string>
+    <string name="exercise_end_hour">Hora de finalització de l\'exercici</string>
+    <string name="delete_exercise">Eliminar exercici</string>
 </resources>
