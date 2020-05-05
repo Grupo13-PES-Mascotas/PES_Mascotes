@@ -116,7 +116,7 @@ public interface PetManagerService {
     void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException;
 
     /**
-     * Add an exercise to the pet
+     * Add an exercise to the pet.
      * @param user The user
      * @param pet The pet
      * @param exerciseName The exercise name
@@ -126,4 +126,11 @@ public interface PetManagerService {
      */
     void addExercise(User user, Pet pet, String exerciseName, String description, DateTime startDateTime,
                      DateTime endDateTime);
+
+    /**
+     * Delete an exercise of the pet.
+     * @param pet The pet
+     * @param dateTime The DateTime of the exercise
+     */
+    void deleteExercise(Pet pet, DateTime dateTime);
 }

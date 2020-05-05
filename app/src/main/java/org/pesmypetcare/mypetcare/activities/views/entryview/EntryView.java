@@ -20,7 +20,6 @@ import org.pesmypetcare.mypetcare.R;
  */
 @SuppressLint("ViewConstructor")
 public class EntryView extends LinearLayout {
-    private static final float LAYOUT_WEIGHT_SUM = 1.0f;
     private static final int MIN_SPACE_SIZE = 20;
     private static final int PADDING = 20;
     private Builder builder;
@@ -60,7 +59,6 @@ public class EntryView extends LinearLayout {
             layoutEntry.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
             layoutEntry.setOrientation(LinearLayout.HORIZONTAL);
-            //layoutEntry.setWeightSum(LAYOUT_WEIGHT_SUM);
 
             TextView entryLabelView = getEntryTextView(context, entryLabels[actual] + ": ");
             entryLabelView.setTextColor(getResources().getColor(R.color.colorPrimary, null));
@@ -92,10 +90,14 @@ public class EntryView extends LinearLayout {
     private TextView getEntryTextView(Context context, String text) {
         TextView entryLabelView = new TextView(context);
         entryLabelView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-            LayoutParams.WRAP_CONTENT/*, LAYOUT_WEIGHT_SUM / 2.0f*/));
+            LayoutParams.WRAP_CONTENT));
         entryLabelView.setBreakStrategy(Layout.BREAK_STRATEGY_BALANCED);
         entryLabelView.setText(text);
         return entryLabelView;
+    }
+
+    public Builder getBuilder() {
+        return builder;
     }
 
     public static class Builder {

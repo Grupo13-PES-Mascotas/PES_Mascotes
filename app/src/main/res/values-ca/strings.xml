@@ -258,5 +258,8 @@
     <string name="entry_view_exercise_start_hour">Hora d\'inici</string>
     <string name="entry_view_exercise_end_hour">Hora de finalització</string>
     <string name="entry_view_exercise_duration">Duració</string>
+    <string name="update_exercise">Actualitzar l\'exercici</string>
+    <string name="update_exercise_title">Actualitzar l\'exercici</string>
+    <string name="update_exercice_message">Actualitza la informació de l\'exercici</string>
 
 </resources>

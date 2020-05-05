@@ -270,6 +270,11 @@ public class PetManagerAdapter implements PetManagerService {
         // Not implemented yet
     }
 
+    @Override
+    public void deleteExercise(Pet pet, DateTime dateTime) {
+
+    }
+
     /**
      * Decodes the pet information from the server.
      * @param userPet The information from the server

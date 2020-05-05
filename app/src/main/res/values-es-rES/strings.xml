@@ -257,4 +257,7 @@
     <string name="entry_view_exercise_start_hour">Hora de inicio</string>
     <string name="entry_view_exercise_end_hour">Hora de finalización</string>
     <string name="entry_view_exercise_duration">Duración</string>
+    <string name="update_exercise">Actualizar ejercicio</string>
+    <string name="update_exercise_title">Actualizar ejercicio</string>
+    <string name="update_exercice_message">Actualiza la información del ejercicio</string>
 </resources>

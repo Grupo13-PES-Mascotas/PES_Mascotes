@@ -136,4 +136,9 @@ public class StubPetManagerService implements PetManagerService {
                             DateTime endDateTime) {
 
     }
+
+    @Override
+    public void deleteExercise(Pet pet, DateTime dateTime) {
+
+    }
 }

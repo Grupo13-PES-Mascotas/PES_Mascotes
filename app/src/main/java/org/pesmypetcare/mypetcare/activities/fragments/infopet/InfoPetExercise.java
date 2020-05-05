@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,16 +32,18 @@ public class InfoPetExercise extends Fragment {
     private static final int MIN_SPACE_SIZE = 20;
     private static FragmentInfoPetExerciseBinding binding;
     private static Context context;
+    private static LayoutInflater inflater;
     private static String[] labels;
-    private AlertDialog dialog;
+    private static AlertDialog dialog;
+    private static Resources resources;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoPetExerciseBinding.inflate(inflater, container, false);
 
         binding.addExerciseButton.setOnClickListener(v -> {
-            AlertDialog dialog = createEditExerciseDialog(R.string.add_exercise_title, R.string.add_exercice_message,
-                true);
+            createEditExerciseDialog(R.string.add_exercise_title, R.string.add_exercice_message,
+                true, null, null);
             dialog.show();
         });
 
@@ -51,6 +54,8 @@ public class InfoPetExercise extends Fragment {
         };
 
         context = getContext();
+        InfoPetExercise.inflater = inflater;
+        resources = getResources();
         showExercises();
 
         return binding.getRoot();
@@ -74,6 +79,12 @@ public class InfoPetExercise extends Fragment {
             Space space = createSpace();
             binding.exerciseDisplayLayout.addView(space);
         }
+
+        Objects.requireNonNull(entryView).setOnClickListener(v -> {
+            createEditExerciseDialog(R.string.update_exercise_title, R.string.update_exercice_message, false,
+                builder.getName(), builder.getEntries());
+            dialog.show();
+        });
     }
 
     @Nullable
@@ -118,13 +129,14 @@ public class InfoPetExercise extends Fragment {
         return endMinutes - startMinutes;
     }
 
-    private AlertDialog createEditExerciseDialog(int titleId, int messageId, boolean isAdding) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()),
+    private static void createEditExerciseDialog(int titleId, int messageId, boolean isAdding, String name,
+                                                        String[] entries) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context),
             R.style.AlertDialogTheme);
         builder.setTitle(titleId);
         builder.setMessage(messageId);
 
-        View editExerciseLayout = getLayoutInflater().inflate(R.layout.edit_exercise, null);
+        View editExerciseLayout = inflater.inflate(R.layout.edit_exercise, null);
         builder.setView(editExerciseLayout);
         dialog = builder.create();
         TextInputLayout exerciseName = editExerciseLayout.findViewById(R.id.inputExerciseName);
@@ -136,19 +148,33 @@ public class InfoPetExercise extends Fragment {
         MaterialButton deleteExerciseButton = editExerciseLayout.findViewById(R.id.deleteExerciseButton);
 
         if (isAdding) {
+            editExerciseButton.setText(R.string.add_exercise_title);
             editExerciseButton.setOnClickListener(v -> {
                 addExerciseListener(exerciseName, exerciseDescription, exerciseDate, exerciseStartTime,
                     exerciseEndTime);
             });
             deleteExerciseButton.setVisibility(View.GONE);
-        }
+        } else {
+            Objects.requireNonNull(exerciseName.getEditText()).setText(name);
+            Objects.requireNonNull(exerciseDescription.getEditText()).setText(entries[0]);
+            exerciseDate.setText(entries[1]);
+            exerciseStartTime.setText(entries[2]);
+            exerciseEndTime.setText(entries[3]);
+            editExerciseButton.setText(R.string.update_exercise);
+            editExerciseButton.setOnClickListener(v -> {
 
-        return dialog;
+            });
+
+            deleteExerciseButton.setVisibility(View.VISIBLE);
+            deleteExerciseButton.setOnClickListener(v -> {
+
+            });
+        }
     }
 
-    private void addExerciseListener(TextInputLayout exerciseName, TextInputLayout exerciseDescription,
-                                     DateButton exerciseDate, TimeButton exerciseStartTime,
-                                     TimeButton exerciseEndTime) {
+    private static void addExerciseListener(TextInputLayout exerciseName, TextInputLayout exerciseDescription,
+                                            DateButton exerciseDate, TimeButton exerciseStartTime,
+                                            TimeButton exerciseEndTime) {
         String txtExerciseName = Objects.requireNonNull(exerciseName.getEditText()).getText().toString();
         boolean isValid = isValid(exerciseName, exerciseDate, exerciseStartTime, exerciseEndTime, txtExerciseName);
 
@@ -157,8 +183,8 @@ public class InfoPetExercise extends Fragment {
         }
     }
 
-    private void addExercise(TextInputLayout exerciseDescription, DateButton exerciseDate, TimeButton exerciseStartTime,
-                             TimeButton exerciseEndTime, String txtExerciseName) {
+    private static void addExercise(TextInputLayout exerciseDescription, DateButton exerciseDate,
+                                    TimeButton exerciseStartTime, TimeButton exerciseEndTime, String txtExerciseName) {
         String txtDescription = Objects.requireNonNull(exerciseDescription.getEditText())
             .getText().toString();
         String date = exerciseDate.getText().toString();
@@ -172,27 +198,27 @@ public class InfoPetExercise extends Fragment {
         dialog.dismiss();
     }
 
-    private boolean isValid(TextInputLayout exerciseName, DateButton exerciseDate, TimeButton exerciseStartTime,
-                            TimeButton exerciseEndTime, String txtExerciseName) {
+    private static boolean isValid(TextInputLayout exerciseName, DateButton exerciseDate, TimeButton exerciseStartTime,
+                                   TimeButton exerciseEndTime, String txtExerciseName) {
         boolean isValid = true;
 
         if ("".equals(txtExerciseName)) {
             exerciseName.setErrorEnabled(true);
-            exerciseName.setError(getString(R.string.error_empty_input_field));
+            exerciseName.setError(resources.getString(R.string.error_empty_input_field));
             isValid = false;
         }
 
-        if (exerciseDate.getText().toString().equals(getString(R.string.exercise_date))) {
+        if (exerciseDate.getText().toString().equals(resources.getString(R.string.exercise_date))) {
             exerciseDate.setText(R.string.error_empty_input_field);
             isValid = false;
         }
 
-        if (exerciseStartTime.getText().toString().equals(getString(R.string.exercise_start_hour))) {
+        if (exerciseStartTime.getText().toString().equals(resources.getString(R.string.exercise_start_hour))) {
             exerciseStartTime.setText(R.string.error_empty_input_field);
             isValid = false;
         }
 
-        if (exerciseEndTime.getText().toString().equals(getString(R.string.exercise_end_hour))) {
+        if (exerciseEndTime.getText().toString().equals(resources.getString(R.string.exercise_end_hour))) {
             exerciseEndTime.setText(R.string.error_empty_input_field);
             isValid = false;
         }

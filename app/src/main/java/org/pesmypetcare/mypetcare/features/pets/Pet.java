@@ -14,7 +14,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -543,6 +542,25 @@ public class Pet {
         return selectedEvents;
     }
 
+    public boolean containsEvent(DateTime dateTime, Class exercise) {
+        for (Event event : events) {
+            if (event.getClass().equals(exercise) && event.getDateTime().compareTo(dateTime) == 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void deleteEventByClass(DateTime dateTime, Class exercise) {
+        for (Event event : events) {
+            if (event.getClass().equals(exercise) && event.getDateTime().compareTo(dateTime) == 0) {
+                events.remove(event);
+                return;
+            }
+        }
+    }
+
     public void addExercise(Exercise exercise) {
         addEvent(exercise);
         int minutes = getMinutes(exercise.getDateTime(), exercise.getEndTime());
@@ -555,14 +573,6 @@ public class Pet {
         }
 
         healthInfo.addExerciseFrequencyForDate(date, minutes);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setFirstDayOfWeek(Calendar.MONDAY);
-        calendar.set(Calendar.YEAR, date.getYear());
-        calendar.set(Calendar.MONTH, date.getMonth());
-        calendar.set(Calendar.DAY_OF_MONTH, date.getDay());
-
-        System.out.println(calendar.get(Calendar.DAY_OF_WEEK));
     }
 
     private int getMinutes(DateTime startDateTime, DateTime endDateTime) {
@@ -570,5 +580,24 @@ public class Pet {
         int endMinutes = endDateTime.getHour() * 60 + endDateTime.getMinutes();
 
         return endMinutes - startMinutes;
+    }
+
+    public void deleteExerciseForDate(DateTime dateTime) {
+        List<Event> events = getEventsByClass(Exercise.class);
+        Exercise exercise = null;
+
+        for (Event event : events) {
+            if (event.getDateTime().compareTo(dateTime) == 0) {
+                exercise = (Exercise) event;
+            }
+        }
+
+        String strDateTime = Objects.requireNonNull(exercise).getDateTime().toString();
+        String strDate = strDateTime.substring(0, strDateTime.indexOf('T'));
+        DateTime date = DateTime.Builder.buildDateString(strDate);
+        int duration = getMinutes(exercise.getDateTime(), exercise.getEndTime());
+
+        healthInfo.removeExerciseFrequency(date, duration);
+        deleteEventByClass(dateTime, Exercise.class);
     }
 }

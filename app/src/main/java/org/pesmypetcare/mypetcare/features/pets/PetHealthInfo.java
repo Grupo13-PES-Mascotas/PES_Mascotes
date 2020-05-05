@@ -176,7 +176,17 @@ public class PetHealthInfo {
      * @param exerciseFreq The exerciseFreq of the pet for that given date
      */
     public void addExerciseFrequencyForDate(DateTime date, int exerciseFreq) {
-        this.exerciseFrequency.put(date, exerciseFreq);
+        exerciseFrequency.put(date, exerciseFreq);
+    }
+
+    public void removeExerciseFrequency(DateTime date, int duration) {
+        int actualDuration = exerciseFrequency.get(date) - duration;
+
+        if (actualDuration > 0) {
+            exerciseFrequency.put(date, actualDuration);
+        } else {
+            exerciseFrequency.remove(date);
+        }
     }
 
     /**
