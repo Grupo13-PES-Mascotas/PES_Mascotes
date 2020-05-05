@@ -117,6 +117,11 @@ public class WashManagerAdapter implements WashManagerService {
         this.createWash(user, pet, newWash);*/
     }
 
+    @Override
+    public void deleteWashesFromPet(User user, Pet pet) {
+        //
+    }
+
     /**
      * Method responsible for accessing the service an obtaining all the washes for the indicated pet.
      * @param accessToken The accessToken of the owner

@@ -38,7 +38,7 @@ public class TrDeleteWash {
      * Setter of the wash that has to be deleted.
      * @param wash The wash that has to be deleted
      */
-    public void setMeal(Wash wash) {
+    public void setWash(Wash wash) {
         this.wash = wash;
     }
 

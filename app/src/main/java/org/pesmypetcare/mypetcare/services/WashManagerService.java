@@ -51,4 +51,11 @@ public interface WashManagerService {
      * @param oldDate The old date of the meal
      */
     void updateWashDate(User user, Pet pet, String newDate, String oldDate);
+
+    /**
+     * Method that deletes all the washes from the indicated pet.
+     * @param user The owner of the pet.
+     * @param pet The pet from which we want to delete all the washes
+     */
+    void deleteWashesFromPet(User user, Pet pet);
 }

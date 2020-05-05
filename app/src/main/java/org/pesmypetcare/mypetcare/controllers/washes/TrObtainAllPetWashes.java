@@ -49,7 +49,7 @@ public class TrObtainAllPetWashes {
      * Method responsible for executing the transaction.
      */
     public void execute() {
-        //result = washManagerService.findWashesByPet(user, pet);
+        result = washManagerService.findWashesByPet(user, pet);
         for (Event e:result) {
             pet.addEvent(e);
         }

@@ -58,9 +58,9 @@ public class TrUpdateWash {
      * Execute the transaction.
      */
     public void execute() {
-        /*washManagerService.updateWashBody(user, pet, wash);
+        washManagerService.updateWashBody(user, pet, wash);
         if (updatesDate) {
             washManagerService.updateWashDate(user, pet, newDate, wash.getDateTime().toString());
-        }*/
+        }
     }
 }

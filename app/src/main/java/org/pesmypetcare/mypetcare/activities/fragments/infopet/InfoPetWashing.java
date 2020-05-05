@@ -24,6 +24,7 @@ import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetWashingBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
+import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.text.SimpleDateFormat;
@@ -239,7 +240,7 @@ public class InfoPetWashing extends Fragment {
         int duration = Integer.parseInt(Objects.requireNonNull(inputWashDuration.getText()).toString());
         wash.setWashDescription(washName);
         wash.setDuration(duration);
-        //InfoPetFragment.getCommunication().updatePetWash(pet, wash, newDate, updatesDate);
+        InfoPetFragment.getCommunication().updatePetWash(pet, wash, newDate, updatesDate);
         if (updatesDate) {
             wash.setWashDate(DateTime.Builder.buildFullString(newDate));
         }
@@ -271,11 +272,11 @@ public class InfoPetWashing extends Fragment {
         int duration = Integer.parseInt(Objects.requireNonNull(inputWashDuration.getText()).toString());
         String washName = Objects.requireNonNull(inputWashName.getText()).toString();
         wash = new Wash(washDate, duration, washName);
-        /*try {
+        try {
             InfoPetFragment.getCommunication().addPetWash(pet, wash);
         } catch (WashAlreadyExistingException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     /**
@@ -283,7 +284,7 @@ public class InfoPetWashing extends Fragment {
      */
     private void initializeRemoveWashButton() {
         deleteWashButton.setOnClickListener(v -> {
-            //InfoPetFragment.getCommunication().deletePetWash(pet, wash);
+            InfoPetFragment.getCommunication().deletePetWash(pet, wash);
             initializeWashLayoutView();
             dialog.dismiss();
         });

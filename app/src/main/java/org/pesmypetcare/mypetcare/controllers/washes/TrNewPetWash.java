@@ -1,9 +1,9 @@
 package org.pesmypetcare.mypetcare.controllers.washes;
 
 import org.pesmypetcare.mypetcare.features.pets.Event;
-import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
+import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.WashManagerService;
 
@@ -41,7 +41,7 @@ public class TrNewPetWash {
      * Setter of the wash that has to be added to the pet.
      * @param wash The wash that has to be added to the pet
      */
-    public void setMeal(Wash wash) {
+    public void setWash(Wash wash) {
         this.wash = wash;
     }
 
@@ -56,10 +56,10 @@ public class TrNewPetWash {
     /**
      * Execute the transaction.
      */
-    public void execute() throws MealAlreadyExistingException {
+    public void execute() throws WashAlreadyExistingException {
         result = false;
         if (mealHasAlreadyBeenAdded()) {
-            throw new MealAlreadyExistingException();
+            throw new WashAlreadyExistingException();
         }
         pet.addEvent(wash);
         //washManagerService.createWash(user, pet, wash);

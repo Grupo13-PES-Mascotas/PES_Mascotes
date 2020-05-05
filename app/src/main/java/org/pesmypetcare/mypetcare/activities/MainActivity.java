@@ -118,6 +118,11 @@ import org.pesmypetcare.mypetcare.controllers.user.TrExistsUsername;
 import org.pesmypetcare.mypetcare.controllers.user.TrObtainUser;
 import org.pesmypetcare.mypetcare.controllers.user.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.controllers.user.UserControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.washes.TrDeleteWash;
+import org.pesmypetcare.mypetcare.controllers.washes.TrNewPetWash;
+import org.pesmypetcare.mypetcare.controllers.washes.TrObtainAllPetWashes;
+import org.pesmypetcare.mypetcare.controllers.washes.TrUpdateWash;
+import org.pesmypetcare.mypetcare.controllers.washes.WashesControllersFactory;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumCreatedBeforeGroupException;
@@ -148,6 +153,8 @@ import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingExcepti
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
+import org.pesmypetcare.mypetcare.features.pets.Wash;
+import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
@@ -230,6 +237,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainAllPetMeals trObtainAllPetMeals;
     private TrDeleteMeal trDeleteMeal;
     private TrUpdateMeal trUpdateMeal;
+    private TrNewPetWash trNewPetWash;
+    private TrObtainAllPetWashes trObtainAllPetWashes;
+    private TrDeleteWash trDeleteWash;
+    private TrUpdateWash trUpdateWash;
     private TrObtainAllGroups trObtainAllGroups;
     private TrCreateNewGroup trCreateNewGroup;
     private TrDeleteGroup trDeleteGroup;
@@ -356,6 +367,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         for (Pet pet : user.getPets()) {
             obtainAllPetMeals(pet);
             obtainAllPetMedications(pet);
+            obtainAllPetWashes(pet);
         }
 
         Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
@@ -535,6 +547,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeUserControllers();
         initializePetHealthControllers();
         initializeMealsControllers();
+        initializeWashControllers();
         initializeCommunityControllers();
         initializeMedicationControllers();
     }
@@ -591,6 +604,16 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainAllPetMeals = MealsControllersFactory.createTrObtainAllPetMeals();
         trDeleteMeal = MealsControllersFactory.createTrDeleteMeal();
         trUpdateMeal = MealsControllersFactory.createTrUpdateMeal();
+    }
+
+    /**
+     * Initialize the wash controllers.
+     */
+    private void initializeWashControllers() {
+        trNewPetWash = WashesControllersFactory.createTrNewPetWash();
+        trObtainAllPetWashes = WashesControllersFactory.createTrObtainAllPetWashes();
+        trDeleteWash = WashesControllersFactory.createTrDeleteWash();
+        trUpdateWash = WashesControllersFactory.createTrUpdateWash();
     }
 
     /**
@@ -1403,6 +1426,40 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainAllPetMeals.setUser(user);
         trObtainAllPetMeals.setPet(pet);
         trObtainAllPetMeals.execute();
+    }
+
+    @Override
+    public void addPetWash(Pet pet, Wash wash) throws WashAlreadyExistingException {
+        trNewPetWash.setUser(user);
+        trNewPetWash.setPet(pet);
+        trNewPetWash.setWash(wash);
+        trNewPetWash.execute();
+    }
+
+    @Override
+    public void updatePetWash(Pet pet, Wash wash, String newDate, boolean updatesDate) {
+        trUpdateWash.setUser(user);
+        trUpdateWash.setPet(pet);
+        trUpdateWash.setWash(wash);
+        if (updatesDate) {
+            trUpdateWash.setNewDate(newDate);
+        }
+        trUpdateWash.execute();
+    }
+
+    @Override
+    public void deletePetWash(Pet pet, Wash wash) {
+        trDeleteWash.setUser(user);
+        trDeleteWash.setPet(pet);
+        trDeleteWash.setWash(wash);
+        trDeleteWash.execute();
+    }
+
+    @Override
+    public void obtainAllPetWashes(Pet pet) {
+        trObtainAllPetWashes.setUser(user);
+        trObtainAllPetWashes.setPet(pet);
+        trObtainAllPetWashes.execute();
     }
 
     @Override
