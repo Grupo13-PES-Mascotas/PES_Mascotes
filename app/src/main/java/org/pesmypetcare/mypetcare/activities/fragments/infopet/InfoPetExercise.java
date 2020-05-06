@@ -157,9 +157,9 @@ public class InfoPetExercise extends Fragment {
         } else {
             Objects.requireNonNull(exerciseName.getEditText()).setText(name);
             Objects.requireNonNull(exerciseDescription.getEditText()).setText(entries[0]);
-            exerciseDate.setText(entries[1]);
-            exerciseStartTime.setText(entries[2]);
-            exerciseEndTime.setText(entries[3]);
+            exerciseDate.setButtonText(entries[1]);
+            exerciseStartTime.setButtonText(entries[2]);
+            exerciseEndTime.setButtonText(entries[3]);
             editExerciseButton.setText(R.string.update_exercise);
             editExerciseButton.setOnClickListener(v -> {
 
@@ -167,7 +167,14 @@ public class InfoPetExercise extends Fragment {
 
             deleteExerciseButton.setVisibility(View.VISIBLE);
             deleteExerciseButton.setOnClickListener(v -> {
-
+                DateTime date = exerciseDate.getDateTime();
+                DateTime time = exerciseStartTime.getDateTime();
+                String strDate = date.toString().substring(0, date.toString().indexOf('T'));
+                String strTime = time.toString().substring(time.toString().indexOf('T') + 1);
+                DateTime dateTime = DateTime.Builder.buildDateTimeString(strDate, strTime);
+                InfoPetFragment.getCommunication().removeExercise(InfoPetFragment.getPet(), dateTime);
+                dialog.dismiss();
+                showExercises();
             });
         }
     }

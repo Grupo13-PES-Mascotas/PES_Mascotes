@@ -145,4 +145,11 @@ public interface InfoPetCommunication {
      */
     void addExercise(Pet pet, String exerciseName, String exerciseDescription, DateTime startExerciseDateTime,
                      DateTime endExerciseDateTime);
+
+    /**
+     * Remove an exercise to the pet.
+     * @param pet The pet
+     * @param dateTime The start
+     */
+    void removeExercise(Pet pet, DateTime dateTime);
 }

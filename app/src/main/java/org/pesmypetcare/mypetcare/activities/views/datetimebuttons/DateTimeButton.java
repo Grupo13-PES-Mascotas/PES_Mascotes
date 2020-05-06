@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.button.MaterialButton;
 
 import org.pesmypetcare.mypetcare.activities.MainActivity;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 /**
  * @author Albert Pinto
@@ -17,6 +18,7 @@ import org.pesmypetcare.mypetcare.activities.MainActivity;
 public abstract class DateTimeButton extends MaterialButton {
     private static FragmentManager fragmentManager;
     private boolean isValueChanged;
+    private DateTime dateTime;
 
     static {
         fragmentManager = MainActivity.getApplicationFragmentManager();
@@ -55,6 +57,22 @@ public abstract class DateTimeButton extends MaterialButton {
     }
 
     /**
+     * Get the dateTime.
+     * @return The dateTime
+     */
+    public DateTime getDateTime() {
+        return dateTime;
+    }
+
+    /**
+     * Set the dateTime.
+     * @param dateTime The dateTime to set
+     */
+    public void setDateTime(DateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    /**
      * Get the attributes if existing.
      * @param context The context of the application
      * @param attrs The attributes from the XML file
@@ -67,4 +85,6 @@ public abstract class DateTimeButton extends MaterialButton {
      * Add the component.
      */
     protected abstract void addComponent();
+
+    public abstract void setButtonText(String text);
 }

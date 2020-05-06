@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -55,6 +56,14 @@ public class DateButton extends DateTimeButton {
         materialDatePicker.addOnPositiveButtonClickListener(this::addPositiveListener);
     }
 
+    @Override
+    public void setButtonText(String text) {
+        System.out.println("TEXT " + text);
+        setDateTime(DateTime.Builder.buildDateString(text));
+        System.out.println(getDateTime().toString());
+        setText(text);
+    }
+
     private void addPositiveListener(Object selection) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
@@ -62,5 +71,6 @@ public class DateButton extends DateTimeButton {
         String formattedDate = simpleDateFormat.format(calendar.getTime());
         setText(formattedDate);
         setValueChanged(true);
+        setDateTime(DateTime.Builder.buildDateString(formattedDate));
     }
 }

@@ -7,6 +7,8 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
+
 import java.util.Calendar;
 
 /**
@@ -35,6 +37,12 @@ public class TimeButton extends DateTimeButton {
         });
     }
 
+    @Override
+    public void setButtonText(String text) {
+        setDateTime(DateTime.Builder.buildDateTimeString("2001-01-01", text));
+        setText(text);
+    }
+
     private void initializeTimePickerDialog(int selectedHour, int selectedMin) {
         StringBuilder time = new StringBuilder();
         if (selectedHour < FIRST_TWO_DIGITS) {
@@ -46,7 +54,9 @@ public class TimeButton extends DateTimeButton {
         }
         time.append(selectedMin).append(TIME_SEPARATOR).append(DEFAULT_SECONDS);
 
-        setText(time);
+        String strTime = time.toString();
+        setText(strTime);
         setValueChanged(true);
+        setDateTime(DateTime.Builder.buildDateTimeString("2001-01-01", strTime));
     }
 }

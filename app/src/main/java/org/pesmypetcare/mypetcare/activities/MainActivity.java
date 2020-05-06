@@ -92,6 +92,7 @@ import org.pesmypetcare.mypetcare.controllers.event.TrNewPeriodicNotification;
 import org.pesmypetcare.mypetcare.controllers.event.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.exercise.ExerciseControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.exercise.TrAddExercise;
+import org.pesmypetcare.mypetcare.controllers.infopet.TrDeleteExercise;
 import org.pesmypetcare.mypetcare.controllers.meals.MealsControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.meals.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.meals.TrNewPetMeal;
@@ -149,6 +150,7 @@ import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.NotExistingExerciseException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
@@ -255,6 +257,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrUnlikePost trUnlikePost;
     private TrReportPost trReportPost;
     private TrAddExercise trAddExercise;
+    private TrDeleteExercise trDeleteExercise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -419,7 +422,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             int nUserPets = user.getPets().size();
 
             if (imagesNotFound == nUserPets) {
-                getImagesFromServer();
+                //getImagesFromServer();
             }
         });
     }
@@ -556,6 +559,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     private void initializeExerciseControllers() {
         trAddExercise = ExerciseControllersFactory.createTrAddExercise();
+        trDeleteExercise = ExerciseControllersFactory.createTrDeleteExercise();
     }
 
     /**
@@ -1495,6 +1499,19 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
 
         InfoPetExercise.showExercises();
+    }
+
+    @Override
+    public void removeExercise(Pet pet, DateTime dateTime) {
+        trDeleteExercise.setUser(user);
+        trDeleteExercise.setPet(pet);
+        trDeleteExercise.setExerciseDateTime(dateTime);
+
+        try {
+            trDeleteExercise.execute();
+        } catch (NotPetOwnerException | NotExistingExerciseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
