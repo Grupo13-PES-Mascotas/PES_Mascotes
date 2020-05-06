@@ -64,6 +64,10 @@ public class DateButton extends DateTimeButton {
         setText(text);
     }
 
+    /**
+     * Add the listener of the positive button
+     * @param selection The object selected
+     */
     private void addPositiveListener(Object selection) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();

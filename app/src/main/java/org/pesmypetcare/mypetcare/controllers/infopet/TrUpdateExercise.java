@@ -29,34 +29,65 @@ public class TrUpdateExercise {
         this.petManagerService = petManagerService;
     }
 
+    /**
+     * Setter of the owner of the pet.
+     * @param user The owner of the pet
+     */
     public void setUser(User user) {
         this.user = user;
     }
 
+    /**
+     * Setter of the pet to whom the exercise will be updated.
+     * @param pet The pet to whom the exercise will be updated
+     */
     public void setPet(Pet pet) {
         this.pet = pet;
     }
 
+    /**
+     * Setter of the name of the exercise that will be updated.
+     * @param exerciseName The name of the exercise that will be updated
+     */
     public void setExerciseName(String exerciseName) {
         this.exerciseName = exerciseName;
     }
 
+    /**
+     * Setter of the description of the exercise that will be updated.
+     * @param exerciseDescription The description of the exercise that will be updated
+     */
     public void setExerciseDescription(String exerciseDescription) {
         this.exerciseDescription = exerciseDescription;
     }
 
+    /**
+     * Setter of the original date and time of the exercise that will be updated.
+     * @param originalDateTime The original date and time of the exercise that will be updated
+     */
     public void setOriginalStartDateTime(DateTime originalDateTime) {
         this.originalDateTime = originalDateTime;
     }
 
+    /**
+     * Setter of the start date and time of the exercise that will be updated.
+     * @param startDateTime The start date and time of the exercise that will be updated
+     */
     public void setStartDateTime(DateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
 
+    /**
+     * Setter of the end date and time of the exercise that will be updated.
+     * @param endDateTime The end date and time of the exercise that will be updated
+     */
     public void setEndDateTime(DateTime endDateTime) {
         this.endDateTime = endDateTime;
     }
 
+    /**
+     * Execute the transaction.
+     */
     public void execute() throws NotPetOwnerException, NotExistingExerciseException, InvalidPeriodException {
         if (!pet.isOwner(user)) {
             throw new NotPetOwnerException();
@@ -72,6 +103,10 @@ public class TrUpdateExercise {
         pet.addExercise(exercise);
     }
 
+    /**
+     * Method responsible for checking if the exercise exists.
+     * @return True if the exercise exists
+     */
     private boolean isFound() {
         List<Event> exercises = pet.getEventsByClass(Exercise.class);
         boolean found = false;
@@ -85,6 +120,10 @@ public class TrUpdateExercise {
         return found;
     }
 
+    /**
+     * Method responsible for checking if the start and end date are different.
+     * @return True if the dates are different
+     */
     private boolean isDifferentDate(DateTime startDateTime, DateTime endDateTime) {
         return startDateTime.getYear() != endDateTime.getYear() || startDateTime.getMonth() != endDateTime.getMonth()
             || startDateTime.getDay() != endDateTime.getDay();

@@ -24,30 +24,57 @@ public class TrAddExercise {
         this.petManagerService = petManagerService;
     }
 
+    /**
+     * Setter of the owner of the pet.
+     * @param user The owner of the pet
+     */
     public void setUser(User user) {
         this.user = user;
     }
 
+    /**
+     * Setter of the pet to whom the exercise will be added.
+     * @param pet The pet to whom the exercise will be added
+     */
     public void setPet(Pet pet) {
         this.pet = pet;
     }
 
+    /**
+     * Setter of the name of the exercise that will be added.
+     * @param exerciseName The name of the exercise that will be added
+     */
     public void setExerciseName(String exerciseName) {
         this.exerciseName = exerciseName;
     }
 
+    /**
+     * Setter of the description of the exercise that will be added.
+     * @param exerciseDescription The description of the exercise that will be added
+     */
     public void setExerciseDescription(String exerciseDescription) {
         this.exerciseDescription = exerciseDescription;
     }
 
+    /**
+     * Setter of the start date and time of the exercise that will be added.
+     * @param startDateTime The start date and time of the exercise that will be added
+     */
     public void setStartDateTime(DateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
 
+    /**
+     * Setter of the end date and time of the exercise that will be added.
+     * @param endDateTime The end date and time of the exercise that will be added
+     */
     public void setEndDateTime(DateTime endDateTime) {
         this.endDateTime = endDateTime;
     }
 
+    /**
+     * Execute the transaction.
+     */
     public void execute() throws NotPetOwnerException, InvalidPeriodException {
         if (!pet.isOwner(user)) {
             throw new NotPetOwnerException();
@@ -60,6 +87,10 @@ public class TrAddExercise {
         pet.addExercise(exercise);
     }
 
+    /**
+     * Method responsible for checking if the start and end date are different.
+     * @return True if the dates are different
+     */
     private boolean isDifferentDate(DateTime startDateTime, DateTime endDateTime) {
         return startDateTime.getYear() != endDateTime.getYear() || startDateTime.getMonth() != endDateTime.getMonth()
             || startDateTime.getDay() != endDateTime.getDay();

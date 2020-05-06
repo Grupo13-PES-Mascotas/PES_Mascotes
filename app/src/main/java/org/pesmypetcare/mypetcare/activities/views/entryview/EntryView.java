@@ -96,6 +96,10 @@ public class EntryView extends LinearLayout {
         return entryLabelView;
     }
 
+    /**
+     * Get the builder of the view.
+     * @return The builder
+     */
     public Builder getBuilder() {
         return builder;
     }
@@ -106,34 +110,67 @@ public class EntryView extends LinearLayout {
         private String[] entries;
         private String name;
 
+        /**
+         * Builder of the context.
+         * @param context The context
+         */
         public Builder(Context context) {
             this.context = context;
         }
 
+        /**
+         * Get the entry labels.
+         * @return The entry labels
+         */
         public String[] getEntryLabels() {
             return entryLabels;
         }
 
+        /**
+         * Setter of the entry labels.
+         * @param entryLabels The entry labels
+         */
         public void setEntryLabels(String[] entryLabels) {
             this.entryLabels = entryLabels;
         }
 
+        /**
+         * Get the entries.
+         * @return The entries
+         */
         public String[] getEntries() {
             return entries;
         }
 
+        /**
+         * Setter of the entries.
+         * @param entries The entries
+         */
         public void setEntries(String[] entries) {
             this.entries = entries;
         }
 
+        /**
+         * Get the name.
+         * @return The name
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * Setter of the name.
+         * @param name The name
+         */
         public void setName(String name) {
             this.name = name;
         }
 
+        /**
+         * The builder of the EntryView.
+         * @return The EntryView to build
+         * @throws InvalidBuildParameters If the parameters to build are invalids
+         */
         public EntryView build() throws InvalidBuildParameters {
             if (entryLabels == null || entries == null || entryLabels.length != entries.length) {
                 throw new InvalidBuildParameters();

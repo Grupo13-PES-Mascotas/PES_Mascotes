@@ -21,18 +21,33 @@ public class TrDeleteExercise {
         this.petManagerService = petManagerService;
     }
 
+    /**
+     * Setter of the owner of the pet.
+     * @param user The owner of the pet
+     */
     public void setUser(User user) {
         this.user = user;
     }
 
+    /**
+     * Setter of the pet to whom the exercise will be deleted.
+     * @param pet The pet to whom the exercise will be deleted
+     */
     public void setPet(Pet pet) {
         this.pet = pet;
     }
 
+    /**
+     * Setter of the  date and time of the exercise that will be deleted.
+     * @param dateTime The date and time of the exercise that will be deleted
+     */
     public void setExerciseDateTime(DateTime dateTime) {
         this.dateTime = dateTime;
     }
 
+    /**
+     * Execute the transaction.
+     */
     public void execute() throws NotPetOwnerException, NotExistingExerciseException {
         if (!pet.isOwner(user)) {
             throw new NotPetOwnerException();

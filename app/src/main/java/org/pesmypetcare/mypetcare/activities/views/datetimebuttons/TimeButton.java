@@ -15,10 +15,10 @@ import java.util.Calendar;
  * @author Albert Pinto
  */
 public class TimeButton extends DateTimeButton {
-    private static final int FIRST_TWO_DIGITS = 10;
-    private static final String DEFAULT_SECONDS = "00";
     public static final char ZERO_CHARACTER = '0';
     public static final char TIME_SEPARATOR = ':';
+    private static final int FIRST_TWO_DIGITS = 10;
+    private static final String DEFAULT_SECONDS = "00";
 
     public TimeButton(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -43,6 +43,11 @@ public class TimeButton extends DateTimeButton {
         setText(text);
     }
 
+    /**
+     * Initialize the time picker dialog.
+     * @param selectedHour The hour to display
+     * @param selectedMin The minute to display
+     */
     private void initializeTimePickerDialog(int selectedHour, int selectedMin) {
         StringBuilder time = new StringBuilder();
         if (selectedHour < FIRST_TWO_DIGITS) {
