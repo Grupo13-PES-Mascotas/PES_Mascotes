@@ -15,6 +15,9 @@ import androidx.annotation.Nullable;
 
 import org.pesmypetcare.mypetcare.R;
 
+import java.util.Arrays;
+import java.util.Locale;
+
 /**
  * @author Albert Pinto
  */
@@ -83,8 +86,7 @@ public class EntryView extends LinearLayout {
      * @param name The name to add
      */
     private void addName(Context context, String name) {
-        name = name.toUpperCase();
-        TextView nameView = getEntryTextView(context, name);
+        TextView nameView = getEntryTextView(context, name.toUpperCase(Locale.getDefault()));
         nameView.setTextColor(getResources().getColor(R.color.colorPrimary, null));
         nameView.setTypeface(null, Typeface.BOLD);
         addView(nameView);
@@ -156,7 +158,7 @@ public class EntryView extends LinearLayout {
          * @return The entry labels
          */
         public String[] getEntryLabels() {
-            return entryLabels;
+            return Arrays.copyOf(entryLabels, entryLabels.length);
         }
 
         /**
@@ -164,7 +166,7 @@ public class EntryView extends LinearLayout {
          * @param entryLabels The entry labels
          */
         public void setEntryLabels(String[] entryLabels) {
-            this.entryLabels = entryLabels;
+            this.entryLabels = Arrays.copyOf(entryLabels, entryLabels.length);
         }
 
         /**
@@ -172,7 +174,7 @@ public class EntryView extends LinearLayout {
          * @return The entries
          */
         public String[] getEntries() {
-            return entries;
+            return Arrays.copyOf(entryLabels, entryLabels.length);
         }
 
         /**
@@ -180,7 +182,7 @@ public class EntryView extends LinearLayout {
          * @param entries The entries
          */
         public void setEntries(String[] entries) {
-            this.entries = entries;
+            this.entries = Arrays.copyOf(entries, entries.length);
         }
 
         /**

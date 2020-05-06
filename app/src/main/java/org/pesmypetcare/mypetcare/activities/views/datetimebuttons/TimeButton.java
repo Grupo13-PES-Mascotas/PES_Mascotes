@@ -19,6 +19,7 @@ public class TimeButton extends DateTimeButton {
     public static final char TIME_SEPARATOR = ':';
     private static final int FIRST_TWO_DIGITS = 10;
     private static final String DEFAULT_SECONDS = "00";
+    private static final String SAMPLE_DATE = "2001-01-01";
 
     public TimeButton(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -39,7 +40,7 @@ public class TimeButton extends DateTimeButton {
 
     @Override
     public void setButtonText(String text) {
-        setDateTime(DateTime.Builder.buildDateTimeString("2001-01-01", text));
+        setDateTime(DateTime.Builder.buildDateTimeString(SAMPLE_DATE, text));
         setText(text);
     }
 
@@ -62,6 +63,6 @@ public class TimeButton extends DateTimeButton {
         String strTime = time.toString();
         setText(strTime);
         setValueChanged(true);
-        setDateTime(DateTime.Builder.buildDateTimeString("2001-01-01", strTime));
+        setDateTime(DateTime.Builder.buildDateTimeString(SAMPLE_DATE, strTime));
     }
 }

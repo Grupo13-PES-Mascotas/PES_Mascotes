@@ -30,6 +30,11 @@ import java.util.Objects;
 
 public class InfoPetExercise extends Fragment {
     private static final int MIN_SPACE_SIZE = 20;
+    private static final int HOUR_IN_MINUTES = 60;
+    private static final int DESCRIPTION = 0;
+    private static final int DATE = 1;
+    private static final int START_TIME = 2;
+    private static final int END_TIME = 3;
     private static FragmentInfoPetExerciseBinding binding;
     private static Context context;
     private static LayoutInflater inflater;
@@ -48,11 +53,7 @@ public class InfoPetExercise extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoPetExerciseBinding.inflate(inflater, container, false);
 
-        binding.addExerciseButton.setOnClickListener(v -> {
-            createEditExerciseDialog(R.string.add_exercise_title, R.string.add_exercice_message,
-                true, null, null);
-            dialog.show();
-        });
+        binding.addExerciseButton.setOnClickListener(v -> setAddExerciseButtonListener());
 
         labels = new String[] {
             getString(R.string.entry_view_exercise_description), getString(R.string.entry_view_exercise_date),
@@ -66,6 +67,15 @@ public class InfoPetExercise extends Fragment {
         showExercises();
 
         return binding.getRoot();
+    }
+
+    /**
+     * Set the add exercise button listener.
+     */
+    private void setAddExerciseButtonListener() {
+        createEditExerciseDialog(R.string.add_exercise_title, R.string.add_exercice_message,
+            true, null, null);
+        dialog.show();
     }
 
     /**
@@ -109,15 +119,7 @@ public class InfoPetExercise extends Fragment {
      */
     @Nullable
     private static EntryView createEntryView(Exercise exercise, EntryView.Builder builder) {
-        String startDateTime = exercise.getDateTime().toString();
-        String endDateTime = exercise.getEndTime().toString();
-        String date = startDateTime.substring(0, startDateTime.indexOf('T'));
-
-        String[] entries = new String[]{
-            exercise.getDescription(), date, startDateTime.substring(startDateTime.indexOf('T') + 1),
-            endDateTime.substring(endDateTime.indexOf('T') + 1),
-            getMinutes(exercise.getDateTime(), exercise.getEndTime()) + " min"
-        };
+        String[] entries = getEntries(exercise);
 
         builder.setEntries(entries);
         builder.setName(exercise.getName());
@@ -129,6 +131,24 @@ public class InfoPetExercise extends Fragment {
             invalidBuildParameters.printStackTrace();
         }
         return entryView;
+    }
+
+    /**
+     * Get the entries to display.
+     * @param exercise The exercise
+     * @return The entries to display from the exercise
+     */
+    @NonNull
+    private static String[] getEntries(Exercise exercise) {
+        String startDateTime = exercise.getDateTime().toString();
+        String endDateTime = exercise.getEndTime().toString();
+        String date = startDateTime.substring(0, startDateTime.indexOf('T'));
+
+        return new String[]{
+            exercise.getDescription(), date, startDateTime.substring(startDateTime.indexOf('T') + 1),
+            endDateTime.substring(endDateTime.indexOf('T') + 1),
+            getMinutes(exercise.getDateTime(), exercise.getEndTime()) + " min"
+        };
     }
 
     /**
@@ -149,8 +169,8 @@ public class InfoPetExercise extends Fragment {
      * @return The minutes of difference
      */
     private static int getMinutes(DateTime startDateTime, DateTime endDateTime) {
-        int startMinutes = startDateTime.getHour() * 60 + startDateTime.getMinutes();
-        int endMinutes = endDateTime.getHour() * 60 + endDateTime.getMinutes();
+        int startMinutes = startDateTime.getHour() * HOUR_IN_MINUTES + startDateTime.getMinutes();
+        int endMinutes = endDateTime.getHour() * HOUR_IN_MINUTES + endDateTime.getMinutes();
 
         return endMinutes - startMinutes;
     }
@@ -237,15 +257,15 @@ public class InfoPetExercise extends Fragment {
      */
     private static void setButtons(String name, String[] entries, MaterialButton editExerciseButton) {
         Objects.requireNonNull(exerciseName.getEditText()).setText(name);
-        Objects.requireNonNull(exerciseDescription.getEditText()).setText(entries[0]);
-        exerciseDate.setButtonText(entries[1]);
-        exerciseStartTime.setButtonText(entries[2]);
-        exerciseEndTime.setButtonText(entries[3]);
+        Objects.requireNonNull(exerciseDescription.getEditText()).setText(entries[DESCRIPTION]);
+        exerciseDate.setButtonText(entries[DATE]);
+        exerciseStartTime.setButtonText(entries[START_TIME]);
+        exerciseEndTime.setButtonText(entries[END_TIME]);
         editExerciseButton.setText(R.string.update_exercise);
     }
 
     /**
-     * Set the listener if the user want to update an exercise
+     * Set the listener if the user want to update an exercise.
      * @param editExerciseButton The button to edit the exercise
      * @param originalDateTime The original date and time of the exercise
      */

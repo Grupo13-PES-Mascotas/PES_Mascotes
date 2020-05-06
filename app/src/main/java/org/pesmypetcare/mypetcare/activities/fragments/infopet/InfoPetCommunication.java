@@ -154,7 +154,7 @@ public interface InfoPetCommunication {
     void removeExercise(Pet pet, DateTime dateTime);
 
     /**
-     * Update an exercise of the pet
+     * Update an exercise of the pet.
      * @param pet The pet
      * @param txtExerciseName The exercise name
      * @param txtDescription The exercise description
