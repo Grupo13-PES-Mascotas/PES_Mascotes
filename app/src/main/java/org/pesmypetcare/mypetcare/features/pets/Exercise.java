@@ -15,18 +15,34 @@ public class Exercise extends Event {
         this.endTime = endTime;
     }
 
+    /**
+     * Get the name.
+     * @return The name to get
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set the name.
+     * @param name The name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Get the name.
+     * @return The name to get
+     */
     public DateTime getEndTime() {
         return endTime;
     }
 
+    /**
+     * Set the end time.
+     * @param endTime The end time to set
+     */
     public void setEndTime(DateTime endTime) {
         this.endTime = endTime;
     }
