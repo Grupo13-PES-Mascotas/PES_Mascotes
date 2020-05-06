@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.pesmypetcare.mypetcare.controllers.user.TrChangeUsername;
 import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.StubUserManagerService;
 
 import static org.junit.Assert.assertTrue;
 

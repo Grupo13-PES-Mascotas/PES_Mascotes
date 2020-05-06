@@ -8,7 +8,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
 import org.pesmypetcare.mypetcare.services.StubMedicationService;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
-import org.pesmypetcare.mypetcare.services.StubUserManagerService;
 
 import java.util.concurrent.ExecutionException;
 

@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.pesmypetcare.mypetcare.controllers.user.TrChangePassword;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.StubUserManagerService;
 
 import static org.junit.Assert.assertTrue;
 

@@ -10,8 +10,8 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
 import org.pesmypetcare.mypetcare.services.StubMedicationService;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
-import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
+import org.pesmypetcare.usermanagerliblib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerliblib.datacontainers.pet.GenderType;
 
 import java.util.concurrent.ExecutionException;
 

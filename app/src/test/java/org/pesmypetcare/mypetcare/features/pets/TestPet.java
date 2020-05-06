@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
-import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
+import org.pesmypetcare.usermanagerliblib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerliblib.datacontainers.pet.GenderType;
 
 import java.util.List;
 
