@@ -351,12 +351,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return mAuth;
     }
 
+    /**
+     * Get the fragment manager.
+     * @return The fragment manager
+     */
     public static FragmentManager getApplicationFragmentManager() {
         return fragmentManager;
-    }
-
-    public void setToolbarText(String text) {
-        toolbar.setTitle(text);
     }
 
     /**
