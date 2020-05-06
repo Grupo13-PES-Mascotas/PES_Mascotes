@@ -3,7 +3,7 @@ package org.pesmypetcare.mypetcare.services;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
 
 import java.text.ParseException;
 import java.util.concurrent.ExecutionException;

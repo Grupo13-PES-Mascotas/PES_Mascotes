@@ -8,7 +8,7 @@ import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import static org.junit.Assert.assertTrue;
 
@@ -54,7 +54,7 @@ public class TestTrNewPetMeal {
         DateTime date = null;
         try {
             date = DateTime.Builder.build(YEAR, 2, DAY, HOUR, MINUTES, SECONDS);
-        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
+        } catch (org.pesmypetcare.usermanager.exceptions.InvalidFormatException e) {
             e.printStackTrace();
         }
         assert date != null;

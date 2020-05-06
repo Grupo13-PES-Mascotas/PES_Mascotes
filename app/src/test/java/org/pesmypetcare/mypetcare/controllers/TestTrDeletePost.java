@@ -13,7 +13,7 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostCreatedBeforeForu
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
-import org.pesmypetcare.usermanagerliblib.datacontainers.DateTime;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 /**
  * @author Xavier Campos

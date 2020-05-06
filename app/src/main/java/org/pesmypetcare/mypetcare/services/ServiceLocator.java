@@ -2,13 +2,13 @@ package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
 import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
-import org.pesmypetcare.usermanagerlib.clients.GoogleCalendarManagerClient;
-import org.pesmypetcare.usermanagerlib.clients.pet.FreqWashManagerClient;
-import org.pesmypetcare.usermanagerlib.clients.pet.MealManagerClient;
-import org.pesmypetcare.usermanagerlib.clients.pet.MedicationManagerClient;
-import org.pesmypetcare.usermanagerlib.clients.pet.PetManagerClient;
-import org.pesmypetcare.usermanagerlib.clients.pet.WeightManagerClient;
-import org.pesmypetcare.usermanagerlib.clients.user.UserManagerClient;
+import org.pesmypetcare.usermanager.clients.GoogleCalendarManagerClient;
+import org.pesmypetcare.usermanager.clients.pet.FreqWashManagerClient;
+import org.pesmypetcare.usermanager.clients.pet.MealManagerClient;
+import org.pesmypetcare.usermanager.clients.pet.MedicationManagerClient;
+import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
+import org.pesmypetcare.usermanager.clients.pet.WeightManagerClient;
+import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
 
 public class ServiceLocator {
     private static ServiceLocator instance;

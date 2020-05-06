@@ -8,8 +8,8 @@ import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
-import org.pesmypetcare.usermanagerlib.clients.user.UserManagerClient;
-import org.pesmypetcare.usermanagerlib.datacontainers.user.UserData;
+import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
+import org.pesmypetcare.usermanager.datacontainers.user.UserData;
 
 import java.io.IOException;
 import java.util.Objects;
