@@ -28,8 +28,8 @@ public class TestTrNewVetVisit {
         user = new User("Manolo Lama", "lamacope@gmail.com", "1234");
         pet = new Pet("Bichinho");
         pet.setOwner(user);
-        vetVisit = new VetVisit(DateTime.Builder.buildDateString("2021-11-29"), "Carrer Casablanca 71",
-            "Implosió");
+        vetVisit = new VetVisit(DateTime.Builder.buildDateString("2020-11-29"), "Carrer Major 15",
+            "Combustió Espontànea");
     }
 
     @Test(expected = VetVisitAlreadyExistingException.class)

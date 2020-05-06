@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.controllers.vetvisits;
 
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.VetVisit;
+import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.VetVisitsManagerService;
 
@@ -66,8 +67,11 @@ public class TrUpdateVetVisit {
     /**
      * Executes the transaction.
      */
-    public void execute() {
+    public void execute() throws NotPetOwnerException {
         result = false;
+        if (!user.getUsername().equals(pet.getOwner().getUsername())) {
+            throw new NotPetOwnerException();
+        }
         vetVisitsManagerService.updateVetVisitBody(user, pet, vetVisit);
         if (updatesDate) {
             vetVisitsManagerService.updateVetVisitKey(user, pet, newDate, vetVisit.getVisitDate());

@@ -1503,7 +1503,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         if (updatesDate) {
             trUpdateVetVisit.setNewDate(newDate);
         }
-        trUpdateVetVisit.execute();
+        try {
+            trUpdateVetVisit.execute();
+        } catch (NotPetOwnerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
