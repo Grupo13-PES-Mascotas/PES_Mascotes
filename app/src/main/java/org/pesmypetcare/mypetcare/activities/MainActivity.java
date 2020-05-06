@@ -57,6 +57,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.community.groups.PostsFra
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
+import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetExercise;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.login.AsyncResponse;
 import org.pesmypetcare.mypetcare.activities.fragments.login.MyAsyncTask;
@@ -89,6 +90,10 @@ import org.pesmypetcare.mypetcare.controllers.event.TrDeletePeriodicNotification
 import org.pesmypetcare.mypetcare.controllers.event.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.event.TrNewPeriodicNotification;
 import org.pesmypetcare.mypetcare.controllers.event.TrNewPersonalEvent;
+import org.pesmypetcare.mypetcare.controllers.exercise.ExerciseControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.exercise.TrAddExercise;
+import org.pesmypetcare.mypetcare.controllers.exercise.TrDeleteExercise;
+import org.pesmypetcare.mypetcare.controllers.exercise.TrUpdateExercise;
 import org.pesmypetcare.mypetcare.controllers.meals.MealsControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.meals.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.meals.TrNewPetMeal;
@@ -141,10 +146,12 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostReportedByAuthorE
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.InvalidPeriodException;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.NotExistingExerciseException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
@@ -203,6 +210,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static List<Group> groups;
     private static int notificationId;
     private static int requestCode;
+    private static FragmentManager fragmentManager;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -249,6 +257,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrLikePost trLikePost;
     private TrUnlikePost trUnlikePost;
     private TrReportPost trReportPost;
+    private TrAddExercise trAddExercise;
+    private TrDeleteExercise trDeleteExercise;
+    private TrUpdateExercise trUpdateExercise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         notificationId = 0;
         requestCode = 0;
+        fragmentManager = getSupportFragmentManager();
 
         makeLogin();
         initializeControllers();
@@ -339,6 +351,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return mAuth;
     }
 
+    public static FragmentManager getApplicationFragmentManager() {
+        return fragmentManager;
+    }
+
     public void setToolbarText(String text) {
         toolbar.setTitle(text);
     }
@@ -408,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             int nUserPets = user.getPets().size();
 
             if (imagesNotFound == nUserPets) {
-                getImagesFromServer();
+                //getImagesFromServer();
             }
         });
     }
@@ -537,6 +553,16 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeMealsControllers();
         initializeCommunityControllers();
         initializeMedicationControllers();
+        initializeExerciseControllers();
+    }
+
+    /**
+     * Initialize the exercise controllers
+     */
+    private void initializeExerciseControllers() {
+        trAddExercise = ExerciseControllersFactory.createTrAddExercise();
+        trDeleteExercise = ExerciseControllersFactory.createTrDeleteExercise();
+        trUpdateExercise = ExerciseControllersFactory.createTrUpdateExercise();
     }
 
     /**
@@ -1455,6 +1481,56 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trObtainAllPetMedications.execute();
         } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addExercise(Pet pet, String exerciseName, String exerciseDescription, DateTime startExerciseDateTime,
+                            DateTime endExerciseDateTime) {
+        trAddExercise.setUser(user);
+        trAddExercise.setPet(pet);
+        trAddExercise.setExerciseName(exerciseName);
+        trAddExercise.setExerciseDescription(exerciseDescription);
+        trAddExercise.setStartDateTime(startExerciseDateTime);
+        trAddExercise.setEndDateTime(endExerciseDateTime);
+
+        try {
+            trAddExercise.execute();
+        } catch (NotPetOwnerException | InvalidPeriodException e) {
+            e.printStackTrace();
+        }
+
+        InfoPetExercise.showExercises();
+    }
+
+    @Override
+    public void removeExercise(Pet pet, DateTime dateTime) {
+        trDeleteExercise.setUser(user);
+        trDeleteExercise.setPet(pet);
+        trDeleteExercise.setExerciseDateTime(dateTime);
+
+        try {
+            trDeleteExercise.execute();
+        } catch (NotPetOwnerException | NotExistingExerciseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateExercise(Pet pet, String exerciseName, String exerciseDescription, DateTime originalDateTime,
+                               DateTime startExerciseDateTime, DateTime endExerciseDateTime) {
+        trUpdateExercise.setUser(user);
+        trUpdateExercise.setPet(pet);
+        trUpdateExercise.setExerciseName(exerciseName);
+        trUpdateExercise.setExerciseDescription(exerciseDescription);
+        trUpdateExercise.setOriginalStartDateTime(originalDateTime);
+        trUpdateExercise.setStartDateTime(startExerciseDateTime);
+        trUpdateExercise.setEndDateTime(endExerciseDateTime);
+
+        try {
+            trUpdateExercise.execute();
+        } catch (NotPetOwnerException | InvalidPeriodException | NotExistingExerciseException e) {
             e.printStackTrace();
         }
     }

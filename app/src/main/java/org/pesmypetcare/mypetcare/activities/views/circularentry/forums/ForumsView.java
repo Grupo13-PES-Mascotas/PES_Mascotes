@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ForumsView extends LinearLayout {
-    public static final int MIN_SPACE_SIZE = 20;
+    private static final int MIN_SPACE_SIZE = 20;
     private Context context;
     private List<CircularEntryView> forumComponents;
 

@@ -340,6 +340,10 @@ public class Pet {
         this.profileImage = profileImage;
     }
 
+    /**
+     * Get the health info.
+     * @return The health info
+     */
     public PetHealthInfo getHealthInfo() {
         return healthInfo;
     }
@@ -385,31 +389,54 @@ public class Pet {
         return selectedEvents;
     }
 
+    /**
+     * Delete the weight for a date.
+     * @param dateTime The date to delete the weight
+     */
     public void deleteWeightForDate(DateTime dateTime) {
         healthInfo.deleteWeightForDate(dateTime);
     }
 
+    /**
+     * Delete the wash frequency for a date.
+     * @param dateTime The date to delete the wash frequency
+     */
     public void deleteWashFrequencyForDate(DateTime dateTime) {
         healthInfo.deleteWashFrequencyForDate(dateTime);
     }
 
+    /**
+     * Check whether the user is the owner.
+     * @param user The user
+     * @return True if the user is the owner
+     */
     public boolean isOwner(User user) {
         return user.equals(owner);
     }
 
+    /**
+     * Set the weight for a date.
+     * @param newWeight The weight to set
+     * @param dateTime The date of the weight to set
+     */
     public void setWeightForDate(double newWeight, DateTime dateTime) {
         healthInfo.addWeightForDate(dateTime, newWeight);
     }
 
+    /**
+     * Set the wash frequency for a date.
+     * @param newWashFrequency The wash frequency to set
+     * @param dateTime The date of the wash frequency to set
+     */
     public void setWashFrequencyForDate(int newWashFrequency, DateTime dateTime) {
         healthInfo.addWashFrequencyForDate(dateTime, newWashFrequency);
     }
 
-    @NonNull
     /**
      * Get the list of meals of the pet.
      * @return The list of meals of the pet
      */
+    @NonNull
     public List<Event> getMealEvents() {
         ArrayList<Event> mealEvents = new ArrayList<>();
 
@@ -529,5 +556,105 @@ public class Pet {
         String desc = event.getDescription();
         PeriodEvent pe = new PeriodEvent(desc, dateTime, 0);
         periodEvents.remove(pe);
+    }
+
+    /**
+     * Get the events by the class.
+     * @param eventClass The class of the event
+     * @return The events of the specified class
+     */
+    public List<Event> getEventsByClass(Class eventClass) {
+        ArrayList<Event> selectedEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event.getClass().equals(eventClass)) {
+                selectedEvents.add(event);
+            }
+        }
+        return selectedEvents;
+    }
+
+    /**
+     * Check whether the pet contains the specified event.
+     * @param dateTime The DateTime of the event
+     * @param exercise The exercise class
+     * @return True if the pet contains the event
+     */
+    public boolean containsEvent(DateTime dateTime, Class exercise) {
+        for (Event event : events) {
+            if (event.getClass().equals(exercise) && event.getDateTime().compareTo(dateTime) == 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Delete the event by the class.
+     * @param dateTime The date of the event
+     * @param eventClass The event class
+     */
+    public void deleteEventByClass(DateTime dateTime, Class eventClass) {
+        for (Event event : events) {
+            if (event.getClass().equals(eventClass) && event.getDateTime().compareTo(dateTime) == 0) {
+                events.remove(event);
+                return;
+            }
+        }
+    }
+
+    /**
+     * Add an exercise.
+     * @param exercise The exercise to add
+     */
+    public void addExercise(Exercise exercise) {
+        addEvent(exercise);
+        int minutes = getMinutes(exercise.getDateTime(), exercise.getEndTime());
+        String dateTime = exercise.getDateTime().toString();
+        String strDate = dateTime.substring(0, dateTime.indexOf('T'));
+        DateTime date = DateTime.Builder.buildDateString(strDate);
+
+        if (healthInfo.getExerciseFrequency().containsKey(date)) {
+            minutes += healthInfo.getExerciseFrequencyForDate(date);
+        }
+
+        healthInfo.addExerciseFrequencyForDate(date, minutes);
+    }
+
+    /**
+     * Get the minutes duration.
+     * @param startDateTime The start DateTime
+     * @param endDateTime The end DateTime
+     * @return The duration in minutes
+     */
+    private int getMinutes(DateTime startDateTime, DateTime endDateTime) {
+        int startMinutes = startDateTime.getHour() * 60 + startDateTime.getMinutes();
+        int endMinutes = endDateTime.getHour() * 60 + endDateTime.getMinutes();
+
+        return endMinutes - startMinutes;
+    }
+
+    /**
+     * Delete an exercise.
+     * @param dateTime The DateTime of the event to delete
+     */
+    public void deleteExerciseForDate(DateTime dateTime) {
+        List<Event> events = getEventsByClass(Exercise.class);
+        Exercise exercise = null;
+
+        for (Event event : events) {
+            if (event.getDateTime().compareTo(dateTime) == 0) {
+                exercise = (Exercise) event;
+            }
+        }
+
+        String strDateTime = Objects.requireNonNull(exercise).getDateTime().toString();
+        String strDate = strDateTime.substring(0, strDateTime.indexOf('T'));
+        DateTime date = DateTime.Builder.buildDateString(strDate);
+        int duration = getMinutes(exercise.getDateTime(), exercise.getEndTime());
+
+        healthInfo.removeExerciseFrequency(date, duration);
+        deleteEventByClass(dateTime, Exercise.class);
     }
 }
