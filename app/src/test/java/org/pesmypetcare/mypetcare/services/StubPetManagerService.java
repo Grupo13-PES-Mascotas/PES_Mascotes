@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.services;
 import android.graphics.Bitmap;
 
 import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
@@ -132,13 +133,17 @@ public class StubPetManagerService implements PetManagerService {
     }
 
     @Override
-    public void addExercise(User user, Pet pet, String exerciseName, String description, DateTime startDateTime,
-                            DateTime endDateTime) {
-
+    public void addExercise(User user, Pet pet, Exercise exercise) {
+        // Not implemented
     }
 
     @Override
     public void deleteExercise(Pet pet, DateTime dateTime) {
+        // Not implemented
+    }
 
+    @Override
+    public void updateExercise(User user, Pet pet, Exercise exercise) {
+        // Not implemented yet
     }
 }

@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.controllers.exercise;
 
 import org.pesmypetcare.mypetcare.controllers.infopet.TrDeleteExercise;
+import org.pesmypetcare.mypetcare.controllers.infopet.TrUpdateExercise;
 import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
 
 /**
@@ -25,5 +26,13 @@ public class ExerciseControllersFactory {
      */
     public static TrDeleteExercise createTrDeleteExercise() {
         return new TrDeleteExercise(new PetManagerAdapter());
+    }
+
+    /**
+     * Create the transaction for updating an exercise.
+     * @return The transaction for updating an exercise
+     */
+    public static TrUpdateExercise createTrUpdateExercise() {
+        return new TrUpdateExercise(new PetManagerAdapter());
     }
 }

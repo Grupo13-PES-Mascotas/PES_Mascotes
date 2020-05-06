@@ -93,6 +93,7 @@ import org.pesmypetcare.mypetcare.controllers.event.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.exercise.ExerciseControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.exercise.TrAddExercise;
 import org.pesmypetcare.mypetcare.controllers.infopet.TrDeleteExercise;
+import org.pesmypetcare.mypetcare.controllers.infopet.TrUpdateExercise;
 import org.pesmypetcare.mypetcare.controllers.meals.MealsControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.meals.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.meals.TrNewPetMeal;
@@ -258,6 +259,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrReportPost trReportPost;
     private TrAddExercise trAddExercise;
     private TrDeleteExercise trDeleteExercise;
+    private TrUpdateExercise trUpdateExercise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -560,6 +562,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private void initializeExerciseControllers() {
         trAddExercise = ExerciseControllersFactory.createTrAddExercise();
         trDeleteExercise = ExerciseControllersFactory.createTrDeleteExercise();
+        trUpdateExercise = ExerciseControllersFactory.createTrUpdateExercise();
     }
 
     /**
@@ -1510,6 +1513,24 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trDeleteExercise.execute();
         } catch (NotPetOwnerException | NotExistingExerciseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateExercise(Pet pet, String exerciseName, String exerciseDescription, DateTime originalDateTime,
+                               DateTime startExerciseDateTime, DateTime endExerciseDateTime) {
+        trUpdateExercise.setUser(user);
+        trUpdateExercise.setPet(pet);
+        trUpdateExercise.setExerciseName(exerciseName);
+        trUpdateExercise.setExerciseDescription(exerciseDescription);
+        trUpdateExercise.setOriginalStartDateTime(originalDateTime);
+        trUpdateExercise.setStartDateTime(startExerciseDateTime);
+        trUpdateExercise.setEndDateTime(endExerciseDateTime);
+
+        try {
+            trUpdateExercise.execute();
+        } catch (NotPetOwnerException | InvalidPeriodException | NotExistingExerciseException e) {
             e.printStackTrace();
         }
     }

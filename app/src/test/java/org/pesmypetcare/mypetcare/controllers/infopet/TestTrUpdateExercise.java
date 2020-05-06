@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.controllers.infopet;
 import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
+import org.pesmypetcare.mypetcare.features.pets.InvalidPeriodException;
 import org.pesmypetcare.mypetcare.features.pets.NotExistingExerciseException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
@@ -11,6 +12,8 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Albert Pinto
@@ -33,25 +36,90 @@ public class TestTrUpdateExercise {
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotAddExerciseToNonOwnedPet() throws NotPetOwnerException {
+    public void shouldNotAddExerciseToNonOwnedPet() throws NotPetOwnerException, NotExistingExerciseException,
+        InvalidPeriodException {
         trUpdateExercise.setUser(new User("johnSmith", "johnsmith@gmail.com", "5678"));
         trUpdateExercise.setPet(pet);
         trUpdateExercise.setExerciseName("Frisbee");
         trUpdateExercise.setExerciseDescription("Playing at the beach");
+        trUpdateExercise.setOriginalStartDateTime(DateTime.Builder.buildFullString("2020-05-04T10:00:00"));
         trUpdateExercise.setStartDateTime(DateTime.Builder.buildFullString("2020-05-04T10:00:00"));
         trUpdateExercise.setEndDateTime(DateTime.Builder.buildFullString("2020-05-04T11:00:00"));
         trUpdateExercise.execute();
     }
 
-    @Test(expected = NotExistingExerciseException.class)
-    public void shouldNotUpdateNonExistingExercise() throws NotPetOwnerException {
+    @Test(expected = InvalidPeriodException.class)
+    public void shouldStartAndEndTheExerciseInTheSameDate() throws NotPetOwnerException, InvalidPeriodException,
+        NotExistingExerciseException {
         trUpdateExercise.setUser(user);
         trUpdateExercise.setPet(pet);
         trUpdateExercise.setExerciseName("Frisbee");
         trUpdateExercise.setExerciseDescription("Playing at the beach");
+        trUpdateExercise.setOriginalStartDateTime(DateTime.Builder.buildFullString("2020-05-04T11:00:00"));
+        trUpdateExercise.setStartDateTime(DateTime.Builder.buildFullString("2020-05-04T11:00:00"));
+        trUpdateExercise.setEndDateTime(DateTime.Builder.buildFullString("2020-05-05T10:00:00"));
+        trUpdateExercise.execute();
+    }
+
+    @Test(expected = NotExistingExerciseException.class)
+    public void shouldNotUpdateNonExistingExercise() throws NotPetOwnerException, NotExistingExerciseException,
+        InvalidPeriodException {
+        trUpdateExercise.setUser(user);
+        trUpdateExercise.setPet(pet);
+        trUpdateExercise.setExerciseName("Frisbee2");
+        trUpdateExercise.setExerciseDescription("Playing at the beach");
+        trUpdateExercise.setOriginalStartDateTime(DateTime.Builder.buildFullString("2020-05-04T11:00:00"));
+        trUpdateExercise.setStartDateTime(DateTime.Builder.buildFullString("2020-05-04T12:00:00"));
+        trUpdateExercise.setEndDateTime(DateTime.Builder.buildFullString("2020-05-04T13:00:00"));
+        trUpdateExercise.execute();
+    }
+
+    @Test
+    public void shouldUpdateTheExercise() throws NotPetOwnerException, NotExistingExerciseException,
+        InvalidPeriodException {
+        trUpdateExercise.setUser(user);
+        trUpdateExercise.setPet(pet);
+        trUpdateExercise.setExerciseName("Frisbee time");
+        trUpdateExercise.setExerciseDescription("Playing at the beach");
+        trUpdateExercise.setOriginalStartDateTime(DateTime.Builder.buildFullString("2020-05-04T10:00:00"));
         trUpdateExercise.setStartDateTime(DateTime.Builder.buildFullString("2020-05-04T10:00:00"));
         trUpdateExercise.setEndDateTime(DateTime.Builder.buildFullString("2020-05-04T11:00:00"));
         trUpdateExercise.execute();
+
+        assertEquals("Should update the exercise", "[{Frisbee time, Playing at the beach, 2020-05-04T10:00:00, "
+            + "2020-05-04T11:00:00}]", pet.getEventsByClass(Exercise.class).toString());
+    }
+
+    @Test
+    public void shouldUpdateTheExerciseTime() throws NotPetOwnerException, NotExistingExerciseException,
+        InvalidPeriodException {
+        trUpdateExercise.setUser(user);
+        trUpdateExercise.setPet(pet);
+        trUpdateExercise.setExerciseName("Frisbee time");
+        trUpdateExercise.setExerciseDescription("Playing at the beach");
+        trUpdateExercise.setOriginalStartDateTime(DateTime.Builder.buildFullString("2020-05-04T10:00:00"));
+        trUpdateExercise.setStartDateTime(DateTime.Builder.buildFullString("2020-05-04T10:00:00"));
+        trUpdateExercise.setEndDateTime(DateTime.Builder.buildFullString("2020-05-04T12:00:00"));
+        trUpdateExercise.execute();
+
+        assertEquals("Should add the exercise time", "{2020-05-04T00:00:00=120}",
+            pet.getHealthInfo().getExerciseFrequency().toString());
+    }
+
+    @Test
+    public void shouldUpdateTheStartDate() throws NotPetOwnerException, NotExistingExerciseException,
+        InvalidPeriodException {
+        trUpdateExercise.setUser(user);
+        trUpdateExercise.setPet(pet);
+        trUpdateExercise.setExerciseName("Frisbee time");
+        trUpdateExercise.setExerciseDescription("Playing at the beach");
+        trUpdateExercise.setOriginalStartDateTime(DateTime.Builder.buildFullString("2020-05-04T10:00:00"));
+        trUpdateExercise.setStartDateTime(DateTime.Builder.buildFullString("2020-05-04T10:30:00"));
+        trUpdateExercise.setEndDateTime(DateTime.Builder.buildFullString("2020-05-04T11:00:00"));
+        trUpdateExercise.execute();
+
+        assertEquals("Should update the exercise", "[{Frisbee time, Playing at the beach, 2020-05-04T10:30:00, "
+            + "2020-05-04T11:00:00}]", pet.getEventsByClass(Exercise.class).toString());
     }
 
     private Pet getDinkyPet() throws PetRepeatException {

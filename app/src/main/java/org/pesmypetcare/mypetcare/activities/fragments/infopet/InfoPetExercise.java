@@ -161,8 +161,27 @@ public class InfoPetExercise extends Fragment {
             exerciseStartTime.setButtonText(entries[2]);
             exerciseEndTime.setButtonText(entries[3]);
             editExerciseButton.setText(R.string.update_exercise);
-            editExerciseButton.setOnClickListener(v -> {
+            DateTime originalDateTime = DateTime.Builder.buildDateTimeString(exerciseDate.getText().toString(),
+                exerciseStartTime.getText().toString());
 
+            editExerciseButton.setOnClickListener(v -> {
+                String txtExerciseName = Objects.requireNonNull(exerciseName.getEditText()).getText().toString();
+                boolean isValid = isValid(exerciseName, exerciseDate, exerciseStartTime, exerciseEndTime,
+                    txtExerciseName);
+                if (isValid) {
+                    String txtDescription = Objects.requireNonNull(exerciseDescription.getEditText())
+                        .getText().toString();
+                    String date = exerciseDate.getText().toString();
+                    String startHour = exerciseStartTime.getText().toString();
+                    String endHour = exerciseEndTime.getText().toString();
+                    DateTime startExerciseDateTime = DateTime.Builder.buildDateTimeString(date, startHour);
+                    DateTime endExerciseDateTime = DateTime.Builder.buildDateTimeString(date, endHour);
+
+                    InfoPetFragment.getCommunication().updateExercise(InfoPetFragment.getPet(), txtExerciseName,
+                        txtDescription, originalDateTime, startExerciseDateTime, endExerciseDateTime);
+                    dialog.dismiss();
+                    showExercises();
+                }
             });
 
             deleteExerciseButton.setVisibility(View.VISIBLE);

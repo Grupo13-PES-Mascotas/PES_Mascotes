@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.services;
 import android.graphics.Bitmap;
 
 import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
@@ -119,13 +120,9 @@ public interface PetManagerService {
      * Add an exercise to the pet.
      * @param user The user
      * @param pet The pet
-     * @param exerciseName The exercise name
-     * @param description The description
-     * @param startDateTime The start DateTime
-     * @param endDateTime The end DateTime
+     * @param exercise The exercise
      */
-    void addExercise(User user, Pet pet, String exerciseName, String description, DateTime startDateTime,
-                     DateTime endDateTime);
+    void addExercise(User user, Pet pet, Exercise exercise);
 
     /**
      * Delete an exercise of the pet.
@@ -133,4 +130,12 @@ public interface PetManagerService {
      * @param dateTime The DateTime of the exercise
      */
     void deleteExercise(Pet pet, DateTime dateTime);
+
+    /**
+     * Update the exercise of the pet.
+     * @param user The user
+     * @param pet The pet
+     * @param exercise The exercise
+     */
+    void updateExercise(User user, Pet pet, Exercise exercise);
 }

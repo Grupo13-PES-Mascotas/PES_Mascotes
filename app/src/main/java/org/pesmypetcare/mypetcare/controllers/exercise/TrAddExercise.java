@@ -55,8 +55,9 @@ public class TrAddExercise {
             throw new InvalidPeriodException();
         }
 
-        petManagerService.addExercise(user, pet, exerciseName, exerciseDescription, startDateTime, endDateTime);
-        pet.addExercise(new Exercise(exerciseName, exerciseDescription, startDateTime, endDateTime));
+        Exercise exercise = new Exercise(exerciseName, exerciseDescription, startDateTime, endDateTime);
+        petManagerService.addExercise(user, pet, exercise);
+        pet.addExercise(exercise);
     }
 
     private boolean isDifferentDate(DateTime startDateTime, DateTime endDateTime) {
