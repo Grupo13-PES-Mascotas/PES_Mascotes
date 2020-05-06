@@ -58,9 +58,7 @@ public class DateButton extends DateTimeButton {
 
     @Override
     public void setButtonText(String text) {
-        System.out.println("TEXT " + text);
         setDateTime(DateTime.Builder.buildDateString(text));
-        System.out.println(getDateTime().toString());
         setText(text);
     }
 

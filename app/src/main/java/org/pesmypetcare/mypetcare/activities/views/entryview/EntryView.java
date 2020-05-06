@@ -174,7 +174,7 @@ public class EntryView extends LinearLayout {
          * @return The entries
          */
         public String[] getEntries() {
-            return Arrays.copyOf(entryLabels, entryLabels.length);
+            return Arrays.copyOf(entries, entries.length);
         }
 
         /**

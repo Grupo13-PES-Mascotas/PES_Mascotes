@@ -260,4 +260,6 @@
     <string name="update_exercise">Actualizar ejercicio</string>
     <string name="update_exercise_title">Actualizar ejercicio</string>
     <string name="update_exercice_message">Actualiza la información del ejercicio</string>
+    <string name="error_invalid_period">La fecha de inicio tiene que ser anterior a la de finalización</string>
+
 </resources>

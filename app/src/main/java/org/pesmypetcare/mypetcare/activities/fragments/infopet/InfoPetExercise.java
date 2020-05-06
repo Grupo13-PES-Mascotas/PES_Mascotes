@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Space;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -405,7 +406,42 @@ public class InfoPetExercise extends Fragment {
             exerciseEndTime.setText(R.string.error_empty_input_field);
             isValid = false;
         }
+
+        if (isValid) {
+            isValid = checkDateTimePeriod(exerciseDate, exerciseStartTime, exerciseEndTime);
+        }
+
         return isValid;
+    }
+
+    /**
+     * Check whether the exercise period is valid.
+     * @param exerciseDate The exercise date
+     * @param exerciseStartTime The exercise start time
+     * @param exerciseEndTime The exercise end time
+     * @return True if the period is valid
+     */
+    private static boolean checkDateTimePeriod(DateButton exerciseDate, TimeButton exerciseStartTime,
+                                               TimeButton exerciseEndTime) {
+        String strDate = exerciseDate.getDateTime().toString();
+        strDate = strDate.substring(0, strDate.indexOf('T'));
+
+        String strStartHour = exerciseStartTime.getDateTime().toString();
+        strStartHour = strStartHour.substring(strStartHour.indexOf('T') + 1);
+
+        String strEndHour = exerciseEndTime.getDateTime().toString();
+        strEndHour = strEndHour.substring(strEndHour.indexOf('T') + 1);
+
+        DateTime startDateTime = DateTime.Builder.buildDateTimeString(strDate, strStartHour);
+        DateTime endDateTime = DateTime.Builder.buildDateTimeString(strDate, strEndHour);
+        if (startDateTime.compareTo(endDateTime) > 0) {
+            Toast toast = Toast.makeText(context, R.string.error_invalid_period, Toast.LENGTH_LONG);
+            toast.show();
+
+            return false;
+        }
+
+        return true;
     }
 
     @Override
