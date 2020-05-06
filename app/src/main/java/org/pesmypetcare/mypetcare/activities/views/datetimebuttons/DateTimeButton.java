@@ -86,5 +86,9 @@ public abstract class DateTimeButton extends MaterialButton {
      */
     protected abstract void addComponent();
 
+    /**
+     * Set the button text.
+     * @param text The text to set
+     */
     public abstract void setButtonText(String text);
 }

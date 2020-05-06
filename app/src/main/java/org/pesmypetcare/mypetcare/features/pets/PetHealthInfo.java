@@ -179,6 +179,11 @@ public class PetHealthInfo {
         exerciseFrequency.put(date, exerciseFreq);
     }
 
+    /**
+     * Remove an exercise frequency.
+     * @param date The date
+     * @param duration The duration
+     */
     public void removeExerciseFrequency(DateTime date, int duration) {
         int actualDuration = exerciseFrequency.get(date) - duration;
 

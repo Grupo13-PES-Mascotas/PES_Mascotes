@@ -1,7 +1,5 @@
 package org.pesmypetcare.mypetcare.controllers.exercise;
 
-import org.pesmypetcare.mypetcare.controllers.infopet.TrDeleteExercise;
-import org.pesmypetcare.mypetcare.controllers.infopet.TrUpdateExercise;
 import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
 
 /**

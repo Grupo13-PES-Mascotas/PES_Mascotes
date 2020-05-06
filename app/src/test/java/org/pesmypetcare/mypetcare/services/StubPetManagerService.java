@@ -26,6 +26,9 @@ public class StubPetManagerService implements PetManagerService {
         this.data.put(JOHN_DOE, new ArrayList<>());
         Pet pet = new Pet(DINKY);
         pet.setWeight(10.0);
+        pet.addExercise(new Exercise("Frisbee", "Playing at the beach",
+            DateTime.Builder.buildFullString("2020-05-04T10:00:00"),
+            DateTime.Builder.buildFullString("2020-05-04T11:00:00")));
         Objects.requireNonNull(this.data.get(JOHN_DOE)).add(pet);
 
         this.data.put(JOHN_DOE_2, new ArrayList<>());
@@ -134,16 +137,23 @@ public class StubPetManagerService implements PetManagerService {
 
     @Override
     public void addExercise(User user, Pet pet, Exercise exercise) {
-        // Not implemented
+        List<Pet> pets = data.get(user.getUsername());
+        int index = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(index).addExercise(exercise);
     }
 
     @Override
-    public void deleteExercise(Pet pet, DateTime dateTime) {
-        // Not implemented
+    public void deleteExercise(User user, Pet pet, DateTime dateTime) {
+        List<Pet> pets = data.get(user.getUsername());
+        int index = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(index).deleteExerciseForDate(dateTime);
     }
 
     @Override
-    public void updateExercise(User user, Pet pet, Exercise exercise) {
-        // Not implemented yet
+    public void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise) {
+        List<Pet> pets = data.get(user.getUsername());
+        int index = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(index).deleteExerciseForDate(originalDateTime);
+        pets.get(index).addExercise(exercise);
     }
 }

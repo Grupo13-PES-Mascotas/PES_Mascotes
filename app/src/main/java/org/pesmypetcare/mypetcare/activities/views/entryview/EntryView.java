@@ -28,7 +28,76 @@ public class EntryView extends LinearLayout {
         super(context, attrs);
         this.builder = builder;
 
-        setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        setLayoutConfiguration();
+
+        String name = builder.getName();
+
+        if (name != null) {
+            addName(context, name);
+        }
+
+        addEntries(context, builder);
+    }
+
+    /**
+     * Add the entries.
+     * @param context The context of the application
+     * @param builder The builder for the EntryView
+     */
+    private void addEntries(Context context, Builder builder) {
+        String[] entryLabels = builder.getEntryLabels();
+        String[] entries = builder.getEntries();
+        int nEntries = entryLabels.length;
+
+        for (int actual = 0; actual < nEntries; ++actual) {
+            addLayoutEntry(context, getEntryTextView(context, entryLabels[actual] + ": "),
+                getEntryTextView(context, entries[actual]));
+        }
+    }
+
+    /**
+     * Add the layout entry.
+     * @param context The context of the application
+     * @param entryLabel The layout entry label
+     * @param entry The entry
+     */
+    private void addLayoutEntry(Context context, TextView entryLabel, TextView entry) {
+        LinearLayout layoutEntry = new LinearLayout(context);
+        layoutEntry.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+            LayoutParams.WRAP_CONTENT));
+        layoutEntry.setOrientation(LinearLayout.HORIZONTAL);
+
+        entryLabel.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+        layoutEntry.addView(entryLabel);
+        layoutEntry.addView(entry);
+
+        addView(layoutEntry);
+
+        Space space = createSpace();
+        addView(space);
+    }
+
+    /**
+     * Add the name.
+     * @param context The context of the application
+     * @param name The name to add
+     */
+    private void addName(Context context, String name) {
+        name = name.toUpperCase();
+        TextView nameView = getEntryTextView(context, name);
+        nameView.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+        nameView.setTypeface(null, Typeface.BOLD);
+        addView(nameView);
+
+        Space space = createSpace();
+        addView(space);
+    }
+
+    /**
+     * Set the layout configuration file.
+     */
+    private void setLayoutConfiguration() {
+        setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         setOrientation(LinearLayout.VERTICAL);
         setBackground(getResources().getDrawable(R.drawable.entry_background, null));
 
@@ -36,42 +105,6 @@ public class EntryView extends LinearLayout {
             getResources().getDisplayMetrics());
 
         setPadding(padding, padding, padding, padding);
-
-        String name = builder.getName();
-
-        if (name != null) {
-            name = name.toUpperCase();
-            TextView nameView = getEntryTextView(context, name);
-            nameView.setTextColor(getResources().getColor(R.color.colorPrimary, null));
-            nameView.setTypeface(null, Typeface.BOLD);
-            addView(nameView);
-
-            Space space = createSpace();
-            addView(space);
-        }
-
-        String[] entryLabels = builder.getEntryLabels();
-        String[] entries = builder.getEntries();
-        int nEntries = entryLabels.length;
-
-        for (int actual = 0; actual < nEntries; ++actual) {
-            LinearLayout layoutEntry = new LinearLayout(context);
-            layoutEntry.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT));
-            layoutEntry.setOrientation(LinearLayout.HORIZONTAL);
-
-            TextView entryLabelView = getEntryTextView(context, entryLabels[actual] + ": ");
-            entryLabelView.setTextColor(getResources().getColor(R.color.colorPrimary, null));
-            layoutEntry.addView(entryLabelView);
-
-            TextView entryView = getEntryTextView(context, entries[actual]);
-            layoutEntry.addView(entryView);
-
-            addView(layoutEntry);
-
-            Space space = createSpace();
-            addView(space);
-        }
     }
 
     /**

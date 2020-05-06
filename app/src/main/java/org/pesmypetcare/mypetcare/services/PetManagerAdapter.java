@@ -270,12 +270,12 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public void deleteExercise(Pet pet, DateTime dateTime) {
+    public void deleteExercise(User user, Pet pet, DateTime dateTime) {
         // Not implemented yet
     }
 
     @Override
-    public void updateExercise(User user, Pet pet, Exercise exercise) {
+    public void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise) {
         // Not implemented yet
     }
 

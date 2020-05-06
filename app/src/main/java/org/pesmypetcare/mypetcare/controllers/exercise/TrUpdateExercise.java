@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.controllers.infopet;
+package org.pesmypetcare.mypetcare.controllers.exercise;
 
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
@@ -98,7 +98,7 @@ public class TrUpdateExercise {
         }
 
         Exercise exercise = new Exercise(exerciseName, exerciseDescription, startDateTime, endDateTime);
-        petManagerService.updateExercise(user, pet, exercise);
+        petManagerService.updateExercise(user, pet, originalDateTime, exercise);
         pet.deleteExerciseForDate(originalDateTime);
         pet.addExercise(exercise);
     }

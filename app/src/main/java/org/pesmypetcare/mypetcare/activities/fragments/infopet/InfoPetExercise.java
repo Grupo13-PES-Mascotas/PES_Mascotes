@@ -41,6 +41,8 @@ public class InfoPetExercise extends Fragment {
     private static DateButton exerciseDate;
     private static TimeButton exerciseStartTime;
     private static TimeButton exerciseEndTime;
+    private static MaterialButton editExerciseButton;
+    private static MaterialButton deleteExerciseButton;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,7 +69,7 @@ public class InfoPetExercise extends Fragment {
     }
 
     /**
-     * Show the exercise events of the pet
+     * Show the exercise events of the pet.
      */
     public static void showExercises() {
         binding.exerciseDisplayLayout.removeAllViews();
@@ -77,7 +79,7 @@ public class InfoPetExercise extends Fragment {
     }
 
     /**
-     * Show the exercise event details
+     * Show the exercise event details.
      * @param exercise The exercise to show
      */
     private static void showEvent(Exercise exercise) {
@@ -99,6 +101,12 @@ public class InfoPetExercise extends Fragment {
         });
     }
 
+    /**
+     * Create an entry view for the exercise.
+     * @param exercise The exercise
+     * @param builder The builder for the entry view
+     * @return The entry view for the exercise
+     */
     @Nullable
     private static EntryView createEntryView(Exercise exercise, EntryView.Builder builder) {
         String startDateTime = exercise.getDateTime().toString();
@@ -156,34 +164,57 @@ public class InfoPetExercise extends Fragment {
      * @param entries The different entries of the exercise
      */
     private static void createEditExerciseDialog(int titleId, int messageId, boolean isAdding, String name,
-                                                        String[] entries) {
+                                                 String[] entries) {
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(context),
             R.style.AlertDialogTheme);
         builder.setTitle(titleId);
         builder.setMessage(messageId);
+        initializeDialog(builder);
 
+        if (isAdding) {
+            setAddExerciseListeners();
+        } else {
+            setEditExerciseListeners(name, entries);
+        }
+    }
+
+    /**
+     * Initialize the fialog.
+     * @param builder The builder of the dialog
+     */
+    private static void initializeDialog(AlertDialog.Builder builder) {
         View editExerciseLayout = inflater.inflate(R.layout.edit_exercise, null);
         builder.setView(editExerciseLayout);
         dialog = builder.create();
         setLayoutViews(editExerciseLayout);
-        MaterialButton editExerciseButton = editExerciseLayout.findViewById(R.id.editExerciseButton);
-        MaterialButton deleteExerciseButton = editExerciseLayout.findViewById(R.id.deleteExerciseButton);
+        editExerciseButton = editExerciseLayout.findViewById(R.id.editExerciseButton);
+        deleteExerciseButton = editExerciseLayout.findViewById(R.id.deleteExerciseButton);
+    }
 
-        if (isAdding) {
-            editExerciseButton.setText(R.string.add_exercise_title);
-            editExerciseButton.setOnClickListener(v -> {
-                addExerciseListener(exerciseName, exerciseDescription, exerciseDate, exerciseStartTime,
-                        exerciseEndTime);
-            });
-            deleteExerciseButton.setVisibility(View.GONE);
-        } else {
-            setButtons(name, entries, editExerciseButton);
-            DateTime originalDateTime = DateTime.Builder.buildDateTimeString(exerciseDate.getText().toString(),
-                exerciseStartTime.getText().toString());
+    /**
+     * Set the edit exercise listener.
+     * @param name THe name of the exercise
+     * @param entries The entries of the EntryView
+     */
+    private static void setEditExerciseListeners(String name, String[] entries) {
+        setButtons(name, entries, editExerciseButton);
+        DateTime originalDateTime = DateTime.Builder.buildDateTimeString(exerciseDate.getText().toString(),
+            exerciseStartTime.getText().toString());
 
-            setEditExerciseButtonListener(editExerciseButton, originalDateTime);
-            setDeleteExerciseButton(exerciseDate, exerciseStartTime, deleteExerciseButton);
-        }
+        setEditExerciseButtonListener(editExerciseButton, originalDateTime);
+        setDeleteExerciseButton(exerciseDate, exerciseStartTime, deleteExerciseButton);
+    }
+
+    /**
+     * Set the add exercise listener.
+     */
+    private static void setAddExerciseListeners() {
+        editExerciseButton.setText(R.string.add_exercise_title);
+        editExerciseButton.setOnClickListener(v -> {
+            addExerciseListener(exerciseName, exerciseDescription, exerciseDate, exerciseStartTime,
+                    exerciseEndTime);
+        });
+        deleteExerciseButton.setVisibility(View.GONE);
     }
 
     /**
@@ -224,20 +255,29 @@ public class InfoPetExercise extends Fragment {
             boolean isValid = isValid(exerciseName, exerciseDate, exerciseStartTime, exerciseEndTime,
                     txtExerciseName);
             if (isValid) {
-                String txtDescription = Objects.requireNonNull(exerciseDescription.getEditText())
-                        .getText().toString();
-                String date = exerciseDate.getText().toString();
-                String startHour = exerciseStartTime.getText().toString();
-                String endHour = exerciseEndTime.getText().toString();
-                DateTime startExerciseDateTime = DateTime.Builder.buildDateTimeString(date, startHour);
-                DateTime endExerciseDateTime = DateTime.Builder.buildDateTimeString(date, endHour);
-
-                InfoPetFragment.getCommunication().updateExercise(InfoPetFragment.getPet(), txtExerciseName,
-                        txtDescription, originalDateTime, startExerciseDateTime, endExerciseDateTime);
-                dialog.dismiss();
-                showExercises();
+                updateExercise(originalDateTime, txtExerciseName);
             }
         });
+    }
+
+    /**
+     * Update the exercise.
+     * @param originalDateTime The original DateTime
+     * @param txtExerciseName The name of the exercise
+     */
+    private static void updateExercise(DateTime originalDateTime, String txtExerciseName) {
+        String txtDescription = Objects.requireNonNull(exerciseDescription.getEditText())
+                .getText().toString();
+        String date = exerciseDate.getText().toString();
+        String startHour = exerciseStartTime.getText().toString();
+        String endHour = exerciseEndTime.getText().toString();
+        DateTime startExerciseDateTime = DateTime.Builder.buildDateTimeString(date, startHour);
+        DateTime endExerciseDateTime = DateTime.Builder.buildDateTimeString(date, endHour);
+
+        InfoPetFragment.getCommunication().updateExercise(InfoPetFragment.getPet(), txtExerciseName,
+                txtDescription, originalDateTime, startExerciseDateTime, endExerciseDateTime);
+        dialog.dismiss();
+        showExercises();
     }
 
     /**
@@ -250,15 +290,24 @@ public class InfoPetExercise extends Fragment {
                                                 MaterialButton deleteExerciseButton) {
         deleteExerciseButton.setVisibility(View.VISIBLE);
         deleteExerciseButton.setOnClickListener(v -> {
-            DateTime date = exerciseDate.getDateTime();
-            DateTime time = exerciseStartTime.getDateTime();
-            String strDate = date.toString().substring(0, date.toString().indexOf('T'));
-            String strTime = time.toString().substring(time.toString().indexOf('T') + 1);
-            DateTime dateTime = DateTime.Builder.buildDateTimeString(strDate, strTime);
-            InfoPetFragment.getCommunication().removeExercise(InfoPetFragment.getPet(), dateTime);
-            dialog.dismiss();
-            showExercises();
+            deleteExercise(exerciseDate, exerciseStartTime);
         });
+    }
+
+    /**
+     * Delete an exercise.
+     * @param exerciseDate The date button
+     * @param exerciseStartTime The time button
+     */
+    private static void deleteExercise(DateButton exerciseDate, TimeButton exerciseStartTime) {
+        DateTime date = exerciseDate.getDateTime();
+        DateTime time = exerciseStartTime.getDateTime();
+        String strDate = date.toString().substring(0, date.toString().indexOf('T'));
+        String strTime = time.toString().substring(time.toString().indexOf('T') + 1);
+        DateTime dateTime = DateTime.Builder.buildDateTimeString(strDate, strTime);
+        InfoPetFragment.getCommunication().removeExercise(InfoPetFragment.getPet(), dateTime);
+        dialog.dismiss();
+        showExercises();
     }
 
     /**
@@ -281,7 +330,7 @@ public class InfoPetExercise extends Fragment {
     }
 
     /**
-     * The method that add a new exercise
+     * The method that add a new exercise.
      * @param exerciseDescription The description of the exercise that user want to add
      * @param exerciseDate The date of the exercise that user want to add
      * @param exerciseStartTime The start time of the exercise that user want to add

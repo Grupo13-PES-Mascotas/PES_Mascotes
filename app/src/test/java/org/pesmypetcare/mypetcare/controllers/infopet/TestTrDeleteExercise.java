@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.controllers.infopet;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.mypetcare.controllers.exercise.TrDeleteExercise;
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.NotExistingExerciseException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;

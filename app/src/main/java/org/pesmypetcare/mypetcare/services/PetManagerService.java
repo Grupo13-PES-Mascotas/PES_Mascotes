@@ -126,16 +126,18 @@ public interface PetManagerService {
 
     /**
      * Delete an exercise of the pet.
+     * @param user The user
      * @param pet The pet
      * @param dateTime The DateTime of the exercise
      */
-    void deleteExercise(Pet pet, DateTime dateTime);
+    void deleteExercise(User user, Pet pet, DateTime dateTime);
 
     /**
      * Update the exercise of the pet.
      * @param user The user
      * @param pet The pet
+     * @param originalDateTime The original DateTime
      * @param exercise The exercise
      */
-    void updateExercise(User user, Pet pet, Exercise exercise);
+    void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise);
 }

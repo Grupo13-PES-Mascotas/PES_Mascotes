@@ -65,7 +65,7 @@ public class DateButton extends DateTimeButton {
     }
 
     /**
-     * Add the listener of the positive button
+     * Add the listener of the positive button.
      * @param selection The object selected
      */
     private void addPositiveListener(Object selection) {
