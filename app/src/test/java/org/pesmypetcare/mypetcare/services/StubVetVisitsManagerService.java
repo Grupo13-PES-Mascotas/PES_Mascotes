@@ -64,5 +64,26 @@ public class StubVetVisitsManagerService implements VetVisitsManagerService {
         Objects.requireNonNull(data.get(user.getUsername() + " : " + pet.getName())).remove(vetVisit);
         nVetVisit--;
     }
+
+    @Override
+    public void updateVetVisitKey(User user, Pet pet, String newDate, DateTime visitDate) {
+        ArrayList<VetVisit> petVisits = Objects.requireNonNull(data.get(user.getUsername() + " : " + pet.getName()));
+        for (VetVisit visit:petVisits) {
+            if (visit.getVisitDate().compareTo(visitDate) == 0) {
+                visit.setVisitDate(DateTime.Builder.buildFullString(newDate));
+            }
+        }
+    }
+
+    @Override
+    public void updateVetVisitBody(User user, Pet pet, VetVisit vetVisit) {
+        ArrayList<VetVisit> petVisits = Objects.requireNonNull(data.get(user.getUsername() + " : " + pet.getName()));
+        for (VetVisit visit:petVisits) {
+            if (visit.getVisitDate().compareTo(vetVisit.getDateTime()) == 0) {
+                Objects.requireNonNull(data.get(user.getUsername() + " : " + pet.getName())).remove(visit);
+                Objects.requireNonNull(data.get(user.getUsername() + " : " + pet.getName())).add(vetVisit);
+            }
+        }
+    }
 }
 

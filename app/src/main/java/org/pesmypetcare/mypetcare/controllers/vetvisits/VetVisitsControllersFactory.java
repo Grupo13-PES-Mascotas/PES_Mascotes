@@ -33,4 +33,12 @@ public class VetVisitsControllersFactory {
     public static TrDeleteVetVisit createTrDeleteVetVisit() {
         return new TrDeleteVetVisit(new VetVisitsAdapter());
     }
+
+    /**
+     * Creates the transaction responsible for updating an vet visit from a pet.
+     * @return The transaction responsible for updating an vet visit from a pet
+     */
+    public static TrUpdateVetVisit createTrUpdateVetVisit() {
+        return new TrUpdateVetVisit(new VetVisitsAdapter());
+    }
 }

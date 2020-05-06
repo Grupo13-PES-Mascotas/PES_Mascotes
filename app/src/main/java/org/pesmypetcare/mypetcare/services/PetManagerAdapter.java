@@ -205,7 +205,6 @@ public class PetManagerAdapter implements PetManagerService {
     @Override
     public Map<String, byte[]> getAllPetsImages(User user) {
         Map<String, byte[]> pets = null;
-
         try {
             pets = ServiceLocator.getInstance().getPetManagerClient().downloadAllProfileImages(user.getToken(),
                 user.getUsername());

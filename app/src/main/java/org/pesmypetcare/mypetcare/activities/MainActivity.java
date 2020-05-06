@@ -312,9 +312,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void getGoogleToken() {
         String googleEmail = sharedpreferences.getString("GoogleEmail", "");
         String scopes = sharedpreferences.getString("GoogleScopes", "");
-        MyAsyncTask asyncTask = new MyAsyncTask(googleEmail, scopes, this.getBaseContext());
-        asyncTask.delegate = this;
-        asyncTask.execute();
+        if (!"".equals(googleEmail)) {
+            MyAsyncTask asyncTask = new MyAsyncTask(googleEmail, scopes, this.getBaseContext());
+            asyncTask.delegate = this;
+            asyncTask.execute();
+        }
     }
 
     /**
@@ -365,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         for (Pet pet : user.getPets()) {
             obtainAllPetMeals(pet);
             obtainAllPetMedications(pet);
-            obtainAllPetVetVisits(pet);
+            //obtainAllPetVetVisits(pet);
         }
 
         Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
@@ -417,7 +419,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             int imagesNotFound = getPetImages();
             int nUserPets = user.getPets().size();
 
-            if (imagesNotFound == nUserPets) {
+            if (imagesNotFound == nUserPets && nUserPets != 0) {
                 getImagesFromServer();
             }
         });
