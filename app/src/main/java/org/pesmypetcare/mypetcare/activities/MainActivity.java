@@ -121,6 +121,7 @@ import org.pesmypetcare.mypetcare.controllers.user.UserControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.TrDeleteVetVisit;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.TrNewVetVisit;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.TrObtainAllVetVisits;
+import org.pesmypetcare.mypetcare.controllers.vetvisits.TrUpdateVetVisit;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.VetVisitsControllersFactory;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
@@ -258,6 +259,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainAllVetVisits trObtainAllVetVisits;
     private TrNewVetVisit trNewVetVisit;
     private TrDeleteVetVisit trDeleteVetVisit;
+    private TrUpdateVetVisit trUpdateVetVisit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -367,7 +369,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         for (Pet pet : user.getPets()) {
             obtainAllPetMeals(pet);
             obtainAllPetMedications(pet);
-            //obtainAllPetVetVisits(pet);
+            obtainAllPetVetVisits(pet);
         }
 
         Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
@@ -642,6 +644,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainAllVetVisits = VetVisitsControllersFactory.createTrObtainAllVetVisits();
         trNewVetVisit = VetVisitsControllersFactory.createTrNewVetVisit();
         trDeleteVetVisit = VetVisitsControllersFactory.createTrDeleteVetVisit();
+        trUpdateVetVisit = VetVisitsControllersFactory.createTrUpdateVetVisit();
     }
 
     /**
@@ -1494,7 +1497,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void updatePetVetVisit(Pet pet, VetVisit vetVisit, String newDate, boolean updatesDate) {
-        System.out.println("Actualizar la visita: " + vetVisit.getReason() +  " a la mascota " + pet.getName());
+        trUpdateVetVisit.setUser(user);
+        trUpdateVetVisit.setPet(pet);
+        trUpdateVetVisit.setVetVisit(vetVisit);
+        if (updatesDate) {
+            trUpdateVetVisit.setNewDate(newDate);
+        }
+        trUpdateVetVisit.execute();
     }
 
     @Override
