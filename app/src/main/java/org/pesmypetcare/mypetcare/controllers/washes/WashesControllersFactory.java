@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.controllers.washes;
 
 import org.pesmypetcare.mypetcare.services.WashManagerAdapter;
 
+
 /**
  * @author Enric Hernando
  */
