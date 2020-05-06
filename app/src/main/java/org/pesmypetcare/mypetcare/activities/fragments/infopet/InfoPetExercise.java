@@ -423,14 +423,9 @@ public class InfoPetExercise extends Fragment {
      */
     private static boolean checkDateTimePeriod(DateButton exerciseDate, TimeButton exerciseStartTime,
                                                TimeButton exerciseEndTime) {
-        String strDate = exerciseDate.getDateTime().toString();
-        strDate = strDate.substring(0, strDate.indexOf('T'));
-
-        String strStartHour = exerciseStartTime.getDateTime().toString();
-        strStartHour = strStartHour.substring(strStartHour.indexOf('T') + 1);
-
-        String strEndHour = exerciseEndTime.getDateTime().toString();
-        strEndHour = strEndHour.substring(strEndHour.indexOf('T') + 1);
+        String strDate = getDate(exerciseDate);
+        String strStartHour = getTime(exerciseStartTime);
+        String strEndHour = getTime(exerciseEndTime);
 
         DateTime startDateTime = DateTime.Builder.buildDateTimeString(strDate, strStartHour);
         DateTime endDateTime = DateTime.Builder.buildDateTimeString(strDate, strEndHour);
@@ -442,6 +437,30 @@ public class InfoPetExercise extends Fragment {
         }
 
         return true;
+    }
+
+    /**
+     * Get the time.
+     * @param exerciseTime The time button
+     * @return The time
+     */
+    @NonNull
+    private static String getTime(TimeButton exerciseTime) {
+        String strStartHour = exerciseTime.getDateTime().toString();
+        strStartHour = strStartHour.substring(strStartHour.indexOf('T') + 1);
+        return strStartHour;
+    }
+
+    /**
+     * Get the date.
+     * @param exerciseDate The date button
+     * @return The date
+     */
+    @NonNull
+    private static String getDate(DateButton exerciseDate) {
+        String strDate = exerciseDate.getDateTime().toString();
+        strDate = strDate.substring(0, strDate.indexOf('T'));
+        return strDate;
     }
 
     @Override
