@@ -10,6 +10,9 @@ import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingExcepti
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.pets.VetVisit;
+import org.pesmypetcare.mypetcare.features.pets.Wash;
+import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 public interface InfoPetCommunication {
 
@@ -158,10 +161,67 @@ public interface InfoPetCommunication {
      */
     void deletePetVetVisit(Pet pet, VetVisit vetVisit);
 
-
     /**
      * Obtains all the vet visits from a pet.
      * @param pet The pet from which we want to obtain all the vet visits
      */
     void obtainAllPetVetVisits(Pet pet);
+    
+    /**
+     * Adds a new wash to the pet.
+     * @param pet The pet to which we want to add the meal
+     * @param wash The wash that has to be added
+     */
+    void addPetWash(Pet pet, Wash wash) throws WashAlreadyExistingException;
+
+    /**
+     * Updates the data of a wash of a pet.
+     * @param pet The pet to which we want to update the wash
+     * @param wash The updated wash
+     * @param newDate The new date of the wash
+     * @param updatesDate True if the date has to be updated or false otherwise
+     */
+    void updatePetWash(Pet pet, Wash wash, String newDate, boolean updatesDate);
+
+    /**
+     * Deletes a wash from a pet.
+     * @param pet The pet from which the wash has to be deleted
+     * @param wash The wash that has to be deleted from the pet
+     */
+    void deletePetWash(Pet pet, Wash wash);
+
+    /**
+     * Obtains all the wash from a pet.
+     * @param pet The pet from which we want to obtain all the washes
+     */
+    void obtainAllPetWashes(Pet pet);
+
+    /**
+     * Add an exercise to the pet.
+     * @param pet The pet
+     * @param exerciseName The exercise name
+     * @param exerciseDescription The exercise description
+     * @param startExerciseDateTime The exercise start DateTime
+     * @param endExerciseDateTime The exercise end DateTime
+     */
+    void addExercise(Pet pet, String exerciseName, String exerciseDescription, DateTime startExerciseDateTime,
+                     DateTime endExerciseDateTime);
+
+    /**
+     * Remove an exercise to the pet.
+     * @param pet The pet
+     * @param dateTime The start
+     */
+    void removeExercise(Pet pet, DateTime dateTime);
+
+    /**
+     * Update an exercise of the pet.
+     * @param pet The pet
+     * @param txtExerciseName The exercise name
+     * @param txtDescription The exercise description
+     * @param startExerciseDateTime The exercise start DateTime
+     * @param endExerciseDateTime The exercise end DateTime
+     */
+    void updateExercise(Pet pet, String txtExerciseName, String txtDescription, DateTime originalStartDateTime,
+                        DateTime startExerciseDateTime, DateTime endExerciseDateTime);
 }

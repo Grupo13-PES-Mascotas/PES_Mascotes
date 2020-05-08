@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -263,6 +264,21 @@ public class PetManagerAdapter implements PetManagerService {
         ServiceLocator.getInstance().getFreqWashManagerClient().deleteByDate(accessToken, userName, petName, dateTime);
     }
 
+    @Override
+    public void addExercise(User user, Pet pet, Exercise exercise) {
+        // Not implemented yet
+    }
+
+    @Override
+    public void deleteExercise(User user, Pet pet, DateTime dateTime) {
+        // Not implemented yet
+    }
+
+    @Override
+    public void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise) {
+        // Not implemented yet
+    }
+
     /**
      * Decodes the pet information from the server.
      * @param userPet The information from the server
@@ -281,6 +297,10 @@ public class PetManagerAdapter implements PetManagerService {
         pet.setRecommendedDailyKiloCalories(petData.getRecommendedKcal());
         pet.setBreed(petData.getBreed());
         pet.setPathologies(petData.getPathologies());
+
+        pet.addExercise(new Exercise("Frisbee", "Playing at the beach",
+            DateTime.Builder.buildFullString("2020-05-04T10:00:00"),
+            DateTime.Builder.buildFullString("2020-05-04T11:00:00")));
 
         return pet;
     }

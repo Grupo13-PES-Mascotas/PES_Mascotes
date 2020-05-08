@@ -15,6 +15,7 @@ public class ServiceLocator {
     private UserManagerClient userManagerClient;
     private PetManagerClient petManagerClient;
     private MealManagerClient mealManagerClient;
+    //private WashManagerClient washManagerClient;
     private GoogleCalendarManagerClient googleCalendarManagerClient;
     private GroupManagerClient groupManagerClient;
     private ForumManagerClient forumManagerClient;
@@ -32,6 +33,7 @@ public class ServiceLocator {
         medicationManagerClient = new MedicationManagerClient();
         weightManagerClient = new WeightManagerClient();
         freqWashManagerClient = new FreqWashManagerClient();
+        //washManagerClient = new WashManagerClient();
     }
 
     public static ServiceLocator getInstance() {
@@ -77,4 +79,11 @@ public class ServiceLocator {
     public FreqWashManagerClient getFreqWashManagerClient() {
         return freqWashManagerClient;
     }
+
+    /*
+    public Object getWashManagerClient() {
+        return washManagerClient;
+    }
+
+    */
 }

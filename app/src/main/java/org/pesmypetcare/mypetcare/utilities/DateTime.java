@@ -330,32 +330,66 @@ public class DateTime implements Comparable<DateTime> {
         return new DateTime(strData);
     }
 
+    public int getMinutesDuration(DateTime endDateTime) throws DifferentDatesException, PreviousEndDateException {
+        if (!toDateString().equals(endDateTime.toDateString())) {
+            throw new DifferentDatesException();
+        } else if (this.compareTo(endDateTime) > 0) {
+            throw new PreviousEndDateException();
+        }
+        int startMinutes = hour * 60 + minutes;
+        int endMinutes = endDateTime.getHour() * 60 + endDateTime.getMinutes();
+
+        return endMinutes - startMinutes;
+    }
+
+    public String toDateString() {
+        StringBuilder date = new StringBuilder("");
+        date.append(year).append(DATE_SEPARATOR_CHAR);
+        if (month < FIRST_TWO_DIGITS) {
+            date.append(ZERO_DIGIT_CHAR);
+        }
+        date.append(month).append(DATE_SEPARATOR_CHAR);
+        if (day < FIRST_TWO_DIGITS) {
+            date.append(ZERO_DIGIT_CHAR);
+        }
+        date.append(day);
+
+        return date.toString();
+    }
+
+    public String toDateStringReverse() {
+        StringBuilder date = new StringBuilder("");
+        if (day < FIRST_TWO_DIGITS) {
+            date.append(ZERO_DIGIT_CHAR);
+        }
+        date.append(day).append(DATE_SEPARATOR_CHAR);
+
+        if (month < FIRST_TWO_DIGITS) {
+            date.append(ZERO_DIGIT_CHAR);
+        }
+        date.append(month).append(DATE_SEPARATOR_CHAR).append(year);
+        return date.toString();
+    }
+
+    public String toTimeString() {
+        StringBuilder time = new StringBuilder("");
+        time.append(hour).append(TIME_SEPARATOR_CHAR);
+        if (minutes < FIRST_TWO_DIGITS) {
+            time.append(ZERO_DIGIT_CHAR);
+        }
+        time.append(minutes).append(TIME_SEPARATOR_CHAR);
+        if (seconds < FIRST_TWO_DIGITS) {
+            time.append(ZERO_DIGIT_CHAR);
+        }
+        time.append(seconds);
+
+        return time.toString();
+    }
+
     @NonNull
     @Override
     public String toString() {
-        StringBuilder dateTime = new StringBuilder("");
-        dateTime.append(year).append(DATE_SEPARATOR_CHAR);
-        if (month < FIRST_TWO_DIGITS) {
-            dateTime.append(ZERO_DIGIT_CHAR);
-        }
-        dateTime.append(month).append(DATE_SEPARATOR_CHAR);
-        if (day < FIRST_TWO_DIGITS) {
-            dateTime.append(ZERO_DIGIT_CHAR);
-        }
-        dateTime.append(day).append(DATE_TIME_SEPARATOR_CHAR);
-        if (hour < FIRST_TWO_DIGITS) {
-            dateTime.append(ZERO_DIGIT_CHAR);
-        }
-        dateTime.append(hour).append(TIME_SEPARATOR_CHAR);
-        if (minutes < FIRST_TWO_DIGITS) {
-            dateTime.append(ZERO_DIGIT_CHAR);
-        }
-        dateTime.append(minutes).append(TIME_SEPARATOR_CHAR);
-        if (seconds < FIRST_TWO_DIGITS) {
-            dateTime.append(ZERO_DIGIT_CHAR);
-        }
-        dateTime.append(seconds);
-        return dateTime.toString();
+        return toDateString() + DATE_TIME_SEPARATOR + toTimeString();
     }
 
     @Override

@@ -134,15 +134,24 @@
     <string name="add_wash_frequency_date_hint">Select the wash frequency date</string>
     <string name="delete_wash_frequency">Delete wash frequency</string>
     <string name="meals_interval_switch">Show only last week meals</string>
+    <string name="wash_interval_switch">Show only last week washes</string>
     <string name="add_meal_button">Add meal</string>
+    <string name="add_wash_button">Add wash</string>
     <string name="meal_name">Meal Name</string>
     <string name="meal_kcal">Meal Kilocalories</string>
     <string name="meal_date">Meal Date</string>
     <string name="meal_time">Meal Time</string>
+    <string name="wash_name">Wash Description</string>
+    <string name="wash_duration">Wash Duration</string>
+    <string name="wash_date">Wash Date</string>
+    <string name="wash_time">Wah Time</string>
     <string name="update_meal">Update meal</string>
     <string name="delete_current_meal">Delete meal</string>
+    <string name="update_wash">Update wash</string>
+    <string name="delete_current_wash">Delete wash</string>
     <string name="empty_fields">Fields cannot be empty</string>
     <string name="meal">Meal:</string>
+    <string name="wash">Wash:</string>
     <string name="from_date">From:</string>
     <string name="notificationid">NOTIFICATION_ID</string>
     <string name="selectPet">Select pet</string>
@@ -192,6 +201,9 @@
     <string name="edit_meal_title">Edit meal</string>
     <string name="edit_meal_message">Introduce the data of the meal</string>
     <string name="select_meal_date">Select meal date</string>
+    <string name="edit_wash_title">Edit wash</string>
+    <string name="edit_wash_message">Introduce the data of the wash</string>
+    <string name="select_wash_date">Select wash date</string>
     <string name="add_new_forum_title">Add new forum</string>
     <string name="add_new_forum_description">Introduce the data of the forum</string>
     <string name="forum_name">Forum name</string>
@@ -255,8 +267,28 @@
     <string name="visit_of_the_day">Visit datetime:</string>
     <string name="visit_reason">Due to:</string>
     <string name="visit_addres">With address:</string>
+    <string name="add_exercise_title">Add exercise</string>
+    <string name="add_exercice_message">Input the data of the new exercise</string>
+    <string name="exercise_name">Exercise name</string>
+    <string name="exercise_description">Exercise description (optional)</string>
+    <string name="exercise_date">Exercise date</string>
+    <string name="exercise_start_hour">Exercise start hour</string>
+    <string name="exercise_end_hour">Exercise end hour</string>
+    <string name="delete_exercise">Delete exercise</string>
+    <string name="error_empty_input_field">This field cannot be empty</string>
+    <string name="entry_view_exercise_description">Description</string>
+    <string name="entry_view_exercise_date">Date</string>
+    <string name="entry_view_exercise_start_hour">Start hour</string>
+    <string name="entry_view_exercise_end_hour">End hour</string>
+    <string name="entry_view_exercise_duration">Duration</string>
+    <string name="update_exercise">Update exercise</string>
+    <string name="update_exercise_title">Update exercise</string>
+    <string name="update_exercice_message">Update the data of the exercise</string>
+    <string name="error_invalid_period">The start must be previous to the end one</string>
+
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open" translatable="false">Open</string>
     <string name="navigation_view_closed" translatable="false">Closed</string>
+
 </resources>

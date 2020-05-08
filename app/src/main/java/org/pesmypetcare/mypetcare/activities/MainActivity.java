@@ -57,6 +57,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.community.groups.PostsFra
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
+import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetExercise;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.login.AsyncResponse;
 import org.pesmypetcare.mypetcare.activities.fragments.login.MyAsyncTask;
@@ -89,6 +90,10 @@ import org.pesmypetcare.mypetcare.controllers.event.TrDeletePeriodicNotification
 import org.pesmypetcare.mypetcare.controllers.event.TrDeletePersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.event.TrNewPeriodicNotification;
 import org.pesmypetcare.mypetcare.controllers.event.TrNewPersonalEvent;
+import org.pesmypetcare.mypetcare.controllers.exercise.ExerciseControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.exercise.TrAddExercise;
+import org.pesmypetcare.mypetcare.controllers.exercise.TrDeleteExercise;
+import org.pesmypetcare.mypetcare.controllers.exercise.TrUpdateExercise;
 import org.pesmypetcare.mypetcare.controllers.meals.MealsControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.meals.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.meals.TrNewPetMeal;
@@ -123,6 +128,11 @@ import org.pesmypetcare.mypetcare.controllers.vetvisits.TrNewVetVisit;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.TrObtainAllVetVisits;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.TrUpdateVetVisit;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.VetVisitsControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.washes.TrDeleteWash;
+import org.pesmypetcare.mypetcare.controllers.washes.TrNewPetWash;
+import org.pesmypetcare.mypetcare.controllers.washes.TrObtainAllPetWashes;
+import org.pesmypetcare.mypetcare.controllers.washes.TrUpdateWash;
+import org.pesmypetcare.mypetcare.controllers.washes.WashesControllersFactory;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumCreatedBeforeGroupException;
@@ -146,15 +156,19 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostReportedByAuthorE
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.InvalidPeriodException;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.NotExistingExerciseException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.pets.VetVisit;
 import org.pesmypetcare.mypetcare.features.pets.VetVisitAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.Wash;
+import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
@@ -210,6 +224,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static List<Group> groups;
     private static int notificationId;
     private static int requestCode;
+    private static FragmentManager fragmentManager;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -237,6 +252,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainAllPetMeals trObtainAllPetMeals;
     private TrDeleteMeal trDeleteMeal;
     private TrUpdateMeal trUpdateMeal;
+    private TrNewPetWash trNewPetWash;
+    private TrObtainAllPetWashes trObtainAllPetWashes;
+    private TrDeleteWash trDeleteWash;
+    private TrUpdateWash trUpdateWash;
     private TrObtainAllGroups trObtainAllGroups;
     private TrCreateNewGroup trCreateNewGroup;
     private TrDeleteGroup trDeleteGroup;
@@ -260,6 +279,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrNewVetVisit trNewVetVisit;
     private TrDeleteVetVisit trDeleteVetVisit;
     private TrUpdateVetVisit trUpdateVetVisit;
+    private TrAddExercise trAddExercise;
+    private TrDeleteExercise trDeleteExercise;
+    private TrUpdateExercise trUpdateExercise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -273,6 +295,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         notificationId = 0;
         requestCode = 0;
+        fragmentManager = getSupportFragmentManager();
 
         makeLogin();
         initializeControllers();
@@ -352,6 +375,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return mAuth;
     }
 
+    public static FragmentManager getApplicationFragmentManager() {
+        return fragmentManager;
+    }
+
     public void setToolbarText(String text) {
         toolbar.setTitle(text);
     }
@@ -370,6 +397,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             obtainAllPetMeals(pet);
             obtainAllPetMedications(pet);
             obtainAllPetVetVisits(pet);
+            obtainAllPetWashes(pet);
         }
 
         Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
@@ -422,7 +450,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             int nUserPets = user.getPets().size();
 
             if (imagesNotFound == nUserPets && nUserPets != 0) {
-                getImagesFromServer();
+                getImagesFromServer();            
             }
         });
     }
@@ -549,9 +577,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeUserControllers();
         initializePetHealthControllers();
         initializeMealsControllers();
+        initializeWashControllers();
         initializeCommunityControllers();
         initializeMedicationControllers();
         initializeVetVisitsControllers();
+        initializeExerciseControllers();
+    }
+
+    /**
+     * Initialize the exercise controllers
+     */
+    private void initializeExerciseControllers() {
+        trAddExercise = ExerciseControllersFactory.createTrAddExercise();
+        trDeleteExercise = ExerciseControllersFactory.createTrDeleteExercise();
+        trUpdateExercise = ExerciseControllersFactory.createTrUpdateExercise();
     }
 
     /**
@@ -606,6 +645,16 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainAllPetMeals = MealsControllersFactory.createTrObtainAllPetMeals();
         trDeleteMeal = MealsControllersFactory.createTrDeleteMeal();
         trUpdateMeal = MealsControllersFactory.createTrUpdateMeal();
+    }
+
+    /**
+     * Initialize the wash controllers.
+     */
+    private void initializeWashControllers() {
+        trNewPetWash = WashesControllersFactory.createTrNewPetWash();
+        trObtainAllPetWashes = WashesControllersFactory.createTrObtainAllPetWashes();
+        trDeleteWash = WashesControllersFactory.createTrDeleteWash();
+        trUpdateWash = WashesControllersFactory.createTrUpdateWash();
     }
 
     /**
@@ -1430,6 +1479,40 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
+    public void addPetWash(Pet pet, Wash wash) throws WashAlreadyExistingException {
+        trNewPetWash.setUser(user);
+        trNewPetWash.setPet(pet);
+        trNewPetWash.setWash(wash);
+        trNewPetWash.execute();
+    }
+
+    @Override
+    public void updatePetWash(Pet pet, Wash wash, String newDate, boolean updatesDate) {
+        trUpdateWash.setUser(user);
+        trUpdateWash.setPet(pet);
+        trUpdateWash.setWash(wash);
+        if (updatesDate) {
+            trUpdateWash.setNewDate(newDate);
+        }
+        trUpdateWash.execute();
+    }
+
+    @Override
+    public void deletePetWash(Pet pet, Wash wash) {
+        trDeleteWash.setUser(user);
+        trDeleteWash.setPet(pet);
+        trDeleteWash.setWash(wash);
+        trDeleteWash.execute();
+    }
+
+    @Override
+    public void obtainAllPetWashes(Pet pet) {
+        trObtainAllPetWashes.setUser(user);
+        trObtainAllPetWashes.setPet(pet);
+        trObtainAllPetWashes.execute();
+    }
+
+    @Override
     public void addPetMedication(Pet pet, Medication medication) {
         trNewPetMedication.setUser(user);
         trNewPetMedication.setPet(pet);
@@ -1506,6 +1589,34 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trUpdateVetVisit.execute();
         } catch (NotPetOwnerException e) {
+          
+    public void addExercise(Pet pet, String exerciseName, String exerciseDescription, DateTime startExerciseDateTime,
+                            DateTime endExerciseDateTime) {
+        trAddExercise.setUser(user);
+        trAddExercise.setPet(pet);
+        trAddExercise.setExerciseName(exerciseName);
+        trAddExercise.setExerciseDescription(exerciseDescription);
+        trAddExercise.setStartDateTime(startExerciseDateTime);
+        trAddExercise.setEndDateTime(endExerciseDateTime);
+
+        try {
+            trAddExercise.execute();
+        } catch (NotPetOwnerException | InvalidPeriodException e) {
+            e.printStackTrace();
+        }
+
+        InfoPetExercise.showExercises();
+    }
+
+    @Override
+    public void removeExercise(Pet pet, DateTime dateTime) {
+        trDeleteExercise.setUser(user);
+        trDeleteExercise.setPet(pet);
+        trDeleteExercise.setExerciseDateTime(dateTime);
+
+        try {
+            trDeleteExercise.execute();
+        } catch (NotPetOwnerException | NotExistingExerciseException e) {
             e.printStackTrace();
         }
     }
@@ -1518,6 +1629,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trDeleteVetVisit.execute();
         } catch (NotPetOwnerException e) {
+
+    public void updateExercise(Pet pet, String exerciseName, String exerciseDescription, DateTime originalDateTime,
+                               DateTime startExerciseDateTime, DateTime endExerciseDateTime) {
+        trUpdateExercise.setUser(user);
+        trUpdateExercise.setPet(pet);
+        trUpdateExercise.setExerciseName(exerciseName);
+        trUpdateExercise.setExerciseDescription(exerciseDescription);
+        trUpdateExercise.setOriginalStartDateTime(originalDateTime);
+        trUpdateExercise.setStartDateTime(startExerciseDateTime);
+        trUpdateExercise.setEndDateTime(endExerciseDateTime);
+
+        try {
+            trUpdateExercise.execute();
+        } catch (NotPetOwnerException | InvalidPeriodException | NotExistingExerciseException e) {
             e.printStackTrace();
         }
     }
