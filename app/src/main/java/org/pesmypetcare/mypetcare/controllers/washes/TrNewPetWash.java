@@ -62,7 +62,7 @@ public class TrNewPetWash {
             throw new WashAlreadyExistingException();
         }
         pet.addEvent(wash);
-        //washManagerService.createWash(user, pet, wash);
+        washManagerService.createWash(user, pet, wash);
         result = true;
     }
 

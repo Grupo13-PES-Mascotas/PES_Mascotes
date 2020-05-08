@@ -80,7 +80,8 @@ public class ServiceLocator {
         return freqWashManagerClient;
     }
 
-   /* public Object getWashManagerClient() {
+    /*
+    public Object getWashManagerClient() {
         return washManagerClient;
     }
 

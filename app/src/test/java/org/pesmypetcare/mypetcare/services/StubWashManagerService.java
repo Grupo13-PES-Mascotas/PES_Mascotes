@@ -14,7 +14,7 @@ import java.util.Objects;
 /**
  * @author Enric Hernando
  */
-public class StubWashManagerService implements WashManagerService{
+public class StubWashManagerService implements WashManagerService {
 
     private static final String JOHN_DOE = "johnDoe";
     private static final String LINUX = "Linux";

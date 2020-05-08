@@ -5,7 +5,7 @@ import org.pesmypetcare.usermanager.datacontainers.DateTime;
 /**
  * @author Enric Hernando
  */
-public class Wash extends Event{
+public class Wash extends Event {
     private static final String WASH = "Wash ";
     private static final String OF_THE_DAY = " of the day ";
     private String washDescription;
@@ -18,7 +18,7 @@ public class Wash extends Event{
         this.washDescription = washDescription;
         this.duration = duration;
     }
-/*
+    /*
     public Wash(Wash wash) {
         super(WASH + wash.getBody().getWashName() + OF_THE_DAY + wash.getDate(),
                 DateTime.Builder.buildFullString(wash.getDate()));
