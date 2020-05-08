@@ -67,10 +67,10 @@ public class WashManagerAdapter implements WashManagerService {
     }
     /**
      * Method responsible for accessing the service to update the wash duration.
-     * @param wash The meal from which we want to update the kcal.
+     * @param wash The wash from which we want to update the duration.
      * @param accessToken The access token of the user
      * @param owner The owner of the pet
-     * @param petName The name of the pet to which belong the meal
+     * @param petName The name of the pet to which belong the wash
      * @param washDate The date of the wash
      */
     private void updateWashDuration(Wash wash, String accessToken, String owner, String petName, DateTime washDate) {
