@@ -9,6 +9,8 @@ import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
+import org.pesmypetcare.mypetcare.features.pets.Wash;
+import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 public interface InfoPetCommunication {
@@ -134,6 +136,35 @@ public interface InfoPetCommunication {
      * @param pet The pet from which we want to obtain all the medications
      */
     void obtainAllPetMedications(Pet pet);
+
+    /**
+     * Adds a new wash to the pet.
+     * @param pet The pet to which we want to add the meal
+     * @param wash The wash that has to be added
+     */
+    void addPetWash(Pet pet, Wash wash) throws WashAlreadyExistingException;
+
+    /**
+     * Updates the data of a wash of a pet.
+     * @param pet The pet to which we want to update the wash
+     * @param wash The updated wash
+     * @param newDate The new date of the wash
+     * @param updatesDate True if the date has to be updated or false otherwise
+     */
+    void updatePetWash(Pet pet, Wash wash, String newDate, boolean updatesDate);
+
+    /**
+     * Deletes a wash from a pet.
+     * @param pet The pet from which the wash has to be deleted
+     * @param wash The wash that has to be deleted from the pet
+     */
+    void deletePetWash(Pet pet, Wash wash);
+
+    /**
+     * Obtains all the wash from a pet.
+     * @param pet The pet from which we want to obtain all the washes
+     */
+    void obtainAllPetWashes(Pet pet);
 
     /**
      * Add an exercise to the pet.

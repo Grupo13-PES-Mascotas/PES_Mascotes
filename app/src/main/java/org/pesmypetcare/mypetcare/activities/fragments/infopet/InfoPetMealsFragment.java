@@ -83,7 +83,6 @@ public class InfoPetMealsFragment extends Fragment {
         initializeRemoveMealButton();
         initializeIntervalSwitch();
         initializeAddMealButton();
-
         return binding.getRoot();
     }
 

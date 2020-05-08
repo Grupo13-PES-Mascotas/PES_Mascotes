@@ -1,20 +1,21 @@
 package org.pesmypetcare.mypetcare.services;
 
-import org.pesmypetcare.usermanager.clients.GoogleCalendarManagerClient;
 import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
 import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
+import org.pesmypetcare.usermanager.clients.GoogleCalendarManagerClient;
 import org.pesmypetcare.usermanager.clients.pet.FreqWashManagerClient;
 import org.pesmypetcare.usermanager.clients.pet.MealManagerClient;
 import org.pesmypetcare.usermanager.clients.pet.MedicationManagerClient;
 import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
-import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
 import org.pesmypetcare.usermanager.clients.pet.WeightManagerClient;
+import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
 
 public class ServiceLocator {
     private static ServiceLocator instance;
     private UserManagerClient userManagerClient;
     private PetManagerClient petManagerClient;
     private MealManagerClient mealManagerClient;
+    //private WashManagerClient washManagerClient;
     private GoogleCalendarManagerClient googleCalendarManagerClient;
     private GroupManagerClient groupManagerClient;
     private ForumManagerClient forumManagerClient;
@@ -32,6 +33,7 @@ public class ServiceLocator {
         medicationManagerClient = new MedicationManagerClient();
         weightManagerClient = new WeightManagerClient();
         freqWashManagerClient = new FreqWashManagerClient();
+        //washManagerClient = new WashManagerClient();
     }
 
     public static ServiceLocator getInstance() {
@@ -77,4 +79,11 @@ public class ServiceLocator {
     public FreqWashManagerClient getFreqWashManagerClient() {
         return freqWashManagerClient;
     }
+
+    /*
+    public Object getWashManagerClient() {
+        return washManagerClient;
+    }
+
+    */
 }
