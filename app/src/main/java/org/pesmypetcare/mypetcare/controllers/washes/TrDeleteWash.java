@@ -46,7 +46,7 @@ public class TrDeleteWash {
      * Executes the transaction.
      */
     public void execute() {
-        //washManagerService.deleteWash(user, pet, wash);
+        washManagerService.deleteWash(user, pet, wash);
         pet.deleteEvent(wash);
     }
 }
