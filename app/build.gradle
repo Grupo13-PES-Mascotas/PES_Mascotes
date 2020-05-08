@@ -90,6 +90,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
     implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:29625c44c9'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 }
 
 configurations.all {
