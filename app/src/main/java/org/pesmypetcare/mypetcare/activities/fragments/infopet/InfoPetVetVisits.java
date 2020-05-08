@@ -41,12 +41,11 @@ public class InfoPetVetVisits extends Fragment {
     private static final String TIMESEPARATOR = ":";
     private static final int FIRST_TWO_DIGITS = 10;
     private static final String DEFAULT_SECONDS = "00";
-
-    private FragmentInfoPetVetVisitsBinding binding;
-    private Pet pet;
     private static boolean editing;
     private static VetVisit vetVisit;
 
+    private FragmentInfoPetVetVisitsBinding binding;
+    private Pet pet;
     private SwitchMaterial visitSelectorSwitch;
     private boolean isPendentVisits;
     private LinearLayout visitDisplay;

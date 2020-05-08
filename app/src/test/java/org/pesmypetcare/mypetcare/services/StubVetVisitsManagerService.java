@@ -20,9 +20,8 @@ public class StubVetVisitsManagerService implements VetVisitsManagerService {
     private static final String PET1 = "Bichinho";
     private static final String PET2 = "Comandante";
     private static final String SPACE_KOLIN = " : ";
-    public static VetVisit currentVisit;
-    public static int nVetVisit = 3;
     private Map<String, ArrayList<VetVisit>> data;
+    public static int nVetVisit = 3;
 
     public StubVetVisitsManagerService() {
         addStubDefaultData();
@@ -68,7 +67,8 @@ public class StubVetVisitsManagerService implements VetVisitsManagerService {
 
     @Override
     public void updateVetVisitKey(User user, Pet pet, String newDate, DateTime visitDate) {
-        ArrayList<VetVisit> petVisits = Objects.requireNonNull(data.get(user.getUsername() + SPACE_KOLIN + pet.getName()));
+        ArrayList<VetVisit> petVisits = Objects.requireNonNull(data.get(user.getUsername() + SPACE_KOLIN
+            + pet.getName()));
         for (VetVisit visit:petVisits) {
             if (visit.getVisitDate().compareTo(visitDate) == 0) {
                 visit.setVisitDate(DateTime.Builder.buildFullString(newDate));
@@ -78,7 +78,8 @@ public class StubVetVisitsManagerService implements VetVisitsManagerService {
 
     @Override
     public void updateVetVisitBody(User user, Pet pet, VetVisit vetVisit) {
-        ArrayList<VetVisit> petVisits = Objects.requireNonNull(data.get(user.getUsername() + SPACE_KOLIN + pet.getName()));
+        ArrayList<VetVisit> petVisits = Objects.requireNonNull(data.get(user.getUsername() + SPACE_KOLIN
+            + pet.getName()));
         for (VetVisit visit:petVisits) {
             if (visit.getVisitDate().compareTo(vetVisit.getDateTime()) == 0) {
                 Objects.requireNonNull(data.get(user.getUsername() + SPACE_KOLIN + pet.getName())).remove(visit);

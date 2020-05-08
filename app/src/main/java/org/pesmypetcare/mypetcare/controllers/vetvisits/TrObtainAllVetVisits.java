@@ -17,7 +17,7 @@ public class TrObtainAllVetVisits {
     private Pet pet;
     private List<VetVisit> result;
 
-    public TrObtainAllVetVisits (VetVisitsManagerService vetVisitsManagerService) {
+    public TrObtainAllVetVisits(VetVisitsManagerService vetVisitsManagerService) {
         this.vetVisitsManagerService = vetVisitsManagerService;
     }
 
