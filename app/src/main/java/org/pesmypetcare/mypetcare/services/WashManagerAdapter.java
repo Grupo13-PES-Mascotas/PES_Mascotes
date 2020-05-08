@@ -6,6 +6,7 @@ import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -143,7 +144,7 @@ public class WashManagerAdapter implements WashManagerService {
         }
         return result;
          */
-        return null;
+        return new ArrayList<>();
     }
 
 }
