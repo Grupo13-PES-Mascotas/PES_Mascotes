@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -162,6 +163,7 @@ import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
+import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
 
@@ -283,6 +285,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeCurrentUser();
         initializeActivity();
         setUpNavigationImage();
+        LocationUpdater.setContext(this);
+        List<Location> list = getMyLocations();
     }
 
     /**
@@ -1276,6 +1280,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 toast.show();
             }
         }*/
+    }
+
+    public List<Location> getMyLocations() {
+        LocationUpdater.startRoute();
+        List<Location> loc = LocationUpdater.endRoute();
+        System.out.println(loc);
+        return loc;
     }
 
     @Override

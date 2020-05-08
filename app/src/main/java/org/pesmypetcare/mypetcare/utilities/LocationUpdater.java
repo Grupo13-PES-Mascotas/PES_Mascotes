@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,19 +28,25 @@ public class LocationUpdater {
     private static LocationManager locationManager;
 
 
-
     public static void startRoute() {
         listLocation = new ArrayList<>();
         updateLocation();
 
     }
 
-    public static List<Location> endRoute() {
-
-        locationManager.removeUpdates(locationListener);
-        return listLocation;
+    public static void setContext(Context context) {
+        LocationUpdater.context = context;
     }
 
+    public static List<Location> endRoute() {
+        if(locationManager != null) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    locationManager.removeUpdates(locationListener);
+            }
+        }
+        return listLocation;
+    }
 
     static LocationListener locationListener = new LocationListener() {
         @Override
@@ -64,7 +71,6 @@ public class LocationUpdater {
         }
     };
 
-
     private static void updateCoordinates(Location location) {
         if (location != null) {
             listLocation.add(location);
@@ -79,6 +85,7 @@ public class LocationUpdater {
             return;
         }
         locationManager  = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        assert locationManager != null;
         location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         updateCoordinates(location);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 20000, 0, locationListener);
