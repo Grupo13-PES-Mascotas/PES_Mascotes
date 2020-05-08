@@ -5,6 +5,7 @@ import org.pesmypetcare.mypetcare.features.pets.VetVisit;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
     @Override
     public List<VetVisit> findVetVisitsByPet(User user, Pet pet) {
         //Not implemented yet
-        return null;
+        return new ArrayList<>();
     }
 
     @Override

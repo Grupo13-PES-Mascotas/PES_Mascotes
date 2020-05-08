@@ -254,7 +254,7 @@
     <string name="delete_vet_visit">Esborrar visita al veterinari</string>
     <string name="edit_vet_visit_title">Editar visita al veterinari</string>
     <string name="edit_vet_visit_message">Selecciona la data de la visita al veterinari</string>
-    <string name="visit_of_the_day">Visita del dia:</string>
+    <string name="visit_of_the_day">Data de la visita:</string>
     <string name="visit_reason">Degut a:</string>
     <string name="visit_addres">Amb adreça:</string>
 </resources>

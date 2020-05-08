@@ -253,7 +253,7 @@
     <string name="delete_vet_visit">Eliminar visita al veterinario</string>
     <string name="edit_vet_visit_title">Editar visita al veterinario</string>
     <string name="edit_vet_visit_message">Selecciona la fecha de la visita al veterinario</string>
-    <string name="visit_of_the_day">Visita del día:</string>
+    <string name="visit_of_the_day">Día de la visita:</string>
     <string name="visit_reason">Debido a:</string>
     <string name="visit_addres">Con dirección:</string>
 </resources>

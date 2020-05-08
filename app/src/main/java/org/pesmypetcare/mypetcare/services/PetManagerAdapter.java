@@ -76,6 +76,8 @@ public class PetManagerAdapter implements PetManagerService {
             pet.getPathologies(), pet.getRecommendedDailyKiloCalories(), pet.getWashFrequency());*/
 
         org.pesmypetcare.usermanager.datacontainers.pet.Pet registerPet = getRegisterPet(pet);
+        System.out.println("https://pes-my-pet-care.herokuapp.com/pet/" + user.getUsername() + "/" + pet.getName());
+        System.out.println("Pet Body " + registerPet.getBody());
 
         try {
             ServiceLocator.getInstance().getPetManagerClient()

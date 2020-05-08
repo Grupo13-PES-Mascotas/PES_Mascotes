@@ -252,7 +252,7 @@
     <string name="delete_vet_visit">Delete veterinary visit</string>
     <string name="edit_vet_visit_title">Edit veterinary visit</string>
     <string name="edit_vet_visit_message">Introduce the data of the veterinary visit</string>
-    <string name="visit_of_the_day">Visit of the day:</string>
+    <string name="visit_of_the_day">Visit datetime:</string>
     <string name="visit_reason">Due to:</string>
     <string name="visit_addres">With address:</string>
 
