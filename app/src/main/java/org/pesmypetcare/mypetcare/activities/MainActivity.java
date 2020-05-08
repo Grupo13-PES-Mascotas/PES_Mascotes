@@ -1589,6 +1589,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trUpdateVetVisit.execute();
         } catch (NotPetOwnerException e) {
+
+        }
+    }
           
     public void addExercise(Pet pet, String exerciseName, String exerciseDescription, DateTime startExerciseDateTime,
                             DateTime endExerciseDateTime) {
@@ -1629,6 +1632,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trDeleteVetVisit.execute();
         } catch (NotPetOwnerException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void updateExercise(Pet pet, String exerciseName, String exerciseDescription, DateTime originalDateTime,
                                DateTime startExerciseDateTime, DateTime endExerciseDateTime) {
