@@ -11,6 +11,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 public interface InfoPetCommunication {
 
@@ -165,4 +166,32 @@ public interface InfoPetCommunication {
      */
     void obtainAllPetWashes(Pet pet);
 
+    /**
+     * Add an exercise to the pet.
+     * @param pet The pet
+     * @param exerciseName The exercise name
+     * @param exerciseDescription The exercise description
+     * @param startExerciseDateTime The exercise start DateTime
+     * @param endExerciseDateTime The exercise end DateTime
+     */
+    void addExercise(Pet pet, String exerciseName, String exerciseDescription, DateTime startExerciseDateTime,
+                     DateTime endExerciseDateTime);
+
+    /**
+     * Remove an exercise to the pet.
+     * @param pet The pet
+     * @param dateTime The start
+     */
+    void removeExercise(Pet pet, DateTime dateTime);
+
+    /**
+     * Update an exercise of the pet.
+     * @param pet The pet
+     * @param txtExerciseName The exercise name
+     * @param txtDescription The exercise description
+     * @param startExerciseDateTime The exercise start DateTime
+     * @param endExerciseDateTime The exercise end DateTime
+     */
+    void updateExercise(Pet pet, String txtExerciseName, String txtDescription, DateTime originalStartDateTime,
+                        DateTime startExerciseDateTime, DateTime endExerciseDateTime);
 }

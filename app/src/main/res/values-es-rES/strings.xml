@@ -255,4 +255,23 @@
     <string name="pet_info_medical_profile">Perfil médico</string>
     <string name="pet_info_medication">Medicación</string>
     <string name="pet_info_vet_visits">Visitas al veterinario</string>
+    <string name="add_exercise_title">Añadir ejercicio</string>
+    <string name="add_exercice_message">Introduzca la información del ejercicio</string>
+    <string name="exercise_name">Nombre del ejercicio</string>
+    <string name="exercise_description">Descripción del ejercicio (opcional)</string>
+    <string name="exercise_date">Fecha del ejercicio</string>
+    <string name="exercise_start_hour">Hora de inicio del ejercicio</string>
+    <string name="exercise_end_hour">Fecha de finalizaciñon del ejercicio</string>
+    <string name="delete_exercise">Eliminar el ejercicio</string>
+    <string name="error_empty_input_field">Este campo no puede estar vacío</string>
+    <string name="entry_view_exercise_description">Descripción</string>
+    <string name="entry_view_exercise_date">Fecha</string>
+    <string name="entry_view_exercise_start_hour">Hora de inicio</string>
+    <string name="entry_view_exercise_end_hour">Hora de finalización</string>
+    <string name="entry_view_exercise_duration">Duración</string>
+    <string name="update_exercise">Actualizar ejercicio</string>
+    <string name="update_exercise_title">Actualizar ejercicio</string>
+    <string name="update_exercice_message">Actualiza la información del ejercicio</string>
+    <string name="error_invalid_period">La fecha de inicio tiene que ser anterior a la de finalización</string>
+
 </resources>
