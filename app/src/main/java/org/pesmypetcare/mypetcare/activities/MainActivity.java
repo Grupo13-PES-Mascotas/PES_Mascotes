@@ -1278,7 +1278,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }*/
     }
 
-
     @Override
     public void makeZoomImage(Drawable drawable) {
         floatingActionButton.hide();

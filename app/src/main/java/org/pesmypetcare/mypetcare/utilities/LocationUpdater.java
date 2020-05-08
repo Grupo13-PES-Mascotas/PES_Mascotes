@@ -11,7 +11,8 @@ import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.maps.GoogleMap;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -21,20 +22,26 @@ import com.google.android.gms.maps.GoogleMap;
 
 public class LocationUpdater {
     private static Context context;
-    private GoogleMap map;
-    private Location location;
-    public double latitude;
-    public double altitude;
+    private static Location location;
+    private static List<Location> listLocation;
+    private static LocationManager locationManager;
 
 
-    public void onCreate() {
 
+    public static void startRoute() {
+        listLocation = new ArrayList<>();
         updateLocation();
 
     }
 
+    public static List<Location> endRoute() {
 
-    LocationListener locationListener = new LocationListener() {
+        locationManager.removeUpdates(locationListener);
+        return listLocation;
+    }
+
+
+    static LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
 
@@ -58,17 +65,20 @@ public class LocationUpdater {
     };
 
 
-    private void updateCoordinates(Location location) {
+    private static void updateCoordinates(Location location) {
         if (location != null) {
-            latitude = location.getLatitude();
-            altitude = location.getAltitude();
+            listLocation.add(location);
         }
     }
-    private void updateLocation() {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+    private static void updateLocation() {
+        if (ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        LocationManager locationManager  = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        locationManager  = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         updateCoordinates(location);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 20000, 0, locationListener);
