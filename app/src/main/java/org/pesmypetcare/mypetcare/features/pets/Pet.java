@@ -172,7 +172,7 @@ public class Pet {
      * @return The birth date of the pet
      */
     public String getBirthDate() {
-        return birthDate.getYear() + "-" + birthDate.getMonth() + "-" + birthDate.getDay();
+        return birthDate.toString();
     }
 
     /**
