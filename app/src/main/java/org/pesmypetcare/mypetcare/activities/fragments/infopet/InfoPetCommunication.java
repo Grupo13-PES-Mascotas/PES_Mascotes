@@ -11,6 +11,8 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
+import java.util.List;
+
 public interface InfoPetCommunication {
 
     /**
@@ -163,4 +165,10 @@ public interface InfoPetCommunication {
      */
     void updateExercise(Pet pet, String txtExerciseName, String txtDescription, DateTime originalStartDateTime,
                         DateTime startExerciseDateTime, DateTime endExerciseDateTime);
+
+    /**
+     * Get the actual user pets.
+     * @return The user pets
+     */
+    List<Pet> getUserPets();
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.jetbrains.annotations.Nullable;
@@ -25,8 +27,10 @@ import org.pesmypetcare.mypetcare.activities.views.entryview.InvalidBuildParamet
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetExerciseBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
+import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
+import java.util.List;
 import java.util.Objects;
 
 public class InfoPetExercise extends Fragment {
@@ -68,10 +72,38 @@ public class InfoPetExercise extends Fragment {
         showExercises();
 
         binding.walkingButton.setOnClickListener(v -> {
-
+            AlertDialog addWalkDialog = createAddWalkDialog();
+            addWalkDialog.show();
         });
 
         return binding.getRoot();
+    }
+
+    private AlertDialog createAddWalkDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
+        builder.setTitle(R.string.start_walking_title);
+        builder.setMessage(R.string.start_walking_message);
+
+        View startWalkingLayout = getLayoutInflater().inflate(R.layout.start_walking, null);
+        LinearLayout checkBoxLayout = startWalkingLayout.findViewById(R.id.checkboxLayout);
+        builder.setView(startWalkingLayout);
+
+        List<Pet> userPets = InfoPetFragment.getCommunication().getUserPets();
+
+        for (Pet pet : userPets) {
+            MaterialCheckBox checkBox = new MaterialCheckBox(context, null);
+            checkBox.setText(pet.getName());
+            checkBox.setChecked(pet.equals(InfoPetFragment.getPet()));
+
+            checkBoxLayout.addView(checkBox);
+        }
+
+        Space space = createSpace();
+        checkBoxLayout.addView(space);
+
+        AlertDialog dialog = builder.create();
+
+        return dialog;
     }
 
     /**
