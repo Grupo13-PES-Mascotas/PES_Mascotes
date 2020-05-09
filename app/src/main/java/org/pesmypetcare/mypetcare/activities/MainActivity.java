@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -378,20 +379,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             obtainAllPetMedications(pet);
         }
 
-        Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
+        askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
         Thread petsImagesThread = createPetsImagesThread();
         Thread updatePetImagesThread = createUpdatePetImagesThread(petsImagesThread);
 
-        askPermissionThread.start();
-
-        try {
-            askPermissionThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         updatePetImagesThread.start();
-
         setUpNavigationHeader();
     }
 
@@ -1578,15 +1571,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     private void galleryImageZoom(@Nullable Intent data) {
         String imagePath = getImagePath(data);
-        Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
-
-        askPermissionThread.start();
-
-        try {
-            askPermissionThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
         Drawable drawable = new BitmapDrawable(getResources(), bitmap);
@@ -1601,6 +1586,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         if (ImageZoomFragment.isMainActivity()) {
             updateUserProfileImage(user.getUserProfileImage());
+        }
+    }
+
+    @Override
+    public void askForPermission(String permission) {
+        Thread askPermissionThread = ThreadFactory.createGenericAskPermissionThread(this, permission);
+        askPermissionThread.start();
+
+        try {
+            askPermissionThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

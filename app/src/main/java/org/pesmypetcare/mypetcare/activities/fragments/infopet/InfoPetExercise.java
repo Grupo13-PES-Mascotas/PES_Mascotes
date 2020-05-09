@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -72,6 +73,8 @@ public class InfoPetExercise extends Fragment {
         showExercises();
 
         binding.walkingButton.setOnClickListener(v -> {
+            InfoPetFragment.getCommunication().askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            InfoPetFragment.getCommunication().askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
             AlertDialog addWalkDialog = createAddWalkDialog();
             addWalkDialog.show();
         });

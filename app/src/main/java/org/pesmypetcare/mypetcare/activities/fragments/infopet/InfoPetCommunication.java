@@ -171,4 +171,10 @@ public interface InfoPetCommunication {
      * @return The user pets
      */
     List<Pet> getUserPets();
+
+    /**
+     * Asks for a permission.
+     * @param permission The permission to ask for
+     */
+    void askForPermission(String permission);
 }
