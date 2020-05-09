@@ -27,7 +27,7 @@
     </ScrollView>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/editExerciseButton"
+        android:id="@+id/startWalkingWithPetsButton"
         style="@style/rounded_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

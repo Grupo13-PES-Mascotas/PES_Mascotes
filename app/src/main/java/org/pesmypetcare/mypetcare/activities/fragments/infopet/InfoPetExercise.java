@@ -31,6 +31,7 @@ import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -105,6 +106,27 @@ public class InfoPetExercise extends Fragment {
         checkBoxLayout.addView(space);
 
         AlertDialog dialog = builder.create();
+
+        MaterialButton btnStartWalking = startWalkingLayout.findViewById(R.id.startWalkingWithPetsButton);
+        btnStartWalking.setOnClickListener(v -> {
+            List<String> walkingPetNames = new ArrayList<>();
+
+            for (int actual = 0; actual < checkBoxLayout.getChildCount() - 1; ++actual) {
+                MaterialCheckBox checkBox = (MaterialCheckBox) checkBoxLayout.getChildAt(actual);
+
+                if (checkBox.isChecked()) {
+                    walkingPetNames.add(checkBox.getText().toString());
+                }
+            }
+
+            if (walkingPetNames.size() == 0) {
+                Toast toast = Toast.makeText(context, R.string.error_no_pets_selected, Toast.LENGTH_LONG);
+                toast.show();
+            } else {
+                InfoPetFragment.getCommunication().startWalking(walkingPetNames);
+                dialog.dismiss();
+            }
+        });
 
         return dialog;
     }

@@ -264,6 +264,7 @@
     <string name="error_invalid_period">La data d\'inici ha de ser prèvia a la de finalització</string>
     <string name="start_walking_title">Iniciar passeig</string>
     <string name="start_walking_message">Selecciona les mascotes amb les quals vols sortir a passejar</string>
+    <string name="error_no_pets_selected">Com a mínim s\'ha de seleccionar una mascota</string>
     <string name="end_walking">Finalitzar passeig</string>
 
 </resources>

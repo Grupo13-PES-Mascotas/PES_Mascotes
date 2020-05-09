@@ -263,6 +263,7 @@
     <string name="error_invalid_period">La fecha de inicio tiene que ser anterior a la de finalización</string>
     <string name="start_walking_title">Iniciar paseo</string>
     <string name="start_walking_message">Selecciona las mascotas con las cuales quieres salir a pasear</string>
+    <string name="error_no_pets_selected">Como mínimo hay que seleccionar una mascota</string>
     <string name="end_walking">Finalizar paseo</string>
 
 </resources>

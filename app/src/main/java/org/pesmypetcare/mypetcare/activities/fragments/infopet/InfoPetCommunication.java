@@ -177,4 +177,10 @@ public interface InfoPetCommunication {
      * @param permission The permission to ask for
      */
     void askForPermission(String permission);
+
+    /**
+     * Start the walking of the pets.
+     * @param walkingPetNames The names of the pets that go for a walk
+     */
+    void startWalking(List<String> walkingPetNames);
 }

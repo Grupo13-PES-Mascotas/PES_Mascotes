@@ -1601,6 +1601,27 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
     }
 
+    @Override
+    public void startWalking(List<String> walkingPetNames) {
+        addPetsToWalkRegister(walkingPetNames);
+        /*
+        Access to the GPS
+        The points should be stored in shared preferences for persistence. However, start assuming that everything
+        is in local memory, although the previous call.
+         */
+    }
+
+    private void addPetsToWalkRegister(List<String> walkingPetNames) {
+        SharedPreferences sharedPreferences = getSharedPreferences("Walking", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        for (String petName : walkingPetNames) {
+            editor.putBoolean(petName, true);
+        }
+
+        editor.apply();
+    }
+
     /**
      * Updates user profile image.
      * @param bitmap The bitmap of the profile image
