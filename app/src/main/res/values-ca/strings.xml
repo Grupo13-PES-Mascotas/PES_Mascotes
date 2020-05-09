@@ -262,5 +262,7 @@
     <string name="update_exercise_title">Actualitzar l\'exercici</string>
     <string name="update_exercice_message">Actualitza la informació de l\'exercici</string>
     <string name="error_invalid_period">La data d\'inici ha de ser prèvia a la de finalització</string>
+    <string name="start_walking">Iniciar passeig</string>
+    <string name="end_walking">Finalitzar passeig</string>
 
 </resources>

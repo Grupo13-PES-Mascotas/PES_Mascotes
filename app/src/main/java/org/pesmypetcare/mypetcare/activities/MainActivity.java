@@ -1284,8 +1284,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     public List<Location> getMyLocations() {
         LocationUpdater.startRoute();
+        /*try {
+            TimeUnit.SECONDS.sleep(60);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
         List<Location> loc = LocationUpdater.endRoute();
-        System.out.println(loc);
+        System.out.println("LOC " + loc);
         return loc;
     }
 

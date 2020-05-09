@@ -261,5 +261,7 @@
     <string name="update_exercise_title">Actualizar ejercicio</string>
     <string name="update_exercice_message">Actualiza la información del ejercicio</string>
     <string name="error_invalid_period">La fecha de inicio tiene que ser anterior a la de finalización</string>
+    <string name="start_walking">Iniciar paseo</string>
+    <string name="end_walking">Finalizar paseo</string>
 
 </resources>

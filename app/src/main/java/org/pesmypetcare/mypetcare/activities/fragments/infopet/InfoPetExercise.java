@@ -67,6 +67,10 @@ public class InfoPetExercise extends Fragment {
         resources = getResources();
         showExercises();
 
+        binding.walkingButton.setOnClickListener(v -> {
+
+        });
+
         return binding.getRoot();
     }
 

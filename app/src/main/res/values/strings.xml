@@ -260,6 +260,8 @@
     <string name="update_exercise_title">Update exercise</string>
     <string name="update_exercice_message">Update the data of the exercise</string>
     <string name="error_invalid_period">The start must be previous to the end one</string>
+    <string name="start_walking">Start walking</string>
+    <string name="end_walking">End walking</string>
 
 
     <!-- The next two strings cannot be translated into any other language -->
