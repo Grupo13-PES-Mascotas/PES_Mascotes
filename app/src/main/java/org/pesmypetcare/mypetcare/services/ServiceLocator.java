@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
+import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
+import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.FreqWashManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.GoogleCalendarManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.MealManagerClient;
@@ -15,8 +17,8 @@ public class ServiceLocator {
     //private WashManagerClient washManagerClient;
     private GoogleCalendarManagerClient googleCalendarManagerClient;
     private PetCollectionsManagerClient petCollectionsManagerClient;
-    //private GroupManagerClient groupManagerClient;
-    //private ForumManagerClient forumManagerClient;
+    private GroupManagerClient groupManagerClient;
+    private ForumManagerClient forumManagerClient;
     //private MedicationManagerClient medicationManagerClient;
     //private WeightManagerClient weightManagerClient;
     private FreqWashManagerClient freqWashManagerClient;
@@ -26,8 +28,8 @@ public class ServiceLocator {
         petManagerClient = new PetManagerClient();
         mealManagerClient = new MealManagerClient();
         googleCalendarManagerClient = new GoogleCalendarManagerClient();
-        //groupManagerClient = new GroupManagerClient();
-        //forumManagerClient = new ForumManagerClient();
+        groupManagerClient = new GroupManagerClient();
+        forumManagerClient = new ForumManagerClient();
         //medicationManagerClient = new MedicationManagerClient();
         //weightManagerClient = new WeightManagerClient();
         freqWashManagerClient = new FreqWashManagerClient();
@@ -59,14 +61,14 @@ public class ServiceLocator {
         return googleCalendarManagerClient;
     }
     
-    /*public GroupManagerClient getGroupManagerClient() {
+    public GroupManagerClient getGroupManagerClient() {
         return groupManagerClient;
     }
 
     public ForumManagerClient getForumManagerClient() {
         return forumManagerClient;
     }
-    
+    /*
     public MedicationManagerClient getMedicationManagerClient() {
         return medicationManagerClient;
     }

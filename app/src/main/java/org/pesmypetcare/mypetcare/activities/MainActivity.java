@@ -1102,8 +1102,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void addNewPet(Bundle petInfo) {
+        System.out.println("Sew"+petInfo.getString("petPathologies"));
         Pet pet = new Pet(petInfo);
-
+        System.out.println(pet.getBirthDate());
         trRegisterNewPet.setUser(user);
         trRegisterNewPet.setPet(pet);
 
@@ -1554,7 +1555,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trAddExercise.execute();
-        } catch (NotPetOwnerException | InvalidPeriodException e) {
+        } catch (NotPetOwnerException | InvalidPeriodException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
@@ -1569,7 +1570,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trDeleteExercise.execute();
-        } catch (NotPetOwnerException | NotExistingExerciseException e) {
+        } catch (NotPetOwnerException | NotExistingExerciseException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -1587,7 +1588,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trUpdateExercise.execute();
-        } catch (NotPetOwnerException | InvalidPeriodException | NotExistingExerciseException e) {
+        } catch (NotPetOwnerException | InvalidPeriodException | NotExistingExerciseException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }

@@ -78,7 +78,6 @@ public class PetManagerAdapter implements PetManagerService {
         /*ServiceLocator.getInstance().getPetManagerClient().createPet(user.getToken(), user.getUsername(),
             pet.getName(), pet.getGender().toString(), pet.getBreed(), pet.getBirthDate(), pet.getWeight(),
             pet.getPathologies(), pet.getRecommendedDailyKiloCalories(), pet.getWashFrequency());*/
-
         org.pesmypetcare.usermanagerlib.datacontainers.Pet registerPet = getRegisterPet(pet);
 
         try {
@@ -102,7 +101,8 @@ public class PetManagerAdapter implements PetManagerService {
         PetData petData = new PetData();
 
         registerPet.setName(pet.getName());
-        petData.setBirth(pet.getBirthDate());
+        System.out.println("cumplep"+pet.getBirthDate());
+        petData.setBirth("2020-05-22T00:00:00");
         petData.setBreed(pet.getBreed());
         petData.setGender(pet.getGender());
         petData.setPathologies(pet.getPathologies());

@@ -1,5 +1,9 @@
 package org.pesmypetcare.mypetcare.services;
 
+import org.pesmypetcare.communitymanager.datacontainers.ForumData;
+import org.pesmypetcare.communitymanager.datacontainers.GroupData;
+import org.pesmypetcare.communitymanager.datacontainers.MessageData;
+import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;

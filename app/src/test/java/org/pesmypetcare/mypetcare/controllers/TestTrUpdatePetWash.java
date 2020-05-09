@@ -9,7 +9,7 @@ import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubWashManagerService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import static org.junit.Assert.assertEquals;
 
@@ -50,7 +50,7 @@ public class TestTrUpdatePetWash {
 
     @Test
     public void shouldUpdateWashDate() throws WashAlreadyExistingException,
-            org.pesmypetcare.usermanager.exceptions.InvalidFormatException {
+            org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException {
         trNewPetWash.setUser(user);
         trNewPetWash.setPet(linux);
         trNewPetWash.setWash(originalWash);
@@ -67,7 +67,7 @@ public class TestTrUpdatePetWash {
         DateTime date = null;
         try {
             date = DateTime.Builder.build(2020, 2, 26, 15, 23, 56);
-        } catch (org.pesmypetcare.usermanager.exceptions.InvalidFormatException e) {
+        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
             e.printStackTrace();
         }
         assert date != null;
