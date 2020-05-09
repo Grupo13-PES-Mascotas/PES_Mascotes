@@ -1,14 +1,11 @@
 package org.pesmypetcare.mypetcare.services;
 
-import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
-import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
-import org.pesmypetcare.usermanager.clients.GoogleCalendarManagerClient;
-import org.pesmypetcare.usermanager.clients.pet.FreqWashManagerClient;
-import org.pesmypetcare.usermanager.clients.pet.MealManagerClient;
-import org.pesmypetcare.usermanager.clients.pet.MedicationManagerClient;
-import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
-import org.pesmypetcare.usermanager.clients.pet.WeightManagerClient;
-import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
+import org.pesmypetcare.usermanagerlib.clients.FreqWashManagerClient;
+import org.pesmypetcare.usermanagerlib.clients.GoogleCalendarManagerClient;
+import org.pesmypetcare.usermanagerlib.clients.MealManagerClient;
+import org.pesmypetcare.usermanagerlib.clients.PetCollectionsManagerClient;
+import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
+import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
 
 public class ServiceLocator {
     private static ServiceLocator instance;
@@ -17,10 +14,11 @@ public class ServiceLocator {
     private MealManagerClient mealManagerClient;
     //private WashManagerClient washManagerClient;
     private GoogleCalendarManagerClient googleCalendarManagerClient;
-    private GroupManagerClient groupManagerClient;
-    private ForumManagerClient forumManagerClient;
-    private MedicationManagerClient medicationManagerClient;
-    private WeightManagerClient weightManagerClient;
+    private PetCollectionsManagerClient petCollectionsManagerClient;
+    //private GroupManagerClient groupManagerClient;
+    //private ForumManagerClient forumManagerClient;
+    //private MedicationManagerClient medicationManagerClient;
+    //private WeightManagerClient weightManagerClient;
     private FreqWashManagerClient freqWashManagerClient;
 
     private ServiceLocator() {
@@ -28,12 +26,13 @@ public class ServiceLocator {
         petManagerClient = new PetManagerClient();
         mealManagerClient = new MealManagerClient();
         googleCalendarManagerClient = new GoogleCalendarManagerClient();
-        groupManagerClient = new GroupManagerClient();
-        forumManagerClient = new ForumManagerClient();
-        medicationManagerClient = new MedicationManagerClient();
-        weightManagerClient = new WeightManagerClient();
+        //groupManagerClient = new GroupManagerClient();
+        //forumManagerClient = new ForumManagerClient();
+        //medicationManagerClient = new MedicationManagerClient();
+        //weightManagerClient = new WeightManagerClient();
         freqWashManagerClient = new FreqWashManagerClient();
         //washManagerClient = new WashManagerClient();
+        petCollectionsManagerClient = new PetCollectionsManagerClient();
     }
 
     public static ServiceLocator getInstance() {
@@ -60,7 +59,7 @@ public class ServiceLocator {
         return googleCalendarManagerClient;
     }
     
-    public GroupManagerClient getGroupManagerClient() {
+    /*public GroupManagerClient getGroupManagerClient() {
         return groupManagerClient;
     }
 
@@ -76,8 +75,14 @@ public class ServiceLocator {
         return weightManagerClient;
     }
 
+     */
+
     public FreqWashManagerClient getFreqWashManagerClient() {
         return freqWashManagerClient;
+    }
+
+    public PetCollectionsManagerClient getPetCollectionsManagerClient() {
+        return petCollectionsManagerClient;
     }
 
     /*

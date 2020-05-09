@@ -1,9 +1,5 @@
 package org.pesmypetcare.mypetcare.services;
 
-import org.pesmypetcare.communitymanager.datacontainers.ForumData;
-import org.pesmypetcare.communitymanager.datacontainers.GroupData;
-import org.pesmypetcare.communitymanager.datacontainers.MessageData;
-import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
@@ -11,7 +7,7 @@ import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundExcepti
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.List;
 import java.util.Map;

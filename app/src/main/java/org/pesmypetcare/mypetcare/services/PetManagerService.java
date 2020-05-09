@@ -8,7 +8,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.List;
 import java.util.Map;
@@ -71,14 +71,14 @@ public interface PetManagerService {
      * @param pet The pet
      * @param event The event
      */
-    void registerNewEvent(Pet pet, Event event);
+    void registerNewEvent(Pet pet, Event event) throws ExecutionException, InterruptedException;
 
     /**
      * Delete a event from a pet.
      * @param pet The pet
      * @param event The event
      */
-    void deleteEvent(Pet pet, Event event);
+    void deleteEvent(Pet pet, Event event) throws ExecutionException, InterruptedException;
 
     /**
      * Update the weight for a pet.
@@ -122,7 +122,7 @@ public interface PetManagerService {
      * @param pet The pet
      * @param exercise The exercise
      */
-    void addExercise(User user, Pet pet, Exercise exercise);
+    void addExercise(User user, Pet pet, Exercise exercise) throws ExecutionException, InterruptedException;
 
     /**
      * Delete an exercise of the pet.
@@ -130,7 +130,7 @@ public interface PetManagerService {
      * @param pet The pet
      * @param dateTime The DateTime of the exercise
      */
-    void deleteExercise(User user, Pet pet, DateTime dateTime);
+    void deleteExercise(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException;
 
     /**
      * Update the exercise of the pet.
@@ -139,5 +139,5 @@ public interface PetManagerService {
      * @param originalDateTime The original DateTime
      * @param exercise The exercise
      */
-    void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise);
+    void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise) throws ExecutionException, InterruptedException;
 }

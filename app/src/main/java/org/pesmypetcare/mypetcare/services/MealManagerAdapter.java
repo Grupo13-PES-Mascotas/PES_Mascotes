@@ -3,10 +3,10 @@ package org.pesmypetcare.mypetcare.services;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanager.clients.pet.MealManagerClient;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
-import org.pesmypetcare.usermanager.datacontainers.pet.Meal;
-import org.pesmypetcare.usermanager.datacontainers.pet.MealData;
+import org.pesmypetcare.usermanagerlib.clients.MealManagerClient;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.Meal;
+import org.pesmypetcare.usermanagerlib.datacontainers.MealData;
 
 import java.util.ArrayList;
 import java.util.List;

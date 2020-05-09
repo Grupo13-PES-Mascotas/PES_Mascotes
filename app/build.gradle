@@ -18,7 +18,7 @@ android {
         }
     }
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "org.pesmypetcare.mypetcare"
@@ -89,7 +89,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.4.1'
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
-    implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:29625c44c9'
+    implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:3f2efd1de5'
 }
 
 configurations.all {
