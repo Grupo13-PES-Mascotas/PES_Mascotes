@@ -126,7 +126,7 @@ public class RegisterPetFragment extends Fragment {
             materialDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
 
         materialDatePicker.addOnPositiveButtonClickListener(selection -> {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-d");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(Long.parseLong(selection.toString()));
             String formattedDate = simpleDateFormat.format(calendar.getTime());

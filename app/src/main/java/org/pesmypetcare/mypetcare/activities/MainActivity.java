@@ -1102,9 +1102,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void addNewPet(Bundle petInfo) {
-        System.out.println("Sew"+petInfo.getString("petPathologies"));
         Pet pet = new Pet(petInfo);
-        System.out.println(pet.getBirthDate());
         trRegisterNewPet.setUser(user);
         trRegisterNewPet.setPet(pet);
 

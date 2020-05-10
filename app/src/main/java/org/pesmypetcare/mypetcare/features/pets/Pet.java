@@ -50,11 +50,10 @@ public class Pet {
     public Pet(Bundle petInfo) {
         this.name = petInfo.getString(BUNDLE_NAME);
         this.breed = petInfo.getString(BUNDLE_BREED);
-        this.birthDate = DateTime.Builder.buildDateString(Objects.requireNonNull(
-                Objects.requireNonNull(petInfo.getString(BUNDLE_BIRTH_DATE)).replace(':', '-')));
+        this.birthDate = DateTime.Builder.buildDateString(Objects.requireNonNull(petInfo.getString(BUNDLE_BIRTH_DATE)));
+        initializeHealthInfo(petInfo);
         this.events = new ArrayList<>();
         this.periodEvents = new ArrayList<>();
-        this.healthInfo.setPathologies(petInfo.getString(BUNDLE_PATHOLOGIES));
 
         if (isMale(petInfo)) {
             this.gender = GenderType.Male;
@@ -72,7 +71,6 @@ public class Pet {
         initializeHealthInfo(petInfo);
         this.events = new ArrayList<>();
         this.periodEvents = new ArrayList<>();
-        this.healthInfo.setPathologies(petInfo.getString(BUNDLE_PATHOLOGIES));
 
         if (isMale(petInfo)) {
             this.gender = GenderType.Male;
@@ -174,7 +172,7 @@ public class Pet {
      * @return The birth date of the pet
      */
     public String getBirthDate() {
-        return birthDate.getYear() + "-" + birthDate.getMonth() + "-" + birthDate.getDay();
+        return birthDate.toString();
     }
 
     /**
