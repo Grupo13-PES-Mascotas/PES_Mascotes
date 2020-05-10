@@ -270,5 +270,6 @@
     <string name="walking_description">Descripción del paseo (opcional)</string>
     <string name="cancel_walking">Cancelar paseo</string>
     <string name="error_missing_start_date_time">Falta la fecha y hora de inicio</string>
+    <string name="exercise_walking">Paseo</string>
 
 </resources>

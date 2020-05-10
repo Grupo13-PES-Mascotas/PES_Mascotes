@@ -1672,7 +1672,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                          DateTime endDateTime) {
         trAddWalk.setUser(user);
         trAddWalk.setPets(pets);
-        trAddWalk.setName(name);
+        trAddWalk.setName(getString(R.string.exercise_walking) + " | " + name);
         trAddWalk.setDescription(description);
         trAddWalk.setStartDateTime(startDateTime);
         trAddWalk.setEndDateTime(endDateTime);

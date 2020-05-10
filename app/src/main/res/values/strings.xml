@@ -269,6 +269,7 @@
     <string name="walking_description">Walking description (optional)</string>
     <string name="cancel_walking">Cancel walk</string>
     <string name="error_missing_start_date_time">Missing start date time</string>
+    <string name="exercise_walking">Walking</string>
 
 
     <!-- The next two strings cannot be translated into any other language -->
