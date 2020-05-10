@@ -17,7 +17,7 @@ public class ImageManager {
     public static final String PET_PROFILE_IMAGES_PATH = "petProfileImages";
     public static final String USER_PROFILE_IMAGES_PATH = "userProfileImages";
     private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath()
-        + File.separator + "MyPetCare";
+            + File.separator + "MyPetCare";
     private static final String EXTENSION = ".jpg";
     private static final int QUALITY = 100;
 

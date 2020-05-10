@@ -13,7 +13,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -203,6 +202,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public static final String TAG_REGEX = "^[a-zA-Z0-9,]*$";
     private static final String WALKING_PREFERENCES = "Walking";
     private static final String START_WALKING_DATE_TIME = "startWalkingDateTime";
+    public static final String ACTUAL_WALK = "ActualWalk";
+    public static final int LAT = 0;
+    public static final int LNG = 1;
 
     private static boolean enableLoginActivity = true;
     private static FloatingActionButton floatingActionButton;
@@ -218,6 +220,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static int notificationId;
     private static int requestCode;
     private static FragmentManager fragmentManager;
+    private static SharedPreferences walkingSharedPreferences;
+    private static Context context;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -269,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrUpdateExercise trUpdateExercise;
     private TrAddWalk trAddWalk;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
@@ -278,10 +283,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         resources = getResources();
 
         sharedpreferences = getSharedPreferences("GoogleCalendar", Context.MODE_PRIVATE);
+        walkingSharedPreferences = getSharedPreferences(ACTUAL_WALK, Context.MODE_PRIVATE);
 
         notificationId = 0;
         requestCode = 0;
         fragmentManager = getSupportFragmentManager();
+
+        context = this;
 
         makeLogin();
         initializeControllers();
@@ -291,8 +299,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeCurrentUser();
         initializeActivity();
         setUpNavigationImage();
+
+        askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
         LocationUpdater.setContext(this);
-        List<Location> list = getMyLocations();
+
+        SharedPreferences.Editor editor = walkingSharedPreferences.edit();
+
+        for (Map.Entry<String, ?> entry : walkingSharedPreferences.getAll().entrySet()) {
+            editor.remove(entry.getKey());
+        }
+
+        editor.apply();
+        getMyLocations();
 
         // Uncomment the following statements to remove all the entries for walking that are stored in SharedPreferences
         /*SharedPreferences walkingSharedPreferences = getSharedPreferences(WALKING_PREFERENCES, Context.MODE_PRIVATE);
@@ -310,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Initializes the current user.
      */
     private void initializeCurrentUser() {
-        if (mAuth.getCurrentUser() != null) {
+        if (enableLoginActivity && mAuth.getCurrentUser() != null) {
             try {
                 initializeUser();
                 refreshGoogleCalendarToken();
@@ -403,6 +423,16 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         updatePetImagesThread.start();
         setUpNavigationHeader();
     }
+
+    public static void updateLocation(double latitude, double longitude) {
+        SharedPreferences.Editor editor = walkingSharedPreferences.edit();
+        String username = user.getUsername();
+        int index = walkingSharedPreferences.getInt(username, 0);
+        editor.putString(username + "_" + index, latitude + " " + longitude);
+        editor.putInt(username, index + 1);
+        editor.apply();
+    }
+
 
     /**
      * Create the update pet images thread.
@@ -712,6 +742,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                     toast.show();
                 }
             }
+
         });
     }
 
@@ -1292,17 +1323,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }*/
     }
 
-    public List<Location> getMyLocations() {
+    public void getMyLocations() {
         LocationUpdater.startRoute();
-        /*try {
-            TimeUnit.SECONDS.sleep(60);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-        List<Location> loc = LocationUpdater.endRoute();
-        System.out.println("LOC " + loc);
-        return loc;
     }
+
 
     @Override
     public void makeZoomImage(Drawable drawable) {
@@ -1621,13 +1645,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void startWalk(List<String> walkingPetNames) {
         addPetsToWalkRegister(walkingPetNames);
-        /*
-        Access to the GPS
-        The points should be stored in shared preferences for persistence. However, start assuming that everything
-        is in local memory, although the previous call. When you have tested that you can access the GPS to get
-        all the points, you should migrate your storage method to SharedPreferences since we need to store the values
-        even if the application is closed.
-         */
+        LocationUpdater.startRoute();
     }
 
     @Override
@@ -1690,13 +1708,22 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @return The coordinates of the walk
      */
     private List<LatLng> getCoordinates() {
-        /*
-        Get the coordinates of the walk
-        This method should read from SharedPreferences in the way you have decided to get the coordinates of the
-        walking. The return type is LatLng, which has a constructor that accepts as parameters the latitude and
-        longitude as double.
-         */
-        return new ArrayList<>();
+
+        List<LatLng> list = new ArrayList<>();
+        LocationUpdater.endRoute();
+        SharedPreferences.Editor editor = walkingSharedPreferences.edit();
+        int size = walkingSharedPreferences.getInt(user.getUsername(), 0);
+        for(int actual = 0; actual < size; actual++) {
+            String pos = walkingSharedPreferences.getString(user.getUsername() + "_" + actual, "");
+            editor.remove(user.getUsername() + "_" + actual);
+            String[] splitPos = pos.split(" ");
+            LatLng latLng = new LatLng(Double.parseDouble(splitPos[LAT]), Double.parseDouble(splitPos[LNG]));
+            list.add(latLng);
+        }
+        editor.remove(user.getUsername());
+        editor.apply();
+        return list;
+
     }
 
     @Override
