@@ -14,8 +14,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.pesmypetcare.mypetcare.databinding.FragmentWalkBinding;
+import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 
 public class WalkFragment extends Fragment implements OnMapReadyCallback {
+    private static final float ZOOM = 16.0f;
     private FragmentWalkBinding binding;
     private MapView mapView;
     private GoogleMap googleMap;
@@ -34,9 +36,11 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
+
+        LatLng currentLocation = LocationUpdater.getCurrentLocation();
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
         googleMap.setMyLocationEnabled(true);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.6044254, 2.28601567), 16.0f));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, ZOOM));
     }
 
     @Override
