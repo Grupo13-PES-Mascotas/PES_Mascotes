@@ -7,6 +7,7 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.WashManagerService;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Enric Hernando
@@ -49,7 +50,11 @@ public class TrObtainAllPetWashes {
      * Method responsible for executing the transaction.
      */
     public void execute() {
-        result = washManagerService.findWashesByPet(user, pet);
+        try {
+            result = washManagerService.findWashesByPet(user, pet);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
         for (Event e:result) {
             pet.addEvent(e);
         }

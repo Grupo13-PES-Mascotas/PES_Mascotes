@@ -7,8 +7,8 @@ import androidx.annotation.NonNull;
 
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
-import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -172,7 +172,7 @@ public class Pet {
      * @return The birth date of the pet
      */
     public String getBirthDate() {
-        return birthDate.getYear() + "-" + birthDate.getMonth() + "-" + birthDate.getDay();
+        return birthDate.toString();
     }
 
     /**
@@ -568,7 +568,7 @@ public class Pet {
      * @param event The event to delete
      */
     public void deletePeriodicNotification(Event event) throws ParseException {
-        org.pesmypetcare.usermanager.datacontainers.DateTime dateTime = event.getDateTime();
+        org.pesmypetcare.usermanagerlib.datacontainers.DateTime dateTime = event.getDateTime();
         String desc = event.getDescription();
         PeriodEvent pe = new PeriodEvent(desc, dateTime, 0);
         periodEvents.remove(pe);

@@ -1,6 +1,6 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 /**
  * @author Xavier Campos
@@ -24,7 +24,7 @@ public class Medication extends Event {
         this.medicationDate = medicationDate;
     }
 
-    public Medication(org.pesmypetcare.usermanager.datacontainers.pet.Medication libraryMedication) {
+    public Medication(org.pesmypetcare.usermanagerlib.datacontainers.Medication libraryMedication) {
         super(MEDICATION + libraryMedication.getName() + WITH_START_DATE + libraryMedication.getDate(),
             DateTime.Builder.buildFullString(libraryMedication.getDate()));
         this.medicationName = libraryMedication.getName();

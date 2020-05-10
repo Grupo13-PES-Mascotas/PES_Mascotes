@@ -5,6 +5,8 @@ import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.WashManagerService;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * @author Enric Hernando
  */
@@ -58,9 +60,17 @@ public class TrUpdateWash {
      * Execute the transaction.
      */
     public void execute() {
-        washManagerService.updateWashBody(user, pet, wash);
+        try {
+            washManagerService.updateWashBody(user, pet, wash);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
         if (updatesDate) {
-            washManagerService.updateWashDate(user, pet, newDate, wash.getDateTime().toString());
+            try {
+                washManagerService.updateWashDate(user, pet, newDate, wash.getDateTime().toString());
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -25,7 +25,7 @@ import org.pesmypetcare.mypetcare.activities.views.entryview.InvalidBuildParamet
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetExerciseBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.Objects;
 

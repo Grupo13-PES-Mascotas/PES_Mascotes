@@ -5,6 +5,8 @@ import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.WashManagerService;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * @author Enric Hernando
  */
@@ -46,7 +48,11 @@ public class TrDeleteWash {
      * Executes the transaction.
      */
     public void execute() {
-        washManagerService.deleteWash(user, pet, wash);
+        try {
+            washManagerService.deleteWash(user, pet, wash);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
         pet.deleteEvent(wash);
     }
 }

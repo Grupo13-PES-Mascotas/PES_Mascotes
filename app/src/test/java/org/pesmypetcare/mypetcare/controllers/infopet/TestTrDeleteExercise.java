@@ -10,8 +10,10 @@ import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
-import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,7 +38,7 @@ public class TestTrDeleteExercise {
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotDeleteExerciseToNonOwnedPet() throws NotPetOwnerException, NotExistingExerciseException {
+    public void shouldNotDeleteExerciseToNonOwnedPet() throws NotPetOwnerException, NotExistingExerciseException, ExecutionException, InterruptedException {
         trDeleteExercise.setUser(new User("johnSmith", "johnsmith@gmail.com", "5678"));
         trDeleteExercise.setPet(pet);
         trDeleteExercise.setExerciseDateTime(DateTime.Builder.buildFullString("2020-05-04T10:00:00"));
@@ -44,7 +46,7 @@ public class TestTrDeleteExercise {
     }
 
     @Test(expected = NotExistingExerciseException.class)
-    public void shouldNotDeleteNonExistingExercise() throws NotPetOwnerException, NotExistingExerciseException {
+    public void shouldNotDeleteNonExistingExercise() throws NotPetOwnerException, NotExistingExerciseException, ExecutionException, InterruptedException {
         trDeleteExercise.setUser(user);
         trDeleteExercise.setPet(pet);
         trDeleteExercise.setExerciseDateTime(DateTime.Builder.buildFullString("2020-05-03T10:00:00"));
@@ -52,7 +54,7 @@ public class TestTrDeleteExercise {
     }
 
     @Test
-    public void shouldDeleteExercise() throws NotPetOwnerException, NotExistingExerciseException {
+    public void shouldDeleteExercise() throws NotPetOwnerException, NotExistingExerciseException, ExecutionException, InterruptedException {
         trDeleteExercise.setUser(user);
         trDeleteExercise.setPet(pet);
         trDeleteExercise.setExerciseDateTime(DateTime.Builder.buildFullString("2020-05-04T10:00:00"));
@@ -62,7 +64,7 @@ public class TestTrDeleteExercise {
     }
 
     @Test
-    public void shouldDeleteExerciseTime() throws NotPetOwnerException, NotExistingExerciseException {
+    public void shouldDeleteExerciseTime() throws NotPetOwnerException, NotExistingExerciseException, ExecutionException, InterruptedException {
         trDeleteExercise.setUser(user);
         trDeleteExercise.setPet(pet);
         trDeleteExercise.setExerciseDateTime(DateTime.Builder.buildFullString("2020-05-04T10:00:00"));
@@ -72,7 +74,7 @@ public class TestTrDeleteExercise {
     }
 
     @Test
-    public void shouldDecrementExerciseTime() throws NotPetOwnerException, NotExistingExerciseException {
+    public void shouldDecrementExerciseTime() throws NotPetOwnerException, NotExistingExerciseException, ExecutionException, InterruptedException {
         pet.addExercise(new Exercise("Running", "Running on the beach",
             DateTime.Builder.buildFullString("2020-05-04T08:00:00"),
             DateTime.Builder.buildFullString("2020-05-04T09:00:00")));

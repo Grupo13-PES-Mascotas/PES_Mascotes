@@ -11,7 +11,7 @@ import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
 import org.pesmypetcare.mypetcare.services.StubWashManagerService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import static org.junit.Assert.assertEquals;
 
@@ -67,7 +67,7 @@ public class TestTrDeleteWash {
         DateTime date = null;
         try {
             date = DateTime.Builder.build(2011, 2, 26, 15, 23, 56);
-        } catch (org.pesmypetcare.usermanager.exceptions.InvalidFormatException e) {
+        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
             e.printStackTrace();
         }
         assert date != null;
@@ -78,7 +78,7 @@ public class TestTrDeleteWash {
         DateTime date = null;
         try {
             date = DateTime.Builder.build(2001, 2, 26, 15, 23, 56);
-        } catch (org.pesmypetcare.usermanager.exceptions.InvalidFormatException e) {
+        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
             e.printStackTrace();
         }
         assert date != null;
