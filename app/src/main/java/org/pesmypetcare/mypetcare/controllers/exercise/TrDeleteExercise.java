@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.controllers.exercise;
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.NotExistingExerciseException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
@@ -49,9 +50,10 @@ public class TrDeleteExercise {
      * Execute the transaction.
      */
     public void execute() throws NotPetOwnerException, NotExistingExerciseException {
+        System.out.println(pet.containsEvent(dateTime, Exercise.class) + " " + pet.containsEvent(dateTime, Walk.class));
         if (!pet.isOwner(user)) {
             throw new NotPetOwnerException();
-        } else if (!pet.containsEvent(dateTime, Exercise.class)) {
+        } else if (!pet.containsEvent(dateTime, Exercise.class) && !pet.containsEvent(dateTime, Walk.class)) {
             throw new NotExistingExerciseException();
         }
 

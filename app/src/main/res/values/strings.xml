@@ -260,14 +260,14 @@
     <string name="update_exercise_title">Update exercise</string>
     <string name="update_exercice_message">Update the data of the exercise</string>
     <string name="error_invalid_period">The start must be previous to the end one</string>
-    <string name="start_walking_title">Start walking</string>
-    <string name="start_walking_message">Select the pets you want go for a walking with</string>
+    <string name="start_walking_title">Start walk</string>
+    <string name="start_walking_message">Select the pets you want go for a walk with</string>
     <string name="error_no_pets_selected">At least one pet should be selected</string>
-    <string name="end_walking_title">End walking</string>
-    <string name="end_walking_message">Enter a name if you want to save the walking or press cancel</string>
+    <string name="end_walking_title">End walk</string>
+    <string name="end_walking_message">Enter a name if you want to save the walk or press cancel</string>
     <string name="walking_name">Walking name</string>
     <string name="walking_description">Walking description (optional)</string>
-    <string name="cancel_walking">Cancel walking</string>
+    <string name="cancel_walking">Cancel walk</string>
     <string name="error_missing_start_date_time">Missing start date time</string>
 
 

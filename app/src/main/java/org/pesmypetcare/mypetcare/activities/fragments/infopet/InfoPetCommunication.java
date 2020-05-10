@@ -182,7 +182,7 @@ public interface InfoPetCommunication {
      * Start the walking of the pets.
      * @param walkingPetNames The names of the pets that go for a walk
      */
-    void startWalking(List<String> walkingPetNames);
+    void startWalk(List<String> walkingPetNames);
 
     /**
      * Check whether the user is walking or not.
@@ -195,7 +195,7 @@ public interface InfoPetCommunication {
      * @param name The name of the walking
      * @param description The description of the walking
      */
-    void endWalking(String name, String description);
+    void endWalk(String name, String description);
 
     /**
      * Cancel the current walking.

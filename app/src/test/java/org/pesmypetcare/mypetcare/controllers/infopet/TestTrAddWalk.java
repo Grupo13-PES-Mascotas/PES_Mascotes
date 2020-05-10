@@ -4,11 +4,11 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.mypetcare.controllers.exercise.TrAddWalking;
+import org.pesmypetcare.mypetcare.controllers.exercise.TrAddWalk;
 import org.pesmypetcare.mypetcare.features.pets.InvalidPeriodException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
-import org.pesmypetcare.mypetcare.features.pets.Walking;
+import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
@@ -23,12 +23,12 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Albert Pinto
  */
-public class TestTrAddWalking {
+public class TestTrAddWalk {
     private static final int COORDINATES_NUMBER = 5;
     private User user;
     private List<Pet> pets;
     private List<LatLng> coordinates;
-    private TrAddWalking trAddWalking;
+    private TrAddWalk trAddWalk;
 
     @Before
     public void setUp() throws PetRepeatException {
@@ -44,62 +44,62 @@ public class TestTrAddWalking {
             coordinates.add(new LatLng(actual, actual));
         }
 
-        trAddWalking = new TrAddWalking(new StubPetManagerService());
+        trAddWalk = new TrAddWalk(new StubPetManagerService());
     }
 
     @Test(expected = NotPetOwnerException.class)
     public void shouldNotAddWalkingToNonOwnerPet() throws NotPetOwnerException, InvalidPeriodException {
-        trAddWalking.setUser(new User("johnSmith", "johnsmith@gmail.com", "5678"));
-        trAddWalking.setPets(pets);
-        trAddWalking.setName("A walk for the neighbourhood");
-        trAddWalking.setDescription("Walking on the near surroundings of our home");
-        trAddWalking.setStartDateTime(DateTime.Builder.buildFullString("2020-05-10T10:00:00"));
-        trAddWalking.setEndDateTime(DateTime.Builder.buildFullString("2020-05-10T11:00:00"));
-        trAddWalking.setCoordinates(coordinates);
-        trAddWalking.execute();
+        trAddWalk.setUser(new User("johnSmith", "johnsmith@gmail.com", "5678"));
+        trAddWalk.setPets(pets);
+        trAddWalk.setName("A walk for the neighbourhood");
+        trAddWalk.setDescription("Walking on the near surroundings of our home");
+        trAddWalk.setStartDateTime(DateTime.Builder.buildFullString("2020-05-10T10:00:00"));
+        trAddWalk.setEndDateTime(DateTime.Builder.buildFullString("2020-05-10T11:00:00"));
+        trAddWalk.setCoordinates(coordinates);
+        trAddWalk.execute();
     }
 
     @Test(expected = InvalidPeriodException.class)
     public void shouldTheStartDateTimeBeBeforeTheEndOne() throws NotPetOwnerException, InvalidPeriodException {
-        trAddWalking.setUser(user);
-        trAddWalking.setPets(pets);
-        trAddWalking.setName("A walk for the neighbourhood");
-        trAddWalking.setDescription("Walking on the near surroundings of our home");
-        trAddWalking.setStartDateTime(DateTime.Builder.buildFullString("2020-05-10T11:00:00"));
-        trAddWalking.setEndDateTime(DateTime.Builder.buildFullString("2020-05-10T10:00:00"));
-        trAddWalking.setCoordinates(coordinates);
-        trAddWalking.execute();
+        trAddWalk.setUser(user);
+        trAddWalk.setPets(pets);
+        trAddWalk.setName("A walk for the neighbourhood");
+        trAddWalk.setDescription("Walking on the near surroundings of our home");
+        trAddWalk.setStartDateTime(DateTime.Builder.buildFullString("2020-05-10T11:00:00"));
+        trAddWalk.setEndDateTime(DateTime.Builder.buildFullString("2020-05-10T10:00:00"));
+        trAddWalk.setCoordinates(coordinates);
+        trAddWalk.execute();
     }
 
     @Test(expected = InvalidPeriodException.class)
     public void shouldStartAndEndTheExerciseInTheSameDate() throws NotPetOwnerException, InvalidPeriodException {
-        trAddWalking.setUser(user);
-        trAddWalking.setPets(pets);
-        trAddWalking.setName("A walk for the neighbourhood");
-        trAddWalking.setDescription("Walking on the near surroundings of our home");
-        trAddWalking.setStartDateTime(DateTime.Builder.buildFullString("2020-05-10T10:00:00"));
-        trAddWalking.setEndDateTime(DateTime.Builder.buildFullString("2020-05-11T11:00:00"));
-        trAddWalking.setCoordinates(coordinates);
-        trAddWalking.execute();
+        trAddWalk.setUser(user);
+        trAddWalk.setPets(pets);
+        trAddWalk.setName("A walk for the neighbourhood");
+        trAddWalk.setDescription("Walking on the near surroundings of our home");
+        trAddWalk.setStartDateTime(DateTime.Builder.buildFullString("2020-05-10T10:00:00"));
+        trAddWalk.setEndDateTime(DateTime.Builder.buildFullString("2020-05-11T11:00:00"));
+        trAddWalk.setCoordinates(coordinates);
+        trAddWalk.execute();
     }
 
     @Test
     public void shouldAddWalking() throws NotPetOwnerException, InvalidPeriodException {
-        trAddWalking.setUser(user);
-        trAddWalking.setPets(pets);
-        trAddWalking.setName("A walk for the neighbourhood");
-        trAddWalking.setDescription("Walking on the near surroundings of our home");
-        trAddWalking.setStartDateTime(DateTime.Builder.buildFullString("2020-05-10T10:00:00"));
-        trAddWalking.setEndDateTime(DateTime.Builder.buildFullString("2020-05-10T11:00:00"));
-        trAddWalking.setCoordinates(coordinates);
-        trAddWalking.execute();
+        trAddWalk.setUser(user);
+        trAddWalk.setPets(pets);
+        trAddWalk.setName("A walk for the neighbourhood");
+        trAddWalk.setDescription("Walking on the near surroundings of our home");
+        trAddWalk.setStartDateTime(DateTime.Builder.buildFullString("2020-05-10T10:00:00"));
+        trAddWalk.setEndDateTime(DateTime.Builder.buildFullString("2020-05-10T11:00:00"));
+        trAddWalk.setCoordinates(coordinates);
+        trAddWalk.execute();
 
         for (Pet pet : pets) {
             assertEquals("Should add walking", "[{A walk for the neighbourhood, "
                 + "Walking on the near surroundings of our home, 2020-05-10T10:00:00, 2020-05-10T11:00:00, "
                 + "[lat/lng: (0.0,0.0), lat/lng: (1.0,1.0), lat/lng: (2.0,2.0), lat/lng: (3.0,3.0), "
                     + "lat/lng: (4.0,4.0)]}]",
-                pet.getEventsByClass(Walking.class).toString());
+                pet.getEventsByClass(Walk.class).toString());
         }
     }
 

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
@@ -155,5 +156,12 @@ public class StubPetManagerService implements PetManagerService {
         int index = Objects.requireNonNull(pets).indexOf(pet);
         pets.get(index).deleteExerciseForDate(originalDateTime);
         pets.get(index).addExercise(exercise);
+    }
+
+    @Override
+    public void addWalking(User user, Pet pet, Walk walk) {
+        List<Pet> pets = data.get(user.getUsername());
+        int index = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(index).addExercise(walk);
     }
 }

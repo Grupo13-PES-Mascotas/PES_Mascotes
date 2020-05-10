@@ -11,18 +11,26 @@ import java.util.List;
 /**
  * @author Albert Pinto
  */
-public class Walking extends Exercise {
+public class Walk extends Exercise {
     private List<LatLng> coordinates;
 
-    public Walking(String name, String description, DateTime dateTime, DateTime endTime, List<LatLng> coordinates) {
+    public Walk(String name, String description, DateTime dateTime, DateTime endTime, List<LatLng> coordinates) {
         super(name, description, dateTime, endTime);
         this.coordinates = coordinates;
     }
 
+    /**
+     * Get the coordinates.
+     * @return The coordinates
+     */
     public List<LatLng> getCoordinates() {
         return coordinates;
     }
 
+    /**
+     * Set the coordinates.
+     * @param coordinates The coordinates to set
+     */
     public void setCoordinates(List<LatLng> coordinates) {
         this.coordinates = coordinates;
     }

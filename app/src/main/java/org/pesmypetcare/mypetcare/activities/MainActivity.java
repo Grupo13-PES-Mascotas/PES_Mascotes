@@ -39,6 +39,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -94,6 +95,7 @@ import org.pesmypetcare.mypetcare.controllers.event.TrNewPeriodicNotification;
 import org.pesmypetcare.mypetcare.controllers.event.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.controllers.exercise.ExerciseControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.exercise.TrAddExercise;
+import org.pesmypetcare.mypetcare.controllers.exercise.TrAddWalk;
 import org.pesmypetcare.mypetcare.controllers.exercise.TrDeleteExercise;
 import org.pesmypetcare.mypetcare.controllers.exercise.TrUpdateExercise;
 import org.pesmypetcare.mypetcare.controllers.meals.MealsControllersFactory;
@@ -265,6 +267,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrAddExercise trAddExercise;
     private TrDeleteExercise trDeleteExercise;
     private TrUpdateExercise trUpdateExercise;
+    private TrAddWalk trAddWalk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -291,8 +294,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         LocationUpdater.setContext(this);
         List<Location> list = getMyLocations();
 
+        // Uncomment the following statements to remove all the entries for walking that are stored in SharedPreferences
         /*SharedPreferences walkingSharedPreferences = getSharedPreferences(WALKING_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = walkingSharedPreferences.edit();
+        editor.remove(START_WALKING_DATE_TIME);
 
         for (Map.Entry<String, ?> entry : walkingSharedPreferences.getAll().entrySet()) {
             editor.remove(entry.getKey());
@@ -571,6 +576,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddExercise = ExerciseControllersFactory.createTrAddExercise();
         trDeleteExercise = ExerciseControllersFactory.createTrDeleteExercise();
         trUpdateExercise = ExerciseControllersFactory.createTrUpdateExercise();
+        trAddWalk = ExerciseControllersFactory.createTrAddWalk();
     }
 
     /**
@@ -1613,12 +1619,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void startWalking(List<String> walkingPetNames) {
+    public void startWalk(List<String> walkingPetNames) {
         addPetsToWalkRegister(walkingPetNames);
         /*
         Access to the GPS
         The points should be stored in shared preferences for persistence. However, start assuming that everything
-        is in local memory, although the previous call.
+        is in local memory, although the previous call. When you have tested that you can access the GPS to get
+        all the points, you should migrate your storage method to SharedPreferences since we need to store the values
+        even if the application is closed.
          */
     }
 
@@ -1636,7 +1644,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void endWalking(String name, String description) {
+    public void endWalk(String name, String description) {
         DateTime endDateTime = DateTime.getCurrentDateTime();
         SharedPreferences sharedPreferences = getSharedPreferences(WALKING_PREFERENCES, Context.MODE_PRIVATE);
         String strStartDateTime = sharedPreferences.getString(START_WALKING_DATE_TIME, "");
@@ -1648,6 +1656,47 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } else {
             endPetWalking(sharedPreferences, pets);
         }
+
+        addWalk(pets, name, description, DateTime.Builder.buildFullString(strStartDateTime), endDateTime);
+    }
+
+    /**
+     * Add the walk to the pets
+     * @param pets The pets that are being walked
+     * @param name The name of the walk
+     * @param description The description of the walk
+     * @param startDateTime The start DateTime of the walk
+     * @param endDateTime The end DateTime of the walk
+     */
+    private void addWalk(List<Pet> pets, String name, String description, DateTime startDateTime,
+                         DateTime endDateTime) {
+        trAddWalk.setUser(user);
+        trAddWalk.setPets(pets);
+        trAddWalk.setName(name);
+        trAddWalk.setDescription(description);
+        trAddWalk.setStartDateTime(startDateTime);
+        trAddWalk.setEndDateTime(endDateTime);
+        trAddWalk.setCoordinates(getCoordinates());
+
+        try {
+            trAddWalk.execute();
+        } catch (NotPetOwnerException | InvalidPeriodException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Get the coordinated of the walk.
+     * @return The coordinates of the walk
+     */
+    private List<LatLng> getCoordinates() {
+        /*
+        Get the coordinates of the walk
+        This method should read from SharedPreferences in the way you have decided to get the coordinates of the
+        walking. The return type is LatLng, which has a constructor that accepts as parameters the latitude and
+        longitude as double.
+         */
+        return new ArrayList<>();
     }
 
     @Override

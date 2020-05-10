@@ -4,7 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.pesmypetcare.mypetcare.features.pets.InvalidPeriodException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.Walking;
+import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @author Albert Pinto
  */
-public class TrAddWalking {
+public class TrAddWalk {
     private PetManagerService petManagerService;
     private User user;
     private List<Pet> pets;
@@ -25,7 +25,7 @@ public class TrAddWalking {
     private DateTime endDateTime;
     private List<LatLng> coordinates;
     
-    public TrAddWalking(PetManagerService petManagerService) {
+    public TrAddWalk(PetManagerService petManagerService) {
         this.petManagerService = petManagerService;
     }
 
@@ -68,10 +68,11 @@ public class TrAddWalking {
             throw new InvalidPeriodException();
         }
 
-        Walking walking = new Walking(name, description, startDateTime, endDateTime, coordinates);
+        Walk walk = new Walk(name, description, startDateTime, endDateTime, coordinates);
 
         for (Pet pet : pets) {
-            pet.addExercise(walking);
+            petManagerService.addWalking(user, pet, walk);
+            pet.addExercise(walk);
         }
     }
 

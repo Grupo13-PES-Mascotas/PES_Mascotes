@@ -7,6 +7,7 @@ import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
+import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
@@ -276,6 +277,11 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise) {
+        // Not implemented yet
+    }
+
+    @Override
+    public void addWalking(User user, Pet pet, Walk walk) {
         // Not implemented yet
     }
 

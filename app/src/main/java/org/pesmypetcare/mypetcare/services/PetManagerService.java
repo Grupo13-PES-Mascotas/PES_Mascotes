@@ -6,6 +6,7 @@ import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
+import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
@@ -140,4 +141,12 @@ public interface PetManagerService {
      * @param exercise The exercise
      */
     void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise);
+
+    /**
+     * Add the walking to the pet.
+     * @param user The user
+     * @param pet The pet
+     * @param walk The walking
+     */
+    void addWalking(User user, Pet pet, Walk walk);
 }

@@ -5,6 +5,7 @@ import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.InvalidPeriodException;
 import org.pesmypetcare.mypetcare.features.pets.NotExistingExerciseException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
@@ -117,6 +118,17 @@ public class TrUpdateExercise {
                 break;
             }
         }
+
+        if (!found) {
+            exercises = pet.getEventsByClass(Walk.class);
+            for (Event event : exercises) {
+                if (event.getDateTime().compareTo(originalDateTime) == 0) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+
         return found;
     }
 
