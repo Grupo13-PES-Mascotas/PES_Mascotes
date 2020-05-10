@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
@@ -23,5 +25,12 @@ public class Walking extends Exercise {
 
     public void setCoordinates(List<LatLng> coordinates) {
         this.coordinates = coordinates;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "{" + getName() + ", " + getDescription() + ", " + getDateTime() + ", " + getEndTime() + ", "
+            + getCoordinates() + "}";
     }
 }

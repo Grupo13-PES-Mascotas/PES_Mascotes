@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
+import androidx.annotation.NonNull;
+
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 /**
@@ -47,6 +49,7 @@ public class Exercise extends Event {
         this.endTime = endTime;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "{" + getName() + ", " + getDescription() + ", " + getDateTime() + ", " + getEndTime() + "}";
