@@ -70,6 +70,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetFr
 import org.pesmypetcare.mypetcare.activities.fragments.settings.NewPasswordInterface;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.walks.WalkFragment;
 import org.pesmypetcare.mypetcare.activities.threads.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
@@ -189,13 +190,14 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
     InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
     CommunityCommunication, InfoGroupCommunication, AsyncResponse {
-    private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
-        R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
-        R.id.navigationAchievements, R.id.navigationSettings
+    private static final int[] NAVIGATION_OPTIONS = {
+        R.id.navigationMyPets, R.id.navigationPetsCommunity, R.id.navigationMyWalks,
+        R.id.navigationNearEstablishments, R.id.navigationCalendar, R.id.navigationAchievements,
+        R.id.navigationSettings
     };
 
     private static final Class[] APPLICATION_FRAGMENTS = {
-        MyPetsFragment.class, CommunityFragment.class, NotImplementedFragment.class,
+        MyPetsFragment.class, CommunityFragment.class, WalkFragment.class,
         NotImplementedFragment.class, CalendarFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
