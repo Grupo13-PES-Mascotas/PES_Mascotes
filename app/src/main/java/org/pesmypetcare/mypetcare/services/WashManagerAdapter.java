@@ -98,7 +98,7 @@ public class WashManagerAdapter implements WashManagerService {
         List<org.pesmypetcare.usermanagerlib.datacontainers.Wash> washes = ServiceLocator.getInstance().getPetCollectionsManagerClient().getAllWashes(accessToken, owner, petName);
         ArrayList<Wash> result = new ArrayList<>();
         for (org.pesmypetcare.usermanagerlib.datacontainers.Wash w : washes) {
-            result.add(new Wash(DateTime.Builder.buildDateString(w.getKey()), w.getBody().getDuration(), w.getBody().getDescription()));
+            result.add(new Wash(DateTime.Builder.buildFullString(w.getKey()), w.getBody().getDuration(), w.getBody().getDescription()));
         }
         return result;
 

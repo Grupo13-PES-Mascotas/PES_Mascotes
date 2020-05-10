@@ -275,7 +275,7 @@ public class PetManagerAdapter implements PetManagerService {
     @Override
     public void addExercise(User user, Pet pet, Exercise exercise) throws ExecutionException, InterruptedException {
         ExerciseData libraryExerciseData = new ExerciseData(exercise.getName(), exercise.getDescription(),
-                exercise.getEndTime().toString());
+                exercise.getEndTime().toString(), null);
         org.pesmypetcare.usermanagerlib.datacontainers.Exercise libraryExercise =
                 new org.pesmypetcare.usermanagerlib.datacontainers.Exercise(exercise.getDateTime().toString(), libraryExerciseData);
         ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
@@ -293,7 +293,7 @@ public class PetManagerAdapter implements PetManagerService {
         ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(user.getToken(),
                 user.getUsername(), pet.getName(), PetData.EXERCISES, originalDateTime.toString());
         ExerciseData libraryExerciseData = new ExerciseData(exercise.getName(), exercise.getDescription(),
-                exercise.getEndTime().toString());
+                exercise.getEndTime().toString(), null);
         org.pesmypetcare.usermanagerlib.datacontainers.Exercise libraryExercise =
                 new org.pesmypetcare.usermanagerlib.datacontainers.Exercise(exercise.getDateTime().toString(), libraryExerciseData);
         ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
@@ -313,7 +313,7 @@ public class PetManagerAdapter implements PetManagerService {
 
         pet.setName(userPet.getName());
         pet.setGender(petData.getGender());
-        pet.setBirthDate(DateTime.Builder.buildDateString(petData.getBirth()));
+        pet.setBirthDate(DateTime.Builder.buildFullString(petData.getBirth()));
         /*pet.setWeight(petData.getWeight());
         pet.setWashFrequency(petData.getWashFreq());*/
         pet.setRecommendedDailyKiloCalories(petData.getRecommendedKcal());
