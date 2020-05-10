@@ -20,6 +20,7 @@ public class Meals extends Event {
     public Meals(Meal meal) {
         super(MEAL + meal.getBody().getMealName() + OF_THE_DAY + meal.getKey(),
             DateTime.Builder.buildFullString(meal.getKey()));
+
         this.mealDate = DateTime.Builder.buildFullString(meal.getKey());
         this.mealName = meal.getBody().getMealName();
         this.kcal = meal.getBody().getKcal();
