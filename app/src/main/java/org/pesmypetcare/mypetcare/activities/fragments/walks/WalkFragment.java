@@ -19,19 +19,26 @@ import com.google.android.gms.maps.model.RoundCap;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentWalkBinding;
+import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 
-public class WalkFragment extends Fragment implements OnMapReadyCallback {
+import java.util.List;
+import java.util.Map;
+
+public class WalkFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPolylineClickListener {
     private static final float ZOOM = 16.0f;
     private FragmentWalkBinding binding;
     private MapView mapView;
     private GoogleMap googleMap;
+    private Map<Polyline, Walk> polylines;
+    private WalkCommunication communication;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentWalkBinding.inflate(inflater, container, false);
-        mapView = binding.mapView;
+        communication = (WalkCommunication) getActivity();
 
+        mapView = binding.mapView;
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
@@ -46,22 +53,18 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback {
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
         googleMap.setMyLocationEnabled(true);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, ZOOM));
+        googleMap.setOnPolylineClickListener(this);
 
-        PolylineOptions options = new PolylineOptions().clickable(true).add(
-            new LatLng(41.220208, 1.720938),
-            new LatLng(41.219639, 1.721323),
-            new LatLng(41.219537, 1.721221),
-            new LatLng(41.219426, 1.721282),
-            new LatLng(41.219392, 1.721411),
-            new LatLng(41.219404, 1.721516),
-            new LatLng(41.218867, 1.721867)
-        );
+        List<Walk> walks = communication.getWalkingRoutes();
 
-        Polyline polyline = googleMap.addPolyline(options);
-        polyline.setStartCap(new RoundCap());
-        polyline.setEndCap(new RoundCap());
-        polyline.setColor(getResources().getColor(R.color.colorPrimary, null));
-        polyline.setJointType(JointType.ROUND);
+        for (Walk walk : walks) {
+            PolylineOptions options = new PolylineOptions().clickable(true).addAll(walk.getCoordinates());
+            Polyline polyline = googleMap.addPolyline(options);
+            polyline.setStartCap(new RoundCap());
+            polyline.setEndCap(new RoundCap());
+            polyline.setColor(getResources().getColor(R.color.colorPrimary, null));
+            polyline.setJointType(JointType.ROUND);
+        }
     }
 
     @Override
@@ -86,5 +89,10 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback {
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    @Override
+    public void onPolylineClick(Polyline polyline) {
+        polyline.setColor(getResources().getColor(R.color.green, null));
     }
 }

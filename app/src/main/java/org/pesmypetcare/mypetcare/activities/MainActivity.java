@@ -70,6 +70,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetFr
 import org.pesmypetcare.mypetcare.activities.fragments.settings.NewPasswordInterface;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.walks.WalkCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.walks.WalkFragment;
 import org.pesmypetcare.mypetcare.activities.threads.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
@@ -159,6 +160,7 @@ import org.pesmypetcare.mypetcare.features.pets.NotExistingExerciseException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
+import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
@@ -189,7 +191,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
     InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
-    CommunityCommunication, InfoGroupCommunication, AsyncResponse {
+    CommunityCommunication, InfoGroupCommunication, WalkCommunication, AsyncResponse {
     private static final int[] NAVIGATION_OPTIONS = {
         R.id.navigationMyPets, R.id.navigationPetsCommunity, R.id.navigationMyWalks,
         R.id.navigationNearEstablishments, R.id.navigationCalendar, R.id.navigationAchievements,
@@ -2058,5 +2060,19 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void processFinish(String token) {
         user.setGoogleCalendarToken(token);
+    }
+
+    @Override
+    public List<Walk> getWalkingRoutes() {
+        List<Walk> walks = new ArrayList<>();
+        Walk walk = new Walk("A walk on the beach", "Quite and beautiful",
+            DateTime.Builder.buildFullString("2020-05-10T10:00:00"),
+            DateTime.Builder.buildFullString("2020-05-10T11:00:00"),
+            Arrays.asList(new LatLng(41.220208, 1.720938), new LatLng(41.219639, 1.721323),
+                new LatLng(41.219537, 1.721221), new LatLng(41.219426, 1.721282), new LatLng(41.219392, 1.721411),
+                new LatLng(41.219404, 1.721516), new LatLng(41.218867, 1.721867)));
+
+        walks.add(walk);
+        return walks;
     }
 }
