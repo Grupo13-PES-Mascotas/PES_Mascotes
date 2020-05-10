@@ -118,6 +118,12 @@ public class InfoPetExercise extends Fragment {
         builder.setView(endWalkingLayout);
         AlertDialog dialog = builder.create();
 
+        btnCancelWalking.setOnClickListener(v -> {
+            InfoPetFragment.getCommunication().cancelWalking();
+            dialog.dismiss();
+            updateWalkingButton();
+        });
+
         btnEndWalking.setOnClickListener(v -> {
             String walkingName = Objects.requireNonNull(inputWalkingName.getEditText()).getText().toString();
             String walkingDescription = Objects.requireNonNull(inputWalkingDescription.getEditText()).getText()

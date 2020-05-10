@@ -196,4 +196,9 @@ public interface InfoPetCommunication {
      * @param description The description of the walking
      */
     void endWalking(String name, String description);
+
+    /**
+     * Cancel the current walking.
+     */
+    void cancelWalking();
 }

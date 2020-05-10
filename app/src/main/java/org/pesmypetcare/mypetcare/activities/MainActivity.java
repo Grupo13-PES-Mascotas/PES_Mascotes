@@ -1627,7 +1627,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         SharedPreferences sharedPreferences = getSharedPreferences(WALKING_PREFERENCES, Context.MODE_PRIVATE);
 
         for (Pet pet : user.getPets()) {
-            if (sharedPreferences.getBoolean(pet.getName(), false)) {
+            if (sharedPreferences.getBoolean(getUserPetIdentifier(pet.getName()), false)) {
                 return true;
             }
         }
@@ -1650,7 +1650,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
     }
 
-    private void endPetWalking(SharedPreferences sharedPreferences, List<Pet> pets) {
+    @Override
+    public void cancelWalking() {
+        SharedPreferences sharedPreferences = getSharedPreferences(WALKING_PREFERENCES, Context.MODE_PRIVATE);
+        endPetWalking(sharedPreferences, null);
+    }
+
+    private void endPetWalking(SharedPreferences sharedPreferences, @Nullable List<Pet> pets) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         for (Pet pet : user.getPets()) {
@@ -1659,7 +1665,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
             if (isWalking) {
                 editor.putBoolean(userPet, false);
-                pets.add(pet);
+
+                if (pets != null) {
+                    pets.add(pet);
+                }
             }
         }
 
