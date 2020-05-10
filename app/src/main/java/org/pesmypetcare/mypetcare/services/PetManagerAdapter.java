@@ -101,7 +101,6 @@ public class PetManagerAdapter implements PetManagerService {
         PetData petData = new PetData();
 
         registerPet.setName(pet.getName());
-        System.out.println("cumplep"+pet.getBirthDate());
         petData.setBirth("2020-05-22T00:00:00");
         petData.setBreed(pet.getBreed());
         petData.setGender(pet.getGender());
