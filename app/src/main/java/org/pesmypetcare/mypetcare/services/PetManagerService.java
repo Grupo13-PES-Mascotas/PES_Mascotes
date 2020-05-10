@@ -139,5 +139,6 @@ public interface PetManagerService {
      * @param originalDateTime The original DateTime
      * @param exercise The exercise
      */
-    void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise) throws ExecutionException, InterruptedException;
+    void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise) throws ExecutionException,
+            InterruptedException;
 }
