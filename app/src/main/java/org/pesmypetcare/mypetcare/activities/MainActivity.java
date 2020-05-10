@@ -199,6 +199,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         SettingsMenuFragment.class
     };
     public static final String TAG_REGEX = "^[a-zA-Z0-9,]*$";
+    private static final String WALKING_PREFERENCES = "Walking";
+    private static final String START_WALKING_DATE_TIME = "startWalkingDateTime";
 
     private static boolean enableLoginActivity = true;
     private static FloatingActionButton floatingActionButton;
@@ -288,6 +290,15 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setUpNavigationImage();
         LocationUpdater.setContext(this);
         List<Location> list = getMyLocations();
+
+        /*SharedPreferences walkingSharedPreferences = getSharedPreferences(WALKING_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = walkingSharedPreferences.edit();
+
+        for (Map.Entry<String, ?> entry : walkingSharedPreferences.getAll().entrySet()) {
+            editor.remove(entry.getKey());
+        }
+
+        editor.apply();*/
     }
 
     /**
@@ -1611,15 +1622,67 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
          */
     }
 
-    private void addPetsToWalkRegister(List<String> walkingPetNames) {
-        SharedPreferences sharedPreferences = getSharedPreferences("Walking", Context.MODE_PRIVATE);
+    @Override
+    public boolean isWalking() {
+        SharedPreferences sharedPreferences = getSharedPreferences(WALKING_PREFERENCES, Context.MODE_PRIVATE);
+
+        for (Pet pet : user.getPets()) {
+            if (sharedPreferences.getBoolean(pet.getName(), false)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public void endWalking(String name, String description) {
+        DateTime endDateTime = DateTime.getCurrentDateTime();
+        SharedPreferences sharedPreferences = getSharedPreferences(WALKING_PREFERENCES, Context.MODE_PRIVATE);
+        String strStartDateTime = sharedPreferences.getString(START_WALKING_DATE_TIME, "");
+        List<Pet> pets = new ArrayList<>();
+
+        if ("".equals(strStartDateTime)) {
+            Toast toast = Toast.makeText(this, R.string.error_missing_start_date_time, Toast.LENGTH_LONG);
+            toast.show();
+        } else {
+            endPetWalking(sharedPreferences, pets);
+        }
+    }
+
+    private void endPetWalking(SharedPreferences sharedPreferences, List<Pet> pets) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        for (String petName : walkingPetNames) {
-            editor.putBoolean(petName, true);
+        for (Pet pet : user.getPets()) {
+            String userPet = getUserPetIdentifier(pet.getName());
+            boolean isWalking = sharedPreferences.getBoolean(userPet, false);
+
+            if (isWalking) {
+                editor.putBoolean(userPet, false);
+                pets.add(pet);
+            }
         }
 
         editor.apply();
+    }
+
+    private void addPetsToWalkRegister(List<String> walkingPetNames) {
+        SharedPreferences sharedPreferences = getSharedPreferences(WALKING_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        DateTime startDateTime = DateTime.getCurrentDateTime();
+        editor.putString(START_WALKING_DATE_TIME, startDateTime.toString());
+
+        for (String petName : walkingPetNames) {
+            editor.putBoolean(getUserPetIdentifier(petName), true);
+        }
+
+        editor.apply();
+    }
+
+    @NonNull
+    private String getUserPetIdentifier(String petName) {
+        return user.getUsername() + "_" + petName;
     }
 
     /**

@@ -183,4 +183,17 @@ public interface InfoPetCommunication {
      * @param walkingPetNames The names of the pets that go for a walk
      */
     void startWalking(List<String> walkingPetNames);
+
+    /**
+     * Check whether the user is walking or not.
+     * @return True if the user is walking
+     */
+    boolean isWalking();
+
+    /**
+     * End the current walking.
+     * @param name The name of the walking
+     * @param description The description of the walking
+     */
+    void endWalking(String name, String description);
 }

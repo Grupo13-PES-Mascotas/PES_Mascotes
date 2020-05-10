@@ -264,6 +264,11 @@
     <string name="start_walking_title">Iniciar paseo</string>
     <string name="start_walking_message">Selecciona las mascotas con las cuales quieres salir a pasear</string>
     <string name="error_no_pets_selected">Como mínimo hay que seleccionar una mascota</string>
-    <string name="end_walking">Finalizar paseo</string>
+    <string name="end_walking_title">Finalizar paseo</string>
+    <string name="end_walking_message">Introduce el nombre del paseo para guardarlo o pulsa cancelar</string>
+    <string name="walking_name">Nombre del paseo</string>
+    <string name="walking_description">Descripción del paseo (opcional)</string>
+    <string name="cancel_walking">Cancelar paseo</string>
+    <string name="error_missing_start_date_time">Falta la fecha y hora de inicio</string>
 
 </resources>

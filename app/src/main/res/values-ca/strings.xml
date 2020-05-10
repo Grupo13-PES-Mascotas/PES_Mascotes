@@ -265,6 +265,11 @@
     <string name="start_walking_title">Iniciar passeig</string>
     <string name="start_walking_message">Selecciona les mascotes amb les quals vols sortir a passejar</string>
     <string name="error_no_pets_selected">Com a mínim s\'ha de seleccionar una mascota</string>
-    <string name="end_walking">Finalitzar passeig</string>
+    <string name="end_walking_title">Finalitzar passeig</string>
+    <string name="end_walking_message">Introdueix el nom del passeig per guardar-lo o prem cancel·lar</string>
+    <string name="walking_name">Nom del passeig</string>
+    <string name="walking_description">Descripció del passeig (opcional)</string>
+    <string name="cancel_walking">Cancel·lar passeig</string>
+    <string name="error_missing_start_date_time">Falta la data i l\'hora d\'inici</string>
 
 </resources>

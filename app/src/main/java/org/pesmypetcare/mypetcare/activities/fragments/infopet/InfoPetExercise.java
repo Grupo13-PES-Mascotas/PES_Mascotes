@@ -73,17 +73,70 @@ public class InfoPetExercise extends Fragment {
         resources = getResources();
         showExercises();
 
-        binding.walkingButton.setOnClickListener(v -> {
-            InfoPetFragment.getCommunication().askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-            InfoPetFragment.getCommunication().askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-            AlertDialog addWalkDialog = createAddWalkDialog();
-            addWalkDialog.show();
-        });
+        updateWalkingButton();
 
         return binding.getRoot();
     }
 
-    private AlertDialog createAddWalkDialog() {
+    private void updateWalkingButton() {
+        boolean isWalking = InfoPetFragment.getCommunication().isWalking();
+
+        if (!isWalking) {
+            binding.walkingButton.setText(R.string.start_walking_title);
+            binding.walkingButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary, null));
+            binding.walkingButton.setIcon(getResources().getDrawable(R.drawable.icon_add, null));
+
+            binding.walkingButton.setOnClickListener(v -> {
+                InfoPetFragment.getCommunication().askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+                InfoPetFragment.getCommunication().askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+                AlertDialog startWalkDialog = createStartWalkDialog();
+                startWalkDialog.show();
+            });
+        } else {
+            binding.walkingButton.setText(R.string.end_walking_title);
+            binding.walkingButton.setBackgroundColor(getResources().getColor(R.color.red, null));
+            binding.walkingButton.setIcon(getResources().getDrawable(R.drawable.icon_clear, null));
+
+            binding.walkingButton.setOnClickListener(v -> {
+                AlertDialog endWalkDialog = createEndDialog();
+                endWalkDialog.show();
+            });
+        }
+    }
+
+    private AlertDialog createEndDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
+        builder.setTitle(R.string.end_walking_title);
+        builder.setMessage(R.string.end_walking_message);
+
+        View endWalkingLayout = getLayoutInflater().inflate(R.layout.end_walking, null);
+        TextInputLayout inputWalkingName = endWalkingLayout.findViewById(R.id.inputWalkingName);
+        TextInputLayout inputWalkingDescription = endWalkingLayout.findViewById(R.id.inputWalkingDescription);
+        MaterialButton btnCancelWalking = endWalkingLayout.findViewById(R.id.cancelWalkingButton);
+        MaterialButton btnEndWalking = endWalkingLayout.findViewById(R.id.endWalkingButton);
+
+        builder.setView(endWalkingLayout);
+        AlertDialog dialog = builder.create();
+
+        btnEndWalking.setOnClickListener(v -> {
+            String walkingName = Objects.requireNonNull(inputWalkingName.getEditText()).getText().toString();
+            String walkingDescription = Objects.requireNonNull(inputWalkingDescription.getEditText()).getText()
+                .toString();
+
+            if ("".equals(walkingName)) {
+                inputWalkingName.setErrorEnabled(true);
+                inputWalkingName.setError(getString(R.string.error_empty_input_field));
+            } else {
+                InfoPetFragment.getCommunication().endWalking(walkingName, walkingDescription);
+                dialog.dismiss();
+                updateWalkingButton();
+            }
+        });
+
+        return dialog;
+    }
+
+    private AlertDialog createStartWalkDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
         builder.setTitle(R.string.start_walking_title);
         builder.setMessage(R.string.start_walking_message);
@@ -125,6 +178,7 @@ public class InfoPetExercise extends Fragment {
             } else {
                 InfoPetFragment.getCommunication().startWalking(walkingPetNames);
                 dialog.dismiss();
+                updateWalkingButton();
             }
         });
 
