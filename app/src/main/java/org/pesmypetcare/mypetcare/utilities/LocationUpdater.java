@@ -15,7 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 
-
+import java.util.Objects;
 
 
 /**
@@ -29,13 +29,33 @@ public class LocationUpdater {
     private static Context context;
     private static LocationManager locationManager;
 
+    private static LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            updateCoordinates(location);
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            // Not implemented
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            // Not implemented
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            // Not implemented
+        }
+    };
 
     /**
      * Start a walk.
      */
     public static void startRoute() {
         updateLocation();
-
     }
 
     /**
@@ -67,34 +87,13 @@ public class LocationUpdater {
             return null;
         }
         locationManager  = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        assert locationManager != null;
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        String loc = location.getLatitude() + " " + location.getLongitude();
+        Location location = Objects.requireNonNull(locationManager).getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        String loc = Objects.requireNonNull(location).getLatitude() + " " + location.getLongitude();
         String[] splitPos = loc.split(" ");
         return new LatLng(Double.parseDouble(splitPos[LAT]), Double.parseDouble(splitPos[LNG]));
     }
 
-    static LocationListener locationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            updateCoordinates(location);
-        }
 
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-    };
 
     /**
      * Update the coordinates of the last location detected.

@@ -314,18 +314,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
 
         editor.apply();
-        getMyLocations();
+        //getMyLocations();
 
         // Uncomment the following statements to remove all the entries for walking that are stored in SharedPreferences
-        /*SharedPreferences walkingSharedPreferences = getSharedPreferences(WALKING_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = walkingSharedPreferences.edit();
-        editor.remove(START_WALKING_DATE_TIME);
+        SharedPreferences walkingSharedPreferences = getSharedPreferences(WALKING_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = walkingSharedPreferences.edit();
+        editor2.remove(START_WALKING_DATE_TIME);
 
         for (Map.Entry<String, ?> entry : walkingSharedPreferences.getAll().entrySet()) {
-            editor.remove(entry.getKey());
+            editor2.remove(entry.getKey());
         }
 
-        editor.apply();*/
+        editor2.apply();
     }
 
     /**
@@ -433,6 +433,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         editor.putString(username + "_" + index, latitude + " " + longitude);
         editor.putInt(username, index + 1);
         editor.apply();
+
+        System.out.println("LAT " + latitude + " LNG " + longitude);
     }
 
 
