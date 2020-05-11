@@ -161,6 +161,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.pets.Walk;
+import org.pesmypetcare.mypetcare.features.pets.WalkPets;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
@@ -2063,8 +2064,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public List<Walk> getWalkingRoutes() {
-        List<Walk> walks = new ArrayList<>();
+    public List<WalkPets> getWalkingRoutes() {
+        List<WalkPets> walks = new ArrayList<>();
         Walk walk = new Walk("A walk on the beach", "Quite and beautiful",
             DateTime.Builder.buildFullString("2020-05-10T10:00:00"),
             DateTime.Builder.buildFullString("2020-05-10T11:00:00"),
@@ -2072,7 +2073,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 new LatLng(41.219537, 1.721221), new LatLng(41.219426, 1.721282), new LatLng(41.219392, 1.721411),
                 new LatLng(41.219404, 1.721516), new LatLng(41.218867, 1.721867)));
 
-        walks.add(walk);
+        WalkPets walkPets = new WalkPets(walk);
+
+        for (Pet pet : user.getPets()) {
+            walkPets.addPet(pet);
+        }
+
+        walks.add(walkPets);
         return walks;
     }
 }

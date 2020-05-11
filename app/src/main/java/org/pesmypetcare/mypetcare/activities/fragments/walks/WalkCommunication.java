@@ -1,6 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.fragments.walks;
 
-import org.pesmypetcare.mypetcare.features.pets.Walk;
+import org.pesmypetcare.mypetcare.features.pets.WalkPets;
 
 import java.util.List;
 
@@ -13,5 +13,5 @@ public interface WalkCommunication {
      * Get the walking routes.
      * @return The walking routes
      */
-    List<Walk> getWalkingRoutes();
+    List<WalkPets> getWalkingRoutes();
 }
