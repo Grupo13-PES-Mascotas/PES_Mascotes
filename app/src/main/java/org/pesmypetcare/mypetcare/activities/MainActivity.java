@@ -1572,7 +1572,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trNewVetVisit.setVetVisit(vetVisit);
         try {
             trNewVetVisit.execute();
-        } catch (VetVisitAlreadyExistingException | NotPetOwnerException e) {
+        } catch (VetVisitAlreadyExistingException | NotPetOwnerException | InterruptedException | ExecutionException e)
+        {
             e.printStackTrace();
         }
     }
@@ -1587,8 +1588,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
         try {
             trUpdateVetVisit.execute();
-        } catch (NotPetOwnerException e) {
-
+        } catch (NotPetOwnerException | ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
     }
           
@@ -1630,7 +1631,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteVetVisit.setVetVisit(vetVisit);
         try {
             trDeleteVetVisit.execute();
-        } catch (NotPetOwnerException e) {
+        } catch (NotPetOwnerException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -1656,7 +1657,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void obtainAllPetVetVisits(Pet pet) {
         trObtainAllVetVisits.setUser(user);
         trObtainAllVetVisits.setPet(pet);
-        trObtainAllVetVisits.execute();
+        try {
+            trObtainAllVetVisits.execute();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

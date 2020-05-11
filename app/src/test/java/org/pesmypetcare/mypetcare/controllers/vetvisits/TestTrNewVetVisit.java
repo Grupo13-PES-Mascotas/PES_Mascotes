@@ -9,7 +9,9 @@ import org.pesmypetcare.mypetcare.features.pets.VetVisitAlreadyExistingException
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubVetVisitsManagerService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -33,7 +35,8 @@ public class TestTrNewVetVisit {
     }
 
     @Test(expected = VetVisitAlreadyExistingException.class)
-    public void shouldNotAddVetVisitIfAlreadyExisting() throws VetVisitAlreadyExistingException, NotPetOwnerException {
+    public void shouldNotAddVetVisitIfAlreadyExisting() throws VetVisitAlreadyExistingException, NotPetOwnerException,
+        ExecutionException, InterruptedException {
         trNewVetVisit.setUser(user);
         trNewVetVisit.setPet(pet);
         trNewVetVisit.setVetVisit(vetVisit);
@@ -42,7 +45,8 @@ public class TestTrNewVetVisit {
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotAddVetVisitIfNotPetOwner() throws VetVisitAlreadyExistingException, NotPetOwnerException {
+    public void shouldNotAddVetVisitIfNotPetOwner() throws VetVisitAlreadyExistingException, NotPetOwnerException,
+        ExecutionException, InterruptedException {
         trNewVetVisit.setUser(user);
         pet.setOwner(new User("Tomas Roncero", "tomasAs@gmail.com", "1235"));
         trNewVetVisit.setPet(pet);
@@ -51,7 +55,8 @@ public class TestTrNewVetVisit {
     }
 
     @Test
-    public void shouldAddVetVisit() throws VetVisitAlreadyExistingException, NotPetOwnerException {
+    public void shouldAddVetVisit() throws VetVisitAlreadyExistingException, NotPetOwnerException, ExecutionException,
+        InterruptedException {
         trNewVetVisit.setUser(user);
         trNewVetVisit.setPet(pet);
         trNewVetVisit.setVetVisit(vetVisit);

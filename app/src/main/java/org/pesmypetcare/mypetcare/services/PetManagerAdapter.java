@@ -2,7 +2,6 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
-import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
@@ -23,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class PetManagerAdapter implements PetManagerService {
     private static final String A_REALLY_PRETTY_LOCATION = "A really pretty Location";
@@ -178,7 +175,6 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public List<Pet> findPetsByOwner(User user) throws PetRepeatException {
-        List<org.pesmypetcare.usermanager.datacontainers.pet.Pet> userPets = null;
         List<org.pesmypetcare.usermanagerlib.datacontainers.Pet> userPets = null;
         try {
             userPets = ServiceLocator.getInstance().getPetManagerClient().getAllPets(user.getToken(),

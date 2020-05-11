@@ -6,6 +6,8 @@ import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.VetVisitsManagerService;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * @author Xavier Campos
  */
@@ -67,7 +69,7 @@ public class TrUpdateVetVisit {
     /**
      * Executes the transaction.
      */
-    public void execute() throws NotPetOwnerException {
+    public void execute() throws NotPetOwnerException, ExecutionException, InterruptedException {
         result = false;
         if (!user.getUsername().equals(pet.getOwner().getUsername())) {
             throw new NotPetOwnerException();

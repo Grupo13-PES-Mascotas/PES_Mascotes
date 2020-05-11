@@ -7,7 +7,9 @@ import org.pesmypetcare.mypetcare.features.pets.VetVisit;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubVetVisitsManagerService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -33,7 +35,8 @@ public class TestTrUpdateVetVisit {
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotUpdateVetVisitIfNotPetOwner() throws NotPetOwnerException {
+    public void shouldNotUpdateVetVisitIfNotPetOwner() throws NotPetOwnerException, ExecutionException,
+        InterruptedException {
         trUpdateVetVisit.setUser(user);
         pet.setOwner(new User("Tomas Roncero", "tomasAS@gmail.com", "1235"));
         trUpdateVetVisit.setPet(pet);
@@ -42,7 +45,7 @@ public class TestTrUpdateVetVisit {
     }
 
     @Test
-    public void shouldUpdateVetVisitBody() throws NotPetOwnerException {
+    public void shouldUpdateVetVisitBody() throws NotPetOwnerException, ExecutionException, InterruptedException {
         trUpdateVetVisit.setUser(user);
         trUpdateVetVisit.setPet(pet);
         vetVisit.setReason(REASON);
@@ -52,7 +55,7 @@ public class TestTrUpdateVetVisit {
     }
 
     @Test
-    public void shouldUpdateVetVisitKey() throws NotPetOwnerException {
+    public void shouldUpdateVetVisitKey() throws NotPetOwnerException, ExecutionException, InterruptedException {
         trUpdateVetVisit.setUser(user);
         trUpdateVetVisit.setPet(pet);
         trUpdateVetVisit.setVetVisit(vetVisit);
