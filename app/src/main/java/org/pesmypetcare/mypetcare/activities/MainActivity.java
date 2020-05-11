@@ -99,6 +99,8 @@ import org.pesmypetcare.mypetcare.controllers.meals.TrDeleteMeal;
 import org.pesmypetcare.mypetcare.controllers.meals.TrNewPetMeal;
 import org.pesmypetcare.mypetcare.controllers.meals.TrObtainAllPetMeals;
 import org.pesmypetcare.mypetcare.controllers.meals.TrUpdateMeal;
+import org.pesmypetcare.mypetcare.controllers.medicalprofile.MedicalProfileControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrAddNewVaccination;
 import org.pesmypetcare.mypetcare.controllers.medication.MedicationControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.medication.TrDeleteMedication;
 import org.pesmypetcare.mypetcare.controllers.medication.TrNewPetMedication;
@@ -160,6 +162,7 @@ import org.pesmypetcare.mypetcare.features.pets.NotExistingExerciseException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
+import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
@@ -271,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrAddExercise trAddExercise;
     private TrDeleteExercise trDeleteExercise;
     private TrUpdateExercise trUpdateExercise;
+    private TrAddNewVaccination trAddNewVaccination;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -567,10 +571,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeCommunityControllers();
         initializeMedicationControllers();
         initializeExerciseControllers();
+        initializeMedicalProfileControllers();
     }
 
     /**
-     * Initialize the exercise controllers
+     * Initialize the medical profile controllers.
+     */
+    private void initializeMedicalProfileControllers() {
+        trAddNewVaccination = MedicalProfileControllersFactory.createTrAddNewVaccination();
+    }
+
+    /**
+     * Initialize the exercise controllers.
      */
     private void initializeExerciseControllers() {
         trAddExercise = ExerciseControllersFactory.createTrAddExercise();
@@ -1586,7 +1598,21 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trUpdateExercise.execute();
-        } catch (NotPetOwnerException | InvalidPeriodException | NotExistingExerciseException | ExecutionException | InterruptedException e) {
+        } catch (NotPetOwnerException | InvalidPeriodException | NotExistingExerciseException | ExecutionException |
+            InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addVaccination(Pet pet, String vaccinationDescription, DateTime vaccinationDate) {
+        Vaccination vaccination = new Vaccination(vaccinationDescription, vaccinationDate);
+        trAddNewVaccination.setUser(user);
+        trAddNewVaccination.setPet(pet);
+        trAddNewVaccination.setVaccination(vaccination);
+        try {
+            trAddNewVaccination.execute();
+        } catch (NotPetOwnerException e) {
             e.printStackTrace();
         }
     }

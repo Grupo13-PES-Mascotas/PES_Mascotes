@@ -16,6 +16,10 @@ public class TrAddNewVaccination {
     private Vaccination vaccination;
     private boolean result;
 
+    public TrAddNewVaccination(MedicalProfileManagerService medicalProfileManagerService) {
+        this.medicalProfileManagerService = medicalProfileManagerService;
+    }
+
     /**
      * Setter of the owner of the pet.
      * @param user The owner of the pet.

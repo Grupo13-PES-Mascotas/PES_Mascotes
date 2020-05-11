@@ -194,4 +194,12 @@ public interface InfoPetCommunication {
      */
     void updateExercise(Pet pet, String txtExerciseName, String txtDescription, DateTime originalStartDateTime,
                         DateTime startExerciseDateTime, DateTime endExerciseDateTime);
+
+    /**
+     * Add an vaccination to the pet.
+     * @param pet The pet to whom the vaccination has to be added
+     * @param vaccinationDescription The description of the vaccination that has to be added to the pet
+     * @param vaccinationDate The date of the vaccination that has to be added to the pet
+     */
+    void addVaccination(Pet pet, String vaccinationDescription, DateTime vaccinationDate);
 }
