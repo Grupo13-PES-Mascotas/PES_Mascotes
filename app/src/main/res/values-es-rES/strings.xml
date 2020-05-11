@@ -284,7 +284,5 @@
     <string name="update_exercise_title">Actualizar ejercicio</string>
     <string name="update_exercice_message">Actualiza la información del ejercicio</string>
     <string name="error_invalid_period">La fecha de inicio tiene que ser anterior a la de finalización</string>
-    <string name="vaccination_date">Fecha de la vacuna</string>
-    <string name="vaccination_description">Descripción de la vacuna</string>
 
 </resources>

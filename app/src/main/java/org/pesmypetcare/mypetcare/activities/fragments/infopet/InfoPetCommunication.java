@@ -9,6 +9,7 @@ import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
+import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
@@ -190,7 +191,7 @@ public interface InfoPetCommunication {
      * @param txtExerciseName The exercise name
      * @param txtDescription The exercise description
      * @param startExerciseDateTime The exercise start DateTime
-     * @param endExerciseDateTime The exercise end DateTime
+     * @param endExerciseDateTime The exercise end DateTime-
      */
     void updateExercise(Pet pet, String txtExerciseName, String txtDescription, DateTime originalStartDateTime,
                         DateTime startExerciseDateTime, DateTime endExerciseDateTime);
@@ -201,5 +202,27 @@ public interface InfoPetCommunication {
      * @param vaccinationDescription The description of the vaccination that has to be added to the pet
      * @param vaccinationDate The date of the vaccination that has to be added to the pet
      */
-    void addVaccination(Pet pet, String vaccinationDescription, DateTime vaccinationDate);
+    void addPetVaccination(Pet pet, String vaccinationDescription, DateTime vaccinationDate);
+
+    /**
+     * Updates an vaccination of the pet.
+     * @param pet The pet from whom we have to update the vaccination
+     * @param vaccination The vaccination with the body updated
+     * @param newDate The new date of the vaccination
+     * @param updatesDate A boolean that indicates whether the date has to be updated or not
+     */
+    void updatePetVaccination(Pet pet, Vaccination vaccination, String newDate, boolean updatesDate);
+
+    /**
+     * Deletes an vaccination from the given pet.
+     * @param pet The pet from where the vaccination has to be deleted
+     * @param vaccination The vaccination that has to be deleted
+     */
+    void deletePetVaccination(Pet pet, Vaccination vaccination);
+
+    /**
+     * Obtains all vaccinations from a given pet.
+     * @param pet The pet from where we have to obtain all the vaccinations
+     */
+    void obtainAllPetVaccinations(Pet pet);
 }

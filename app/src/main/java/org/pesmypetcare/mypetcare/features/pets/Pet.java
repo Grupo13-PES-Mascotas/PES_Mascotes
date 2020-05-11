@@ -452,7 +452,7 @@ public class Pet {
      * Get the list of vaccinations of the pet.
      * @return The list of vaccinations of the pet
      */
-    public List<Event> getVaccinationvents() {
+    public List<Event> getVaccinationEvents() {
         ArrayList<Event> vaccinationEvents = new ArrayList<>();
 
         for (Event event : events) {

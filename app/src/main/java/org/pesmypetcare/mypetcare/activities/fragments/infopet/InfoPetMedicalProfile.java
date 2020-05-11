@@ -274,7 +274,7 @@ public class InfoPetMedicalProfile extends Fragment {
         DateTime vaccinationDate = getDateTime();
         String description = Objects.requireNonNull(inputVaccinationDescription.getText()).toString();
         vaccination = new Vaccination(description, vaccinationDate);
-        InfoPetFragment.getCommunication().addVaccination(pet, description, vaccinationDate);
+        InfoPetFragment.getCommunication().addPetVaccination(pet, description, vaccinationDate);
     }
 
     /**
