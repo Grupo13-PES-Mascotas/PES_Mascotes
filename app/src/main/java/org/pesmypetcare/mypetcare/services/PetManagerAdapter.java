@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
@@ -22,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class PetManagerAdapter implements PetManagerService {
     @Override
@@ -77,15 +80,22 @@ public class PetManagerAdapter implements PetManagerService {
             pet.getPathologies(), pet.getRecommendedDailyKiloCalories(), pet.getWashFrequency());*/
 
         org.pesmypetcare.usermanager.datacontainers.pet.Pet registerPet = getRegisterPet(pet);
-        System.out.println("https://pes-my-pet-care.herokuapp.com/pet/" + user.getUsername() + "/" + pet.getName());
-        System.out.println("Pet Body " + registerPet.getBody());
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getPetManagerClient().createPetSync(user.getToken(), user.getUsername(),
+                    registerPet);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
 
-        try {
+        /*try {
             ServiceLocator.getInstance().getPetManagerClient()
                 .createPet(user.getToken(), user.getUsername(), registerPet);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return true;
     }
