@@ -38,4 +38,8 @@ public class WalkPets {
     public List<Pet> getPets() {
         return pets;
     }
+
+    public String toString() {
+        return "{ " + getWalk().toString() + ", " +  getPets().toString() + " }";
+    }
 }
