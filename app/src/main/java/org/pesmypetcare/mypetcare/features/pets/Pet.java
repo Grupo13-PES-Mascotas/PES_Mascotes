@@ -448,6 +448,21 @@ public class Pet {
         return mealEvents;
     }
 
+    /**
+     * Get the list of vaccinations of the pet.
+     * @return The list of vaccinations of the pet
+     */
+    public List<Event> getVaccinationvents() {
+        ArrayList<Event> vaccinationEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof Vaccination) {
+                vaccinationEvents.add(event);
+            }
+        }
+        return vaccinationEvents;
+    }
+
     @NonNull
     /**
      * Get the list of washes of the pet.
