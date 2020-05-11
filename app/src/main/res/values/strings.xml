@@ -137,6 +137,9 @@
     <string name="wash_interval_switch">Show only last week washes</string>
     <string name="add_meal_button">Add meal</string>
     <string name="add_wash_button">Add wash</string>
+    <string name="add_vaccinations_button">Add vaccinations</string>
+    <string name="delete_current_vaccination">Delete vaccination</string>
+    <string name="add_illnesses_button">Add illnesses</string>
     <string name="meal_name">Meal Name</string>
     <string name="meal_kcal">Meal Kilocalories</string>
     <string name="meal_date">Meal Date</string>

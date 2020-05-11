@@ -138,6 +138,9 @@
     <string name="wash_interval_switch">Mostrar només rentats d\'aquesta setmana</string>
     <string name="add_meal_button">Afegir àpat</string>
     <string name="add_wash_button">Afegir rentat</string>
+    <string name="add_vaccinations_button">Afegir vacuna</string>
+    <string name="add_illnesses_button">Afegir malaltia</string>
+    <string name="delete_current_vaccination">Eliminar vacuna</string>
     <string name="meal_name">Nom de l\'àpat</string>
     <string name="meal_kcal">Quilories de l\'àpat</string>
     <string name="meal_date">Data de l\'àpat</string>

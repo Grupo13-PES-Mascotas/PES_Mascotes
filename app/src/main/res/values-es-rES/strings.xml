@@ -225,6 +225,8 @@
     <string name="fb_login_protocol_scheme">fb685773595491268</string>
     <string name="unsubscribe_owner">No puedes eliminar la subscripción de tu propio grupo</string>
     <string name="add_medication_button">Añadir medicación</string>
+    <string name="add_vaccinations_button">Añadir vacuna</string>
+    <string name="add_illnesses_button">Añadir enfermadad</string>
     <string name="medication_name">Nombre de la medicación</string>
     <string name="medication_duration">Duración de la medicación</string>
     <string name="medication_inidate">Fecha de inicio de la medicación</string>
