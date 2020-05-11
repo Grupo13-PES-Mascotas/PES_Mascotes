@@ -57,12 +57,13 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
     }
 
     @Override
-    public void updateVetVisitKey(User user, Pet pet, String newDate, DateTime visitDate) throws ExecutionException, InterruptedException {
+    public void updateVetVisitKey(User user, Pet pet, String newDate, DateTime visitDate) throws ExecutionException,
+        InterruptedException {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
-        VetVisitData vetVisitData = ServiceLocator.getInstance().getPetCollectionsManagerClient().getVetVisit
-            (accessToken, owner, petName, visitDate.toString());
+        VetVisitData vetVisitData = ServiceLocator.getInstance().getPetCollectionsManagerClient().getVetVisit(
+            accessToken, owner, petName, visitDate.toString());
         org.pesmypetcare.usermanagerlib.datacontainers.VetVisit oldLibraryVisit =
             new org.pesmypetcare.usermanagerlib.datacontainers.VetVisit(visitDate.toString(), vetVisitData);
         org.pesmypetcare.usermanagerlib.datacontainers.VetVisit newLibraryVisit =
@@ -75,7 +76,8 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
     }
 
     @Override
-    public void updateVetVisitBody(User user, Pet pet, VetVisit vetVisit) throws ExecutionException, InterruptedException {
+    public void updateVetVisitBody(User user, Pet pet, VetVisit vetVisit) throws ExecutionException,
+        InterruptedException {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();

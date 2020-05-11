@@ -58,7 +58,8 @@ public class TrNewVetVisit {
     /**
      * Executes the transaction.
      */
-    public void execute() throws VetVisitAlreadyExistingException, NotPetOwnerException, ExecutionException, InterruptedException {
+    public void execute() throws VetVisitAlreadyExistingException, NotPetOwnerException, ExecutionException,
+        InterruptedException {
         result = false;
         if (!pet.getOwner().getUsername().equals(user.getUsername())) {
             throw new NotPetOwnerException();

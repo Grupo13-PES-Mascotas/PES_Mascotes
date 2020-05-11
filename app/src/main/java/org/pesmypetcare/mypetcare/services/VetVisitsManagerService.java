@@ -28,7 +28,8 @@ public interface VetVisitsManagerService {
      * @param pet The pet where the vet visits has to be added
      * @param vetVisit The vet visit that has to be added to the pet
      */
-    void createVetVisit(User user, Pet pet, VetVisit vetVisit) throws VetVisitAlreadyExistingException, ExecutionException, InterruptedException;
+    void createVetVisit(User user, Pet pet, VetVisit vetVisit) throws VetVisitAlreadyExistingException,
+        ExecutionException, InterruptedException;
 
     /**
      * Deletes the vet visit from the given pet.
@@ -45,7 +46,8 @@ public interface VetVisitsManagerService {
      * @param newDate The new date to set to the visit
      * @param visitDate The current date of the visit
      */
-    void updateVetVisitKey(User user, Pet pet, String newDate, DateTime visitDate) throws ExecutionException, InterruptedException;
+    void updateVetVisitKey(User user, Pet pet, String newDate, DateTime visitDate) throws ExecutionException,
+        InterruptedException;
 
     /**
      * Updates the body of the given visit.
