@@ -271,7 +271,6 @@
     <string name="error_missing_start_date_time">Missing start date time</string>
     <string name="exercise_walking">Walking</string>
 
-
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open" translatable="false">Open</string>
     <string name="navigation_view_closed" translatable="false">Closed</string>

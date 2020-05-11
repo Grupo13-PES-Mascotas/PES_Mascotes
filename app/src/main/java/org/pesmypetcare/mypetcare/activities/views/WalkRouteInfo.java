@@ -1,18 +1,24 @@
 package org.pesmypetcare.mypetcare.activities.views;
 
 import android.content.Context;
-import android.widget.LinearLayout;
+import android.util.AttributeSet;
+import android.view.View;
+
+import androidx.annotation.Nullable;
 
 import org.pesmypetcare.mypetcare.features.pets.WalkPets;
 
 /**
  * @author Albert Pinto
  */
-public class WalkRouteInfo {
-    private LinearLayout infoLayout;
+public class WalkRouteInfo extends View {
 
-    private WalkRouteInfo(Context context, WalkPets walkPets) {
-        infoLayout = new LinearLayout(context, null);
+    private WalkRouteInfo(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    private WalkRouteInfo(Context context, @Nullable AttributeSet attrs, WalkPets walkPets) {
+        super(context, attrs);
     }
 
     public static class Builder {
@@ -32,7 +38,7 @@ public class WalkRouteInfo {
         }
 
         public WalkRouteInfo build() {
-            return new WalkRouteInfo(context, walkPets);
+            return new WalkRouteInfo(context, null, walkPets);
         }
     }
 }

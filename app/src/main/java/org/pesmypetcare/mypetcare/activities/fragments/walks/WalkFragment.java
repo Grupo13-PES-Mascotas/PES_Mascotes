@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -20,28 +21,31 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
 
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.activities.views.WalkRouteInfo;
 import org.pesmypetcare.mypetcare.databinding.FragmentWalkBinding;
 import org.pesmypetcare.mypetcare.features.pets.WalkPets;
 import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class WalkFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPolylineClickListener,
     GoogleMap.OnInfoWindowCloseListener, GoogleMap.InfoWindowAdapter {
     private static final float ZOOM = 16.0f;
+    private static final String LESS_THAN_A_MINUTE = "<1 min";
     private FragmentWalkBinding binding;
     private MapView mapView;
     private GoogleMap googleMap;
     private Map<Polyline, WalkPets> polylines;
     private WalkCommunication communication;
-    private WalkRouteInfo walkRouteInfo;
+    private WalkPets selectedWalkPets;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentWalkBinding.inflate(inflater, container, false);
         communication = (WalkCommunication) getActivity();
+        polylines = new HashMap<>();
 
         mapView = binding.mapView;
         mapView.onCreate(savedInstanceState);
@@ -61,7 +65,6 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         googleMap.setOnPolylineClickListener(this);
         googleMap.setOnInfoWindowCloseListener(this);
         googleMap.setInfoWindowAdapter(this);
-        //walkRouteInfo = new WalkRouteInfo();
 
         List<WalkPets> walkPetsList = communication.getWalkingRoutes();
 
@@ -108,6 +111,7 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
 
         MarkerOptions options = new MarkerOptions().position(middlePoint).title("Test title").snippet("Test snippet");
         Marker marker = googleMap.addMarker(options);
+        selectedWalkPets = polylines.get(polyline);
         marker.showInfoWindow();
     }
 
@@ -123,6 +127,36 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public View getInfoContents(Marker marker) {
-        return null;
+        View walkRoute = getLayoutInflater().inflate(R.layout.walk_route, null);
+        TextView name = walkRoute.findViewById(R.id.walkRouteName);
+        name.setText(selectedWalkPets.getWalk().getName());
+
+        TextView description = walkRoute.findViewById(R.id.walkRouteDescription);
+        description.setText(selectedWalkPets.getWalk().getDescription());
+
+        TextView duration = walkRoute.findViewById(R.id.walkRouteDuration);
+        int minutes = getMinutes(selectedWalkPets.getWalk().getDateTime(), selectedWalkPets.getWalk().getEndTime());
+
+        if (minutes < 0) {
+            duration.setText(LESS_THAN_A_MINUTE);
+        } else {
+            String strMinutes = minutes + " min";
+            duration.setText(strMinutes);
+        }
+
+        return walkRoute;
+    }
+
+    /**
+     * Get the minutes duration.
+     * @param startDateTime The start DateTime
+     * @param endDateTime The end DateTime
+     * @return The duration in minutes
+     */
+    private int getMinutes(DateTime startDateTime, DateTime endDateTime) {
+        int startMinutes = startDateTime.getHour() * 60 + startDateTime.getMinutes();
+        int endMinutes = endDateTime.getHour() * 60 + endDateTime.getMinutes();
+
+        return endMinutes - startMinutes;
     }
 }
