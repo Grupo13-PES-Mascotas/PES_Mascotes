@@ -283,7 +283,8 @@
     <string name="update_exercise_title">Update exercise</string>
     <string name="update_exercice_message">Update the data of the exercise</string>
     <string name="error_invalid_period">The start must be previous to the end one</string>
-
+    <string name="vaccination_date">Vaccination date</string>
+    <string name="vaccination_description">Vaccination description</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open" translatable="false">Open</string>

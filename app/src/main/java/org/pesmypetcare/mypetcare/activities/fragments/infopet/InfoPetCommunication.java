@@ -9,7 +9,6 @@ import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
-import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
@@ -197,25 +196,10 @@ public interface InfoPetCommunication {
                         DateTime startExerciseDateTime, DateTime endExerciseDateTime);
 
     /**
-     * Update an vaccination of the pet.
-     * @param pet The pet
-     * @param vaccination The vaccination
-     * @param newDate The new date
-     * @param updatesDate True if the date has to be updated or false otherwise
+     * Add an vaccination to the pet.
+     * @param pet The pet to whom the vaccination has to be added
+     * @param vaccinationDescription The description of the vaccination that has to be added to the pet
+     * @param vaccinationDate The date of the vaccination that has to be added to the pet
      */
-    void updatePetVaccination(Pet pet, Vaccination vaccination, String newDate, boolean updatesDate);
-
-    /**
-     * Deletes a meal from a pet.
-     * @param pet The pet from which the meal has to be deleted
-     * @param vaccination The vaccination that has to be deleted from the pet
-     */
-    void deletePetVaccination(Pet pet, Vaccination vaccination);
-
-    /**
-     * Adds a new vaccination to the pet.
-     * @param pet The pet to which we want to add the vaccination
-     * @param vaccination The vaccination that has to be added
-     */
-    void addPetVaccition(Pet pet, Vaccination vaccination);
+    void addVaccination(Pet pet, String vaccinationDescription, DateTime vaccinationDate);
 }
