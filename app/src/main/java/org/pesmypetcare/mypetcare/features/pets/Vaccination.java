@@ -4,7 +4,7 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 /**
- * @author Xavier Campos
+ * @author Xavier Campos & Enric Hernando Puerta
  */
 public class Vaccination extends Event{
     private static final String SPACE = " ";
