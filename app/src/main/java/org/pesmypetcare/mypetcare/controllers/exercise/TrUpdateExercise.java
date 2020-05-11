@@ -8,9 +8,10 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Albert Pinto
@@ -88,7 +89,7 @@ public class TrUpdateExercise {
     /**
      * Execute the transaction.
      */
-    public void execute() throws NotPetOwnerException, NotExistingExerciseException, InvalidPeriodException {
+    public void execute() throws NotPetOwnerException, NotExistingExerciseException, InvalidPeriodException, ExecutionException, InterruptedException {
         if (!pet.isOwner(user)) {
             throw new NotPetOwnerException();
         } else if (startDateTime.compareTo(endDateTime) > 0 || isDifferentDate(startDateTime, endDateTime)) {

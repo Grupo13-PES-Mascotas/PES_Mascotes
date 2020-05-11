@@ -176,8 +176,8 @@ import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
-import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -1127,7 +1127,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void addNewPet(Bundle petInfo) {
         Pet pet = new Pet(petInfo);
-
         trRegisterNewPet.setUser(user);
         trRegisterNewPet.setPet(pet);
 
@@ -1604,7 +1603,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trAddExercise.execute();
-        } catch (NotPetOwnerException | InvalidPeriodException e) {
+        } catch (NotPetOwnerException | InvalidPeriodException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
@@ -1619,7 +1618,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trDeleteExercise.execute();
-        } catch (NotPetOwnerException | NotExistingExerciseException e) {
+        } catch (NotPetOwnerException | NotExistingExerciseException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -1648,7 +1647,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trUpdateExercise.execute();
-        } catch (NotPetOwnerException | InvalidPeriodException | NotExistingExerciseException e) {
+        } catch (NotPetOwnerException | InvalidPeriodException | NotExistingExerciseException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }

@@ -25,7 +25,7 @@ import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -242,7 +242,7 @@ public class InfoPetWashing extends Fragment {
         wash.setDuration(duration);
         InfoPetFragment.getCommunication().updatePetWash(pet, wash, newDate, updatesDate);
         if (updatesDate) {
-            wash.setWashDate(DateTime.Builder.buildFullString(newDate));
+            wash.setWashDate(DateTime.Builder.buildDateString(newDate));
         }
     }
 

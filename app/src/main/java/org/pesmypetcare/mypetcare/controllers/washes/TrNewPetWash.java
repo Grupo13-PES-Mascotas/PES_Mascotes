@@ -7,6 +7,8 @@ import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.WashManagerService;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * @author Enric Hernando
  */
@@ -62,7 +64,11 @@ public class TrNewPetWash {
             throw new WashAlreadyExistingException();
         }
         pet.addEvent(wash);
-        washManagerService.createWash(user, pet, wash);
+        try {
+            washManagerService.createWash(user, pet, wash);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
         result = true;
     }
 
