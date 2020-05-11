@@ -275,7 +275,7 @@ public class PetManagerAdapter implements PetManagerService {
     @Override
     public void addExercise(User user, Pet pet, Exercise exercise) throws ExecutionException, InterruptedException {
         ExerciseData libraryExerciseData = new ExerciseData(exercise.getName(), exercise.getDescription(),
-                exercise.getEndTime().toString(), null);
+                exercise.getEndTime().toString());
         org.pesmypetcare.usermanagerlib.datacontainers.Exercise libraryExercise =
                 new org.pesmypetcare.usermanagerlib.datacontainers.Exercise(exercise.getDateTime().toString(), libraryExerciseData);
         ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
@@ -293,7 +293,7 @@ public class PetManagerAdapter implements PetManagerService {
         ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(user.getToken(),
                 user.getUsername(), pet.getName(), PetData.EXERCISES, originalDateTime.toString());
         ExerciseData libraryExerciseData = new ExerciseData(exercise.getName(), exercise.getDescription(),
-                exercise.getEndTime().toString(), null);
+                exercise.getEndTime().toString());
         org.pesmypetcare.usermanagerlib.datacontainers.Exercise libraryExercise =
                 new org.pesmypetcare.usermanagerlib.datacontainers.Exercise(exercise.getDateTime().toString(), libraryExerciseData);
         ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
@@ -319,10 +319,6 @@ public class PetManagerAdapter implements PetManagerService {
         pet.setRecommendedDailyKiloCalories(petData.getRecommendedKcal());
         pet.setBreed(petData.getBreed());
         pet.setPathologies(petData.getPathologies());
-
-        pet.addExercise(new Exercise("Frisbee", "Playing at the beach",
-            DateTime.Builder.buildFullString("2020-05-04T10:00:00"),
-            DateTime.Builder.buildFullString("2020-05-04T11:00:00")));
 
         return pet;
     }
