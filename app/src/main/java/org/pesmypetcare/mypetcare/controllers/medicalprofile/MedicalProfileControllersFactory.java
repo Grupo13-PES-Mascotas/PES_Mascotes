@@ -14,8 +14,8 @@ public class MedicalProfileControllersFactory {
      * Method responsible for creating the transaction to add a new vaccination to a pet.
      * @return The transaction to add a new vaccination to a pet
      */
-    public static TrAddNewVaccination createTrAddNewVaccination() {
-        return new TrAddNewVaccination(new MedicalProfileManagerAdapter());
+    public static TrAddNewPetVaccination createTrAddNewVaccination() {
+        return new TrAddNewPetVaccination(new MedicalProfileManagerAdapter());
     }
 
     /**
@@ -24,5 +24,13 @@ public class MedicalProfileControllersFactory {
      */
     public static TrObtainAllPetVaccinations createTrObtainAllPetVaccinations() {
         return new TrObtainAllPetVaccinations(new MedicalProfileManagerAdapter());
+    }
+
+    /**
+     * Method responsible for creating the transaction to delete a vaccination from a pet.
+     * @return The transaction to delete a vaccination from a pet
+     */
+    public static TrDeletePetVaccination createTrDeletePetVaccinations() {
+        return new TrDeletePetVaccination(new MedicalProfileManagerAdapter());
     }
 }

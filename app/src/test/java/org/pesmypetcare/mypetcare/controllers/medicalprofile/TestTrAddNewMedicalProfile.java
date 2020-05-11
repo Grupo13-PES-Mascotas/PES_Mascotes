@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
  * @author Xavier Campos
  */
 public class TestTrAddNewMedicalProfile {
-    private TrAddNewVaccination trAddNewVaccination;
+    private TrAddNewPetVaccination trAddNewPetVaccination;
     private StubMedicalProfileManagerService stubMedicalProfileManagerService;
     private User user;
     private Pet pet;
@@ -28,7 +28,7 @@ public class TestTrAddNewMedicalProfile {
     @Before
     public void setUp() {
         stubMedicalProfileManagerService = new StubMedicalProfileManagerService();
-        trAddNewVaccination = new TrAddNewVaccination(stubMedicalProfileManagerService);
+        trAddNewPetVaccination = new TrAddNewPetVaccination(stubMedicalProfileManagerService);
         user = new User("Manolo Lama", "lamacope@gmail.com", "1234");
         pet = new Pet("Bichinho");
         pet.setOwner(user);
@@ -38,31 +38,31 @@ public class TestTrAddNewMedicalProfile {
     @Test(expected = VaccinationAlreadyExistingException.class)
     public void shouldNotAddVaccinationIfAlreadyExisting() throws VaccinationAlreadyExistingException,
         NotPetOwnerException, ExecutionException, InterruptedException {
-        trAddNewVaccination.setUser(user);
-        trAddNewVaccination.setPet(pet);
-        trAddNewVaccination.setVaccination(vaccination);
-        trAddNewVaccination.execute();
-        trAddNewVaccination.execute();
+        trAddNewPetVaccination.setUser(user);
+        trAddNewPetVaccination.setPet(pet);
+        trAddNewPetVaccination.setVaccination(vaccination);
+        trAddNewPetVaccination.execute();
+        trAddNewPetVaccination.execute();
     }
 
     @Test(expected = NotPetOwnerException.class)
     public void shouldNotAddVaccinationIfNotPetOwner() throws VaccinationAlreadyExistingException,
         NotPetOwnerException, ExecutionException, InterruptedException {
-        trAddNewVaccination.setUser(user);
+        trAddNewPetVaccination.setUser(user);
         pet.setOwner(new User("Tomas Roncero", "tomasAs@gmail.com", "1235"));
-        trAddNewVaccination.setPet(pet);
-        trAddNewVaccination.setVaccination(vaccination);
-        trAddNewVaccination.execute();
+        trAddNewPetVaccination.setPet(pet);
+        trAddNewPetVaccination.setVaccination(vaccination);
+        trAddNewPetVaccination.execute();
     }
 
     @Test
     public void shouldAddVaccination() throws VaccinationAlreadyExistingException, NotPetOwnerException,
         ExecutionException, InterruptedException {
-        trAddNewVaccination.setUser(user);
-        trAddNewVaccination.setPet(pet);
-        trAddNewVaccination.setVaccination(vaccination);
+        trAddNewPetVaccination.setUser(user);
+        trAddNewPetVaccination.setPet(pet);
+        trAddNewPetVaccination.setVaccination(vaccination);
         int nVisits = StubMedicalProfileManagerService.nVaccinations;
-        trAddNewVaccination.execute();
+        trAddNewPetVaccination.execute();
         assertEquals("The number of vaccinations should have increased by 1",
             nVisits + 1, StubMedicalProfileManagerService.nVaccinations);
     }

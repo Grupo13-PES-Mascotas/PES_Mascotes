@@ -10,14 +10,14 @@ import org.pesmypetcare.mypetcare.services.MedicalProfileManagerService;
 /**
  * @author Xavier Campos
  */
-public class TrAddNewVaccination {
+public class TrAddNewPetVaccination {
     private MedicalProfileManagerService medicalProfileManagerService;
     private User user;
     private Pet pet;
     private Vaccination vaccination;
     private boolean result;
 
-    public TrAddNewVaccination(MedicalProfileManagerService medicalProfileManagerService) {
+    public TrAddNewPetVaccination(MedicalProfileManagerService medicalProfileManagerService) {
         this.medicalProfileManagerService = medicalProfileManagerService;
     }
 

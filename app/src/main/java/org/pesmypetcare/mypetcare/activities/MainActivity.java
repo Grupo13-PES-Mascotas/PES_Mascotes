@@ -100,7 +100,8 @@ import org.pesmypetcare.mypetcare.controllers.meals.TrNewPetMeal;
 import org.pesmypetcare.mypetcare.controllers.meals.TrObtainAllPetMeals;
 import org.pesmypetcare.mypetcare.controllers.meals.TrUpdateMeal;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.MedicalProfileControllersFactory;
-import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrAddNewVaccination;
+import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrAddNewPetVaccination;
+import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrDeletePetVaccination;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrObtainAllPetVaccinations;
 import org.pesmypetcare.mypetcare.controllers.medication.MedicationControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.medication.TrDeleteMedication;
@@ -276,8 +277,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrAddExercise trAddExercise;
     private TrDeleteExercise trDeleteExercise;
     private TrUpdateExercise trUpdateExercise;
-    private TrAddNewVaccination trAddNewVaccination;
+    private TrAddNewPetVaccination trAddNewPetVaccination;
     private TrObtainAllPetVaccinations trObtainAllPetVaccinations;
+    private TrDeletePetVaccination trDeletePetVaccination;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -582,8 +584,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Initialize the medical profile controllers.
      */
     private void initializeMedicalProfileControllers() {
-        trAddNewVaccination = MedicalProfileControllersFactory.createTrAddNewVaccination();
+        trAddNewPetVaccination = MedicalProfileControllersFactory.createTrAddNewVaccination();
         trObtainAllPetVaccinations = MedicalProfileControllersFactory.createTrObtainAllPetVaccinations();
+        trDeletePetVaccination = MedicalProfileControllersFactory.createTrDeletePetVaccinations();
     }
 
     /**
@@ -1612,11 +1615,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void addPetVaccination(Pet pet, String vaccinationDescription, DateTime vaccinationDate) {
         Vaccination vaccination = new Vaccination(vaccinationDescription, vaccinationDate);
-        trAddNewVaccination.setUser(user);
-        trAddNewVaccination.setPet(pet);
-        trAddNewVaccination.setVaccination(vaccination);
+        trAddNewPetVaccination.setUser(user);
+        trAddNewPetVaccination.setPet(pet);
+        trAddNewPetVaccination.setVaccination(vaccination);
         try {
-            trAddNewVaccination.execute();
+            trAddNewPetVaccination.execute();
         } catch (NotPetOwnerException | VaccinationAlreadyExistingException e) {
             e.printStackTrace();
         }
@@ -1630,7 +1633,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void deletePetVaccination(Pet pet, Vaccination vaccination) {
-        // Not implemeted yet
+        trDeletePetVaccination.setUser(user);
+        trDeletePetVaccination.setPet(pet);
+        trDeletePetVaccination.setVaccination(vaccination);
+        trDeletePetVaccination.execute();
     }
 
     @Override
