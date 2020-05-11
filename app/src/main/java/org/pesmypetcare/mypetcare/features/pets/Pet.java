@@ -590,6 +590,21 @@ public class Pet {
     }
 
     /**
+     * Getter of the list of vet visits of a pet.
+     * @return The list of vet visits of a pet
+     */
+    public List<Event> getVetVisitEvents() {
+        ArrayList<Event> vetVisitEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof VetVisit) {
+                vetVisitEvents.add(event);
+            }
+        }
+        return vetVisitEvents;
+    }
+  
+    /**
      * Get the events by the class.
      * @param eventClass The class of the event
      * @return The events of the specified class

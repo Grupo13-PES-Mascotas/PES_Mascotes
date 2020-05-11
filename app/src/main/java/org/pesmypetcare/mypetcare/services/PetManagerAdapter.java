@@ -80,12 +80,12 @@ public class PetManagerAdapter implements PetManagerService {
             pet.getPathologies(), pet.getRecommendedDailyKiloCalories(), pet.getWashFrequency());*/
         org.pesmypetcare.usermanagerlib.datacontainers.Pet registerPet = getRegisterPet(pet);
 
-        try {
+        /*try {
             ServiceLocator.getInstance().getPetManagerClient()
                 .createPet(user.getToken(), user.getUsername(), registerPet);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return true;
     }
@@ -176,7 +176,6 @@ public class PetManagerAdapter implements PetManagerService {
     @Override
     public List<Pet> findPetsByOwner(User user) throws PetRepeatException {
         List<org.pesmypetcare.usermanagerlib.datacontainers.Pet> userPets = null;
-
         try {
             userPets = ServiceLocator.getInstance().getPetManagerClient().getAllPets(user.getToken(),
                 user.getUsername());
@@ -209,7 +208,6 @@ public class PetManagerAdapter implements PetManagerService {
     @Override
     public Map<String, byte[]> getAllPetsImages(User user) {
         Map<String, byte[]> pets = null;
-
         try {
             pets = ServiceLocator.getInstance().getPetManagerClient().downloadAllProfileImages(user.getToken(),
                 user.getUsername());

@@ -92,9 +92,6 @@ dependencies {
     implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:d086a9242c'
     implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:httptools:82ee7cba441'
     implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:communitymanager:82ee7cba441'
-
-
-
 }
 
 configurations.all {
