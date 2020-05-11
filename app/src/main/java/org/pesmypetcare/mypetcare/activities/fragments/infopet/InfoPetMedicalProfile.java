@@ -59,6 +59,20 @@ public class InfoPetMedicalProfile extends Fragment {
     private MaterialButton deleteVaccinationButton;
     private AlertDialog dialog;
 
+    private LinearLayout illnessDisplay;
+    private Button addIllnessButton;
+    private MaterialButton illnessDate;
+    private boolean isIllnessDateSelected;
+    private boolean isIllnessTimeSelected;
+    private boolean illnessUpdatesDate;
+    private int illnessSelectedHour;
+    private int illnessSelectedMin;
+    private MaterialButton illnessTime;
+    private MaterialButton editIllnessButton;
+    private TextInputEditText inputIllnessDescription;
+    private MaterialButton deleteIllnessButton;
+    private AlertDialog illnessDialog;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoPetMedicalProfileBinding.inflate(inflater, container, false);
@@ -229,9 +243,9 @@ public class InfoPetMedicalProfile extends Fragment {
         String newDate = getDateTime().toString();
         String description = Objects.requireNonNull(inputVaccinationDescription.getText()).toString();
         vaccination.setDescription(description);
-        InfoPetFragment.getCommunication().updatePetVaccination(pet, vaccination, newDate, updatesDate);
+        //InfoPetFragment.getCommunication().updatePetVaccination(pet, vaccination, newDate, updatesDate);
         if (updatesDate) {
-            vaccination.setDate(DateTime.Builder.buildDateString(newDate));
+            vaccination.setVaccinationDate(DateTime.Builder.buildDateString(newDate));
         }
     }
 
@@ -259,8 +273,8 @@ public class InfoPetMedicalProfile extends Fragment {
     private void initializeAddButtonListener() {
         DateTime vaccinationDate = getDateTime();
         String description = Objects.requireNonNull(inputVaccinationDescription.getText()).toString();
-        vaccination = new Vaccination(vaccinationDate, description);
-        InfoPetFragment.getCommunication().addPetVaccition(pet, vaccination);
+        vaccination = new Vaccination(description, vaccinationDate);
+        InfoPetFragment.getCommunication().addVaccination(pet, description, vaccinationDate);
     }
 
     /**
@@ -268,7 +282,7 @@ public class InfoPetMedicalProfile extends Fragment {
      */
     private void initializeRemoveVaccinationButton() {
         deleteVaccinationButton.setOnClickListener(v -> {
-            InfoPetFragment.getCommunication().deletePetVaccination(pet, vaccination);
+            //InfoPetFragment.getCommunication().deletePetVaccination(pet, vaccination);
             initializeVaccinationLayoutView();
             dialog.dismiss();
         });
@@ -326,7 +340,7 @@ public class InfoPetMedicalProfile extends Fragment {
         editVaccinationButton.setText(R.string.update_vaccination);
         inputVaccinationDescription.setText(vaccination.getDescription());
         updatesDate = false;
-        DateTime vaccinationDate = vaccination.getDate();
+        DateTime vaccinationDate = vaccination.getVaccinationDate();
         showVaccinationDate(vaccinationDate);
         showVaccinationTime(vaccinationDate);
     }
