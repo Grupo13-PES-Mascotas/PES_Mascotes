@@ -227,9 +227,16 @@
     <string name="add_medication_button">Añadir medicación</string>
     <string name="add_vaccinations_button">Añadir vacuna</string>
     <string name="add_illnesses_button">Añadir enfermadad</string>
+    <string name="vaccination_description">Descripción de la vacuna</string>
+    <string name="select_vaccination_date">Selecciona la fecha de la vacuna</string>
     <string name="medication_name">Nombre de la medicación</string>
     <string name="medication_duration">Duración de la medicación</string>
+    <string name="vaccination_time">Hora de la vacuna</string>
+    <string name="vaccination_date">Fecha de la vacuna</string>
+    <string name="vaccination">Vacuna</string>
+    <string name="update_vaccination">Modifica vacuna</string>
     <string name="medication_inidate">Fecha de inicio de la medicación</string>
+    <string name="delete_current_vaccination">Eliminar vacuna</string>
     <string name="medication_quantity">Cantidad de la medicación</string>
     <string name="medication_periodicity">Frecuencia de la medicación</string>
     <string name="update_medication">Actualizar medicación</string>
@@ -237,6 +244,8 @@
     <string name="medication">Medicación:</string>
     <string name="periodicity">Frecuencia:</string>
     <string name="quantity">Cantidad:</string>
+    <string name="edit_vaccination_title">Editar la vacuna</string>
+    <string name="edit_vaccination_message">Introduce la información de la vacuna</string>
     <string name="edit_medication_title">Editar medicacióm</string>
     <string name="edit_medication_message">Introduce los datos de la medicación</string>
     <string name="select_medication_date">Seleciona la fecha de inicio de la medicación</string>

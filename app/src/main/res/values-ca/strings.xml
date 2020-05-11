@@ -139,6 +139,9 @@
     <string name="add_meal_button">Afegir àpat</string>
     <string name="add_wash_button">Afegir rentat</string>
     <string name="add_vaccinations_button">Afegir vacuna</string>
+    <string name="vaccination_time">Hora de la vacuna</string>
+    <string name="vaccination_date">Data de la vacuna</string>
+    <string name="vaccination_description">Descripció de la vacuna</string>
     <string name="add_illnesses_button">Afegir malaltia</string>
     <string name="delete_current_vaccination">Eliminar vacuna</string>
     <string name="meal_name">Nom de l\'àpat</string>
@@ -203,9 +206,14 @@
     <string name="subscribe">Subscriure\'s</string>
     <string name="desubscribe">Eliminar subscripció</string>
     <string name="owner">(Propietari)</string>
+    <string name="vaccination">Vacuna</string>
+    <string name="update_vaccination">Modifica vacuna</string>
+    <string name="edit_vaccination_title">Editar la vacuna</string>
+    <string name="edit_vaccination_message">Introdueix la informació de la vacuna</string>
     <string name="edit_meal_title">Editar l\'àpat</string>
     <string name="edit_meal_message">Introdueix la informació de l\'àpat</string>
     <string name="select_meal_date">Selecciona la data de l\'àpat</string>
+    <string name="select_vaccination_date">Selecciona la data de la vacuna</string>
     <string name="edit_wash_title">Editar el rentat</string>
     <string name="edit_wash_message">Introdueix la informació del rentat</string>
     <string name="select_wash_date">Selecciona la data del rentat</string>

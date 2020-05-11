@@ -160,6 +160,7 @@ import org.pesmypetcare.mypetcare.features.pets.NotExistingExerciseException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
+import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
@@ -1589,6 +1590,21 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (NotPetOwnerException | InvalidPeriodException | NotExistingExerciseException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void updatePetVaccination(Pet pet, Vaccination vaccination, String newDate, boolean updatesDate) {
+        // Not implemeted yet
+    }
+
+    @Override
+    public void deletePetVaccination(Pet pet, Vaccination vaccination) {
+        // Not implemeted yet
+    }
+
+    @Override
+    public void addPetVaccition(Pet pet, Vaccination vaccination) {
+        // Not implemeted yet
     }
 
     @Override
