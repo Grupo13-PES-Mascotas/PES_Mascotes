@@ -8,6 +8,7 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.MedicalProfileManagerService;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Xavier Campos
@@ -46,7 +47,7 @@ public class TrObtainAllPetVaccinations {
         return result;
     }
 
-    public void execute() throws NotPetOwnerException {
+    public void execute() throws NotPetOwnerException, ExecutionException, InterruptedException {
         if(!user.getUsername().equals(pet.getOwner().getUsername())) {
             throw new NotPetOwnerException();
         }

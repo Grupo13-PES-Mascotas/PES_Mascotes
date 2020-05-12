@@ -1639,7 +1639,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
         try {
             trUpdatePetVaccination.execute();
-        } catch (NotPetOwnerException e) {
+        } catch (NotPetOwnerException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
@@ -1662,7 +1662,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainAllPetVaccinations.setPet(pet);
         try {
             trObtainAllPetVaccinations.execute();
-        } catch (NotPetOwnerException e) {
+        } catch (NotPetOwnerException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
