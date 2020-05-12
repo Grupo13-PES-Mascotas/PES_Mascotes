@@ -271,5 +271,6 @@
     <string name="cancel_walking">Cancelar paseo</string>
     <string name="error_missing_start_date_time">Falta la fecha y hora de inicio</string>
     <string name="exercise_walking">Paseo</string>
+    <string name="walk_route_date">Fecha: </string>
 
 </resources>

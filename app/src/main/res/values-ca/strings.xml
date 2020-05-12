@@ -272,5 +272,6 @@
     <string name="cancel_walking">Cancel·lar passeig</string>
     <string name="error_missing_start_date_time">Falta la data i l\'hora d\'inici</string>
     <string name="exercise_walking">Passeig</string>
+    <string name="walk_route_date">Data: </string>
 
 </resources>

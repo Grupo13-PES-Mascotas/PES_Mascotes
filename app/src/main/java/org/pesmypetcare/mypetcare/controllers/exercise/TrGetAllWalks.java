@@ -5,7 +5,6 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.pets.WalkPets;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.PetManagerService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +12,10 @@ import java.util.List;
 /**
  * @author Daniel Clemente
  */
-public class TrGetExercises {
-    private PetManagerService petManagerService;
+public class TrGetAllWalks {
     private User user;
-    List<Walk> exercises;
-    List<WalkPets> result;
-
-    public TrGetExercises(PetManagerService petManagerService) {
-        this.petManagerService = petManagerService;
-        result = new ArrayList<WalkPets>();
-    }
+    private List<Walk> exercises;
+    private List<WalkPets> result;
 
     /**
      * Setter of the owner of the pet.
@@ -32,10 +25,26 @@ public class TrGetExercises {
         this.user = user;
     }
 
-
-
     public void execute() {
-        ArrayList<Pet> pets = user.getPets();
+        result = new ArrayList<>();
+
+        for (Pet pet : user.getPets()) {
+            List<Event> events = pet.getEventsByClass(Walk.class);
+
+            for (Event event : events) {
+                WalkPets actualWalkPets = new WalkPets((Walk) event);
+                int index = result.indexOf(actualWalkPets);
+
+                if (index >= 0) {
+                    result.get(index).addPet(pet);
+                } else {
+                    actualWalkPets.addPet(pet);
+                    result.add(actualWalkPets);
+                }
+            }
+        }
+
+        /*ArrayList<Pet> pets = user.getPets();
         for (Pet pet : pets) {
             List<Event> events = pet.getEventsByClass(Walk.class);
             for (Event e : events) {
@@ -45,7 +54,7 @@ public class TrGetExercises {
                     result.add(walk);
                 }
             }
-        }
+        }*/
     }
 
     public List<WalkPets> getResult() { return result; }

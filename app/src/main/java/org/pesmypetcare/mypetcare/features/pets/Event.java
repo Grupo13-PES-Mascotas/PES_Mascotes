@@ -64,7 +64,7 @@ public class Event {
         }
 
         Event event = (Event) o;
-        return Objects.equals(dateTime, event.dateTime);
+        return dateTime.compareTo(event.dateTime) == 0;
     }
 
     @Override

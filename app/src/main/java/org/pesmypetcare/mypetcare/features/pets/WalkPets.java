@@ -1,7 +1,10 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Albert Pinto
@@ -39,7 +42,30 @@ public class WalkPets {
         return pets;
     }
 
+    @NonNull
     public String toString() {
-        return "{ " + getWalk().toString() + ", " +  getPets().toString() + " }";
+        StringBuilder petNames = new StringBuilder();
+
+        for (Pet pet : pets) {
+            petNames.append(pet.getName()).append(", ");
+        }
+
+        petNames.deleteCharAt(petNames.length() - 1);
+        petNames.deleteCharAt(petNames.length() - 1);
+
+        return "{" + walk.getName() + ", {" + petNames.toString() + "}}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WalkPets walkPets = (WalkPets) o;
+        return Objects.equals(walk, walkPets.walk);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(walk);
     }
 }

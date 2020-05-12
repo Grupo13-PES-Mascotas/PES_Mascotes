@@ -1,11 +1,13 @@
 package org.pesmypetcare.mypetcare.activities.fragments.walks;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -19,6 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
+import com.google.android.material.checkbox.MaterialCheckBox;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentWalkBinding;
@@ -29,17 +32,22 @@ import org.pesmypetcare.usermanager.datacontainers.DateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class WalkFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPolylineClickListener,
-    GoogleMap.OnInfoWindowCloseListener, GoogleMap.InfoWindowAdapter {
+    GoogleMap.OnInfoWindowCloseListener, GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener {
     private static final float ZOOM = 16.0f;
     private static final String LESS_THAN_A_MINUTE = "<1 min";
+    private static final int NUM_DIFFERENT_COLORS = 14;
+
     private FragmentWalkBinding binding;
     private MapView mapView;
     private GoogleMap googleMap;
     private Map<Polyline, WalkPets> polylines;
     private WalkCommunication communication;
     private WalkPets selectedWalkPets;
+    private int colors[];
+    private int nextColor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,6 +58,18 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         mapView = binding.mapView;
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        colors = new int[]{
+            getResources().getColor(R.color.colorPrimary, null), getResources().getColor(R.color.red, null),
+            getResources().getColor(R.color.green, null), getResources().getColor(R.color.violet, null),
+            getResources().getColor(R.color.orange, null), getResources().getColor(R.color.yellow, null),
+            getResources().getColor(R.color.cyan, null), getResources().getColor(R.color.magenta, null),
+            getResources().getColor(R.color.ocean_blue, null), getResources().getColor(R.color.aquamarine, null),
+            getResources().getColor(R.color.turquoise, null), getResources().getColor(R.color.rose, null),
+            getResources().getColor(R.color.spring_green, null), getResources().getColor(R.color.grey, null)
+        };
+
+        binding.walkingRoutesFilterScrollView.setAlpha(0.7f);
 
         return binding.getRoot();
     }
@@ -65,18 +85,46 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         googleMap.setOnPolylineClickListener(this);
         googleMap.setOnInfoWindowCloseListener(this);
         googleMap.setInfoWindowAdapter(this);
+        googleMap.setOnInfoWindowClickListener(this);
 
         List<WalkPets> walkPetsList = communication.getWalkingRoutes();
 
+        System.out.println(walkPetsList.toString());
+
         for (WalkPets walkPets : walkPetsList) {
-            PolylineOptions options = new PolylineOptions().clickable(true).addAll(walkPets.getWalk().getCoordinates());
-            Polyline polyline = googleMap.addPolyline(options);
-            polyline.setStartCap(new RoundCap());
-            polyline.setEndCap(new RoundCap());
-            polyline.setColor(getResources().getColor(R.color.colorPrimary, null));
-            polyline.setJointType(JointType.ROUND);
+            Polyline polyline = createPolyline(walkPets.getWalk().getCoordinates());
             polylines.put(polyline, walkPets);
+
+            MaterialCheckBox checkBox = new MaterialCheckBox(Objects.requireNonNull(getContext()));
+            checkBox.setText(walkPets.getWalk().getName());
+            checkBox.setChecked(true);
+            checkBox.setTextColor(getResources().getColor(R.color.black, null));
+            checkBox.setButtonTintList(ColorStateList.valueOf(colors[nextColor]));
+            nextColor = (nextColor + 1) % NUM_DIFFERENT_COLORS;
+
+            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    polyline.setVisible(true);
+                    polyline.setClickable(true);
+                } else {
+                    polyline.setVisible(false);
+                    polyline.setClickable(false);
+                }
+            });
+
+            binding.walkingRoutesFilterLayout.addView(checkBox);
         }
+    }
+
+    private Polyline createPolyline(List<LatLng> coordinates) {
+        PolylineOptions options = new PolylineOptions().clickable(true).addAll(coordinates);
+        Polyline polyline = googleMap.addPolyline(options);
+        polyline.setStartCap(new RoundCap());
+        polyline.setEndCap(new RoundCap());
+        polyline.setColor(colors[nextColor]);
+        polyline.setJointType(JointType.ROUND);
+
+        return polyline;
     }
 
     @Override
@@ -158,5 +206,25 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         int endMinutes = endDateTime.getHour() * 60 + endDateTime.getMinutes();
 
         return endMinutes - startMinutes;
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()),
+            R.style.AlertDialogTheme);
+        builder.setTitle(selectedWalkPets.getWalk().getName());
+        builder.setMessage(selectedWalkPets.getWalk().getDescription());
+
+        DateTime startDateTime = selectedWalkPets.getWalk().getDateTime();
+        String strDate = startDateTime.toString().substring(0, startDateTime.toString().indexOf('T'));
+
+        /*View selectedWalkRouteLayout = getLayoutInflater().inflate(R.layout.selected_walk_route, null);
+        TextView date = selectedWalkRouteLayout.findViewById(R.id.walkRouteInfoDate);
+        date.setText(strDate);
+
+        builder.setView(selectedWalkRouteLayout);*/
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
     }
 }
