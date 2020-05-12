@@ -6,8 +6,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetMedicalProfileBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.Illness;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
@@ -41,7 +44,9 @@ public class InfoPetMedicalProfile extends Fragment {
     private static final String DATESEPARATOR = "-";
     private static final String TIMESEPARATOR = ":";
     private static boolean editing;
+    private static boolean editingIllness;
     private static Vaccination vaccination;
+    private static Illness illness;
 
     private Pet pet;
     private LinearLayout vaccinationDisplay;
@@ -62,14 +67,25 @@ public class InfoPetMedicalProfile extends Fragment {
     private LinearLayout illnessDisplay;
     private Button addIllnessButton;
     private MaterialButton illnessDate;
+    private MaterialButton illnessEndDate;
+    private MaterialDatePicker materialIllnessDatePicker;
+    private MaterialDatePicker materialIllnessEndDatePicker;
     private boolean isIllnessDateSelected;
     private boolean isIllnessTimeSelected;
-    private boolean illnessUpdatesDate;
+    private boolean isIllnessEndDateSelected;
+    private boolean isIllnessEndTimeSelected;
     private int illnessSelectedHour;
     private int illnessSelectedMin;
+    private int illnessSelectedEndHour;
+    private int illnessSelectedEndMin;
+    private boolean updatesIllnessDate;
+    private boolean updatesIllnessEndDate;
     private MaterialButton illnessTime;
+    private MaterialButton illnessEndTime;
     private MaterialButton editIllnessButton;
     private TextInputEditText inputIllnessDescription;
+    private Spinner severity;
+    private Spinner type;
     private MaterialButton deleteIllnessButton;
     private AlertDialog illnessDialog;
 
@@ -83,11 +99,18 @@ public class InfoPetMedicalProfile extends Fragment {
         View editVaccinationLayout = prepareDialog();
         dialog = getBasicVaccinationDialog();
         dialog.setView(editVaccinationLayout);
-
         initializeEditVaccinationButton();
         initializeRemoveVaccinationButton();
         initializeAddVaccinationButton();
 
+        illnessDisplay = binding.illnessesDisplayLayout;
+        addIllnessButton = binding.addIllnessesButton;
+        View editIllnessLayout = prepareIllnessDialog();
+        illnessDialog = getBasicIllnessDialog();
+        illnessDialog .setView(editIllnessLayout);
+        initializeEditIllnessButton();
+        initializeRemoveIllnessButton();
+        initializeAddIllnessButton();
         return binding.getRoot();
     }
 
@@ -102,10 +125,30 @@ public class InfoPetMedicalProfile extends Fragment {
         deleteVaccinationButton = editVaccinationLayout.findViewById(R.id.deleteVaccinationButton);
         vaccinationDate = editVaccinationLayout.findViewById(R.id.inputVaccinationDate);
         vaccinationTime = editVaccinationLayout.findViewById(R.id.inputVaccinationTime);
-
         setCalendarPicker();
         setTimePicker();
         return editVaccinationLayout;
+    }
+
+    /**
+     * Prepare the Illness dialog.
+     * @return The layout of the main dialog
+     */
+    private View prepareIllnessDialog() {
+        View editIllnessLayout = getLayoutInflater().inflate(R.layout.edit_illness, null);
+        inputIllnessDescription = editIllnessLayout.findViewById(R.id.inputIllnessDescription);
+        severity = editIllnessLayout.findViewById(R.id.spinnerIllnessSeverity);
+        type = editIllnessLayout.findViewById(R.id.spinnerIllnessType);
+        editIllnessButton = editIllnessLayout.findViewById(R.id.editIllnessButton);
+        deleteIllnessButton = editIllnessLayout.findViewById(R.id.deleteIllnessButton);
+        illnessDate = editIllnessLayout.findViewById(R.id.inputIllnessDate);
+        illnessEndDate = editIllnessLayout.findViewById(R.id.inputIllnessEndDate);
+        illnessTime = editIllnessLayout.findViewById(R.id.inputIllnessTime);
+        illnessEndTime = editIllnessLayout.findViewById(R.id.inputIllnessEndTime);
+
+        setIllnessCalendarPicker();
+        setIllnessTimePicker();
+        return editIllnessLayout;
     }
 
     /**
@@ -120,6 +163,59 @@ public class InfoPetMedicalProfile extends Fragment {
                 materialDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
 
         materialDatePicker.addOnPositiveButtonClickListener(this::initializeOnPositiveButtonClickListener);
+    }
+
+    /**
+     * Sets the calendar picker.
+     */
+    private void setIllnessCalendarPicker() {
+        MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText(getString(R.string.select_illness_date));
+        materialIllnessDatePicker = builder.build();
+
+        illnessDate.setOnClickListener(v ->
+                materialIllnessDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
+
+        materialIllnessDatePicker.addOnPositiveButtonClickListener(this::initializeIllnessOnPositiveButtonClickListener);
+
+        MaterialDatePicker.Builder builderEnd = MaterialDatePicker.Builder.datePicker();
+        builderEnd.setTitleText(getString(R.string.illness_end_date));
+        materialIllnessEndDatePicker = builderEnd.build();
+
+        illnessEndDate.setOnClickListener(v ->
+                materialIllnessEndDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
+
+        materialIllnessEndDatePicker.addOnPositiveButtonClickListener(this::initializeIllnessEndOnPositiveButtonClickListener);
+    }
+
+    /**
+     * Method responsible for initializing the onPositiveButtonClickListener.
+     * @param selection The selected value
+     */
+    private void initializeIllnessEndOnPositiveButtonClickListener(Object selection) {
+        illnessEndDate.setText(materialIllnessEndDatePicker.getHeaderText());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(selection.toString()));
+        String formattedDate = simpleDateFormat.format(calendar.getTime());
+        illnessEndDate.setText(formattedDate);
+        isIllnessEndDateSelected = true;
+        updatesIllnessEndDate = true;
+    }
+
+    /**
+     * Method responsible for initializing the onPositiveButtonClickListener.
+     * @param selection The selected value
+     */
+    private void initializeIllnessOnPositiveButtonClickListener(Object selection) {
+        illnessDate.setText(materialIllnessDatePicker.getHeaderText());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(selection.toString()));
+        String formattedDate = simpleDateFormat.format(calendar.getTime());
+        illnessDate.setText(formattedDate);
+        isIllnessDateSelected = true;
+        updatesDate = true;
     }
 
     /**
@@ -151,6 +247,90 @@ public class InfoPetMedicalProfile extends Fragment {
             timePickerDialog.show();
         });
 
+    }
+
+    /**
+     * Sets the time picker.
+     */
+    private void setIllnessTimePicker() {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int min = calendar.get(Calendar.MINUTE);
+
+        illnessTime.setOnClickListener(v -> {
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), (view, hourOfDay, minute) ->
+                    initializeIllnessTimePickerDialog(hourOfDay, minute), hour, min, true);
+            timePickerDialog.show();
+        });
+
+        illnessEndTime.setOnClickListener(v -> {
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), (view, hourOfDay, minute) ->
+                    initializeIllnessEndTimePickerDialog(hourOfDay, minute), hour, min, true);
+            timePickerDialog.show();
+        });
+
+    }
+
+    /**
+     * Method responsible for initializing the timePickerDialog.
+     * @param hourOfDay The selected value for the hour
+     * @param minute The selected value for the minutes
+     */
+    private void initializeIllnessEndTimePickerDialog(int hourOfDay, int minute) {
+        illnessSelectedEndHour = hourOfDay;
+        illnessSelectedEndMin = minute;
+        StringBuilder time = formatIllnessEndTimePickerText();
+        illnessEndTime.setText(time);
+        isIllnessEndTimeSelected = true;
+        updatesIllnessEndDate = true;
+    }
+
+    /**
+     * Method responsible for formatting the text for the time picker.
+     * @return An stringbuilder containing the time in the correct format
+     */
+    private StringBuilder formatIllnessEndTimePickerText() {
+        StringBuilder time = new StringBuilder();
+        if (illnessSelectedEndHour < FIRST_TWO_DIGITS) {
+            time.append('0');
+        }
+        time.append(illnessSelectedEndHour).append(':');
+        if (illnessSelectedEndMin < FIRST_TWO_DIGITS) {
+            time.append('0');
+        }
+        time.append(illnessSelectedEndMin).append(':').append(DEFAULT_SECONDS);
+        return time;
+    }
+
+    /**
+     * Method responsible for initializing the timePickerDialog.
+     * @param hourOfDay The selected value for the hour
+     * @param minute The selected value for the minutes
+     */
+    private void initializeIllnessTimePickerDialog(int hourOfDay, int minute) {
+        illnessSelectedHour = hourOfDay;
+        illnessSelectedMin = minute;
+        StringBuilder time = formatIllnessTimePickerText();
+        illnessTime.setText(time);
+        isIllnessTimeSelected = true;
+        updatesIllnessDate = true;
+    }
+
+    /**
+     * Method responsible for formatting the text for the time picker.
+     * @return An stringbuilder containing the time in the correct format
+     */
+    private StringBuilder formatIllnessTimePickerText() {
+        StringBuilder time = new StringBuilder();
+        if (illnessSelectedHour < FIRST_TWO_DIGITS) {
+            time.append('0');
+        }
+        time.append(illnessSelectedHour).append(':');
+        if (illnessSelectedMin < FIRST_TWO_DIGITS) {
+            time.append('0');
+        }
+        time.append(illnessSelectedMin).append(':').append(DEFAULT_SECONDS);
+        return time;
     }
 
     /**
@@ -186,7 +366,7 @@ public class InfoPetMedicalProfile extends Fragment {
 
     /**
      * Create the basic vaccination dialog.
-     * @return The basic vaccinationdialog
+     * @return The basic vaccination dialog
      */
     private AlertDialog getBasicVaccinationDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()),
@@ -194,6 +374,18 @@ public class InfoPetMedicalProfile extends Fragment {
         dialog.setTitle(R.string.edit_vaccination_title);
         dialog.setMessage(R.string.edit_vaccination_message);
         return dialog.create();
+    }
+
+    /**
+     * Create the basic illness dialog.
+     * @return The basic illness dialog
+     */
+    private AlertDialog getBasicIllnessDialog() {
+        AlertDialog.Builder illnessDialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()),
+                R.style.AlertDialogTheme);
+        illnessDialog.setTitle(R.string.edit_illness_title);
+        illnessDialog.setMessage(R.string.edit_illness_message);
+        return illnessDialog.create();
     }
 
     /**
@@ -215,6 +407,40 @@ public class InfoPetMedicalProfile extends Fragment {
             }
         });
     }
+
+    /**
+     * Initialize the edit illness button.
+     */
+    private void initializeEditIllnessButton() {
+        editIllnessButton.setOnClickListener(v -> {
+            if (isAnyIllnessFieldBlank()) {
+                showErrorMessage();
+            } else {
+                if (editingIllness) {
+                    initializeEditIllnessButtonListener();
+                } else {
+                    initializeAddIllnessButtonListener();
+                }
+
+                illnessDialog.dismiss();
+                initializeIllnessLayoutView();
+            }
+        });
+    }
+
+    /**
+     * Method responsible for checking if there is any empty field.
+     * @return True if there is any empty field or false otherwise
+     */
+    private boolean isAnyIllnessFieldBlank() {
+        boolean illnessNameEmpty = "".equals(Objects.requireNonNull(inputIllnessDescription.getText()).toString());
+        if (editing) {
+            return illnessNameEmpty;
+        }
+        return illnessNameEmpty || !isIllnessDateSelected || !isIllnessTimeSelected || !isIllnessEndDateSelected
+                || !isIllnessEndTimeSelected ;
+    }
+
 
     /**
      * Method responsible for checking if there is any empty field.
@@ -239,11 +465,66 @@ public class InfoPetMedicalProfile extends Fragment {
     /**
      * Method responsible for initializing the editButton listener.
      */
+    private void initializeEditIllnessButtonListener() {
+        String newDate = getIllnessDateTime().toString();
+        String description = Objects.requireNonNull(inputIllnessDescription.getText()).toString();
+        illness.setDescription(description);
+        illness.setSeverity(severity.getSelectedItem().toString());
+        illness.setType(type.getSelectedItem().toString());
+        illness.setEndTime(getIllnessEndDateTime());
+        //InfoPetFragment.getCommunication().updatePetIllness(pet, illness, newDate, illnessUpdatesDate);
+        if (updatesIllnessDate) {
+            illness.setDateTime(DateTime.Builder.buildDateString(newDate));
+        }
+        if (updatesIllnessEndDate) {
+            illness.setEndTime(getIllnessEndDateTime());
+        }
+    }
+
+    /**
+     * Method responsible for obtaining the date of the wash in the current format.
+     * @return The dateTime of the wash
+     */
+    private DateTime getIllnessDateTime() {
+        StringBuilder dateString = new StringBuilder(illnessDate.getText().toString());
+        dateString.append('T');
+        if (selectedHour < FIRST_TWO_DIGITS) {
+            dateString.append('0');
+        }
+        dateString.append(selectedHour).append(':');
+        if (selectedMin < FIRST_TWO_DIGITS) {
+            dateString.append('0');
+        }
+        dateString.append(selectedMin).append(':').append(DEFAULT_SECONDS);
+        return DateTime.Builder.buildFullString(dateString.toString());
+    }
+
+    /**
+     * Method responsible for obtaining the date of the wash in the current format.
+     * @return The dateTime of the wash
+     */
+    private DateTime getIllnessEndDateTime() {
+        StringBuilder dateString = new StringBuilder(illnessEndDate.getText().toString());
+        dateString.append('T');
+        if (selectedHour < FIRST_TWO_DIGITS) {
+            dateString.append('0');
+        }
+        dateString.append(selectedHour).append(':');
+        if (selectedMin < FIRST_TWO_DIGITS) {
+            dateString.append('0');
+        }
+        dateString.append(selectedMin).append(':').append(DEFAULT_SECONDS);
+        return DateTime.Builder.buildFullString(dateString.toString());
+    }
+
+    /**
+     * Method responsible for initializing the editButton listener.
+     */
     private void initializeEditButtonListener() {
         String newDate = getDateTime().toString();
         String description = Objects.requireNonNull(inputVaccinationDescription.getText()).toString();
         vaccination.setDescription(description);
-        //InfoPetFragment.getCommunication().updatePetVaccination(pet, vaccination, newDate, updatesDate);
+        InfoPetFragment.getCommunication().updatePetVaccination(pet, vaccination, newDate, updatesDate);
         if (updatesDate) {
             vaccination.setVaccinationDate(DateTime.Builder.buildDateString(newDate));
         }
@@ -278,14 +559,146 @@ public class InfoPetMedicalProfile extends Fragment {
     }
 
     /**
+     * Method responsible for initializing the addButton listener.
+     */
+    private void initializeAddIllnessButtonListener() {
+        DateTime illnessDate = getIllnessDateTime();
+        DateTime illnessEndDate = getIllnessEndDateTime();
+        String description = Objects.requireNonNull(inputIllnessDescription.getText()).toString();
+        illness = new Illness(description, illnessDate, illnessEndDate, type.getSelectedItem().toString(),
+                severity.getSelectedItem().toString());
+        //InfoPetFragment.getCommunication().addPetIllness(pet, description, illnessDate);
+    }
+
+    /**
      * Method responsible for initializing the remove vaccination button.
      */
     private void initializeRemoveVaccinationButton() {
         deleteVaccinationButton.setOnClickListener(v -> {
-            //InfoPetFragment.getCommunication().deletePetVaccination(pet, vaccination);
+            InfoPetFragment.getCommunication().deletePetVaccination(pet, vaccination);
             initializeVaccinationLayoutView();
             dialog.dismiss();
         });
+    }
+
+    /**
+     * Method responsible for initializing the remove illness button.
+     */
+    private void initializeRemoveIllnessButton() {
+        deleteIllnessButton.setOnClickListener(v -> {
+            //InfoPetFragment.getCommunication().deletePetIllness(pet, illness);
+            initializeVaccinationLayoutView();
+            illnessDialog.dismiss();
+        });
+    }
+
+    /**
+     * Method responsible for initializing the illness layout view.
+     */
+    private void initializeIllnessLayoutView() {
+        ArrayList<Event> illnessList;
+        illnessDisplay.removeAllViews();
+
+
+        illnessList = (ArrayList<Event>) pet.getIllnessEvents();
+
+        for (Event illness : illnessList) {
+            initializeIllnessComponent(illness);
+        }
+    }
+
+    /**
+     * Method responsible for initializing each illness component.
+     * @param illness The illness for which we want to initialize the component
+     */
+    private void initializeIllnessComponent(Event illness) {
+        MaterialButton illnessButton = new MaterialButton(Objects.requireNonNull(this.getActivity()), null);
+        initializeIllnessButtonParams(illnessButton);
+        initializeIllnessButtonLogic((Illness) illness, illnessButton);
+        illnessDisplay.addView(illnessButton);
+    }
+
+    /**
+     * Method responsible for initializing the button parameters.
+     * @param illnessButton The button that has to be initialized
+     */
+    private void initializeIllnessButtonParams(MaterialButton illnessButton) {
+        illnessButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        illnessButton.setBackgroundColor(getResources().getColor(R.color.white));
+        illnessButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        illnessButton.setStrokeColorResource(R.color.colorAccent);
+        illnessButton.setStrokeWidth(STROKE_WIDTH);
+        illnessButton.setGravity(Gravity.START);
+    }
+
+    /**
+     * Method responsible for initializing the button logic.
+     * @param illness The illness for which we want to initialize a button
+     * @param illnessButton The button that has to be initialized
+     */
+    private void initializeIllnessButtonLogic(Illness illness, MaterialButton illnessButton) {
+        String illnessButtonText = getString(R.string.illness) + SPACE + illness.getDescription() + EOL
+                + getString(R.string.from_date) + SPACE + illness.getDateTime();
+        illnessButton.setText(illnessButtonText);
+        illnessButton.setOnClickListener(v -> {
+            InfoPetMedicalProfile.illness = illness;
+            editingIllness = true;
+            initializeEditIllnessDialog();
+            deleteIllnessButton.setVisibility(View.VISIBLE);
+            illnessDialog.setTitle(R.string.edit_illness_title);
+            illnessDialog.show();
+        });
+    }
+
+    /**
+     * Method responsible for initializing the edit illness dialog.
+     */
+    private void initializeEditIllnessDialog() {
+        editIllnessButton.setText(R.string.update_illness);
+        inputIllnessDescription.setText(illness.getDescription());
+
+        updatesIllnessDate = false;
+        DateTime illnessDate = illness.getDateTime();
+        showIllnessDate(illnessDate);
+        showIllnessTime(illnessDate);
+    }
+
+    /**
+     * Method responsible for initializing the string for the inputIllnessTime button.
+     * @param illnessDate The date of the illness
+     */
+    private void showIllnessTime(DateTime illnessDate) {
+        StringBuilder timeString = new StringBuilder();
+        if (illnessDate.getHour() < FIRST_TWO_DIGITS) {
+            timeString.append('0');
+        }
+        timeString.append(illnessDate.getHour()).append(TIMESEPARATOR);
+        if (illnessDate.getMinutes() < FIRST_TWO_DIGITS) {
+            timeString.append('0');
+        }
+        timeString.append(illnessDate.getMinutes()).append(TIMESEPARATOR).append(DEFAULT_SECONDS);
+        illnessTime.setText(timeString);
+        illnessSelectedHour = illnessDate.getHour();
+        illnessSelectedMin = illnessDate.getMinutes();
+    }
+
+    /**
+     * Method responsible for initializing the string for the inputIllnessDate button.
+     * @param illnessDate The date of the illness
+     */
+    private void showIllnessDate(DateTime illnessDate) {
+        StringBuilder dateString = new StringBuilder();
+        dateString.append(illnessDate.getYear()).append(DATESEPARATOR);
+        if (illnessDate.getMonth() < FIRST_TWO_DIGITS) {
+            dateString.append('0');
+        }
+        dateString.append(illnessDate.getMonth()).append(DATESEPARATOR);
+        if (illnessDate.getDay() < FIRST_TWO_DIGITS) {
+            dateString.append('0');
+        }
+        dateString.append(illnessDate.getDay());
+        this.illnessDate.setText(dateString);
     }
 
     /**
@@ -296,7 +709,7 @@ public class InfoPetMedicalProfile extends Fragment {
         vaccinationDisplay.removeAllViews();
 
 
-        vaccinationList = (ArrayList<Event>) pet.getWashEvents();
+        vaccinationList = (ArrayList<Event>) pet.getVaccinationEvents();
 
         for (Event vaccination : vaccinationList) {
             initializeVaccinationComponent(vaccination);
@@ -409,6 +822,44 @@ public class InfoPetMedicalProfile extends Fragment {
             editVaccinationButton.setText(R.string.add_vaccinations_button);
             dialog.setTitle(R.string.add_vaccinations_button);
             dialog.show();
+        });
+    }
+
+    /**
+     * Method responsible for initializing the add illness button.
+     */
+    private void initializeAddIllnessButton() {
+        addIllnessButton.setOnClickListener(v -> {
+            editing = false;
+            deleteIllnessButton.setVisibility(View.INVISIBLE);
+            inputIllnessDescription.setText("");
+
+            ArrayList<String> severityList = new ArrayList<>();
+            severityList.add("Low");
+            severityList.add("Medium");
+            severityList.add("High");
+            final ArrayAdapter<String> adp = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
+                    android.R.layout.simple_spinner_item, severityList);
+            severity.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            severity.setAdapter(adp);
+
+            ArrayList<String> typeList = new ArrayList<>();
+            typeList.add("Normal");
+            typeList.add("Allergy");
+            final ArrayAdapter<String> adp2 = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
+                    android.R.layout.simple_spinner_item, typeList);
+            type.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            type.setAdapter(adp2);
+
+            illnessEndDate.setText(R.string.illness_end_date);
+            illnessEndTime.setText(R.string.illness_end_time);
+            illnessDate.setText(R.string.illness_date);
+            illnessTime.setText(R.string.illness_time);
+            editIllnessButton.setText(R.string.add_illnesses_button);
+            illnessDialog.setTitle(R.string.add_illnesses_button);
+            illnessDialog.show();
         });
     }
 

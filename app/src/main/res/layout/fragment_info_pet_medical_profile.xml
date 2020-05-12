@@ -9,7 +9,7 @@
     <ScrollView
         android:id="@+id/vaccinationsScrollView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="140dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="10dp"
@@ -23,7 +23,7 @@
         <LinearLayout
             android:id="@+id/vaccinationDisplayLayout"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="140dp"
             android:orientation="vertical">
 
         </LinearLayout>
@@ -45,9 +45,9 @@
     <ScrollView
         android:id="@+id/illnessesScrollView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="140dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="175dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@+id/addIllnessesButton"
@@ -59,7 +59,7 @@
         <LinearLayout
             android:id="@+id/illnessesDisplayLayout"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="140dp"
             android:orientation="vertical">
 
         </LinearLayout>
@@ -71,14 +71,11 @@
         style="@style/calendar_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:gravity="bottom|center_horizontal"
+        android:paddingBottom="1dp"
         android:text="@string/add_illnesses_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/illnessesScrollView"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/illnessesScrollView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -688,4 +688,19 @@ public class Pet {
         healthInfo.removeExerciseFrequency(date, duration);
         deleteEventByClass(dateTime, Exercise.class);
     }
+
+    /**
+     * Get the list of illness of the pet.
+     * @return The list of illness of the pet
+     */
+    public List<Event> getIllnessEvents() {
+        ArrayList<Event> illnessEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof Illness) {
+                illnessEvents.add(event);
+            }
+        }
+        return illnessEvents;
+    }
 }
