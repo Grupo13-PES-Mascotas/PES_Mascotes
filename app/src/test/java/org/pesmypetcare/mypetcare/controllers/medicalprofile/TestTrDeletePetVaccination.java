@@ -3,14 +3,12 @@ package org.pesmypetcare.mypetcare.controllers.medicalprofile;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Vaccination;
+import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMedicalProfileManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-
-import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -34,9 +32,17 @@ public class TestTrDeletePetVaccination {
         vaccination = new Vaccination("Vacuna ebola", DateTime.Builder.buildDateString("2020-04-15"));
     }
 
+    @Test(expected = NotPetOwnerException.class)
+    public void shouldNotUpdatePetVaccinationIfNotPetOwner() throws NotPetOwnerException {
+        trDeletePetVaccination.setUser(user);
+        pet.setOwner(new User("Tomas Roncero", "tomasAS@gmail.com", "1235"));
+        trDeletePetVaccination.setPet(pet);
+        trDeletePetVaccination.setVaccination(vaccination);
+        trDeletePetVaccination.execute();
+    }
+
     @Test
-    public void shouldDeleteMedication() throws MedicationAlreadyExistingException, ExecutionException,
-        InterruptedException {
+    public void shouldDeleteMedication() throws NotPetOwnerException {
         final int before = StubMedicalProfileManagerService.nVaccinations;
         trDeletePetVaccination.setUser(user);
         trDeletePetVaccination.setPet(pet);

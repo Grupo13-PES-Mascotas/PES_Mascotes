@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.controllers.medicalprofile;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Vaccination;
+import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.MedicalProfileManagerService;
 
@@ -45,7 +46,10 @@ public class TrObtainAllPetVaccinations {
         return result;
     }
 
-    public void execute() {
+    public void execute() throws NotPetOwnerException {
+        if(!user.getUsername().equals(pet.getOwner().getUsername())) {
+            throw new NotPetOwnerException();
+        }
         result = medicalProfileManagerService.findVaccinationsByPet(user, pet);
         for (Event e : result) {
             pet.addEvent(e);

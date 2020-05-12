@@ -33,4 +33,12 @@ public class MedicalProfileControllersFactory {
     public static TrDeletePetVaccination createTrDeletePetVaccinations() {
         return new TrDeletePetVaccination(new MedicalProfileManagerAdapter());
     }
+
+    /**
+     * Method responsible for creating the transaction to update a vaccination from a pet.
+     * @return The transaction to update a vaccination from a pet
+     */
+    public static TrUpdatePetVaccination createTrUpdatePetVaccination() {
+        return new TrUpdatePetVaccination(new MedicalProfileManagerAdapter());
+    }
 }

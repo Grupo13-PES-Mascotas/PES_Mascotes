@@ -83,8 +83,7 @@ public class StubMedicalProfileManagerService implements MedicalProfileManagerSe
             + pet.getName()));
         for (Vaccination serverVacc:petVaccinations) {
             if (serverVacc.getVaccinationDate().compareTo(vaccination.getDateTime()) == 0) {
-                Objects.requireNonNull(data.get(user.getUsername() + SPACE_KOLIN + pet.getName())).remove(serverVacc);
-                Objects.requireNonNull(data.get(user.getUsername() + SPACE_KOLIN + pet.getName())).add(vaccination);
+                serverVacc.setVaccinationDescription(vaccination.getVaccinationDescription());
             }
         }
     }

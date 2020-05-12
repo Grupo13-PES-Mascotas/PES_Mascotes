@@ -105,12 +105,12 @@ public class InfoPetMedicalProfile extends Fragment {
 
         illnessDisplay = binding.illnessesDisplayLayout;
         addIllnessButton = binding.addIllnessesButton;
-        View editIllnessLayout = prepareIllnessDialog();
+        /*View editIllnessLayout = prepareIllnessDialog();
         illnessDialog = getBasicIllnessDialog();
         illnessDialog .setView(editIllnessLayout);
         initializeEditIllnessButton();
         initializeRemoveIllnessButton();
-        initializeAddIllnessButton();
+        initializeAddIllnessButton();*/
         return binding.getRoot();
     }
 
@@ -130,10 +130,12 @@ public class InfoPetMedicalProfile extends Fragment {
         return editVaccinationLayout;
     }
 
+
     /**
      * Prepare the Illness dialog.
      * @return The layout of the main dialog
      */
+    /*
     private View prepareIllnessDialog() {
         View editIllnessLayout = getLayoutInflater().inflate(R.layout.edit_illness, null);
         inputIllnessDescription = editIllnessLayout.findViewById(R.id.inputIllnessDescription);
@@ -149,7 +151,7 @@ public class InfoPetMedicalProfile extends Fragment {
         setIllnessCalendarPicker();
         setIllnessTimePicker();
         return editIllnessLayout;
-    }
+    }*/
 
     /**
      * Sets the calendar picker.
