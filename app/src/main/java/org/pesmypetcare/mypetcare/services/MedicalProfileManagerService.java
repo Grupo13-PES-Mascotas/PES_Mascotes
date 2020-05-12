@@ -7,6 +7,7 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Xavier Campos
@@ -27,7 +28,7 @@ public interface MedicalProfileManagerService {
      * @param pet The pet from whom we want to obtain all the vaccinations
      * @return A list containing all the vaccinations of the pet
      */
-    List<Vaccination> findVaccinationsByPet(User user, Pet pet);
+    List<Vaccination> findVaccinationsByPet(User user, Pet pet) throws ExecutionException, InterruptedException;
 
     /**
      * Deletes a vaccination from the given pet.
@@ -44,7 +45,7 @@ public interface MedicalProfileManagerService {
      * @param newDate The new date that has to be set to the vaccination
      * @param vaccinationDate The new old date of the vaccination
      */
-    void updateVaccinationKey(User user, Pet pet, String newDate, DateTime vaccinationDate);
+    void updateVaccinationKey(User user, Pet pet, String newDate, DateTime vaccinationDate) throws ExecutionException, InterruptedException;
 
     /**
      * Updates the vaccination body.
