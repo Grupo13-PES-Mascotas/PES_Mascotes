@@ -19,7 +19,7 @@ public class WalkPets {
     }
 
     /**
-     * Add a pet to the pet walk
+     * Add a pet to the pet walk.
      * @param pet The pet to add
      */
     public void addPet(Pet pet) {
@@ -58,8 +58,14 @@ public class WalkPets {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         WalkPets walkPets = (WalkPets) o;
         return Objects.equals(walk, walkPets.walk);
     }

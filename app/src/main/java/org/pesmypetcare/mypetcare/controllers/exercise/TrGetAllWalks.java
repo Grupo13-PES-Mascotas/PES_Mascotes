@@ -14,7 +14,6 @@ import java.util.List;
  */
 public class TrGetAllWalks {
     private User user;
-    private List<Walk> exercises;
     private List<WalkPets> result;
 
     /**
@@ -25,38 +24,42 @@ public class TrGetAllWalks {
         this.user = user;
     }
 
+    /**
+     * Execute the transaction.
+     */
     public void execute() {
         result = new ArrayList<>();
 
         for (Pet pet : user.getPets()) {
-            List<Event> events = pet.getEventsByClass(Walk.class);
-
-            for (Event event : events) {
-                WalkPets actualWalkPets = new WalkPets((Walk) event);
-                int index = result.indexOf(actualWalkPets);
-
-                if (index >= 0) {
-                    result.get(index).addPet(pet);
-                } else {
-                    actualWalkPets.addPet(pet);
-                    result.add(actualWalkPets);
-                }
-            }
+            getWalksForPet(pet);
         }
-
-        /*ArrayList<Pet> pets = user.getPets();
-        for (Pet pet : pets) {
-            List<Event> events = pet.getEventsByClass(Walk.class);
-            for (Event e : events) {
-                WalkPets walk = new WalkPets((Walk) e);
-                walk.addPet(pet);
-                if (!result.contains(walk)) {
-                    result.add(walk);
-                }
-            }
-        }*/
     }
 
-    public List<WalkPets> getResult() { return result; }
+    /**
+     * Get the walks for the pet.
+     * @param pet The pet
+     */
+    private void getWalksForPet(Pet pet) {
+        List<Event> events = pet.getEventsByClass(Walk.class);
 
+        for (Event event : events) {
+            WalkPets actualWalkPets = new WalkPets((Walk) event);
+            int index = result.indexOf(actualWalkPets);
+
+            if (index >= 0) {
+                result.get(index).addPet(pet);
+            } else {
+                actualWalkPets.addPet(pet);
+                result.add(actualWalkPets);
+            }
+        }
+    }
+
+    /**
+     * Get the result.
+     * @return The result
+     */
+    public List<WalkPets> getResult() {
+        return result;
+    }
 }

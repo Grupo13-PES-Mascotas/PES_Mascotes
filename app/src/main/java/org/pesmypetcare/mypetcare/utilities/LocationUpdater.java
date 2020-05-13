@@ -24,8 +24,9 @@ import java.util.Objects;
 
 
 public class LocationUpdater {
-    public static final int LAT = 0;
-    public static final int LNG = 1;
+    private static final int LAT = 0;
+    private static final int LNG = 1;
+    private static final int MIN_TIME = 5000;
     private static Context context;
     private static LocationManager locationManager;
 
@@ -51,6 +52,10 @@ public class LocationUpdater {
         }
     };
 
+    private LocationUpdater() {
+        // Private constructor
+    }
+
     /**
      * Start a walk.
      */
@@ -70,7 +75,7 @@ public class LocationUpdater {
      * End updating the location of the user.
      */
     public static void endRoute() {
-        if(locationManager != null) {
+        if (locationManager != null) {
             locationManager.removeUpdates(locationListener);
         }
     }
@@ -86,7 +91,7 @@ public class LocationUpdater {
                 != PackageManager.PERMISSION_GRANTED) {
             return null;
         }
-        locationManager  = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         Location location = Objects.requireNonNull(locationManager).getLastKnownLocation(LocationManager.GPS_PROVIDER);
         String loc = Objects.requireNonNull(location).getLatitude() + " " + location.getLongitude();
         String[] splitPos = loc.split(" ");
@@ -115,10 +120,10 @@ public class LocationUpdater {
                 != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        locationManager  = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         assert locationManager != null;
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         updateCoordinates(location);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, 0, locationListener);
     }
 }

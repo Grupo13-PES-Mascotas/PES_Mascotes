@@ -42,6 +42,8 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
     private static final float ZOOM = 16.0f;
     private static final String LESS_THAN_A_MINUTE = "<1 min";
     private static final int NUM_DIFFERENT_COLORS = 14;
+    private static final float TRANSPARENCY = 0.7f;
+    private static final int HOUR_MINUTES = 60;
 
     private FragmentWalkBinding binding;
     private MapView mapView;
@@ -49,7 +51,7 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
     private Map<Polyline, WalkPets> polylines;
     private WalkCommunication communication;
     private WalkPets selectedWalkPets;
-    private int colors[];
+    private int[] colors;
     private int nextColor;
 
     @Override
@@ -64,7 +66,7 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
 
         initializeAvailableColors();
 
-        binding.walkingRoutesFilterScrollView.setAlpha(0.7f);
+        binding.walkingRoutesFilterScrollView.setAlpha(TRANSPARENCY);
 
         return binding.getRoot();
     }
@@ -119,17 +121,24 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         checkBox.setButtonTintList(ColorStateList.valueOf(colors[nextColor]));
         nextColor = (nextColor + 1) % NUM_DIFFERENT_COLORS;
 
-        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                polyline.setVisible(true);
-                polyline.setClickable(true);
-            } else {
-                polyline.setVisible(false);
-                polyline.setClickable(false);
-            }
-        });
+        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> setCheckboxListener(polyline, isChecked));
 
         binding.walkingRoutesFilterLayout.addView(checkBox);
+    }
+
+    /**
+     * Set the listener for the checkbox.
+     * @param polyline The polyline
+     * @param isChecked The state of the checkbox
+     */
+    private void setCheckboxListener(Polyline polyline, boolean isChecked) {
+        if (isChecked) {
+            polyline.setVisible(true);
+            polyline.setClickable(true);
+        } else {
+            polyline.setVisible(false);
+            polyline.setClickable(false);
+        }
     }
 
     /**
@@ -201,7 +210,16 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
 
         TextView description = walkRoute.findViewById(R.id.walkRouteDescription);
         description.setText(selectedWalkPets.getWalk().getDescription());
+        setDuration(walkRoute);
 
+        return walkRoute;
+    }
+
+    /**
+     * Set the duration.
+     * @param walkRoute The walk route
+     */
+    private void setDuration(View walkRoute) {
         TextView duration = walkRoute.findViewById(R.id.walkRouteDuration);
         int minutes = getMinutes(selectedWalkPets.getWalk().getDateTime(), selectedWalkPets.getWalk().getEndTime());
 
@@ -211,8 +229,6 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
             String strMinutes = minutes + " min";
             duration.setText(strMinutes);
         }
-
-        return walkRoute;
     }
 
     /**
@@ -222,8 +238,8 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
      * @return The duration in minutes
      */
     private int getMinutes(DateTime startDateTime, DateTime endDateTime) {
-        int startMinutes = startDateTime.getHour() * 60 + startDateTime.getMinutes();
-        int endMinutes = endDateTime.getHour() * 60 + endDateTime.getMinutes();
+        int startMinutes = startDateTime.getHour() * HOUR_MINUTES + startDateTime.getMinutes();
+        int endMinutes = endDateTime.getHour() * HOUR_MINUTES + endDateTime.getMinutes();
 
         return endMinutes - startMinutes;
     }
