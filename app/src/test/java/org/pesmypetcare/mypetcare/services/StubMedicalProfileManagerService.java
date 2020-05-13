@@ -78,7 +78,8 @@ public class StubMedicalProfileManagerService implements MedicalProfileManagerSe
     @Override
     public void createVaccination(User user, Pet pet, Vaccination vaccination)
         throws VaccinationAlreadyExistingException {
-        if (Objects.requireNonNull(vaccinationData.get(user.getUsername() + SPACE_KOLIN + pet.getName())).contains(vaccination)) {
+        if (Objects.requireNonNull(vaccinationData.get(user.getUsername() + SPACE_KOLIN + pet.getName()))
+            .contains(vaccination)) {
             throw new VaccinationAlreadyExistingException();
         }
 
@@ -89,7 +90,8 @@ public class StubMedicalProfileManagerService implements MedicalProfileManagerSe
 
     @Override
     public void deleteVaccination(User user, Pet pet, Vaccination vaccination) {
-        Objects.requireNonNull(vaccinationData.get(user.getUsername() + SPACE_KOLIN + pet.getName())).remove(vaccination);
+        Objects.requireNonNull(vaccinationData.get(user.getUsername() + SPACE_KOLIN + pet.getName()))
+            .remove(vaccination);
         nVaccinations--;
     }
 
@@ -106,7 +108,8 @@ public class StubMedicalProfileManagerService implements MedicalProfileManagerSe
 
     @Override
     public void updateVaccinationBody(User user, Pet pet, Vaccination vaccination) {
-        ArrayList<Vaccination> petVaccinations = Objects.requireNonNull(vaccinationData.get(user.getUsername() + SPACE_KOLIN
+        ArrayList<Vaccination> petVaccinations = Objects.requireNonNull(vaccinationData.get(user.getUsername()
+            + SPACE_KOLIN
             + pet.getName()));
         for (Vaccination serverVacc:petVaccinations) {
             if (serverVacc.getVaccinationDate().compareTo(vaccination.getDateTime()) == 0) {

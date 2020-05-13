@@ -171,8 +171,8 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         String owner = user.getUsername();
         String petName = pet.getName();
 
-        IllnessData illnessData = ServiceLocator.getInstance().getPetCollectionsManagerClient().
-            getIllness(accessToken, owner, petName, dateTime.toString());
+        IllnessData illnessData = ServiceLocator.getInstance().getPetCollectionsManagerClient()
+            .getIllness(accessToken, owner, petName, dateTime.toString());
         org.pesmypetcare.usermanagerlib.datacontainers.Illness oldIllness =
             new org.pesmypetcare.usermanagerlib.datacontainers.Illness(dateTime.toString(),
                 illnessData);

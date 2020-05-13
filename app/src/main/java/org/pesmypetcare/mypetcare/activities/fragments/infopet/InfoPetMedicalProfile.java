@@ -680,26 +680,8 @@ public class InfoPetMedicalProfile extends Fragment {
         inputIllnessDescription.setText(illness.getDescription());
         illnessEndDate.setText(illness.getEndTime().toDateString());
         illnessEndTime.setText(illness.getEndTime().toTimeString());
-
-        ArrayList<String> severityList = new ArrayList<>();
-        severityList.add(LOW);
-        severityList.add(MEDIUM);
-        severityList.add(HIGH);
-        final ArrayAdapter<String> adp = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
-                android.R.layout.simple_spinner_item, severityList);
-        severity.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        severity.setAdapter(adp);
-
-        ArrayList<String> typeList = new ArrayList<>();
-        typeList.add(NORMAL);
-        typeList.add(ALLERGY);
-        final ArrayAdapter<String> adp2 = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
-                android.R.layout.simple_spinner_item, typeList);
-        type.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        type.setAdapter(adp2);
-
+        initializeSeverityList();
+        initializeTypeList();
         updatesIllnessDate = false;
         DateTime illnessDate = illness.getDateTime();
         showIllnessDate(illnessDate);
@@ -876,24 +858,9 @@ public class InfoPetMedicalProfile extends Fragment {
             deleteIllnessButton.setVisibility(View.INVISIBLE);
             inputIllnessDescription.setText("");
 
-            ArrayList<String> severityList = new ArrayList<>();
-            severityList.add(LOW);
-            severityList.add(MEDIUM);
-            severityList.add(HIGH);
-            final ArrayAdapter<String> adp = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
-                    android.R.layout.simple_spinner_item, severityList);
-            severity.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
-            severity.setAdapter(adp);
+            initializeSeverityList();
 
-            ArrayList<String> typeList = new ArrayList<>();
-            typeList.add(NORMAL);
-            typeList.add(ALLERGY);
-            final ArrayAdapter<String> adp2 = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
-                    android.R.layout.simple_spinner_item, typeList);
-            type.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
-            type.setAdapter(adp2);
+            initializeTypeList();
 
             illnessEndDate.setText(R.string.illness_end_date);
             illnessEndTime.setText(R.string.illness_end_time);
@@ -903,6 +870,35 @@ public class InfoPetMedicalProfile extends Fragment {
             illnessDialog.setTitle(R.string.add_illnesses_button);
             illnessDialog.show();
         });
+    }
+
+    /**
+     * Method responsible for initializing the type list.
+     */
+    private void initializeTypeList() {
+        ArrayList<String> typeList = new ArrayList<>();
+        typeList.add(NORMAL);
+        typeList.add(ALLERGY);
+        final ArrayAdapter<String> adp2 = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
+            android.R.layout.simple_spinner_item, typeList);
+        type.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT));
+        type.setAdapter(adp2);
+    }
+
+    /**
+     * Method responsible for initializing the severity list.
+     */
+    private void initializeSeverityList() {
+        ArrayList<String> severityList = new ArrayList<>();
+        severityList.add(LOW);
+        severityList.add(MEDIUM);
+        severityList.add(HIGH);
+        final ArrayAdapter<String> adp = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
+            android.R.layout.simple_spinner_item, severityList);
+        severity.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT));
+        severity.setAdapter(adp);
     }
 
 
