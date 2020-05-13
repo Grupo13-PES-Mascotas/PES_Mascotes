@@ -10,6 +10,8 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMedicalProfileManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
+import java.util.concurrent.ExecutionException;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -34,7 +36,7 @@ public class TestTrUpdatePetVaccination {
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotUpdatePetVaccinationIfNotPetOwner() throws NotPetOwnerException {
+    public void shouldNotUpdatePetVaccinationIfNotPetOwner() throws NotPetOwnerException, ExecutionException, InterruptedException {
         trUpdatePetVaccination.setUser(user);
         pet.setOwner(new User("Tomas Roncero", "tomasAS@gmail.com", "1235"));
         trUpdatePetVaccination.setPet(pet);
@@ -43,7 +45,7 @@ public class TestTrUpdatePetVaccination {
     }
 
     @Test
-    public void shouldUpdatePetVaccinationBody() throws NotPetOwnerException {
+    public void shouldUpdatePetVaccinationBody() throws NotPetOwnerException, ExecutionException, InterruptedException {
         trUpdatePetVaccination.setUser(user);
         trUpdatePetVaccination.setPet(pet);
         vaccination.setVaccinationDescription(VACCINATION_DESCRIPTION);
@@ -54,7 +56,7 @@ public class TestTrUpdatePetVaccination {
     }
 
     @Test
-    public void shouldUpdatePetVaccinationKey() throws NotPetOwnerException {
+    public void shouldUpdatePetVaccinationKey() throws NotPetOwnerException, ExecutionException, InterruptedException {
         trUpdatePetVaccination.setUser(user);
         trUpdatePetVaccination.setPet(pet);
         DateTime newDate = DateTime.Builder.buildDateString("2091-03-21");

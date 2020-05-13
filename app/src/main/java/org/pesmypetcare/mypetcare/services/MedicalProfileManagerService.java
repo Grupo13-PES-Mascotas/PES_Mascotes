@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.services;
 
+import org.pesmypetcare.mypetcare.features.pets.Illness;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.pets.VaccinationAlreadyExistingException;
@@ -55,4 +56,19 @@ public interface MedicalProfileManagerService {
      */
     void updateVaccinationBody(User user, Pet pet, Vaccination vaccination);
 
+    /**
+     * Obtains all the Illness of the pet.
+     * @param user The owner of the pet
+     * @param pet The pet from whom we want to obtain all the illness
+     * @return A list containing all the illness of the pet
+     */
+    List<Illness> findIllnessesByPet(User user, Pet pet) throws ExecutionException, InterruptedException;
+
+    /**
+     * Deletes a illness from the given pet.
+     * @param user The owner of the pet
+     * @param pet The pet from whom we want to delete all the illness
+     * @param illness The illness that has to be deleted
+     */
+    void deleteIllness(User user, Pet pet, Illness illness);
 }

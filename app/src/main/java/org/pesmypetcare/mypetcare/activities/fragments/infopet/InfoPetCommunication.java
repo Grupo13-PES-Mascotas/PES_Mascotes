@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import org.pesmypetcare.mypetcare.features.pets.Illness;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Medication;
@@ -225,4 +226,17 @@ public interface InfoPetCommunication {
      * @param pet The pet from where we have to obtain all the vaccinations
      */
     void obtainAllPetVaccinations(Pet pet);
+
+    /**
+     * Obtains all illnesses from a given pet.
+     * @param pet The pet from where we have to obtain all the illnesses
+     */
+    void obtainAllPetIllnesses(Pet pet);
+
+    /**
+     * Deletes an illness from the given pet.
+     * @param pet The pet from where the illness has to be deleted
+     * @param illness The illness that has to be deleted
+     */
+    void deletePetIllness(Pet pet, Illness illness);
 }

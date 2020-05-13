@@ -41,4 +41,20 @@ public class MedicalProfileControllersFactory {
     public static TrUpdatePetVaccination createTrUpdatePetVaccination() {
         return new TrUpdatePetVaccination(new MedicalProfileManagerAdapter());
     }
+
+    /**
+     * Method responsible for creating the transaction to obtain all the illnesses of a pet.
+     * @return The transaction to obtain all the illnesses of a pet
+     */
+    public static TrObtainAllPetIllness createTrObtainAllPetIllnesses() {
+        return new TrObtainAllPetIllness(new MedicalProfileManagerAdapter());
+    }
+
+    /**
+     * Method responsible for creating the transaction to delete a illness from a pet.
+     * @return The transaction to delete a illness from a pet
+     */
+    public static TrDeletePetIllness createTrDeletePetIllness() {
+        return new TrDeletePetIllness(new MedicalProfileManagerAdapter());
+    }
 }

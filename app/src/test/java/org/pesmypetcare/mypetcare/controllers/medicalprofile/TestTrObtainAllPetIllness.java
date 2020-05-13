@@ -13,10 +13,10 @@ import java.util.concurrent.ExecutionException;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Xavier Campos
+ * @author Enric Hernando
  */
-public class TestTrObtainAllPetVaccinations {
-    private TrObtainAllPetVaccinations trObtainAllPetVaccinations;
+public class TestTrObtainAllPetIllness {
+    private TrObtainAllPetIllness trObtainAllPetIllness;
     private StubMedicalProfileManagerService stubMedicalProfileManagerService;
     private User user;
     private Pet pet;
@@ -24,7 +24,7 @@ public class TestTrObtainAllPetVaccinations {
     @Before
     public void setUp() {
         stubMedicalProfileManagerService = new StubMedicalProfileManagerService();
-        trObtainAllPetVaccinations = new TrObtainAllPetVaccinations(stubMedicalProfileManagerService);
+        trObtainAllPetIllness = new TrObtainAllPetIllness(stubMedicalProfileManagerService);
         user = new User("Manolo Lama", "lamacope@gmail.com", "1234");
         pet = new Pet("Bichinho");
         pet.setOwner(user);
@@ -32,19 +32,19 @@ public class TestTrObtainAllPetVaccinations {
 
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotReturnAllPetVaccinationsIfNotPetOwner() throws NotPetOwnerException, ExecutionException, InterruptedException {
-        trObtainAllPetVaccinations.setUser(user);
+    public void shouldNotReturnAllPetIllnessIfNotPetOwner() throws NotPetOwnerException, ExecutionException, InterruptedException {
+        trObtainAllPetIllness.setUser(user);
         pet.setOwner(new User("Tomas Roncero", "tomasAS@gmail.com", "1235"));
-        trObtainAllPetVaccinations.setPet(pet);
-        trObtainAllPetVaccinations.execute();
+        trObtainAllPetIllness.setPet(pet);
+        trObtainAllPetIllness.execute();
     }
     @Test
-    public void shouldReturnAllPetVaccinations() throws NotPetOwnerException, ExecutionException, InterruptedException {
-        trObtainAllPetVaccinations.setUser(user);
-        trObtainAllPetVaccinations.setPet(pet);
-        trObtainAllPetVaccinations.execute();
-        assertEquals("Should have the same medications", pet.getVaccinationEvents(),
-            stubMedicalProfileManagerService.findVaccinationsByPet(user, pet));
+    public void shouldReturnAllPetIllness() throws NotPetOwnerException, ExecutionException, InterruptedException {
+        trObtainAllPetIllness.setUser(user);
+        trObtainAllPetIllness.setPet(pet);
+        trObtainAllPetIllness.execute();
+        assertEquals("Should have the same illnesses", pet.getIllnessEvents(),
+                stubMedicalProfileManagerService.findIllnessesByPet(user, pet));
 
     }
 
