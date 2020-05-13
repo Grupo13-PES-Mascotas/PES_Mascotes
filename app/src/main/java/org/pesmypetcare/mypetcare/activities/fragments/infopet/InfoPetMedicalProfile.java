@@ -473,7 +473,7 @@ public class InfoPetMedicalProfile extends Fragment {
         illness.setSeverity(severity.getSelectedItem().toString());
         illness.setType(type.getSelectedItem().toString());
         illness.setEndTime(getIllnessEndDateTime());
-        //InfoPetFragment.getCommunication().updatePetIllness(pet, illness, newDate, illnessUpdatesDate);
+        InfoPetFragment.getCommunication().updatePetIllness(pet, illness, newDate, updatesIllnessDate);
         if (updatesIllnessDate) {
             illness.setDateTime(DateTime.Builder.buildDateString(newDate));
         }
@@ -568,7 +568,8 @@ public class InfoPetMedicalProfile extends Fragment {
         String description = Objects.requireNonNull(inputIllnessDescription.getText()).toString();
         illness = new Illness(description, illnessDate, illnessEndDate, type.getSelectedItem().toString(),
                 severity.getSelectedItem().toString());
-        //InfoPetFragment.getCommunication().addPetIllness(pet, description, illnessDate);
+        InfoPetFragment.getCommunication().addPetIllness(pet, description, type.getSelectedItem().toString(),
+                severity.getSelectedItem().toString(), illnessDate, illnessEndDate);
     }
 
     /**
@@ -588,7 +589,7 @@ public class InfoPetMedicalProfile extends Fragment {
     private void initializeRemoveIllnessButton() {
         deleteIllnessButton.setOnClickListener(v -> {
             InfoPetFragment.getCommunication().deletePetIllness(pet, illness);
-            initializeVaccinationLayoutView();
+            initializeIllnessLayoutView();
             illnessDialog.dismiss();
         });
     }
@@ -599,10 +600,7 @@ public class InfoPetMedicalProfile extends Fragment {
     private void initializeIllnessLayoutView() {
         ArrayList<Event> illnessList;
         illnessDisplay.removeAllViews();
-
-
         illnessList = (ArrayList<Event>) pet.getIllnessEvents();
-
         for (Event illness : illnessList) {
             initializeIllnessComponent(illness);
         }
@@ -640,7 +638,7 @@ public class InfoPetMedicalProfile extends Fragment {
      */
     private void initializeIllnessButtonLogic(Illness illness, MaterialButton illnessButton) {
         String illnessButtonText = getString(R.string.illness) + SPACE + illness.getDescription() + EOL
-                + getString(R.string.from_date) + SPACE + illness.getDateTime();
+                + getString(R.string.from_date) + SPACE + illness.getDateTime().toDateString();
         illnessButton.setText(illnessButtonText);
         illnessButton.setOnClickListener(v -> {
             InfoPetMedicalProfile.illness = illness;
@@ -658,6 +656,27 @@ public class InfoPetMedicalProfile extends Fragment {
     private void initializeEditIllnessDialog() {
         editIllnessButton.setText(R.string.update_illness);
         inputIllnessDescription.setText(illness.getDescription());
+        illnessEndDate.setText(illness.getEndTime().toDateString());
+        illnessEndTime.setText(illness.getEndTime().toTimeString());
+
+        ArrayList<String> severityList = new ArrayList<>();
+        severityList.add("Low");
+        severityList.add("Medium");
+        severityList.add("High");
+        final ArrayAdapter<String> adp = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
+                android.R.layout.simple_spinner_item, severityList);
+        severity.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        severity.setAdapter(adp);
+
+        ArrayList<String> typeList = new ArrayList<>();
+        typeList.add("Normal");
+        typeList.add("Allergy");
+        final ArrayAdapter<String> adp2 = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
+                android.R.layout.simple_spinner_item, typeList);
+        type.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        type.setAdapter(adp2);
 
         updatesIllnessDate = false;
         DateTime illnessDate = illness.getDateTime();
@@ -735,7 +754,7 @@ public class InfoPetMedicalProfile extends Fragment {
      */
     private void initializeButtonLogic(Vaccination vaccination, MaterialButton vaccinationButton) {
         String vaccinationButtonText = getString(R.string.vaccination) + SPACE + vaccination.getDescription() + EOL
-                + getString(R.string.from_date) + SPACE + vaccination.getDateTime();
+                + getString(R.string.from_date) + SPACE + vaccination.getDateTime().toDateString();
         vaccinationButton.setText(vaccinationButtonText);
         vaccinationButton.setOnClickListener(v -> {
             InfoPetMedicalProfile.vaccination = vaccination;
@@ -868,6 +887,7 @@ public class InfoPetMedicalProfile extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        initializeIllnessLayoutView();
         initializeVaccinationLayoutView();
     }
 }

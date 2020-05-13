@@ -110,7 +110,7 @@ public class StubMedicalProfileManagerService implements MedicalProfileManagerSe
             + pet.getName()));
         for (Vaccination serverVacc:petVaccinations) {
             if (serverVacc.getVaccinationDate().compareTo(vaccination.getDateTime()) == 0) {
-                serverVacc.setVaccinationDescription(vaccination.getVaccinationDescription());
+                serverVacc.setDescription(vaccination.getDescription());
             }
         }
     }

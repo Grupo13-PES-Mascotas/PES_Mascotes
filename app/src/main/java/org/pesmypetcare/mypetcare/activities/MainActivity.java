@@ -406,6 +406,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             obtainAllPetMedications(pet);
             obtainAllPetWashes(pet);
             obtainAllPetVaccinations(pet);
+            obtainAllPetIllnesses(pet);
         }
 
         Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);

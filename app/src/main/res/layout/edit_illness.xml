@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:layout_margin="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
@@ -139,7 +138,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+            android:layout_height="10dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/editIllnessButton"
@@ -153,10 +152,6 @@
             app:icon="@drawable/icon_add"
             app:iconSize="24dp"
             tools:ignore="RtlSymmetry" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp"/>
 
     </LinearLayout>
 

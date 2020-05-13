@@ -59,9 +59,9 @@ public class Illness extends Event {
 
     /**
      * Setter of the duration of the illness.
-     * @param type The new duration of the illness
+     * @param severity The new duration of the illness
      */
-    public void setSeverity(String type) {
+    public void setSeverity(String severity) {
         this.severity = severity;
     }
 }

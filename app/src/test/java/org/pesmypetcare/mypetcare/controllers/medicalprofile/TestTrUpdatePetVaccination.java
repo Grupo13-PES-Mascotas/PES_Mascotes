@@ -48,11 +48,11 @@ public class TestTrUpdatePetVaccination {
     public void shouldUpdatePetVaccinationBody() throws NotPetOwnerException, ExecutionException, InterruptedException {
         trUpdatePetVaccination.setUser(user);
         trUpdatePetVaccination.setPet(pet);
-        vaccination.setVaccinationDescription(VACCINATION_DESCRIPTION);
+        vaccination.setDescription(VACCINATION_DESCRIPTION);
         trUpdatePetVaccination.setVaccination(vaccination);
         trUpdatePetVaccination.execute();
         assertEquals("Should have the same description", VACCINATION_DESCRIPTION,
-            vaccination.getVaccinationDescription());
+            vaccination.getDescription());
     }
 
     @Test

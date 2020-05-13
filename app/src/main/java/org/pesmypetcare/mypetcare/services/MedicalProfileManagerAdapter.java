@@ -25,7 +25,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         String owner = user.getUsername();
         String petName = pet.getName();
 
-        VaccinationData vaccinationData = new VaccinationData(vaccination.getVaccinationDescription());
+        VaccinationData vaccinationData = new VaccinationData(vaccination.getDescription());
         org.pesmypetcare.usermanagerlib.datacontainers.Vaccination libraryVaccination =
             new org.pesmypetcare.usermanagerlib.datacontainers.Vaccination(vaccination.getVaccinationDate().toString(),
                 vaccinationData);
@@ -57,7 +57,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         String owner = user.getUsername();
         String petName = pet.getName();
 
-        VaccinationData vaccinationData = new VaccinationData(vaccination.getVaccinationDescription());
+        VaccinationData vaccinationData = new VaccinationData(vaccination.getDescription());
         org.pesmypetcare.usermanagerlib.datacontainers.Vaccination libraryVaccination =
             new org.pesmypetcare.usermanagerlib.datacontainers.Vaccination(vaccination.getVaccinationDate().toString(),
                 vaccinationData);
@@ -93,7 +93,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         String owner = user.getUsername();
         String petName = pet.getName();
 
-        VaccinationData vaccinationData = new VaccinationData(vaccination.getVaccinationDescription());
+        VaccinationData vaccinationData = new VaccinationData(vaccination.getDescription());
         org.pesmypetcare.usermanagerlib.datacontainers.Vaccination libraryVaccination =
             new org.pesmypetcare.usermanagerlib.datacontainers.Vaccination(vaccination.getVaccinationDate().toString(),
                 vaccinationData);
@@ -161,7 +161,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
                 illnessData);
 
         ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken, owner, petName,
-            PetData.VACCINATIONS, libraryIllness.getKey(), libraryIllness.getBodyAsMap());
+            PetData.ILLNESSES, libraryIllness.getKey(), libraryIllness.getBodyAsMap());
     }
 
     @Override
@@ -179,8 +179,8 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         org.pesmypetcare.usermanagerlib.datacontainers.Illness newIllness =
             new org.pesmypetcare.usermanagerlib.datacontainers.Illness(newDate, illnessData);
         ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner, petName,
-            PetData.VACCINATIONS, oldIllness.getKey());
+            PetData.ILLNESSES, oldIllness.getKey());
         ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner, petName,
-            PetData.VACCINATIONS, newIllness.getKey(), newIllness.getBodyAsMap());
+            PetData.ILLNESSES, newIllness.getKey(), newIllness.getBodyAsMap());
     }
 }

@@ -1,20 +1,15 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
-import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 /**
  * @author Xavier Campos & Enric Hernando Puerta
  */
-public class Vaccination extends Event{
-    private static final String SPACE = " ";
+public class Vaccination extends Event {
     private DateTime vaccinationDate;
-    private String vaccinationDescription;
 
     public Vaccination(String description, DateTime dateTime) {
-        super(R.string.vaccination_date + SPACE + dateTime.toString() + " ."
-            + R.string.vaccination_description + SPACE + description, dateTime);
-        this.vaccinationDescription = description;
+        super(description, dateTime);
         this.vaccinationDate = dateTime;
     }
 
@@ -33,26 +28,5 @@ public class Vaccination extends Event{
     public void setVaccinationDate(DateTime vaccinationDate) {
         this.vaccinationDate = vaccinationDate;
         super.setDateTime(vaccinationDate);
-        super.setDescription(R.string.vaccination_date + SPACE + vaccinationDate.toString() + " ."
-            + R.string.vaccination_description + SPACE + vaccinationDescription);
-    }
-
-    /**
-     * Getter of the description of the vaccination.
-     * @return The description of the vaccination
-     */
-    public String getVaccinationDescription() {
-        return vaccinationDescription;
-    }
-
-    /**
-     * Setter of the description of the vaccination.
-     * @param vaccinationDescription The description of the vaccination to set
-     */
-    public void setVaccinationDescription(String vaccinationDescription) {
-        this.vaccinationDescription = vaccinationDescription;
-        super.setDescription(vaccinationDescription);
-        super.setDescription(R.string.vaccination_date + SPACE + vaccinationDate.toString() + " ."
-            + R.string.vaccination_description + SPACE + vaccinationDescription);
     }
 }

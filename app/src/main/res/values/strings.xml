@@ -143,7 +143,7 @@
     <string name="vaccination_time">Vaccination Time</string>
     <string name="vaccination_date">Vaccination Date</string>
     <string name="vaccination_description">Vaccination description</string>
-    <string name="add_illnesses_button">Add illnesses</string>
+    <string name="add_illnesses_button">Add illness</string>
     <string name="meal_name">Meal Name</string>
     <string name="meal_kcal">Meal Kilocalories</string>
     <string name="meal_date">Meal Date</string>
@@ -220,7 +220,7 @@
     <string name="select_illness_date">Select illness date</string>
     <string name="edit_illness_title">Edit illness</string>
     <string name="edit_illness_message">Introduce the data of the illness</string>
-    <string name="vaccination">Vaccination</string>
+    <string name="vaccination">Vaccination:</string>
     <string name="edit_vaccination_title">Edit vaccination</string>
     <string name="edit_vaccination_message">Introduce the data of the vaccination</string>
     <string name="edit_meal_title">Edit meal</string>
