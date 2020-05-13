@@ -1744,6 +1744,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         endPetWalking(sharedPreferences, null);
     }
 
+    /**
+     * End the pet walking.
+     * @param sharedPreferences The shared preferences
+     * @param pets The pets that has take place in the walk
+     */
     private void endPetWalking(SharedPreferences sharedPreferences, @Nullable List<Pet> pets) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -1941,6 +1946,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return user;
     }
 
+    /**
+     * Get the groups.
+     * @return The groups
+     */
     public List<Group> getGroups() {
         return groups;
     }
