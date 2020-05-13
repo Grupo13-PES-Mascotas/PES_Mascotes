@@ -63,5 +63,5 @@ public interface MedicalProfileManagerService {
      * @param pet The pet to whom the illness has to be added
      * @param illness The illness that has to be added to the pet
      */
-    void createIllness(User user, Pet pet, Illness illness) throws IllnessAlreadyExistingException;
+    void createIllness(User user, Pet pet, Illness illness) throws IllnessAlreadyExistingException, ExecutionException, InterruptedException;
 }

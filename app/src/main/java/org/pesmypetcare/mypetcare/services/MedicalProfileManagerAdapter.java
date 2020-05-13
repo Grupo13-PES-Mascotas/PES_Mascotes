@@ -5,7 +5,10 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.IllnessData;
+import org.pesmypetcare.usermanagerlib.datacontainers.IllnessType;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
+import org.pesmypetcare.usermanagerlib.datacontainers.SeverityType;
 import org.pesmypetcare.usermanagerlib.datacontainers.VaccinationData;
 
 import java.util.ArrayList;
@@ -100,7 +103,17 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
     }
 
     @Override
-    public void createIllness(User user, Pet pet, Illness illness) {
-        // Not implemented yet
+    public void createIllness(User user, Pet pet, Illness illness) throws ExecutionException, InterruptedException {
+        String accessToken = user.getToken();
+        String owner = user.getUsername();
+        String petName = pet.getName();
+
+        IllnessData illnessData = new IllnessData(illness.getEndTime().toString(), illness.getDescription(),
+            IllnessType.valueOf(illness.getType()), SeverityType.valueOf(illness.getSeverity()));
+        org.pesmypetcare.usermanagerlib.datacontainers.Illness libraryIllness =
+            new org.pesmypetcare.usermanagerlib.datacontainers.Illness(illness.getDateTime().toString(), illnessData);
+
+        ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner, petName,
+            PetData.ILLNESSES, libraryIllness.getKey(), libraryIllness.getBodyAsMap());
     }
 }

@@ -11,6 +11,8 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMedicalProfileManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
+import java.util.concurrent.ExecutionException;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -37,7 +39,7 @@ public class TestTrAddNewPetIllness {
 
     @Test(expected = IllnessAlreadyExistingException.class)
     public void shouldNotAddVaccinationIfAlreadyExisting() throws IllnessAlreadyExistingException,
-        NotPetOwnerException {
+        NotPetOwnerException, ExecutionException, InterruptedException {
         trAddNewPetIllness.setUser(user);
         trAddNewPetIllness.setPet(pet);
         trAddNewPetIllness.setIllness(illness);
@@ -46,7 +48,8 @@ public class TestTrAddNewPetIllness {
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotAddVaccinationIfNotPetOwner() throws NotPetOwnerException, IllnessAlreadyExistingException {
+    public void shouldNotAddVaccinationIfNotPetOwner() throws NotPetOwnerException, IllnessAlreadyExistingException,
+        ExecutionException, InterruptedException {
         trAddNewPetIllness.setUser(user);
         pet.setOwner(new User("Tomas Roncero", "tomasAs@gmail.com", "1235"));
         trAddNewPetIllness.setPet(pet);
@@ -55,7 +58,8 @@ public class TestTrAddNewPetIllness {
     }
 
     @Test
-    public void shouldAddVaccination() throws NotPetOwnerException, IllnessAlreadyExistingException {
+    public void shouldAddVaccination() throws NotPetOwnerException, IllnessAlreadyExistingException,
+        ExecutionException, InterruptedException {
         trAddNewPetIllness.setUser(user);
         trAddNewPetIllness.setPet(pet);
         trAddNewPetIllness.setIllness(illness);

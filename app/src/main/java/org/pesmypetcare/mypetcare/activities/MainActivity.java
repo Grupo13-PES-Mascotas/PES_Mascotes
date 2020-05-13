@@ -1682,7 +1682,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewPetIllness.setIllness(illness);
         try {
             trAddNewPetIllness.execute();
-        } catch (NotPetOwnerException | IllnessAlreadyExistingException e) {
+        } catch (NotPetOwnerException | IllnessAlreadyExistingException | InterruptedException
+            | ExecutionException e) {
             e.printStackTrace();
         }
 
