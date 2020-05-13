@@ -5,17 +5,23 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.Space;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PostView extends LinearLayout {
     public static final int MIN_SPACE_SIZE = 20;
@@ -42,8 +48,11 @@ public class PostView extends LinearLayout {
         params.gravity = Gravity.START;
 
         User user = InfoGroupFragment.getCommunication().getUser();
+        DateTime actualDate = null;
 
         for (Post post : forum.getPosts()) {
+            actualDate = updateActualDate(actualDate, post);
+
             CircularEntryView circularEntryView = new PostComponentView(context, null, post, user);
             circularEntryView.initializeComponent();
             addView(circularEntryView);
@@ -52,6 +61,59 @@ public class PostView extends LinearLayout {
             Space verticalSpace = createSpace();
             addView(verticalSpace);
         }
+    }
+
+    /**
+     * Update the actual date if it has changed.
+     * @param actualDate The actual date
+     * @param post The post that has to be displayed
+     * @return THe actual date updated
+     */
+    @NonNull
+    private DateTime updateActualDate(DateTime actualDate, Post post) {
+        DateTime postCreationDate = post.getCreationDate();
+        DateTime postDate = null;
+
+        try {
+            postDate = DateTime.Builder.build(postCreationDate.getYear(), postCreationDate.getMonth(),
+                postCreationDate.getDay());
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+
+        if (actualDate == null || Objects.requireNonNull(postDate).compareTo(actualDate) > 0) {
+            actualDate = addDateLabel(actualDate, postDate);
+        }
+
+        return actualDate;
+    }
+
+    /**
+     * Add the actual date.
+     * @param actualDate The actual date
+     * @param postDate The date of the post
+     * @return The new actual date
+     */
+    @NonNull
+    private DateTime addDateLabel(DateTime actualDate, DateTime postDate) {
+        if (actualDate != null) {
+            Space verticalSpace = createSpace();
+            addView(verticalSpace);
+        }
+
+        TextView dateLabel = new TextView(getContext());
+        dateLabel.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+            LayoutParams.WRAP_CONTENT));
+        dateLabel.setGravity(Gravity.CENTER);
+        dateLabel.setText(Objects.requireNonNull(postDate).toString());
+        dateLabel.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+
+        addView(dateLabel);
+
+        Space verticalSpace = createSpace();
+        addView(verticalSpace);
+
+        return postDate;
     }
 
     /**

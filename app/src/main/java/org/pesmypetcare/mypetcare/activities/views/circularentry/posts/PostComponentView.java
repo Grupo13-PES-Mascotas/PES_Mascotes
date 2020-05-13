@@ -58,8 +58,8 @@ public class PostComponentView extends CircularEntryView {
         String strCreationDate = post.getCreationDate().toString();
         String[] dateTimeParts = strCreationDate.split(DATE_TIME_SEPARATOR);
 
-        return post.getUsername() + WHITE_SPACE + dateTimeParts[DATE] + WHITE_SPACE
-            + dateTimeParts[HOUR].substring(0, dateTimeParts[HOUR].lastIndexOf(HOUR_SEPARATOR));
+        return post.getUsername() + WHITE_SPACE + dateTimeParts[HOUR].substring(0,
+            dateTimeParts[HOUR].lastIndexOf(HOUR_SEPARATOR));
     }
 
     @Override
