@@ -49,4 +49,12 @@ public class ExerciseControllersFactory {
     public static TrGetAllWalks createTrGetAllWalks() {
         return new TrGetAllWalks();
     }
+
+    /**
+     * Create the transaction for getting all the exercises.
+     * @return The transaction for getting all the exercises
+     */
+    public static TrGetAllExercises createTrGetAllExercises() {
+        return new TrGetAllExercises(new PetManagerAdapter());
+    }
 }

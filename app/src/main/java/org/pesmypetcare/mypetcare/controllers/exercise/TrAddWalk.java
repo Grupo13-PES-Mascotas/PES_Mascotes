@@ -8,9 +8,10 @@ import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Albert Pinto
@@ -90,7 +91,8 @@ public class TrAddWalk {
      * @throws NotPetOwnerException The pet does not belong to the owner
      * @throws InvalidPeriodException The period is invalid
      */
-    public void execute() throws NotPetOwnerException, InvalidPeriodException {
+    public void execute() throws NotPetOwnerException, InvalidPeriodException, ExecutionException,
+        InterruptedException {
         for (Pet pet : pets) {
             if (!pet.isOwner(user)) {
                 throw new NotPetOwnerException();

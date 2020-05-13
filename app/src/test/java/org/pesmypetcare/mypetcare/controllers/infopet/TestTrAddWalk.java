@@ -12,11 +12,12 @@ import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
-import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -48,7 +49,8 @@ public class TestTrAddWalk {
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotAddWalkingToNonOwnerPet() throws NotPetOwnerException, InvalidPeriodException {
+    public void shouldNotAddWalkingToNonOwnerPet() throws NotPetOwnerException, InvalidPeriodException,
+        ExecutionException, InterruptedException {
         trAddWalk.setUser(new User("johnSmith", "johnsmith@gmail.com", "5678"));
         trAddWalk.setPets(pets);
         trAddWalk.setName("A walk for the neighbourhood");
@@ -60,7 +62,8 @@ public class TestTrAddWalk {
     }
 
     @Test(expected = InvalidPeriodException.class)
-    public void shouldTheStartDateTimeBeBeforeTheEndOne() throws NotPetOwnerException, InvalidPeriodException {
+    public void shouldTheStartDateTimeBeBeforeTheEndOne() throws NotPetOwnerException, InvalidPeriodException,
+        ExecutionException, InterruptedException {
         trAddWalk.setUser(user);
         trAddWalk.setPets(pets);
         trAddWalk.setName("A walk for the neighbourhood");
@@ -72,7 +75,8 @@ public class TestTrAddWalk {
     }
 
     @Test(expected = InvalidPeriodException.class)
-    public void shouldStartAndEndTheExerciseInTheSameDate() throws NotPetOwnerException, InvalidPeriodException {
+    public void shouldStartAndEndTheExerciseInTheSameDate() throws NotPetOwnerException, InvalidPeriodException,
+        ExecutionException, InterruptedException {
         trAddWalk.setUser(user);
         trAddWalk.setPets(pets);
         trAddWalk.setName("A walk for the neighbourhood");
@@ -84,7 +88,8 @@ public class TestTrAddWalk {
     }
 
     @Test
-    public void shouldAddWalking() throws NotPetOwnerException, InvalidPeriodException {
+    public void shouldAddWalking() throws NotPetOwnerException, InvalidPeriodException, ExecutionException,
+        InterruptedException {
         trAddWalk.setUser(user);
         trAddWalk.setPets(pets);
         trAddWalk.setName("A walk for the neighbourhood");

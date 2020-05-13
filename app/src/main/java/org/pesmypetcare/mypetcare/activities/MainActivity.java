@@ -98,6 +98,7 @@ import org.pesmypetcare.mypetcare.controllers.exercise.ExerciseControllersFactor
 import org.pesmypetcare.mypetcare.controllers.exercise.TrAddExercise;
 import org.pesmypetcare.mypetcare.controllers.exercise.TrAddWalk;
 import org.pesmypetcare.mypetcare.controllers.exercise.TrDeleteExercise;
+import org.pesmypetcare.mypetcare.controllers.exercise.TrGetAllExercises;
 import org.pesmypetcare.mypetcare.controllers.exercise.TrGetAllWalks;
 import org.pesmypetcare.mypetcare.controllers.exercise.TrUpdateExercise;
 import org.pesmypetcare.mypetcare.controllers.meals.MealsControllersFactory;
@@ -162,6 +163,7 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostReportedByAuthorE
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.InvalidPeriodException;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
@@ -171,9 +173,9 @@ import org.pesmypetcare.mypetcare.features.pets.NotExistingExerciseException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
-import org.pesmypetcare.mypetcare.features.pets.WalkPets;
 import org.pesmypetcare.mypetcare.features.pets.VetVisit;
 import org.pesmypetcare.mypetcare.features.pets.VetVisitAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.WalkPets;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
@@ -184,8 +186,6 @@ import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
-import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
@@ -302,6 +302,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrUpdateExercise trUpdateExercise;
     private TrAddWalk trAddWalk;
     private TrGetAllWalks trGetAllWalks;
+    private TrGetAllExercises trGetAllExercises;
 
 
     @Override
@@ -447,6 +448,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             obtainAllPetMedications(pet);
             obtainAllPetVetVisits(pet);
             obtainAllPetWashes(pet);
+            obtainAllPetExercises(pet);
         }
 
         askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -456,6 +458,21 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         updatePetImagesThread.start();
         setUpNavigationHeader();
+    }
+
+    private void obtainAllPetExercises(Pet pet) {
+        trGetAllExercises.setUser(user);
+        trGetAllExercises.setPet(pet);
+
+        try {
+            trGetAllExercises.execute();
+        } catch (NotPetOwnerException | ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        for (Exercise exercise : trGetAllExercises.getResult()) {
+            pet.addExercise(exercise);
+        }
     }
 
     /**
@@ -649,6 +666,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trUpdateExercise = ExerciseControllersFactory.createTrUpdateExercise();
         trAddWalk = ExerciseControllersFactory.createTrAddWalk();
         trGetAllWalks = ExerciseControllersFactory.createTrGetAllWalks();
+        trGetAllExercises = ExerciseControllersFactory.createTrGetAllExercises();
     }
 
     /**
@@ -1841,7 +1859,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trAddWalk.execute();
-        } catch (NotPetOwnerException | InvalidPeriodException e) {
+        } catch (NotPetOwnerException | InvalidPeriodException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }

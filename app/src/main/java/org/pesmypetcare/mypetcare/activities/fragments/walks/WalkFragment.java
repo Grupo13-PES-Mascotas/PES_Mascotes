@@ -30,7 +30,7 @@ import org.pesmypetcare.mypetcare.databinding.FragmentWalkBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.WalkPets;
 import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.HashMap;
 import java.util.List;

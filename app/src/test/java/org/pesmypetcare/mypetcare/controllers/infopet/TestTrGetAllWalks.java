@@ -10,9 +10,9 @@ import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.pets.WalkPets;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
-import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
-import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.Arrays;
 import java.util.List;

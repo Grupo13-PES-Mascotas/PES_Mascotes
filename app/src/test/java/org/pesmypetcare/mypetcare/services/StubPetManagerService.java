@@ -20,6 +20,7 @@ public class StubPetManagerService implements PetManagerService {
     private static final String JOHN_DOE = "johnDoe";
     private static final String JOHN_DOE_2 = "johnDoe2";
     private static final String DINKY = "Dinky";
+    private static final String LINUX = "Linux";
     private Map<String, ArrayList<Pet>> data;
 
     public StubPetManagerService() {
@@ -30,6 +31,10 @@ public class StubPetManagerService implements PetManagerService {
         pet.addExercise(new Exercise("Frisbee", "Playing at the beach",
             DateTime.Builder.buildFullString("2020-05-04T10:00:00"),
             DateTime.Builder.buildFullString("2020-05-04T11:00:00")));
+        Objects.requireNonNull(this.data.get(JOHN_DOE)).add(pet);
+
+        pet = new Pet(LINUX);
+        pet.setWeight(10.0);
         Objects.requireNonNull(this.data.get(JOHN_DOE)).add(pet);
 
         this.data.put(JOHN_DOE_2, new ArrayList<>());
@@ -163,5 +168,21 @@ public class StubPetManagerService implements PetManagerService {
         List<Pet> pets = data.get(user.getUsername());
         int index = Objects.requireNonNull(pets).indexOf(pet);
         pets.get(index).addExercise(walk);
+    }
+
+    @Override
+    public List<Exercise> getAllExercises(User user, Pet pet) {
+        List<Pet> pets = data.get(user.getUsername());
+        int index = Objects.requireNonNull(pets).indexOf(pet);
+
+        List<Event> events = pets.get(index).getEventsByClass(Exercise.class);
+        events.addAll(pets.get(index).getEventsByClass(Walk.class));
+        List<Exercise> exercises = new ArrayList<>();
+
+        for (Event event : events) {
+            exercises.add((Exercise) event);
+        }
+
+        return exercises;
     }
 }
