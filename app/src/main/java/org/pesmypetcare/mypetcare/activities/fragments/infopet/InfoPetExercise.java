@@ -56,6 +56,7 @@ public class InfoPetExercise extends Fragment {
     private static TimeButton exerciseEndTime;
     private static MaterialButton editExerciseButton;
     private static MaterialButton deleteExerciseButton;
+    private static String walkExercisePrefix;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class InfoPetExercise extends Fragment {
         context = getContext();
         InfoPetExercise.inflater = inflater;
         resources = getResources();
+        walkExercisePrefix = getString(R.string.exercise_walking) + " | ";
         showExercises();
 
         updateWalkingButton();
@@ -282,23 +284,24 @@ public class InfoPetExercise extends Fragment {
     public static void showExercises() {
         binding.exerciseDisplayLayout.removeAllViews();
         for (Event event : InfoPetFragment.getPet().getEventsByClass(Exercise.class)) {
-            showEvent((Exercise) event);
+            showEvent((Exercise) event, false);
         }
 
         for (Event event : InfoPetFragment.getPet().getEventsByClass(Walk.class)) {
-            showEvent((Exercise) event);
+            showEvent((Exercise) event, true);
         }
     }
 
     /**
      * Show the exercise event details.
      * @param exercise The exercise to show
+     * @param displayWalkPrefix The walk prefix has to be displayed
      */
-    private static void showEvent(Exercise exercise) {
+    private static void showEvent(Exercise exercise, boolean displayWalkPrefix) {
         EntryView.Builder builder = new EntryView.Builder(context);
         builder.setEntryLabels(labels);
 
-        EntryView entryView = createEntryView(exercise, builder);
+        EntryView entryView = createEntryView(exercise, builder, displayWalkPrefix);
 
         if (entryView != null) {
             binding.exerciseDisplayLayout.addView(entryView);
@@ -317,14 +320,21 @@ public class InfoPetExercise extends Fragment {
      * Create an entry view for the exercise.
      * @param exercise The exercise
      * @param builder The builder for the entry view
+     * @param displayWalkPrefix The walk prefix has to be displayed
      * @return The entry view for the exercise
      */
     @Nullable
-    private static EntryView createEntryView(Exercise exercise, EntryView.Builder builder) {
+    private static EntryView createEntryView(Exercise exercise, EntryView.Builder builder, boolean displayWalkPrefix) {
         String[] entries = getEntries(exercise);
 
         builder.setEntries(entries);
-        builder.setName(exercise.getName());
+
+        if (displayWalkPrefix) {
+            builder.setName(walkExercisePrefix + exercise.getName());
+        } else {
+            builder.setName(exercise.getName());
+        }
+
         EntryView entryView = null;
 
         try {
