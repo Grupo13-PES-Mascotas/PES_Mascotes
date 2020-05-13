@@ -63,10 +63,10 @@ public class TestTrAddNewPetIllness {
         trAddNewPetIllness.setUser(user);
         trAddNewPetIllness.setPet(pet);
         trAddNewPetIllness.setIllness(illness);
-        int nIllness = StubMedicalProfileManagerService.nIllness;
+        int nIllness = StubMedicalProfileManagerService.nIllnesses;
         trAddNewPetIllness.execute();
         assertEquals("The number of illnesses should have increased by 1",
-            nIllness + 1, StubMedicalProfileManagerService.nIllness);
+            nIllness + 1, StubMedicalProfileManagerService.nIllnesses);
     }
 
     @After
