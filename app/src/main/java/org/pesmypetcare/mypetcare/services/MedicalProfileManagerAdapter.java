@@ -20,7 +20,8 @@ import java.util.concurrent.ExecutionException;
  */
 public class MedicalProfileManagerAdapter implements MedicalProfileManagerService {
     @Override
-    public void createVaccination(User user, Pet pet, Vaccination vaccination) throws ExecutionException, InterruptedException {
+    public void createVaccination(User user, Pet pet, Vaccination vaccination) throws ExecutionException,
+        InterruptedException {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
@@ -35,7 +36,8 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
     }
 
     @Override
-    public List<Vaccination> findVaccinationsByPet(User user, Pet pet) throws ExecutionException, InterruptedException {
+    public List<Vaccination> findVaccinationsByPet(User user, Pet pet) throws ExecutionException,
+        InterruptedException {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
@@ -73,8 +75,8 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         String owner = user.getUsername();
         String petName = pet.getName();
 
-        VaccinationData vaccinationData = ServiceLocator.getInstance().getPetCollectionsManagerClient().
-            getVaccination(accessToken, owner, petName, vaccinationDate.toString());
+        VaccinationData vaccinationData = ServiceLocator.getInstance().getPetCollectionsManagerClient()
+            .getVaccination(accessToken, owner, petName, vaccinationDate.toString());
         org.pesmypetcare.usermanagerlib.datacontainers.Vaccination oldVaccination =
             new org.pesmypetcare.usermanagerlib.datacontainers.Vaccination(vaccinationDate.toString(),
                 vaccinationData);
@@ -170,7 +172,6 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
-
         IllnessData illnessData = ServiceLocator.getInstance().getPetCollectionsManagerClient()
             .getIllness(accessToken, owner, petName, dateTime.toString());
         org.pesmypetcare.usermanagerlib.datacontainers.Illness oldIllness =

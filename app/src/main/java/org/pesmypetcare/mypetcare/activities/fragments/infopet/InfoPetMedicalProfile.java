@@ -48,6 +48,7 @@ public class InfoPetMedicalProfile extends Fragment {
     private static final String ALLERGY = "Allergy";
     private static final int FIRST_TWO_DIGITS = 10;
     private static final int STROKE_WIDTH = 5;
+    private static final String YYYY_MM_DD = "yyyy-MM-dd";
     private static boolean editing;
     private static boolean editingIllness;
     private static Vaccination vaccination;
@@ -198,7 +199,8 @@ public class InfoPetMedicalProfile extends Fragment {
         illnessDate.setOnClickListener(v ->
                 materialIllnessDatePicker.show(Objects.requireNonNull(getFragmentManager()), DATE_PICKER));
 
-        materialIllnessDatePicker.addOnPositiveButtonClickListener(this::initializeIllnessOnPositiveButtonClickListener);
+        materialIllnessDatePicker.addOnPositiveButtonClickListener(
+            this::initializeIllnessOnPositiveButtonClickListener);
 
         MaterialDatePicker.Builder builderEnd = MaterialDatePicker.Builder.datePicker();
         builderEnd.setTitleText(getString(R.string.illness_end_date));
@@ -207,7 +209,8 @@ public class InfoPetMedicalProfile extends Fragment {
         illnessEndDate.setOnClickListener(v ->
                 materialIllnessEndDatePicker.show(Objects.requireNonNull(getFragmentManager()), DATE_PICKER));
 
-        materialIllnessEndDatePicker.addOnPositiveButtonClickListener(this::initializeIllnessEndOnPositiveButtonClickListener);
+        materialIllnessEndDatePicker.addOnPositiveButtonClickListener(
+            this::initializeIllnessEndOnPositiveButtonClickListener);
     }
 
     /**
@@ -216,7 +219,7 @@ public class InfoPetMedicalProfile extends Fragment {
      */
     private void initializeIllnessEndOnPositiveButtonClickListener(Object selection) {
         illnessEndDate.setText(materialIllnessEndDatePicker.getHeaderText());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(YYYY_MM_DD, Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(selection.toString()));
         String formattedDate = simpleDateFormat.format(calendar.getTime());
@@ -231,7 +234,7 @@ public class InfoPetMedicalProfile extends Fragment {
      */
     private void initializeIllnessOnPositiveButtonClickListener(Object selection) {
         illnessDate.setText(materialIllnessDatePicker.getHeaderText());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(YYYY_MM_DD, Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(selection.toString()));
         String formattedDate = simpleDateFormat.format(calendar.getTime());
@@ -246,7 +249,7 @@ public class InfoPetMedicalProfile extends Fragment {
      */
     private void initializeOnPositiveButtonClickListener(Object selection) {
         vaccinationDate.setText(materialDatePicker.getHeaderText());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(YYYY_MM_DD, Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(selection.toString()));
         String formattedDate = simpleDateFormat.format(calendar.getTime());
@@ -460,7 +463,7 @@ public class InfoPetMedicalProfile extends Fragment {
             return illnessNameEmpty;
         }
         boolean timesEmpty = !isIllnessTimeSelected || !isIllnessEndTimeSelected;
-        boolean datesEmpty = !isIllnessDateSelected ||  !isIllnessEndDateSelected;
+        boolean datesEmpty = !isIllnessDateSelected || !isIllnessEndDateSelected;
         return illnessNameEmpty || timesEmpty || datesEmpty;
     }
 
@@ -470,7 +473,8 @@ public class InfoPetMedicalProfile extends Fragment {
      * @return True if there is any empty field or false otherwise
      */
     private boolean isAnyFieldBlank() {
-        boolean vaccinationNameEmpty = "".equals(Objects.requireNonNull(inputVaccinationDescription.getText()).toString());
+        boolean vaccinationNameEmpty = "".equals(Objects.requireNonNull(inputVaccinationDescription.getText())
+            .toString());
         if (editing) {
             return vaccinationNameEmpty;
         }
@@ -489,7 +493,7 @@ public class InfoPetMedicalProfile extends Fragment {
      * Method responsible for initializing the editButton listener.
      */
     private void initializeEditIllnessButtonListener() {
-        String newDate = getIllnessDateTime().toString();
+        final String newDate = getIllnessDateTime().toString();
         String description = Objects.requireNonNull(inputIllnessDescription.getText()).toString();
         illness.setDescription(description);
         illness.setSeverity(severity.getSelectedItem().toString());
@@ -857,19 +861,23 @@ public class InfoPetMedicalProfile extends Fragment {
             editing = false;
             deleteIllnessButton.setVisibility(View.INVISIBLE);
             inputIllnessDescription.setText("");
-
             initializeSeverityList();
-
             initializeTypeList();
-
-            illnessEndDate.setText(R.string.illness_end_date);
-            illnessEndTime.setText(R.string.illness_end_time);
-            illnessDate.setText(R.string.illness_date);
-            illnessTime.setText(R.string.illness_time);
+            initializeEndTimeDateTexts();
             editIllnessButton.setText(R.string.add_illnesses_button);
             illnessDialog.setTitle(R.string.add_illnesses_button);
             illnessDialog.show();
         });
+    }
+
+    /**
+     * Method responsible for initializing the end date and end time texts.
+     */
+    private void initializeEndTimeDateTexts() {
+        illnessEndDate.setText(R.string.illness_end_date);
+        illnessEndTime.setText(R.string.illness_end_time);
+        illnessDate.setText(R.string.illness_date);
+        illnessTime.setText(R.string.illness_time);
     }
 
     /**

@@ -56,12 +56,12 @@ public class TrAddNewPetIllness {
     }
 
     /**
-     * Executes the transaction
+     * Executes the transaction.
      */
     public void execute() throws NotPetOwnerException, IllnessAlreadyExistingException, ExecutionException,
         InterruptedException {
         result = false;
-        if(!user.getUsername().equals(pet.getOwner().getUsername())) {
+        if (!user.getUsername().equals(pet.getOwner().getUsername())) {
             throw new NotPetOwnerException();
         }
         medicalProfileManagerService.createIllness(user, pet, illness);

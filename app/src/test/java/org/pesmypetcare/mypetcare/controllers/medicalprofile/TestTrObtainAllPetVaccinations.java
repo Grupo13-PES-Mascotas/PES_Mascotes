@@ -32,7 +32,8 @@ public class TestTrObtainAllPetVaccinations {
 
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotReturnAllPetVaccinationsIfNotPetOwner() throws NotPetOwnerException, ExecutionException, InterruptedException {
+    public void shouldNotReturnAllPetVaccinationsIfNotPetOwner() throws NotPetOwnerException, ExecutionException,
+        InterruptedException {
         trObtainAllPetVaccinations.setUser(user);
         pet.setOwner(new User("Tomas Roncero", "tomasAS@gmail.com", "1235"));
         trObtainAllPetVaccinations.setPet(pet);

@@ -24,10 +24,11 @@ public class StubMedicalProfileManagerService implements MedicalProfileManagerSe
     private static final String PET1 = "Bichinho";
     private static final String PET2 = "Comandante";
     private static final String SPACE_KOLIN = " : ";
-    private Map<String, ArrayList<Vaccination>> vaccinationData;
-    private Map<String, ArrayList<Illness>> illnessData;
     public static int nVaccinations = 3;
     public static int nIllnesses = 3;
+    private Map<String, ArrayList<Vaccination>> vaccinationData;
+    private Map<String, ArrayList<Illness>> illnessData;
+
 
     public StubMedicalProfileManagerService() {
         addStubDefaultData();
@@ -63,7 +64,7 @@ public class StubMedicalProfileManagerService implements MedicalProfileManagerSe
         Objects.requireNonNull(this.vaccinationData.get(USERNAME + SPACE_KOLIN + PET1)).add(new Vaccination(
             "Vacuna malaria", DateTime.Builder.buildDateString("2020-06-11")));
         Objects.requireNonNull(this.vaccinationData.get(USERNAME + SPACE_KOLIN + PET2)).add(new Vaccination(
-            "Vacuna sida",DateTime.Builder.buildDateString("2020-11-29")));
+            "Vacuna sida", DateTime.Builder.buildDateString("2020-11-29")));
     }
 
 
@@ -120,8 +121,8 @@ public class StubMedicalProfileManagerService implements MedicalProfileManagerSe
 
     @Override
     public void createIllness(User user, Pet pet, Illness illness) throws IllnessAlreadyExistingException {
-        if (Objects.requireNonNull(illnessData.get(user.getUsername() + SPACE_KOLIN + pet.getName())).
-            contains(illness)) {
+        if (Objects.requireNonNull(illnessData.get(user.getUsername() + SPACE_KOLIN + pet.getName()))
+            .contains(illness)) {
             throw new IllnessAlreadyExistingException();
         }
 

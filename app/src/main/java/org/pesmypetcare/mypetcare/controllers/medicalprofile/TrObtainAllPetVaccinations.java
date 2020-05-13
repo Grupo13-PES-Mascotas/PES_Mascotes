@@ -48,7 +48,7 @@ public class TrObtainAllPetVaccinations {
     }
 
     public void execute() throws NotPetOwnerException, ExecutionException, InterruptedException {
-        if(!user.getUsername().equals(pet.getOwner().getUsername())) {
+        if (!user.getUsername().equals(pet.getOwner().getUsername())) {
             throw new NotPetOwnerException();
         }
         result = medicalProfileManagerService.findVaccinationsByPet(user, pet);
