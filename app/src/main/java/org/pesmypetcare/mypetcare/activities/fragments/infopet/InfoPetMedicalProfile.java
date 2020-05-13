@@ -192,25 +192,34 @@ public class InfoPetMedicalProfile extends Fragment {
      * Sets the calendar picker.
      */
     private void setIllnessCalendarPicker() {
-        MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
-        builder.setTitleText(getString(R.string.select_illness_date));
-        materialIllnessDatePicker = builder.build();
+        initializeIllnessStartDatePicker();
+        initializeIllnessEndDatePicker();
+    }
 
-        illnessDate.setOnClickListener(v ->
-                materialIllnessDatePicker.show(Objects.requireNonNull(getFragmentManager()), DATE_PICKER));
-
-        materialIllnessDatePicker.addOnPositiveButtonClickListener(
-            this::initializeIllnessOnPositiveButtonClickListener);
-
+    /**
+     * Method responsible for initializing the illnessEndDatePicker.
+     */
+    private void initializeIllnessEndDatePicker() {
         MaterialDatePicker.Builder builderEnd = MaterialDatePicker.Builder.datePicker();
         builderEnd.setTitleText(getString(R.string.illness_end_date));
         materialIllnessEndDatePicker = builderEnd.build();
-
         illnessEndDate.setOnClickListener(v ->
                 materialIllnessEndDatePicker.show(Objects.requireNonNull(getFragmentManager()), DATE_PICKER));
-
         materialIllnessEndDatePicker.addOnPositiveButtonClickListener(
             this::initializeIllnessEndOnPositiveButtonClickListener);
+    }
+
+    /**
+     * Method responsible for initializing the illnessStartDatePicker.
+     */
+    private void initializeIllnessStartDatePicker() {
+        MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText(getString(R.string.select_illness_date));
+        materialIllnessDatePicker = builder.build();
+        illnessDate.setOnClickListener(v ->
+                materialIllnessDatePicker.show(Objects.requireNonNull(getFragmentManager()), DATE_PICKER));
+        materialIllnessDatePicker.addOnPositiveButtonClickListener(
+            this::initializeIllnessOnPositiveButtonClickListener);
     }
 
     /**
