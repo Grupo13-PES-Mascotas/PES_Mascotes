@@ -35,18 +35,25 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class InfoPetMedicalProfile extends Fragment {
-    private FragmentInfoPetMedicalProfileBinding binding;
     private static final String EOL = "\n";
-    private static final int FIRST_TWO_DIGITS = 10;
-    private static final String DEFAULT_SECONDS = "00";
-    private static final int STROKE_WIDTH = 5;
-    private static final String SPACE = " ";
     private static final String DATESEPARATOR = "-";
     private static final String TIMESEPARATOR = ":";
+    private static final String DEFAULT_SECONDS = "00";
+    private static final String SPACE = " ";
+    private static final String DATE_PICKER = "DATE_PICKER";
+    private static final String LOW = "Low";
+    private static final String MEDIUM = "Medium";
+    private static final String HIGH = "High";
+    private static final String NORMAL = "Normal";
+    private static final String ALLERGY = "Allergy";
+    private static final int FIRST_TWO_DIGITS = 10;
+    private static final int STROKE_WIDTH = 5;
     private static boolean editing;
     private static boolean editingIllness;
     private static Vaccination vaccination;
     private static Illness illness;
+
+    private FragmentInfoPetMedicalProfileBinding binding;
 
     private Pet pet;
     private LinearLayout vaccinationDisplay;
@@ -94,15 +101,16 @@ public class InfoPetMedicalProfile extends Fragment {
         binding = FragmentInfoPetMedicalProfileBinding.inflate(inflater, container, false);
         pet = InfoPetFragment.getPet();
 
-        vaccinationDisplay = binding.vaccinationDisplayLayout;
-        addVaccinationButton = binding.addVaccinationsButton;
-        View editVaccinationLayout = prepareDialog();
-        dialog = getBasicVaccinationDialog();
-        dialog.setView(editVaccinationLayout);
-        initializeEditVaccinationButton();
-        initializeRemoveVaccinationButton();
-        initializeAddVaccinationButton();
+        initializeVaccinationDisplay();
+        initializeIllnessDisplay();
 
+        return binding.getRoot();
+    }
+
+    /**
+     * Method responsible for initializing the illness display.
+     */
+    private void initializeIllnessDisplay() {
         illnessDisplay = binding.illnessesDisplayLayout;
         addIllnessButton = binding.addIllnessesButton;
         View editIllnessLayout = prepareIllnessDialog();
@@ -111,7 +119,20 @@ public class InfoPetMedicalProfile extends Fragment {
         initializeEditIllnessButton();
         initializeRemoveIllnessButton();
         initializeAddIllnessButton();
-        return binding.getRoot();
+    }
+
+    /**
+     * Method responsible for initializing the vaccination display.
+     */
+    private void initializeVaccinationDisplay() {
+        vaccinationDisplay = binding.vaccinationDisplayLayout;
+        addVaccinationButton = binding.addVaccinationsButton;
+        View editVaccinationLayout = prepareDialog();
+        dialog = getBasicVaccinationDialog();
+        dialog.setView(editVaccinationLayout);
+        initializeEditVaccinationButton();
+        initializeRemoveVaccinationButton();
+        initializeAddVaccinationButton();
     }
 
     /**
@@ -161,7 +182,7 @@ public class InfoPetMedicalProfile extends Fragment {
         materialDatePicker = builder.build();
 
         vaccinationDate.setOnClickListener(v ->
-                materialDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
+                materialDatePicker.show(Objects.requireNonNull(getFragmentManager()), DATE_PICKER));
 
         materialDatePicker.addOnPositiveButtonClickListener(this::initializeOnPositiveButtonClickListener);
     }
@@ -175,7 +196,7 @@ public class InfoPetMedicalProfile extends Fragment {
         materialIllnessDatePicker = builder.build();
 
         illnessDate.setOnClickListener(v ->
-                materialIllnessDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
+                materialIllnessDatePicker.show(Objects.requireNonNull(getFragmentManager()), DATE_PICKER));
 
         materialIllnessDatePicker.addOnPositiveButtonClickListener(this::initializeIllnessOnPositiveButtonClickListener);
 
@@ -184,7 +205,7 @@ public class InfoPetMedicalProfile extends Fragment {
         materialIllnessEndDatePicker = builderEnd.build();
 
         illnessEndDate.setOnClickListener(v ->
-                materialIllnessEndDatePicker.show(Objects.requireNonNull(getFragmentManager()), "DATE_PICKER"));
+                materialIllnessEndDatePicker.show(Objects.requireNonNull(getFragmentManager()), DATE_PICKER));
 
         materialIllnessEndDatePicker.addOnPositiveButtonClickListener(this::initializeIllnessEndOnPositiveButtonClickListener);
     }
@@ -438,8 +459,9 @@ public class InfoPetMedicalProfile extends Fragment {
         if (editing) {
             return illnessNameEmpty;
         }
-        return illnessNameEmpty || !isIllnessDateSelected || !isIllnessTimeSelected || !isIllnessEndDateSelected
-                || !isIllnessEndTimeSelected ;
+        boolean timesEmpty = !isIllnessTimeSelected || !isIllnessEndTimeSelected;
+        boolean datesEmpty = !isIllnessDateSelected ||  !isIllnessEndDateSelected;
+        return illnessNameEmpty || timesEmpty || datesEmpty;
     }
 
 
@@ -660,9 +682,9 @@ public class InfoPetMedicalProfile extends Fragment {
         illnessEndTime.setText(illness.getEndTime().toTimeString());
 
         ArrayList<String> severityList = new ArrayList<>();
-        severityList.add("Low");
-        severityList.add("Medium");
-        severityList.add("High");
+        severityList.add(LOW);
+        severityList.add(MEDIUM);
+        severityList.add(HIGH);
         final ArrayAdapter<String> adp = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
                 android.R.layout.simple_spinner_item, severityList);
         severity.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -670,8 +692,8 @@ public class InfoPetMedicalProfile extends Fragment {
         severity.setAdapter(adp);
 
         ArrayList<String> typeList = new ArrayList<>();
-        typeList.add("Normal");
-        typeList.add("Allergy");
+        typeList.add(NORMAL);
+        typeList.add(ALLERGY);
         final ArrayAdapter<String> adp2 = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
                 android.R.layout.simple_spinner_item, typeList);
         type.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -855,9 +877,9 @@ public class InfoPetMedicalProfile extends Fragment {
             inputIllnessDescription.setText("");
 
             ArrayList<String> severityList = new ArrayList<>();
-            severityList.add("Low");
-            severityList.add("Medium");
-            severityList.add("High");
+            severityList.add(LOW);
+            severityList.add(MEDIUM);
+            severityList.add(HIGH);
             final ArrayAdapter<String> adp = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
                     android.R.layout.simple_spinner_item, severityList);
             severity.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -865,8 +887,8 @@ public class InfoPetMedicalProfile extends Fragment {
             severity.setAdapter(adp);
 
             ArrayList<String> typeList = new ArrayList<>();
-            typeList.add("Normal");
-            typeList.add("Allergy");
+            typeList.add(NORMAL);
+            typeList.add(ALLERGY);
             final ArrayAdapter<String> adp2 = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
                     android.R.layout.simple_spinner_item, typeList);
             type.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
