@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -25,6 +26,7 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentWalkBinding;
+import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.WalkPets;
 import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
@@ -216,13 +218,32 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         builder.setMessage(selectedWalkPets.getWalk().getDescription());
 
         DateTime startDateTime = selectedWalkPets.getWalk().getDateTime();
-        String strDate = startDateTime.toString().substring(0, startDateTime.toString().indexOf('T'));
+        DateTime endDateTime = selectedWalkPets.getWalk().getEndTime();
+        String strDate = " " + startDateTime.toString().substring(0, startDateTime.toString().indexOf('T'));
+        String strStartHour = " " + startDateTime.toString().substring(startDateTime.toString().indexOf('T') + 1);
+        String strEndHour = " " + endDateTime.toString().substring(endDateTime.toString().indexOf('T') + 1);
 
-        /*View selectedWalkRouteLayout = getLayoutInflater().inflate(R.layout.selected_walk_route, null);
+        View selectedWalkRouteLayout = getLayoutInflater().inflate(R.layout.selected_walk_route, null);
         TextView date = selectedWalkRouteLayout.findViewById(R.id.walkRouteInfoDate);
-        date.setText(strDate);
+        TextView startHour = selectedWalkRouteLayout.findViewById(R.id.walkRouteInfoStartHour);
+        TextView endHour = selectedWalkRouteLayout.findViewById(R.id.walkRouteInfoEndHour);
 
-        builder.setView(selectedWalkRouteLayout);*/
+        date.setText(strDate);
+        startHour.setText(strStartHour);
+        endHour.setText(strEndHour);
+
+        LinearLayout walkInfoPetLayout = selectedWalkRouteLayout.findViewById(R.id.walkRoutePetsLayout);
+
+        for (Pet pet : selectedWalkPets.getPets()) {
+            TextView actualPet = new TextView(getContext());
+            actualPet.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+            String petName = " " + pet.getName();
+            actualPet.setText(petName);
+            walkInfoPetLayout.addView(actualPet);
+        }
+
+        builder.setView(selectedWalkRouteLayout);
         AlertDialog dialog = builder.create();
 
         dialog.show();
