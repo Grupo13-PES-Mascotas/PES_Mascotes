@@ -1,6 +1,8 @@
 package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.pets.Illness;
+import org.pesmypetcare.mypetcare.features.pets.Illness;
+import org.pesmypetcare.mypetcare.features.pets.IllnessAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.pets.VaccinationAlreadyExistingException;
@@ -25,22 +27,42 @@ public class StubMedicalProfileManagerService implements MedicalProfileManagerSe
     private static final String SPACE_KOLIN = " : ";
     private Map<String, ArrayList<Vaccination>> data;
     private Map<String, ArrayList<Illness>> data2;
+    private Map<String, ArrayList<Vaccination>> vaccinationData;
+    private Map<String, ArrayList<Illness>> illnessData;
     public static int nVaccinations = 3;
     public static int nIllnesses = 3;
+    public static int nIllness = 2;
 
     public StubMedicalProfileManagerService() {
         addStubDefaultData();
     }
 
     public void addStubDefaultData() {
-        this.data = new HashMap<>();
-        this.data.put(USERNAME + SPACE_KOLIN + PET1, new ArrayList<>());
-        this.data.put(USERNAME + SPACE_KOLIN + PET2, new ArrayList<>());
-        Objects.requireNonNull(this.data.get(USERNAME + SPACE_KOLIN + PET1)).add(new Vaccination(
+        addVaccinationDefaultData();
+        addIllnessDefaultData();
+    }
+
+    private void addIllnessDefaultData() {
+        this.illnessData = new HashMap<>();
+        this.illnessData.put(USERNAME + SPACE_KOLIN + PET1, new ArrayList<>());
+        this.illnessData.put(USERNAME + SPACE_KOLIN + PET2, new ArrayList<>());
+        Objects.requireNonNull(this.illnessData.get(USERNAME + SPACE_KOLIN + PET2)).add(new Illness("Infecció renal",
+            DateTime.Builder.buildDateString("2022-03-14"), DateTime.Builder.buildDateString("2023-05-23"),
+            "Infecció", "Lleu"));
+        Objects.requireNonNull(this.illnessData.get(USERNAME + SPACE_KOLIN + PET2)).add(new Illness("Malatia xunga",
+            DateTime.Builder.buildDateString("2020-12-21"), DateTime.Builder.buildDateString("2021-01-15"),
+            "Terminal", "Greu"));
+    }
+
+    private void addVaccinationDefaultData() {
+        this.vaccinationData = new HashMap<>();
+        this.vaccinationData.put(USERNAME + SPACE_KOLIN + PET1, new ArrayList<>());
+        this.vaccinationData.put(USERNAME + SPACE_KOLIN + PET2, new ArrayList<>());
+        Objects.requireNonNull(this.vaccinationData.get(USERNAME + SPACE_KOLIN + PET1)).add(new Vaccination(
             "Vacuna ebola", DateTime.Builder.buildDateString("2020-04-15")));
-        Objects.requireNonNull(this.data.get(USERNAME + SPACE_KOLIN + PET1)).add(new Vaccination(
+        Objects.requireNonNull(this.vaccinationData.get(USERNAME + SPACE_KOLIN + PET1)).add(new Vaccination(
             "Vacuna malaria", DateTime.Builder.buildDateString("2020-06-11")));
-        Objects.requireNonNull(this.data.get(USERNAME + SPACE_KOLIN + PET2)).add(new Vaccination(
+        Objects.requireNonNull(this.vaccinationData.get(USERNAME + SPACE_KOLIN + PET2)).add(new Vaccination(
             "Vacuna sida",DateTime.Builder.buildDateString("2020-11-29")));
 
         this.data2 = new HashMap<>();
@@ -63,8 +85,8 @@ public class StubMedicalProfileManagerService implements MedicalProfileManagerSe
 
     @Override
     public List<Vaccination> findVaccinationsByPet(User user, Pet pet) {
-        if (data.containsKey(user.getUsername() + SPACE_KOLIN + pet.getName())) {
-            return data.get(user.getUsername() + SPACE_KOLIN + pet.getName());
+        if (vaccinationData.containsKey(user.getUsername() + SPACE_KOLIN + pet.getName())) {
+            return vaccinationData.get(user.getUsername() + SPACE_KOLIN + pet.getName());
         }
         return null;
     }
@@ -72,24 +94,24 @@ public class StubMedicalProfileManagerService implements MedicalProfileManagerSe
     @Override
     public void createVaccination(User user, Pet pet, Vaccination vaccination)
         throws VaccinationAlreadyExistingException {
-        if (Objects.requireNonNull(data.get(user.getUsername() + SPACE_KOLIN + pet.getName())).contains(vaccination)) {
+        if (Objects.requireNonNull(vaccinationData.get(user.getUsername() + SPACE_KOLIN + pet.getName())).contains(vaccination)) {
             throw new VaccinationAlreadyExistingException();
         }
 
-        data.putIfAbsent(user.getUsername() + SPACE_KOLIN + pet.getName(), new ArrayList<>());
-        Objects.requireNonNull(data.get(user.getUsername() + SPACE_KOLIN + pet.getName())).add(vaccination);
+        vaccinationData.putIfAbsent(user.getUsername() + SPACE_KOLIN + pet.getName(), new ArrayList<>());
+        Objects.requireNonNull(vaccinationData.get(user.getUsername() + SPACE_KOLIN + pet.getName())).add(vaccination);
         nVaccinations++;
     }
 
     @Override
     public void deleteVaccination(User user, Pet pet, Vaccination vaccination) {
-        Objects.requireNonNull(data.get(user.getUsername() + SPACE_KOLIN + pet.getName())).remove(vaccination);
+        Objects.requireNonNull(vaccinationData.get(user.getUsername() + SPACE_KOLIN + pet.getName())).remove(vaccination);
         nVaccinations--;
     }
 
     @Override
     public void updateVaccinationKey(User user, Pet pet, String newDate, DateTime vaccinationDate) {
-        ArrayList<Vaccination> petVisits = Objects.requireNonNull(data.get(user.getUsername() + SPACE_KOLIN
+        ArrayList<Vaccination> petVisits = Objects.requireNonNull(vaccinationData.get(user.getUsername() + SPACE_KOLIN
             + pet.getName()));
         for (Vaccination vaccination:petVisits) {
             if (vaccination.getVaccinationDate().compareTo(vaccinationDate) == 0) {
@@ -100,13 +122,25 @@ public class StubMedicalProfileManagerService implements MedicalProfileManagerSe
 
     @Override
     public void updateVaccinationBody(User user, Pet pet, Vaccination vaccination) {
-        ArrayList<Vaccination> petVaccinations = Objects.requireNonNull(data.get(user.getUsername() + SPACE_KOLIN
+        ArrayList<Vaccination> petVaccinations = Objects.requireNonNull(vaccinationData.get(user.getUsername() + SPACE_KOLIN
             + pet.getName()));
         for (Vaccination serverVacc:petVaccinations) {
             if (serverVacc.getVaccinationDate().compareTo(vaccination.getDateTime()) == 0) {
                 serverVacc.setVaccinationDescription(vaccination.getVaccinationDescription());
             }
         }
+    }
+
+    @Override
+    public void createIllness(User user, Pet pet, Illness illness) throws IllnessAlreadyExistingException {
+            if (Objects.requireNonNull(illnessData.get(user.getUsername() + SPACE_KOLIN + pet.getName())).
+                contains(illness)) {
+                throw new IllnessAlreadyExistingException();
+            }
+
+            illnessData.putIfAbsent(user.getUsername() + SPACE_KOLIN + pet.getName(), new ArrayList<>());
+            Objects.requireNonNull(illnessData.get(user.getUsername() + SPACE_KOLIN + pet.getName())).add(illness);
+            nIllness++;
     }
 
     @Override

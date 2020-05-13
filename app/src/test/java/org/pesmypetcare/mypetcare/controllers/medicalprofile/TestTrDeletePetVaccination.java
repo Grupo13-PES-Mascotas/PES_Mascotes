@@ -10,6 +10,8 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMedicalProfileManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
+import java.util.concurrent.ExecutionException;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -33,7 +35,8 @@ public class TestTrDeletePetVaccination {
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotUpdatePetVaccinationIfNotPetOwner() throws NotPetOwnerException {
+    public void shouldNotUpdatePetVaccinationIfNotPetOwner() throws NotPetOwnerException, ExecutionException,
+        InterruptedException {
         trDeletePetVaccination.setUser(user);
         pet.setOwner(new User("Tomas Roncero", "tomasAS@gmail.com", "1235"));
         trDeletePetVaccination.setPet(pet);
@@ -42,6 +45,7 @@ public class TestTrDeletePetVaccination {
     }
 
     @Test
+    public void shouldDeleteMedication() throws NotPetOwnerException, ExecutionException, InterruptedException {
     public void shouldDeleteIllness() throws NotPetOwnerException {
         final int before = StubMedicalProfileManagerService.nVaccinations;
         trDeletePetVaccination.setUser(user);

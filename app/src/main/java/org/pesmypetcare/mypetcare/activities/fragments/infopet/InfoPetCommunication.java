@@ -228,6 +228,17 @@ public interface InfoPetCommunication {
     void obtainAllPetVaccinations(Pet pet);
 
     /**
+     * Add an pet illness to the pet.
+     * @param pet The pet to whom the illness has to be added
+     * @param description The description of the illness that has to be added
+     * @param type The type of the illness that has to be added
+     * @param severity The severity of the illness that has to be added
+     * @param startDate The startDate of the illness that has to be added
+     * @param endDate The endDate of the illness that has to be added
+     */
+    void addPetIllness(Pet pet, String description, String type, String severity, DateTime startDate, DateTime endDate);
+
+    /**
      * Obtains all illnesses from a given pet.
      * @param pet The pet from where we have to obtain all the illnesses
      */

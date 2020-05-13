@@ -101,9 +101,7 @@ import org.pesmypetcare.mypetcare.controllers.meals.TrObtainAllPetMeals;
 import org.pesmypetcare.mypetcare.controllers.meals.TrUpdateMeal;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.MedicalProfileControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrAddNewPetVaccination;
-import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrDeletePetIllness;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrDeletePetVaccination;
-import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrObtainAllPetIllness;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrObtainAllPetVaccinations;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrUpdatePetVaccination;
 import org.pesmypetcare.mypetcare.controllers.medication.MedicationControllersFactory;
@@ -159,6 +157,8 @@ import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Illness;
+import org.pesmypetcare.mypetcare.features.pets.Illness;
+import org.pesmypetcare.mypetcare.features.pets.IllnessAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.InvalidPeriodException;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
@@ -287,6 +287,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeletePetVaccination trDeletePetVaccination;
     private TrObtainAllPetIllness trObtainAllPetIllness;
     private TrDeletePetIllness trDeletePetIllness;
+    private TrAddNewPetIllness trAddNewPetIllness;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -401,7 +402,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             obtainAllPetMedications(pet);
             obtainAllPetWashes(pet);
             obtainAllPetVaccinations(pet);
-            obtainAllPetIllnesses(pet);
         }
 
         Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
@@ -598,6 +598,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeletePetVaccination = MedicalProfileControllersFactory.createTrDeletePetVaccinations();
         trObtainAllPetIllness = MedicalProfileControllersFactory.createTrObtainAllPetIllnesses();
         trDeletePetIllness = MedicalProfileControllersFactory.createTrDeletePetIllness();
+        trAddNewPetIllness = MedicalProfileControllersFactory.createTrAddNewIllness();
     }
 
     /**
@@ -1673,6 +1674,22 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (NotPetOwnerException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void addPetIllness(Pet pet, String description, String type, String severity, DateTime startDate,
+                              DateTime endDate) {
+        Illness illness = new Illness(description, startDate, endDate, type, severity);
+        trAddNewPetIllness.setUser(user);
+        trAddNewPetIllness.setPet(pet);
+        trAddNewPetIllness.setIllness(illness);
+        try {
+            trAddNewPetIllness.execute();
+        } catch (NotPetOwnerException | IllnessAlreadyExistingException | InterruptedException
+            | ExecutionException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

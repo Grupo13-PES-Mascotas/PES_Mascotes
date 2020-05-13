@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Xavier Campos
  */
-public class TestTrAddNewMedicalProfile {
+public class TestTrAddNewPetVaccination {
     private TrAddNewPetVaccination trAddNewPetVaccination;
     private StubMedicalProfileManagerService stubMedicalProfileManagerService;
     private User user;
