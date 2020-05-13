@@ -46,7 +46,6 @@ public class TestTrDeletePetVaccination {
 
     @Test
     public void shouldDeleteMedication() throws NotPetOwnerException, ExecutionException, InterruptedException {
-    public void shouldDeleteIllness() throws NotPetOwnerException {
         final int before = StubMedicalProfileManagerService.nVaccinations;
         trDeletePetVaccination.setUser(user);
         trDeletePetVaccination.setPet(pet);

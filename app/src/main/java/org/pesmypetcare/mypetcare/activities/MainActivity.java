@@ -100,8 +100,11 @@ import org.pesmypetcare.mypetcare.controllers.meals.TrNewPetMeal;
 import org.pesmypetcare.mypetcare.controllers.meals.TrObtainAllPetMeals;
 import org.pesmypetcare.mypetcare.controllers.meals.TrUpdateMeal;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.MedicalProfileControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrAddNewPetIllness;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrAddNewPetVaccination;
+import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrDeletePetIllness;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrDeletePetVaccination;
+import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrObtainAllPetIllness;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrObtainAllPetVaccinations;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrUpdatePetVaccination;
 import org.pesmypetcare.mypetcare.controllers.medication.MedicationControllersFactory;
@@ -156,7 +159,6 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostReportedByAuthorE
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
-import org.pesmypetcare.mypetcare.features.pets.Illness;
 import org.pesmypetcare.mypetcare.features.pets.Illness;
 import org.pesmypetcare.mypetcare.features.pets.IllnessAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.InvalidPeriodException;
@@ -1632,7 +1634,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewPetVaccination.setVaccination(vaccination);
         try {
             trAddNewPetVaccination.execute();
-        } catch (NotPetOwnerException | VaccinationAlreadyExistingException e) {
+        } catch (NotPetOwnerException | VaccinationAlreadyExistingException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -1660,7 +1662,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeletePetVaccination.setVaccination(vaccination);
         try {
             trDeletePetVaccination.execute();
-        } catch (NotPetOwnerException e) {
+        } catch (NotPetOwnerException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }

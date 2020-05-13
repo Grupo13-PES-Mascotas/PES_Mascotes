@@ -1,7 +1,6 @@
 package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.pets.Illness;
-import org.pesmypetcare.mypetcare.features.pets.Illness;
 import org.pesmypetcare.mypetcare.features.pets.IllnessAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Vaccination;
@@ -23,7 +22,7 @@ public interface MedicalProfileManagerService {
      * @param pet  The pet to whom the vaccination has to be added
      * @param vaccination The vaccination that has to be added to the pet
      */
-    void createVaccination(User user, Pet pet, Vaccination vaccination) throws VaccinationAlreadyExistingException;
+    void createVaccination(User user, Pet pet, Vaccination vaccination) throws VaccinationAlreadyExistingException, ExecutionException, InterruptedException;
 
     /**
      * Obtains all the vaccinations of the pet.
@@ -39,7 +38,7 @@ public interface MedicalProfileManagerService {
      * @param pet The pet from whom we want to delete all the vaccinations
      * @param vaccination The vaccination that has to be deleted
      */
-    void deleteVaccination(User user, Pet pet, Vaccination vaccination);
+    void deleteVaccination(User user, Pet pet, Vaccination vaccination) throws ExecutionException, InterruptedException;
 
     /**
      * Updates the vaccination key.
