@@ -59,7 +59,7 @@ public class TrDeleteExercise {
         if (pet.containsEvent(dateTime, Walk.class)) {
             for (Pet userPet : user.getPets()) {
                 if (userPet.containsEvent(dateTime, Walk.class)) {
-                    petManagerService.deleteExercise(user, pet, dateTime);
+                    petManagerService.deleteExercise(user, userPet, dateTime);
                     userPet.deleteExerciseForDate(dateTime);
                 }
             }

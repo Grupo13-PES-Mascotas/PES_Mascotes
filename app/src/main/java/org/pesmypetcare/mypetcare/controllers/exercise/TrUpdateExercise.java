@@ -98,10 +98,33 @@ public class TrUpdateExercise {
             throw new NotExistingExerciseException();
         }
 
-        Exercise exercise = new Exercise(exerciseName, exerciseDescription, startDateTime, endDateTime);
-        petManagerService.updateExercise(user, pet, originalDateTime, exercise);
-        pet.deleteExerciseForDate(originalDateTime);
-        pet.addExercise(exercise);
+        List<Event> events = pet.getEventsByClass(Walk.class);
+        Walk walk = null;
+
+        for (Event event : events) {
+            if (event.getDateTime().compareTo(originalDateTime) == 0) {
+                walk = (Walk) event;
+                break;
+            }
+        }
+
+        if (walk != null) {
+            Walk updateWalk = new Walk(exerciseName, exerciseDescription, startDateTime, endDateTime,
+                walk.getCoordinates());
+
+            for (Pet userPet : user.getPets()) {
+                if (userPet.containsEvent(originalDateTime, Walk.class)) {
+                    petManagerService.updateExercise(user,userPet, originalDateTime, updateWalk);
+                    userPet.deleteExerciseForDate(originalDateTime);
+                    userPet.addExercise(updateWalk);
+                }
+            }
+        } else {
+            Exercise exercise = new Exercise(exerciseName, exerciseDescription, startDateTime, endDateTime);
+            petManagerService.updateExercise(user, pet, originalDateTime, exercise);
+            pet.deleteExerciseForDate(originalDateTime);
+            pet.addExercise(exercise);
+        }
     }
 
     /**
