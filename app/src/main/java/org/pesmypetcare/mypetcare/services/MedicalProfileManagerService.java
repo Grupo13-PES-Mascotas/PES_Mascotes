@@ -45,7 +45,7 @@ public interface MedicalProfileManagerService {
      * @param user The owner of the pet
      * @param pet The pet from whom we want to update the vaccination key
      * @param newDate The new date that has to be set to the vaccination
-     * @param vaccinationDate The new old date of the vaccination
+     * @param vaccinationDate The old date of the vaccination
      */
     void updateVaccinationKey(User user, Pet pet, String newDate, DateTime vaccinationDate) throws ExecutionException, InterruptedException;
 
@@ -79,4 +79,21 @@ public interface MedicalProfileManagerService {
      * @param illness The illness that has to be added to the pet
      */
     void createIllness(User user, Pet pet, Illness illness) throws IllnessAlreadyExistingException, ExecutionException, InterruptedException;
+
+    /**
+     * Updates the illness body.
+     * @param user The owner of the pet
+     * @param pet The pet from whom we want to updated the illness body
+     * @param illness The illness that has to be updated
+     */
+    void updateIllnessBody(User user, Pet pet, Illness illness) throws ExecutionException, InterruptedException;
+
+    /**
+     * Updates the illness key.
+     * @param user The owner of the pet
+     * @param pet The pet from whom we want to update the vaccination key
+     * @param newDate The new date that has to be set to the vaccination
+     * @param dateTime The old date of the vaccination
+     */
+    void updateIllnessKey(User user, Pet pet, String newDate, DateTime dateTime) throws ExecutionException, InterruptedException;
 }

@@ -239,6 +239,15 @@ public interface InfoPetCommunication {
     void addPetIllness(Pet pet, String description, String type, String severity, DateTime startDate, DateTime endDate);
 
     /**
+     * Updates an illness of the pet.
+     * @param pet The pet from whom we have to update the illness
+     * @param illness The illness with the body updated
+     * @param newDate The new date of the illness
+     * @param updatesDate A boolean that indicates whether the date has to be updated or not
+     */
+    void updatePetIllness(Pet pet, Illness illness, String newDate, boolean updatesDate);
+
+    /**
      * Obtains all illnesses from a given pet.
      * @param pet The pet from where we have to obtain all the illnesses
      */

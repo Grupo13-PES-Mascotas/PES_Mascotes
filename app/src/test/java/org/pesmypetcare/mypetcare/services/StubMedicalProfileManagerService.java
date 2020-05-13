@@ -1,7 +1,6 @@
 package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.mypetcare.features.pets.Illness;
-import org.pesmypetcare.mypetcare.features.pets.Illness;
 import org.pesmypetcare.mypetcare.features.pets.IllnessAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Vaccination;
@@ -133,14 +132,39 @@ public class StubMedicalProfileManagerService implements MedicalProfileManagerSe
 
     @Override
     public void createIllness(User user, Pet pet, Illness illness) throws IllnessAlreadyExistingException {
-            if (Objects.requireNonNull(illnessData.get(user.getUsername() + SPACE_KOLIN + pet.getName())).
-                contains(illness)) {
-                throw new IllnessAlreadyExistingException();
-            }
+        if (Objects.requireNonNull(illnessData.get(user.getUsername() + SPACE_KOLIN + pet.getName())).
+            contains(illness)) {
+            throw new IllnessAlreadyExistingException();
+        }
 
-            illnessData.putIfAbsent(user.getUsername() + SPACE_KOLIN + pet.getName(), new ArrayList<>());
-            Objects.requireNonNull(illnessData.get(user.getUsername() + SPACE_KOLIN + pet.getName())).add(illness);
-            nIllness++;
+        illnessData.putIfAbsent(user.getUsername() + SPACE_KOLIN + pet.getName(), new ArrayList<>());
+        Objects.requireNonNull(illnessData.get(user.getUsername() + SPACE_KOLIN + pet.getName())).add(illness);
+        nIllness++;
+    }
+
+    @Override
+    public void updateIllnessBody(User user, Pet pet, Illness illness) {
+        ArrayList<Illness> petIllnesses = Objects.requireNonNull(illnessData.get(user.getUsername() + SPACE_KOLIN
+            + pet.getName()));
+        for (Illness serverIllness:petIllnesses) {
+            if (serverIllness.getDateTime().compareTo(illness.getDateTime()) == 0) {
+                serverIllness.setDescription(illness.getDescription());
+                serverIllness.setType(illness.getType());
+                serverIllness.setEndTime(illness.getEndTime());
+                serverIllness.setSeverity(illness.getSeverity());
+            }
+        }
+    }
+
+    @Override
+    public void updateIllnessKey(User user, Pet pet, String newDate, DateTime dateTime) {
+        ArrayList<Illness> petIllnesses = Objects.requireNonNull(illnessData.get(user.getUsername() + SPACE_KOLIN
+            + pet.getName()));
+        for (Illness serverIllness:petIllnesses) {
+            if (serverIllness.getDateTime().compareTo(dateTime) == 0) {
+                serverIllness.setDateTime(DateTime.Builder.buildFullString(newDate));
+            }
+        }
     }
 
     @Override

@@ -147,4 +147,40 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void updateIllnessBody(User user, Pet pet, Illness illness) throws ExecutionException, InterruptedException {
+        String accessToken = user.getToken();
+        String owner = user.getUsername();
+        String petName = pet.getName();
+
+        IllnessData illnessData = new IllnessData(illness.getEndTime().toString(), illness.getDescription(),
+            IllnessType.valueOf(illness.getType()), SeverityType.valueOf(illness.getSeverity()));
+        org.pesmypetcare.usermanagerlib.datacontainers.Illness libraryIllness =
+            new org.pesmypetcare.usermanagerlib.datacontainers.Illness(illness.getDateTime().toString(),
+                illnessData);
+
+        ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken, owner, petName,
+            PetData.VACCINATIONS, libraryIllness.getKey(), libraryIllness.getBodyAsMap());
+    }
+
+    @Override
+    public void updateIllnessKey(User user, Pet pet, String newDate, DateTime dateTime) throws ExecutionException,
+        InterruptedException {
+        String accessToken = user.getToken();
+        String owner = user.getUsername();
+        String petName = pet.getName();
+
+        IllnessData illnessData = ServiceLocator.getInstance().getPetCollectionsManagerClient().
+            getIllness(accessToken, owner, petName, dateTime.toString());
+        org.pesmypetcare.usermanagerlib.datacontainers.Illness oldIllness =
+            new org.pesmypetcare.usermanagerlib.datacontainers.Illness(dateTime.toString(),
+                illnessData);
+        org.pesmypetcare.usermanagerlib.datacontainers.Illness newIllness =
+            new org.pesmypetcare.usermanagerlib.datacontainers.Illness(newDate, illnessData);
+        ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner, petName,
+            PetData.VACCINATIONS, oldIllness.getKey());
+        ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner, petName,
+            PetData.VACCINATIONS, newIllness.getKey(), newIllness.getBodyAsMap());
+    }
 }

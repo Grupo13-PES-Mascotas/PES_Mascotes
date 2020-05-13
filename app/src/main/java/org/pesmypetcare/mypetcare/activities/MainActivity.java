@@ -106,6 +106,7 @@ import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrDeletePetIllness;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrDeletePetVaccination;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrObtainAllPetIllness;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrObtainAllPetVaccinations;
+import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrUpdatePetIllness;
 import org.pesmypetcare.mypetcare.controllers.medicalprofile.TrUpdatePetVaccination;
 import org.pesmypetcare.mypetcare.controllers.medication.MedicationControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.medication.TrDeleteMedication;
@@ -290,6 +291,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrObtainAllPetIllness trObtainAllPetIllness;
     private TrDeletePetIllness trDeletePetIllness;
     private TrAddNewPetIllness trAddNewPetIllness;
+    private TrUpdatePetIllness trUpdatePetIllness;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -601,6 +603,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainAllPetIllness = MedicalProfileControllersFactory.createTrObtainAllPetIllnesses();
         trDeletePetIllness = MedicalProfileControllersFactory.createTrDeletePetIllness();
         trAddNewPetIllness = MedicalProfileControllersFactory.createTrAddNewIllness();
+        trUpdatePetIllness = MedicalProfileControllersFactory.createTrPetIllness();
     }
 
     /**
@@ -1713,6 +1716,21 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trDeletePetIllness.execute();
         } catch (NotPetOwnerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updatePetIllness(Pet pet, Illness illness, String newDate, boolean updatesDate) {
+        trUpdatePetIllness.setUser(user);
+        trUpdatePetIllness.setPet(pet);
+        trUpdatePetIllness.setIllness(illness);
+        if (updatesDate) {
+            trUpdatePetIllness.setNewDate(newDate);
+        }
+        try {
+            trUpdatePetIllness.execute();
+        } catch (NotPetOwnerException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
