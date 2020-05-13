@@ -585,7 +585,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     /**
      * Start the runnable to obtain the images of the pets.
-     * @param nUserPets The number of pets the user has
+     * @param nUserPets The number of pets the user has got
      * @param executorService The executor service of the runnable
      */
     private void startRunnable(int nUserPets, ExecutorService executorService) {
