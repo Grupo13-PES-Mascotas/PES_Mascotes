@@ -29,34 +29,67 @@ public class TrAddWalk {
         this.petManagerService = petManagerService;
     }
 
+    /**
+     * Set the user.
+     * @param user The user to set
+     */
     public void setUser(User user) {
         this.user = user;
     }
 
+    /**
+     * Set the pets.
+     * @param pets The pets to set
+     */
     public void setPets(List<Pet> pets) {
         this.pets = pets;
     }
 
+    /**
+     * Set the name.
+     * @param name The name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Set the description.
+     * @param description The description to set
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Set the start DateTime.
+     * @param startDateTime The start DateTime to set
+     */
     public void setStartDateTime(DateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
 
+    /**
+     * Set the end DateTime.
+     * @param endDateTime The end DateTime to set
+     */
     public void setEndDateTime(DateTime endDateTime) {
         this.endDateTime = endDateTime;
     }
 
+    /**
+     * Set the coordinates.
+     * @param coordinates The coordinates to set
+     */
     public void setCoordinates(List<LatLng> coordinates) {
         this.coordinates = coordinates;
     }
 
+    /**
+     * Execute the transaction.
+     * @throws NotPetOwnerException The pet does not belong to the owner
+     * @throws InvalidPeriodException The period is invalid
+     */
     public void execute() throws NotPetOwnerException, InvalidPeriodException {
         for (Pet pet : pets) {
             if (!pet.isOwner(user)) {

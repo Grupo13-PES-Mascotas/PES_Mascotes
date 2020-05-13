@@ -2,8 +2,6 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
@@ -21,7 +19,6 @@ import org.pesmypetcare.usermanager.datacontainers.pet.Weight;
 import org.pesmypetcare.usermanager.datacontainers.pet.WeightData;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -300,34 +297,12 @@ public class PetManagerAdapter implements PetManagerService {
 
         pet.setName(userPet.getName());
         pet.setGender(petData.getGender());
-        //pet.setBirthDate(DateTime.Builder.buildFullString(petData.getBirth()));
-        pet.setBirthDate(DateTime.Builder.buildFullString("2020-05-09T00:00:00"));
+        pet.setBirthDate(DateTime.Builder.buildFullString(petData.getBirth()));
         /*pet.setWeight(petData.getWeight());
         pet.setWashFrequency(petData.getWashFreq());*/
         pet.setRecommendedDailyKiloCalories(petData.getRecommendedKcal());
         pet.setBreed(petData.getBreed());
         pet.setPathologies(petData.getPathologies());
-
-        pet.addExercise(new Exercise("Frisbee", "Playing at the beach",
-            DateTime.Builder.buildFullString("2020-05-04T10:00:00"),
-            DateTime.Builder.buildFullString("2020-05-04T11:00:00")));
-
-        Walk walk = new Walk("A walk on the beach", "Quite and beautiful",
-            DateTime.Builder.buildFullString("2020-05-10T10:00:00"),
-            DateTime.Builder.buildFullString("2020-05-10T11:00:00"),
-            Arrays.asList(new LatLng(41.220208, 1.720938), new LatLng(41.219639, 1.721323),
-                new LatLng(41.219537, 1.721221), new LatLng(41.219426, 1.721282), new LatLng(41.219392, 1.721411),
-                new LatLng(41.219404, 1.721516), new LatLng(41.218867, 1.721867)));
-
-        Walk walk2 = new Walk("A walk on city north", "Cool",
-            DateTime.Builder.buildFullString("2020-05-10T16:00:00"),
-            DateTime.Builder.buildFullString("2020-05-10T17:00:00"),
-            Arrays.asList(new LatLng(41.225693, 1.713248), new LatLng(41.226613, 1.714943),
-                new LatLng(41.226627, 1.715228), new LatLng(41.226877, 1.715472), new LatLng(41.227381, 1.716620),
-                new LatLng(41.227825, 1.717737), new LatLng(41.228152, 1.718469)));
-
-        pet.addExercise(walk);
-        pet.addExercise(walk2);
 
         return pet;
     }

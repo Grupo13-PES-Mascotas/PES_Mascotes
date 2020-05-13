@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -61,6 +62,17 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
+        initializeAvailableColors();
+
+        binding.walkingRoutesFilterScrollView.setAlpha(0.7f);
+
+        return binding.getRoot();
+    }
+
+    /**
+     * Initialize the available colors.
+     */
+    private void initializeAvailableColors() {
         colors = new int[]{
             getResources().getColor(R.color.colorPrimary, null), getResources().getColor(R.color.red, null),
             getResources().getColor(R.color.green, null), getResources().getColor(R.color.violet, null),
@@ -70,10 +82,6 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
             getResources().getColor(R.color.turquoise, null), getResources().getColor(R.color.rose, null),
             getResources().getColor(R.color.spring_green, null), getResources().getColor(R.color.grey, null)
         };
-
-        binding.walkingRoutesFilterScrollView.setAlpha(0.7f);
-
-        return binding.getRoot();
     }
 
     @Override
@@ -91,33 +99,44 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
 
         List<WalkPets> walkPetsList = communication.getWalkingRoutes();
 
-        System.out.println(walkPetsList.toString());
-
         for (WalkPets walkPets : walkPetsList) {
-            Polyline polyline = createPolyline(walkPets.getWalk().getCoordinates());
-            polylines.put(polyline, walkPets);
-
-            MaterialCheckBox checkBox = new MaterialCheckBox(Objects.requireNonNull(getContext()));
-            checkBox.setText(walkPets.getWalk().getName());
-            checkBox.setChecked(true);
-            checkBox.setTextColor(getResources().getColor(R.color.black, null));
-            checkBox.setButtonTintList(ColorStateList.valueOf(colors[nextColor]));
-            nextColor = (nextColor + 1) % NUM_DIFFERENT_COLORS;
-
-            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    polyline.setVisible(true);
-                    polyline.setClickable(true);
-                } else {
-                    polyline.setVisible(false);
-                    polyline.setClickable(false);
-                }
-            });
-
-            binding.walkingRoutesFilterLayout.addView(checkBox);
+            addWalkRoute(walkPets);
         }
     }
 
+    /**
+     * Add the walk route.
+     * @param walkPets The walk route
+     */
+    private void addWalkRoute(WalkPets walkPets) {
+        Polyline polyline = createPolyline(walkPets.getWalk().getCoordinates());
+        polylines.put(polyline, walkPets);
+
+        MaterialCheckBox checkBox = new MaterialCheckBox(Objects.requireNonNull(getContext()));
+        checkBox.setText(walkPets.getWalk().getName());
+        checkBox.setChecked(true);
+        checkBox.setTextColor(getResources().getColor(R.color.black, null));
+        checkBox.setButtonTintList(ColorStateList.valueOf(colors[nextColor]));
+        nextColor = (nextColor + 1) % NUM_DIFFERENT_COLORS;
+
+        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                polyline.setVisible(true);
+                polyline.setClickable(true);
+            } else {
+                polyline.setVisible(false);
+                polyline.setClickable(false);
+            }
+        });
+
+        binding.walkingRoutesFilterLayout.addView(checkBox);
+    }
+
+    /**
+     * Create a polyline.
+     * @param coordinates The coordinates of the polyline
+     * @return The polyline
+     */
     private Polyline createPolyline(List<LatLng> coordinates) {
         PolylineOptions options = new PolylineOptions().clickable(true).addAll(coordinates);
         Polyline polyline = googleMap.addPolyline(options);
@@ -155,7 +174,6 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onPolylineClick(Polyline polyline) {
-        //polyline.setColor(getResources().getColor(R.color.green, null));
         List<LatLng> points = polyline.getPoints();
         LatLng middlePoint = points.get(points.size() / 2);
 
@@ -217,13 +235,56 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         builder.setTitle(selectedWalkPets.getWalk().getName());
         builder.setMessage(selectedWalkPets.getWalk().getDescription());
 
+        View selectedWalkRouteLayout = initializeWalkRouteLayout();
+        builder.setView(selectedWalkRouteLayout);
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+    }
+
+    /**
+     * Initialize the walk route layout.
+     * @return The walk route layout
+     */
+    @NonNull
+    private View initializeWalkRouteLayout() {
+        View selectedWalkRouteLayout = getLayoutInflater().inflate(R.layout.selected_walk_route, null);
+        addWalkRouteInfo(selectedWalkRouteLayout);
+
+        LinearLayout walkInfoPetLayout = selectedWalkRouteLayout.findViewById(R.id.walkRoutePetsLayout);
+
+        for (Pet pet : selectedWalkPets.getPets()) {
+            addActualPet(walkInfoPetLayout, pet);
+        }
+
+        return selectedWalkRouteLayout;
+    }
+
+    /**
+     * Add the actual pet.
+     * @param walkInfoPetLayout The layout of the walk route
+     * @param pet The pet to add
+     */
+    private void addActualPet(LinearLayout walkInfoPetLayout, Pet pet) {
+        TextView actualPet = new TextView(getContext());
+        actualPet.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT));
+        String petName = " " + pet.getName();
+        actualPet.setText(petName);
+        walkInfoPetLayout.addView(actualPet);
+    }
+
+    /**
+     * Add the walk route info.
+     * @param selectedWalkRouteLayout The layout to add the walk route info
+     */
+    private void addWalkRouteInfo(View selectedWalkRouteLayout) {
         DateTime startDateTime = selectedWalkPets.getWalk().getDateTime();
         DateTime endDateTime = selectedWalkPets.getWalk().getEndTime();
         String strDate = " " + startDateTime.toString().substring(0, startDateTime.toString().indexOf('T'));
         String strStartHour = " " + startDateTime.toString().substring(startDateTime.toString().indexOf('T') + 1);
         String strEndHour = " " + endDateTime.toString().substring(endDateTime.toString().indexOf('T') + 1);
 
-        View selectedWalkRouteLayout = getLayoutInflater().inflate(R.layout.selected_walk_route, null);
         TextView date = selectedWalkRouteLayout.findViewById(R.id.walkRouteInfoDate);
         TextView startHour = selectedWalkRouteLayout.findViewById(R.id.walkRouteInfoStartHour);
         TextView endHour = selectedWalkRouteLayout.findViewById(R.id.walkRouteInfoEndHour);
@@ -231,21 +292,5 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         date.setText(strDate);
         startHour.setText(strStartHour);
         endHour.setText(strEndHour);
-
-        LinearLayout walkInfoPetLayout = selectedWalkRouteLayout.findViewById(R.id.walkRoutePetsLayout);
-
-        for (Pet pet : selectedWalkPets.getPets()) {
-            TextView actualPet = new TextView(getContext());
-            actualPet.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-            String petName = " " + pet.getName();
-            actualPet.setText(petName);
-            walkInfoPetLayout.addView(actualPet);
-        }
-
-        builder.setView(selectedWalkRouteLayout);
-        AlertDialog dialog = builder.create();
-
-        dialog.show();
     }
 }

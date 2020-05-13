@@ -309,7 +309,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
         askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-        LocationUpdater.setContext(this);
+        /*LocationUpdater.setContext(this);
 
         SharedPreferences.Editor editor = walkingSharedPreferences.edit();
 
@@ -329,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             editor2.remove(entry.getKey());
         }
 
-        editor2.apply();
+        editor2.apply();*/
     }
 
     /**
@@ -430,6 +430,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setUpNavigationHeader();
     }
 
+    /**
+     * Update the location.
+     * @param latitude The latitude
+     * @param longitude The longitude
+     */
     public static void updateLocation(double latitude, double longitude) {
         SharedPreferences.Editor editor = walkingSharedPreferences.edit();
         String username = user.getUsername();
@@ -437,8 +442,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         editor.putString(username + "_" + index, latitude + " " + longitude);
         editor.putInt(username, index + 1);
         editor.apply();
-
-        System.out.println("LAT " + latitude + " LNG " + longitude);
     }
 
 
