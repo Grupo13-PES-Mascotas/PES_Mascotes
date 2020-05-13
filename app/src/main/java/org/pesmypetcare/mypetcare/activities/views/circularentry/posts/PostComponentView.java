@@ -23,7 +23,6 @@ public class PostComponentView extends CircularEntryView {
 
     private Post post;
     private User user;
-    private boolean isUserTheOwner;
 
     public PostComponentView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -70,19 +69,16 @@ public class PostComponentView extends CircularEntryView {
 
     @Override
     protected ImageView getRightImage() {
+        if (post.getUsername().equals(user.getUsername())) {
+            return null;
+        }
+
         ImageView likeImage = getBasicImageView();
 
-        if (post.getUsername().equals(user.getUsername())) {
-            likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_camera, null));
-            isUserTheOwner = true;
+        if (post.isLikedByUser(user.getUsername())) {
+            likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_like_blue, null));
         } else {
-            if (post.isLikedByUser(user.getUsername())) {
-                likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_like_blue, null));
-            } else {
-                likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_like, null));
-            }
-
-            isUserTheOwner = false;
+            likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_like, null));
         }
 
         return likeImage;
@@ -111,9 +107,5 @@ public class PostComponentView extends CircularEntryView {
         bottomImage.setImageBitmap(post.getPostImage());
 
         return bottomImage;
-    }
-
-    public boolean isUserTheOwner() {
-        return isUserTheOwner;
     }
 }

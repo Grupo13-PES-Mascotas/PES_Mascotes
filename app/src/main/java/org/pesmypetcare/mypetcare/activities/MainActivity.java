@@ -42,6 +42,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.pesmypetcare.communitymanager.datacontainers.MessageData;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunication;
@@ -79,6 +80,7 @@ import org.pesmypetcare.mypetcare.controllers.community.TrDeleteGroupImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeletePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeletePostImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteSubscription;
+import org.pesmypetcare.mypetcare.controllers.community.TrGetPostImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrLikePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrObtainAllGroups;
 import org.pesmypetcare.mypetcare.controllers.community.TrReportPost;
@@ -255,6 +257,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeletePostImage trDeletePostImage;
     private TrAddGroupImage trAddGroupImage;
     private TrDeleteGroupImage trDeleteGroupImage;
+    private TrGetPostImage trGetPostImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -610,6 +613,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeletePostImage = CommunityControllersFactory.createTrDeletePostImage();
         trAddGroupImage = CommunityControllersFactory.createTrAddGroupImage();
         trDeleteGroupImage = CommunityControllersFactory.createTrDeleteGroupImage();
+        trGetPostImage = CommunityControllersFactory.createTrGetPostImage();
     }
 
     /**
@@ -1162,16 +1166,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void addNewPost(Forum forum, String postText) {
+    public void addNewPost(Forum forum, @Nullable String postText, @Nullable Bitmap postImage) {
         trAddNewPost.setUser(user);
         trAddNewPost.setPostText(postText);
         trAddNewPost.setForum(forum);
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = new Date();
-        String strData = dateFormat.format(date);
-
-        trAddNewPost.setPostCreationDate(DateTime.Builder.buildFullString(strData));
+        trAddNewPost.setPostImage(postImage);
+        trAddNewPost.setPostCreationDate(DateTime.getCurrentDateTime());
 
         try {
             trAddNewPost.execute();
@@ -1258,14 +1258,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void addPostImage(Post post, Bitmap image) {
-        trAddPostImage.setUser(user);
+        /*trAddPostImage.setUser(user);
         trAddPostImage.setPost(post);
         trAddPostImage.setImage(image);
         try {
             trAddPostImage.execute();
         } catch (NotPostOwnerException | PostNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
@@ -1286,6 +1286,16 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         ImageZoomFragment.setOrigin(InfoGroupFragment.INFO_GROUP_ZOOM_IDENTIFIER);
 
         changeFragment(new ImageZoomFragment(drawable));
+    }
+
+    @Override
+    public byte[] getImageFromPost(Post post, MessageData messageData) {
+        trGetPostImage.setUser(user);
+        trGetPostImage.setPost(post);
+        trGetPostImage.setMessageData(messageData);
+        trGetPostImage.execute();
+
+        return trGetPostImage.getResult();
     }
 
     @Override
@@ -1555,10 +1565,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     private void galleryPostFragment(Intent data) {
         Bitmap bitmap = getGalleryBitmap(data);
-        PostsFragment.getSelectedPost().setPostImage(bitmap);
+        //PostsFragment.getSelectedPost().setPostImage(bitmap);
         changeFragment(actualFragment);
+        ((PostsFragment) actualFragment).setPostImage(bitmap);
 
-        addPostImage(PostsFragment.getSelectedPost(), bitmap);
+        //addPostImage(PostsFragment.getSelectedPost(), bitmap);
     }
 
     @Override

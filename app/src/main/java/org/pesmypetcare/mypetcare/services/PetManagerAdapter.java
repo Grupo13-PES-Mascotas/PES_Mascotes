@@ -8,7 +8,6 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
-import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 import org.pesmypetcare.usermanager.datacontainers.pet.FreqWash;
 import org.pesmypetcare.usermanager.datacontainers.pet.FreqWashData;
@@ -25,7 +24,7 @@ import java.util.concurrent.ExecutionException;
 public class PetManagerAdapter implements PetManagerService {
     @Override
     public void updatePet(Pet pet) {
-        String name = pet.getName();
+        /*String name = pet.getName();
         String ownerUsername = pet.getOwner().getUsername();
         String userToken = pet.getOwner().getToken();
 
@@ -37,7 +36,8 @@ public class PetManagerAdapter implements PetManagerService {
             updateHealth(pet);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
+
 
         /*ServiceLocator.getInstance().getPetManagerClient().updateGender(userToken, ownerUsername, name,
             pet.getGender().toString());
@@ -285,7 +285,7 @@ public class PetManagerAdapter implements PetManagerService {
 
         pet.setName(userPet.getName());
         pet.setGender(petData.getGender());
-        pet.setBirthDate(DateTime.Builder.buildDateString(petData.getBirth()));
+        //pet.setBirthDate(DateTime.Builder.buildDateString(petData.getBirth()));
         /*pet.setWeight(petData.getWeight());
         pet.setWashFrequency(petData.getWashFreq());*/
         pet.setRecommendedDailyKiloCalories(petData.getRecommendedKcal());

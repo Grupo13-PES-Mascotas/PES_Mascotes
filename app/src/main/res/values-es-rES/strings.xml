@@ -244,7 +244,7 @@
     <string name="delete_user_image_text">Estás seguro que quieres eliminar tu imagen de usuario?</string>
     <string name="delete_group_image_title">Eliminar imagen del grupo</string>
     <string name="delete_group_image_text">Estàs seguro que quieres eliminar la imagen del grupo?</string>
-
+    <string name="wait_for_update">Espera una actualización para usar esta funcionalidad</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

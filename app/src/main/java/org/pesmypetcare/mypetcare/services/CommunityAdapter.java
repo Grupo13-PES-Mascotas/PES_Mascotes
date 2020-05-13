@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import org.pesmypetcare.communitymanager.datacontainers.ForumData;
 import org.pesmypetcare.communitymanager.datacontainers.GroupData;
+import org.pesmypetcare.communitymanager.datacontainers.Message;
 import org.pesmypetcare.communitymanager.datacontainers.MessageData;
 import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
@@ -13,8 +14,10 @@ import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundExcepti
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +31,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class CommunityAdapter implements CommunityService {
     public static final int TIME = 20;
+    private byte[] imageBytes;
 
     @Override
     public SortedSet<Group> getAllGroups() {
@@ -290,9 +294,31 @@ public class CommunityAdapter implements CommunityService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                MessageData messageData = new MessageData(post.getUsername(), post.getText());
+                Message message;
+
+                if (!"".equals(post.getText()) && post.getPostImage() != null) {
+                    byte[] imageBytes = ImageManager.getImageBytes(post.getPostImage());
+                    message = new Message(user.getUsername(), post.getText(), imageBytes);
+                } else if (!"".equals(post.getText())) {
+                    message = new Message(user.getUsername(), post.getText());
+                } else {
+                    byte[] imageBytes = ImageManager.getImageBytes(post.getPostImage());
+                    message = new Message(user.getUsername(), imageBytes);
+                }
+
+                if (message.getImage() != null) {
+                    ExecutorService imageExecutorService = Executors.newSingleThreadExecutor();
+                    imageExecutorService.execute(() -> {
+                        String fileName = user.getUsername() + "_" + post.getCreationDate().toString() + "_"
+                            + post.getForum().getName() + "_" + post.getForum().getGroup().getName();
+                        ImageManager.writeImage(ImageManager.POST_IMAGES_PATH, fileName, message.getImage());
+                    });
+
+                    imageExecutorService.shutdown();
+                }
+
                 ServiceLocator.getInstance().getForumManagerClient().postMessage(user.getToken(),
-                    forum.getGroup().getName(), forum.getName(), messageData);
+                    forum.getGroup().getName(), forum.getName(), message);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -373,6 +399,38 @@ public class CommunityAdapter implements CommunityService {
         // Not implemented yet
     }
 
+    @Override
+    public byte[] getPostImage(User user, Post post, MessageData messageData) {
+        String fileName = post.getUsername() + "_" + post.getCreationDate().toString() + "_"
+            + post.getForum().getName() + "_" + post.getForum().getGroup().getName();
+
+        try {
+            imageBytes = ImageManager.readImage(ImageManager.POST_IMAGES_PATH, fileName);
+        } catch (IOException e) {
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                try {
+                    Map<String, byte[]> forumImages = ServiceLocator.getInstance().getForumManagerClient()
+                        .getAllPostsImagesFromForum(user.getToken(), post.getForum().getGroup().getName(),
+                            post.getForum().getName());
+                    imageBytes = forumImages.get(messageData.getImagePath());
+                } catch (MyPetCareException ex) {
+                    ex.printStackTrace();
+                }
+            });
+
+            executorService.shutdown();
+
+            try {
+                executorService.awaitTermination(2, TimeUnit.MINUTES);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return imageBytes;
+    }
+
     /**
      * Create the executor service for deleting post.
      * @param user The user
@@ -404,9 +462,9 @@ public class CommunityAdapter implements CommunityService {
         executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                MessageData messageData = new MessageData(post.getUsername(), post.getText());
+                Message message = new Message(post.getUsername(), post.getText());
                 ServiceLocator.getInstance().getForumManagerClient().postMessage(user.getToken(),
-                    post.getForum().getGroup().getName(), post.getForum().getName(), messageData);
+                    post.getForum().getGroup().getName(), post.getForum().getName(), message);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }

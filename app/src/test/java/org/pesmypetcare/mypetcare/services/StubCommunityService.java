@@ -1,7 +1,9 @@
 package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
+import org.pesmypetcare.communitymanager.datacontainers.MessageData;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerException;
@@ -17,6 +19,7 @@ import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -54,8 +57,10 @@ public class StubCommunityService implements CommunityService {
             StubCommunityService.groups.get(DINOSAURS));
         new Forum("Sickling", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:10:00"),
             StubCommunityService.groups.get(DINOSAURS));
-        forum.addPost(new Post("John Doe", "I think that the huskies have to be kept cleaned. What do you think?",
-            DateTime.Builder.buildFullString("2020-04-21T20:55:10"), forum));
+        Post post = new Post("John Doe", "I think that the huskies have to be kept cleaned. What do you think?",
+            DateTime.Builder.buildFullString("2020-04-21T20:55:10"), forum);
+        post.setPostImage(BitmapFactory.decodeByteArray(new byte[]{(byte) 0x00}, 0, 1));
+        forum.addPost(post);
         forum.addPost(new Post("John Doe", "I'm very interested in your answers",
             DateTime.Builder.buildFullString("2020-04-21T21:15:22"), forum));
         forum.addPost(new Post("Manolo Lama", "I would love to clean the Bicho",
@@ -383,6 +388,27 @@ public class StubCommunityService implements CommunityService {
         } else {
             groups.get(groupIndex).setGroupIcon(null);
         }
+    }
+
+    @Override
+    public byte[] getPostImage(User user, Post post, MessageData messageData) {
+        int groupIndex = groups.indexOf(post.getForum().getGroup());
+        Forum selectedForum = null;
+
+        for (Forum forum : groups.get(groupIndex).getForums()) {
+            if (post.getForum().getName().equals(forum.getName())) {
+                selectedForum = forum;
+                break;
+            }
+        }
+
+        for (Post forumPost : Objects.requireNonNull(selectedForum).getPosts()) {
+            if (forumPost.getCreationDate().compareTo(post.getCreationDate()) == 0) {
+                return new byte[] {0x00};
+            }
+        }
+
+        return null;
     }
 
     /**

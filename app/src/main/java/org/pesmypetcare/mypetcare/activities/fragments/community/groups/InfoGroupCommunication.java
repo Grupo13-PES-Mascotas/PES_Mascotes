@@ -3,6 +3,9 @@ package org.pesmypetcare.mypetcare.activities.fragments.community.groups;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.Nullable;
+
+import org.pesmypetcare.communitymanager.datacontainers.MessageData;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
@@ -52,8 +55,9 @@ public interface InfoGroupCommunication {
     /**
      * Add a new post to the forum.
      * @param forum The forum were the post will be added
+     * @param postImage The post of the image
      */
-    void addNewPost(Forum forum, String postText);
+    void addNewPost(Forum forum, @Nullable String postText, @Nullable Bitmap postImage);
 
     /**
      * Deletes a post from the given forum.
@@ -113,4 +117,12 @@ public interface InfoGroupCommunication {
      * @param drawable The image to display
      */
     void makeGroupZoomImage(Drawable drawable);
+
+    /**
+     * Get the image for the post.
+     * @param post The image of the post
+     * @param messageData The message data
+     * @return
+     */
+    byte[] getImageFromPost(Post post, MessageData messageData);
 }

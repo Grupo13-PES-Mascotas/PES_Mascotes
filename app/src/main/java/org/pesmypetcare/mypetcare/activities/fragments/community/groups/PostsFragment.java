@@ -1,7 +1,8 @@
 package org.pesmypetcare.mypetcare.activities.fragments.community.groups;
 
 import android.app.AlertDialog;
-import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,13 +22,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.pesmypetcare.communitymanager.ChatException;
 import org.pesmypetcare.communitymanager.ChatModel;
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.databinding.FragmentPostsBinding;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.utilities.androidservices.GalleryService;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.util.List;
@@ -40,6 +39,7 @@ public class PostsFragment extends Fragment {
 
     private FragmentPostsBinding binding;
     private String reportMessage;
+    private Bitmap postImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,8 +49,21 @@ public class PostsFragment extends Fragment {
         setForumName();
 
         binding.btnSentMessage.setOnClickListener(v -> sendMessage());
+        binding.postMessageInputLayout.setEndIconOnClickListener(v -> selectImageToPost());
 
         return binding.getRoot();
+    }
+
+    /**
+     * Select the image to post.
+     */
+    private void selectImageToPost() {
+        /*Intent imagePicker = GalleryService.getGalleryIntent();
+        MainActivity.setFragmentRequestCode(POST_FRAGMENT_REQUEST_CODE);
+        startActivityForResult(imagePicker, POST_FRAGMENT_REQUEST_CODE);*/
+
+        Toast toast = Toast.makeText(getContext(), R.string.wait_for_update, Toast.LENGTH_LONG);
+        toast.show();
     }
 
     /**
@@ -63,9 +76,11 @@ public class PostsFragment extends Fragment {
             Toast toast = Toast.makeText(getContext(), getString(R.string.should_be_subscribed),
                 Toast.LENGTH_LONG);
             toast.show();
-        } else if (!isMessageEmpty(message)) {
-            InfoGroupFragment.getCommunication().addNewPost(forum, message);
+        } else if (!isMessageEmpty(message) || postImage != null) {
+            InfoGroupFragment.getCommunication().addNewPost(forum, message, postImage);
             binding.postMessage.setText("");
+            binding.postMessageInputLayout.setEndIconDrawable(R.drawable.icon_camera);
+            postImage = null;
         }
     }
 
@@ -129,6 +144,16 @@ public class PostsFragment extends Fragment {
     }
 
     /**
+     * Set the post image.
+     * @param postImage The post image to set
+     */
+    public void setPostImage(Bitmap postImage) {
+        this.postImage = postImage;
+        binding.postMessageInputLayout.setEndIconTintList(ColorStateList.valueOf(getResources()
+            .getColor(R.color.colorPrimary, null)));
+    }
+
+    /**
      * Method responsible for showing all the posts of the forum.
      */
     private void showPosts() {
@@ -160,10 +185,6 @@ public class PostsFragment extends Fragment {
             }
 
             showPosts();
-        } else {
-            Intent imagePicker = GalleryService.getGalleryIntent();
-            MainActivity.setFragmentRequestCode(POST_FRAGMENT_REQUEST_CODE);
-            startActivityForResult(imagePicker, POST_FRAGMENT_REQUEST_CODE);
         }
     }
 
@@ -385,6 +406,12 @@ public class PostsFragment extends Fragment {
         chatModel.getMessage().observe(requireActivity(), messageData -> {
             Post post = new Post(messageData.getCreator(), messageData.getText(),
                 DateTime.Builder.buildFullString(messageData.getPublicationDate()), forum);
+
+            /*if (messageData.getImagePath() != null) {
+                byte[] imageBytes = InfoGroupFragment.getCommunication().getImageFromPost(post, messageData);
+                post.setPostImage(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+            }*/
+
             forum.addPost(post);
             showPosts();
         });

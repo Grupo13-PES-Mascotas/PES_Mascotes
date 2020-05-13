@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.communitymanager.datacontainers.MessageData;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerException;
@@ -156,4 +157,13 @@ public interface CommunityService {
      * @param group The group from where the image has to be deleted
      */
     void deleteGroupImage(User user, Group group) throws GroupNotFoundException;
+
+    /**
+     * Get the image of the post.
+     * @param user The user that makes the petition
+     * @param post The post to get the image from
+     * @param messageData The data received from the server
+     * @return The image of the post in form of a byte array
+     */
+    byte[] getPostImage(User user, Post post, MessageData messageData);
 }
