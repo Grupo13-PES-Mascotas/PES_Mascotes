@@ -10,4 +10,14 @@
     <color name="red">#F44336</color>
     <color name="green">#4CAF50</color>
     <color name="grey">#B3B3B3</color>
+    <color name="violet">#8F00FF</color>
+    <color name="orange">#FF7F00</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="cyan">#00FFFF</color>
+    <color name="magenta">#FF00FF</color>
+    <color name="ocean_blue">#4F42B5</color>
+    <color name="aquamarine">#7FFFD4</color>
+    <color name="turquoise">#40E0D0</color>
+    <color name="rose">#FF007F</color>
+    <color name="spring_green">#00FF7F</color>
 </resources>

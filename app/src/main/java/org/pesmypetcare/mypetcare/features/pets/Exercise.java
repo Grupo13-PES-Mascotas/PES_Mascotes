@@ -1,11 +1,13 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
+import androidx.annotation.NonNull;
+
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 /**
  * @author Albert Pinto
  */
-public class Exercise extends Event {
+public class Exercise extends Event implements Comparable<Exercise> {
     private String name;
     private DateTime endTime;
 
@@ -47,8 +49,14 @@ public class Exercise extends Event {
         this.endTime = endTime;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "{" + getName() + ", " + getDescription() + ", " + getDateTime() + ", " + getEndTime() + "}";
+    }
+
+    @Override
+    public int compareTo(Exercise exercise) {
+        return getDateTime().compareTo(exercise.getDateTime());
     }
 }

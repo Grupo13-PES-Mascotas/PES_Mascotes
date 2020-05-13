@@ -14,6 +14,8 @@ import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
+import java.util.List;
+
 public interface InfoPetCommunication {
 
     /**
@@ -224,4 +226,40 @@ public interface InfoPetCommunication {
      */
     void updateExercise(Pet pet, String txtExerciseName, String txtDescription, DateTime originalStartDateTime,
                         DateTime startExerciseDateTime, DateTime endExerciseDateTime);
+
+    /**
+     * Get the actual user pets.
+     * @return The user pets
+     */
+    List<Pet> getUserPets();
+
+    /**
+     * Asks for a permission.
+     * @param permission The permission to ask for
+     */
+    void askForPermission(String permission);
+
+    /**
+     * Start the walking of the pets.
+     * @param walkingPetNames The names of the pets that go for a walk
+     */
+    void startWalk(List<String> walkingPetNames);
+
+    /**
+     * Check whether the user is walking or not.
+     * @return True if the user is walking
+     */
+    boolean isWalking();
+
+    /**
+     * End the current walking.
+     * @param name The name of the walking
+     * @param description The description of the walking
+     */
+    void endWalk(String name, String description);
+
+    /**
+     * Cancel the current walking.
+     */
+    void cancelWalking();
 }

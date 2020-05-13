@@ -1,11 +1,13 @@
 package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.Toast;
 
@@ -14,6 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.jetbrains.annotations.Nullable;
@@ -25,8 +28,12 @@ import org.pesmypetcare.mypetcare.activities.views.entryview.InvalidBuildParamet
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetExerciseBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
+import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class InfoPetExercise extends Fragment {
@@ -49,13 +56,23 @@ public class InfoPetExercise extends Fragment {
     private static TimeButton exerciseEndTime;
     private static MaterialButton editExerciseButton;
     private static MaterialButton deleteExerciseButton;
+    private static String walkExercisePrefix;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoPetExerciseBinding.inflate(inflater, container, false);
 
         binding.addExerciseButton.setOnClickListener(v -> setAddExerciseButtonListener());
+        initializeView(inflater);
 
+        return binding.getRoot();
+    }
+
+    /**
+     * Initialize the view.
+     * @param inflater The inflater of the fragment
+     */
+    private void initializeView(@NonNull LayoutInflater inflater) {
         labels = new String[] {
             getString(R.string.entry_view_exercise_description), getString(R.string.entry_view_exercise_date),
             getString(R.string.entry_view_exercise_start_hour), getString(R.string.entry_view_exercise_end_hour),
@@ -65,9 +82,214 @@ public class InfoPetExercise extends Fragment {
         context = getContext();
         InfoPetExercise.inflater = inflater;
         resources = getResources();
+        walkExercisePrefix = getString(R.string.exercise_walking) + " | ";
         showExercises();
 
-        return binding.getRoot();
+        updateWalkingButton();
+    }
+
+    /**
+     * Updates the walking button.
+     */
+    private void updateWalkingButton() {
+        boolean isWalking = InfoPetFragment.getCommunication().isWalking();
+
+        if (!isWalking) {
+            setStartWalkingButton();
+        } else {
+            setEndWalkingButton();
+        }
+    }
+
+    /**
+     * Set the end walking button.
+     */
+    private void setEndWalkingButton() {
+        binding.walkingButton.setText(R.string.end_walking_title);
+        binding.walkingButton.setBackgroundColor(getResources().getColor(R.color.red, null));
+        binding.walkingButton.setIcon(getResources().getDrawable(R.drawable.icon_clear, null));
+
+        binding.walkingButton.setOnClickListener(v -> {
+            AlertDialog endWalkDialog = createEndDialog();
+            endWalkDialog.show();
+        });
+    }
+
+    /**
+     * Set the start walking button.
+     */
+    private void setStartWalkingButton() {
+        binding.walkingButton.setText(R.string.start_walking_title);
+        binding.walkingButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary, null));
+        binding.walkingButton.setIcon(getResources().getDrawable(R.drawable.icon_add, null));
+
+        binding.walkingButton.setOnClickListener(v -> {
+            InfoPetFragment.getCommunication().askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            InfoPetFragment.getCommunication().askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            AlertDialog startWalkDialog = createStartWalkDialog();
+            startWalkDialog.show();
+        });
+    }
+
+    /**
+     * Create the end walking dialog.
+     * @return The ned walking dialog
+     */
+    private AlertDialog createEndDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
+        builder.setTitle(R.string.end_walking_title);
+        builder.setMessage(R.string.end_walking_message);
+
+        View endWalkingLayout = getLayoutInflater().inflate(R.layout.end_walking, null);
+        TextInputLayout inputWalkingName = endWalkingLayout.findViewById(R.id.inputWalkingName);
+        TextInputLayout inputWalkingDescription = endWalkingLayout.findViewById(R.id.inputWalkingDescription);
+        MaterialButton btnCancelWalking = endWalkingLayout.findViewById(R.id.cancelWalkingButton);
+        MaterialButton btnEndWalking = endWalkingLayout.findViewById(R.id.endWalkingButton);
+
+        builder.setView(endWalkingLayout);
+        AlertDialog dialog = builder.create();
+
+        setCancelWalkButtonListener(btnCancelWalking, dialog);
+        setEndWalkListener(inputWalkingName, inputWalkingDescription, btnEndWalking, dialog);
+
+        return dialog;
+    }
+
+    /**
+     * Set the end walk listener.
+     * @param inputWalkingName The input walking name layout
+     * @param inputWalkingDescription The input walking description layout
+     * @param btnEndWalking The button for ending the walk
+     * @param dialog The dialog
+     */
+    private void setEndWalkListener(TextInputLayout inputWalkingName, TextInputLayout inputWalkingDescription,
+                                    MaterialButton btnEndWalking, AlertDialog dialog) {
+        btnEndWalking.setOnClickListener(v -> addEndWalkListener(inputWalkingName, inputWalkingDescription, dialog));
+    }
+
+    /**
+     * Add the end walk listener.
+     * @param inputWalkingName The input walking name layout
+     * @param inputWalkingDescription The input walking description layout
+     * @param dialog The dialog
+     */
+    private void addEndWalkListener(TextInputLayout inputWalkingName, TextInputLayout inputWalkingDescription,
+                                    AlertDialog dialog) {
+        String walkingName = Objects.requireNonNull(inputWalkingName.getEditText()).getText().toString();
+        String walkingDescription = Objects.requireNonNull(inputWalkingDescription.getEditText()).getText()
+            .toString();
+
+        if ("".equals(walkingName)) {
+            inputWalkingName.setErrorEnabled(true);
+            inputWalkingName.setError(getString(R.string.error_empty_input_field));
+        } else {
+            InfoPetFragment.getCommunication().endWalk(walkingName, walkingDescription);
+            dialog.dismiss();
+            updateWalkingButton();
+            showExercises();
+        }
+    }
+
+    /**
+     * Set the cancel button listener.
+     * @param btnCancelWalking The cancel walking button
+     * @param dialog The dialog
+     */
+    private void setCancelWalkButtonListener(MaterialButton btnCancelWalking, AlertDialog dialog) {
+        btnCancelWalking.setOnClickListener(v -> {
+            InfoPetFragment.getCommunication().cancelWalking();
+            dialog.dismiss();
+            updateWalkingButton();
+        });
+    }
+
+    /**
+     * Create the start walk dialog.
+     * @return The start walk dialog
+     */
+    private AlertDialog createStartWalkDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
+        builder.setTitle(R.string.start_walking_title);
+        builder.setMessage(R.string.start_walking_message);
+
+        View startWalkingLayout = getLayoutInflater().inflate(R.layout.start_walking, null);
+        LinearLayout checkBoxLayout = startWalkingLayout.findViewById(R.id.checkboxLayout);
+        builder.setView(startWalkingLayout);
+
+        addCheckBoxes(checkBoxLayout);
+
+        Space space = createSpace();
+        checkBoxLayout.addView(space);
+
+        AlertDialog dialog = builder.create();
+
+        MaterialButton btnStartWalking = startWalkingLayout.findViewById(R.id.startWalkingWithPetsButton);
+        setStartWalkingListener(checkBoxLayout, dialog, btnStartWalking);
+
+        return dialog;
+    }
+
+    /**
+     * Add the checkboxes for the pets.
+     * @param checkboxLayout The checkboxes layout
+     */
+    private void addCheckBoxes(LinearLayout checkboxLayout) {
+        List<Pet> userPets = InfoPetFragment.getCommunication().getUserPets();
+
+        for (Pet pet : userPets) {
+            MaterialCheckBox checkBox = new MaterialCheckBox(context, null);
+            checkBox.setText(pet.getName());
+            checkBox.setChecked(pet.equals(InfoPetFragment.getPet()));
+
+            checkboxLayout.addView(checkBox);
+        }
+    }
+
+    /**
+     * Set the start walking button listener.
+     * @param checkBoxLayout The checkbox layout
+     * @param dialog The dialog
+     * @param btnStartWalking The start walking dialog
+     */
+    private void setStartWalkingListener(LinearLayout checkBoxLayout, AlertDialog dialog,
+                                         MaterialButton btnStartWalking) {
+        btnStartWalking.setOnClickListener(v -> addStartWalkingListener(checkBoxLayout, dialog));
+    }
+
+    /**
+     * Add the start walking listener.
+     * @param checkBoxLayout The layout with the checkboxes
+     * @param dialog The dialog to show the walks
+     */
+    private void addStartWalkingListener(LinearLayout checkBoxLayout, AlertDialog dialog) {
+        List<String> walkingPetNames = new ArrayList<>();
+
+        for (int actual = 0; actual < checkBoxLayout.getChildCount() - 1; ++actual) {
+            addPetIfSelected(checkBoxLayout, walkingPetNames, actual);
+        }
+
+        if (walkingPetNames.size() == 0) {
+            Toast toast = Toast.makeText(context, R.string.error_no_pets_selected, Toast.LENGTH_LONG);
+            toast.show();
+        } else {
+            InfoPetFragment.getCommunication().startWalk(walkingPetNames);
+            dialog.dismiss();
+            updateWalkingButton();
+        }
+    }
+
+    /**
+     * Adds the pet if it has been selected.
+     * @param checkBoxLayout The checkbox layout
+     * @param walkingPetNames The names of the pets that take part in the walk
+     * @param actual The actual index
+     */
+    private void addPetIfSelected(LinearLayout checkBoxLayout, List<String> walkingPetNames, int actual) {
+        MaterialCheckBox checkBox = (MaterialCheckBox) checkBoxLayout.getChildAt(actual);
+
+        if (checkBox.isChecked()) {
+            walkingPetNames.add(checkBox.getText().toString());
+        }
     }
 
     /**
@@ -85,19 +307,24 @@ public class InfoPetExercise extends Fragment {
     public static void showExercises() {
         binding.exerciseDisplayLayout.removeAllViews();
         for (Event event : InfoPetFragment.getPet().getEventsByClass(Exercise.class)) {
-            showEvent((Exercise) event);
+            showEvent((Exercise) event, false);
+        }
+
+        for (Event event : InfoPetFragment.getPet().getEventsByClass(Walk.class)) {
+            showEvent((Exercise) event, true);
         }
     }
 
     /**
      * Show the exercise event details.
      * @param exercise The exercise to show
+     * @param displayWalkPrefix The walk prefix has to be displayed
      */
-    private static void showEvent(Exercise exercise) {
+    private static void showEvent(Exercise exercise, boolean displayWalkPrefix) {
         EntryView.Builder builder = new EntryView.Builder(context);
         builder.setEntryLabels(labels);
 
-        EntryView entryView = createEntryView(exercise, builder);
+        EntryView entryView = createEntryView(exercise, builder, displayWalkPrefix);
 
         if (entryView != null) {
             binding.exerciseDisplayLayout.addView(entryView);
@@ -116,14 +343,31 @@ public class InfoPetExercise extends Fragment {
      * Create an entry view for the exercise.
      * @param exercise The exercise
      * @param builder The builder for the entry view
+     * @param displayWalkPrefix The walk prefix has to be displayed
      * @return The entry view for the exercise
      */
     @Nullable
-    private static EntryView createEntryView(Exercise exercise, EntryView.Builder builder) {
+    private static EntryView createEntryView(Exercise exercise, EntryView.Builder builder, boolean displayWalkPrefix) {
         String[] entries = getEntries(exercise);
 
         builder.setEntries(entries);
-        builder.setName(exercise.getName());
+
+        if (displayWalkPrefix) {
+            builder.setName(walkExercisePrefix + exercise.getName());
+        } else {
+            builder.setName(exercise.getName());
+        }
+
+        return createEntryView(builder);
+    }
+
+    /**
+     * Create the entry view.
+     * @param builder The builder of the entry view
+     * @return The entry view
+     */
+    @Nullable
+    private static EntryView createEntryView(EntryView.Builder builder) {
         EntryView entryView = null;
 
         try {
@@ -144,11 +388,17 @@ public class InfoPetExercise extends Fragment {
         String startDateTime = exercise.getDateTime().toString();
         String endDateTime = exercise.getEndTime().toString();
         String date = startDateTime.substring(0, startDateTime.indexOf('T'));
+        int minutes = getMinutes(exercise.getDateTime(), exercise.getEndTime());
+        String strMinutes = String.valueOf(minutes);
+
+        if (minutes < 1) {
+            strMinutes = "<1";
+        }
 
         return new String[]{
             exercise.getDescription(), date, startDateTime.substring(startDateTime.indexOf('T') + 1),
             endDateTime.substring(endDateTime.indexOf('T') + 1),
-            getMinutes(exercise.getDateTime(), exercise.getEndTime()) + " min"
+            strMinutes + " min"
         };
     }
 
@@ -257,7 +507,13 @@ public class InfoPetExercise extends Fragment {
      * @param editExerciseButton The button to update the exercise parameters
      */
     private static void setButtons(String name, String[] entries, MaterialButton editExerciseButton) {
-        Objects.requireNonNull(exerciseName.getEditText()).setText(name);
+        String exerciseNameDisplay = name;
+
+        if (name.startsWith(walkExercisePrefix)) {
+            exerciseNameDisplay = name.substring(walkExercisePrefix.length());
+        }
+
+        Objects.requireNonNull(exerciseName.getEditText()).setText(exerciseNameDisplay);
         Objects.requireNonNull(exerciseDescription.getEditText()).setText(entries[DESCRIPTION]);
         exerciseDate.setButtonText(entries[DATE]);
         exerciseStartTime.setButtonText(entries[START_TIME]);

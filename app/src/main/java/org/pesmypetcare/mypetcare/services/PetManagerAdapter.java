@@ -7,6 +7,7 @@ import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
+import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 
 public class PetManagerAdapter implements PetManagerService {
@@ -74,11 +77,12 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public boolean registerNewPet(User user, Pet pet) {
+    public boolean registerNewPet(User user, Pet pet) throws ExecutionException, InterruptedException {
         /*ServiceLocator.getInstance().getPetManagerClient().createPet(user.getToken(), user.getUsername(),
             pet.getName(), pet.getGender().toString(), pet.getBreed(), pet.getBirthDate(), pet.getWeight(),
             pet.getPathologies(), pet.getRecommendedDailyKiloCalories(), pet.getWashFrequency());*/
-        org.pesmypetcare.usermanagerlib.datacontainers.Pet registerPet = getRegisterPet(pet);
+        org.pesmypetcare.usermanagerlib.datacontainers.Pet libraryPet = getRegisterPet(pet);
+        ServiceLocator.getInstance().getPetManagerClient().createPet(user.getToken(), user.getUsername(), libraryPet);
 
         /*try {
             ServiceLocator.getInstance().getPetManagerClient()
@@ -101,7 +105,7 @@ public class PetManagerAdapter implements PetManagerService {
         PetData petData = new PetData();
 
         registerPet.setName(pet.getName());
-        petData.setBirth("2020-05-22T00:00:00");
+        petData.setBirth(pet.getBirthDate());
         petData.setBreed(pet.getBreed());
         petData.setGender(pet.getGender());
         petData.setPathologies(pet.getPathologies());
@@ -176,6 +180,7 @@ public class PetManagerAdapter implements PetManagerService {
     @Override
     public List<Pet> findPetsByOwner(User user) throws PetRepeatException {
         List<org.pesmypetcare.usermanagerlib.datacontainers.Pet> userPets = null;
+
         try {
             userPets = ServiceLocator.getInstance().getPetManagerClient().getAllPets(user.getToken(),
                 user.getUsername());
@@ -237,11 +242,13 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public void addWeight(User user, Pet pet, double newWeight, DateTime dateTime) throws ExecutionException, InterruptedException {
+    public void addWeight(User user, Pet pet, double newWeight, DateTime dateTime) throws ExecutionException,
+        InterruptedException {
         org.pesmypetcare.usermanagerlib.datacontainers.Weight libraryWeight =
                 new org.pesmypetcare.usermanagerlib.datacontainers.Weight(dateTime.toString(), (int)newWeight);
         ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
-                user.getUsername(), pet.getName(), PetData.WEIGHTS, libraryWeight.getKey(), libraryWeight.getBodyAsMap());
+                user.getUsername(), pet.getName(), PetData.WEIGHTS, libraryWeight.getKey(),
+            libraryWeight.getBodyAsMap());
 
     }
 
@@ -263,7 +270,8 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException {
+    public void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) throws ExecutionException,
+        InterruptedException {
         String accessToken = user.getToken();
         String userName = user.getUsername();
         String petName = pet.getName();
@@ -275,9 +283,11 @@ public class PetManagerAdapter implements PetManagerService {
         ExerciseData libraryExerciseData = new ExerciseData(exercise.getName(), exercise.getDescription(),
                 exercise.getEndTime().toString());
         org.pesmypetcare.usermanagerlib.datacontainers.Exercise libraryExercise =
-                new org.pesmypetcare.usermanagerlib.datacontainers.Exercise(exercise.getDateTime().toString(), libraryExerciseData);
+                new org.pesmypetcare.usermanagerlib.datacontainers.Exercise(exercise.getDateTime().toString(),
+                    libraryExerciseData);
         ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
-                user.getUsername(), pet.getName(), PetData.EXERCISES, libraryExercise.getKey(), libraryExercise.getBodyAsMap());
+                user.getUsername(), pet.getName(), PetData.EXERCISES, libraryExercise.getKey(),
+            libraryExercise.getBodyAsMap());
     }
 
     @Override
@@ -287,16 +297,61 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise) throws ExecutionException, InterruptedException {
+    public void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise)
+        throws ExecutionException, InterruptedException {
         ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(user.getToken(),
                 user.getUsername(), pet.getName(), PetData.EXERCISES, originalDateTime.toString());
         ExerciseData libraryExerciseData = new ExerciseData(exercise.getName(), exercise.getDescription(),
                 exercise.getEndTime().toString());
-        org.pesmypetcare.usermanagerlib.datacontainers.Exercise libraryExercise =
-                new org.pesmypetcare.usermanagerlib.datacontainers.Exercise(exercise.getDateTime().toString(), libraryExerciseData);
-        ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
-                user.getUsername(), pet.getName(), PetData.EXERCISES, libraryExercise.getKey(), libraryExercise.getBodyAsMap());
 
+        if (exercise instanceof Walk) {
+            libraryExerciseData.setCoordinates(((Walk) exercise).getCoordinates());
+        }
+
+        org.pesmypetcare.usermanagerlib.datacontainers.Exercise libraryExercise =
+                new org.pesmypetcare.usermanagerlib.datacontainers.Exercise(exercise.getDateTime().toString(),
+                    libraryExerciseData);
+        ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
+                user.getUsername(), pet.getName(), PetData.EXERCISES, libraryExercise.getKey(),
+            libraryExercise.getBodyAsMap());
+    }
+
+    @Override
+    public void addWalking(User user, Pet pet, Walk walk) throws ExecutionException, InterruptedException {
+        ExerciseData libraryExerciseData = new ExerciseData(walk.getName(), walk.getDescription(),
+            walk.getEndTime().toString(), walk.getCoordinates());
+        org.pesmypetcare.usermanagerlib.datacontainers.Exercise libraryExercise =
+            new org.pesmypetcare.usermanagerlib.datacontainers.Exercise(walk.getDateTime().toString(),
+                libraryExerciseData);
+        ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
+            user.getUsername(), pet.getName(), PetData.EXERCISES, libraryExercise.getKey(),
+            libraryExercise.getBodyAsMap());
+    }
+
+    @Override
+    public List<Exercise> getAllExercises(User user, Pet pet) throws ExecutionException, InterruptedException {
+        List<org.pesmypetcare.usermanagerlib.datacontainers.Exercise> exercises = ServiceLocator.getInstance()
+            .getPetCollectionsManagerClient().getAllExercises(user.getToken(), user.getUsername(), pet.getName());
+
+        SortedSet<Exercise> exercisesSet = new TreeSet<>();
+
+        for (org.pesmypetcare.usermanagerlib.datacontainers.Exercise exercise : exercises) {
+            ExerciseData exerciseData = exercise.getBody();
+
+            if (exerciseData.getCoordinates() == null) {
+                Exercise actualExercise = new Exercise(exerciseData.getName(), exerciseData.getDescription(),
+                    DateTime.Builder.buildFullString(exercise.getKey()),
+                    DateTime.Builder.buildFullString(exerciseData.getEndDateTime()));
+                exercisesSet.add(actualExercise);
+            } else {
+                Walk actualExercise = new Walk(exerciseData.getName(), exerciseData.getDescription(),
+                    DateTime.Builder.buildFullString(exercise.getKey()),
+                    DateTime.Builder.buildFullString(exerciseData.getEndDateTime()), exerciseData.getCoordinates());
+                exercisesSet.add(actualExercise);
+            }
+        }
+
+        return new ArrayList<>(exercisesSet);
     }
 
     /**

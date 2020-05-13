@@ -15,4 +15,6 @@ public class NotImplementedFragment extends Fragment {
         FragmentNotImplementedBinding binding = FragmentNotImplementedBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
+
 }
