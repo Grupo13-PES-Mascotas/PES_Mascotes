@@ -50,14 +50,22 @@ public class TrDeleteExercise {
      * Execute the transaction.
      */
     public void execute() throws NotPetOwnerException, NotExistingExerciseException {
-        System.out.println(pet.containsEvent(dateTime, Exercise.class) + " " + pet.containsEvent(dateTime, Walk.class));
         if (!pet.isOwner(user)) {
             throw new NotPetOwnerException();
         } else if (!pet.containsEvent(dateTime, Exercise.class) && !pet.containsEvent(dateTime, Walk.class)) {
             throw new NotExistingExerciseException();
         }
 
-        petManagerService.deleteExercise(user, pet, dateTime);
-        pet.deleteExerciseForDate(dateTime);
+        if (pet.containsEvent(dateTime, Walk.class)) {
+            for (Pet userPet : user.getPets()) {
+                if (userPet.containsEvent(dateTime, Walk.class)) {
+                    petManagerService.deleteExercise(user, pet, dateTime);
+                    userPet.deleteExerciseForDate(dateTime);
+                }
+            }
+        } else {
+            petManagerService.deleteExercise(user, pet, dateTime);
+            pet.deleteExerciseForDate(dateTime);
+        }
     }
 }

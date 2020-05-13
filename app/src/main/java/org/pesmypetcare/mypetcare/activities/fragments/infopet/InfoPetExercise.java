@@ -474,7 +474,13 @@ public class InfoPetExercise extends Fragment {
      * @param editExerciseButton The button to update the exercise parameters
      */
     private static void setButtons(String name, String[] entries, MaterialButton editExerciseButton) {
-        Objects.requireNonNull(exerciseName.getEditText()).setText(name);
+        String exerciseNameDisplay = name;
+
+        if (name.startsWith(walkExercisePrefix)) {
+            exerciseNameDisplay = name.substring(walkExercisePrefix.length());
+        }
+
+        Objects.requireNonNull(exerciseName.getEditText()).setText(exerciseNameDisplay);
         Objects.requireNonNull(exerciseDescription.getEditText()).setText(entries[DESCRIPTION]);
         exerciseDate.setButtonText(entries[DATE]);
         exerciseStartTime.setButtonText(entries[START_TIME]);
