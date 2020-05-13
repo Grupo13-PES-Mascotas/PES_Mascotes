@@ -11,8 +11,10 @@ import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
-import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -38,7 +40,7 @@ public class TestTrUpdateExercise {
 
     @Test(expected = NotPetOwnerException.class)
     public void shouldNotAddExerciseToNonOwnedPet() throws NotPetOwnerException, NotExistingExerciseException,
-        InvalidPeriodException {
+            InvalidPeriodException, ExecutionException, InterruptedException {
         trUpdateExercise.setUser(new User("johnSmith", "johnsmith@gmail.com", "5678"));
         trUpdateExercise.setPet(pet);
         trUpdateExercise.setExerciseName("Frisbee");
@@ -51,7 +53,7 @@ public class TestTrUpdateExercise {
 
     @Test(expected = InvalidPeriodException.class)
     public void shouldStartAndEndTheExerciseInTheSameDate() throws NotPetOwnerException, InvalidPeriodException,
-        NotExistingExerciseException {
+            NotExistingExerciseException, ExecutionException, InterruptedException {
         trUpdateExercise.setUser(user);
         trUpdateExercise.setPet(pet);
         trUpdateExercise.setExerciseName("Frisbee");
@@ -64,7 +66,7 @@ public class TestTrUpdateExercise {
 
     @Test(expected = NotExistingExerciseException.class)
     public void shouldNotUpdateNonExistingExercise() throws NotPetOwnerException, NotExistingExerciseException,
-        InvalidPeriodException {
+            InvalidPeriodException, ExecutionException, InterruptedException {
         trUpdateExercise.setUser(user);
         trUpdateExercise.setPet(pet);
         trUpdateExercise.setExerciseName("Frisbee2");
@@ -77,7 +79,7 @@ public class TestTrUpdateExercise {
 
     @Test
     public void shouldUpdateTheExercise() throws NotPetOwnerException, NotExistingExerciseException,
-        InvalidPeriodException {
+            InvalidPeriodException, ExecutionException, InterruptedException {
         trUpdateExercise.setUser(user);
         trUpdateExercise.setPet(pet);
         trUpdateExercise.setExerciseName("Frisbee time");
@@ -93,7 +95,7 @@ public class TestTrUpdateExercise {
 
     @Test
     public void shouldUpdateTheExerciseTime() throws NotPetOwnerException, NotExistingExerciseException,
-        InvalidPeriodException {
+            InvalidPeriodException, ExecutionException, InterruptedException {
         trUpdateExercise.setUser(user);
         trUpdateExercise.setPet(pet);
         trUpdateExercise.setExerciseName("Frisbee time");
@@ -109,7 +111,7 @@ public class TestTrUpdateExercise {
 
     @Test
     public void shouldUpdateTheStartDate() throws NotPetOwnerException, NotExistingExerciseException,
-        InvalidPeriodException {
+            InvalidPeriodException, ExecutionException, InterruptedException {
         trUpdateExercise.setUser(user);
         trUpdateExercise.setPet(pet);
         trUpdateExercise.setExerciseName("Frisbee time");

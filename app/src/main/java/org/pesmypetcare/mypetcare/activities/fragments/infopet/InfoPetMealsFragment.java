@@ -24,7 +24,7 @@ import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,7 +83,6 @@ public class InfoPetMealsFragment extends Fragment {
         initializeRemoveMealButton();
         initializeIntervalSwitch();
         initializeAddMealButton();
-
         return binding.getRoot();
     }
 
@@ -427,8 +426,8 @@ public class InfoPetMealsFragment extends Fragment {
     private void initializeButtonParams(MaterialButton mealButton) {
         mealButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT));
-        mealButton.setBackgroundColor(getResources().getColor(R.color.white));
-        mealButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        mealButton.setBackgroundColor(getResources().getColor(R.color.white, null));
+        mealButton.setTextColor(getResources().getColor(R.color.colorPrimary, null));
         mealButton.setStrokeColorResource(R.color.colorAccent);
         mealButton.setStrokeWidth(STROKE_WIDTH);
         mealButton.setGravity(Gravity.START);

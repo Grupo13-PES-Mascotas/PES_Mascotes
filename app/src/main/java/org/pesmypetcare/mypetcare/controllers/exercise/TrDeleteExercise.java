@@ -7,7 +7,9 @@ import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Albert Pinto
@@ -49,7 +51,7 @@ public class TrDeleteExercise {
     /**
      * Execute the transaction.
      */
-    public void execute() throws NotPetOwnerException, NotExistingExerciseException {
+    public void execute() throws NotPetOwnerException, NotExistingExerciseException, ExecutionException, InterruptedException {
         if (!pet.isOwner(user)) {
             throw new NotPetOwnerException();
         } else if (!pet.containsEvent(dateTime, Exercise.class) && !pet.containsEvent(dateTime, Walk.class)) {

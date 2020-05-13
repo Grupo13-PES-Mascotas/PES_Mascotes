@@ -2,7 +2,7 @@ package org.pesmypetcare.mypetcare.features.pets;
 
 import androidx.annotation.NonNull;
 
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 /**
  * @author Albert Pinto

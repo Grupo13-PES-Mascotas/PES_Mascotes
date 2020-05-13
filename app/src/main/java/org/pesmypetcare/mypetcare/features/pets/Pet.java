@@ -7,8 +7,8 @@ import androidx.annotation.NonNull;
 
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
-import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -448,6 +448,22 @@ public class Pet {
         return mealEvents;
     }
 
+    @NonNull
+    /**
+     * Get the list of washes of the pet.
+     * @return The list of washes of the pet
+     */
+    public List<Event> getWashEvents() {
+        ArrayList<Event> washEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof Wash) {
+                washEvents.add(event);
+            }
+        }
+        return washEvents;
+    }
+
     /**
      * Method responsible for cleaning the event list of the pet.
      */
@@ -552,12 +568,27 @@ public class Pet {
      * @param event The event to delete
      */
     public void deletePeriodicNotification(Event event) throws ParseException {
-        org.pesmypetcare.usermanager.datacontainers.DateTime dateTime = event.getDateTime();
+        org.pesmypetcare.usermanagerlib.datacontainers.DateTime dateTime = event.getDateTime();
         String desc = event.getDescription();
         PeriodEvent pe = new PeriodEvent(desc, dateTime, 0);
         periodEvents.remove(pe);
     }
 
+    /**
+     * Getter of the list of vet visits of a pet.
+     * @return The list of vet visits of a pet
+     */
+    public List<Event> getVetVisitEvents() {
+        ArrayList<Event> vetVisitEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof VetVisit) {
+                vetVisitEvents.add(event);
+            }
+        }
+        return vetVisitEvents;
+    }
+  
     /**
      * Get the events by the class.
      * @param eventClass The class of the event
