@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.services;
 
+import org.pesmypetcare.mypetcare.features.pets.Illness;
+import org.pesmypetcare.mypetcare.features.pets.IllnessAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.pets.VaccinationAlreadyExistingException;
@@ -20,7 +22,7 @@ public interface MedicalProfileManagerService {
      * @param pet  The pet to whom the vaccination has to be added
      * @param vaccination The vaccination that has to be added to the pet
      */
-    void createVaccination(User user, Pet pet, Vaccination vaccination) throws VaccinationAlreadyExistingException;
+    void createVaccination(User user, Pet pet, Vaccination vaccination) throws VaccinationAlreadyExistingException, ExecutionException, InterruptedException;
 
     /**
      * Obtains all the vaccinations of the pet.
@@ -36,7 +38,7 @@ public interface MedicalProfileManagerService {
      * @param pet The pet from whom we want to delete all the vaccinations
      * @param vaccination The vaccination that has to be deleted
      */
-    void deleteVaccination(User user, Pet pet, Vaccination vaccination);
+    void deleteVaccination(User user, Pet pet, Vaccination vaccination) throws ExecutionException, InterruptedException;
 
     /**
      * Updates the vaccination key.
@@ -53,6 +55,13 @@ public interface MedicalProfileManagerService {
      * @param pet The pet from whom we want to update the body
      * @param vaccination The vaccination that has to be updated
      */
-    void updateVaccinationBody(User user, Pet pet, Vaccination vaccination);
+    void updateVaccinationBody(User user, Pet pet, Vaccination vaccination) throws ExecutionException, InterruptedException;
 
+    /**
+     * Creates and adds the given illness to the given pet.
+     * @param user The owner of the pet
+     * @param pet The pet to whom the illness has to be added
+     * @param illness The illness that has to be added to the pet
+     */
+    void createIllness(User user, Pet pet, Illness illness) throws IllnessAlreadyExistingException;
 }

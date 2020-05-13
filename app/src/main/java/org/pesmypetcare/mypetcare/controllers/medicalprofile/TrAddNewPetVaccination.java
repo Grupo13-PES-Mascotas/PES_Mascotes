@@ -7,6 +7,8 @@ import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.MedicalProfileManagerService;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * @author Xavier Campos
  */
@@ -53,7 +55,8 @@ public class TrAddNewPetVaccination {
         return result;
     }
 
-    public void execute() throws NotPetOwnerException, VaccinationAlreadyExistingException {
+    public void execute() throws NotPetOwnerException, VaccinationAlreadyExistingException, ExecutionException,
+        InterruptedException {
         result = false;
         if (!user.getUsername().equals(pet.getOwner().getUsername())) {
             throw new NotPetOwnerException();

@@ -1,24 +1,23 @@
 package org.pesmypetcare.mypetcare.controllers.medicalprofile;
 
+import org.pesmypetcare.mypetcare.features.pets.Illness;
+import org.pesmypetcare.mypetcare.features.pets.IllnessAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.MedicalProfileManagerService;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Xavier Campos
  */
-public class TrDeletePetVaccination {
+public class TrAddNewPetIllness {
     private MedicalProfileManagerService medicalProfileManagerService;
     private User user;
     private Pet pet;
-    private Vaccination vaccination;
+    private Illness illness;
     private boolean result;
 
-    public TrDeletePetVaccination(MedicalProfileManagerService medicalProfileManagerService) {
+    public TrAddNewPetIllness(MedicalProfileManagerService medicalProfileManagerService) {
         this.medicalProfileManagerService = medicalProfileManagerService;
     }
 
@@ -31,39 +30,39 @@ public class TrDeletePetVaccination {
     }
 
     /**
-     * Setter of the pet from where the vaccination has to be deleted.
-     * @param pet The pet from where the vaccination has to be deleted
+     * Setter of the pet to whom the illness has to be added.
+     * @param pet The pet to whom the illness has to be added
      */
     public void setPet(Pet pet) {
         this.pet = pet;
     }
 
     /**
-     * Setter of the vaccination that has to be deleted from the pet.
-     * @param vaccination The vaccination that has to be deleted from the pet
+     * Setter of the illness that has to be added to the pet.
+     * @param illness The illness that has to be added to the pet
      */
-    public void setVaccination(Vaccination vaccination) {
-        this.vaccination = vaccination;
+    public void setIllness(Illness illness) {
+        this.illness = illness;
     }
 
     /**
      * Getter of the result of the transaction.
-     * @return True if the delete was successful or false otherwise
+     * @return True if the adding was successful or false otherwise
      */
     public boolean isResult() {
         return result;
     }
 
     /**
-     * Executes the transaction.
+     * Executes the transaction
      */
-    public void execute() throws NotPetOwnerException, ExecutionException, InterruptedException {
+    public void execute() throws NotPetOwnerException, IllnessAlreadyExistingException {
         result = false;
-        if (!user.getUsername().equals(pet.getOwner().getUsername())) {
+        if(!user.getUsername().equals(pet.getOwner().getUsername())) {
             throw new NotPetOwnerException();
         }
-        medicalProfileManagerService.deleteVaccination(user, pet, vaccination);
-        pet.deleteEvent(vaccination);
+        medicalProfileManagerService.createIllness(user, pet, illness);
+        pet.addEvent(illness);
         result = true;
     }
 }

@@ -41,4 +41,8 @@ public class MedicalProfileControllersFactory {
     public static TrUpdatePetVaccination createTrUpdatePetVaccination() {
         return new TrUpdatePetVaccination(new MedicalProfileManagerAdapter());
     }
+
+    public static TrAddNewPetIllness createTrAddNewIllness() {
+        return new TrAddNewPetIllness(new MedicalProfileManagerAdapter());
+    }
 }

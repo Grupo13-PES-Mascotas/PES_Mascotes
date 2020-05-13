@@ -8,6 +8,8 @@ import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMedicalProfileManagerService;
 
+import java.util.concurrent.ExecutionException;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -30,14 +32,16 @@ public class TestTrObtainAllPetVaccinations {
 
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotReturnAllPetVaccinationsIfNotPetOwner() throws NotPetOwnerException {
+    public void shouldNotReturnAllPetVaccinationsIfNotPetOwner() throws NotPetOwnerException, ExecutionException,
+        InterruptedException {
         trObtainAllPetVaccinations.setUser(user);
         pet.setOwner(new User("Tomas Roncero", "tomasAS@gmail.com", "1235"));
         trObtainAllPetVaccinations.setPet(pet);
         trObtainAllPetVaccinations.execute();
     }
     @Test
-    public void shouldReturnAllPetVaccinations() throws NotPetOwnerException {
+    public void shouldReturnAllPetVaccinations() throws NotPetOwnerException, ExecutionException,
+        InterruptedException {
         trObtainAllPetVaccinations.setUser(user);
         trObtainAllPetVaccinations.setPet(pet);
         trObtainAllPetVaccinations.execute();
