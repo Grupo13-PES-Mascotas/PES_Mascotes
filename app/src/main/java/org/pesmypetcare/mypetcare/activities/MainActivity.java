@@ -309,9 +309,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
         askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-        /*LocationUpdater.setContext(this);
+        LocationUpdater.setContext(this);
 
-        SharedPreferences.Editor editor = walkingSharedPreferences.edit();
+        /*SharedPreferences.Editor editor = walkingSharedPreferences.edit();
 
         for (Map.Entry<String, ?> entry : walkingSharedPreferences.getAll().entrySet()) {
             editor.remove(entry.getKey());
