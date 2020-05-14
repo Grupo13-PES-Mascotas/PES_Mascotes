@@ -11,9 +11,12 @@ import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingExcepti
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.pets.Vaccination;
+import org.pesmypetcare.mypetcare.features.pets.VetVisit;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+
+import java.util.List;
 
 public interface InfoPetCommunication {
 
@@ -140,6 +143,35 @@ public interface InfoPetCommunication {
     void obtainAllPetMedications(Pet pet);
 
     /**
+     * Add a vet visit to the given pet.
+     * @param pet The pet to whom the vet visit has to be added
+     * @param vetVisit The vet visit to add to the pet
+     */
+    void addPetVetVisit(Pet pet, VetVisit vetVisit);
+
+    /**
+     * Updates a vet visit from a pet.
+     * @param pet The pet from which the vet visit has to be updated
+     * @param vetVisit The vet visit that has to be updated
+     * @param newDate The new date of the vet visit
+     * @param updatesDate True if the date has to be updated or false otherwise
+     */
+    void updatePetVetVisit(Pet pet, VetVisit vetVisit, String newDate, boolean updatesDate);
+
+    /**
+     * Deletes a vet visit from a pet.
+     * @param pet The pet from which the vet visit has to be deleted
+     * @param vetVisit The vet visit that has to be deleted from the given pet
+     */
+    void deletePetVetVisit(Pet pet, VetVisit vetVisit);
+
+    /**
+     * Obtains all the vet visits from a pet.
+     * @param pet The pet from which we want to obtain all the vet visits
+     */
+    void obtainAllPetVetVisits(Pet pet);
+    
+    /**
      * Adds a new wash to the pet.
      * @param pet The pet to which we want to add the meal
      * @param wash The wash that has to be added
@@ -259,4 +291,40 @@ public interface InfoPetCommunication {
      * @param illness The illness that has to be deleted
      */
     void deletePetIllness(Pet pet, Illness illness);
+
+    /**
+     * Get the actual user pets.
+     * @return The user pets
+     */
+    List<Pet> getUserPets();
+
+    /**
+     * Asks for a permission.
+     * @param permission The permission to ask for
+     */
+    void askForPermission(String permission);
+
+    /**
+     * Start the walking of the pets.
+     * @param walkingPetNames The names of the pets that go for a walk
+     */
+    void startWalk(List<String> walkingPetNames);
+
+    /**
+     * Check whether the user is walking or not.
+     * @return True if the user is walking
+     */
+    boolean isWalking();
+
+    /**
+     * End the current walking.
+     * @param name The name of the walking
+     * @param description The description of the walking
+     */
+    void endWalk(String name, String description);
+
+    /**
+     * Cancel the current walking.
+     */
+    void cancelWalking();
 }

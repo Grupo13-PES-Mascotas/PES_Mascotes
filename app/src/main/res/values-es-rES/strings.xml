@@ -280,6 +280,19 @@
     <string name="pet_info_medical_profile">Perfil médico</string>
     <string name="pet_info_medication">Medicación</string>
     <string name="pet_info_vet_visits">Visitas al veterinario</string>
+    <string name="vet_visit_switch">Muestra solo las visitas pendientes</string>
+    <string name="vet_visit_date">Fecha de la visita</string>
+    <string name="vet_visit_time">Hora de la visita</string>
+    <string name="vet_visit_reason">Razon de la visita</string>
+    <string name="vet_visit_address">Dirección de la visita</string>
+    <string name="add_vet_visit">Añadir visita al veterinario</string>
+    <string name="update_vet_visit">Actualizar visita al veterinario</string>
+    <string name="delete_vet_visit">Eliminar visita al veterinario</string>
+    <string name="edit_vet_visit_title">Editar visita al veterinario</string>
+    <string name="edit_vet_visit_message">Selecciona la fecha de la visita al veterinario</string>
+    <string name="visit_of_the_day">Día de la visita:</string>
+    <string name="visit_reason">Debido a:</string>
+    <string name="visit_addres">Con dirección:</string>
     <string name="add_exercise_title">Añadir ejercicio</string>
     <string name="add_exercice_message">Introduzca la información del ejercicio</string>
     <string name="exercise_name">Nombre del ejercicio</string>
@@ -298,5 +311,19 @@
     <string name="update_exercise_title">Actualizar ejercicio</string>
     <string name="update_exercice_message">Actualiza la información del ejercicio</string>
     <string name="error_invalid_period">La fecha de inicio tiene que ser anterior a la de finalización</string>
+    <string name="start_walking_title">Iniciar paseo</string>
+    <string name="start_walking_message">Selecciona las mascotas con las cuales quieres salir a pasear</string>
+    <string name="error_no_pets_selected">Como mínimo hay que seleccionar una mascota</string>
+    <string name="end_walking_title">Finalizar paseo</string>
+    <string name="end_walking_message">Introduce el nombre del paseo para guardarlo o pulsa cancelar</string>
+    <string name="walking_name">Nombre del paseo</string>
+    <string name="walking_description">Descripción del paseo (opcional)</string>
+    <string name="cancel_walking">Cancelar paseo</string>
+    <string name="error_missing_start_date_time">Falta la fecha y hora de inicio</string>
+    <string name="exercise_walking">Paseo</string>
+    <string name="walk_route_date">Fecha:</string>
+    <string name="walk_route_start_hour">Hora de inicio:</string>
+    <string name="walk_route_end_hour">Hora de finalización:</string>
+    <string name="walk_route_pets">Mascotas:</string>
 
 </resources>

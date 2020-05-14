@@ -426,8 +426,8 @@ public class InfoPetMealsFragment extends Fragment {
     private void initializeButtonParams(MaterialButton mealButton) {
         mealButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT));
-        mealButton.setBackgroundColor(getResources().getColor(R.color.white));
-        mealButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        mealButton.setBackgroundColor(getResources().getColor(R.color.white, null));
+        mealButton.setTextColor(getResources().getColor(R.color.colorPrimary, null));
         mealButton.setStrokeColorResource(R.color.colorAccent);
         mealButton.setStrokeWidth(STROKE_WIDTH);
         mealButton.setGravity(Gravity.START);

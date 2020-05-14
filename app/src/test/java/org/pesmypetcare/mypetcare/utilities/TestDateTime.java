@@ -218,4 +218,45 @@ public class TestDateTime {
         int duration = dateTime.getMinutesDuration(dateTime7);
         assertEquals("Should calculate duration in minutes", 60, duration);
     }
+
+    @Test
+    public void shouldAddOneSecond() {
+        dateTime.addSecond();
+        assertEquals("Should add one second", "2020-10-23T15:02:12", dateTime.toString());
+    }
+
+    @Test
+    public void shouldAddOneSecondAndChangeMinute() throws InvalidFormatException {
+        DateTime dateTime = DateTime.Builder.build(2020, 10, 23, 15, 2, 59);
+        dateTime.addSecond();
+        assertEquals("Should add one second and change minute", "2020-10-23T15:03:00", dateTime.toString());
+    }
+
+    @Test
+    public void shouldAddOneSecondAndChangeHour() throws InvalidFormatException {
+        DateTime dateTime = DateTime.Builder.build(2020, 10, 23, 15, 59, 59);
+        dateTime.addSecond();
+        assertEquals("Should add one second and change hour", "2020-10-23T16:00:00", dateTime.toString());
+    }
+
+    @Test
+    public void shouldAddOneSecondAndChangeDay() throws InvalidFormatException {
+        DateTime dateTime = DateTime.Builder.build(2020, 10, 23, 23, 59, 59);
+        dateTime.addSecond();
+        assertEquals("Should add one second and change hour", "2020-10-24T00:00:00", dateTime.toString());
+    }
+
+    @Test
+    public void shouldAddOneSecondAndChangeMonth() throws InvalidFormatException {
+        DateTime dateTime = DateTime.Builder.build(2020, 10, 31, 23, 59, 59);
+        dateTime.addSecond();
+        assertEquals("Should add one second and change hour", "2020-11-01T00:00:00", dateTime.toString());
+    }
+
+    @Test
+    public void shouldAddOneSecondAndChangeYear() throws InvalidFormatException {
+        DateTime dateTime = DateTime.Builder.build(2020, 12, 31, 23, 59, 59);
+        dateTime.addSecond();
+        assertEquals("Should add one second and change hour", "2021-01-01T00:00:00", dateTime.toString());
+    }
 }
