@@ -55,7 +55,7 @@ public class TestTrUpdatePetWash {
         trNewPetWash.setPet(linux);
         trNewPetWash.setWash(originalWash);
         trNewPetWash.execute();
-        originalWash.setWashDate(DateTime.Builder.build(2011, 5, 27, 11, 15, 1));
+        originalWash.setDateTime(DateTime.Builder.build(2011, 5, 27, 11, 15, 1));
         trUpdateWash.setUser(user);
         trUpdateWash.setPet(linux);
         trUpdateWash.setWash(originalWash);

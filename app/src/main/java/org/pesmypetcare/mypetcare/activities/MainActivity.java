@@ -1849,17 +1849,19 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     public void cancelNotification(Context context, Notification notification) {
         Notification deleted = user.getNotification(notification);
-        Intent intent = new Intent(context, NotificationReceiver.class);
-        intent.putExtra(getString(R.string.title), deleted.getTitle());
-        intent.putExtra(getString(R.string.text), deleted.getText());
-        intent.putExtra(getString(R.string.notificationid) , deleted.getNotificationID());
-        PendingIntent pending = PendingIntent.getBroadcast(context, deleted.getRequestCode(), intent,
-            PendingIntent.FLAG_UPDATE_CURRENT);
+        if (deleted != null) {
+            Intent intent = new Intent(context, NotificationReceiver.class);
+            intent.putExtra(getString(R.string.title), deleted.getTitle());
+            intent.putExtra(getString(R.string.text), deleted.getText());
+            intent.putExtra(getString(R.string.notificationid), deleted.getNotificationID());
+            PendingIntent pending = PendingIntent.getBroadcast(context, deleted.getRequestCode(), intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
 
-        user.deleteNotification(notification);
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        assert manager != null;
-        manager.cancel(pending);
+            user.deleteNotification(notification);
+            AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            assert manager != null;
+            manager.cancel(pending);
+        }
     }
 
     @Override

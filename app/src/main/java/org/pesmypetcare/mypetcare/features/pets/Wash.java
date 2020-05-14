@@ -10,11 +10,9 @@ public class Wash extends Event {
     private static final String OF_THE_DAY = " of the day ";
     private String washDescription;
     private int duration;
-    private DateTime washDate;
 
     public Wash(DateTime dateTime, int duration, String washDescription) {
-        super(WASH + washDescription + OF_THE_DAY + dateTime.toString(), dateTime);
-        this.washDate = dateTime;
+        super(WASH + washDescription + OF_THE_DAY + dateTime.toDateString(), dateTime);
         this.washDescription = washDescription;
         this.duration = duration;
     }
@@ -59,22 +57,5 @@ public class Wash extends Event {
      */
     public void setDuration(int duration) {
         this.duration = duration;
-    }
-
-    /**
-     * Getter of the date of the wash.
-     * @return The date of the wash
-     */
-    public DateTime getWashDate() {
-        return washDate;
-    }
-
-    /**
-     * Setter of the date of the wash.
-     * @param washDate The new date of the wash
-     */
-    public void setWashDate(DateTime washDate) {
-        super.setDateTime(washDate);
-        this.washDate = washDate;
     }
 }

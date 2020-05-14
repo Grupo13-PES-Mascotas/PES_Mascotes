@@ -331,14 +331,14 @@ public class CalendarFragment extends Fragment {
     private void createPersonalEvent(EditText reasonText, TextView dateText, EditText timeText, Spinner sp) throws
             ParseException, InvalidFormatException, ExecutionException, InterruptedException {
         String petName = sp.getSelectedItem().toString();
-        DateTime dateTime = DateTime.Builder.buildDateTimeString(dateText.getText().toString(),
-                timeText.getText().toString());;
-        getPet(petName);
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
+            DateTime dateTime = DateTime.Builder.buildDateTimeString(dateText.getText().toString(),
+                    timeText.getText().toString());
+            getPet(petName);
             communication.newPersonalEvent(selectedPet, reasonText.getText().toString(), dateTime.toString());
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(dateTime, c);
-            communication.scheduleNotification(getContext(), c.getTimeInMillis() , selectedPet.getName(), reasonText.getText().toString());
+            communication.scheduleNotification(getContext(), c.getTimeInMillis(), selectedPet.getName(), reasonText.getText().toString());
             setUpCalendar();
         } else {
             toastText(getString(R.string.incorrect_entry));
