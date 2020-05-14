@@ -5,7 +5,9 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.WashManagerService;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
 
@@ -14,13 +16,15 @@ import java.util.concurrent.ExecutionException;
  */
 public class TrNewPetWash {
     private WashManagerService washManagerService;
+    private GoogleCalendarService googleCalendarService;
     private User user;
     private Pet pet;
     private Wash wash;
     private Boolean result;
 
-    public TrNewPetWash(WashManagerService washManagerService) {
+    public TrNewPetWash(WashManagerService washManagerService, GoogleCalendarService googleCalendarService) {
         this.washManagerService = washManagerService;
+        this.googleCalendarService = googleCalendarService;
     }
 
     /**
@@ -58,17 +62,15 @@ public class TrNewPetWash {
     /**
      * Execute the transaction.
      */
-    public void execute() throws WashAlreadyExistingException {
+    public void execute() throws WashAlreadyExistingException, InterruptedException, ExecutionException,
+        InvalidFormatException {
         result = false;
         if (mealHasAlreadyBeenAdded()) {
             throw new WashAlreadyExistingException();
         }
         pet.addEvent(wash);
-        try {
-            washManagerService.createWash(user, pet, wash);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        washManagerService.createWash(user, pet, wash);
+        googleCalendarService.registerNewEvent(pet, wash);
         result = true;
     }
 

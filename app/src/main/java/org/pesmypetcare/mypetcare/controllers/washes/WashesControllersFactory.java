@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers.washes;
 
+import org.pesmypetcare.mypetcare.services.GoogleCalendarAdapter;
 import org.pesmypetcare.mypetcare.services.WashManagerAdapter;
 
 
@@ -16,7 +17,7 @@ public class WashesControllersFactory {
      * @return The transaction for adding a new pet wash
      */
     public static TrNewPetWash createTrNewPetWash() {
-        return new TrNewPetWash(new WashManagerAdapter());
+        return new TrNewPetWash(new WashManagerAdapter(), new GoogleCalendarAdapter());
     }
 
     /**
@@ -32,7 +33,7 @@ public class WashesControllersFactory {
      * @return The transaction for deleting a Wash
      */
     public static TrDeleteWash createTrDeleteWash() {
-        return new TrDeleteWash(new WashManagerAdapter());
+        return new TrDeleteWash(new WashManagerAdapter(), new GoogleCalendarAdapter());
     }
 
     /**

@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.controllers.washes;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.WashManagerService;
 
 import java.util.concurrent.ExecutionException;
@@ -12,12 +13,14 @@ import java.util.concurrent.ExecutionException;
  */
 public class TrDeleteWash {
     private WashManagerService washManagerService;
+    private GoogleCalendarService googleCalendarService;
     private User user;
     private Pet pet;
     private Wash wash;
 
-    public TrDeleteWash(WashManagerService washManagerService) {
+    public TrDeleteWash(WashManagerService washManagerService, GoogleCalendarService googleCalendarService) {
         this.washManagerService = washManagerService;
+        this.googleCalendarService = googleCalendarService;
     }
 
     /**
@@ -47,12 +50,9 @@ public class TrDeleteWash {
     /**
      * Executes the transaction.
      */
-    public void execute() {
-        try {
-            washManagerService.deleteWash(user, pet, wash);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void execute() throws ExecutionException, InterruptedException {
+        washManagerService.deleteWash(user, pet, wash);
         pet.deleteEvent(wash);
+        googleCalendarService.deleteEvent(pet, wash);
     }
 }

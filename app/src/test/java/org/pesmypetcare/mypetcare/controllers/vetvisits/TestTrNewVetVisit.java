@@ -8,8 +8,10 @@ import org.pesmypetcare.mypetcare.features.pets.VetVisit;
 import org.pesmypetcare.mypetcare.features.pets.VetVisitAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubVetVisitsManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
 
@@ -26,7 +28,7 @@ public class TestTrNewVetVisit {
 
     @Before
     public void setUp() {
-        trNewVetVisit = new TrNewVetVisit(new StubVetVisitsManagerService());
+        trNewVetVisit = new TrNewVetVisit(new StubVetVisitsManagerService(), new StubGoogleCalendarService());
         user = new User("Manolo Lama", "lamacope@gmail.com", "1234");
         pet = new Pet("Bichinho");
         pet.setOwner(user);
@@ -36,7 +38,7 @@ public class TestTrNewVetVisit {
 
     @Test(expected = VetVisitAlreadyExistingException.class)
     public void shouldNotAddVetVisitIfAlreadyExisting() throws VetVisitAlreadyExistingException, NotPetOwnerException,
-        ExecutionException, InterruptedException {
+        ExecutionException, InterruptedException, InvalidFormatException {
         trNewVetVisit.setUser(user);
         trNewVetVisit.setPet(pet);
         trNewVetVisit.setVetVisit(vetVisit);
@@ -46,7 +48,7 @@ public class TestTrNewVetVisit {
 
     @Test(expected = NotPetOwnerException.class)
     public void shouldNotAddVetVisitIfNotPetOwner() throws VetVisitAlreadyExistingException, NotPetOwnerException,
-        ExecutionException, InterruptedException {
+        ExecutionException, InterruptedException, InvalidFormatException {
         trNewVetVisit.setUser(user);
         pet.setOwner(new User("Tomas Roncero", "tomasAs@gmail.com", "1235"));
         trNewVetVisit.setPet(pet);
@@ -56,7 +58,7 @@ public class TestTrNewVetVisit {
 
     @Test
     public void shouldAddVetVisit() throws VetVisitAlreadyExistingException, NotPetOwnerException, ExecutionException,
-        InterruptedException {
+        InterruptedException, InvalidFormatException {
         trNewVetVisit.setUser(user);
         trNewVetVisit.setPet(pet);
         trNewVetVisit.setVetVisit(vetVisit);

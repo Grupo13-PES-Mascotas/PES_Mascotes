@@ -7,8 +7,12 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubWashManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertTrue;
 
@@ -29,11 +33,12 @@ public class TestTrNewPetWash {
     public void setUp() {
         user = new User("johnDoe", "johndoe@gmail.com", "PASSWORD");
         linux = new Pet("Linux");
-        trNewPetWash = new TrNewPetWash(new StubWashManagerService());
+        trNewPetWash = new TrNewPetWash(new StubWashManagerService(), new StubGoogleCalendarService());
     }
 
     @Test
-    public void shouldAddOneWash() throws WashAlreadyExistingException {
+    public void shouldAddOneWash() throws WashAlreadyExistingException, InterruptedException, ExecutionException,
+        InvalidFormatException {
         Wash wash = getTestWash();
         trNewPetWash.setUser(user);
         trNewPetWash.setPet(linux);
@@ -44,7 +49,8 @@ public class TestTrNewPetWash {
     }
 
     @Test(expected = WashAlreadyExistingException.class)
-    public void shouldNotAddIfExisting() throws WashAlreadyExistingException {
+    public void shouldNotAddIfExisting() throws WashAlreadyExistingException, InterruptedException,
+        ExecutionException, InvalidFormatException {
         Wash wash = getTestWash();
         trNewPetWash.setUser(user);
         trNewPetWash.setPet(linux);

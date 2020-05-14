@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers.vetvisits;
 
+import org.pesmypetcare.mypetcare.services.GoogleCalendarAdapter;
 import org.pesmypetcare.mypetcare.services.VetVisitsAdapter;
 
 /**
@@ -23,7 +24,7 @@ public class VetVisitsControllersFactory {
      * @return The transaction responsible for creating and adding a new vet visit to a pet
      */
     public static TrNewVetVisit createTrNewVetVisit() {
-        return new TrNewVetVisit(new VetVisitsAdapter());
+        return new TrNewVetVisit(new VetVisitsAdapter(), new GoogleCalendarAdapter());
     }
 
     /**
@@ -31,7 +32,7 @@ public class VetVisitsControllersFactory {
      * @return The transaction responsible for removing an vet visit from a pet
      */
     public static TrDeleteVetVisit createTrDeleteVetVisit() {
-        return new TrDeleteVetVisit(new VetVisitsAdapter());
+        return new TrDeleteVetVisit(new VetVisitsAdapter(), new GoogleCalendarAdapter());
     }
 
     /**

@@ -1608,7 +1608,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trNewPetWash.setUser(user);
         trNewPetWash.setPet(pet);
         trNewPetWash.setWash(wash);
-        trNewPetWash.execute();
+        try {
+            trNewPetWash.execute();
+        } catch (InterruptedException | ExecutionException | InvalidFormatException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -1627,7 +1631,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteWash.setUser(user);
         trDeleteWash.setPet(pet);
         trDeleteWash.setWash(wash);
-        trDeleteWash.execute();
+        try {
+            trDeleteWash.execute();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -1699,7 +1707,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trNewVetVisit.setVetVisit(vetVisit);
         try {
             trNewVetVisit.execute();
-        } catch (VetVisitAlreadyExistingException | NotPetOwnerException | InterruptedException | ExecutionException e)
+        } catch (VetVisitAlreadyExistingException | NotPetOwnerException | InterruptedException | ExecutionException
+            | InvalidFormatException e)
         {
             e.printStackTrace();
         }
