@@ -198,6 +198,7 @@ public class Group implements Comparable<Group> {
         String strData = dateFormat.format(date);
 
         subscribers.put(subscriber.getUsername(), DateTime.Builder.buildDateString(strData));
+        subscribersImages.put(subscriber.getUsername(), subscriber.getUserProfileImage());
     }
 
     /**
@@ -224,6 +225,7 @@ public class Group implements Comparable<Group> {
      */
     public void removeSubscriber(User subscriber) {
         subscribers.remove(subscriber.getUsername());
+        subscribersImages.remove(subscriber.getUsername());
     }
 
     /**

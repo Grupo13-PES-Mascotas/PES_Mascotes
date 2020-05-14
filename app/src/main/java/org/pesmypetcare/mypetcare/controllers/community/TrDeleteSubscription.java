@@ -52,6 +52,7 @@ public class TrDeleteSubscription {
         } else if (!group.isUserSubscriber(user)) {
             throw new NotSubscribedException();
         }
+
         communityService.deleteSubscriber(user, group);
         user.removeSubscribedGroup(group);
     }

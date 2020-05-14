@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -56,6 +57,14 @@ public class PostsFragment extends Fragment {
 
         binding.btnSentMessage.setOnClickListener(v -> sendMessage());
         binding.postMessageInputLayout.setEndIconOnClickListener(v -> selectImageToPost());
+
+        Bitmap ownerImage = forum.getGroup().getUserImage(forum.getOwnerUsername());
+
+        if (ownerImage == null) {
+            ownerImage = ((BitmapDrawable) getResources().getDrawable(R.drawable.user_icon_sample, null)).getBitmap();
+        }
+
+        binding.imgForum.setDrawable(new BitmapDrawable(getResources(), ownerImage));
 
         return binding.getRoot();
     }
