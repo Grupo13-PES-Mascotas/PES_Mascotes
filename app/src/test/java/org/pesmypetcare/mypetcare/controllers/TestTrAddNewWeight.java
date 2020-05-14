@@ -21,6 +21,8 @@ import static org.junit.Assert.assertEquals;
 
 public class TestTrAddNewWeight {
     private static final double DELTA = 0.05;
+    private static final double NEW_WEIGHT = 10.0;
+    private static final double NEW_WEIGHT1 = 15.0;
     private User user;
     private Pet pet;
     private DateTime dateTime;
@@ -48,7 +50,7 @@ public class TestTrAddNewWeight {
         InterruptedException {
         trAddNewWeight.setUser(new User("johnSmith", "johnSmith@gmail.com", "5678"));
         trAddNewWeight.setPet(pet);
-        trAddNewWeight.setNewWeight(10.0);
+        trAddNewWeight.setNewWeight(NEW_WEIGHT);
         trAddNewWeight.setDateTime(dateTime);
         trAddNewWeight.execute();
     }
@@ -57,25 +59,25 @@ public class TestTrAddNewWeight {
     public void shouldChangePetWeight() throws NotPetOwnerException, ExecutionException, InterruptedException {
         trAddNewWeight.setUser(user);
         trAddNewWeight.setPet(pet);
-        trAddNewWeight.setNewWeight(10.0);
+        trAddNewWeight.setNewWeight(NEW_WEIGHT);
         trAddNewWeight.setDateTime(dateTime);
         trAddNewWeight.execute();
 
-        assertEquals("Should change weight", 10.0, pet.getLastWeight(), DELTA);
+        assertEquals("Should change weight", NEW_WEIGHT, pet.getLastWeight(), DELTA);
     }
 
     @Test
     public void shouldOnlyHaveOneWeightPerDay() throws NotPetOwnerException, ExecutionException, InterruptedException {
         trAddNewWeight.setUser(user);
         trAddNewWeight.setPet(pet);
-        trAddNewWeight.setNewWeight(10.0);
+        trAddNewWeight.setNewWeight(NEW_WEIGHT);
         trAddNewWeight.setDateTime(dateTime);
         try {
             TimeUnit.SECONDS.sleep(2);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        trAddNewWeight.setNewWeight(15.0);
+        trAddNewWeight.setNewWeight(NEW_WEIGHT1);
         trAddNewWeight.execute();
 
         assertEquals("Should only have one weight per day", 1, pet.getHealthInfo().getWeight().size());
