@@ -1,6 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers.community;
 
-import org.pesmypetcare.communitymanager.datacontainers.MessageData;
+import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.CommunityService;
@@ -12,7 +12,7 @@ public class TrGetPostImage {
     private CommunityService communityService;
     private User user;
     private Post post;
-    private MessageData messageData;
+    private MessageDisplay messageData;
     private byte[] result;
 
     public TrGetPostImage(CommunityService communityService) {
@@ -27,7 +27,7 @@ public class TrGetPostImage {
         this.post = post;
     }
 
-    public void setMessageData(MessageData messageData) {
+    public void setMessageData(MessageDisplay messageData) {
         this.messageData = messageData;
     }
 

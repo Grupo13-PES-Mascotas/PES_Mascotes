@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable;
 
 import androidx.annotation.Nullable;
 
-import org.pesmypetcare.communitymanager.datacontainers.MessageData;
+import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
@@ -120,9 +120,9 @@ public interface InfoGroupCommunication {
 
     /**
      * Get the image for the post.
-     * @param post The image of the post
-     * @param messageData The message data
-     * @return
+     * @param post The post to get the image from
+     * @param messageData The message data of the post
+     * @return The image of the post
      */
-    byte[] getImageFromPost(Post post, MessageData messageData);
+    byte[] getImageFromPost(Post post, MessageDisplay messageData);
 }

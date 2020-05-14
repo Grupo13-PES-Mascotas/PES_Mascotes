@@ -4,8 +4,8 @@ import android.graphics.Bitmap;
 
 import org.pesmypetcare.communitymanager.datacontainers.ForumData;
 import org.pesmypetcare.communitymanager.datacontainers.GroupData;
-import org.pesmypetcare.communitymanager.datacontainers.Message;
-import org.pesmypetcare.communitymanager.datacontainers.MessageData;
+import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
+import org.pesmypetcare.communitymanager.datacontainers.MessageSendData;
 import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
@@ -17,7 +17,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -178,10 +177,16 @@ public class CommunityAdapter implements CommunityService {
 
     @Override
     public void createGroup(User user, Group group) {
-        GroupData groupData = new GroupData(group.getName(), group.getOwnerUsername(), group.getDescription(),
-            group.getTags());
+        GroupData groupData;
 
-        System.out.println("GROUP DATA " + groupData.toString());
+        if (!"".equals(group.getDescription()) && group.getTags() != null) {
+            groupData = new GroupData(group.getName(), group.getOwnerUsername(), group.getDescription(),
+                group.getTags());
+        } else if (!"".equals(group.getDescription())) {
+            groupData = new GroupData(group.getName(), group.getOwnerUsername(), group.getTags());
+        } else {
+            groupData = new GroupData(group.getName(), group.getOwnerUsername(), group.getDescription());
+        }
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
@@ -296,24 +301,28 @@ public class CommunityAdapter implements CommunityService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                Message message;
+                MessageSendData message;
+                boolean isImage = false;
 
                 if (!"".equals(post.getText()) && post.getPostImage() != null) {
                     byte[] imageBytes = ImageManager.getImageBytes(post.getPostImage());
-                    message = new Message(user.getUsername(), post.getText(), imageBytes);
+                    message = new MessageSendData(user.getUsername(), post.getText(), imageBytes);
+                    isImage = true;
                 } else if (!"".equals(post.getText())) {
-                    message = new Message(user.getUsername(), post.getText());
+                    message = new MessageSendData(user.getUsername(), post.getText());
                 } else {
                     byte[] imageBytes = ImageManager.getImageBytes(post.getPostImage());
-                    message = new Message(user.getUsername(), imageBytes);
+                    message = new MessageSendData(user.getUsername(), imageBytes);
+                    isImage = true;
                 }
 
-                if (message.getImage() != null) {
+                if (isImage) {
                     ExecutorService imageExecutorService = Executors.newSingleThreadExecutor();
                     imageExecutorService.execute(() -> {
                         String fileName = user.getUsername() + "_" + post.getCreationDate().toString() + "_"
                             + post.getForum().getName() + "_" + post.getForum().getGroup().getName();
-                        ImageManager.writeImage(ImageManager.POST_IMAGES_PATH, fileName, message.getImage());
+                        byte[] imageBytes = ImageManager.getImageBytes(post.getPostImage());
+                        ImageManager.writeImage(ImageManager.POST_IMAGES_PATH, fileName, imageBytes);
                     });
 
                     imageExecutorService.shutdown();
@@ -427,8 +436,8 @@ public class CommunityAdapter implements CommunityService {
     }
 
     @Override
-    public byte[] getPostImage(User user, Post post, MessageData messageData) {
-        String fileName = post.getUsername() + "_" + post.getCreationDate().toString() + "_"
+    public byte[] getPostImage(User user, Post post, MessageDisplay messageDisplay) {
+        /*String fileName = post.getUsername() + "_" + post.getCreationDate().toString() + "_"
             + post.getForum().getName() + "_" + post.getForum().getGroup().getName();
 
         try {
@@ -440,7 +449,7 @@ public class CommunityAdapter implements CommunityService {
                     Map<String, byte[]> forumImages = ServiceLocator.getInstance().getForumManagerClient()
                         .getAllPostsImagesFromForum(user.getToken(), post.getForum().getGroup().getName(),
                             post.getForum().getName());
-                    imageBytes = forumImages.get(messageData.getImagePath());
+                    imageBytes = forumImages.get(messageDisplay.getImagePath());
                 } catch (MyPetCareException ex) {
                     ex.printStackTrace();
                 }
@@ -453,7 +462,7 @@ public class CommunityAdapter implements CommunityService {
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
-        }
+        }*/
 
         return imageBytes;
     }
@@ -489,7 +498,7 @@ public class CommunityAdapter implements CommunityService {
         executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                Message message = new Message(post.getUsername(), post.getText());
+                MessageSendData message = new MessageSendData(post.getUsername(), post.getText());
                 ServiceLocator.getInstance().getForumManagerClient().postMessage(user.getToken(),
                     post.getForum().getGroup().getName(), post.getForum().getName(), message);
             } catch (MyPetCareException e) {

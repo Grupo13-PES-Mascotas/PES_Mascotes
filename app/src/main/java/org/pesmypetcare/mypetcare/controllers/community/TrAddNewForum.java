@@ -74,6 +74,9 @@ public class TrAddNewForum {
      */
     public void execute() throws UserNotSubscribedException, GroupNotFoundException,
         ForumCreatedBeforeGroupException {
+        System.out.println("GROUP CREATION DATE " + group.getCreationDate().toString());
+        System.out.println("FORUM CREATION DATE " + creationDate.toString());
+
         if (!communityService.isGroupExisting(group)) {
             throw new GroupNotFoundException();
         } else if (!group.isUserSubscriber(user)) {

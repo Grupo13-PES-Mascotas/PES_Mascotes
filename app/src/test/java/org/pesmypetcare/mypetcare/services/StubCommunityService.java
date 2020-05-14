@@ -3,7 +3,7 @@ package org.pesmypetcare.mypetcare.services;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import org.pesmypetcare.communitymanager.datacontainers.MessageData;
+import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerException;
@@ -390,7 +390,7 @@ public class StubCommunityService implements CommunityService {
     }
 
     @Override
-    public byte[] getPostImage(User user, Post post, MessageData messageData) {
+    public byte[] getPostImage(User user, Post post, MessageDisplay messageDisplay) {
         int groupIndex = groups.indexOf(post.getForum().getGroup());
         Forum selectedForum = null;
 

@@ -1,8 +1,10 @@
 package org.pesmypetcare.mypetcare.activities.fragments.community.groups;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,11 +24,13 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.pesmypetcare.communitymanager.ChatException;
 import org.pesmypetcare.communitymanager.ChatModel;
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.databinding.FragmentPostsBinding;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.utilities.androidservices.GalleryService;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.util.List;
@@ -59,12 +63,9 @@ public class PostsFragment extends Fragment {
      * Select the image to post.
      */
     private void selectImageToPost() {
-        /*Intent imagePicker = GalleryService.getGalleryIntent();
+        Intent imagePicker = GalleryService.getGalleryIntent();
         MainActivity.setFragmentRequestCode(POST_FRAGMENT_REQUEST_CODE);
-        startActivityForResult(imagePicker, POST_FRAGMENT_REQUEST_CODE);*/
-
-        Toast toast = Toast.makeText(getContext(), R.string.wait_for_update, Toast.LENGTH_LONG);
-        toast.show();
+        startActivityForResult(imagePicker, POST_FRAGMENT_REQUEST_CODE);
     }
 
     /**
@@ -404,17 +405,23 @@ public class PostsFragment extends Fragment {
         super.onResume();
 
         chatModel = new ViewModelProvider(requireActivity()).get(ChatModel.class);
-        chatModel.getMessage().observe(requireActivity(), messageData -> {
-            Post post = new Post(messageData.getCreator(), messageData.getText(),
-                DateTime.Builder.buildFullString(messageData.getPublicationDate()), forum);
-            post.setLikerUsername(messageData.getLikedBy());
+        chatModel.getMessage().observe(requireActivity(), messageDisplay -> {
+            Post post = new Post(messageDisplay.getCreator(), messageDisplay.getText(),
+                DateTime.Builder.buildFullString(messageDisplay.getPublicationDate()), forum);
+            post.setLikerUsername(messageDisplay.getLikedBy());
 
-            /*if (messageData.getImagePath() != null) {
-                byte[] imageBytes = InfoGroupFragment.getCommunication().getImageFromPost(post, messageData);
+            byte[] byteImages = messageDisplay.getImage();
+
+            if (byteImages != null) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(byteImages, 0, byteImages.length);
+                post.setPostImage(bitmap);
+            }
+
+            /*if (messageDisplay.getImagePath() != null) {
+                byte[] imageBytes = InfoGroupFragment.getCommunication().getImageFromPost(post, messageDisplay);
                 post.setPostImage(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
             }*/
 
-            System.out.println("LIKES " + messageData.getLikedBy());
             forum.addPost(post);
             showPosts();
         });

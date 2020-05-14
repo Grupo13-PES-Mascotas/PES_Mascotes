@@ -2,7 +2,7 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
-import org.pesmypetcare.communitymanager.datacontainers.MessageData;
+import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
@@ -160,8 +160,8 @@ public interface CommunityService {
      * Get the image of the post.
      * @param user The user that makes the petition
      * @param post The post to get the image from
-     * @param messageData The data received from the server
+     * @param messageDisplay The data received from the server
      * @return The image of the post in form of a byte array
      */
-    byte[] getPostImage(User user, Post post, MessageData messageData);
+    byte[] getPostImage(User user, Post post, MessageDisplay messageDisplay);
 }

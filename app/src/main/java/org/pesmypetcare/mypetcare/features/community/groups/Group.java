@@ -193,7 +193,7 @@ public class Group implements Comparable<Group> {
      * @param subscriber The subscriber to add
      */
     public void addSubscriber(User subscriber) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d", Locale.getDefault());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date date = new Date();
         String strData = dateFormat.format(date);
 

@@ -43,6 +43,7 @@ public class InfoGroupFragment extends Fragment {
         communication.setToolbar(group.getName());
         String tags = getTagsFromGroup();
         binding.txtGroupTags.setText(tags);
+        binding.groupDescription.setText(group.getDescription());
 
         if (group.getGroupIcon() == null) {
             binding.imgGroup.setDrawable(getResources().getDrawable(R.drawable.icon_group, null));

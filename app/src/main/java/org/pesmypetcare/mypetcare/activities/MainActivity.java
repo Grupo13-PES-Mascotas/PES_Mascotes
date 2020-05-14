@@ -41,8 +41,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
 
-import org.pesmypetcare.communitymanager.datacontainers.MessageData;
+import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
@@ -169,7 +170,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -260,6 +260,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrAddGroupImage trAddGroupImage;
     private TrDeleteGroupImage trDeleteGroupImage;
     private TrGetPostImage trGetPostImage;
+    private byte[] result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -276,7 +277,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeControllers();
         getComponents();
 
-        ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw));
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                System.out.println("TOKEN " + task.getResult().getToken());
+            }
+        });
+
+        ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw, null));
         initializeCurrentUser();
         initializeActivity();
         setUpNavigationImage();
@@ -714,12 +721,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewForum.setForumName(forumName);
         trAddNewForum.setTags(forumTags);
         trAddNewForum.setGroup(group);
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d'T'hh:mm:ss", Locale.getDefault());
-        Date date = new Date();
-        String strData = dateFormat.format(date);
-
-        trAddNewForum.setCreationDate(DateTime.Builder.buildFullString(strData));
+        trAddNewForum.setCreationDate(DateTime.getCurrentDateTime());
 
         try {
             trAddNewForum.execute();
@@ -1291,13 +1293,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public byte[] getImageFromPost(Post post, MessageData messageData) {
+    public byte[] getImageFromPost(Post post, MessageDisplay messageData) {
         trGetPostImage.setUser(user);
         trGetPostImage.setPost(post);
         trGetPostImage.setMessageData(messageData);
         trGetPostImage.execute();
 
-        return trGetPostImage.getResult();
+        return result;
     }
 
     @Override
