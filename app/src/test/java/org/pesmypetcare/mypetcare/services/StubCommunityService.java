@@ -268,20 +268,19 @@ public class StubCommunityService implements CommunityService {
     }
 
     @Override
-    public void likePost(String likerName, String authorName, DateTime creationDate, String forumName,
-                         String groupName) throws PostNotFoundException, PostAlreadyLikedException {
+    public void likePost(User user, Post post) throws PostNotFoundException, PostAlreadyLikedException {
         boolean found = false;
         for (Group g : groups) {
-            if (g.getName().equals(groupName)) {
+            if (g.getName().equals(post.getForum().getGroup().getName())) {
                 for (Forum f : g.getForums()) {
-                    if (f.getName().equals(forumName)) {
+                    if (f.getName().equals(post.getForum().getName())) {
                         for (Post p : f.getPosts()) {
-                            if (p.getUsername().equals(authorName)
-                                && p.getCreationDate().compareTo(creationDate) == 0) {
-                                if (p.getLikerUsername().contains(likerName)) {
+                            if (p.getUsername().equals(user.getUsername())
+                                && p.getCreationDate().compareTo(post.getCreationDate()) == 0) {
+                                if (p.getLikerUsername().contains(user.getUsername())) {
                                     throw new PostAlreadyLikedException();
                                 }
-                                p.addLikerUsername(likerName);
+                                p.addLikerUsername(user.getUsername());
                                 found = true;
                                 break;
                             }

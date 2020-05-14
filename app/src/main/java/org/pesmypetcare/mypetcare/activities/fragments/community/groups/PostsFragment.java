@@ -40,6 +40,7 @@ public class PostsFragment extends Fragment {
     private FragmentPostsBinding binding;
     private String reportMessage;
     private Bitmap postImage;
+    private ChatModel chatModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -402,16 +403,18 @@ public class PostsFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        ChatModel chatModel = new ViewModelProvider(requireActivity()).get(ChatModel.class);
+        chatModel = new ViewModelProvider(requireActivity()).get(ChatModel.class);
         chatModel.getMessage().observe(requireActivity(), messageData -> {
             Post post = new Post(messageData.getCreator(), messageData.getText(),
                 DateTime.Builder.buildFullString(messageData.getPublicationDate()), forum);
+            post.setLikerUsername(messageData.getLikedBy());
 
             /*if (messageData.getImagePath() != null) {
                 byte[] imageBytes = InfoGroupFragment.getCommunication().getImageFromPost(post, messageData);
                 post.setPostImage(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
             }*/
 
+            System.out.println("LIKES " + messageData.getLikedBy());
             forum.addPost(post);
             showPosts();
         });
@@ -421,5 +424,10 @@ public class PostsFragment extends Fragment {
         } catch (ChatException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }

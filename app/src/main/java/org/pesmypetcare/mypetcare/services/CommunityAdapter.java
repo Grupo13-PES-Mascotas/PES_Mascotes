@@ -357,21 +357,35 @@ public class CommunityAdapter implements CommunityService {
     }
 
     @Override
-    public void likePost(String likerName, String authorName, DateTime creationDate, String forumName,
-                         String groupName) throws PostNotFoundException {
-        /*ExecutorService executorService = Executors.newSingleThreadExecutor();
+    public void likePost(User user, Post post) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getForumManagerClient().likePost(...);
+                ServiceLocator.getInstance().getForumManagerClient().likeMessage(user.getToken(), user.getUsername(),
+                    post.getForum().getGroup().getName(), post.getForum().getName(), post.getUsername(),
+                    post.getCreationDate().toString(), true);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
-        });*/
+        });
+
+        executorService.shutdown();
     }
 
     @Override
     public void unlikePost(User user, Post post) {
-        // Not implemented yet
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getForumManagerClient().likeMessage(user.getToken(), user.getUsername(),
+                    post.getForum().getGroup().getName(), post.getForum().getName(), post.getUsername(),
+                    post.getCreationDate().toString(), false);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+
+        executorService.shutdown();
     }
 
     @Override

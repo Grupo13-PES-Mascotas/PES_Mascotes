@@ -58,8 +58,16 @@ public class PostComponentView extends CircularEntryView {
         String strCreationDate = post.getCreationDate().toString();
         String[] dateTimeParts = strCreationDate.split(DATE_TIME_SEPARATOR);
 
+        String likesLabel;
+
+        if (post.getLikes() == 1) {
+            likesLabel = getResources().getString(R.string.likes_singular);
+        } else {
+            likesLabel = getResources().getString(R.string.likes);
+        }
+
         return post.getUsername() + WHITE_SPACE + dateTimeParts[HOUR].substring(0,
-            dateTimeParts[HOUR].lastIndexOf(HOUR_SEPARATOR));
+            dateTimeParts[HOUR].lastIndexOf(HOUR_SEPARATOR)) + " (" + post.getLikes() + " " + likesLabel + ")";
     }
 
     @Override

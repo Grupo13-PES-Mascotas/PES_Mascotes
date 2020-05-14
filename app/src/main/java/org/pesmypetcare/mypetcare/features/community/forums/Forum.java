@@ -148,6 +148,7 @@ public class Forum implements Comparable<Forum> {
      * @param post The post that has to be added to the forum
      */
     public void addPost(Post post) {
+        posts.remove(post);
         posts.add(post);
     }
 

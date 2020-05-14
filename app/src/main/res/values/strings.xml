@@ -244,6 +244,8 @@
     <string name="delete_group_image_title">Delete group image</string>
     <string name="delete_group_image_text">Are you sure you want to delete the image of your group?</string>
     <string name="wait_for_update">Wait for an update to use this functionality</string>
+    <string name="likes">likes</string>
+    <string name="likes_singular">like</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

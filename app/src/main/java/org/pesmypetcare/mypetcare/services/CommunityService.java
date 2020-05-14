@@ -104,13 +104,10 @@ public interface CommunityService {
 
     /**
      * The indicated user likes the indicated post.
-     * @param likerName The username of the owner who wants to like the post
-     * @param authorName The username of the author of the post to like
-     * @param creationDate The creation date of the author of the post to like
-     * @param forumName The name of the forum where the post is
-     * @param groupName The name of the group where the forum of the post iss
+     * @param user The user that wants to give a like to the post
+     * @param post The post to give a like
      */
-    void likePost(String likerName, String authorName, DateTime creationDate, String forumName, String groupName)
+    void likePost(User user, Post post)
         throws PostNotFoundException, PostAlreadyLikedException;
 
     /**

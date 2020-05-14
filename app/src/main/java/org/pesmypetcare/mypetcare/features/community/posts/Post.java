@@ -27,7 +27,6 @@ public class Post implements Comparable<Post> {
         this.forum = forum;
         this.likerUsername = new ArrayList<>();
         this.likerUsername.add(username);
-        this.likes = 1;
     }
 
     /**
@@ -179,7 +178,12 @@ public class Post implements Comparable<Post> {
      * @param likerUsername The liker username to set
      */
     public void setLikerUsername(List<String> likerUsername) {
-        this.likerUsername = likerUsername;
+        if (likerUsername == null) {
+            this.likerUsername = new ArrayList<>();
+        } else {
+            this.likerUsername = likerUsername;
+            this.likes = likerUsername.size();
+        }
     }
 
     /**
