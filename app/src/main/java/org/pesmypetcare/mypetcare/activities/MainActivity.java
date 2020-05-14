@@ -172,9 +172,9 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostReportedByAuthorE
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
 import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Illness;
 import org.pesmypetcare.mypetcare.features.pets.IllnessAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.InvalidPeriodException;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
@@ -1722,7 +1722,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trAddExercise.execute();
-        } catch (NotPetOwnerException | InvalidPeriodException | InterruptedException | ExecutionException e) {
+        } catch (NotPetOwnerException | InvalidPeriodException | InterruptedException | ExecutionException
+            | InvalidFormatException e) {
             e.printStackTrace();
         }
 
