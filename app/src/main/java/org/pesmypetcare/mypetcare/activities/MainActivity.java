@@ -1644,7 +1644,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trNewPetMedication.setMedication(medication);
         try {
             trNewPetMedication.execute();
-        } catch (MedicationAlreadyExistingException | ExecutionException | InterruptedException e) {
+        } catch (MedicationAlreadyExistingException | ExecutionException | InterruptedException
+            | InvalidFormatException e) {
             e.printStackTrace();
         }
     }
@@ -1789,7 +1790,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewPetVaccination.setVaccination(vaccination);
         try {
             trAddNewPetVaccination.execute();
-        } catch (NotPetOwnerException | VaccinationAlreadyExistingException | ExecutionException | InterruptedException e) {
+        } catch (NotPetOwnerException | VaccinationAlreadyExistingException | ExecutionException
+            | InterruptedException | InvalidFormatException e) {
             e.printStackTrace();
         }
     }
@@ -1842,8 +1844,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewPetIllness.setIllness(illness);
         try {
             trAddNewPetIllness.execute();
-        } catch (NotPetOwnerException | IllnessAlreadyExistingException | InterruptedException
-            | ExecutionException e) {
+        } catch (NotPetOwnerException | IllnessAlreadyExistingException | InterruptedException | ExecutionException
+            | InvalidFormatException e) {
             e.printStackTrace();
         }
 
@@ -1867,7 +1869,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeletePetIllness.setIllness(illness);
         try {
             trDeletePetIllness.execute();
-        } catch (NotPetOwnerException e) {
+        } catch (NotPetOwnerException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }

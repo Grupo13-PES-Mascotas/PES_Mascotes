@@ -4,6 +4,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.MedicalProfileManagerService;
 
 import java.util.concurrent.ExecutionException;
@@ -13,13 +14,16 @@ import java.util.concurrent.ExecutionException;
  */
 public class TrDeletePetVaccination {
     private MedicalProfileManagerService medicalProfileManagerService;
+    private GoogleCalendarService googleCalendarService;
     private User user;
     private Pet pet;
     private Vaccination vaccination;
     private boolean result;
 
-    public TrDeletePetVaccination(MedicalProfileManagerService medicalProfileManagerService) {
+    public TrDeletePetVaccination(MedicalProfileManagerService medicalProfileManagerService,
+                                  GoogleCalendarService googleCalendarService) {
         this.medicalProfileManagerService = medicalProfileManagerService;
+        this.googleCalendarService = googleCalendarService;
     }
 
     /**
@@ -64,6 +68,7 @@ public class TrDeletePetVaccination {
         }
         medicalProfileManagerService.deleteVaccination(user, pet, vaccination);
         pet.deleteEvent(vaccination);
+        googleCalendarService.deleteEvent(pet, vaccination);
         result = true;
     }
 }

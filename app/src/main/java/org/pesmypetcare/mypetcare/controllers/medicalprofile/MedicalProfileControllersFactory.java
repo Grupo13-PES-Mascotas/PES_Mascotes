@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers.medicalprofile;
 
+import org.pesmypetcare.mypetcare.services.GoogleCalendarAdapter;
 import org.pesmypetcare.mypetcare.services.MedicalProfileManagerAdapter;
 
 /**
@@ -15,7 +16,7 @@ public class MedicalProfileControllersFactory {
      * @return The transaction to add a new vaccination to a pet
      */
     public static TrAddNewPetVaccination createTrAddNewVaccination() {
-        return new TrAddNewPetVaccination(new MedicalProfileManagerAdapter());
+        return new TrAddNewPetVaccination(new MedicalProfileManagerAdapter(), new GoogleCalendarAdapter());
     }
 
     /**
@@ -31,7 +32,7 @@ public class MedicalProfileControllersFactory {
      * @return The transaction to delete a vaccination from a pet
      */
     public static TrDeletePetVaccination createTrDeletePetVaccinations() {
-        return new TrDeletePetVaccination(new MedicalProfileManagerAdapter());
+        return new TrDeletePetVaccination(new MedicalProfileManagerAdapter(), new GoogleCalendarAdapter());
     }
 
     /**
@@ -55,7 +56,7 @@ public class MedicalProfileControllersFactory {
      * @return The transaction to delete a illness from a pet
      */
     public static TrDeletePetIllness createTrDeletePetIllness() {
-        return new TrDeletePetIllness(new MedicalProfileManagerAdapter());
+        return new TrDeletePetIllness(new MedicalProfileManagerAdapter(), new GoogleCalendarAdapter());
     }
 
     /**
@@ -63,7 +64,7 @@ public class MedicalProfileControllersFactory {
      * @return The transaction to add a illness from a pet
      */
     public static TrAddNewPetIllness createTrAddNewIllness() {
-        return new TrAddNewPetIllness(new MedicalProfileManagerAdapter());
+        return new TrAddNewPetIllness(new MedicalProfileManagerAdapter(), new GoogleCalendarAdapter());
     }
 
     /**
