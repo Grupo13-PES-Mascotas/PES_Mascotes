@@ -72,7 +72,6 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
             PetData.VET_VISITS, oldLibraryVisit.getKey());
         ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner, petName,
             PetData.VET_VISITS, newLibraryVisit.getKey(), newLibraryVisit.getBodyAsMap());
-
     }
 
     @Override

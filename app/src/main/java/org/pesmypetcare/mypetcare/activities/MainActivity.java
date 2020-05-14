@@ -477,7 +477,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         Thread petsImagesThread = createPetsImagesThread();
         Thread updatePetImagesThread = createUpdatePetImagesThread(petsImagesThread);
-
         updatePetImagesThread.start();
         setUpNavigationHeader();
     }
@@ -1581,7 +1580,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         if (updatesDate) {
             trUpdateMeal.setNewDate(newDate);
         }
-        trUpdateMeal.execute();
+        try {
+            trUpdateMeal.execute();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -1600,7 +1603,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void obtainAllPetMeals(Pet pet) {
         trObtainAllPetMeals.setUser(user);
         trObtainAllPetMeals.setPet(pet);
-        trObtainAllPetMeals.execute();
+        try {
+            trObtainAllPetMeals.execute();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
