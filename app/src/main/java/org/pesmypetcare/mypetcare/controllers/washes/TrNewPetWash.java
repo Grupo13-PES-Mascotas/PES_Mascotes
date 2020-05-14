@@ -79,7 +79,7 @@ public class TrNewPetWash {
     private boolean mealHasAlreadyBeenAdded() {
         for (Event e : pet.getWashEvents()) {
             Wash m = (Wash) e;
-            if (m.getDateTime().compareTo(wash.getWashDate()) == 0) {
+            if (m.getDateTime().compareTo(wash.getDateTime()) == 0) {
                 return true;
             }
         }

@@ -3,12 +3,14 @@ package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import org.pesmypetcare.mypetcare.features.pets.Illness;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
+import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.pets.VetVisit;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
@@ -222,10 +224,73 @@ public interface InfoPetCommunication {
      * @param txtExerciseName The exercise name
      * @param txtDescription The exercise description
      * @param startExerciseDateTime The exercise start DateTime
-     * @param endExerciseDateTime The exercise end DateTime
+     * @param endExerciseDateTime The exercise end DateTime-
      */
     void updateExercise(Pet pet, String txtExerciseName, String txtDescription, DateTime originalStartDateTime,
                         DateTime startExerciseDateTime, DateTime endExerciseDateTime);
+
+    /**
+     * Add a vaccination to the pet.
+     * @param pet The pet to whom the vaccination has to be added
+     * @param vaccinationDescription The description of the vaccination that has to be added to the pet
+     * @param vaccinationDate The date of the vaccination that has to be added to the pet
+     */
+    void addPetVaccination(Pet pet, String vaccinationDescription, DateTime vaccinationDate);
+
+    /**
+     * Updates a vaccination of the pet.
+     * @param pet The pet from whom we have to update the vaccination
+     * @param vaccination The vaccination with the body updated
+     * @param newDate The new date of the vaccination
+     * @param updatesDate A boolean that indicates whether the date has to be updated or not
+     */
+    void updatePetVaccination(Pet pet, Vaccination vaccination, String newDate, boolean updatesDate);
+
+    /**
+     * Deletes a vaccination from the given pet.
+     * @param pet The pet from where the vaccination has to be deleted
+     * @param vaccination The vaccination that has to be deleted
+     */
+    void deletePetVaccination(Pet pet, Vaccination vaccination);
+
+    /**
+     * Obtains all vaccinations from a given pet.
+     * @param pet The pet from where we have to obtain all the vaccinations
+     */
+    void obtainAllPetVaccinations(Pet pet);
+
+    /**
+     * Add a pet illness to the pet.
+     * @param pet The pet to whom the illness has to be added
+     * @param description The description of the illness that has to be added
+     * @param type The type of the illness that has to be added
+     * @param severity The severity of the illness that has to be added
+     * @param startDate The startDate of the illness that has to be added
+     * @param endDate The endDate of the illness that has to be added
+     */
+    void addPetIllness(Pet pet, String description, String type, String severity, DateTime startDate, DateTime endDate);
+
+    /**
+     * Updates an illness of the pet.
+     * @param pet The pet from whom we have to update the illness
+     * @param illness The illness with the body updated
+     * @param newDate The new date of the illness
+     * @param updatesDate A boolean that indicates whether the date has to be updated or not
+     */
+    void updatePetIllness(Pet pet, Illness illness, String newDate, boolean updatesDate);
+
+    /**
+     * Obtains all illnesses from a given pet.
+     * @param pet The pet from where we have to obtain all the illnesses
+     */
+    void obtainAllPetIllnesses(Pet pet);
+
+    /**
+     * Deletes an illness from the given pet.
+     * @param pet The pet from where the illness has to be deleted
+     * @param illness The illness that has to be deleted
+     */
+    void deletePetIllness(Pet pet, Illness illness);
 
     /**
      * Get the actual user pets.

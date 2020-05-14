@@ -242,7 +242,7 @@ public class InfoPetWashing extends Fragment {
         wash.setDuration(duration);
         InfoPetFragment.getCommunication().updatePetWash(pet, wash, newDate, updatesDate);
         if (updatesDate) {
-            wash.setWashDate(DateTime.Builder.buildDateString(newDate));
+            wash.setDateTime(DateTime.Builder.buildDateString(newDate));
         }
     }
 
@@ -343,7 +343,7 @@ public class InfoPetWashing extends Fragment {
      */
     private void initializeButtonLogic(Wash wash, MaterialButton washButton) {
         String washButtonText = getString(R.string.wash) + SPACE + wash.getWashDescription() + EOL
-                + getString(R.string.from_date) + SPACE + wash.getDateTime() + EOL + getString(R.string.wash_duration)
+                + getString(R.string.from_date) + SPACE + wash.getDateTime().toDateString() + EOL + getString(R.string.wash_duration)
                 + ": " + wash.getDuration();
         washButton.setText(washButtonText);
         washButton.setOnClickListener(v -> {
@@ -364,7 +364,7 @@ public class InfoPetWashing extends Fragment {
         inputWashName.setText(wash.getWashDescription());
         inputWashDuration.setText(String.valueOf(wash.getDuration()));
         updatesDate = false;
-        DateTime washDate = wash.getWashDate();
+        DateTime washDate = wash.getDateTime();
         showWashDate(washDate);
         showWashTime(washDate);
     }

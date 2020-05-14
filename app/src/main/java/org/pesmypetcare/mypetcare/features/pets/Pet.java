@@ -448,6 +448,21 @@ public class Pet {
         return mealEvents;
     }
 
+    /**
+     * Get the list of vaccinations of the pet.
+     * @return The list of vaccinations of the pet
+     */
+    public List<Event> getVaccinationEvents() {
+        ArrayList<Event> vaccinationEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof Vaccination) {
+                vaccinationEvents.add(event);
+            }
+        }
+        return vaccinationEvents;
+    }
+
     @NonNull
     /**
      * Get the list of washes of the pet.
@@ -699,5 +714,20 @@ public class Pet {
 
         healthInfo.removeExerciseFrequency(date, duration);
         deleteEventByClass(dateTime, classToDelete);
+    }
+
+    /**
+     * Get the list of illness of the pet.
+     * @return The list of illness of the pet
+     */
+    public List<Event> getIllnessEvents() {
+        ArrayList<Event> illnessEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof Illness) {
+                illnessEvents.add(event);
+            }
+        }
+        return illnessEvents;
     }
 }
