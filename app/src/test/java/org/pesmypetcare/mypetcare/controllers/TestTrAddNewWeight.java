@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.Assert.assertEquals;
 
 public class TestTrAddNewWeight {
+    private static final double DELTA = 0.05;
     private User user;
     private Pet pet;
     private DateTime dateTime;
@@ -60,7 +61,7 @@ public class TestTrAddNewWeight {
         trAddNewWeight.setDateTime(dateTime);
         trAddNewWeight.execute();
 
-        assertEquals("Should change weight", 10.0, pet.getLastWeight(), 0.05);
+        assertEquals("Should change weight", 10.0, pet.getLastWeight(), DELTA);
     }
 
     @Test

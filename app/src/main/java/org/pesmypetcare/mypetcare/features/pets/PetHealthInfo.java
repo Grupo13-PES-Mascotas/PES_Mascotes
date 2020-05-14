@@ -286,8 +286,8 @@ public class PetHealthInfo {
      */
     public Integer getWeeklyExerciseForDate(DateTime date) throws InvalidFormatException {
         DateTime mondayDate = this.obtainDateMonday(date);
-        if (weeklyExercise.containsKey(date)) {
-            return weeklyExercise.get(date);
+        if (weeklyExercise.containsKey(mondayDate)) {
+            return weeklyExercise.get(mondayDate);
         }
         return null;
     }
@@ -405,9 +405,8 @@ public class PetHealthInfo {
             c.set(date.getYear(), date.getMonth(), date.getDay());
             dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
         }
-        DateTime resultDate = DateTime.Builder.build(c.get(Calendar.YEAR) , c.get(Calendar.MONTH),
+        return DateTime.Builder.build(c.get(Calendar.YEAR), c.get(Calendar.MONTH),
                 c.get(Calendar.DAY_OF_MONTH));
-        return resultDate;
     }
 
     /**
