@@ -230,7 +230,7 @@ public interface InfoPetCommunication {
                         DateTime startExerciseDateTime, DateTime endExerciseDateTime);
 
     /**
-     * Add an vaccination to the pet.
+     * Add a vaccination to the pet.
      * @param pet The pet to whom the vaccination has to be added
      * @param vaccinationDescription The description of the vaccination that has to be added to the pet
      * @param vaccinationDate The date of the vaccination that has to be added to the pet
@@ -238,7 +238,7 @@ public interface InfoPetCommunication {
     void addPetVaccination(Pet pet, String vaccinationDescription, DateTime vaccinationDate);
 
     /**
-     * Updates an vaccination of the pet.
+     * Updates a vaccination of the pet.
      * @param pet The pet from whom we have to update the vaccination
      * @param vaccination The vaccination with the body updated
      * @param newDate The new date of the vaccination
@@ -247,7 +247,7 @@ public interface InfoPetCommunication {
     void updatePetVaccination(Pet pet, Vaccination vaccination, String newDate, boolean updatesDate);
 
     /**
-     * Deletes an vaccination from the given pet.
+     * Deletes a vaccination from the given pet.
      * @param pet The pet from where the vaccination has to be deleted
      * @param vaccination The vaccination that has to be deleted
      */
@@ -260,7 +260,7 @@ public interface InfoPetCommunication {
     void obtainAllPetVaccinations(Pet pet);
 
     /**
-     * Add an pet illness to the pet.
+     * Add a pet illness to the pet.
      * @param pet The pet to whom the illness has to be added
      * @param description The description of the illness that has to be added
      * @param type The type of the illness that has to be added
