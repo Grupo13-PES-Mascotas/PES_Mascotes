@@ -41,8 +41,6 @@ public class TestTrNewPersonalEvent {
     public void shouldAddOneEvent() {
         Event e = new Event("Hello", DateTime.Builder.buildFullString("2020-04-03T10:30:00"));
         pet.addEvent(e);
-        System.out.println(e);
-        System.out.println(pet.getEvents(DATE));
         assertTrue("should add one event", pet.getEvents(DATE).contains(e));
     }
 
