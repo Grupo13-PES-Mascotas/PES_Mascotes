@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
@@ -34,7 +35,8 @@ public class TestTrAddGroupImage {
     }
 
     @Test(expected = GroupNotFoundException.class)
-    public void shouldNotAddImageIfNonExistingGroup() throws NotGroupOwnerException, GroupNotFoundException {
+    public void shouldNotAddImageIfNonExistingGroup() throws NotGroupOwnerException, GroupNotFoundException,
+        MyPetCareException {
         trAddGroupImage.setUser(user);
         group.setName("El Bicho");
         trAddGroupImage.setGroup(group);
@@ -43,7 +45,8 @@ public class TestTrAddGroupImage {
     }
 
     @Test(expected = NotGroupOwnerException.class)
-    public void shouldNotAddImageIfNotGroupOwner() throws NotGroupOwnerException, GroupNotFoundException {
+    public void shouldNotAddImageIfNotGroupOwner() throws NotGroupOwnerException, GroupNotFoundException,
+        MyPetCareException {
         trAddGroupImage.setUser(user);
         user.setUsername("Tomas Roncero");
         trAddGroupImage.setGroup(group);
@@ -52,7 +55,7 @@ public class TestTrAddGroupImage {
     }
 
     @Test
-    public void shouldAddGroupImage() throws NotGroupOwnerException, GroupNotFoundException {
+    public void shouldAddGroupImage() throws NotGroupOwnerException, GroupNotFoundException, MyPetCareException {
         trAddGroupImage.setUser(user);
         trAddGroupImage.setGroup(group);
         trAddGroupImage.setImage(image);

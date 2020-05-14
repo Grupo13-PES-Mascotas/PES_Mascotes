@@ -181,6 +181,8 @@ public class CommunityAdapter implements CommunityService {
         GroupData groupData = new GroupData(group.getName(), group.getOwnerUsername(), group.getDescription(),
             group.getTags());
 
+        System.out.println("GROUP DATA " + groupData.toString());
+
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
@@ -404,8 +406,19 @@ public class CommunityAdapter implements CommunityService {
     }
 
     @Override
-    public void addGroupImage(User user, Group group, Bitmap image) throws GroupNotFoundException {
-        // Not implemented yet
+    public void addGroupImage(User user, Group group, Bitmap image) throws MyPetCareException {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            byte[] imageBytes = ImageManager.getImageBytes(image);
+            try {
+                ServiceLocator.getInstance().getGroupManagerClient().updateGroupIcon(user.getToken(), group.getName(),
+                    imageBytes);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+
+        executorService.shutdown();
     }
 
     @Override

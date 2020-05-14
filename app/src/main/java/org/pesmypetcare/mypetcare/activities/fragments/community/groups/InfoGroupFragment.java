@@ -53,12 +53,10 @@ public class InfoGroupFragment extends Fragment {
         User user = communication.getUser();
 
         if (group.getOwnerUsername().equals(user.getUsername())) {
-            binding.imgGroup.setOnClickListener(v -> {
-                communication.makeGroupZoomImage(binding.imgGroup.getDrawable());
-            });
+            binding.imgGroup.setOnClickListener(v -> communication.makeGroupZoomImage(binding.imgGroup.getDrawable()));
         }
 
-        ExecutorService obtainSubscribersImages = Executors.newCachedThreadPool();
+        ExecutorService obtainSubscribersImages = Executors.newSingleThreadExecutor();
         obtainSubscribersImages.execute(() -> {
             List<Map.Entry<String, DateTime>> subscribers = new ArrayList<>(group.getSubscribers().entrySet());
             String[] username = new String[subscribers.size()];

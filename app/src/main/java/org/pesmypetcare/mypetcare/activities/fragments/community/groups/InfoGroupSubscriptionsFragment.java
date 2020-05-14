@@ -63,12 +63,12 @@ public class InfoGroupSubscriptionsFragment extends Fragment {
     private void initializeListener() {
         if (isUserSubscriber()) {
             btnSubscribe.setText(getString(R.string.subscribe));
-            btnSubscribe.setBackgroundColor(getResources().getColor(R.color.green));
+            btnSubscribe.setBackgroundColor(getResources().getColor(R.color.green, null));
             InfoGroupFragment.getCommunication().removeSubscription(InfoGroupFragment.getGroup());
             showSubscribers();
         } else {
             btnSubscribe.setText(getString(R.string.desubscribe));
-            btnSubscribe.setBackgroundColor(getResources().getColor(R.color.red));
+            btnSubscribe.setBackgroundColor(getResources().getColor(R.color.red, null));
             InfoGroupFragment.getCommunication().addSubscription(InfoGroupFragment.getGroup());
             showSubscribers();
         }

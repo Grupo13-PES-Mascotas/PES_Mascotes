@@ -5,12 +5,17 @@
     android:layout_height="match_parent"
     tools:context=".activities.fragments.NotImplementedFragment">
 
-    <TextView
+    <!--<TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="@string/not_implemented"
         android:textColor="@color/colorPrimary"
-        android:textSize="20sp"/>
+        android:textSize="20sp"/>-->
+
+    <ImageView
+        android:id="@+id/displayTestImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

@@ -43,6 +43,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.pesmypetcare.communitymanager.datacontainers.MessageData;
+import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunication;
@@ -194,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     public static final int MAIN_ACTIVITY_ZOOM_IDENTIFIER = 0;
     private static final String TAG_REGEX = "^[a-zA-Z0-9,]*$";
+    public static final String GROUPS_SHARED_PREFERENCES = "Groups";
     private static boolean enableLoginActivity = true;
     private static FloatingActionButton floatingActionButton;
     private static FirebaseAuth mAuth;
@@ -1034,7 +1036,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @param bitmap The new image of the group
      */
     private void updateGroupImage(Group group, Bitmap bitmap) {
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(GROUPS_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -1068,7 +1070,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddGroupImage.setImage(image);
         try {
             trAddGroupImage.execute();
-        } catch (NotGroupOwnerException | GroupNotFoundException e) {
+        } catch (NotGroupOwnerException | GroupNotFoundException | MyPetCareException e) {
             e.printStackTrace();
         }
     }
@@ -1879,10 +1881,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     private void updateGroupImage(List<Group> groupList, int finalActual) {
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(GROUPS_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Group actualGroup = groupList.get(finalActual);
         String currentGroupDate = sharedPreferences.getString(actualGroup.getName(), "");
-        byte[] bytesImage = new byte[0];
+        byte[] bytesImage;
 
         if (needToUpdateImage(groupList, finalActual, currentGroupDate)) {
             SharedPreferences.Editor editor = sharedPreferences.edit();

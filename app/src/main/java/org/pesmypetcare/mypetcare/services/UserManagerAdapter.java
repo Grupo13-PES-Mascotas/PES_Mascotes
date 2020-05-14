@@ -12,6 +12,7 @@ import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
 import org.pesmypetcare.usermanager.datacontainers.user.UserData;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -178,8 +179,11 @@ public class UserManagerAdapter implements UserManagerService {
 
     @Override
     public Bitmap obtainUserImage(String username, String accessToken) throws ExecutionException, InterruptedException {
+        System.out.println("UID " + Objects.requireNonNull(MainActivity.getmAuth().getCurrentUser()).getUid());
         byte[] userProfileImageBytes = ServiceLocator.getInstance().getUserManagerClient()
-            .downloadProfileImage(username, accessToken);
+            .downloadProfileImage(accessToken, Objects.requireNonNull(MainActivity.getmAuth().getCurrentUser())
+                .getUid());
+        System.out.println("BYTES " + Arrays.toString(userProfileImageBytes));
         return BitmapFactory.decodeByteArray(userProfileImageBytes, 0,
             userProfileImageBytes.length);
     }

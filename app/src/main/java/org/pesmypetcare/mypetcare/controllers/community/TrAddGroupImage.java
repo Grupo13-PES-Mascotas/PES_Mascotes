@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.controllers.community;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.NotGroupOwnerException;
@@ -57,7 +58,7 @@ public class TrAddGroupImage {
     /**
      * Executes the transaction.
      */
-    public void execute() throws NotGroupOwnerException, GroupNotFoundException {
+    public void execute() throws NotGroupOwnerException, GroupNotFoundException, MyPetCareException {
         result = false;
         if (!user.getUsername().equals(group.getOwnerUsername())) {
             throw new NotGroupOwnerException();

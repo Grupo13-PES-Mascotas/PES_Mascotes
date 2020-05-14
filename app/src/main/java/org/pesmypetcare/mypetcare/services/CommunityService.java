@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.services;
 import android.graphics.Bitmap;
 
 import org.pesmypetcare.communitymanager.datacontainers.MessageData;
+import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerException;
@@ -146,7 +147,7 @@ public interface CommunityService {
      * @param group The group where the image has to be added
      * @param image The image that has to be added
      */
-    void addGroupImage(User user, Group group, Bitmap image) throws GroupNotFoundException;
+    void addGroupImage(User user, Group group, Bitmap image) throws GroupNotFoundException, MyPetCareException;
 
     /**
      * The given user wants to delete the image from the indicated group.
