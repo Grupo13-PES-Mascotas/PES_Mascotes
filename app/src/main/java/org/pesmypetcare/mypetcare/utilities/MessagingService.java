@@ -19,8 +19,7 @@ public class MessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
-
-        // Library access
+        communication.sendMessageToken(s);
     }
 
     @Override

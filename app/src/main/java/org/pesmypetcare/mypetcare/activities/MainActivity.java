@@ -112,6 +112,7 @@ import org.pesmypetcare.mypetcare.controllers.pethealth.TrAddNewWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrAddNewWeight;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrDeleteWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrDeleteWeight;
+import org.pesmypetcare.mypetcare.controllers.user.EmptyMessagingTokenException;
 import org.pesmypetcare.mypetcare.controllers.user.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.user.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.user.TrChangeUsername;
@@ -119,6 +120,7 @@ import org.pesmypetcare.mypetcare.controllers.user.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.user.TrExistsUsername;
 import org.pesmypetcare.mypetcare.controllers.user.TrObtainUser;
 import org.pesmypetcare.mypetcare.controllers.user.TrObtainUserImage;
+import org.pesmypetcare.mypetcare.controllers.user.TrSendFirebaseMessagingToken;
 import org.pesmypetcare.mypetcare.controllers.user.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.controllers.user.UserControllersFactory;
 import org.pesmypetcare.mypetcare.databinding.ActivityMainBinding;
@@ -260,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrAddGroupImage trAddGroupImage;
     private TrDeleteGroupImage trDeleteGroupImage;
     private TrGetPostImage trGetPostImage;
+    private TrSendFirebaseMessagingToken trSendFirebaseMessagingToken;
     private byte[] result;
 
     @Override
@@ -582,6 +585,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trChangeUsername = UserControllersFactory.createTrChangeUsername();
         trExistsUsername = UserControllersFactory.createTrExistsUsername();
         trObtainUserImage = UserControllersFactory.createTrObtainUserImage();
+        trSendFirebaseMessagingToken = UserControllersFactory.createTrSendFirebaseMessagingToken();
     }
 
     /**
@@ -1987,5 +1991,17 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void schedulePostNotification(String title, String text, long time) {
         scheduleNotification(this, time, title, text);
+    }
+
+    @Override
+    public void sendMessageToken(String messageToken) {
+        trSendFirebaseMessagingToken.setUser(user);
+        trSendFirebaseMessagingToken.setToken(messageToken);
+
+        try {
+            trSendFirebaseMessagingToken.execute();
+        } catch (EmptyMessagingTokenException e) {
+            e.printStackTrace();
+        }
     }
 }

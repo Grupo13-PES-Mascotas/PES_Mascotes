@@ -77,4 +77,12 @@ public class UserControllersFactory {
     public static TrObtainUserImage createTrObtainUserImage() {
         return new TrObtainUserImage(new UserManagerAdapter());
     }
+
+    /**
+     * Create the transaction for sending the firebase messaging token.
+     * @return The transaction for sending the firebase messaging token.
+     */
+    public static TrSendFirebaseMessagingToken createTrSendFirebaseMessagingToken() {
+        return new TrSendFirebaseMessagingToken(new UserManagerAdapter());
+    }
 }

@@ -12,4 +12,10 @@ public interface MessagingServiceCommunication {
      * @param time The time to display the notification
      */
     void schedulePostNotification(String title, String text, long time);
+
+    /**
+     * Send the message token.
+     * @param messageToken The message token
+     */
+    void sendMessageToken(String messageToken);
 }
