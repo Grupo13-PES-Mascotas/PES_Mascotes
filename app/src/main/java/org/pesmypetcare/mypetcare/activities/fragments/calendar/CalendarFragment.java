@@ -344,7 +344,8 @@ public class CalendarFragment extends Fragment {
             communication.newPersonalEvent(selectedPet, reasonText.getText().toString(), dateTime.toString());
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(dateTime, c);
-            communication.scheduleNotification(getContext(), c.getTimeInMillis() , selectedPet.getName(), reasonText.getText().toString());
+            communication.scheduleNotification(getContext(), c.getTimeInMillis() , selectedPet.getName(),
+                reasonText.getText().toString());
             setUpCalendar();
         } else {
             toastText(getString(R.string.incorrect_entry));

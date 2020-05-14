@@ -249,6 +249,7 @@
     <string name="likes">m\'agrades</string>
     <string name="likes_singular">m\'agrada</string>
     <string name="error_too_big_image">La imatge ha de ser inferior o igual a 1 MB</string>
+    <string name="new_post_received">ha fet una nova publicació</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

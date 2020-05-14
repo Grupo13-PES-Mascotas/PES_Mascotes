@@ -13,7 +13,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
@@ -25,7 +24,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -160,6 +158,8 @@ import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
+import org.pesmypetcare.mypetcare.utilities.MessagingService;
+import org.pesmypetcare.mypetcare.utilities.MessagingServiceCommunication;
 import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.io.IOException;
@@ -181,7 +181,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
     InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
-    CommunityCommunication, InfoGroupCommunication {
+    CommunityCommunication, InfoGroupCommunication, MessagingServiceCommunication {
     private static final int[] NAVIGATION_OPTIONS = {R.id.navigationMyPets, R.id.navigationPetsCommunity,
         R.id.navigationMyWalks, R.id.navigationNearEstablishments, R.id.navigationCalendar,
         R.id.navigationAchievements, R.id.navigationSettings
@@ -284,10 +284,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         });
 
         ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw, null));
+        MessagingService.setCommunication(this);
+
         initializeCurrentUser();
         initializeActivity();
         setUpNavigationImage();
     }
+
 
     /**
      * Initializes the current user.
@@ -1679,7 +1682,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @param title The notification's title
      * @param time The alarm time of the notification
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
     public void scheduleNotification(Context context, long time, String title, String text) {
         Notification notification = new Notification(title, text, new Date(time), Long.toString(time));
         notification.setNotificationID(notificationId);
@@ -1979,5 +1982,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void showGroupFragment(InfoGroupFragment infoGroupFragment) {
         changeFragment(infoGroupFragment);
+    }
+
+    @Override
+    public void schedulePostNotification(String title, String text, long time) {
+        scheduleNotification(this, time, title, text);
     }
 }

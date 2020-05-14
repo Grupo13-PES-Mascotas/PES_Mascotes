@@ -79,6 +79,7 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:7.0.0'
     implementation 'com.google.firebase:firebase-firestore:21.4.3'
     implementation 'com.google.firebase:firebase-analytics:17.4.1'
+    implementation 'com.google.firebase:firebase-messaging:20.1.7'
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.mockito:mockito-core:3.3.3'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
@@ -89,7 +90,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.4.1'
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
-    implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:a38f3102cc'
+    implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:7040bd2438'
 }
 
 configurations.all {
