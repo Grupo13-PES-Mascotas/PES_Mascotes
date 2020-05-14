@@ -12,7 +12,7 @@ public class DailyKilocaloriesData extends StatisticData {
     private static final String UNIT = "kcal";
 
     public DailyKilocaloriesData(Pet pet) {
-        Map<DateTime, Double> weights = pet.getHealthInfo().getDailyKiloCalories();
+        Map<DateTime, Double> weights = pet.getHealthInfo().getRecommendedDailyKiloCalories();
         List<String> xAxisValues = new ArrayList<>();
         List<Double> yAxisValues = new ArrayList<>();
 

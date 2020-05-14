@@ -56,7 +56,7 @@ public class TestTrDeleteWashFrequency {
 
     @Test
     public void shouldDeleteWashFrequencyData() throws NotPetOwnerException, ExecutionException, InterruptedException {
-        pet.setWashFrequency(2);
+        pet.setWashFrequencyForCurrentDate(2);
 
         trDeleteWashFrequency.setUser(user);
         trDeleteWashFrequency.setPet(pet);
@@ -79,9 +79,9 @@ public class TestTrDeleteWashFrequency {
         pet.setGender(GenderType.Female);
         pet.setBirthDate(DateTime.Builder.buildDateString("2020-03-02"));
         pet.setBreed("Husky");
-        pet.setRecommendedDailyKiloCalories(2);
-        pet.setWashFrequency(2);
-        pet.setWeight(2);
+        pet.setRecommendedDailyKiloCaloriesForCurrentDate(2);
+        pet.setWashFrequencyForCurrentDate(2);
+        pet.setWeightForCurrentDate(2);
         return pet;
     }
 }

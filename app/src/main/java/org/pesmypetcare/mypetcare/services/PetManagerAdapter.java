@@ -109,7 +109,7 @@ public class PetManagerAdapter implements PetManagerService {
         petData.setBreed(pet.getBreed());
         petData.setGender(pet.getGender());
         petData.setPathologies(pet.getPathologies());
-        petData.setRecommendedKcal(pet.getRecommendedDailyKiloCalories());
+        petData.setRecommendedKcal(pet.getLastRecommendedDailyKiloCalories());
         //petData.setWashFreq(pet.getWashFrequency());
         //petData.setWeight(pet.getWeight());
       
@@ -369,7 +369,7 @@ public class PetManagerAdapter implements PetManagerService {
         pet.setBirthDate(DateTime.Builder.buildFullString(petData.getBirth()));
         /*pet.setWeight(petData.getWeight());
         pet.setWashFrequency(petData.getWashFreq());*/
-        pet.setRecommendedDailyKiloCalories(petData.getRecommendedKcal());
+        pet.setRecommendedDailyKiloCaloriesForCurrentDate(petData.getRecommendedKcal());
         pet.setBreed(petData.getBreed());
         pet.setPathologies(petData.getPathologies());
 

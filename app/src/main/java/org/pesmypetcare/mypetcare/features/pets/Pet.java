@@ -9,8 +9,8 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -97,7 +97,7 @@ public class Pet {
      * @param petInfo A bundle containing all the information of the pet
      */
     public void initializeHealthInfo(Bundle petInfo) {
-        DateTime dateTime = getActualDateTime();
+        DateTime dateTime = DateTime.getCurrentDate();
 
         this.healthInfo = new PetHealthInfo();
         this.healthInfo.addWeightForDate(dateTime, petInfo.getFloat(BUNDLE_WEIGHT));
@@ -184,31 +184,38 @@ public class Pet {
     }
 
     /**
-     * Get the weight of the pet.
-     * @return The weight of the pet
+     * Getter of the last weight of the pet.
+     * @return The last weight of the pet
      */
-    public double getWeight() {
+    public double getLastWeight() {
         return healthInfo.getLastWeight();
     }
 
     /**
-     * Set the weight of the pet.
+     * Getter of the weight of the pet for the given date.
+     * @param dateTime The date for which the pet weight has to be recovered
+     * @return The weight of the pet for the given date
+     */
+    public double getWeightForDate(DateTime dateTime) {
+        return healthInfo.getWeightForDate(dateTime);
+    }
+
+    /**
+     * Setter of the weight of the pet for the current date.
      * @param weight The weight to set
      */
-    public void setWeight(double weight) {
-        DateTime dateTime = getActualDateTime();
+    public void setWeightForCurrentDate(double weight) {
+        DateTime dateTime = DateTime.getCurrentDate();
         this.healthInfo.addWeightForDate(dateTime, weight);
     }
 
     /**
-     * Get the actual date time.
-     * @return The actual date time
+     * Setter of the weight of the pet for the given date.
+     * @param weight The weight to set
+     * @param dateTime The date for which the weight has to be set
      */
-    private DateTime getActualDateTime() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d");
-        Date date = new Date();
-        String strData = dateFormat.format(date);
-        return DateTime.Builder.buildDateString(strData);
+    public void setWeightForDate(double weight, DateTime dateTime) {
+        this.healthInfo.addWeightForDate(dateTime, weight);
     }
 
     /**
@@ -228,36 +235,106 @@ public class Pet {
     }
 
     /**
-     * Get the recommended daily kilo calories of the pet.
-     * @return The recommended daily kilo calories of the pet
+     * Getter of the last recommended daily kilo calories of the pet.
+     * @return The last recommended daily kilo calories of the pet
      */
-    public double getRecommendedDailyKiloCalories() {
+    public double getLastRecommendedDailyKiloCalories() {
         return healthInfo.getLastRecommendedDailyKiloCalories();
     }
 
     /**
-     * Set the recommended daily kilo calories of the pet.
-     * @param recommendedDailyKiloCalories The recommended daily kilo calories of the pet to set
+     * Getter of the recommended daily kilo calories of the pet for the given date.
+     * @param dateTime The date for which we want to obtain the recommended daily kilocalories
+     * @return The recommended daily kilo calories of the pet for the given date
      */
-    public void setRecommendedDailyKiloCalories(double recommendedDailyKiloCalories) {
-        /*DateTime dateTime = getActualDateTime();
-        healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, recommendedDailyKiloCalories);*/
+    public double getRecommendedDailyKiloCaloriesForDate(DateTime dateTime) {
+        return healthInfo.getRecommendedDailyKiloCaloriesForDate(dateTime);
     }
 
     /**
-     * Get the wash frequency of the pet.
-     * @return The wash frequency of the pet
+     * Setter of the recommended daily kilo calories of the pet for the current date.
+     * @param recommendedDailyKiloCalories The recommended daily kilo calories of the pet to set
      */
-    public int getWashFrequency() {
+    public void setRecommendedDailyKiloCaloriesForCurrentDate(double recommendedDailyKiloCalories) {
+        DateTime dateTime = DateTime.getCurrentDate();
+        healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, recommendedDailyKiloCalories);
+    }
+
+    /**
+     * Setter of the recommended daily kilo calories of the pet for the given date.
+     * @param recommendedDailyKiloCalories The recommended daily kilo calories of the pet to set
+     * @param dateTime The date for which the daily kilocalories have to be set
+     */
+    public void setRecommendedDailyKiloCaloriesForDate(double recommendedDailyKiloCalories, DateTime dateTime) {
+        healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, recommendedDailyKiloCalories);
+    }
+
+    /**
+     * Getter of the last daily kilo calories of the pet.
+     * @return The last daily kilo calories of the pet
+     */
+    public double getLastDailyKiloCalories() {
+        return healthInfo.getLastDailyKiloCalories();
+    }
+
+    /**
+     * Getter of the daily kilo calories of the pet for the given date.
+     * @param dateTime The date for which we want to obtain the daily kilo calories of the pet
+     * @return The daily kilo calories of the pet for the given date
+     */
+    public double getDailyKiloCaloriesForDate(DateTime dateTime) {
+        return healthInfo.getDailyKiloCaloriesForDate(dateTime);
+    }
+
+    /**
+     * Sets the given value to the stored daily kilocalories of the pet.
+     * @param dailyKilocalories The daily kilo calories of the pet to add
+     */
+    public void setDailyKiloCaloriesForCurrentDate(double dailyKilocalories) {
+        DateTime dateTime = DateTime.getCurrentDate();
+        try {
+            healthInfo.addDailyKiloCaloriesForDate(dateTime, dailyKilocalories);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets the given value to the stored daily kilo calories of the pet for the given date.
+     * @param dateTime The date for which we want to obtain the daily kilo calories of the pet
+     * @param dailyKilocalories The daily kilo calories of the pet to add
+     */
+    public void setDailyKiloCaloriesForDate(double dailyKilocalories, DateTime dateTime) {
+        try {
+            healthInfo.addDailyKiloCaloriesForDate(dateTime, dailyKilocalories);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Getter of the last wash frequency of the pet.
+     * @return The last wash frequency of the pet
+     */
+    public int getLastWashFrequency() {
         return (int) healthInfo.getLastWashFrequency();
     }
 
     /**
-     * Set the wash frequency of the pet.
+     * Getter of the wash frequency of the pet for the given date.
+     * @param dateTime The date for which we want to obtain the wash frequency
+     * @return The wash frequency of the pet for the given date
+     */
+    public int getWashFrequencyForDate(DateTime dateTime) {
+        return (int) healthInfo.getWashFrequencyForDate(dateTime);
+    }
+
+    /**
+     * Set the wash frequency of the pet for the current date.
      * @param washFrequency The wash frequency to set
      */
-    public void setWashFrequency(int washFrequency) {
-        DateTime dateTime = getActualDateTime();
+    public void setWashFrequencyForCurrentDate(int washFrequency) {
+        DateTime dateTime = DateTime.getCurrentDate();
         healthInfo.addWashFrequencyForDate(dateTime, washFrequency);
     }
 
@@ -354,12 +431,14 @@ public class Pet {
      */
     public void addEvent(Event event) {
         events.add(event);
-
         if (event instanceof Meals) {
             DateTime eventDate = event.getDateTime();
             double kcal = ((Meals) event).getKcal();
-
-            healthInfo.addRecommendedDailyKiloCaloriesForDate(eventDate, kcal);
+            try {
+                healthInfo.addDailyKiloCaloriesForDate(eventDate, kcal);
+            } catch (InvalidFormatException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -368,6 +447,15 @@ public class Pet {
      * @param event The event to delete
      */
     public void deleteEvent(Event event) {
+        if (event instanceof Meals) {
+            DateTime eventDate = event.getDateTime();
+            double kcal = ((Meals) event).getKcal();
+            try {
+                healthInfo.deleteDailyKiloCaloriesForDate(eventDate, kcal);
+            } catch (InvalidFormatException e) {
+                e.printStackTrace();
+            }
+        }
         events.remove(event);
     }
 
@@ -419,7 +507,7 @@ public class Pet {
      * @param newWeight The weight to set
      * @param dateTime The date of the weight to set
      */
-    public void setWeightForDate(double newWeight, DateTime dateTime) {
+    public void setWeightForCurrentDate(double newWeight, DateTime dateTime) {
         healthInfo.addWeightForDate(dateTime, newWeight);
     }
 

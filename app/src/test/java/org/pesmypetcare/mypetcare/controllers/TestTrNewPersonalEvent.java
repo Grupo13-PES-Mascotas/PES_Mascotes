@@ -30,9 +30,9 @@ public class TestTrNewPersonalEvent {
         pet.setGender(GenderType.Female);
         pet.setBirthDate(DateTime.Builder.buildDateString("2020-03-02"));
         pet.setBreed(HUSKY);
-        pet.setRecommendedDailyKiloCalories(2);
-        pet.setWashFrequency(2);
-        pet.setWeight(2);
+        pet.setRecommendedDailyKiloCaloriesForCurrentDate(2);
+        pet.setWashFrequencyForCurrentDate(2);
+        pet.setWeightForCurrentDate(2);
         pet.setOwner(new User("johnDoe", "", ""));
         trNewPersonalEvent = new TrNewPersonalEvent(new StubGoogleCalendarService());
     }

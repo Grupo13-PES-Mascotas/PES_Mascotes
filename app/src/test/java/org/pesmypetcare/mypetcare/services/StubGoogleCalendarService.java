@@ -24,7 +24,7 @@ public class StubGoogleCalendarService implements GoogleCalendarService {
         this.data = new HashMap<>();
         this.data.put(JOHN_DOE, new ArrayList<>());
         Pet pet = new Pet(DINKY);
-        pet.setWeight(10.0);
+        pet.setWeightForCurrentDate(10.0);
         Objects.requireNonNull(this.data.get(JOHN_DOE)).add(pet);
 
         this.data.put(JOHN_DOE_2, new ArrayList<>());
