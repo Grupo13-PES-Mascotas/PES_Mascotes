@@ -16,7 +16,7 @@ public class Medication extends Event {
 
     public Medication(String medicationName, double medicationQuantity, int medicationFrequency,
                       int medicationDuration, DateTime medicationDate) {
-        super(MEDICATION + medicationName + WITH_START_DATE + medicationDate.toString(), medicationDate);
+        super(medicationName, medicationDate);
         this.medicationName = medicationName;
         this.medicationQuantity = medicationQuantity;
         this.medicationFrequency = medicationFrequency;
@@ -25,7 +25,7 @@ public class Medication extends Event {
     }
 
     public Medication(org.pesmypetcare.usermanagerlib.datacontainers.Medication libraryMedication) {
-        super(MEDICATION + libraryMedication.getName() + WITH_START_DATE + libraryMedication.getDate(),
+        super(libraryMedication.getName(),
             DateTime.Builder.buildFullString(libraryMedication.getDate()));
         this.medicationName = libraryMedication.getName();
         this.medicationQuantity = libraryMedication.getBody().getQuantity();

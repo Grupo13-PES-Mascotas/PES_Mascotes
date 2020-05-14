@@ -7,6 +7,7 @@ import org.pesmypetcare.usermanagerlib.clients.MealManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.Meal;
 import org.pesmypetcare.usermanagerlib.datacontainers.MealData;
+import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,8 @@ public class MealManagerAdapter implements MealManagerService {
         MealData body = new MealData(meal.getMealName(), meal.getKcal());
         Meal libMeal = new Meal(meal.getDateTime().toString(), body);
         try {
-            ServiceLocator.getInstance().getMealManagerClient().createMeal(accessToken, owner, petName, libMeal);
+            ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner, petName,
+                    PetData.MEALS, libMeal.getKey(), libMeal.getBodyAsMap());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -50,12 +52,21 @@ public class MealManagerAdapter implements MealManagerService {
     private void updateMealKCal(Meals meal, String accessToken, String owner, String petName, DateTime mealDate) {
         String field = MealManagerClient.KCAL;
         Object value = meal.getKcal();
+
+        DateTime oldDateTime = meal.getMealDate();
+
+        MealData mealData = null;
         try {
-            ServiceLocator.getInstance().getMealManagerClient().updateMealField(accessToken,
-                owner, petName, mealDate, field, value);
+            mealData = ServiceLocator.getInstance().getPetCollectionsManagerClient().getMeal(accessToken,
+                    owner, petName, oldDateTime.toString());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+        Meal currentMeal = new Meal(meal.getMealDate().toString(), meal.getMealName(), meal.getKcal());
+        deleteMeal(user, pet, currentMedication);
+        currentMedication.setMedicationName(newName);
+        currentMedication.setMedicationDate(DateTime.Builder.buildFullString(newDate));
+        createMedication(user, pet, currentMedication);
     }
 
     /**
@@ -67,11 +78,12 @@ public class MealManagerAdapter implements MealManagerService {
      * @param mealDate The date of the meal
      */
     private void updateMealName(Meals meal, String accessToken, String owner, String petName, DateTime mealDate) {
-        String field = MealManagerClient.MEALNAME;
-        Object value = meal.getMealName();
+        MealData libraryMealData = new MealData(meal.getMealName(), meal.getKcal());
+        org.pesmypetcare.usermanagerlib.datacontainers.Meal libraryMeal =
+                new org.pesmypetcare.usermanagerlib.datacontainers.Meal(meal.getMealDate().toString(), libraryMealData);
         try {
-            ServiceLocator.getInstance().getMealManagerClient().updateMealField(accessToken,
-                owner, petName, mealDate, field, value);
+            ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken, owner, petName,
+                    PetData.MEALS, libraryMeal.getKey(), libraryMeal.getBodyAsMap());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -147,7 +159,10 @@ public class MealManagerAdapter implements MealManagerService {
         }
         List<Meals> result = new ArrayList<>();
         for (Meal m:mealList) {
-            result.add(new Meals(m));
+            System.out.println("ui " + m.getKey());
+            if (m.getKey() != null) {
+                result.add(new Meals(m));
+            }
         }
         return result;
     }

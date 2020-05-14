@@ -12,7 +12,7 @@ public class Wash extends Event {
     private int duration;
 
     public Wash(DateTime dateTime, int duration, String washDescription) {
-        super(WASH + washDescription + OF_THE_DAY + dateTime.toDateString(), dateTime);
+        super(washDescription, dateTime);
         this.washDescription = washDescription;
         this.duration = duration;
     }

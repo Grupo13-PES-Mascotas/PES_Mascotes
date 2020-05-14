@@ -11,15 +11,14 @@ public class Meals extends Event {
     private DateTime mealDate;
 
     public Meals(DateTime dateTime, Double kcal, String mealName) {
-        super(MEAL + mealName + OF_THE_DAY + dateTime.toString(), dateTime);
+        super(mealName, dateTime);
         this.mealDate = dateTime;
         this.mealName = mealName;
         this.kcal = kcal;
     }
 
     public Meals(Meal meal) {
-        super(MEAL + meal.getBody().getMealName() + OF_THE_DAY + meal.getKey(),
-            DateTime.Builder.buildFullString(meal.getKey()));
+        super(meal.getBody().getMealName(), DateTime.Builder.buildFullString(meal.getKey()));
 
         this.mealDate = DateTime.Builder.buildFullString(meal.getKey());
         this.mealName = meal.getBody().getMealName();
