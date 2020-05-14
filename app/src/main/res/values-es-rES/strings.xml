@@ -247,6 +247,7 @@
     <string name="wait_for_update">Espera una actualización para usar esta funcionalidad</string>
     <string name="likes">me gustas</string>
     <string name="likes_singular">me gusta</string>
+    <string name="error_too_big_image">La imagen tiene que ser inferior o igual a 1 MB</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

@@ -38,6 +38,7 @@ import java.util.Objects;
 
 public class PostsFragment extends Fragment {
     public static final int POST_FRAGMENT_REQUEST_CODE = 200;
+    public static final double IMAGE_ALLOWED_SIZE = Math.pow(2, 20);
     private static Post selectedPost;
     private static Forum forum;
 

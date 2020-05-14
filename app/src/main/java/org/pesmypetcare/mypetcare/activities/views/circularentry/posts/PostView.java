@@ -105,7 +105,8 @@ public class PostView extends LinearLayout {
         dateLabel.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
             LayoutParams.WRAP_CONTENT));
         dateLabel.setGravity(Gravity.CENTER);
-        dateLabel.setText(Objects.requireNonNull(postDate).toString());
+        String strPostDate = Objects.requireNonNull(postDate).toString();
+        dateLabel.setText(strPostDate.substring(0, strPostDate.indexOf('T')));
         dateLabel.setTextColor(getResources().getColor(R.color.colorPrimary, null));
 
         addView(dateLabel);

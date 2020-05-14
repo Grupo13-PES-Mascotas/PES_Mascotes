@@ -248,6 +248,7 @@
     <string name="wait_for_update">Espera una actualització per utilitzar aquesta funcionalitat</string>
     <string name="likes">m\'agrades</string>
     <string name="likes_singular">m\'agrada</string>
+    <string name="error_too_big_image">La imatge ha de ser inferior o igual a 1 MB</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

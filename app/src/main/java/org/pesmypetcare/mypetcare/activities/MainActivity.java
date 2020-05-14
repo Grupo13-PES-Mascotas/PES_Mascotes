@@ -1571,7 +1571,15 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         Bitmap bitmap = getGalleryBitmap(data);
         //PostsFragment.getSelectedPost().setPostImage(bitmap);
         changeFragment(actualFragment);
-        ((PostsFragment) actualFragment).setPostImage(bitmap);
+
+        byte[] imageBytes = ImageManager.getImageBytes(bitmap);
+
+        if (imageBytes.length > PostsFragment.IMAGE_ALLOWED_SIZE) {
+            Toast toast = Toast.makeText(this, R.string.error_too_big_image, Toast.LENGTH_LONG);
+            toast.show();
+        } else {
+            ((PostsFragment) actualFragment).setPostImage(bitmap);
+        }
 
         //addPostImage(PostsFragment.getSelectedPost(), bitmap);
     }
