@@ -466,7 +466,6 @@ public class Pet {
      */
     public List<Event> getEvents(String date) {
         ArrayList<Event> selectedEvents = new ArrayList<>();
-
         for (Event event : events) {
             String eventDate = DateConversion.getDate(event.getDateTime().toString());
             if (eventDate.equals(date)) {
