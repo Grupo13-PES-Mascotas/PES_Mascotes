@@ -89,4 +89,11 @@ public interface UserManagerService {
      */
     Bitmap obtainUserImage(String username, String accessToken) throws ExecutionException, InterruptedException,
         MyPetCareException;
+
+    /**
+     * Sent the firebase messaging token.
+     * @param user The user of the token
+     * @param token The messaging token
+     */
+    void sendFirebaseMessagingToken(User user, String token);
 }

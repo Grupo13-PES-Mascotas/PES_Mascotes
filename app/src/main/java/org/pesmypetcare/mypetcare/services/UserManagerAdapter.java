@@ -220,4 +220,9 @@ public class UserManagerAdapter implements UserManagerService {
 
         return BitmapFactory.decodeByteArray(userProfileImageBytes, 0, userProfileImageBytes.length);
     }
+
+    @Override
+    public void sendFirebaseMessagingToken(User user, String token) {
+        // Not implemented yet
+    }
 }
