@@ -6,6 +6,7 @@ import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
+import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
@@ -29,7 +30,7 @@ public interface PetManagerService {
      * @return True if the register has been done without any problems
      * @throws PetAlreadyExistingException The pet already belongs to the user
      */
-    boolean registerNewPet(User user, Pet pet);
+    boolean registerNewPet(User user, Pet pet) throws ExecutionException, InterruptedException;
 
     /**
      * Updates the image of the pet.
@@ -141,4 +142,20 @@ public interface PetManagerService {
      */
     void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise) throws ExecutionException,
             InterruptedException;
+
+    /**
+     * Add the walking to the pet.
+     * @param user The user
+     * @param pet The pet
+     * @param walk The walking
+     */
+    void addWalking(User user, Pet pet, Walk walk) throws ExecutionException, InterruptedException;
+
+    /**
+     * Get all the exercises.
+     * @param user The user
+     * @param pet The pet
+     * @return All the exercises of the pet
+     */
+    List<Exercise> getAllExercises(User user, Pet pet) throws ExecutionException, InterruptedException;
 }

@@ -33,4 +33,28 @@ public class ExerciseControllersFactory {
     public static TrUpdateExercise createTrUpdateExercise() {
         return new TrUpdateExercise(new PetManagerAdapter());
     }
+
+    /**
+     * Create the transaction for adding a walking.
+     * @return The transaction for adding a walking
+     */
+    public static TrAddWalk createTrAddWalk() {
+        return new TrAddWalk(new PetManagerAdapter());
+    }
+
+    /**
+     * Create the transaction for getting all the walks.
+     * @return The transaction for getting all the walks
+     */
+    public static TrGetAllWalks createTrGetAllWalks() {
+        return new TrGetAllWalks();
+    }
+
+    /**
+     * Create the transaction for getting all the exercises.
+     * @return The transaction for getting all the exercises
+     */
+    public static TrGetAllExercises createTrGetAllExercises() {
+        return new TrGetAllExercises(new PetManagerAdapter());
+    }
 }

@@ -452,7 +452,7 @@ public class Pet {
      * Get the list of vaccinations of the pet.
      * @return The list of vaccinations of the pet
      */
-    public List<Event> getVaccinationvents() {
+    public List<Event> getVaccinationEvents() {
         ArrayList<Event> vaccinationEvents = new ArrayList<>();
 
         for (Event event : events) {
@@ -688,10 +688,22 @@ public class Pet {
     public void deleteExerciseForDate(DateTime dateTime) {
         List<Event> events = getEventsByClass(Exercise.class);
         Exercise exercise = null;
+        Class classToDelete = Exercise.class;
 
         for (Event event : events) {
             if (event.getDateTime().compareTo(dateTime) == 0) {
                 exercise = (Exercise) event;
+            }
+        }
+
+        if (exercise == null) {
+            events = getEventsByClass(Walk.class);
+
+            for (Event event : events) {
+                if (event.getDateTime().compareTo(dateTime) == 0) {
+                    exercise = (Exercise) event;
+                    classToDelete = Walk.class;
+                }
             }
         }
 
@@ -701,6 +713,21 @@ public class Pet {
         int duration = getMinutes(exercise.getDateTime(), exercise.getEndTime());
 
         healthInfo.removeExerciseFrequency(date, duration);
-        deleteEventByClass(dateTime, Exercise.class);
+        deleteEventByClass(dateTime, classToDelete);
+    }
+
+    /**
+     * Get the list of illness of the pet.
+     * @return The list of illness of the pet
+     */
+    public List<Event> getIllnessEvents() {
+        ArrayList<Event> illnessEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof Illness) {
+                illnessEvents.add(event);
+            }
+        }
+        return illnessEvents;
     }
 }

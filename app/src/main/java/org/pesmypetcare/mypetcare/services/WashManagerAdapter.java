@@ -67,9 +67,6 @@ public class WashManagerAdapter implements WashManagerService {
         String owner = user.getUsername();
         String petName = pet.getName();
         WashData libraryWashData = ServiceLocator.getInstance().getPetCollectionsManagerClient().getWash(user.getToken(), user.getUsername(), pet.getName(), oldDate);
-        org.pesmypetcare.usermanagerlib.datacontainers.Wash libraryWash =
-                new org.pesmypetcare.usermanagerlib.datacontainers.Wash(oldDate,
-                        libraryWashData.getDescription(), libraryWashData.getDuration());
         org.pesmypetcare.usermanagerlib.datacontainers.Wash libraryUpdatedWash =
                 new org.pesmypetcare.usermanagerlib.datacontainers.Wash(newDate,
                         libraryWashData.getDescription(), libraryWashData.getDuration());
