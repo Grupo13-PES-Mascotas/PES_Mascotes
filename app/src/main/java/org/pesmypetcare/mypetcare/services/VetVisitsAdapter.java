@@ -80,6 +80,7 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
+
         VetVisitData visitData = new VetVisitData(vetVisit.getReason(), vetVisit.getAddress());
         org.pesmypetcare.usermanagerlib.datacontainers.VetVisit libraryVisit =
             new org.pesmypetcare.usermanagerlib.datacontainers.VetVisit(vetVisit.getVisitDate().toString(), visitData);
