@@ -296,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         if (mAuth.getCurrentUser() != null) {
             try {
                 initializeUser();
-            } catch (PetRepeatException e) {
+            } catch (PetRepeatException | MyPetCareException e) {
                 Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing),
                     Toast.LENGTH_LONG);
                 toast.show();
@@ -354,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Initialize the current.
      * @throws PetRepeatException The pet has already been registered
      */
-    private void initializeUser() throws PetRepeatException {
+    private void initializeUser() throws PetRepeatException, MyPetCareException {
         trObtainUser.setUsername(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
         trObtainUser.execute();
 
@@ -1248,9 +1248,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public Bitmap findImageByUser(String username) {
         trObtainUserImage.setUsername(username);
         trObtainUserImage.setAccessToken(user.getToken());
+
         try {
             trObtainUserImage.execute();
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (ExecutionException | InterruptedException | MyPetCareException e) {
             e.printStackTrace();
         }
         Bitmap result = trObtainUserImage.getResult();
@@ -1300,6 +1301,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trGetPostImage.execute();
 
         return result;
+    }
+
+    @Override
+    public void refreshActualFragment() {
+        changeFragment(new InfoGroupFragment());
     }
 
     @Override
@@ -1839,7 +1845,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void updateUserImage(Drawable drawable) {
         trUpdateUserImage.setUser(user);
         trUpdateUserImage.setImage(((BitmapDrawable) drawable).getBitmap());
-        trUpdateUserImage.execute();
+
+        try {
+            trUpdateUserImage.execute();
+        } catch (MyPetCareException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

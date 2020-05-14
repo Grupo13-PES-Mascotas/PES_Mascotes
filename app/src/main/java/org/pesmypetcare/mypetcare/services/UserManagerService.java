@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.concurrent.ExecutionException;
@@ -13,7 +14,7 @@ public interface UserManagerService {
      * @param username The username of the user to be registered
      * @return True if the register has been done without any problems
      */
-    User findUserByUsername(String username);
+    User findUserByUsername(String username) throws MyPetCareException;
 
     /**
      * Checks if the user had been registered.
@@ -63,7 +64,7 @@ public interface UserManagerService {
      * @param user The user that wants his image to be updated
      * @param bitmap The bitmap of the image to be assigned
      */
-    void updateUserImage(User user, Bitmap bitmap);
+    void updateUserImage(User user, Bitmap bitmap) throws MyPetCareException;
 
     /**
      * User with this username exists.
@@ -84,6 +85,8 @@ public interface UserManagerService {
      * Obtains the image of the given username.
      * @param username The username from which we want to obtain the image
      * @param accessToken The access token of the current user
+     * @throws MyPetCareException There has been a problem with the server connection
      */
-    Bitmap obtainUserImage(String username, String accessToken) throws ExecutionException, InterruptedException;
+    Bitmap obtainUserImage(String username, String accessToken) throws ExecutionException, InterruptedException,
+        MyPetCareException;
 }

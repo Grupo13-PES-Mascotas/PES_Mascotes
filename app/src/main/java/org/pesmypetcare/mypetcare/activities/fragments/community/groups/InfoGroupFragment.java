@@ -31,12 +31,16 @@ public class InfoGroupFragment extends Fragment {
     private static InfoGroupCommunication communication;
     private static Group group;
 
+    private static int selectedTab;
+
     private FragmentInfoGroupBinding binding;
+    private TabLayout tabLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoGroupBinding.inflate(inflater, container, false);
         communication = (InfoGroupCommunication) getActivity();
+        tabLayout = binding.tabLayoutInfoGroup;
 
         setUpViewPager();
 
@@ -74,7 +78,7 @@ public class InfoGroupFragment extends Fragment {
 
             obtainSubscriberImage.shutdown();
             try {
-                obtainSubscriberImage.awaitTermination(2, TimeUnit.MINUTES);
+                obtainSubscriberImage.awaitTermination(5, TimeUnit.MINUTES);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -84,9 +88,16 @@ public class InfoGroupFragment extends Fragment {
             }
 
             //InfoGroupSubscriptionsFragment.showSubscribers();
+            //communication.refreshActualFragment();
         });
 
         obtainSubscribersImages.shutdown();
+
+        try {
+            obtainSubscribersImages.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return binding.getRoot();
     }
@@ -121,9 +132,7 @@ public class InfoGroupFragment extends Fragment {
         ViewPager2 viewPager = binding.infoGroupPager;
         viewPager.setAdapter(infoGroupFragmentAdapter);
 
-        TabLayout tabLayout = binding.tabLayoutInfoGroup;
         TabLayoutMediator tabLayoutMediator = createTabLayoutMediator(viewPager, tabLayout);
-
         tabLayoutMediator.attach();
     }
 
@@ -135,6 +144,8 @@ public class InfoGroupFragment extends Fragment {
      */
     private TabLayoutMediator createTabLayoutMediator(ViewPager2 viewPager, TabLayout tabLayout) {
         return new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            selectedTab = position;
+
             switch (position) {
                 case InfoGroupFragmentAdapter.FORUMS_FRAGMENT:
                     tab.setText(R.string.info_group_forums);
@@ -169,5 +180,13 @@ public class InfoGroupFragment extends Fragment {
      */
     public static InfoGroupCommunication getCommunication() {
         return communication;
+    }
+
+    /**
+     * Set the selected tab.
+     * @param selectedTab The selected tab to set
+     */
+    public static void setSelectedTab(int selectedTab) {
+        InfoGroupFragment.selectedTab = selectedTab;
     }
 }

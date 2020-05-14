@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.views.circularentry.subscriber;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -35,7 +36,12 @@ public class SubscriberComponentView extends CircularEntryView {
     @Override
     protected CircularImageView getImage() {
         CircularImageView image = new CircularImageView(getCurrentActivity(), null);
-        Drawable subscriberImage = new BitmapDrawable(getResources(), group.getUserImage(username));
+        Bitmap userImage = group.getUserImage(username);
+        Drawable subscriberImage = getResources().getDrawable(R.drawable.user_icon_sample, null);
+
+        if (userImage != null) {
+            subscriberImage = new BitmapDrawable(getResources(), userImage);
+        }
 
         image.setDrawable(subscriberImage);
         int imageDimensions = getImageDimensions();

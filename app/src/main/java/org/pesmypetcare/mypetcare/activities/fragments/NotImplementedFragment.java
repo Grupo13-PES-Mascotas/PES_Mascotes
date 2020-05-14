@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.mypetcare.controllers.user.TrObtainUserImage;
 import org.pesmypetcare.mypetcare.controllers.user.UserControllersFactory;
 import org.pesmypetcare.mypetcare.databinding.FragmentNotImplementedBinding;
@@ -33,7 +34,7 @@ public class NotImplementedFragment extends Fragment {
 
             try {
                 trObtainUserImage.execute();
-            } catch (ExecutionException | InterruptedException e) {
+            } catch (ExecutionException | InterruptedException | MyPetCareException e) {
                 e.printStackTrace();
             }
 

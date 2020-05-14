@@ -125,4 +125,6 @@ public interface InfoGroupCommunication {
      * @return The image of the post
      */
     byte[] getImageFromPost(Post post, MessageDisplay messageData);
+
+    void refreshActualFragment();
 }

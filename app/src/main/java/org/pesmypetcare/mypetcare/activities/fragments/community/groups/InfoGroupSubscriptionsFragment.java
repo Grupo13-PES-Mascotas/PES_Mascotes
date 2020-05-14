@@ -103,7 +103,9 @@ public class InfoGroupSubscriptionsFragment extends Fragment {
      * Show the subscribers of the group.
      */
     public static void showSubscribers() {
-        binding.subscribersViewLayout.removeAllViews();
-        binding.subscribersViewLayout.showSubscribers(InfoGroupFragment.getGroup());
+        if (binding != null) {
+            binding.subscribersViewLayout.removeAllViews();
+            binding.subscribersViewLayout.showSubscribers(InfoGroupFragment.getGroup());
+        }
     }
 }
