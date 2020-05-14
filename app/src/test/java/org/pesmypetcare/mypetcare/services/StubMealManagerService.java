@@ -63,7 +63,7 @@ public class StubMealManagerService implements MealManagerService {
     }
 
     @Override
-    public void updateMealDate(User user, Pet pet, String newDate, String oldDate) {
+    public void updateMealKey(User user, Pet pet, String newDate, String oldDate) {
         if (data.containsKey(user.getUsername() + " : " + pet.getName())) {
             ArrayList<Meals> petMeals = data.get(user.getUsername() + " : " + pet.getName());
             assert petMeals != null;

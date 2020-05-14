@@ -5,7 +5,9 @@ import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.pets.VaccinationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.MedicalProfileManagerService;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
 
@@ -14,13 +16,16 @@ import java.util.concurrent.ExecutionException;
  */
 public class TrAddNewPetVaccination {
     private MedicalProfileManagerService medicalProfileManagerService;
+    private GoogleCalendarService googleCalendarService;
     private User user;
     private Pet pet;
     private Vaccination vaccination;
     private boolean result;
 
-    public TrAddNewPetVaccination(MedicalProfileManagerService medicalProfileManagerService) {
+    public TrAddNewPetVaccination(MedicalProfileManagerService medicalProfileManagerService,
+                                  GoogleCalendarService googleCalendarService) {
         this.medicalProfileManagerService = medicalProfileManagerService;
+        this.googleCalendarService = googleCalendarService;
     }
 
     /**
@@ -56,13 +61,14 @@ public class TrAddNewPetVaccination {
     }
 
     public void execute() throws NotPetOwnerException, VaccinationAlreadyExistingException, ExecutionException,
-        InterruptedException {
+        InterruptedException, InvalidFormatException {
         result = false;
         if (!user.getUsername().equals(pet.getOwner().getUsername())) {
             throw new NotPetOwnerException();
         }
         medicalProfileManagerService.createVaccination(user, pet, vaccination);
         pet.addEvent(vaccination);
+        googleCalendarService.registerNewEvent(pet, vaccination);
         result = true;
     }
 }

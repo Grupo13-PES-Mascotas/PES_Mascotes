@@ -7,6 +7,7 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubMedicalProfileManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
@@ -27,7 +28,8 @@ public class TestTrDeletePetVaccination {
     @Before
     public void setUp() {
         stubMedicalProfileManagerService = new StubMedicalProfileManagerService();
-        trDeletePetVaccination = new TrDeletePetVaccination(stubMedicalProfileManagerService);
+        trDeletePetVaccination = new TrDeletePetVaccination(stubMedicalProfileManagerService,
+            new StubGoogleCalendarService());
         user = new User("Manolo Lama", "lamacope@gmail.com", "1234");
         pet = new Pet("Bichinho");
         pet.setOwner(user);

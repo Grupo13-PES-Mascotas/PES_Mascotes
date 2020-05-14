@@ -4,20 +4,26 @@ import org.pesmypetcare.mypetcare.features.pets.Illness;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.MedicalProfileManagerService;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Enric Hernando
  */
 public class TrDeletePetIllness {
     private MedicalProfileManagerService medicalProfileManagerService;
+    private GoogleCalendarService googleCalendarService;
     private User user;
     private Pet pet;
     private Illness illness;
     private boolean result;
 
-    public TrDeletePetIllness(MedicalProfileManagerService medicalProfileManagerService) {
+    public TrDeletePetIllness(MedicalProfileManagerService medicalProfileManagerService,
+                              GoogleCalendarService googleCalendarService) {
         this.medicalProfileManagerService = medicalProfileManagerService;
+        this.googleCalendarService = googleCalendarService;
     }
 
     /**
@@ -55,13 +61,14 @@ public class TrDeletePetIllness {
     /**
      * Executes the transaction.
      */
-    public void execute() throws NotPetOwnerException {
+    public void execute() throws NotPetOwnerException, ExecutionException, InterruptedException {
         result = false;
         if (!user.getUsername().equals(pet.getOwner().getUsername())) {
             throw new NotPetOwnerException();
         }
         medicalProfileManagerService.deleteIllness(user, pet, illness);
         pet.deleteEvent(illness);
+        googleCalendarService.deleteEvent(pet, illness);
         result = true;
     }
 }

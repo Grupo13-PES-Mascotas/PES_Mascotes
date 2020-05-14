@@ -9,9 +9,11 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
 
@@ -29,13 +31,13 @@ public class TestTrAddExercise {
     public void setUp() throws PetRepeatException {
         user = new User("johnDoe", "johndoe@gmail.com", "1234");
         pet = getDinkyPet();
-        trAddExercise = new TrAddExercise(new StubPetManagerService());
-
+        trAddExercise = new TrAddExercise(new StubPetManagerService(), new StubGoogleCalendarService());
         user.addPet(pet);
     }
 
     @Test(expected = NotPetOwnerException.class)
-    public void shouldNotAddExerciseToNonOwnedPet() throws NotPetOwnerException, InvalidPeriodException, ExecutionException, InterruptedException {
+    public void shouldNotAddExerciseToNonOwnedPet() throws NotPetOwnerException, InvalidPeriodException,
+        ExecutionException, InterruptedException, InvalidFormatException {
         trAddExercise.setUser(new User("johnSmith", "johnsmith@gmail.com", "5678"));
         trAddExercise.setPet(pet);
         trAddExercise.setExerciseName("Frisbee");
@@ -46,7 +48,8 @@ public class TestTrAddExercise {
     }
 
     @Test(expected = InvalidPeriodException.class)
-    public void shouldTheStartDateTimeBeBeforeTheEndOne() throws NotPetOwnerException, InvalidPeriodException, ExecutionException, InterruptedException {
+    public void shouldTheStartDateTimeBeBeforeTheEndOne() throws NotPetOwnerException, InvalidPeriodException,
+        ExecutionException, InterruptedException, InvalidFormatException {
         trAddExercise.setUser(user);
         trAddExercise.setPet(pet);
         trAddExercise.setExerciseName("Frisbee");
@@ -57,7 +60,8 @@ public class TestTrAddExercise {
     }
 
     @Test(expected = InvalidPeriodException.class)
-    public void shouldStartAndEndTheExerciseInTheSameDate() throws NotPetOwnerException, InvalidPeriodException, ExecutionException, InterruptedException {
+    public void shouldStartAndEndTheExerciseInTheSameDate() throws NotPetOwnerException, InvalidPeriodException,
+        ExecutionException, InterruptedException, InvalidFormatException {
         trAddExercise.setUser(user);
         trAddExercise.setPet(pet);
         trAddExercise.setExerciseName("Frisbee");
@@ -68,7 +72,8 @@ public class TestTrAddExercise {
     }
 
     @Test
-    public void shouldAddExercise() throws NotPetOwnerException, InvalidPeriodException, ExecutionException, InterruptedException {
+    public void shouldAddExercise() throws NotPetOwnerException, InvalidPeriodException, ExecutionException,
+        InterruptedException, InvalidFormatException {
         trAddExercise.setUser(user);
         trAddExercise.setPet(pet);
         trAddExercise.setExerciseName("Frisbee");
@@ -82,7 +87,8 @@ public class TestTrAddExercise {
     }
 
     @Test
-    public void shouldAddTheFirstExerciseTimeInDate() throws NotPetOwnerException, InvalidPeriodException, ExecutionException, InterruptedException {
+    public void shouldAddTheFirstExerciseTimeInDate() throws NotPetOwnerException, InvalidPeriodException,
+        ExecutionException, InterruptedException, InvalidFormatException {
         trAddExercise.setUser(user);
         trAddExercise.setPet(pet);
         trAddExercise.setExerciseName("Frisbee");
@@ -96,7 +102,8 @@ public class TestTrAddExercise {
     }
 
     @Test
-    public void shouldAddSomeExerciseTimesInTheSameDate() throws NotPetOwnerException, InvalidPeriodException, ExecutionException, InterruptedException {
+    public void shouldAddSomeExerciseTimesInTheSameDate() throws NotPetOwnerException, InvalidPeriodException,
+        ExecutionException, InterruptedException, InvalidFormatException {
         trAddExercise.setUser(user);
         trAddExercise.setPet(pet);
         trAddExercise.setExerciseName("Frisbee");

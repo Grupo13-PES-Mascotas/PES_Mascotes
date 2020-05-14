@@ -8,8 +8,10 @@ import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.pets.VaccinationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubMedicalProfileManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
 
@@ -28,7 +30,8 @@ public class TestTrAddNewPetVaccination {
     @Before
     public void setUp() {
         stubMedicalProfileManagerService = new StubMedicalProfileManagerService();
-        trAddNewPetVaccination = new TrAddNewPetVaccination(stubMedicalProfileManagerService);
+        trAddNewPetVaccination = new TrAddNewPetVaccination(stubMedicalProfileManagerService,
+            new StubGoogleCalendarService());
         user = new User("Manolo Lama", "lamacope@gmail.com", "1234");
         pet = new Pet("Bichinho");
         pet.setOwner(user);
@@ -37,7 +40,7 @@ public class TestTrAddNewPetVaccination {
 
     @Test(expected = VaccinationAlreadyExistingException.class)
     public void shouldNotAddVaccinationIfAlreadyExisting() throws VaccinationAlreadyExistingException,
-        NotPetOwnerException, ExecutionException, InterruptedException {
+        NotPetOwnerException, ExecutionException, InterruptedException, InvalidFormatException {
         trAddNewPetVaccination.setUser(user);
         trAddNewPetVaccination.setPet(pet);
         trAddNewPetVaccination.setVaccination(vaccination);
@@ -47,7 +50,7 @@ public class TestTrAddNewPetVaccination {
 
     @Test(expected = NotPetOwnerException.class)
     public void shouldNotAddVaccinationIfNotPetOwner() throws VaccinationAlreadyExistingException,
-        NotPetOwnerException, ExecutionException, InterruptedException {
+        NotPetOwnerException, ExecutionException, InterruptedException, InvalidFormatException {
         trAddNewPetVaccination.setUser(user);
         pet.setOwner(new User("Tomas Roncero", "tomasAs@gmail.com", "1235"));
         trAddNewPetVaccination.setPet(pet);
@@ -57,7 +60,7 @@ public class TestTrAddNewPetVaccination {
 
     @Test
     public void shouldAddVaccination() throws VaccinationAlreadyExistingException, NotPetOwnerException,
-        ExecutionException, InterruptedException {
+        ExecutionException, InterruptedException, InvalidFormatException {
         trAddNewPetVaccination.setUser(user);
         trAddNewPetVaccination.setPet(pet);
         trAddNewPetVaccination.setVaccination(new Vaccination("Vacuna ebola2",

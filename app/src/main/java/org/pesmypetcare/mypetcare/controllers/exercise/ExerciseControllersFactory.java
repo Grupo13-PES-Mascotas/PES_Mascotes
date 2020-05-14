@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers.exercise;
 
+import org.pesmypetcare.mypetcare.services.GoogleCalendarAdapter;
 import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
 
 /**
@@ -15,7 +16,7 @@ public class ExerciseControllersFactory {
      * @return The transaction for adding a new exercise
      */
     public static TrAddExercise createTrAddExercise() {
-        return new TrAddExercise(new PetManagerAdapter());
+        return new TrAddExercise(new PetManagerAdapter(), new GoogleCalendarAdapter());
     }
 
     /**

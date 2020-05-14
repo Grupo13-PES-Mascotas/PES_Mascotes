@@ -6,13 +6,11 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
  * @author Enric Hernando
  */
 public class Wash extends Event {
-    private static final String WASH = "Wash ";
-    private static final String OF_THE_DAY = " of the day ";
     private String washDescription;
     private int duration;
 
     public Wash(DateTime dateTime, int duration, String washDescription) {
-        super(WASH + washDescription + OF_THE_DAY + dateTime.toDateString(), dateTime);
+        super(washDescription, dateTime);
         this.washDescription = washDescription;
         this.duration = duration;
     }

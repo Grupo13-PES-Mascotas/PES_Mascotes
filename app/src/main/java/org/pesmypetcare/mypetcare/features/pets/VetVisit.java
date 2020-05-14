@@ -13,8 +13,7 @@ public class VetVisit extends Event {
     private String reason;
 
     public VetVisit(DateTime dateTime, String address, String reason) {
-        super(R.string.visit_of_the_day + SPACE + dateTime.toString() + SPACE + R.string.visit_reason + SPACE + reason
-            + SPACE + R.string.visit_addres + SPACE + address, dateTime);
+        super(reason, dateTime);
         this.dateTime = dateTime;
         this.address = address;
         this.reason = reason;

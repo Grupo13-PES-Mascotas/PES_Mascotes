@@ -8,8 +8,10 @@ import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubMedicationService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
 
@@ -34,13 +36,13 @@ public class TestTrDeleteMedication {
         originalMedication = new Medication("Filoproffin", 2, 2, MEDICATION_DURATION,
             DateTime.Builder.buildDateString("2020-04-15"));
         stubMedicationService = new StubMedicationService();
-        trDeleteMedication = new TrDeleteMedication(stubMedicationService);
-        trNewPetMedication = new TrNewPetMedication(stubMedicationService);
+        trDeleteMedication = new TrDeleteMedication(stubMedicationService, new StubGoogleCalendarService());
+        trNewPetMedication = new TrNewPetMedication(stubMedicationService, new StubGoogleCalendarService());
     }
 
     @Test
     public void shouldDeleteMedication() throws MedicationAlreadyExistingException, ExecutionException,
-        InterruptedException {
+        InterruptedException, InvalidFormatException {
         final int before = stubMedicationService.nMedications();
         trNewPetMedication.setUser(user);
         trNewPetMedication.setPet(linux);

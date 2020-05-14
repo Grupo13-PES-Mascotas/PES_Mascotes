@@ -5,17 +5,23 @@ import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.MealManagerService;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+
+import java.util.concurrent.ExecutionException;
 
 public class TrNewPetMeal {
     private MealManagerService mealManagerService;
+    private GoogleCalendarService googleCalendarService;
     private User user;
     private Pet pet;
     private Meals meal;
     private Boolean result;
 
-    public TrNewPetMeal(MealManagerService mealManagerService) {
+    public TrNewPetMeal(MealManagerService mealManagerService, GoogleCalendarService googleCalendarService) {
         this.mealManagerService = mealManagerService;
+        this.googleCalendarService = googleCalendarService;
     }
 
     /**
@@ -53,13 +59,15 @@ public class TrNewPetMeal {
     /**
      * Execute the transaction.
      */
-    public void execute() throws MealAlreadyExistingException {
+    public void execute() throws MealAlreadyExistingException, InterruptedException, ExecutionException,
+        InvalidFormatException {
         result = false;
         if (mealHasAlreadyBeenAdded()) {
             throw new MealAlreadyExistingException();
         }
         pet.addEvent(meal);
         mealManagerService.createMeal(user, pet, meal);
+        googleCalendarService.registerNewEvent(pet, meal);
         result = true;
     }
 

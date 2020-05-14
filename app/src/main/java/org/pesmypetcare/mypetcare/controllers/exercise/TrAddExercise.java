@@ -5,8 +5,10 @@ import org.pesmypetcare.mypetcare.features.pets.InvalidPeriodException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
 
@@ -15,6 +17,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class TrAddExercise {
     private PetManagerService petManagerService;
+    private GoogleCalendarService googleCalendarService;
     private User user;
     private Pet pet;
     private String exerciseName;
@@ -22,7 +25,8 @@ public class TrAddExercise {
     private DateTime startDateTime;
     private DateTime endDateTime;
 
-    public TrAddExercise(PetManagerService petManagerService) {
+    public TrAddExercise(PetManagerService petManagerService, GoogleCalendarService googleCalendarService) {
+        this.googleCalendarService = googleCalendarService;
         this.petManagerService = petManagerService;
     }
 
@@ -77,7 +81,8 @@ public class TrAddExercise {
     /**
      * Execute the transaction.
      */
-    public void execute() throws NotPetOwnerException, InvalidPeriodException, ExecutionException, InterruptedException {
+    public void execute() throws NotPetOwnerException, InvalidPeriodException, ExecutionException,
+        InterruptedException, InvalidFormatException {
         if (!pet.isOwner(user)) {
             throw new NotPetOwnerException();
         } else if (startDateTime.compareTo(endDateTime) > 0 || isDifferentDate(startDateTime, endDateTime)) {
@@ -87,6 +92,7 @@ public class TrAddExercise {
         Exercise exercise = new Exercise(exerciseName, exerciseDescription, startDateTime, endDateTime);
         petManagerService.addExercise(user, pet, exercise);
         pet.addExercise(exercise);
+        googleCalendarService.registerNewEvent(pet, exercise);
     }
 
     /**

@@ -4,14 +4,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.mypetcare.controllers.washes.TrDeleteWash;
 import org.pesmypetcare.mypetcare.controllers.washes.TrNewPetWash;
-import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
 import org.pesmypetcare.mypetcare.services.StubWashManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -34,12 +37,13 @@ public class TestTrDeleteWash {
         originalWash = getTestWash();
         secondWash = getTestWash2();
         stubWashManagerService = new StubWashManagerService();
-        trNewPetWash = new TrNewPetWash(stubWashManagerService);
-        trDeleteWash = new TrDeleteWash(stubWashManagerService);
+        trNewPetWash = new TrNewPetWash(stubWashManagerService, new StubGoogleCalendarService());
+        trDeleteWash = new TrDeleteWash(stubWashManagerService, new StubGoogleCalendarService());
     }
 
     @Test
-    public void shouldDeleteWash() throws WashAlreadyExistingException {
+    public void shouldDeleteWash() throws WashAlreadyExistingException, InterruptedException, ExecutionException,
+        InvalidFormatException {
         trNewPetWash.setUser(user);
         trNewPetWash.setPet(linux);
         trNewPetWash.setWash(originalWash);
@@ -52,7 +56,8 @@ public class TestTrDeleteWash {
     }
 
     @Test
-    public void shouldDeleteAllWashes() throws MealAlreadyExistingException, WashAlreadyExistingException {
+    public void shouldDeleteAllWashes() throws WashAlreadyExistingException, InterruptedException, ExecutionException,
+        InvalidFormatException {
         trNewPetWash.setUser(user);
         trNewPetWash.setPet(linux);
         trNewPetWash.setWash(originalWash);
@@ -78,7 +83,7 @@ public class TestTrDeleteWash {
         DateTime date = null;
         try {
             date = DateTime.Builder.build(2001, 2, 26, 15, 23, 56);
-        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
+        } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
         assert date != null;

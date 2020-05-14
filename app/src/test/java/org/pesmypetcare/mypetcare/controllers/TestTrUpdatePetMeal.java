@@ -8,8 +8,12 @@ import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,11 +30,12 @@ public class TestTrUpdatePetMeal {
         linux = new Pet("Linux");
         originalMeal = getTestMeal();
         trUpdateMeal = new TrUpdateMeal(new StubMealManagerService());
-        trNewPetMeal = new TrNewPetMeal(new StubMealManagerService());
+        trNewPetMeal = new TrNewPetMeal(new StubMealManagerService(), new StubGoogleCalendarService());
     }
 
     @Test
-    public void shouldUpdateMealBody() throws MealAlreadyExistingException {
+    public void shouldUpdateMealBody() throws MealAlreadyExistingException, InterruptedException, ExecutionException,
+        InvalidFormatException {
         trNewPetMeal.setUser(user);
         trNewPetMeal.setPet(linux);
         trNewPetMeal.setMeal(originalMeal);
@@ -46,7 +51,7 @@ public class TestTrUpdatePetMeal {
 
     @Test
     public void shouldUpdateMealDate() throws MealAlreadyExistingException,
-        org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException {
+        org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException, ExecutionException, InterruptedException {
         trNewPetMeal.setUser(user);
         trNewPetMeal.setPet(linux);
         trNewPetMeal.setMeal(originalMeal);

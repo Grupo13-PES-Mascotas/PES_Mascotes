@@ -8,8 +8,12 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubWashManagerService;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -30,11 +34,12 @@ public class TestTrUpdatePetWash {
         linux = new Pet("Linux");
         originalWash = getTestWash();
         trUpdateWash = new TrUpdateWash(new StubWashManagerService());
-        trNewPetWash = new TrNewPetWash(new StubWashManagerService());
+        trNewPetWash = new TrNewPetWash(new StubWashManagerService(), new StubGoogleCalendarService());
     }
 
     @Test
-    public void shouldUpdateWashBody() throws WashAlreadyExistingException {
+    public void shouldUpdateWashBody() throws WashAlreadyExistingException, InterruptedException, ExecutionException,
+        InvalidFormatException {
         trNewPetWash.setUser(user);
         trNewPetWash.setPet(linux);
         trNewPetWash.setWash(originalWash);
@@ -50,7 +55,7 @@ public class TestTrUpdatePetWash {
 
     @Test
     public void shouldUpdateWashDate() throws WashAlreadyExistingException,
-            org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException {
+        InvalidFormatException, ExecutionException, InterruptedException {
         trNewPetWash.setUser(user);
         trNewPetWash.setPet(linux);
         trNewPetWash.setWash(originalWash);
@@ -67,7 +72,7 @@ public class TestTrUpdatePetWash {
         DateTime date = null;
         try {
             date = DateTime.Builder.build(2020, 2, 26, 15, 23, 56);
-        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
+        } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
         assert date != null;
