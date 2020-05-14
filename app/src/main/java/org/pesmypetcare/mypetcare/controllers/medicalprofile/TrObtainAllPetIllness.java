@@ -47,6 +47,12 @@ public class TrObtainAllPetIllness {
         return result;
     }
 
+    /**
+     * Executes the transaction.
+     * @throws NotPetOwnerException Exception thrown when the user is not the owner of the pet
+     * @throws ExecutionException Exception thrown when there is an exception during the execution
+     * @throws InterruptedException Exception thrown when there is an interruption during the exception
+     */
     public void execute() throws NotPetOwnerException, ExecutionException, InterruptedException {
         if (!user.getUsername().equals(pet.getOwner().getUsername())) {
             throw new NotPetOwnerException();

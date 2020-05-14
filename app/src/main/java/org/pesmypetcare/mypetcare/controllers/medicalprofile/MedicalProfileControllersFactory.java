@@ -58,10 +58,18 @@ public class MedicalProfileControllersFactory {
         return new TrDeletePetIllness(new MedicalProfileManagerAdapter());
     }
 
+    /**
+     * Method responsible for creating the transaction to add a illness to a pet.
+     * @return The transaction to add a illness from a pet
+     */
     public static TrAddNewPetIllness createTrAddNewIllness() {
         return new TrAddNewPetIllness(new MedicalProfileManagerAdapter());
     }
 
+    /**
+     * Method responsible for creating the transaction to update a illness from a pet.
+     * @return The transaction to update a illness from a pet
+     */
     public static TrUpdatePetIllness createTrPetIllness() {
         return new TrUpdatePetIllness(new MedicalProfileManagerAdapter());
     }
