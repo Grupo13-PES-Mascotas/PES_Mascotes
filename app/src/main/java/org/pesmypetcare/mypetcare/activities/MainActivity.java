@@ -1562,11 +1562,15 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void addPetMeal(Pet pet, Meals meal) throws MealAlreadyExistingException {
+    public void addPetMeal(Pet pet, Meals meal) {
         trNewPetMeal.setUser(user);
         trNewPetMeal.setPet(pet);
         trNewPetMeal.setMeal(meal);
-        trNewPetMeal.execute();
+        try {
+            trNewPetMeal.execute();
+        } catch (MealAlreadyExistingException | InterruptedException | ExecutionException | InvalidFormatException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -1585,7 +1589,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteMeal.setUser(user);
         trDeleteMeal.setPet(pet);
         trDeleteMeal.setMeal(meal);
-        trDeleteMeal.execute();
+        try {
+            trDeleteMeal.execute();
+        } catch (NotPetOwnerException | ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
