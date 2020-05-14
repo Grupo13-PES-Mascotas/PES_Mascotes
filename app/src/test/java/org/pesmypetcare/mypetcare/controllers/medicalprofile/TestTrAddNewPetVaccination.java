@@ -60,7 +60,8 @@ public class TestTrAddNewPetVaccination {
         ExecutionException, InterruptedException {
         trAddNewPetVaccination.setUser(user);
         trAddNewPetVaccination.setPet(pet);
-        trAddNewPetVaccination.setVaccination(vaccination);
+        trAddNewPetVaccination.setVaccination(new Vaccination("Vacuna ebola2",
+                DateTime.Builder.buildDateString("2020-04-18")));
         int nVisits = StubMedicalProfileManagerService.nVaccinations;
         trAddNewPetVaccination.execute();
         assertEquals("The number of vaccinations should have increased by 1",
