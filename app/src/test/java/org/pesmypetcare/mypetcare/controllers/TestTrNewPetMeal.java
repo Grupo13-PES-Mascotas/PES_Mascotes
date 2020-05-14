@@ -60,7 +60,7 @@ public class TestTrNewPetMeal {
         DateTime date = null;
         try {
             date = DateTime.Builder.build(YEAR, 2, DAY, HOUR, MINUTES, SECONDS);
-        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
+        } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
         assert date != null;

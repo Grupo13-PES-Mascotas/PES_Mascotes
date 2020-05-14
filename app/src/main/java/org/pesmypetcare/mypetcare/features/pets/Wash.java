@@ -6,8 +6,6 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
  * @author Enric Hernando
  */
 public class Wash extends Event {
-    private static final String WASH = "Wash ";
-    private static final String OF_THE_DAY = " of the day ";
     private String washDescription;
     private int duration;
 

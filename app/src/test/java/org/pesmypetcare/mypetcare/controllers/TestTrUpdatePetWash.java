@@ -55,7 +55,7 @@ public class TestTrUpdatePetWash {
 
     @Test
     public void shouldUpdateWashDate() throws WashAlreadyExistingException,
-        org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException, ExecutionException, InterruptedException {
+        InvalidFormatException, ExecutionException, InterruptedException {
         trNewPetWash.setUser(user);
         trNewPetWash.setPet(linux);
         trNewPetWash.setWash(originalWash);
@@ -72,7 +72,7 @@ public class TestTrUpdatePetWash {
         DateTime date = null;
         try {
             date = DateTime.Builder.build(2020, 2, 26, 15, 23, 56);
-        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
+        } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
         assert date != null;

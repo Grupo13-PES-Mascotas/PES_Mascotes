@@ -6,8 +6,6 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
  * @author Xavier Campos
  */
 public class Medication extends Event {
-    private static final String MEDICATION = "Medication ";
-    private static final String WITH_START_DATE = " with start date ";
     private String medicationName;
     private double medicationQuantity;
     private int medicationFrequency;

@@ -32,7 +32,8 @@ public interface MealManagerService {
      * @param newDate The new date of the meal
      * @param oldDate The old date of the meal
      */
-    void updateMealKey(User user, Pet pet, String newDate, String oldDate) throws ExecutionException, InterruptedException;
+    void updateMealKey(User user, Pet pet, String newDate, String oldDate) throws ExecutionException,
+            InterruptedException;
 
     /**
      * Method that removes a meal from the indicated pet.

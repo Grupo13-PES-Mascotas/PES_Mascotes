@@ -83,7 +83,7 @@ public class TestTrDeleteWash {
         DateTime date = null;
         try {
             date = DateTime.Builder.build(2001, 2, 26, 15, 23, 56);
-        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
+        } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
         assert date != null;

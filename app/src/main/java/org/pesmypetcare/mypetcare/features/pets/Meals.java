@@ -4,8 +4,6 @@ import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.Meal;
 
 public class Meals extends Event {
-    private static final String MEAL = "Meal ";
-    private static final String OF_THE_DAY = " of the day ";
     private String mealName;
     private Double kcal;
     private DateTime mealDate;
