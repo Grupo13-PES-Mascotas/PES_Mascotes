@@ -104,14 +104,25 @@ public class InfoPetFragment extends Fragment {
                 case InfoPetFragmentAdapter.INFO_PET_HEALTH:
                     tab.setText(R.string.pet_info_health);
                     break;
-                case InfoPetFragmentAdapter.INFO_PET_MEDICATION:
-                    tab.setText(R.string.pet_info_medication);
-                    break;
                 case InfoPetFragmentAdapter.INFO_PET_MEALS:
                     tab.setText(R.string.pet_info_meal);
                     break;
+                case InfoPetFragmentAdapter.INFO_PET_EXERCISE:
+                    tab.setText(R.string.pet_info_exercise);
+                    break;
+                case InfoPetFragmentAdapter.INFO_PET_WASHING:
+                    tab.setText(R.string.pet_info_washing);
+                    break;
+                case InfoPetFragmentAdapter.INFO_PET_MEDICAL_PROFILE:
+                    tab.setText(R.string.pet_info_medical_profile);
+                    break;
+                case InfoPetFragmentAdapter.INFO_PET_MEDICATION:
+                    tab.setText(R.string.pet_info_medication);
+                    break;
+                case InfoPetFragmentAdapter.INFO_PET_VET_VISITS:
+                    tab.setText(R.string.pet_info_vet_visits);
+                    break;
                 default:
-
             }
         });
 

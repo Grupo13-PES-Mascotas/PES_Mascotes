@@ -11,6 +11,7 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyLikedExcep
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import static org.junit.Assert.assertEquals;
 

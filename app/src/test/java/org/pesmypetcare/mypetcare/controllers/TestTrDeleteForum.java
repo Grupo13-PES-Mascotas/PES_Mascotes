@@ -10,6 +10,7 @@ import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerExcepti
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 /**
  * @author Xavier Campos

@@ -10,6 +10,11 @@ import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -32,7 +37,7 @@ public class TestTrDeletePersonalEvent {
         pet.setWashFrequency(2);
         pet.setWeight(2);
         pet.setOwner(new User("johnDoe", "", ""));
-        trDeletePersonalEvent = new TrDeletePersonalEvent(new StubPetManagerService());
+        trDeletePersonalEvent = new TrDeletePersonalEvent(new StubGoogleCalendarService());
     }
 
     @Test
@@ -44,7 +49,7 @@ public class TestTrDeletePersonalEvent {
     }
 
     @Test
-    public void shouldCommunicateWithService() {
+    public void shouldCommunicateWithService() throws ExecutionException, InterruptedException {
         Event e = new Event("Hello2", DateTime.Builder.buildFullString(DATE_TIME));
         pet.addEvent(e);
         trDeletePersonalEvent.setPet(pet);

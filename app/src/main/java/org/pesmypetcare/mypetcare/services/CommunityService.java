@@ -16,6 +16,7 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingEx
 import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyLikedException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.SortedSet;
 

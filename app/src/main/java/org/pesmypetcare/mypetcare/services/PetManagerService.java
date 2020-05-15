@@ -4,12 +4,14 @@ import android.graphics.Bitmap;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
+import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
-import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -29,7 +31,7 @@ public interface PetManagerService {
      * @return True if the register has been done without any problems
      * @throws PetAlreadyExistingException The pet already belongs to the user
      */
-    boolean registerNewPet(User user, Pet pet);
+    boolean registerNewPet(User user, Pet pet) throws ExecutionException, InterruptedException;
 
     /**
      * Updates the image of the pet.
@@ -71,14 +73,14 @@ public interface PetManagerService {
      * @param pet The pet
      * @param event The event
      */
-    void registerNewEvent(Pet pet, Event event);
+    void registerNewEvent(Pet pet, Event event) throws ExecutionException, InterruptedException;
 
     /**
      * Delete a event from a pet.
      * @param pet The pet
      * @param event The event
      */
-    void deleteEvent(Pet pet, Event event);
+    void deleteEvent(Pet pet, Event event) throws ExecutionException, InterruptedException;
 
     /**
      * Update the weight for a pet.
@@ -117,21 +119,44 @@ public interface PetManagerService {
     void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException;
 
     /**
-     * Add a periodic event to pet.
-     * @param user The user that wants to add a periodic event
-     * @param pet The pet which the user wants to add a periodic event
-     * @param event The period event
-     * @param period The periodicity of the period event
+     * Add an exercise to the pet.
+     * @param user The user
+     * @param pet The pet
+     * @param exercise The exercise
      */
-    void registerNewPeriodicNotification(User user, Pet pet, Event event, int period)
-            throws ParseException, ExecutionException, InterruptedException;
+    void addExercise(User user, Pet pet, Exercise exercise) throws ExecutionException, InterruptedException;
 
     /**
-     * Delete a periodic event of pet.
-     * @param user The user that wants to delete a periodic event
-     * @param pet The pet which the user wants to delete a periodic event
-     * @param event The period event that user wants to delete
+     * Delete an exercise of the pet.
+     * @param user The user
+     * @param pet The pet
+     * @param dateTime The DateTime of the exercise
      */
-    void deletePeriodicEvent(User user, Pet pet, Event event)
-            throws ParseException, ExecutionException, InterruptedException;
+    void deleteExercise(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException;
+
+    /**
+     * Update the exercise of the pet.
+     * @param user The user
+     * @param pet The pet
+     * @param originalDateTime The original DateTime
+     * @param exercise The exercise
+     */
+    void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise) throws ExecutionException,
+            InterruptedException;
+
+    /**
+     * Add the walking to the pet.
+     * @param user The user
+     * @param pet The pet
+     * @param walk The walking
+     */
+    void addWalking(User user, Pet pet, Walk walk) throws ExecutionException, InterruptedException;
+
+    /**
+     * Get all the exercises.
+     * @param user The user
+     * @param pet The pet
+     * @return All the exercises of the pet
+     */
+    List<Exercise> getAllExercises(User user, Pet pet) throws ExecutionException, InterruptedException;
 }

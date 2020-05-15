@@ -10,6 +10,12 @@ import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertTrue;
 
@@ -31,20 +37,18 @@ public class TestTrNewPersonalEvent {
         pet.setWashFrequency(2);
         pet.setWeight(2);
         pet.setOwner(new User("johnDoe", "", ""));
-        trNewPersonalEvent = new TrNewPersonalEvent(new StubPetManagerService());
+        trNewPersonalEvent = new TrNewPersonalEvent(new StubGoogleCalendarService());
     }
 
     @Test
     public void shouldAddOneEvent() {
         Event e = new Event("Hello", DateTime.Builder.buildFullString("2020-04-03T10:30:00"));
         pet.addEvent(e);
-        System.out.println(e);
-        System.out.println(pet.getEvents(DATE));
         assertTrue("should add one event", pet.getEvents(DATE).contains(e));
     }
 
     @Test
-    public void shouldCommunicateWithService() {
+    public void shouldCommunicateWithService() throws ExecutionException, InterruptedException, InvalidFormatException {
         Event e = new Event("Hello2", DateTime.Builder.buildFullString("2020-04-03T10:40:00"));
         pet.addEvent(e);
         trNewPersonalEvent.setPet(pet);

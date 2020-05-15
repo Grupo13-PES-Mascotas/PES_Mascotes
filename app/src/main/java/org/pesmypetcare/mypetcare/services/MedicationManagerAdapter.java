@@ -6,6 +6,9 @@ import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingExcepti
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.pet.MedicationData;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.MedicationData;
+import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +26,11 @@ public class MedicationManagerAdapter implements MedicationManagerService {
         String petName = pet.getName();
         MedicationData libraryMedicationData = new MedicationData(medication.getMedicationQuantity(),
             medication.getMedicationDuration(), medication.getMedicationFrequency());
-        org.pesmypetcare.usermanager.datacontainers.pet.Medication libraryMedication =
-            new org.pesmypetcare.usermanager.datacontainers.pet.Medication(medication.getMedicationDate().toString(),
+        org.pesmypetcare.usermanagerlib.datacontainers.Medication libraryMedication =
+            new org.pesmypetcare.usermanagerlib.datacontainers.Medication(medication.getMedicationDate().toString(),
                 medication.getMedicationName(), libraryMedicationData);
-        ServiceLocator.getInstance().getMedicationManagerClient().createMedication(accessToken, owner, petName,
-            libraryMedication);
+        ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner, petName, PetData.MEDICATIONS,
+            libraryMedication.getKey(), libraryMedication.getBodyAsMap());
     }
 
     @Override
@@ -36,15 +39,13 @@ public class MedicationManagerAdapter implements MedicationManagerService {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
-        ServiceLocator.getInstance().getMedicationManagerClient().updateMedicationField(accessToken, owner, petName,
-            medication.getMedicationDate(), medication.getMedicationName(), "quantity",
-            medication.getMedicationQuantity());
-        ServiceLocator.getInstance().getMedicationManagerClient().updateMedicationField(accessToken, owner, petName,
-            medication.getMedicationDate(), medication.getMedicationName(), "duration",
-            medication.getMedicationDuration());
-        ServiceLocator.getInstance().getMedicationManagerClient().updateMedicationField(accessToken, owner, petName,
-            medication.getMedicationDate(), medication.getMedicationName(), "periodicity",
-            medication.getMedicationFrequency());
+        MedicationData libraryMedicationData = new MedicationData(medication.getMedicationQuantity(),
+                medication.getMedicationDuration(), medication.getMedicationFrequency());
+        org.pesmypetcare.usermanagerlib.datacontainers.Medication libraryMedication =
+                new org.pesmypetcare.usermanagerlib.datacontainers.Medication(medication.getMedicationDate().toString(),
+                        medication.getMedicationName(), libraryMedicationData);
+        ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken, owner, petName,
+                PetData.MEDICATIONS, libraryMedication.getKey(), libraryMedication.getBodyAsMap());
     }
 
     @Override
@@ -55,8 +56,8 @@ public class MedicationManagerAdapter implements MedicationManagerService {
         String owner = user.getUsername();
         String petName = pet.getName();
         DateTime oldDateTime = DateTime.Builder.buildFullString(oldDate);
-        MedicationData medicationData = ServiceLocator.getInstance().getMedicationManagerClient().getMedicationData(
-            accessToken, owner, petName, oldDateTime, oldName);
+
+        MedicationData medicationData = ServiceLocator.getInstance().getPetCollectionsManagerClient().getMedication(user.getToken(), user.getUsername(), pet.getName(), oldDate);
         Medication currentMedication = new Medication(oldName, medicationData.getQuantity(),
             medicationData.getPeriodicity(), medicationData.getDuration(), oldDateTime);
         deleteMedication(user, pet, currentMedication);
@@ -68,11 +69,16 @@ public class MedicationManagerAdapter implements MedicationManagerService {
     @Override
     public void deleteMedication(User user, Pet pet, Medication medication) throws ExecutionException,
         InterruptedException {
+        MedicationData libraryMedicationData = new MedicationData(medication.getMedicationQuantity(),
+                medication.getMedicationDuration(), medication.getMedicationFrequency());
+        org.pesmypetcare.usermanagerlib.datacontainers.Medication libraryMedication =
+                new org.pesmypetcare.usermanagerlib.datacontainers.Medication(medication.getMedicationDate().toString(),
+                        medication.getMedicationName(), libraryMedicationData);
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
-        ServiceLocator.getInstance().getMedicationManagerClient().deleteByDateName(accessToken, owner, petName,
-            medication.getMedicationDate(), medication.getMedicationName());
+        ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner, petName,
+                PetData.MEDICATIONS, libraryMedication.getKey());
     }
 
     @Override
@@ -80,7 +86,8 @@ public class MedicationManagerAdapter implements MedicationManagerService {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
-        ServiceLocator.getInstance().getMedicationManagerClient().deleteAllMedications(accessToken, owner, petName);
+        ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollection(accessToken, owner, petName,
+                PetData.MEDICATIONS);
     }
 
     @Override
@@ -89,10 +96,10 @@ public class MedicationManagerAdapter implements MedicationManagerService {
         String owner = user.getUsername();
         String petName = pet.getName();
         List<Medication> result = new ArrayList<>();
-        List<org.pesmypetcare.usermanager.datacontainers.pet.Medication> serverMedications = new ArrayList<>();
-        serverMedications = ServiceLocator.getInstance().getMedicationManagerClient().getAllMedicationData(accessToken,
+        List<org.pesmypetcare.usermanagerlib.datacontainers.Medication> serverMedications = new ArrayList<>();
+        serverMedications = ServiceLocator.getInstance().getPetCollectionsManagerClient().getAllMedications(accessToken,
             owner, petName);
-        for (org.pesmypetcare.usermanager.datacontainers.pet.Medication serverMedication : serverMedications) {
+        for (org.pesmypetcare.usermanagerlib.datacontainers.Medication serverMedication : serverMedications) {
             Medication med = new Medication(serverMedication);
             result.add(med);
         }

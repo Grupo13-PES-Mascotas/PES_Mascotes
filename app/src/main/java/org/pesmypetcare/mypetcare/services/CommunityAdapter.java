@@ -15,6 +15,7 @@ import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundExcepti
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
 import java.util.Arrays;
@@ -30,7 +31,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class CommunityAdapter implements CommunityService {
     public static final int TIME = 20;
-    private byte[] imageBytes;
 
     @Override
     public SortedSet<Group> getAllGroups() {

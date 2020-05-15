@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.activities.views.chart.statisticdata;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;

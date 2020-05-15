@@ -12,6 +12,7 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingEx
 import org.pesmypetcare.mypetcare.features.community.posts.PostCreatedBeforeForumException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import static org.junit.Assert.assertTrue;
 

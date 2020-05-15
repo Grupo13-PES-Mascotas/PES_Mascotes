@@ -5,6 +5,7 @@ import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;

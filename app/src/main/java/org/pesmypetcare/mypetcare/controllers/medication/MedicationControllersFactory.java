@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers.medication;
 
+import org.pesmypetcare.mypetcare.services.GoogleCalendarAdapter;
 import org.pesmypetcare.mypetcare.services.MedicationManagerAdapter;
 
 /**
@@ -15,7 +16,7 @@ public class MedicationControllersFactory {
      * @return The transaction for adding a new pet medication
      */
     public static TrNewPetMedication createTrNewPetMedication() {
-        return new TrNewPetMedication(new MedicationManagerAdapter());
+        return new TrNewPetMedication(new MedicationManagerAdapter(), new GoogleCalendarAdapter());
     }
 
     /**
@@ -31,7 +32,7 @@ public class MedicationControllersFactory {
      * @return The transaction for deleting a pet medication
      */
     public static TrDeleteMedication createTrDeleteMedication() {
-        return new TrDeleteMedication(new MedicationManagerAdapter());
+        return new TrDeleteMedication(new MedicationManagerAdapter(), new GoogleCalendarAdapter());
     }
 
     /**

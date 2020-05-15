@@ -6,6 +6,8 @@ import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.util.List;
 

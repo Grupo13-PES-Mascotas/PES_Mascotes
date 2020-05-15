@@ -4,10 +4,12 @@ import android.graphics.Bitmap;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,12 +21,20 @@ public class StubPetManagerService implements PetManagerService {
     private static final String JOHN_DOE = "johnDoe";
     private static final String JOHN_DOE_2 = "johnDoe2";
     private static final String DINKY = "Dinky";
+    private static final String LINUX = "Linux";
     private Map<String, ArrayList<Pet>> data;
 
     public StubPetManagerService() {
         this.data = new HashMap<>();
         this.data.put(JOHN_DOE, new ArrayList<>());
         Pet pet = new Pet(DINKY);
+        pet.setWeight(10.0);
+        pet.addExercise(new Exercise("Frisbee", "Playing at the beach",
+            DateTime.Builder.buildFullString("2020-05-04T10:00:00"),
+            DateTime.Builder.buildFullString("2020-05-04T11:00:00")));
+        Objects.requireNonNull(this.data.get(JOHN_DOE)).add(pet);
+
+        pet = new Pet(LINUX);
         pet.setWeight(10.0);
         Objects.requireNonNull(this.data.get(JOHN_DOE)).add(pet);
 
@@ -133,18 +143,47 @@ public class StubPetManagerService implements PetManagerService {
     }
 
     @Override
-    public void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) throws ParseException {
-        ArrayList<Pet> pets = data.get(user.getUsername());
-        assert pets != null;
+    public void addExercise(User user, Pet pet, Exercise exercise) {
+        List<Pet> pets = data.get(user.getUsername());
         int index = Objects.requireNonNull(pets).indexOf(pet);
-        pets.get(index).addPeriodicNotification(event, period);
+        pets.get(index).addExercise(exercise);
     }
 
     @Override
-    public void deletePeriodicEvent(User user, Pet pet, Event event) throws ParseException {
-        ArrayList<Pet> pets = data.get(user.getUsername());
-        assert pets != null;
+    public void deleteExercise(User user, Pet pet, DateTime dateTime) {
+        List<Pet> pets = data.get(user.getUsername());
         int index = Objects.requireNonNull(pets).indexOf(pet);
-        pets.get(index).deletePeriodicNotification(event);
+        pets.get(index).deleteExerciseForDate(dateTime);
+    }
+
+    @Override
+    public void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise) {
+        List<Pet> pets = data.get(user.getUsername());
+        int index = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(index).deleteExerciseForDate(originalDateTime);
+        pets.get(index).addExercise(exercise);
+    }
+
+    @Override
+    public void addWalking(User user, Pet pet, Walk walk) {
+        List<Pet> pets = data.get(user.getUsername());
+        int index = Objects.requireNonNull(pets).indexOf(pet);
+        pets.get(index).addExercise(walk);
+    }
+
+    @Override
+    public List<Exercise> getAllExercises(User user, Pet pet) {
+        List<Pet> pets = data.get(user.getUsername());
+        int index = Objects.requireNonNull(pets).indexOf(pet);
+
+        List<Event> events = pets.get(index).getEventsByClass(Exercise.class);
+        events.addAll(pets.get(index).getEventsByClass(Walk.class));
+        List<Exercise> exercises = new ArrayList<>();
+
+        for (Event event : events) {
+            exercises.add((Exercise) event);
+        }
+
+        return exercises;
     }
 }

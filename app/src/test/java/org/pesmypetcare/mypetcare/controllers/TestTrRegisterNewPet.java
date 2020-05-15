@@ -8,8 +8,13 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertTrue;
 
@@ -21,7 +26,7 @@ public class TestTrRegisterNewPet {
     @Before
     public void setUp() {
         user = new User("johnDoe", "johndoe@gmail.com", PASSWORD);
-        trRegisterNewPet = new TrRegisterNewPet(new StubPetManagerService());
+        trRegisterNewPet = new TrRegisterNewPet(new StubPetManagerService(), new StubGoogleCalendarService());
     }
 
     @Test
@@ -32,7 +37,7 @@ public class TestTrRegisterNewPet {
     }
 
     @Test
-    public void shouldCommunicateWithService() throws PetAlreadyExistingException, PetRepeatException {
+    public void shouldCommunicateWithService() throws PetAlreadyExistingException, PetRepeatException, ExecutionException, InterruptedException {
         Pet pet = getLinuxPet();
         trRegisterNewPet.setUser(user);
         trRegisterNewPet.setPet(pet);
@@ -42,7 +47,7 @@ public class TestTrRegisterNewPet {
     }
 
     @Test(expected = PetAlreadyExistingException.class)
-    public void shouldNotAddPetIfExisting() throws PetAlreadyExistingException, PetRepeatException {
+    public void shouldNotAddPetIfExisting() throws PetAlreadyExistingException, PetRepeatException, ExecutionException, InterruptedException {
         Pet pet = getLinuxPet();
         trRegisterNewPet.setUser(user);
         trRegisterNewPet.setPet(pet);

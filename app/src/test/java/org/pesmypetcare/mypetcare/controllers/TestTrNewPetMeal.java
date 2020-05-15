@@ -9,7 +9,12 @@ import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertTrue;
 
@@ -27,11 +32,12 @@ public class TestTrNewPetMeal {
     public void setUp() {
         user = new User("johnDoe", "johndoe@gmail.com", "PASSWORD");
         linux = new Pet("Linux");
-        trNewPetMeal = new TrNewPetMeal(new StubMealManagerService());
+        trNewPetMeal = new TrNewPetMeal(new StubMealManagerService(), new StubGoogleCalendarService());
     }
 
     @Test
-    public void shoudlAddOneMeal() throws MealAlreadyExistingException {
+    public void shoudlAddOneMeal() throws MealAlreadyExistingException, InterruptedException, ExecutionException,
+        InvalidFormatException {
         Meals meal = getTestMeal();
         trNewPetMeal.setUser(user);
         trNewPetMeal.setPet(linux);
@@ -42,7 +48,8 @@ public class TestTrNewPetMeal {
     }
 
     @Test(expected = MealAlreadyExistingException.class)
-    public void shouldNotAddIfExisting() throws MealAlreadyExistingException {
+    public void shouldNotAddIfExisting() throws MealAlreadyExistingException, InterruptedException,
+        ExecutionException, InvalidFormatException {
         Meals meal = getTestMeal();
         trNewPetMeal.setUser(user);
         trNewPetMeal.setPet(linux);

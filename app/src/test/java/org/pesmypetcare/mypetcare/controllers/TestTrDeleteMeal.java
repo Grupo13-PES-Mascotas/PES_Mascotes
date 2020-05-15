@@ -9,8 +9,14 @@ import org.pesmypetcare.mypetcare.controllers.meals.TrNewPetMeal;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,20 +28,24 @@ public class TestTrDeleteMeal {
     private TrNewPetMeal trNewPetMeal;
     private TrDeleteMeal trDeleteMeal;
     private StubMealManagerService stubMealManagerService;
+    private StubGoogleCalendarService stubGoogleCalendarService;
 
     @Before
     public void setUp() {
         user = new User("johnDoe", "johndoe@gmail.com", "PASSWORD");
         linux = new Pet("Linux");
+        linux.setOwner(user);
         originalMeal = getTestMeal();
         secondMeal = getTestMeal2();
         stubMealManagerService = new StubMealManagerService();
-        trNewPetMeal = new TrNewPetMeal(stubMealManagerService);
-        trDeleteMeal = new TrDeleteMeal(stubMealManagerService);
+        stubGoogleCalendarService = new StubGoogleCalendarService();
+        trNewPetMeal = new TrNewPetMeal(stubMealManagerService, stubGoogleCalendarService);
+        trDeleteMeal = new TrDeleteMeal(stubMealManagerService, stubGoogleCalendarService);
     }
 
     @Test
-    public void shouldDeleteMeal() throws MealAlreadyExistingException {
+    public void shouldDeleteMeal() throws MealAlreadyExistingException, InterruptedException, ExecutionException,
+        InvalidFormatException, NotPetOwnerException {
         trNewPetMeal.setUser(user);
         trNewPetMeal.setPet(linux);
         trNewPetMeal.setMeal(originalMeal);
@@ -48,7 +58,8 @@ public class TestTrDeleteMeal {
     }
 
     @Test
-    public void shouldDeleteAllMeals() throws MealAlreadyExistingException {
+    public void shouldDeleteAllMeals() throws MealAlreadyExistingException, InterruptedException, ExecutionException,
+        InvalidFormatException {
         trNewPetMeal.setUser(user);
         trNewPetMeal.setPet(linux);
         trNewPetMeal.setMeal(originalMeal);
@@ -63,6 +74,7 @@ public class TestTrDeleteMeal {
         DateTime date = null;
         try {
             date = DateTime.Builder.build(2011, 2, 26, 15, 23, 56);
+        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
         } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
@@ -75,6 +87,7 @@ public class TestTrDeleteMeal {
         try {
             date = DateTime.Builder.build(2001, 2, 26, 15, 23, 56);
         } catch (InvalidFormatException e) {
+        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
             e.printStackTrace();
         }
 

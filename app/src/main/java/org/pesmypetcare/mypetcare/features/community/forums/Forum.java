@@ -4,6 +4,7 @@ import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;

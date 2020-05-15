@@ -10,6 +10,7 @@ import org.pesmypetcare.mypetcare.features.community.groups.NotSubscribedExcepti
 import org.pesmypetcare.mypetcare.features.community.groups.OwnerCannotDeleteSubscriptionException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import static org.junit.Assert.assertEquals;
 

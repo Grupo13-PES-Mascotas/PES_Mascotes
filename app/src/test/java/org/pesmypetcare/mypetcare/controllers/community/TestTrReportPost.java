@@ -10,6 +10,7 @@ import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostReportedByAuthorException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 /**
  * @author Xavier Campos

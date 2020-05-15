@@ -8,7 +8,10 @@ import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubMedicationService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -29,7 +32,7 @@ public class TestTrNewPetMedication {
         this.user = new User("johnDoe", "johndoe@gmail.com", "PASSWORD");
         this.pet = new Pet("Linux");
         StubMedicationService stubMedicationService = new StubMedicationService();
-        trNewPetMedication = new TrNewPetMedication(stubMedicationService);
+        trNewPetMedication = new TrNewPetMedication(stubMedicationService, new StubGoogleCalendarService());
         List<Medication> medication = stubMedicationService.findMedicationsByPet(user, pet);
         for (Medication med : medication) {
             pet.addEvent(med);
@@ -38,7 +41,7 @@ public class TestTrNewPetMedication {
 
     @Test(expected = MedicationAlreadyExistingException.class)
     public void shouldNotAddAlreadyExistingMedication() throws MedicationAlreadyExistingException, ExecutionException,
-        InterruptedException {
+        InterruptedException, InvalidFormatException {
         Medication medication = getTestMedication("2020-01-12");
         trNewPetMedication.setUser(user);
         trNewPetMedication.setPet(pet);
@@ -54,7 +57,7 @@ public class TestTrNewPetMedication {
 
     @Test
     public void shouldAddMedication() throws MedicationAlreadyExistingException, ExecutionException,
-        InterruptedException {
+        InterruptedException, InvalidFormatException {
         Medication medication = getTestMedication("2017-03-10");
         trNewPetMedication.setUser(user);
         trNewPetMedication.setPet(pet);

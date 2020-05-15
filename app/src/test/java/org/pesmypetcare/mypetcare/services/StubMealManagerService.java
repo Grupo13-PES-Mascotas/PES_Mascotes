@@ -5,6 +5,7 @@ import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public class StubMealManagerService implements MealManagerService {
         this.data = new HashMap<>();
         try {
             mealDate = DateTime.Builder.build(YEAR, MONTH, DAY, HOUR, MINUTES, SECONDS);
+        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -44,6 +46,7 @@ public class StubMealManagerService implements MealManagerService {
             mealKcal++;
         }
     }
+
     @Override
     public void createMeal(User user, Pet pet, Meals meal) {
         data.putIfAbsent(user.getUsername() + " : " + pet.getName(), new ArrayList<>());
@@ -63,7 +66,7 @@ public class StubMealManagerService implements MealManagerService {
     }
 
     @Override
-    public void updateMealDate(User user, Pet pet, String newDate, String oldDate) {
+    public void updateMealKey(User user, Pet pet, String newDate, String oldDate) {
         if (data.containsKey(user.getUsername() + " : " + pet.getName())) {
             ArrayList<Meals> petMeals = data.get(user.getUsername() + " : " + pet.getName());
             assert petMeals != null;
@@ -106,6 +109,7 @@ public class StubMealManagerService implements MealManagerService {
         DateTime date = null;
         try {
             date = DateTime.Builder.build(2020, 2, 26, 15, 23, 56);
+        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
         } catch (InvalidFormatException e) {
             e.printStackTrace();
         }

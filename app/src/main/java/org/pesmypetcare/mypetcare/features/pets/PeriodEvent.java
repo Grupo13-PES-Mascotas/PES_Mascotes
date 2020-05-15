@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 /**
  * @author Daniel Clemente
@@ -27,5 +28,13 @@ public class PeriodEvent extends Event {
      */
     public void setPeriod(int period) {
         this.period = period;
+    }
+
+    /**
+     * Check the type of the event.
+     * @return True if is periodic, false otherwise
+     */
+    public boolean isPeriodic() {
+        return true;
     }
 }

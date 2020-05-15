@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;

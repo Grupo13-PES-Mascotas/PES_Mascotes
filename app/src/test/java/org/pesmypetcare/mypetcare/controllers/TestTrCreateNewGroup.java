@@ -8,6 +8,8 @@ import org.pesmypetcare.mypetcare.controllers.community.TrCreateNewGroup;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.ArrayList;
 import java.util.List;

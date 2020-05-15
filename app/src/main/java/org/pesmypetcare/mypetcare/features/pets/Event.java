@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.Objects;
 
@@ -45,6 +46,14 @@ public class Event {
         this.dateTime = dateTime;
     }
 
+    /**
+     * Check the type of the event.
+     * @return True if is periodic, false otherwise
+     */
+    public boolean isPeriodic() {
+        return false;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -56,7 +65,7 @@ public class Event {
         }
 
         Event event = (Event) o;
-        return Objects.equals(dateTime, event.dateTime);
+        return dateTime.compareTo(event.dateTime) == 0;
     }
 
     @Override

@@ -14,6 +14,7 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.List;
 
