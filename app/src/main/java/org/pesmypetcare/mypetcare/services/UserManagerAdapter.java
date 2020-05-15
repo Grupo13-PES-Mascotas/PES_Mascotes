@@ -223,6 +223,15 @@ public class UserManagerAdapter implements UserManagerService {
 
     @Override
     public void sendFirebaseMessagingToken(User user, String token) {
-        // Not implemented yet
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getUserManagerClient().sendTokenToServer(user.getToken(), token);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+
+        executorService.shutdown();
     }
 }

@@ -280,18 +280,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeControllers();
         getComponents();
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                System.out.println("TOKEN " + task.getResult().getToken());
-            }
-        });
-
         ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw, null));
         MessagingService.setCommunication(this);
 
         initializeCurrentUser();
         initializeActivity();
         setUpNavigationImage();
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && user != null) {
+                sendMessageToken(Objects.requireNonNull(task.getResult()).getToken());
+            }
+        });
     }
 
 
