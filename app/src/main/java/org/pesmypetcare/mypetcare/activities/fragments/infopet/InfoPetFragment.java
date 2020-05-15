@@ -47,6 +47,8 @@ public class InfoPetFragment extends Fragment {
         setUpViewPager();
         setUpPet();
 
+        System.out.println("HEALTH " + pet.getHealthInfo().toString());
+
         return binding.getRoot();
     }
 

@@ -234,12 +234,16 @@ public class PetHealthInfo {
      * @param kCal The dailyKiloCalories of the pet in that date
      */
     public void addDailyKiloCaloriesForDate(DateTime date, double kCal) throws InvalidFormatException {
-        if (!dailyKiloCalories.containsKey(date)) {
-            dailyKiloCalories.put(date, kCal);
+        String strDate = date.toDateString();
+        DateTime dateTime = DateTime.Builder.buildDateString(strDate);
+
+        if (!dailyKiloCalories.containsKey(dateTime)) {
+            dailyKiloCalories.put(dateTime, kCal);
         } else {
-            double storedKcal = dailyKiloCalories.get(date);
-            dailyKiloCalories.put(date, storedKcal + kCal);
+            double storedKcal = dailyKiloCalories.get(dateTime);
+            dailyKiloCalories.put(dateTime, storedKcal + kCal);
         }
+
         addWeeklyKiloCalAverageForDate(date, kCal);
     }
 

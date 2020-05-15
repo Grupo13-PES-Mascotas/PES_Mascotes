@@ -35,7 +35,7 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
     private FragmentInfoPetHealthBinding binding;
     private TextView statisticTitle;
     private MaterialButton btnAddNewStatistic;
-    private BarChart barChart;
+    private static BarChart barChart;
     private HealthBottomSheet healthBottomSheet;
     private MaterialDatePicker materialDatePicker;
 
@@ -134,6 +134,13 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
         btnAddNewStatistic.setFocusable(statisticData.getFocusableState());
 
         addNewStatisticButtonListener(statisticId);
+    }
+
+    /**
+     * Updates the bar chart.
+     */
+    public static void updateBarChart() {
+        barChart.updatePet(InfoPetFragment.getPet());
     }
 
     /**

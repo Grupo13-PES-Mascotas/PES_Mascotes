@@ -188,6 +188,8 @@ public class InfoPetExercise extends Fragment {
             updateWalkingButton();
             showExercises();
         }
+
+        InfoPetHealthFragment.updateBarChart();
     }
 
     /**
@@ -481,10 +483,8 @@ public class InfoPetExercise extends Fragment {
      */
     private static void setAddExerciseListeners() {
         editExerciseButton.setText(R.string.add_exercise_title);
-        editExerciseButton.setOnClickListener(v -> {
-            addExerciseListener(exerciseName, exerciseDescription, exerciseDate, exerciseStartTime,
-                    exerciseEndTime);
-        });
+        editExerciseButton.setOnClickListener(v -> addExerciseListener(exerciseName, exerciseDescription, exerciseDate,
+            exerciseStartTime, exerciseEndTime));
         deleteExerciseButton.setVisibility(View.GONE);
     }
 
@@ -555,6 +555,7 @@ public class InfoPetExercise extends Fragment {
                 txtDescription, originalDateTime, startExerciseDateTime, endExerciseDateTime);
         dialog.dismiss();
         showExercises();
+        InfoPetHealthFragment.updateBarChart();
     }
 
     /**
@@ -585,6 +586,7 @@ public class InfoPetExercise extends Fragment {
         InfoPetFragment.getCommunication().removeExercise(InfoPetFragment.getPet(), dateTime);
         dialog.dismiss();
         showExercises();
+        InfoPetHealthFragment.updateBarChart();
     }
 
     /**
@@ -603,6 +605,7 @@ public class InfoPetExercise extends Fragment {
 
         if (isValid) {
             addExercise(exerciseDescription, exerciseDate, exerciseStartTime, exerciseEndTime, txtExerciseName);
+            InfoPetHealthFragment.updateBarChart();
         }
     }
 

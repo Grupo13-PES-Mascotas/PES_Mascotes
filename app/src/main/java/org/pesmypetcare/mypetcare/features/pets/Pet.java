@@ -102,16 +102,7 @@ public class Pet {
         this.healthInfo = new PetHealthInfo();
         this.healthInfo.addWeightForDate(dateTime, petInfo.getFloat(BUNDLE_WEIGHT));
         this.healthInfo.setPathologies(petInfo.getString(BUNDLE_PATHOLOGIES));
-        this.healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, calculateRecommendedKiloCalories());
         this.healthInfo.addWashFrequencyForDate(dateTime, petInfo.getInt(BUNDLE_WASH));
-    }
-
-    /**
-     * Calculate the recommended kilocalories for the pet.
-     * @return The recommended kilocalories
-     */
-    private double calculateRecommendedKiloCalories() {
-        return healthInfo.getLastWeight() * FACTOR_PES_1 + FACTOR_PES_2;
     }
 
     /**
@@ -434,6 +425,7 @@ public class Pet {
         if (event instanceof Meals) {
             DateTime eventDate = event.getDateTime();
             double kcal = ((Meals) event).getKcal();
+
             try {
                 healthInfo.addDailyKiloCaloriesForDate(eventDate, kcal);
             } catch (InvalidFormatException e) {
@@ -532,6 +524,7 @@ public class Pet {
                 mealEvents.add(event);
             }
         }
+
         return mealEvents;
     }
 

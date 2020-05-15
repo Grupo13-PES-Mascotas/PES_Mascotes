@@ -62,6 +62,7 @@ public class TrNewPetMeal {
     public void execute() throws MealAlreadyExistingException, InterruptedException, ExecutionException,
         InvalidFormatException {
         result = false;
+
         if (mealHasAlreadyBeenAdded()) {
             throw new MealAlreadyExistingException();
         }
