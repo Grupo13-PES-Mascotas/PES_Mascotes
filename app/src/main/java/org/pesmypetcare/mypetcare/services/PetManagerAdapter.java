@@ -2,18 +2,16 @@ package org.pesmypetcare.mypetcare.services;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 import org.pesmypetcare.usermanager.datacontainers.pet.FreqWash;
 import org.pesmypetcare.usermanager.datacontainers.pet.FreqWashData;
 import org.pesmypetcare.usermanager.datacontainers.pet.PetData;
-import org.pesmypetcare.usermanager.datacontainers.pet.Weight;
-import org.pesmypetcare.usermanager.datacontainers.pet.WeightData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -231,9 +229,9 @@ public class PetManagerAdapter implements PetManagerService {
         String accessToken = user.getToken();
         String userName = user.getUsername();
         String petName = pet.getName();
-        Weight weight = new Weight(new WeightData(newWeight));
+        /*Weight weight = new Weight(new WeightData((int) newWeight));
         ServiceLocator.getInstance().getWeightManagerClient().createWeight(accessToken, userName, petName,
-            weight, dateTime);
+            weight, dateTime);*/
     }
 
     @Override
@@ -241,7 +239,7 @@ public class PetManagerAdapter implements PetManagerService {
         String accessToken = user.getToken();
         String userName = user.getUsername();
         String petName = pet.getName();
-        ServiceLocator.getInstance().getWeightManagerClient().deleteByDate(accessToken, userName, petName, dateTime);
+        //ServiceLocator.getInstance().getWeightManagerClient().deleteByDate(accessToken, userName, petName, dateTime);
     }
 
     @Override

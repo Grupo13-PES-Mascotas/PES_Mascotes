@@ -1,10 +1,10 @@
 package org.pesmypetcare.mypetcare.services;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.clients.pet.MealManagerClient;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 import org.pesmypetcare.usermanager.datacontainers.pet.Meal;
 import org.pesmypetcare.usermanager.datacontainers.pet.MealData;
 

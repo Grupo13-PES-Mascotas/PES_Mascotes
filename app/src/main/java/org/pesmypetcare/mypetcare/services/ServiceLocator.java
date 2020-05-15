@@ -1,14 +1,14 @@
 package org.pesmypetcare.mypetcare.services;
 
-import org.pesmypetcare.usermanager.clients.GoogleCalendarManagerClient;
 import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
 import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
+import org.pesmypetcare.usermanager.clients.GoogleCalendarManagerClient;
 import org.pesmypetcare.usermanager.clients.pet.FreqWashManagerClient;
 import org.pesmypetcare.usermanager.clients.pet.MealManagerClient;
 import org.pesmypetcare.usermanager.clients.pet.MedicationManagerClient;
 import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
-import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
 import org.pesmypetcare.usermanager.clients.pet.WeightManagerClient;
+import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
 
 public class ServiceLocator {
     private static ServiceLocator instance;
@@ -18,9 +18,9 @@ public class ServiceLocator {
     private GoogleCalendarManagerClient googleCalendarManagerClient;
     private GroupManagerClient groupManagerClient;
     private ForumManagerClient forumManagerClient;
+    private FreqWashManagerClient freqWashManagerClient;
     private MedicationManagerClient medicationManagerClient;
     private WeightManagerClient weightManagerClient;
-    private FreqWashManagerClient freqWashManagerClient;
 
     private ServiceLocator() {
         userManagerClient = new UserManagerClient();
@@ -29,9 +29,9 @@ public class ServiceLocator {
         googleCalendarManagerClient = new GoogleCalendarManagerClient();
         groupManagerClient = new GroupManagerClient();
         forumManagerClient = new ForumManagerClient();
+        freqWashManagerClient = new FreqWashManagerClient();
         medicationManagerClient = new MedicationManagerClient();
         weightManagerClient = new WeightManagerClient();
-        freqWashManagerClient = new FreqWashManagerClient();
     }
 
     public static ServiceLocator getInstance() {
@@ -65,16 +65,16 @@ public class ServiceLocator {
     public ForumManagerClient getForumManagerClient() {
         return forumManagerClient;
     }
-    
+
+    public FreqWashManagerClient getFreqWashManagerClient() {
+        return freqWashManagerClient;
+    }
+
     public MedicationManagerClient getMedicationManagerClient() {
         return medicationManagerClient;
     }
 
     public WeightManagerClient getWeightManagerClient() {
         return weightManagerClient;
-    }
-
-    public FreqWashManagerClient getFreqWashManagerClient() {
-        return freqWashManagerClient;
     }
 }

@@ -3,12 +3,12 @@ package org.pesmypetcare.mypetcare.controllers.community;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.NotGroupOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 /**
  * @author Xavier Campos

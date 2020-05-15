@@ -2,9 +2,9 @@ package org.pesmypetcare.mypetcare.features.pets;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 
 import java.util.List;

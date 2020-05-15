@@ -2,7 +2,7 @@ package org.pesmypetcare.mypetcare.controllers.user;
 
 import android.graphics.Bitmap;
 
-import org.pesmypetcare.httptools.MyPetCareException;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.services.UserManagerService;
 
 import java.util.concurrent.ExecutionException;

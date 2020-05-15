@@ -6,7 +6,8 @@ import org.pesmypetcare.communitymanager.datacontainers.ForumData;
 import org.pesmypetcare.communitymanager.datacontainers.GroupData;
 import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.communitymanager.datacontainers.MessageSendData;
-import org.pesmypetcare.httptools.MyPetCareException;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
@@ -15,7 +16,6 @@ import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.util.Arrays;
 import java.util.List;

@@ -4,13 +4,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.communitymanager.datacontainers.MessageReceiveData;
-import org.pesmypetcare.httptools.MyPetCareException;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.io.IOException;
 

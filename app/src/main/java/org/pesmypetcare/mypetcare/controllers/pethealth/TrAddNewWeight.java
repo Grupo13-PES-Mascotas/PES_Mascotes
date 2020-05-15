@@ -1,10 +1,10 @@
 package org.pesmypetcare.mypetcare.controllers.pethealth;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.PetManagerService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.util.concurrent.ExecutionException;
 

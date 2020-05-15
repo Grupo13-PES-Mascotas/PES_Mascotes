@@ -2,7 +2,7 @@ package org.pesmypetcare.mypetcare.controllers.community;
 
 import android.graphics.Bitmap;
 
-import org.pesmypetcare.httptools.MyPetCareException;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.NotGroupOwnerException;

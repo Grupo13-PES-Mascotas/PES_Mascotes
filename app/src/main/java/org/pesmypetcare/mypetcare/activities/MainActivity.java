@@ -42,7 +42,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
-import org.pesmypetcare.httptools.MyPetCareException;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunication;
@@ -162,7 +163,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.mypetcare.utilities.MessagingService;
 import org.pesmypetcare.mypetcare.utilities.MessagingServiceCommunication;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setUpNavigationImage();
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && user != null) {
+            if (task.isSuccessful()) {
                 sendMessageToken(Objects.requireNonNull(task.getResult()).getToken());
             }
         });
@@ -307,6 +307,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                     Toast.LENGTH_LONG);
                 toast.show();
             }
+
+            user.setToken(Objects.requireNonNull(mAuth.getCurrentUser().getIdToken(false).getResult()).getToken());
         }
     }
 

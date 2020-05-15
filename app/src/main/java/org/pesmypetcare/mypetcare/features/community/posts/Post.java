@@ -2,8 +2,8 @@ package org.pesmypetcare.mypetcare.features.community.posts;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;

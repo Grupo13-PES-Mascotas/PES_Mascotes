@@ -24,6 +24,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.pesmypetcare.communitymanager.ChatException;
 import org.pesmypetcare.communitymanager.ChatModel;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
@@ -32,7 +33,6 @@ import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.androidservices.GalleryService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.util.List;
 import java.util.Objects;

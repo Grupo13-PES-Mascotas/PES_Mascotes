@@ -1,6 +1,6 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.httptools.utilities.DateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;

@@ -2,13 +2,14 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.controllers.meals.TrNewPetMeal;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import static org.junit.Assert.assertTrue;
 
@@ -54,10 +55,10 @@ public class TestTrNewPetMeal {
         DateTime date = null;
         try {
             date = DateTime.Builder.build(YEAR, 2, DAY, HOUR, MINUTES, SECONDS);
-        } catch (org.pesmypetcare.usermanager.exceptions.InvalidFormatException e) {
+        } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
-        assert date != null;
+
         return new Meals(date, (double) SECONDS, "Linux meal");
     }
 }

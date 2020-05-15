@@ -31,8 +31,20 @@ public class User {
         this.subscribedGroups = new TreeSet<>();
     }
 
+    /**
+     * Get the token.
+     * @return The token
+     */
     public String getToken() {
         return token;
+    }
+
+    /**
+     * Set the token.
+     * @param token The token to set
+     */
+    public void setToken(String token) {
+        this.token = token;
     }
 
     /**
