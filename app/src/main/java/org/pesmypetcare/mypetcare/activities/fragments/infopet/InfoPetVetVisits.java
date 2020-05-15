@@ -385,7 +385,7 @@ public class InfoPetVetVisits extends Fragment {
      * @param visitButton The button that has to be initialized
      */
     private void initializeButtonLogic(VetVisit visit, MaterialButton visitButton) {
-        String visitButtonText = getString(R.string.visit_of_the_day) + SPACE + vetVisit.getVisitDate() + EOL
+        String visitButtonText = getString(R.string.visit_of_the_day) + SPACE + visit.getVisitDate() + EOL
             + getString(R.string.visit_reason) + SPACE + visit.getReason() + EOL + getString(R.string.visit_addres)
             + SPACE + visit.getAddress();
         visitButton.setText(visitButtonText);
