@@ -11,16 +11,12 @@ import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
-import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.EventData;
-import org.pesmypetcare.usermanagerlib.datacontainers.ExerciseData;
-import org.pesmypetcare.usermanagerlib.datacontainers.FreqWash;
-import org.pesmypetcare.usermanagerlib.datacontainers.FreqWashData;
-import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
+import org.pesmypetcare.usermanager.datacontainers.EventData;
+import org.pesmypetcare.usermanager.datacontainers.pet.ExerciseData;
 import org.pesmypetcare.usermanager.datacontainers.pet.FreqWash;
 import org.pesmypetcare.usermanager.datacontainers.pet.FreqWashData;
 import org.pesmypetcare.usermanager.datacontainers.pet.PetData;
+import org.pesmypetcare.usermanager.datacontainers.pet.Weight;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +81,7 @@ public class PetManagerAdapter implements PetManagerService {
         /*ServiceLocator.getInstance().getPetManagerClient().createPet(user.getToken(), user.getUsername(),
             pet.getName(), pet.getGender().toString(), pet.getBreed(), pet.getBirthDate(), pet.getWeight(),
             pet.getPathologies(), pet.getRecommendedDailyKiloCalories(), pet.getWashFrequency());*/
-        org.pesmypetcare.usermanagerlib.datacontainers.Pet libraryPet = getRegisterPet(pet);
+        org.pesmypetcare.usermanager.datacontainers.pet.Pet libraryPet = getRegisterPet(pet);
         ServiceLocator.getInstance().getPetManagerClient().createPet(user.getToken(), user.getUsername(), libraryPet);
 
         /*try {
@@ -103,9 +99,9 @@ public class PetManagerAdapter implements PetManagerService {
      * @param pet The pet from he application
      * @return The pet to be registered in the system
      */
-    private org.pesmypetcare.usermanagerlib.datacontainers.Pet getRegisterPet(Pet pet) {
-        org.pesmypetcare.usermanagerlib.datacontainers.Pet registerPet;
-        registerPet = new org.pesmypetcare.usermanagerlib.datacontainers.Pet();
+    private org.pesmypetcare.usermanager.datacontainers.pet.Pet getRegisterPet(Pet pet) {
+        org.pesmypetcare.usermanager.datacontainers.pet.Pet registerPet;
+        registerPet = new org.pesmypetcare.usermanager.datacontainers.pet.Pet();
         PetData petData = new PetData();
 
         registerPet.setName(pet.getName());
@@ -183,7 +179,7 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public List<Pet> findPetsByOwner(User user) throws PetRepeatException {
-        List<org.pesmypetcare.usermanagerlib.datacontainers.Pet> userPets = null;
+        List<org.pesmypetcare.usermanager.datacontainers.pet.Pet> userPets = null;
 
         try {
             userPets = ServiceLocator.getInstance().getPetManagerClient().getAllPets(user.getToken(),
@@ -201,11 +197,11 @@ public class PetManagerAdapter implements PetManagerService {
      * @return The instances of the pets of our application
      * @throws PetRepeatException The pet is repeated
      */
-    private List<Pet> getPets(List<org.pesmypetcare.usermanagerlib.datacontainers.Pet> userPets)
+    private List<Pet> getPets(List<org.pesmypetcare.usermanager.datacontainers.pet.Pet> userPets)
         throws PetRepeatException {
         List<Pet> pets = new ArrayList<>();
 
-        for (org.pesmypetcare.usermanagerlib.datacontainers.Pet userPet : Objects.requireNonNull(userPets)) {
+        for (org.pesmypetcare.usermanager.datacontainers.pet.Pet userPet : Objects.requireNonNull(userPets)) {
             if (userPet != null) {
                 pets.add(decodePet(userPet));
             }
@@ -246,17 +242,9 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public void addWeight(User user, Pet pet, double newWeight, DateTime dateTime) throws ExecutionException, InterruptedException {
-        String accessToken = user.getToken();
-        String userName = user.getUsername();
-        String petName = pet.getName();
-        /*Weight weight = new Weight(new WeightData((int) newWeight));
-        ServiceLocator.getInstance().getWeightManagerClient().createWeight(accessToken, userName, petName,
-            weight, dateTime);*/
     public void addWeight(User user, Pet pet, double newWeight, DateTime dateTime) throws ExecutionException,
         InterruptedException {
-        org.pesmypetcare.usermanagerlib.datacontainers.Weight libraryWeight =
-                new org.pesmypetcare.usermanagerlib.datacontainers.Weight(dateTime.toString(), (int)newWeight);
+        Weight libraryWeight = new Weight(dateTime.toString(), (int) newWeight);
         ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
                 user.getUsername(), pet.getName(), PetData.WEIGHTS, libraryWeight.getKey(),
             libraryWeight.getBodyAsMap());
@@ -297,8 +285,8 @@ public class PetManagerAdapter implements PetManagerService {
     public void addExercise(User user, Pet pet, Exercise exercise) throws ExecutionException, InterruptedException {
         ExerciseData libraryExerciseData = new ExerciseData(exercise.getName(), exercise.getDescription(),
                 exercise.getEndTime().toString());
-        org.pesmypetcare.usermanagerlib.datacontainers.Exercise libraryExercise =
-                new org.pesmypetcare.usermanagerlib.datacontainers.Exercise(exercise.getDateTime().toString(),
+        org.pesmypetcare.usermanager.datacontainers.pet.Exercise libraryExercise =
+                new org.pesmypetcare.usermanager.datacontainers.pet.Exercise(exercise.getDateTime().toString(),
                     libraryExerciseData);
         ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
                 user.getUsername(), pet.getName(), PetData.EXERCISES, libraryExercise.getKey(),
@@ -323,8 +311,8 @@ public class PetManagerAdapter implements PetManagerService {
             libraryExerciseData.setCoordinates(((Walk) exercise).getCoordinates());
         }
 
-        org.pesmypetcare.usermanagerlib.datacontainers.Exercise libraryExercise =
-                new org.pesmypetcare.usermanagerlib.datacontainers.Exercise(exercise.getDateTime().toString(),
+        org.pesmypetcare.usermanager.datacontainers.pet.Exercise libraryExercise =
+                new org.pesmypetcare.usermanager.datacontainers.pet.Exercise(exercise.getDateTime().toString(),
                     libraryExerciseData);
         ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
                 user.getUsername(), pet.getName(), PetData.EXERCISES, libraryExercise.getKey(),
@@ -335,8 +323,8 @@ public class PetManagerAdapter implements PetManagerService {
     public void addWalking(User user, Pet pet, Walk walk) throws ExecutionException, InterruptedException {
         ExerciseData libraryExerciseData = new ExerciseData(walk.getName(), walk.getDescription(),
             walk.getEndTime().toString(), walk.getCoordinates());
-        org.pesmypetcare.usermanagerlib.datacontainers.Exercise libraryExercise =
-            new org.pesmypetcare.usermanagerlib.datacontainers.Exercise(walk.getDateTime().toString(),
+        org.pesmypetcare.usermanager.datacontainers.pet.Exercise libraryExercise =
+            new org.pesmypetcare.usermanager.datacontainers.pet.Exercise(walk.getDateTime().toString(),
                 libraryExerciseData);
         ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
             user.getUsername(), pet.getName(), PetData.EXERCISES, libraryExercise.getKey(),
@@ -345,12 +333,12 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public List<Exercise> getAllExercises(User user, Pet pet) throws ExecutionException, InterruptedException {
-        List<org.pesmypetcare.usermanagerlib.datacontainers.Exercise> exercises = ServiceLocator.getInstance()
+        List<org.pesmypetcare.usermanager.datacontainers.pet.Exercise> exercises = ServiceLocator.getInstance()
             .getPetCollectionsManagerClient().getAllExercises(user.getToken(), user.getUsername(), pet.getName());
 
         SortedSet<Exercise> exercisesSet = new TreeSet<>();
 
-        for (org.pesmypetcare.usermanagerlib.datacontainers.Exercise exercise : exercises) {
+        for (org.pesmypetcare.usermanager.datacontainers.pet.Exercise exercise : exercises) {
             ExerciseData exerciseData = exercise.getBody();
 
             if (exerciseData.getCoordinates() == null) {
@@ -375,7 +363,7 @@ public class PetManagerAdapter implements PetManagerService {
      * @return The pet associated with that information
      * @throws PetRepeatException The pet is repeated.
      */
-    private Pet decodePet(org.pesmypetcare.usermanagerlib.datacontainers.Pet userPet) throws PetRepeatException {
+    private Pet decodePet(org.pesmypetcare.usermanager.datacontainers.pet.Pet userPet) throws PetRepeatException {
         PetData petData = userPet.getBody();
         Pet pet = new Pet();
 

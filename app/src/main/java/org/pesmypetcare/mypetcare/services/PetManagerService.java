@@ -10,7 +10,6 @@ import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.Walk;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.List;
 import java.util.Map;

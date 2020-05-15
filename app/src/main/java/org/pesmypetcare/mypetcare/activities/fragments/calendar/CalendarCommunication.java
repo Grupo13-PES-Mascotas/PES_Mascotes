@@ -2,14 +2,13 @@ package org.pesmypetcare.mypetcare.activities.fragments.calendar;
 
 import android.content.Context;
 
+import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
@@ -29,7 +28,7 @@ public interface CalendarCommunication {
      * @param dateTime The date and time of the event
      */
     void newPersonalEvent(Pet pet, String description, String dateTime) throws ExecutionException, InterruptedException,
-            InvalidFormatException;
+        InvalidFormatException;
 
     /**
      * Passes the information to delete a personal event to the main activity.

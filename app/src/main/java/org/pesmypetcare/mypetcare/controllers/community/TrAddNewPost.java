@@ -10,7 +10,6 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingEx
 import org.pesmypetcare.mypetcare.features.community.posts.PostCreatedBeforeForumException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.CommunityService;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 /**
  * @author Xavier Campos

@@ -36,7 +36,7 @@
             android:enabled="true" />
 
         <service
-            android:name="org.pesmypetcare.mypetcare.services.MessagingService"
+            android:name="org.pesmypetcare.mypetcare.utilities.MessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

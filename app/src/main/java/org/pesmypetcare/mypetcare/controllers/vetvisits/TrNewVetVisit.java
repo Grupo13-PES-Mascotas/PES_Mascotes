@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers.vetvisits;
 
+import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.VetVisit;
 import org.pesmypetcare.mypetcare.features.pets.VetVisitAlreadyExistingException;
@@ -7,7 +8,6 @@ import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.VetVisitsManagerService;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
 

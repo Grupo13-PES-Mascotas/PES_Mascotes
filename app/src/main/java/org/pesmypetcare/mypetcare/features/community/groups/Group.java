@@ -8,7 +8,6 @@ import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

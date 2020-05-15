@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 /**
  * @author Xavier Campos

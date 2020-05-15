@@ -9,8 +9,6 @@ import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -585,7 +583,6 @@ public class Pet {
      * @param event The event to delete
      */
     public void deletePeriodicNotification(Event event) throws ParseException {
-        org.pesmypetcare.usermanagerlib.datacontainers.DateTime dateTime = event.getDateTime();
         DateTime dateTime = event.getDateTime();
         String desc = event.getDescription();
         PeriodEvent pe = new PeriodEvent(desc, dateTime, 0);

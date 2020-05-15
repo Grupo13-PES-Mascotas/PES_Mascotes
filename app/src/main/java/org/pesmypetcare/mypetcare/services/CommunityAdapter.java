@@ -15,7 +15,6 @@ import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundExcepti
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
 import java.util.Arrays;
@@ -464,7 +463,7 @@ public class CommunityAdapter implements CommunityService {
             }
         }*/
 
-        return imageBytes;
+        return null;
     }
 
     /**
