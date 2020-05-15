@@ -442,9 +442,4 @@ public class PostsFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
 }

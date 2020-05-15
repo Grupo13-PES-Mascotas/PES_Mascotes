@@ -44,7 +44,7 @@ public class TrDeletePostImage {
     }
 
     /**
-     * Executes the transaction
+     * Executes the transaction.
      */
     public void execute() throws NotPostOwnerException, PostNotFoundException {
         result = false;

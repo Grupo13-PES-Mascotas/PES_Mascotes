@@ -60,7 +60,7 @@ public class TrAddNewPost {
     }
 
     /**
-     * Setter of the post image
+     * Setter of the post image.
      * @param postImage The post image
      */
     public void setPostImage(Bitmap postImage) {

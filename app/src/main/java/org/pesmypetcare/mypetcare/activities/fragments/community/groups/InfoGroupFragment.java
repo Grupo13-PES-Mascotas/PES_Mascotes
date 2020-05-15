@@ -28,10 +28,9 @@ import java.util.concurrent.TimeUnit;
 
 public class InfoGroupFragment extends Fragment {
     public static final int INFO_GROUP_ZOOM_IDENTIFIER = 2;
+    private static final int TIMEOUT = 5;
     private static InfoGroupCommunication communication;
     private static Group group;
-
-    private static int selectedTab;
 
     private FragmentInfoGroupBinding binding;
     private TabLayout tabLayout;
@@ -49,6 +48,26 @@ public class InfoGroupFragment extends Fragment {
         binding.txtGroupTags.setText(tags);
         binding.groupDescription.setText(group.getDescription());
 
+        addButtonListeners();
+
+        ExecutorService obtainSubscribersImages = Executors.newSingleThreadExecutor();
+        obtainSubscribersImages.execute(() -> getImageExecutor());
+
+        obtainSubscribersImages.shutdown();
+
+        try {
+            obtainSubscribersImages.awaitTermination(TIMEOUT, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return binding.getRoot();
+    }
+
+    /**
+     * Add the buttons listeners.
+     */
+    private void addButtonListeners() {
         if (group.getGroupIcon() == null) {
             binding.imgGroup.setDrawable(getResources().getDrawable(R.drawable.icon_group, null));
         } else {
@@ -60,46 +79,38 @@ public class InfoGroupFragment extends Fragment {
         if (group.getOwnerUsername().equals(user.getUsername())) {
             binding.imgGroup.setOnClickListener(v -> communication.makeGroupZoomImage(binding.imgGroup.getDrawable()));
         }
+    }
 
-        ExecutorService obtainSubscribersImages = Executors.newSingleThreadExecutor();
-        obtainSubscribersImages.execute(() -> {
-            List<Map.Entry<String, DateTime>> subscribers = new ArrayList<>(group.getSubscribers().entrySet());
-            String[] username = new String[subscribers.size()];
-            Bitmap[] images = new Bitmap[subscribers.size()];
-            ExecutorService obtainSubscriberImage = Executors.newCachedThreadPool();
+    /**
+     * Get the image executor.
+     */
+    private void getImageExecutor() {
+        List<Map.Entry<String, DateTime>> subscribers = new ArrayList<>(group.getSubscribers().entrySet());
+        String[] username = new String[subscribers.size()];
+        Bitmap[] images = new Bitmap[subscribers.size()];
+        ExecutorService obtainSubscriberImage = Executors.newCachedThreadPool();
 
-            for (int actual = 0; actual < subscribers.size(); ++actual) {
-                int finalActual = actual;
-                obtainSubscriberImage.execute(() -> {
-                    username[finalActual] = subscribers.get(finalActual).getKey();
-                    images[finalActual] = InfoGroupFragment.getCommunication().findImageByUser(username[finalActual]);
-                });
-            }
+        for (int actual = 0; actual < subscribers.size(); ++actual) {
+            int finalActual = actual;
+            obtainSubscriberImage.execute(() -> {
+                username[finalActual] = subscribers.get(finalActual).getKey();
+                images[finalActual] = InfoGroupFragment.getCommunication().findImageByUser(username[finalActual]);
+            });
+        }
 
-            obtainSubscriberImage.shutdown();
-            try {
-                obtainSubscriberImage.awaitTermination(5, TimeUnit.MINUTES);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            for (int actual = 0; actual < subscribers.size(); ++actual) {
-                group.addSubscriberImage(username[actual], images[actual]);
-            }
-
-            //InfoGroupSubscriptionsFragment.showSubscribers();
-            //communication.refreshActualFragment();
-        });
-
-        obtainSubscribersImages.shutdown();
-
+        obtainSubscriberImage.shutdown();
         try {
-            obtainSubscribersImages.awaitTermination(5, TimeUnit.MINUTES);
+            obtainSubscriberImage.awaitTermination(TIMEOUT, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        return binding.getRoot();
+        for (int actual = 0; actual < subscribers.size(); ++actual) {
+            group.addSubscriberImage(username[actual], images[actual]);
+        }
+
+        //InfoGroupSubscriptionsFragment.showSubscribers();
+        //communication.refreshActualFragment();
     }
 
     /**
@@ -144,7 +155,6 @@ public class InfoGroupFragment extends Fragment {
      */
     private TabLayoutMediator createTabLayoutMediator(ViewPager2 viewPager, TabLayout tabLayout) {
         return new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            selectedTab = position;
 
             switch (position) {
                 case InfoGroupFragmentAdapter.FORUMS_FRAGMENT:
@@ -187,6 +197,5 @@ public class InfoGroupFragment extends Fragment {
      * @param selectedTab The selected tab to set
      */
     public static void setSelectedTab(int selectedTab) {
-        InfoGroupFragment.selectedTab = selectedTab;
     }
 }

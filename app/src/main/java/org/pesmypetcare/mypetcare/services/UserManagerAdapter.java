@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UserManagerAdapter implements UserManagerService {
     private static final int TIME = 20;
+    private static final int TIMEOUT = 5;
     private byte[] userProfileImageBytes;
 
     @Override
@@ -213,7 +214,7 @@ public class UserManagerAdapter implements UserManagerService {
         executorService.shutdown();
 
         try {
-            executorService.awaitTermination(5, TimeUnit.MINUTES);
+            executorService.awaitTermination(TIMEOUT, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
