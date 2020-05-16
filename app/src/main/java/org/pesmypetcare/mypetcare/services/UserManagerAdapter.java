@@ -191,7 +191,7 @@ public class UserManagerAdapter implements UserManagerService {
     public void changeUsername(User user, String newUsername) {
         try {
             ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(), user.getUsername(),
-                    UserManagerClient.USERNAME, newUsername);
+                    UserManagerClient.USERNAME_PARAMETER, newUsername);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }

@@ -1450,12 +1450,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewPost.setPostImage(postImage);
         trAddNewPost.setPostCreationDate(DateTime.getCurrentDateTime());
 
-        if (postImage == null) {
-            System.out.println("POST IMAGE IS NULL");
-        } else {
-            System.out.println("POST IMAGE IS NOT NULL");
-        }
-
         try {
             trAddNewPost.execute();
         } catch (PostAlreadyExistingException | ForumNotFoundException | PostCreatedBeforeForumException e) {
