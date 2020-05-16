@@ -136,8 +136,6 @@ public class ImageZoomFragment extends Fragment {
         ImageZoomFragment.isDefaultImage = isDefaultImage;
     }
 
-
-
     /**
      * Initialize the circular image view.
      */

@@ -43,6 +43,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
@@ -136,6 +137,7 @@ import org.pesmypetcare.mypetcare.controllers.pethealth.TrAddNewWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrAddNewWeight;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrDeleteWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrDeleteWeight;
+import org.pesmypetcare.mypetcare.controllers.user.EmptyMessagingTokenException;
 import org.pesmypetcare.mypetcare.controllers.user.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.user.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.user.TrChangeUsername;
@@ -143,6 +145,7 @@ import org.pesmypetcare.mypetcare.controllers.user.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.user.TrExistsUsername;
 import org.pesmypetcare.mypetcare.controllers.user.TrObtainUser;
 import org.pesmypetcare.mypetcare.controllers.user.TrObtainUserImage;
+import org.pesmypetcare.mypetcare.controllers.user.TrSendFirebaseMessagingToken;
 import org.pesmypetcare.mypetcare.controllers.user.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.controllers.user.UserControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.TrDeleteVetVisit;
@@ -205,7 +208,10 @@ import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
+import org.pesmypetcare.mypetcare.utilities.MessagingService;
+import org.pesmypetcare.mypetcare.utilities.MessagingServiceCommunication;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -225,7 +231,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
     InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
-    CommunityCommunication, InfoGroupCommunication, WalkCommunication, AsyncResponse {
+    CommunityCommunication, InfoGroupCommunication, WalkCommunication, MessagingServiceCommunication, AsyncResponse {
 
     public static final int MAIN_ACTIVITY_ZOOM_IDENTIFIER = 0;
     private static final int[] NAVIGATION_OPTIONS = {
@@ -336,10 +342,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrGetPostImage trGetPostImage;
     private TrAddGroupImage trAddGroupImage;
     private TrDeleteGroupImage trDeleteGroupImage;
-
-    public static void setFragmentRequestCode(int postFragmentRequestCode) {
-        MainActivity.fragmentRequestCode = postFragmentRequestCode;
-    }
+    private TrSendFirebaseMessagingToken trSendFirebaseMessagingToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -359,18 +362,37 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         context = this;
 
         makeLogin();
-        initializeControllers();
-        getComponents();
 
-        ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw));
-        initializeCurrentUser();
-        initializeActivity();
-        setUpNavigationImage();
+        ExecutorService mainActivitySetUp = Executors.newCachedThreadPool();
+        mainActivitySetUp.execute(() -> {
+            initializeControllers();
+            getComponents();
 
-        askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-        askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-        LocationUpdater.setContext(this);
+            ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw, null));
+            initializeCurrentUser();
+            initializeActivity();
+            setUpNavigationImage();
+
+            askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            LocationUpdater.setContext(this);
+            MessagingService.setCommunication(this);
+        });
+
+        mainActivitySetUp.shutdown();
+
+        try {
+            mainActivitySetUp.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && user != null) {
+                sendMessageToken(Objects.requireNonNull(task.getResult()).getToken());
+            }
+        });
 
         /*SharedPreferences.Editor editor = walkingSharedPreferences.edit();
 
@@ -401,6 +423,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             try {
                 initializeUser();
                 refreshGoogleCalendarToken();
+                user.setToken(Objects.requireNonNull(mAuth.getCurrentUser().getIdToken(false).getResult()).getToken());
                 //changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
             } catch (PetRepeatException e) {
                 Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing),
@@ -759,6 +782,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trChangeUsername = UserControllersFactory.createTrChangeUsername();
         trExistsUsername = UserControllersFactory.createTrExistsUsername();
         trObtainUserImage = UserControllersFactory.createTrObtainUserImage();
+        trSendFirebaseMessagingToken = UserControllersFactory.createTrSendFirebaseMessagingToken();
     }
 
     /**
@@ -1370,6 +1394,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         toolbar.setTitle(title);
     }
 
+    /**
+     * Set the fragment request code.
+     * @param fragmentRequestCode The fragment request code to set
+     */
+    public static void setFragmentRequestCode(int fragmentRequestCode) {
+        MainActivity.fragmentRequestCode = fragmentRequestCode;
+    }
+
     @Override
     public void addSubscription(Group group) {
         trAddSubscription.setUser(user);
@@ -1415,12 +1447,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewPost.setUser(user);
         trAddNewPost.setPostText(postText);
         trAddNewPost.setForum(forum);
+        trAddNewPost.setPostImage(postImage);
+        trAddNewPost.setPostCreationDate(DateTime.getCurrentDateTime());
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = new Date();
-        String strData = dateFormat.format(date);
-
-        trAddNewPost.setPostCreationDate(DateTime.Builder.buildFullString(strData));
+        if (postImage == null) {
+            System.out.println("POST IMAGE IS NULL");
+        } else {
+            System.out.println("POST IMAGE IS NOT NULL");
+        }
 
         try {
             trAddNewPost.execute();
@@ -2066,9 +2100,31 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            galleryImageZoom(data);
+            if (fragmentRequestCode == PostsFragment.POST_FRAGMENT_REQUEST_CODE) {
+                galleryPostFragment(data);
+            } else {
+                galleryImageZoom(data);
+            }
         }
     }
+
+    private void galleryPostFragment(Intent data) {
+        Bitmap bitmap = getGalleryBitmap(data);
+        //PostsFragment.getSelectedPost().setPostImage(bitmap);
+        changeFragment(actualFragment);
+
+        byte[] imageBytes = ImageManager.getImageBytes(bitmap);
+
+        if (imageBytes.length > PostsFragment.IMAGE_ALLOWED_SIZE) {
+            Toast toast = Toast.makeText(this, R.string.error_too_big_image, Toast.LENGTH_LONG);
+            toast.show();
+        } else {
+            ((PostsFragment) actualFragment).setPostImage(bitmap);
+        }
+
+        //addPostImage(PostsFragment.getSelectedPost(), bitmap);
+    }
+
 
     @Override
     protected void onResume() {
@@ -2489,7 +2545,79 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             }
         }
 
+        getAllGroupImages(groups);
         return groups;
+    }
+
+    /**
+     * Get all the groups images.
+     * @param groups The group images
+     */
+    private void getAllGroupImages(SortedSet<Group> groups) {
+        ExecutorService getGroupsImages = Executors.newSingleThreadExecutor();
+        getGroupsImages.execute(() -> getGroupsImages(groups));
+
+        getGroupsImages.shutdown();
+        try {
+            getGroupsImages.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getGroupsImages(SortedSet<Group> groups) {
+        List<Group> groupList = new ArrayList<>(groups);
+        ExecutorService getGroupImage = Executors.newCachedThreadPool();
+
+        for (int actual = 0; actual < groupList.size(); ++actual) {
+            int finalActual = actual;
+            getGroupImage.execute(() -> updateGroupImage(groupList, finalActual));
+        }
+
+        getGroupImage.shutdown();
+        try {
+            getGroupImage.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateGroupImage(List<Group> groupList, int finalActual) {
+        SharedPreferences sharedPreferences = getSharedPreferences(GROUPS_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        Group actualGroup = groupList.get(finalActual);
+        String currentGroupDate = sharedPreferences.getString(actualGroup.getName(), "");
+        byte[] bytesImage;
+
+        if (needToUpdateImage(groupList, finalActual, currentGroupDate)) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(actualGroup.getName(), actualGroup.getLastGroupImage().toString());
+            editor.apply();
+
+            bytesImage = getGroupImage(actualGroup.getName());
+            ImageManager.writeImage(ImageManager.GROUP_IMAGES_PATH, actualGroup.getName(), bytesImage);
+        } else {
+            try {
+                bytesImage = ImageManager.readImage(ImageManager.GROUP_IMAGES_PATH, actualGroup.getName());
+            } catch (IOException e) {
+                bytesImage = new byte[0];
+            }
+        }
+
+        if (bytesImage.length == 0) {
+            groupList.get(finalActual).setGroupIcon(null);
+        } else {
+            groupList.get(finalActual).setGroupIcon(BitmapFactory.decodeByteArray(bytesImage, 0,
+                bytesImage.length));
+        }
+    }
+
+    private byte[] getGroupImage(String groupName) {
+        return new byte[0];
+    }
+
+    private boolean needToUpdateImage(List<Group> groupList, int finalActual, String currentGroupDate) {
+        return "".equals(currentGroupDate) || groupList.get(finalActual).getLastGroupImage()
+            .compareTo(DateTime.Builder.buildFullString(currentGroupDate)) > 0;
     }
 
     /**
@@ -2567,5 +2695,22 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trGetAllWalks.execute();
 
         return trGetAllWalks.getResult();
+    }
+
+    @Override
+    public void schedulePostNotification(String title, String text, long time) {
+        scheduleNotification(this, time, title, text);
+    }
+
+    @Override
+    public void sendMessageToken(String messageToken) {
+        trSendFirebaseMessagingToken.setUser(user);
+        trSendFirebaseMessagingToken.setToken(messageToken);
+
+        try {
+            trSendFirebaseMessagingToken.execute();
+        } catch (EmptyMessagingTokenException e) {
+            e.printStackTrace();
+        }
     }
 }
