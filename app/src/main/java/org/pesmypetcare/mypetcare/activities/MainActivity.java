@@ -373,9 +373,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             initializeActivity();
             setUpNavigationImage();
 
-            askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-            askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            //askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            //askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            //askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
             LocationUpdater.setContext(this);
             MessagingService.setCommunication(this);
         });
@@ -423,13 +423,19 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             try {
                 initializeUser();
                 refreshGoogleCalendarToken();
-                user.setToken(Objects.requireNonNull(mAuth.getCurrentUser().getIdToken(false).getResult()).getToken());
                 //changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
             } catch (PetRepeatException e) {
                 Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing),
                     Toast.LENGTH_LONG);
                 toast.show();
             }
+
+            Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getIdToken(false)
+                .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    user.setToken(Objects.requireNonNull(task.getResult()).getToken());
+                }
+            });
         }
     }
 
