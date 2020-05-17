@@ -52,8 +52,7 @@ public class TrLikePost {
         result = false;
         Forum forum = post.getForum();
         Group group = forum.getGroup();
-        communityService.likePost(user.getUsername(), post.getUsername(), post.getCreationDate(), forum.getName(),
-            group.getName());
+        communityService.likePost(user, post);
         post.addLikerUsername(user.getUsername());
         result = true;
     }

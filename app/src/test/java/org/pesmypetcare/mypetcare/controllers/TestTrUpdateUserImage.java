@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.controllers.user.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubUserManagerService;
@@ -25,7 +26,7 @@ public class TestTrUpdateUserImage {
     }
 
     @Test
-    public void shouldUpdateUserImage() {
+    public void shouldUpdateUserImage() throws MyPetCareException {
         Bitmap bitmap = BitmapFactory.decodeByteArray(new byte[] {(byte) COLOR_BLUE}, 0, 1);
         trUpdateUserImage.setUser(user);
         trUpdateUserImage.setImage(bitmap);

@@ -1,9 +1,9 @@
 package org.pesmypetcare.mypetcare.features.community.forums;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,6 +148,7 @@ public class Forum implements Comparable<Forum> {
      * @param post The post that has to be added to the forum
      */
     public void addPost(Post post) {
+        posts.remove(post);
         posts.add(post);
     }
 

@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.controllers.user.TrObtainUser;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -19,7 +20,7 @@ public class TestTrObtainUser {
     }
 
     @Test
-    public void shouldObtainUser() throws PetRepeatException {
+    public void shouldObtainUser() throws PetRepeatException, MyPetCareException {
         trObtainUser.setUsername("johnDoe");
         trObtainUser.execute();
         User user = trObtainUser.getResult();

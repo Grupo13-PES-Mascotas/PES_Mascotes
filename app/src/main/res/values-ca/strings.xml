@@ -273,6 +273,20 @@
     <string name="report_reason_spam_or_misleading_content">Contingut brossa o enganyós</string>
     <string name="report_reason_infringe_my_rights">Infracció dels drets d\'autor</string>
     <string name="report_reason_other">Altres</string>
+    <string name="delete_post_image">Eliminar la imatge del post</string>
+    <string name="delete_user_image_title">Eliminar la imatge d\'usuari</string>
+    <string name="delete_user_image_text">Estàs segur que vols eliminar la teva imatge de perfil?</string>
+    <string name="delete_group_image_title">Eliminar la imatge del grup</string>
+    <string name="delete_group_image_text">Estàs segur que vols eliminar la imatge del grup?</string>
+    <string name="wait_for_update">Espera una actualització per utilitzar aquesta funcionalitat</string>
+    <string name="likes">m\'agrades</string>
+    <string name="likes_singular">m\'agrada</string>
+    <string name="error_too_big_image">La imatge ha de ser inferior o igual a 1 MB</string>
+    <string name="new_post_received">ha fet una nova publicació</string>
+
+    <!-- The next two strings cannot be translated into any other language -->
+    <string name="navigation_view_open">Open</string>
+    <string name="navigation_view_closed">Closed</string>
     <string name="pet_info_basic">Bàsic</string>
     <string name="pet_info_health">Salut</string>
     <string name="pet_info_meal">Àpats</string>

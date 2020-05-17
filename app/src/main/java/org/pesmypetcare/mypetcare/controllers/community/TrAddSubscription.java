@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.controllers.community;
 
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
-import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingException;
+import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.CommunityService;
 
@@ -35,11 +35,11 @@ public class TrAddSubscription {
 
     /**
      * Execute the transaction.
-     * @throws GroupNotExistingException The group does not exist
+     * @throws GroupNotFoundException The group does not exist
      */
-    public void execute() throws GroupNotExistingException {
+    public void execute() throws GroupNotFoundException {
         if (!communityService.isGroupExisting(group)) {
-            throw new GroupNotExistingException();
+            throw new GroupNotFoundException();
         }
 
         communityService.addSubscriber(user, group);

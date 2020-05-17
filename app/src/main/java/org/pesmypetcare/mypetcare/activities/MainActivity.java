@@ -14,7 +14,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
@@ -26,7 +25,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -45,7 +43,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
+import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunication;
@@ -76,14 +79,18 @@ import org.pesmypetcare.mypetcare.activities.threads.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.community.CommunityControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.community.TrAddGroupImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewForum;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewPost;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddSubscription;
 import org.pesmypetcare.mypetcare.controllers.community.TrCreateNewGroup;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteForum;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteGroup;
+import org.pesmypetcare.mypetcare.controllers.community.TrDeleteGroupImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeletePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteSubscription;
+import org.pesmypetcare.mypetcare.controllers.community.TrGetGroupImage;
+import org.pesmypetcare.mypetcare.controllers.community.TrGetPostImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrLikePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrObtainAllGroups;
 import org.pesmypetcare.mypetcare.controllers.community.TrReportPost;
@@ -131,12 +138,15 @@ import org.pesmypetcare.mypetcare.controllers.pethealth.TrAddNewWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrAddNewWeight;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrDeleteWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrDeleteWeight;
+import org.pesmypetcare.mypetcare.controllers.user.EmptyMessagingTokenException;
 import org.pesmypetcare.mypetcare.controllers.user.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.user.TrChangePassword;
 import org.pesmypetcare.mypetcare.controllers.user.TrChangeUsername;
 import org.pesmypetcare.mypetcare.controllers.user.TrDeleteUser;
 import org.pesmypetcare.mypetcare.controllers.user.TrExistsUsername;
 import org.pesmypetcare.mypetcare.controllers.user.TrObtainUser;
+import org.pesmypetcare.mypetcare.controllers.user.TrObtainUserImage;
+import org.pesmypetcare.mypetcare.controllers.user.TrSendFirebaseMessagingToken;
 import org.pesmypetcare.mypetcare.controllers.user.TrUpdateUserImage;
 import org.pesmypetcare.mypetcare.controllers.user.UserControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.TrDeleteVetVisit;
@@ -157,8 +167,8 @@ import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerExcepti
 import org.pesmypetcare.mypetcare.features.community.forums.UserNotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingException;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
+import org.pesmypetcare.mypetcare.features.community.groups.NotGroupOwnerException;
 import org.pesmypetcare.mypetcare.features.community.groups.NotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.OwnerCannotDeleteSubscriptionException;
 import org.pesmypetcare.mypetcare.features.community.posts.NotLikedPostException;
@@ -199,9 +209,10 @@ import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+import org.pesmypetcare.mypetcare.utilities.MessagingService;
+import org.pesmypetcare.mypetcare.utilities.MessagingServiceCommunication;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -221,7 +232,9 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
     InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
-    CommunityCommunication, InfoGroupCommunication, WalkCommunication, AsyncResponse {
+    CommunityCommunication, InfoGroupCommunication, WalkCommunication, MessagingServiceCommunication, AsyncResponse {
+
+    public static final int MAIN_ACTIVITY_ZOOM_IDENTIFIER = 0;
     private static final int[] NAVIGATION_OPTIONS = {
         R.id.navigationMyPets, R.id.navigationPetsCommunity, R.id.navigationMyWalks,
         R.id.navigationNearEstablishments, R.id.navigationCalendar, R.id.navigationAchievements,
@@ -235,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     };
     public static final String TAG_REGEX = "^[a-zA-Z0-9,]*$";
     private static final String WALKING_PREFERENCES = "Walking";
+    public static final String GROUPS_SHARED_PREFERENCES = "Groups";
     private static final String START_WALKING_DATE_TIME = "startWalkingDateTime";
     public static final String ACTUAL_WALK = "ActualWalk";
     public static final int LAT = 0;
@@ -256,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static FragmentManager fragmentManager;
     private static SharedPreferences walkingSharedPreferences;
     private static Context context;
+    private static int fragmentRequestCode;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -324,6 +339,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrAddWalk trAddWalk;
     private TrGetAllWalks trGetAllWalks;
     private TrGetAllExercises trGetAllExercises;
+    private TrObtainUserImage trObtainUserImage;
+    private TrGetPostImage trGetPostImage;
+    private TrAddGroupImage trAddGroupImage;
+    private TrDeleteGroupImage trDeleteGroupImage;
+    private TrSendFirebaseMessagingToken trSendFirebaseMessagingToken;
+    private TrGetGroupImage trGetGroupImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -343,18 +364,37 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         context = this;
 
         makeLogin();
-        initializeControllers();
-        getComponents();
 
-        ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw));
-        initializeCurrentUser();
-        initializeActivity();
-        setUpNavigationImage();
+        ExecutorService mainActivitySetUp = Executors.newCachedThreadPool();
+        mainActivitySetUp.execute(() -> {
+            initializeControllers();
+            getComponents();
 
-        askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-        askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-        LocationUpdater.setContext(this);
+            ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw, null));
+            initializeCurrentUser();
+            initializeActivity();
+            setUpNavigationImage();
+
+            askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            LocationUpdater.setContext(this);
+            MessagingService.setCommunication(this);
+        });
+
+        mainActivitySetUp.shutdown();
+
+        try {
+            mainActivitySetUp.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && user != null) {
+                sendMessageToken(Objects.requireNonNull(task.getResult()).getToken());
+            }
+        });
 
         /*SharedPreferences.Editor editor = walkingSharedPreferences.edit();
 
@@ -391,6 +431,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                     Toast.LENGTH_LONG);
                 toast.show();
             }
+
+            Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getIdToken(false)
+                .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    user.setToken(Objects.requireNonNull(task.getResult()).getToken());
+                }
+            });
         }
     }
 
@@ -459,7 +506,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     private void initializeUser() throws PetRepeatException {
         trObtainUser.setUsername(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
-        trObtainUser.execute();
+
+        try {
+            trObtainUser.execute();
+        } catch (MyPetCareException e) {
+            e.printStackTrace();
+        }
 
         user = trObtainUser.getResult();
 
@@ -518,20 +570,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     private Thread createUpdatePetImagesThread(Thread petsImagesThread) {
         return new Thread(() -> {
-                petsImagesThread.start();
+            petsImagesThread.start();
 
-                try {
-                    petsImagesThread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            try {
+                petsImagesThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-                if (actualFragment instanceof MyPetsFragment) {
-                    changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
-                } else if (actualFragment instanceof InfoPetFragment) {
-                    changeFragment(actualFragment);
-                }
-            });
+            if (actualFragment instanceof MyPetsFragment) {
+                changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+            } else if (actualFragment instanceof InfoPetFragment) {
+                changeFragment(actualFragment);
+            }
+        });
     }
 
     /**
@@ -544,7 +596,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             int nUserPets = user.getPets().size();
 
             if (imagesNotFound == nUserPets && nUserPets != 0) {
-                getImagesFromServer();            
+                getImagesFromServer();
             }
         });
     }
@@ -737,6 +789,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trChangeMail = UserControllersFactory.createTrChangeMail();
         trChangeUsername = UserControllersFactory.createTrChangeUsername();
         trExistsUsername = UserControllersFactory.createTrExistsUsername();
+        trObtainUserImage = UserControllersFactory.createTrObtainUserImage();
+        trSendFirebaseMessagingToken = UserControllersFactory.createTrSendFirebaseMessagingToken();
     }
 
     /**
@@ -786,6 +840,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trLikePost = CommunityControllersFactory.createTrLikePost();
         trUnlikePost = CommunityControllersFactory.createTrUnlikePost();
         trReportPost = CommunityControllersFactory.createTrReportPost();
+        trGetPostImage = CommunityControllersFactory.createTrGetPostImage();
+        trAddGroupImage = CommunityControllersFactory.createTrAddGroupImage();
+        trDeleteGroupImage = CommunityControllersFactory.createTrDeleteGroupImage();
+        trGetGroupImage = CommunityControllersFactory.createTrGetGroupImage();
     }
 
     /**
@@ -896,7 +954,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             if (isCorrect) {
                 String[] tags = Objects.requireNonNull(forumTags.getEditText()).getText().toString().split(",");
                 createForum(InfoGroupFragment.getGroup(), Objects.requireNonNull(forumName.getEditText()).getText()
-                        .toString(), new ArrayList<>(Arrays.asList(tags)));
+                    .toString(), new ArrayList<>(Arrays.asList(tags)));
                 alertDialog.dismiss();
                 ForumsFragment.showForums();
             }
@@ -923,7 +981,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trAddNewForum.execute();
-        } catch (UserNotSubscribedException | GroupNotExistingException | ForumCreatedBeforeGroupException e) {
+        } catch (UserNotSubscribedException | ForumCreatedBeforeGroupException | GroupNotFoundException e) {
             Toast toast = Toast.makeText(this, getString(R.string.should_be_subscribed), Toast.LENGTH_LONG);
             toast.show();
         }
@@ -1100,7 +1158,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             }
 
             ImageZoomFragment imageZoomFragment = new ImageZoomFragment(drawable);
-            ImageZoomFragment.setIsMainActivity(true);
+            ImageZoomFragment.setOrigin(MAIN_ACTIVITY_ZOOM_IDENTIFIER);
+
             floatingActionButton.hide();
             hideShareAppButton();
             drawerLayout.closeDrawers();
@@ -1227,13 +1286,81 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Change to next fragment from an ImageZoomFragment.
      */
     private void changeFromImageZoom() {
-        if (ImageZoomFragment.isMainActivity()) {
-            Drawable drawable = ImageZoomFragment.getDrawable();
-            user.setUserProfileImage(((BitmapDrawable) drawable).getBitmap());
-            changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+        switch (ImageZoomFragment.getOrigin()) {
+            case MAIN_ACTIVITY_ZOOM_IDENTIFIER:
+                Drawable drawable = ImageZoomFragment.getDrawable();
+                user.setUserProfileImage(((BitmapDrawable) drawable).getBitmap());
+                changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+                break;
+            case InfoPetFragment.INFO_PET_ZOOM_IDENTIFIER:
+                InfoPetFragment.setPetProfileDrawable(ImageZoomFragment.getDrawable());
+                changeFragment(new InfoPetFragment());
+                break;
+            case InfoGroupFragment.INFO_GROUP_ZOOM_IDENTIFIER:
+                changeFragment(new InfoGroupFragment());
+                Bitmap bitmap = ((BitmapDrawable) ImageZoomFragment.getDrawable()).getBitmap();
+                updateGroupImage(InfoGroupFragment.getGroup(), bitmap);
+                break;
+            default:
+        }
+    }
+
+    /**
+     * Updates the image of the given group.
+     * @param group The group which image has to be updated
+     * @param bitmap The new image of the group
+     */
+    private void updateGroupImage(Group group, Bitmap bitmap) {
+        SharedPreferences sharedPreferences = getSharedPreferences(GROUPS_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        if (ImageZoomFragment.isImageDeleted()) {
+            deleteGroupImage(group);
+            executorService.execute(() -> ImageManager.deleteImage(ImageManager.GROUP_IMAGES_PATH, group.getName()));
+
+            editor.remove(group.getName());
         } else {
-            InfoPetFragment.setPetProfileDrawable(ImageZoomFragment.getDrawable());
-            changeFragment(new InfoPetFragment());
+            addGroupImage(group, bitmap);
+            executorService.execute(() -> {
+                byte[] imageBytes = ImageManager.getImageBytes(bitmap);
+                ImageManager.writeImage(ImageManager.GROUP_IMAGES_PATH, group.getName(), imageBytes);
+            });
+
+            editor.putString(group.getName(), DateTime.getCurrentDateTime().toString());
+        }
+
+        executorService.shutdown();
+        editor.apply();
+    }
+
+    /**
+     * Adds the given image to the indicated group.
+     * @param group The group where the image has to be added
+     * @param image The image that has to be added to the groups
+     */
+    private void addGroupImage(Group group, Bitmap image) {
+        trAddGroupImage.setUser(user);
+        trAddGroupImage.setGroup(group);
+        trAddGroupImage.setImage(image);
+        try {
+            trAddGroupImage.execute();
+        } catch (NotGroupOwnerException | GroupNotFoundException | MyPetCareException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Deletes the image from the indicated group.
+     * @param group The group which image has to be deleted
+     */
+    private void deleteGroupImage(Group group) {
+        trDeleteGroupImage.setUser(user);
+        trDeleteGroupImage.setGroup(group);
+        try {
+            trDeleteGroupImage.execute();
+        } catch (NotGroupOwnerException | GroupNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -1276,6 +1403,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         toolbar.setTitle(title);
     }
 
+    /**
+     * Set the fragment request code.
+     * @param fragmentRequestCode The fragment request code to set
+     */
+    public static void setFragmentRequestCode(int fragmentRequestCode) {
+        MainActivity.fragmentRequestCode = fragmentRequestCode;
+    }
+
     @Override
     public void addSubscription(Group group) {
         trAddSubscription.setUser(user);
@@ -1283,7 +1418,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trAddSubscription.execute();
-        } catch (GroupNotExistingException e) {
+        } catch (GroupNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -1294,7 +1429,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteSubscription.setGroup(group);
         try {
             trDeleteSubscription.execute();
-        } catch (GroupNotExistingException | NotSubscribedException | OwnerCannotDeleteSubscriptionException e) {
+        } catch (NotSubscribedException | OwnerCannotDeleteSubscriptionException | GroupNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -1317,16 +1452,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void addNewPost(Forum forum, String postText) {
+    public void addNewPost(Forum forum, @Nullable String postText, @Nullable Bitmap postImage) {
         trAddNewPost.setUser(user);
         trAddNewPost.setPostText(postText);
         trAddNewPost.setForum(forum);
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = new Date();
-        String strData = dateFormat.format(date);
-
-        trAddNewPost.setPostCreationDate(DateTime.Builder.buildFullString(strData));
+        trAddNewPost.setPostImage(postImage);
+        trAddNewPost.setPostCreationDate(DateTime.getCurrentDateTime());
 
         try {
             trAddNewPost.execute();
@@ -1396,12 +1527,59 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
+    public Bitmap findImageByUser(String username) {
+        trObtainUserImage.setUsername(username);
+        trObtainUserImage.setAccessToken(user.getToken());
+
+        try {
+            trObtainUserImage.execute();
+        } catch (ExecutionException | InterruptedException | MyPetCareException e) {
+            e.printStackTrace();
+        }
+        Bitmap result = trObtainUserImage.getResult();
+        if (result == null) {
+            result = BitmapFactory.decodeResource(getResources(), R.drawable.user_icon);
+        }
+        return result;
+    }
+
+    @Override
+    public void addPostImage(Post post, Bitmap image) {
+
+    }
+
+    @Override
+    public void deletePostImage(Post post) {
+
+    }
+
+    @Override
+    public void makeGroupZoomImage(Drawable drawable) {
+        floatingActionButton.hide();
+        //ImageZoomFragment.setIsMainActivity(false);
+        ImageZoomFragment.setOrigin(InfoGroupFragment.INFO_GROUP_ZOOM_IDENTIFIER);
+
+        changeFragment(new ImageZoomFragment(drawable));
+    }
+
+    @Override
+    public byte[] getImageFromPost(Post post, MessageDisplay messageData) {
+        trGetPostImage.setUser(user);
+        trGetPostImage.setPost(post);
+        trGetPostImage.setMessageData(messageData);
+        trGetPostImage.execute();
+
+        return trGetPostImage.getResult();
+    }
+
+    @Override
     public void changePetProfileImage(Pet actualPet) {
         user.updatePetProfileImage(actualPet);
     }
 
     @Override
-    public void newPersonalEvent(Pet pet, String description, String dateTime) throws ExecutionException, InterruptedException, InvalidFormatException {
+    public void newPersonalEvent(Pet pet, String description, String dateTime) throws ExecutionException,
+        InterruptedException, InvalidFormatException, InvalidFormatException {
         trNewPersonalEvent.setPet(pet);
         trNewPersonalEvent.setEvent(new Event(description, DateTime.Builder.buildFullString(dateTime)));
         trNewPersonalEvent.execute();
@@ -1445,7 +1623,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void makeZoomImage(Drawable drawable) {
         floatingActionButton.hide();
-        ImageZoomFragment.setIsMainActivity(false);
+        ImageZoomFragment.setOrigin(InfoPetFragment.INFO_PET_ZOOM_IDENTIFIER);
 
         changeFragment(new ImageZoomFragment(drawable));
     }
@@ -1735,7 +1913,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             e.printStackTrace();
         }
     }
-          
+
     public void addExercise(Pet pet, String exerciseName, String exerciseDescription, DateTime startExerciseDateTime,
                             DateTime endExerciseDateTime) {
         trAddExercise.setUser(user);
@@ -1925,9 +2103,31 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            galleryImageZoom(data);
+            if (fragmentRequestCode == PostsFragment.POST_FRAGMENT_REQUEST_CODE) {
+                galleryPostFragment(data);
+            } else {
+                galleryImageZoom(data);
+            }
         }
     }
+
+    private void galleryPostFragment(Intent data) {
+        Bitmap bitmap = getGalleryBitmap(data);
+        //PostsFragment.getSelectedPost().setPostImage(bitmap);
+        changeFragment(actualFragment);
+
+        byte[] imageBytes = ImageManager.getImageBytes(bitmap);
+
+        if (imageBytes.length > PostsFragment.IMAGE_ALLOWED_SIZE) {
+            Toast toast = Toast.makeText(this, R.string.error_too_big_image, Toast.LENGTH_LONG);
+            toast.show();
+        } else {
+            ((PostsFragment) actualFragment).setPostImage(bitmap);
+        }
+
+        //addPostImage(PostsFragment.getSelectedPost(), bitmap);
+    }
+
 
     @Override
     protected void onResume() {
@@ -1943,23 +2143,41 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @param data Data received from the gallery
      */
     private void galleryImageZoom(@Nullable Intent data) {
-        String imagePath = getImagePath(data);
-        askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+        Bitmap bitmap = getGalleryBitmap(data);
         Drawable drawable = new BitmapDrawable(getResources(), bitmap);
         ((ImageZoomFragment) actualFragment).setDrawable(drawable);
         ImageZoomFragment.setIsDefaultImage(false);
+        ImageZoomFragment.setIsImageDeleted(false);
 
-        if (ImageZoomFragment.isMainActivity()) {
-            updateUserImage(drawable);
-        } else {
-            InfoPetFragment.setIsDefaultPetImage(false);
+        switch (ImageZoomFragment.getOrigin()) {
+            case MAIN_ACTIVITY_ZOOM_IDENTIFIER:
+                updateUserImage(drawable);
+                updateUserProfileImage(user.getUserProfileImage());
+                break;
+            case InfoPetFragment.INFO_PET_ZOOM_IDENTIFIER:
+                InfoPetFragment.setIsDefaultPetImage(false);
+            default:
+        }
+    }
+
+    /**
+     * Get the galley bitmap.
+     * @param data The data from the gallery
+     * @return The bitmap of the gallery
+     */
+    private Bitmap getGalleryBitmap(@Nullable Intent data) {
+        String imagePath = getImagePath(data);
+        Thread askPermissionThread = ThreadFactory.createAskPermissionThread(this);
+
+        askPermissionThread.start();
+
+        try {
+            askPermissionThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
-        if (ImageZoomFragment.isMainActivity()) {
-            updateUserProfileImage(user.getUserProfileImage());
-        }
+        return BitmapFactory.decodeFile(imagePath);
     }
 
     @Override
@@ -2145,7 +2363,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @param title The notification's title
      * @param time The alarm time of the notification
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public void scheduleNotification(Context context, long time, String title, String text) {
         Notification notification = new Notification(title, text, new Date(time), Long.toString(time));
         notification.setNotificationID(notificationId);
@@ -2177,7 +2394,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             intent.putExtra(getString(R.string.text), deleted.getText());
             intent.putExtra(getString(R.string.notificationid), deleted.getNotificationID());
             PendingIntent pending = PendingIntent.getBroadcast(context, deleted.getRequestCode(), intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
             user.deleteNotification(notification);
             AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -2188,7 +2405,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void newPeriodicNotification(Pet selectedPet, int periodicity, String reasonText, DateTime dateTime)
-            throws ParseException, UserIsNotOwnerException, ExecutionException, InterruptedException {
+        throws ParseException, UserIsNotOwnerException, ExecutionException, InterruptedException {
 
         trNewPeriodicNotification.setUser(user);
         trNewPeriodicNotification.setPeriodicity(periodicity);
@@ -2200,7 +2417,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void deletePeriodicNotification(Pet selectedPet, Event event, User user)
-            throws ParseException, UserIsNotOwnerException, ExecutionException, InterruptedException {
+        throws ParseException, UserIsNotOwnerException, ExecutionException, InterruptedException {
 
         trDeletePeriodicNotification.setUser(user);
         trDeletePeriodicNotification.setPet(selectedPet);
@@ -2229,12 +2446,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         intent.putExtra(getString(R.string.notificationid), Integer.toString(notificationId));
         notificationId++;
         PendingIntent pending = PendingIntent.getBroadcast(context, requestCode, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent.FLAG_UPDATE_CURRENT);
         requestCode++;
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert manager != null;
         manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, time,
-                AlarmManager.INTERVAL_DAY*period, pending);
+            AlarmManager.INTERVAL_DAY*period, pending);
     }
 
     @Override
@@ -2275,7 +2492,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public List<Group> getGroups() {
         return groups;
     }
-  
+
     @Override
     public boolean usernameExists(String newUsername) {
         trExistsUsername.setNewUsername(newUsername);
@@ -2299,7 +2516,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         userName.setText(newUsername);
     }
 
-    @Override  
+    @Override
     public void changeMail(String newEmail) {
         trChangeMail.setUser(user);
         trChangeMail.setMail(newEmail);
@@ -2313,7 +2530,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void updateUserImage(Drawable drawable) {
         trUpdateUserImage.setUser(user);
         trUpdateUserImage.setImage(((BitmapDrawable) drawable).getBitmap());
-        trUpdateUserImage.execute();
+        try {
+            trUpdateUserImage.execute();
+        } catch (MyPetCareException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -2327,7 +2548,104 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             }
         }
 
+        getAllGroupImages(groups);
         return groups;
+    }
+
+    /**
+     * Get all the groups images.
+     * @param groups The group images
+     */
+    private void getAllGroupImages(SortedSet<Group> groups) {
+        ExecutorService getGroupsImages = Executors.newSingleThreadExecutor();
+        getGroupsImages.execute(() -> getGroupsImages(groups));
+
+        getGroupsImages.shutdown();
+        try {
+            getGroupsImages.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Get the groups images.
+     * @param groups The groups to get the images from
+     */
+    private void getGroupsImages(SortedSet<Group> groups) {
+        List<Group> groupList = new ArrayList<>(groups);
+        ExecutorService getGroupImage = Executors.newCachedThreadPool();
+
+        for (int actual = 0; actual < groupList.size(); ++actual) {
+            int finalActual = actual;
+            getGroupImage.execute(() -> updateGroupImage(groupList, finalActual));
+        }
+
+        getGroupImage.shutdown();
+        try {
+            getGroupImage.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Update the group image.
+     * @param groupList The list of the groups to update
+     * @param finalActual THe actual group index
+     */
+    private void updateGroupImage(List<Group> groupList, int finalActual) {
+        SharedPreferences sharedPreferences = getSharedPreferences(GROUPS_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        Group actualGroup = groupList.get(finalActual);
+        String currentGroupDate = sharedPreferences.getString(actualGroup.getName(), "");
+        byte[] bytesImage;
+
+        if (needToUpdateImage(groupList, finalActual, currentGroupDate)) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(actualGroup.getName(), actualGroup.getLastGroupImage().toString());
+            editor.apply();
+
+            bytesImage = getGroupImage(actualGroup);
+            ImageManager.writeImage(ImageManager.GROUP_IMAGES_PATH, actualGroup.getName(), bytesImage);
+        } else {
+            try {
+                bytesImage = ImageManager.readImage(ImageManager.GROUP_IMAGES_PATH, actualGroup.getName());
+            } catch (IOException e) {
+                bytesImage = new byte[0];
+            }
+        }
+
+        if (bytesImage.length == 0) {
+            groupList.get(finalActual).setGroupIcon(null);
+        } else {
+            groupList.get(finalActual).setGroupIcon(BitmapFactory.decodeByteArray(bytesImage, 0,
+                bytesImage.length));
+        }
+    }
+
+    /**
+     * Get the group image from the server.
+     * @param group The group to get the image from
+     * @return The image of the group in he form of an array of byte
+     */
+    private byte[] getGroupImage(Group group) {
+        trGetGroupImage.setUser(user);
+        trGetGroupImage.setGroup(group);
+        trGetGroupImage.execute();
+
+        return trGetGroupImage.getResult();
+    }
+
+    /**
+     * Check whether we need to update the group image.
+     * @param groupList The list of groups
+     * @param finalActual The index of the actual group
+     * @param currentGroupDate The current group date
+     * @return True if we need to update the group image
+     */
+    private boolean needToUpdateImage(List<Group> groupList, int finalActual, String currentGroupDate) {
+        return "".equals(currentGroupDate) || groupList.get(finalActual).getLastGroupImage()
+            .compareTo(DateTime.Builder.buildFullString(currentGroupDate)) > 0;
     }
 
     /**
@@ -2405,5 +2723,22 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trGetAllWalks.execute();
 
         return trGetAllWalks.getResult();
+    }
+
+    @Override
+    public void schedulePostNotification(String title, String text, long time) {
+        scheduleNotification(this, time, title, text);
+    }
+
+    @Override
+    public void sendMessageToken(String messageToken) {
+        trSendFirebaseMessagingToken.setUser(user);
+        trSendFirebaseMessagingToken.setToken(messageToken);
+
+        try {
+            trSendFirebaseMessagingToken.execute();
+        } catch (EmptyMessagingTokenException e) {
+            e.printStackTrace();
+        }
     }
 }

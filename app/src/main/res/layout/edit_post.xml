@@ -50,6 +50,23 @@
             android:layout_height="20dp"/>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/deletePostImageButton"
+            style="@style/rounded_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/red"
+            android:text="@string/delete_post_image"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:icon="@drawable/icon_clear"
+            app:iconSize="24dp"
+            app:iconTint="@color/white" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/deletePostButton"
             style="@style/rounded_button"
             android:layout_width="match_parent"

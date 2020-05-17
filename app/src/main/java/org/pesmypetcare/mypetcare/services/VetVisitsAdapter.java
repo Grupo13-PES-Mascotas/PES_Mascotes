@@ -1,11 +1,11 @@
 package org.pesmypetcare.mypetcare.services;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.VetVisit;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
-import org.pesmypetcare.usermanagerlib.datacontainers.VetVisitData;
+import org.pesmypetcare.usermanager.datacontainers.pet.PetData;
+import org.pesmypetcare.usermanager.datacontainers.pet.VetVisitData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +21,9 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
         String owner = user.getUsername();
         String petName = pet.getName();
         ArrayList<VetVisit> appVisits = new ArrayList<>();
-        List<org.pesmypetcare.usermanagerlib.datacontainers.VetVisit> libraryVisit =
+        List<org.pesmypetcare.usermanager.datacontainers.pet.VetVisit> libraryVisit =
             ServiceLocator.getInstance().getPetCollectionsManagerClient().getAllVetVisits(accessToken, owner, petName);
-        for (org.pesmypetcare.usermanagerlib.datacontainers.VetVisit visit : libraryVisit) {
+        for (org.pesmypetcare.usermanager.datacontainers.pet.VetVisit visit : libraryVisit) {
             appVisits.add(new VetVisit(DateTime.Builder.buildFullString(visit.getKey()), visit.getBody().getAddress(),
                 visit.getBody().getReason()));
         }
@@ -37,8 +37,8 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
         String petName = pet.getName();
 
         VetVisitData visitData = new VetVisitData(vetVisit.getReason(), vetVisit.getAddress());
-        org.pesmypetcare.usermanagerlib.datacontainers.VetVisit libraryVisit =
-            new org.pesmypetcare.usermanagerlib.datacontainers.VetVisit(vetVisit.getVisitDate().toString(), visitData);
+        org.pesmypetcare.usermanager.datacontainers.pet.VetVisit libraryVisit =
+            new org.pesmypetcare.usermanager.datacontainers.pet.VetVisit(vetVisit.getVisitDate().toString(), visitData);
 
         ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner, petName,
             PetData.VET_VISITS, libraryVisit.getKey(), libraryVisit.getBodyAsMap());
@@ -50,8 +50,8 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
         String owner = user.getUsername();
         String petName = pet.getName();
         VetVisitData visitData = new VetVisitData(vetVisit.getReason(), vetVisit.getAddress());
-        org.pesmypetcare.usermanagerlib.datacontainers.VetVisit libraryVisit =
-            new org.pesmypetcare.usermanagerlib.datacontainers.VetVisit(vetVisit.getVisitDate().toString(), visitData);
+        org.pesmypetcare.usermanager.datacontainers.pet.VetVisit libraryVisit =
+            new org.pesmypetcare.usermanager.datacontainers.pet.VetVisit(vetVisit.getVisitDate().toString(), visitData);
         ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner, petName,
             PetData.VET_VISITS, libraryVisit.getKey());
     }
@@ -64,10 +64,10 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
         String petName = pet.getName();
         VetVisitData vetVisitData = ServiceLocator.getInstance().getPetCollectionsManagerClient().getVetVisit(
             accessToken, owner, petName, visitDate.toString());
-        org.pesmypetcare.usermanagerlib.datacontainers.VetVisit oldLibraryVisit =
-            new org.pesmypetcare.usermanagerlib.datacontainers.VetVisit(visitDate.toString(), vetVisitData);
-        org.pesmypetcare.usermanagerlib.datacontainers.VetVisit newLibraryVisit =
-            new org.pesmypetcare.usermanagerlib.datacontainers.VetVisit(newDate, vetVisitData);
+        org.pesmypetcare.usermanager.datacontainers.pet.VetVisit oldLibraryVisit =
+            new org.pesmypetcare.usermanager.datacontainers.pet.VetVisit(visitDate.toString(), vetVisitData);
+        org.pesmypetcare.usermanager.datacontainers.pet.VetVisit newLibraryVisit =
+            new org.pesmypetcare.usermanager.datacontainers.pet.VetVisit(newDate, vetVisitData);
         ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner, petName,
             PetData.VET_VISITS, oldLibraryVisit.getKey());
         ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner, petName,
@@ -82,8 +82,8 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
         String petName = pet.getName();
 
         VetVisitData visitData = new VetVisitData(vetVisit.getReason(), vetVisit.getAddress());
-        org.pesmypetcare.usermanagerlib.datacontainers.VetVisit libraryVisit =
-            new org.pesmypetcare.usermanagerlib.datacontainers.VetVisit(vetVisit.getVisitDate().toString(), visitData);
+        org.pesmypetcare.usermanager.datacontainers.pet.VetVisit libraryVisit =
+            new org.pesmypetcare.usermanager.datacontainers.pet.VetVisit(vetVisit.getVisitDate().toString(), visitData);
         ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken, owner, petName,
             PetData.VET_VISITS, libraryVisit.getKey(), libraryVisit.getBodyAsMap());
     }

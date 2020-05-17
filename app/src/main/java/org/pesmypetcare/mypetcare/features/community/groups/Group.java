@@ -4,9 +4,10 @@ import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
 
+import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,8 +27,10 @@ public class Group implements Comparable<Group> {
     private String description;
     private DateTime creationDate;
     private Bitmap groupIcon;
+    private DateTime lastGroupImage;
     private List<String> participants;
     private Map<String, DateTime> subscribers;
+    private Map<String, Bitmap> subscribersImages;
     private SortedSet<Forum> forums;
     private List<String> tags;
 
@@ -39,6 +42,12 @@ public class Group implements Comparable<Group> {
         this.forums = new TreeSet<>();
         this.tags = new ArrayList<>();
         this.subscribers = new TreeMap<>();
+        this.subscribersImages = new TreeMap<>();
+        try {
+            this.lastGroupImage = DateTime.Builder.build(2020, 1, 1);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
 
         this.subscribers.put(ownerUsername, creationDate);
     }
@@ -184,11 +193,12 @@ public class Group implements Comparable<Group> {
      * @param subscriber The subscriber to add
      */
     public void addSubscriber(User subscriber) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d", Locale.getDefault());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date date = new Date();
         String strData = dateFormat.format(date);
 
         subscribers.put(subscriber.getUsername(), DateTime.Builder.buildDateString(strData));
+        subscribersImages.put(subscriber.getUsername(), subscriber.getUserProfileImage());
     }
 
     /**
@@ -215,6 +225,7 @@ public class Group implements Comparable<Group> {
      */
     public void removeSubscriber(User subscriber) {
         subscribers.remove(subscriber.getUsername());
+        subscribersImages.remove(subscriber.getUsername());
     }
 
     /**
@@ -223,6 +234,26 @@ public class Group implements Comparable<Group> {
      */
     public void removeForum(Forum forum) {
         forums.remove(forum);
+    }
+
+    public Map<String, Bitmap> getSubscribersImages() {
+        return subscribersImages;
+    }
+
+    public void addSubscriberImage(String username, Bitmap image) {
+        subscribersImages.put(username, image);
+    }
+
+    public Bitmap getUserImage(String username) {
+        return subscribersImages.get(username);
+    }
+
+    public DateTime getLastGroupImage() {
+        return lastGroupImage;
+    }
+
+    public void setLastGroupImage(DateTime lastGroupImage) {
+        this.lastGroupImage = lastGroupImage;
     }
 
     @Override

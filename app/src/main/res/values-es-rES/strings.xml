@@ -325,5 +325,19 @@
     <string name="walk_route_start_hour">Hora de inicio:</string>
     <string name="walk_route_end_hour">Hora de finalización:</string>
     <string name="walk_route_pets">Mascotas:</string>
+    <string name="delete_post_image">Eliminar la imagen del post</string>
+    <string name="delete_user_image_title">Eliminar la imagen de usuario</string>
+    <string name="delete_user_image_text">Estás seguro que quieres eliminar tu imagen de usuario?</string>
+    <string name="delete_group_image_title">Eliminar imagen del grupo</string>
+    <string name="delete_group_image_text">Estàs seguro que quieres eliminar la imagen del grupo?</string>
+    <string name="wait_for_update">Espera una actualización para usar esta funcionalidad</string>
+    <string name="likes">me gustas</string>
+    <string name="likes_singular">me gusta</string>
+    <string name="error_too_big_image">La imagen tiene que ser inferior o igual a 1 MB</string>
+    <string name="new_post_received">ha hecho una nueva publicación</string>
+
+    <!-- The next two strings cannot be translated into any other language -->
+    <string name="navigation_view_open">Open</string>
+    <string name="navigation_view_closed">Closed</string>
 
 </resources>

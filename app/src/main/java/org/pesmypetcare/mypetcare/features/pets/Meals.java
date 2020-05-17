@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.Meal;
+import org.pesmypetcare.httptools.utilities.DateTime;
+import org.pesmypetcare.usermanager.datacontainers.pet.Meal;
 
 public class Meals extends Event {
     private String mealName;
@@ -18,6 +18,7 @@ public class Meals extends Event {
     public Meals(Meal meal) {
         super(meal.getBody().getMealName(), DateTime.Builder.buildFullString(meal.getKey()));
 
+        this.mealDate = DateTime.Builder.buildFullString(meal.getKey());
         this.mealDate = DateTime.Builder.buildFullString(meal.getKey());
         this.mealName = meal.getBody().getMealName();
         this.kcal = meal.getBody().getKcal();

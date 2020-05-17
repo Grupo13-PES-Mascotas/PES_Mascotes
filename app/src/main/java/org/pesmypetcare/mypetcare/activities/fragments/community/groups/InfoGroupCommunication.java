@@ -1,10 +1,16 @@
 package org.pesmypetcare.mypetcare.activities.fragments.community.groups;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+
+import androidx.annotation.Nullable;
+
+import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 /**
  * @author Albert Pinto
@@ -49,8 +55,9 @@ public interface InfoGroupCommunication {
     /**
      * Add a new post to the forum.
      * @param forum The forum were the post will be added
+     * @param postImage The post of the image
      */
-    void addNewPost(Forum forum, String postText);
+    void addNewPost(Forum forum, @Nullable String postText, @Nullable Bitmap postImage);
 
     /**
      * Deletes a post from the given forum.
@@ -84,4 +91,39 @@ public interface InfoGroupCommunication {
      * @param reportMessage The report message
      */
     void reportPost(Post post, String reportMessage);
+
+    /**
+     * Get the image from the user.
+     * @param username The username
+     * @return The user image
+     */
+    Bitmap findImageByUser(String username);
+
+    /**
+     * Add the given image to the post.
+     * @param post The post where the image has to be added
+     * @param image The image that has to be added to the post
+     */
+    void addPostImage(Post post, Bitmap image);
+
+    /**
+     * Delete post image.
+     * @param post The post to delete the image
+     */
+    void deletePostImage(Post post);
+
+    /**
+     * Make the zoom image of the group.
+     * @param drawable The image to display
+     */
+    void makeGroupZoomImage(Drawable drawable);
+
+    /**
+     * Get the image for the post.
+     * @param post The post to get the image from
+     * @param messageData The message data of the post
+     * @return The image of the post
+     */
+    byte[] getImageFromPost(Post post, MessageDisplay messageData);
+
 }

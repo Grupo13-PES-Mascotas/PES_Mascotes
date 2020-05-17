@@ -3,14 +3,14 @@ package org.pesmypetcare.mypetcare.controllers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewForum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumCreatedBeforeGroupException;
 import org.pesmypetcare.mypetcare.features.community.forums.UserNotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
-import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingException;
+import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class TestTrAddNewForum {
     }
 
     @Test(expected = UserNotSubscribedException.class)
-    public void shouldUserBeSubscribedToGroup() throws UserNotSubscribedException, GroupNotExistingException,
+    public void shouldUserBeSubscribedToGroup() throws UserNotSubscribedException, GroupNotFoundException,
         ForumCreatedBeforeGroupException {
         trAddNewForum.setUser(new User("Arthur Jones", "arthurjones@gmail.com", "1234"));
         trAddNewForum.setGroup(group);
@@ -50,8 +50,8 @@ public class TestTrAddNewForum {
         trAddNewForum.execute();
     }
 
-    @Test(expected = GroupNotExistingException.class)
-    public void shouldTheGroupExist() throws UserNotSubscribedException, GroupNotExistingException,
+    @Test(expected = GroupNotFoundException.class)
+    public void shouldTheGroupExist() throws UserNotSubscribedException, GroupNotFoundException,
         ForumCreatedBeforeGroupException {
         trAddNewForum.setUser(user);
         trAddNewForum.setGroup(new Group("Penguins", "Arthur Jones", DateTime.Builder.buildDateString("2020-04-22")));
@@ -62,7 +62,7 @@ public class TestTrAddNewForum {
     }
 
     @Test(expected = ForumCreatedBeforeGroupException.class)
-    public void shouldTheForumBeCreatedAfterTheGroup() throws UserNotSubscribedException, GroupNotExistingException,
+    public void shouldTheForumBeCreatedAfterTheGroup() throws UserNotSubscribedException, GroupNotFoundException,
         ForumCreatedBeforeGroupException {
         trAddNewForum.setUser(user);
         trAddNewForum.setGroup(group);
@@ -74,7 +74,7 @@ public class TestTrAddNewForum {
 
     @Test
     public void shouldCreateNewForum() throws UserNotSubscribedException, ForumCreatedBeforeGroupException,
-        GroupNotExistingException {
+        GroupNotFoundException {
         trAddNewForum.setUser(user);
         trAddNewForum.setGroup(group);
         trAddNewForum.setForumName(FORUM_NAME);

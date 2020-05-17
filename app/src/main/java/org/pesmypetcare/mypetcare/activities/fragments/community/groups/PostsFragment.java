@@ -1,6 +1,11 @@
 package org.pesmypetcare.mypetcare.activities.fragments.community.groups;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,21 +24,29 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.pesmypetcare.communitymanager.ChatException;
 import org.pesmypetcare.communitymanager.ChatModel;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.databinding.FragmentPostsBinding;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.mypetcare.utilities.androidservices.GalleryService;
 
 import java.util.List;
 import java.util.Objects;
 
 public class PostsFragment extends Fragment {
+    public static final int POST_FRAGMENT_REQUEST_CODE = 200;
+    public static final double IMAGE_ALLOWED_SIZE = Math.pow(2, 20);
+    private static Post selectedPost;
     private static Forum forum;
+
     private FragmentPostsBinding binding;
     private String reportMessage;
+    private Bitmap postImage;
+    private ChatModel chatModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,8 +56,26 @@ public class PostsFragment extends Fragment {
         setForumName();
 
         binding.btnSentMessage.setOnClickListener(v -> sendMessage());
+        binding.postMessageInputLayout.setEndIconOnClickListener(v -> selectImageToPost());
+
+        Bitmap ownerImage = forum.getGroup().getUserImage(forum.getOwnerUsername());
+
+        if (ownerImage == null) {
+            ownerImage = ((BitmapDrawable) getResources().getDrawable(R.drawable.user_icon_sample, null)).getBitmap();
+        }
+
+        binding.imgForum.setDrawable(new BitmapDrawable(getResources(), ownerImage));
 
         return binding.getRoot();
+    }
+
+    /**
+     * Select the image to post.
+     */
+    private void selectImageToPost() {
+        Intent imagePicker = GalleryService.getGalleryIntent();
+        MainActivity.setFragmentRequestCode(POST_FRAGMENT_REQUEST_CODE);
+        startActivityForResult(imagePicker, POST_FRAGMENT_REQUEST_CODE);
     }
 
     /**
@@ -57,9 +88,11 @@ public class PostsFragment extends Fragment {
             Toast toast = Toast.makeText(getContext(), getString(R.string.should_be_subscribed),
                 Toast.LENGTH_LONG);
             toast.show();
-        } else if (!isMessageEmpty(message)) {
-            InfoGroupFragment.getCommunication().addNewPost(forum, message);
+        } else if (!isMessageEmpty(message) || postImage != null) {
+            InfoGroupFragment.getCommunication().addNewPost(forum, message, postImage);
             binding.postMessage.setText("");
+            binding.postMessageInputLayout.setEndIconDrawable(R.drawable.icon_camera);
+            postImage = null;
         }
     }
 
@@ -115,6 +148,24 @@ public class PostsFragment extends Fragment {
     }
 
     /**
+     * Get the selected post.
+     * @return The selected post
+     */
+    public static Post getSelectedPost() {
+        return selectedPost;
+    }
+
+    /**
+     * Set the post image.
+     * @param postImage The post image to set
+     */
+    public void setPostImage(Bitmap postImage) {
+        this.postImage = postImage;
+        binding.postMessageInputLayout.setEndIconTintList(ColorStateList.valueOf(getResources()
+            .getColor(R.color.colorPrimary, null)));
+    }
+
+    /**
      * Method responsible for showing all the posts of the forum.
      */
     private void showPosts() {
@@ -136,13 +187,13 @@ public class PostsFragment extends Fragment {
      * @param component The component with the post
      */
     private void setOnClickEvent(User user, CircularEntryView component) {
-        Post post = (Post) component.getObject();
+        selectedPost = (Post) component.getObject();
 
-        if (!post.getUsername().equals(user.getUsername())) {
-            if (post.isLikedByUser(user.getUsername())) {
-                InfoGroupFragment.getCommunication().unlikePost(post);
+        if (!selectedPost.getUsername().equals(user.getUsername())) {
+            if (selectedPost.isLikedByUser(user.getUsername())) {
+                InfoGroupFragment.getCommunication().unlikePost(selectedPost);
             } else {
-                InfoGroupFragment.getCommunication().likePost(post);
+                InfoGroupFragment.getCommunication().likePost(selectedPost);
             }
 
             showPosts();
@@ -334,6 +385,8 @@ public class PostsFragment extends Fragment {
                                      AlertDialog editPostDialog) {
         MaterialButton btnUpdatePost = editPostLayout.findViewById(R.id.updatePostButton);
         MaterialButton btnDeletePost = editPostLayout.findViewById(R.id.deletePostButton);
+        MaterialButton btnDeletePostImage = editPostLayout.findViewById(R.id.deletePostImageButton);
+
         btnUpdatePost.setOnClickListener(v -> {
             InfoGroupFragment.getCommunication().updatePost(post,
                 Objects.requireNonNull(editPostMessage.getText()).toString());
@@ -343,16 +396,42 @@ public class PostsFragment extends Fragment {
             InfoGroupFragment.getCommunication().deletePost(forum, post.getCreationDate());
             editPostDialog.dismiss();
         });
+
+        if (post.getPostImage() != null) {
+            btnDeletePostImage.setVisibility(View.VISIBLE);
+
+            btnDeletePostImage.setOnClickListener(v -> {
+                InfoGroupFragment.getCommunication().deletePostImage(post);
+                editPostDialog.dismiss();
+                showPosts();
+            });
+        } else {
+            btnDeletePostImage.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        ChatModel chatModel = new ViewModelProvider(requireActivity()).get(ChatModel.class);
-        chatModel.getMessage().observe(requireActivity(), messageData -> {
-            Post post = new Post(messageData.getCreator(), messageData.getText(),
-                DateTime.Builder.buildFullString(messageData.getPublicationDate()), forum);
+        chatModel = new ViewModelProvider(requireActivity()).get(ChatModel.class);
+        chatModel.getMessage().observe(requireActivity(), messageDisplay -> {
+            Post post = new Post(messageDisplay.getCreator(), messageDisplay.getText(),
+                DateTime.Builder.buildFullString(messageDisplay.getPublicationDate()), forum);
+            post.setLikerUsername(messageDisplay.getLikedBy());
+
+            byte[] byteImages = messageDisplay.getImage();
+
+            if (byteImages != null) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(byteImages, 0, byteImages.length);
+                post.setPostImage(bitmap);
+            }
+
+            /*if (messageDisplay.getImagePath() != null) {
+                byte[] imageBytes = InfoGroupFragment.getCommunication().getImageFromPost(post, messageDisplay);
+                post.setPostImage(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
+            }*/
+
             forum.addPost(post);
             showPosts();
         });
