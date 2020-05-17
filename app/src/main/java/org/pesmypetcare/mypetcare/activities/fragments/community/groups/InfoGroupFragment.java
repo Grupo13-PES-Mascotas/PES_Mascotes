@@ -191,11 +191,4 @@ public class InfoGroupFragment extends Fragment {
     public static InfoGroupCommunication getCommunication() {
         return communication;
     }
-
-    /**
-     * Set the selected tab.
-     * @param selectedTab The selected tab to set
-     */
-    public static void setSelectedTab(int selectedTab) {
-    }
 }

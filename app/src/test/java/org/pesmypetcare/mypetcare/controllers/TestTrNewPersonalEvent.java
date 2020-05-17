@@ -2,18 +2,15 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.controllers.event.TrNewPersonalEvent;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.StubPetManagerService;
-import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 
 import java.util.concurrent.ExecutionException;
 

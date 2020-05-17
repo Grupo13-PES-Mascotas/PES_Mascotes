@@ -89,6 +89,7 @@ import org.pesmypetcare.mypetcare.controllers.community.TrDeleteGroup;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteGroupImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeletePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteSubscription;
+import org.pesmypetcare.mypetcare.controllers.community.TrGetGroupImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrGetPostImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrLikePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrObtainAllGroups;
@@ -343,6 +344,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrAddGroupImage trAddGroupImage;
     private TrDeleteGroupImage trDeleteGroupImage;
     private TrSendFirebaseMessagingToken trSendFirebaseMessagingToken;
+    private TrGetGroupImage trGetGroupImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -373,9 +375,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             initializeActivity();
             setUpNavigationImage();
 
-            //askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            //askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-            //askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
             LocationUpdater.setContext(this);
             MessagingService.setCommunication(this);
         });
@@ -841,6 +843,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trGetPostImage = CommunityControllersFactory.createTrGetPostImage();
         trAddGroupImage = CommunityControllersFactory.createTrAddGroupImage();
         trDeleteGroupImage = CommunityControllersFactory.createTrDeleteGroupImage();
+        trGetGroupImage = CommunityControllersFactory.createTrGetGroupImage();
     }
 
     /**
@@ -2565,6 +2568,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
     }
 
+    /**
+     * Get the groups images.
+     * @param groups The groups to get the images from
+     */
     private void getGroupsImages(SortedSet<Group> groups) {
         List<Group> groupList = new ArrayList<>(groups);
         ExecutorService getGroupImage = Executors.newCachedThreadPool();
@@ -2582,6 +2589,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
     }
 
+    /**
+     * Update the group image.
+     * @param groupList The list of the groups to update
+     * @param finalActual THe actual group index
+     */
     private void updateGroupImage(List<Group> groupList, int finalActual) {
         SharedPreferences sharedPreferences = getSharedPreferences(GROUPS_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Group actualGroup = groupList.get(finalActual);
@@ -2593,7 +2605,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             editor.putString(actualGroup.getName(), actualGroup.getLastGroupImage().toString());
             editor.apply();
 
-            bytesImage = getGroupImage(actualGroup.getName());
+            bytesImage = getGroupImage(actualGroup);
             ImageManager.writeImage(ImageManager.GROUP_IMAGES_PATH, actualGroup.getName(), bytesImage);
         } else {
             try {
@@ -2611,10 +2623,26 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
     }
 
-    private byte[] getGroupImage(String groupName) {
-        return new byte[0];
+    /**
+     * Get the group image from the server.
+     * @param group The group to get the image from
+     * @return The image of the group in he form of an array of byte
+     */
+    private byte[] getGroupImage(Group group) {
+        trGetGroupImage.setUser(user);
+        trGetGroupImage.setGroup(group);
+        trGetGroupImage.execute();
+
+        return trGetGroupImage.getResult();
     }
 
+    /**
+     * Check whether we need to update the group image.
+     * @param groupList The list of groups
+     * @param finalActual The index of the actual group
+     * @param currentGroupDate The current group date
+     * @return True if we need to update the group image
+     */
     private boolean needToUpdateImage(List<Group> groupList, int finalActual, String currentGroupDate) {
         return "".equals(currentGroupDate) || groupList.get(finalActual).getLastGroupImage()
             .compareTo(DateTime.Builder.buildFullString(currentGroupDate)) > 0;

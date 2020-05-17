@@ -3,14 +3,14 @@ package org.pesmypetcare.mypetcare.controllers.medicalprofile;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.pets.Illness;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubMedicalProfileManagerService;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.IllnessType;
-import org.pesmypetcare.usermanagerlib.datacontainers.SeverityType;
+import org.pesmypetcare.usermanager.datacontainers.pet.IllnessType;
+import org.pesmypetcare.usermanager.datacontainers.pet.SeverityType;
 
 import java.util.concurrent.ExecutionException;
 

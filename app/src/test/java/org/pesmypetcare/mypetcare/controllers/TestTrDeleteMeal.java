@@ -13,8 +13,6 @@ import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
 
@@ -74,7 +72,6 @@ public class TestTrDeleteMeal {
         DateTime date = null;
         try {
             date = DateTime.Builder.build(2011, 2, 26, 15, 23, 56);
-        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
         } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
@@ -87,7 +84,6 @@ public class TestTrDeleteMeal {
         try {
             date = DateTime.Builder.build(2001, 2, 26, 15, 23, 56);
         } catch (InvalidFormatException e) {
-        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
             e.printStackTrace();
         }
 

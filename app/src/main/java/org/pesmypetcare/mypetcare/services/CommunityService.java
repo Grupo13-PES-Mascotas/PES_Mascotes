@@ -164,4 +164,12 @@ public interface CommunityService {
      * @return The image of the post in form of a byte array
      */
     byte[] getPostImage(User user, Post post, MessageDisplay messageDisplay);
+
+    /**
+     * Get the image of the group.
+     * @param user The user that makes the petition
+     * @param group The group to get the image from
+     * @return The image of the group in form of a byte array
+     */
+    byte[] getGroupImage(User user, Group group);
 }

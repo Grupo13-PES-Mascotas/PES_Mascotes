@@ -2,8 +2,6 @@ package org.pesmypetcare.mypetcare.controllers.community;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
-import org.pesmypetcare.communitymanager.datacontainers.MessageReceiveData;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
@@ -24,7 +22,6 @@ public class TestTrGetPostImage {
     private Group group;
     private Forum forum;
     private Post post;
-    private MessageDisplay messageData;
     private TrGetPostImage trGetPostImage;
 
     @Before
@@ -35,9 +32,6 @@ public class TestTrGetPostImage {
         post = new Post("John Doe", "I think that the huskies have to be kept cleaned. What do you think?",
             DateTime.Builder.buildFullString("2020-04-21T20:55:10"), forum);
 
-        messageData = new MessageDisplay(new MessageReceiveData("John Doe",
-            "I think that the huskies have to be kept cleaned. What do you think?"));
-
         forum.addPost(post);
         trGetPostImage = new TrGetPostImage(new StubCommunityService());
     }
@@ -46,7 +40,7 @@ public class TestTrGetPostImage {
     public void shouldGetImageFromPost() {
         trGetPostImage.setUser(user);
         trGetPostImage.setPost(post);
-        trGetPostImage.setMessageData(messageData);
+        trGetPostImage.setMessageData(null);
         trGetPostImage.execute();
 
         assertEquals("Should get the image from the post", 0x00, trGetPostImage.getResult()[0]);

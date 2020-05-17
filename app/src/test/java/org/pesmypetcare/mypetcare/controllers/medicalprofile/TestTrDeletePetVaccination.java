@@ -3,13 +3,13 @@ package org.pesmypetcare.mypetcare.controllers.medicalprofile;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubMedicalProfileManagerService;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.concurrent.ExecutionException;
 

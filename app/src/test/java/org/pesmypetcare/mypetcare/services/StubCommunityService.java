@@ -16,7 +16,6 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingEx
 import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyLikedException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -276,7 +275,7 @@ public class StubCommunityService implements CommunityService {
                 for (Forum f : g.getForums()) {
                     if (f.getName().equals(post.getForum().getName())) {
                         for (Post p : f.getPosts()) {
-                            if (p.getUsername().equals(user.getUsername())
+                            if (p.getUsername().equals(post.getUsername())
                                 && p.getCreationDate().compareTo(post.getCreationDate()) == 0) {
                                 if (p.getLikerUsername().contains(user.getUsername())) {
                                     throw new PostAlreadyLikedException();
@@ -404,6 +403,17 @@ public class StubCommunityService implements CommunityService {
 
         for (Post forumPost : Objects.requireNonNull(selectedForum).getPosts()) {
             if (forumPost.getCreationDate().compareTo(post.getCreationDate()) == 0) {
+                return new byte[] {0x00};
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public byte[] getGroupImage(User user, Group group) {
+        for (Group g : groups) {
+            if (g.getName().equals(group.getName())) {
                 return new byte[] {0x00};
             }
         }

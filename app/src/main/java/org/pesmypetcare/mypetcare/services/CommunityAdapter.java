@@ -29,7 +29,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CommunityAdapter implements CommunityService {
-    public static final int TIME = 20;
+    private static final int TIME = 20;
+    private byte[] imageBytes;
 
     @Override
     public SortedSet<Group> getAllGroups() {
@@ -405,12 +406,12 @@ public class CommunityAdapter implements CommunityService {
 
     @Override
     public void addPostImage(User user, Post post, Bitmap image) throws PostNotFoundException {
-        // Not implemented yet
+        // This method has been replaced
     }
 
     @Override
     public void deletePostImage(User user, Post post) throws PostNotFoundException {
-        // Not implemented yet
+        // This method has been replaced
     }
 
     @Override
@@ -463,7 +464,30 @@ public class CommunityAdapter implements CommunityService {
             }
         }*/
 
-        return null;
+        return new byte[0];
+    }
+
+    @Override
+    public byte[] getGroupImage(User user, Group group) {
+        imageBytes = new byte[0];
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                imageBytes = ServiceLocator.getInstance().getGroupManagerClient().getGroupIcon(group.getName());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+
+        executorService.shutdown();
+
+        try {
+            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return imageBytes;
     }
 
     /**

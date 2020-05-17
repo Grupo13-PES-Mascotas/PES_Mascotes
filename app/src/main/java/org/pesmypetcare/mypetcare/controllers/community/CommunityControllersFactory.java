@@ -153,4 +153,12 @@ public class CommunityControllersFactory {
     public static TrGetPostImage createTrGetPostImage() {
         return new TrGetPostImage(new CommunityAdapter());
     }
+
+    /**
+     * Create the transaction to get the image of a group.
+     * @return The transaction to get the image of a group
+     */
+    public static TrGetGroupImage createTrGetGroupImage() {
+        return new TrGetGroupImage(new CommunityAdapter());
+    }
 }

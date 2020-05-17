@@ -10,7 +10,6 @@ import org.pesmypetcare.mypetcare.features.community.posts.NotLikedPostException
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import static org.junit.Assert.assertEquals;
 
@@ -57,7 +56,7 @@ public class TestTrUnlikePost {
         trUnlikePost.setPost(post);
         trUnlikePost.execute();
 
-        assertEquals("Should decrement the number of likes", 1, post.getLikes());
+        assertEquals("Should decrement the number of likes", 0, post.getLikes());
     }
 
     @After

@@ -12,8 +12,6 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.StubMealManagerService;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
 
@@ -52,9 +50,8 @@ public class TestTrUpdatePetMeal {
     }
 
     @Test
-    public void shouldUpdateMealDate() throws MealAlreadyExistingException,
-        org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException, ExecutionException, InterruptedException {
-    public void shouldUpdateMealDate() throws MealAlreadyExistingException, InvalidFormatException {
+    public void shouldUpdateMealDate() throws MealAlreadyExistingException, InvalidFormatException, ExecutionException,
+        InterruptedException {
         trNewPetMeal.setUser(user);
         trNewPetMeal.setPet(linux);
         trNewPetMeal.setMeal(originalMeal);
@@ -73,7 +70,6 @@ public class TestTrUpdatePetMeal {
         try {
             date = DateTime.Builder.build(2020, 2, 26, 15, 23, 56);
         } catch (InvalidFormatException e) {
-        } catch (org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException e) {
             e.printStackTrace();
         }
 
