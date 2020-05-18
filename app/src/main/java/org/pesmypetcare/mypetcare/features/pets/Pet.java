@@ -5,10 +5,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 
 import java.text.ParseException;
