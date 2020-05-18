@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
+import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 
 import java.util.ArrayList;
@@ -12,24 +13,26 @@ import java.util.TreeMap;
 
 public class PetHealthInfo {
     private Map<DateTime, Double> weight;
+    private Map<DateTime, Double> recommendedDailyKiloCalories;
     private Map<DateTime, Double> dailyKiloCalories;
     private Map<DateTime, Integer> exerciseFrequency;
     private Map<DateTime, Integer> weeklyExercise;
     private Map<DateTime, Double> weeklyKiloCaloriesAverage;
+    private Map<DateTime, Integer> weeklyStoredMeals;
     private Map<DateTime, Integer> washFrequency;
-    private Map<DateTime, Integer> weeklyMeals;
     private String pathologies;
     private List<String> petNeeds;
 
     public PetHealthInfo() {
         this.weight = new TreeMap<>(new TreeComparator());
+        this.recommendedDailyKiloCalories = new TreeMap<>(new TreeComparator());
         this.dailyKiloCalories = new TreeMap<>(new TreeComparator());
         this.exerciseFrequency = new TreeMap<>(new TreeComparator());
         this.weeklyExercise = new TreeMap<>(new TreeComparator());
         this.weeklyKiloCaloriesAverage = new TreeMap<>(new TreeComparator());
+        this.weeklyStoredMeals = new TreeMap<>(new TreeComparator());
         this.washFrequency = new TreeMap<>(new TreeComparator());
         this.petNeeds = new ArrayList<>();
-        this.weeklyMeals = new TreeMap<>(new TreeComparator());
     }
 
     /**
@@ -84,8 +87,8 @@ public class PetHealthInfo {
      * Getter of the recommendedDailyKiloCalories attribute.
      * @return The recommendedDailyKiloCalories attribute
      */
-    public Map<DateTime, Double> getDailyKiloCalories() {
-        return dailyKiloCalories;
+    public Map<DateTime, Double> getRecommendedDailyKiloCalories() {
+        return recommendedDailyKiloCalories;
     }
 
     /**
@@ -94,10 +97,10 @@ public class PetHealthInfo {
      * or -1 if the pet does not have any recommended daily kilocalories stored
      */
     public double getLastRecommendedDailyKiloCalories() {
-        if (dailyKiloCalories.isEmpty()) {
+        if (recommendedDailyKiloCalories.isEmpty()) {
             return -1;
         }
-        return ((TreeMap<DateTime, Double>) dailyKiloCalories).lastEntry().getValue();
+        return ((TreeMap<DateTime, Double>) recommendedDailyKiloCalories).lastEntry().getValue();
     }
 
     /**
@@ -106,8 +109,8 @@ public class PetHealthInfo {
      * @return The recommendedDailyKiloCalories of the pet for the specified date or -1 if the date was not found
      */
     public double getRecommendedDailyKiloCaloriesForDate(DateTime date) {
-        if (dailyKiloCalories.containsKey(date)) {
-            return dailyKiloCalories.get(date);
+        if (recommendedDailyKiloCalories.containsKey(date)) {
+            return recommendedDailyKiloCalories.get(date);
         }
         return -1;
     }
@@ -118,16 +121,7 @@ public class PetHealthInfo {
      * @param kCal The recommendedDailyKiloCalories of the pet in that date
      */
     public void addRecommendedDailyKiloCaloriesForDate(DateTime date, double kCal) {
-        /*date.setHour(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
-        if (dailyKiloCalories.containsKey(date)) {
-            double storedKcal = dailyKiloCalories.get(date);
-            dailyKiloCalories.put(date, storedKcal + kCal);
-        } else {
-            this.dailyKiloCalories.put(date, kCal);
-        }
-        this.addWeeklyKiloCalAverageForDate(date, kCal);*/
+        recommendedDailyKiloCalories.put(date, kCal);
     }
 
     /**
@@ -135,7 +129,7 @@ public class PetHealthInfo {
      * @param date The date for which we want to remove the recommendedDailyKiloCalories of the pet
      */
     public void deleteRecommendedDailyKiloCaloriesForDate(DateTime date) {
-        this.dailyKiloCalories.remove(date);
+        this.recommendedDailyKiloCalories.remove(date);
     }
 
     /**
@@ -203,6 +197,74 @@ public class PetHealthInfo {
     }
 
     /**
+     * Getter of the dailyKiloCalories attribute.
+     * @return The dailyKiloCalories attribute
+     */
+    public Map<DateTime, Double> getDailyKiloCalories() {
+        return dailyKiloCalories;
+    }
+
+    /**
+     * Method that gets the last stored daily kilocalories of the pet.
+     * @return The last stored daily kilocalories of the pet
+     * or -1 if the pet does not have any daily kilocalories stored
+     */
+    public double getLastDailyKiloCalories() {
+        if (dailyKiloCalories.isEmpty()) {
+            return -1;
+        }
+        return ((TreeMap<DateTime, Double>) dailyKiloCalories).lastEntry().getValue();
+    }
+
+    /**
+     * Getter of the dailyKiloCalories for an specific date.
+     * @param date The date for which we want to get the dailyKiloCalories of the pet
+     * @return The dailyKiloCalories of the pet for the specified date or -1 if the date was not found
+     */
+    public double getDailyKiloCaloriesForDate(DateTime date) {
+        if (dailyKiloCalories.containsKey(date)) {
+            return dailyKiloCalories.get(date);
+        }
+        return -1;
+    }
+
+    /**
+     * Method that adds, or replaces if date is already present, a new dailyKiloCalories.
+     * @param date The date for which we want to add the dailyKiloCalories of the pet
+     * @param kCal The dailyKiloCalories of the pet in that date
+     */
+    public void addDailyKiloCaloriesForDate(DateTime date, double kCal) throws InvalidFormatException {
+        String strDate = date.toDateString();
+        DateTime dateTime = DateTime.Builder.buildDateString(strDate);
+
+        if (!dailyKiloCalories.containsKey(dateTime)) {
+            dailyKiloCalories.put(dateTime, kCal);
+        } else {
+            double storedKcal = dailyKiloCalories.get(dateTime);
+            dailyKiloCalories.put(dateTime, storedKcal + kCal);
+        }
+
+        addWeeklyKiloCalAverageForDate(date, kCal);
+    }
+
+    /**
+     * Method that removes a dailyKiloCalories for a date.
+     * @param date The date for which we want to remove the dailyKiloCalories of the pet
+     * @param currentMealKcal The kilocalories of the meal that is being deleted
+     */
+    public void deleteDailyKiloCaloriesForDate(DateTime date, double currentMealKcal) throws InvalidFormatException {
+        if (dailyKiloCalories.containsKey(date)) {
+            double storedKcal = dailyKiloCalories.get(date);
+            if (storedKcal - currentMealKcal == 0) {
+                this.dailyKiloCalories.remove(date);
+            } else {
+                this.dailyKiloCalories.put(date, storedKcal - currentMealKcal);
+            }
+            removeWeeklyKiloCalAverageForDate(date, currentMealKcal);
+        }
+    }
+
+    /**
      * Getter of the weeklyExercise attribute.
      * @return The weeklyExercise attribute
      */
@@ -226,9 +288,10 @@ public class PetHealthInfo {
      * @param date The date for which we want to obtain de weeklyExercise
      * @return The weeklyExercise for the given date, or null if not present
      */
-    public Integer getWeeklyExerciseForDate(DateTime date) {
-        if (weeklyExercise.containsKey(date)) {
-            return weeklyExercise.get(date);
+    public Integer getWeeklyExerciseForDate(DateTime date) throws InvalidFormatException {
+        DateTime mondayDate = this.obtainDateMonday(date);
+        if (weeklyExercise.containsKey(mondayDate)) {
+            return weeklyExercise.get(mondayDate);
         }
         return null;
     }
@@ -238,16 +301,31 @@ public class PetHealthInfo {
      * @param date The date for which we want to add the event
      * @param exercise The exercise that we want to add for that given date
      */
-    public void addWeeklyExerciseForDate(DateTime date, Integer exercise) {
-        this.weeklyExercise.put(date, exercise);
+    public void addWeeklyExerciseForDate(DateTime date, int exercise) throws InvalidFormatException {
+        DateTime mondayDate = this.obtainDateMonday(date);
+        if (!weeklyExercise.containsKey(mondayDate)) {
+            weeklyExercise.put(mondayDate, exercise);
+        } else {
+            int storedExercise = weeklyExercise.get(mondayDate);
+            weeklyExercise.put(mondayDate, storedExercise + exercise);
+        }
     }
 
     /**
      * Method that removes the exercise for a given date.
      * @param date The given date for which we want to remove the event
+     * @param exercise The amount of exercise that has to be removed
      */
-    public void removeWeeklyExerciseForDate(DateTime date) {
-        this.weeklyExercise.remove(date);
+    public void removeWeeklyExerciseForDate(DateTime date, int exercise) throws InvalidFormatException {
+        DateTime mondayDate = this.obtainDateMonday(date);
+        if (weeklyExercise.containsKey(mondayDate)) {
+            int storedExercise = weeklyExercise.get(mondayDate);
+            if (storedExercise - exercise == 0) {
+                weeklyExercise.remove(mondayDate);
+            } else {
+                weeklyExercise.put(mondayDate, storedExercise - exercise);
+            }
+        }
     }
 
     /**
@@ -275,9 +353,10 @@ public class PetHealthInfo {
      * @param date The given date for which we want to obtain the event.
      * @return The weeklyKiloCalAverage for the given date, or -1 if the date is not present
      */
-    public double getWeeklyKiloCalAverageForDate(DateTime date) {
-        if (weeklyKiloCaloriesAverage.containsKey(date)) {
-            return weeklyKiloCaloriesAverage.get(date);
+    public double getWeeklyKiloCalAverageForDate(DateTime date) throws InvalidFormatException {
+        DateTime mondayDate = this.obtainDateMonday(date);
+        if (weeklyKiloCaloriesAverage.containsKey(mondayDate)) {
+            return weeklyKiloCaloriesAverage.get(mondayDate);
         }
         return -1;
     }
@@ -287,40 +366,51 @@ public class PetHealthInfo {
      * @param date The date for which we want to add the weeklyKiloCalAvg
      * @param kcal The kcal to add for a given date
      */
-    public void addWeeklyKiloCalAverageForDate(DateTime date, double kcal) {
-        /*obtainDateMonday(date);
-        if (weeklyKiloCaloriesAverage.containsKey(date)) {
-            //int n = weeklyMeals.get(date);
-            double storedKcal = weeklyKiloCaloriesAverage.get(date);
-            weeklyKiloCaloriesAverage.put(date, storedKcal + kcal);
+    public void addWeeklyKiloCalAverageForDate(DateTime date, double kcal) throws InvalidFormatException {
+        DateTime mondayDate = this.obtainDateMonday(date);
+        if (!weeklyKiloCaloriesAverage.containsKey(mondayDate)) {
+            weeklyStoredMeals.put(mondayDate, 1);
+            weeklyKiloCaloriesAverage.put(mondayDate, kcal);
         } else {
-            this.weeklyKiloCaloriesAverage.put(date, kcal);
-            this.weeklyMeals.put(date, 1);
-        }*/
+            double oldKcalAvg = weeklyKiloCaloriesAverage.get(mondayDate);
+            int size = weeklyStoredMeals.get(mondayDate);
+            double newKcalAvg = (size * oldKcalAvg + kcal) / (size + 1);
+            weeklyKiloCaloriesAverage.put(mondayDate, newKcalAvg);
+            weeklyStoredMeals.put(mondayDate, weeklyStoredMeals.get(mondayDate) + 1);
+        }
+    }
+
+    /**
+     * Method that removes the weeklyKiloCalAvg for a given date.
+     * @param date The date for which we want to remove the weeklyKiloCalAvg
+     * @param kcal The kcal that has to be removed from the weekly kcal
+     */
+    public void removeWeeklyKiloCalAverageForDate(DateTime date, double kcal) throws InvalidFormatException {
+        DateTime mondayDate = this.obtainDateMonday(date);
+        if (weeklyKiloCaloriesAverage.containsKey(mondayDate)) {
+            double oldKcalAvg = weeklyKiloCaloriesAverage.get(mondayDate);
+            int size = weeklyStoredMeals.get(mondayDate);
+            double newKcalAvg = (size * oldKcalAvg - kcal) / (size - 1);
+            weeklyKiloCaloriesAverage.put(mondayDate, newKcalAvg);
+            weeklyStoredMeals.put(mondayDate, weeklyStoredMeals.get(mondayDate) - 1);
+        }
     }
 
     /**
      * Obtains the monday of the indicated day.
      * @param date The date for which we want to find the monday
      */
-    private void obtainDateMonday(DateTime date) {
+    private DateTime obtainDateMonday(DateTime date) throws InvalidFormatException {
         Calendar c = Calendar.getInstance();
         c.set(date.getYear(), date.getMonth(), date.getDay());
         int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
         while (dayOfWeek != Calendar.MONDAY) {
             date.decreaseDay();
+            c.set(date.getYear(), date.getMonth(), date.getDay());
+            dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
         }
-        date.setHour(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
-    }
-
-    /**
-     * Method that removes the weeklyKiloCalAvg for a given date.
-     * @param date The date for which we want to remove the weeklyKiloCalAvg
-     */
-    public void removeWeeklyKiloCalAverageForDate(DateTime date) {
-        this.weeklyKiloCaloriesAverage.remove(date);
+        return DateTime.Builder.build(c.get(Calendar.YEAR), c.get(Calendar.MONTH),
+                c.get(Calendar.DAY_OF_MONTH));
     }
 
     /**
@@ -419,7 +509,7 @@ public class PetHealthInfo {
     public String toString() {
         return "PetHealthInfo{"
             + "weight=" + weight
-            + ", recommendedDailyKiloCalories=" + dailyKiloCalories
+            + ", recommendedDailyKiloCalories=" + recommendedDailyKiloCalories
             + ", exerciseFrequency=" + exerciseFrequency
             + ", weeklyExercise=" + weeklyExercise
             + ", weeklyKiloCaloriesAverage=" + weeklyKiloCaloriesAverage

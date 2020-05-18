@@ -18,13 +18,14 @@ public class StubGoogleCalendarService implements GoogleCalendarService {
     private static final String JOHN_DOE = "johnDoe";
     private static final String JOHN_DOE_2 = "johnDoe2";
     private static final String DINKY = "Dinky";
+    private static final double WEIGHT = 10.0;
     private Map<String, ArrayList<Pet>> data;
 
     public StubGoogleCalendarService() {
         this.data = new HashMap<>();
         this.data.put(JOHN_DOE, new ArrayList<>());
         Pet pet = new Pet(DINKY);
-        pet.setWeight(10.0);
+        pet.setWeightForCurrentDate(WEIGHT);
         Objects.requireNonNull(this.data.get(JOHN_DOE)).add(pet);
 
         this.data.put(JOHN_DOE_2, new ArrayList<>());

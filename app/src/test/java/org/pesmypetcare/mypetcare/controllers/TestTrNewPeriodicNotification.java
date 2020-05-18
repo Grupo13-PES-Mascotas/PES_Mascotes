@@ -49,9 +49,9 @@ public class TestTrNewPeriodicNotification {
         pet.setGender(GenderType.Female);
         pet.setBirthDate(DateTime.Builder.buildDateString(BIRTH));
         pet.setBreed(HUSKY);
-        pet.setRecommendedDailyKiloCalories(2);
-        pet.setWashFrequency(2);
-        pet.setWeight(2);
+        pet.setRecommendedDailyKiloCaloriesForCurrentDate(2);
+        pet.setWashFrequencyForCurrentDate(2);
+        pet.setWeightForCurrentDate(2);
         pet.setOwner(user);
         pet2 = new Pet();
         setPet2();
@@ -63,9 +63,9 @@ public class TestTrNewPeriodicNotification {
         pet2.setGender(GenderType.Female);
         pet.setBirthDate(DateTime.Builder.buildDateString(BIRTH));
         pet2.setBreed(HUSKY);
-        pet2.setRecommendedDailyKiloCalories(2);
-        pet2.setWashFrequency(2);
-        pet2.setWeight(2);
+        pet2.setRecommendedDailyKiloCaloriesForCurrentDate(2);
+        pet2.setWashFrequencyForCurrentDate(2);
+        pet2.setWeightForCurrentDate(2);
         User user2 = new User("Paco", "", "");
         pet2.setOwner(user2);
     }

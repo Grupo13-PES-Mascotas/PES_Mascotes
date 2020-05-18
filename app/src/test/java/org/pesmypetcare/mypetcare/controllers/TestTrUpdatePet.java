@@ -35,9 +35,9 @@ public class TestTrUpdatePet {
         pet.setGender(GenderType.Female);
         pet.setBirthDate(DateTime.Builder.buildDateString("2020-03-02"));
         pet.setBreed(HUSKY);
-        pet.setRecommendedDailyKiloCalories(2);
-        pet.setWashFrequency(2);
-        pet.setWeight(2);
+        pet.setRecommendedDailyKiloCaloriesForCurrentDate(2);
+        pet.setWashFrequencyForCurrentDate(2);
+        pet.setWeightForCurrentDate(2);
         trUpdatePet = new TrUpdatePet(new StubPetManagerService());
     }
 
@@ -49,8 +49,8 @@ public class TestTrUpdatePet {
 
     @Test
     public void shouldChangeWeight() {
-        pet.setWeight(NUMBER_30);
-        assertEquals("Correct weight change", NUMBER_30, pet.getWeight(), 0);
+        pet.setWeightForCurrentDate(NUMBER_30);
+        assertEquals("Correct weight change", NUMBER_30, pet.getLastWeight(), 0);
     }
 
     @Test
@@ -68,7 +68,7 @@ public class TestTrUpdatePet {
     @Test
     public void shouldUpdatePetService() throws UserIsNotOwnerException {
         usr.addPet(pet);
-        pet.setWeight(NUMBER_20);
+        pet.setWeightForCurrentDate(NUMBER_20);
         trUpdatePet.setUser(usr);
         trUpdatePet.setPet(pet);
         trUpdatePet.execute();
@@ -107,9 +107,9 @@ public class TestTrUpdatePet {
         pet2.setGender(GenderType.Male);
         pet2.setBirthDate(DateTime.Builder.buildDateString("2020-03-02"));
         pet2.setBreed(HUSKY);
-        pet2.setRecommendedDailyKiloCalories(2);
-        pet2.setWashFrequency(2);
-        pet2.setWeight(2);
+        pet2.setRecommendedDailyKiloCaloriesForCurrentDate(2);
+        pet2.setWashFrequencyForCurrentDate(2);
+        pet2.setWeightForCurrentDate(2);
         return pet2;
     }
 }

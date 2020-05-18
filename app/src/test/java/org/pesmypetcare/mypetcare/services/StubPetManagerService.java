@@ -27,14 +27,14 @@ public class StubPetManagerService implements PetManagerService {
         this.data = new HashMap<>();
         this.data.put(JOHN_DOE, new ArrayList<>());
         Pet pet = new Pet(DINKY);
-        pet.setWeight(10.0);
+        pet.setWeightForCurrentDate(10.0);
         pet.addExercise(new Exercise("Frisbee", "Playing at the beach",
             DateTime.Builder.buildFullString("2020-05-04T10:00:00"),
             DateTime.Builder.buildFullString("2020-05-04T11:00:00")));
         Objects.requireNonNull(this.data.get(JOHN_DOE)).add(pet);
 
         pet = new Pet(LINUX);
-        pet.setWeight(10.0);
+        pet.setWeightForCurrentDate(10.0);
         Objects.requireNonNull(this.data.get(JOHN_DOE)).add(pet);
 
         this.data.put(JOHN_DOE_2, new ArrayList<>());
@@ -116,7 +116,7 @@ public class StubPetManagerService implements PetManagerService {
     public void addWeight(User user, Pet pet, double newWeight, DateTime dateTime) {
         ArrayList<Pet> pets = data.get(user.getUsername());
         int petIndex = Objects.requireNonNull(pets).indexOf(pet);
-        pets.get(petIndex).setWeightForDate(newWeight, dateTime);
+        pets.get(petIndex).setWeightForCurrentDate(newWeight, dateTime);
     }
 
     @Override

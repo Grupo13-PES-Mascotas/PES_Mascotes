@@ -61,6 +61,6 @@ public class TrAddNewWeight {
         }
 
         petManagerService.addWeight(user, pet, newWeight, dateTime);
-        pet.setWeightForDate(newWeight, dateTime);
+        pet.setWeightForCurrentDate(newWeight, dateTime);
     }
 }

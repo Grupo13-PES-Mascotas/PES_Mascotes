@@ -141,6 +141,7 @@ public class InfoPetMealsFragment extends Fragment {
             InfoPetFragment.getCommunication().deletePetMeal(pet, meal);
             initializeMealsLayoutView();
             dialog.dismiss();
+            InfoPetHealthFragment.updateBarChart();
         });
     }
 
@@ -222,21 +223,28 @@ public class InfoPetMealsFragment extends Fragment {
         } catch (MealAlreadyExistingException e) {
             e.printStackTrace();
         }
+
+        InfoPetHealthFragment.updateBarChart();
     }
 
     /**
      * Method responsible for initializing the editButton listener.
      */
     private void initializeEditButtonListener() {
-        String newDate = getDateTime().toString();
+        DateTime newDateTime = DateTime.Builder.buildDateString(mealDate.getText().toString());
+        newDateTime.setHour(selectedHour);
+        newDateTime.setMinutes(selectedMin);
+
         String mealName = Objects.requireNonNull(inputMealName.getText()).toString();
         double kcal = Double.parseDouble(Objects.requireNonNull(inputMealCal.getText()).toString());
         meal.setMealName(mealName);
         meal.setKcal(kcal);
-        InfoPetFragment.getCommunication().updatePetMeal(pet, meal, newDate, updatesDate);
+        InfoPetFragment.getCommunication().updatePetMeal(pet, meal, newDateTime.toString(), updatesDate);
         if (updatesDate) {
-            meal.setMealDate(DateTime.Builder.buildFullString(newDate));
+            meal.setMealDate(newDateTime);
         }
+
+        InfoPetHealthFragment.updateBarChart();
     }
 
     /**
