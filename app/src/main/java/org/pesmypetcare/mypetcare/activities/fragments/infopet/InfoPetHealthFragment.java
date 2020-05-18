@@ -32,10 +32,10 @@ import java.util.Objects;
 public class InfoPetHealthFragment extends Fragment implements HealthBottomSheetCommunication {
     private static final String BOTTOM_SHEET_TAG = "Bottom sheet";
     private static final int CHART_SIZE = 500;
+    private static BarChart barChart;
     private FragmentInfoPetHealthBinding binding;
     private TextView statisticTitle;
     private MaterialButton btnAddNewStatistic;
-    private static BarChart barChart;
     private HealthBottomSheet healthBottomSheet;
     private MaterialDatePicker materialDatePicker;
 
