@@ -1,17 +1,19 @@
 package org.pesmypetcare.mypetcare.activities.views.circularentry.subscriber;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 public class SubscriberComponentView extends CircularEntryView {
     private static final String HYPHEN = "-";
@@ -34,9 +36,14 @@ public class SubscriberComponentView extends CircularEntryView {
     @Override
     protected CircularImageView getImage() {
         CircularImageView image = new CircularImageView(getCurrentActivity(), null);
-        Drawable groupDrawable = getResources().getDrawable(R.drawable.user_icon_sample);
+        Bitmap userImage = group.getUserImage(username);
+        Drawable subscriberImage = getResources().getDrawable(R.drawable.user_icon_sample, null);
 
-        image.setDrawable(groupDrawable);
+        if (userImage != null) {
+            subscriberImage = new BitmapDrawable(getResources(), userImage);
+        }
+
+        image.setDrawable(subscriberImage);
         int imageDimensions = getImageDimensions();
         image.setLayoutParams(new LinearLayout.LayoutParams(imageDimensions, imageDimensions));
         int imageId = View.generateViewId();
@@ -66,6 +73,11 @@ public class SubscriberComponentView extends CircularEntryView {
 
     @Override
     protected ImageView getRightImage() {
+        return null;
+    }
+
+    @Override
+    protected ImageView getBottomImage() {
         return null;
     }
 }

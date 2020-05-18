@@ -2,12 +2,12 @@ package org.pesmypetcare.mypetcare.controllers.vetvisits;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.VetVisit;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubVetVisitsManagerService;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.concurrent.ExecutionException;
 

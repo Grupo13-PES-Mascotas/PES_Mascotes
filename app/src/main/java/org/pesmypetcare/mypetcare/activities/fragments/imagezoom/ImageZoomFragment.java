@@ -15,20 +15,21 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
+import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.databinding.FragmentImageZoomBinding;
+import org.pesmypetcare.mypetcare.utilities.androidservices.GalleryService;
 
 import java.util.Objects;
 
 public class ImageZoomFragment extends Fragment {
-    private static final String[] IMAGE_MIME_TYPES = {"image/jpeg", "image/png"};
-    private static final int GALLERY_ZOOM_REQUEST_CODE = 0;
+    private static final int GALLERY_ZOOM_REQUEST_CODE = 100;
     private static final float RADIUS = 1000.0f;
     private static Drawable drawable;
-    private static boolean isMainActivity;
-
+    private static int origin;
     private static boolean isDefaultImage = true;
+    private static boolean isImageDeleted = false;
 
     private FragmentImageZoomBinding binding;
     private ImageZoomCommunication communication;
@@ -65,7 +66,8 @@ public class ImageZoomFragment extends Fragment {
         FloatingActionButton flDeleteImage = binding.flDeleteImage;
 
         flModifyImage.setOnClickListener(view -> {
-            Intent imagePicker = getGalleryIntent();
+            Intent imagePicker = GalleryService.getGalleryIntent();
+            MainActivity.setFragmentRequestCode(GALLERY_ZOOM_REQUEST_CODE);
             startActivityForResult(imagePicker, GALLERY_ZOOM_REQUEST_CODE);
         });
 
@@ -82,17 +84,49 @@ public class ImageZoomFragment extends Fragment {
     private MaterialAlertDialogBuilder createAlertDialog() {
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(
             Objects.requireNonNull(getActivity()));
-        alertDialog.setTitle(R.string.delete_pet_image_title);
-        alertDialog.setMessage(R.string.delete_pet_image_text);
+        switch (origin) {
+            case MainActivity.MAIN_ACTIVITY_ZOOM_IDENTIFIER:
+                alertDialog.setTitle(R.string.delete_user_image_title);
+                alertDialog.setMessage(R.string.delete_user_image_text);
+                break;
+            case InfoPetFragment.INFO_PET_ZOOM_IDENTIFIER:
+                alertDialog.setTitle(R.string.delete_pet_image_title);
+                alertDialog.setMessage(R.string.delete_pet_image_text);
+                break;
+            case InfoGroupFragment.INFO_GROUP_ZOOM_IDENTIFIER:
+                alertDialog.setTitle(R.string.delete_group_image_title);
+                alertDialog.setMessage(R.string.delete_group_image_text);
+                break;
+            default:
+        }
+
         alertDialog.setPositiveButton(R.string.affirmative_response, (dialog, which) -> {
-            if (isMainActivity) {
+            isImageDeleted = true;
+            switch (origin) {
+                case MainActivity.MAIN_ACTIVITY_ZOOM_IDENTIFIER:
+                    setDrawable(getResources().getDrawable(R.drawable.user_icon_sample, null));
+                    MainActivity.setDefaultUserImage();
+                    break;
+                case InfoPetFragment.INFO_PET_ZOOM_IDENTIFIER:
+                    setDrawable(getResources().getDrawable(R.drawable.single_paw, null));
+                    InfoPetFragment.setDefaultPetImage();
+                    InfoPetFragment.setIsDefaultPetImage(true);
+                    break;
+                case InfoGroupFragment.INFO_GROUP_ZOOM_IDENTIFIER:
+                    setDrawable(getResources().getDrawable(R.drawable.icon_group, null));
+                    break;
+                default:
+            }
+
+            /*
+            if (origin == MainActivity.MAIN_ACTIVITY_ZOOM_IDENTIFIER) {
                 setDrawable(getResources().getDrawable(R.drawable.user_icon_sample, null));
                 MainActivity.setDefaultUserImage();
             } else {
                 setDrawable(getResources().getDrawable(R.drawable.single_paw, null));
                 InfoPetFragment.setDefaultPetImage();
                 InfoPetFragment.setIsDefaultPetImage(true);
-            }
+            }*/
         });
         alertDialog.setNegativeButton(R.string.negative_response, null);
         return alertDialog;
@@ -100,17 +134,6 @@ public class ImageZoomFragment extends Fragment {
 
     public static void setIsDefaultImage(boolean isDefaultImage) {
         ImageZoomFragment.isDefaultImage = isDefaultImage;
-    }
-
-    /**
-     * Gets the gallery intent.
-     * @return The gallery intent
-     */
-    private Intent getGalleryIntent() {
-        Intent imagePicker = new Intent(Intent.ACTION_PICK);
-        imagePicker.setType("image/*");
-        imagePicker.putExtra(Intent.EXTRA_MIME_TYPES, IMAGE_MIME_TYPES);
-        return imagePicker;
     }
 
     /**
@@ -131,19 +154,19 @@ public class ImageZoomFragment extends Fragment {
         initializeCircularImageView();
     }
 
-    /**
-     * Getter of the isMainActivity attribute.
-     * @return The value of isMainActivity
-     */
-    public static boolean isMainActivity() {
-        return isMainActivity;
+    public static int getOrigin() {
+        return origin;
     }
 
-    /**
-     * Setter of the isMainActivity attribute.
-     * @param isMainActivity The value to set to the isMainActivity attribute
-     */
-    public static void setIsMainActivity(boolean isMainActivity) {
-        ImageZoomFragment.isMainActivity = isMainActivity;
+    public static void setOrigin(int origin) {
+        ImageZoomFragment.origin = origin;
+    }
+
+    public static boolean isImageDeleted() {
+        return isImageDeleted;
+    }
+
+    public static void setIsImageDeleted(boolean isImageDeleted) {
+        ImageZoomFragment.isImageDeleted = isImageDeleted;
     }
 }

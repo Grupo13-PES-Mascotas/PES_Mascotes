@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+import org.pesmypetcare.httptools.utilities.DateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;

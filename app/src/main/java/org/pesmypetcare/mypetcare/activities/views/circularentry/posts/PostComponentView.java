@@ -1,6 +1,8 @@
 package org.pesmypetcare.mypetcare.activities.views.circularentry.posts;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -19,6 +21,8 @@ public class PostComponentView extends CircularEntryView {
     private static final String DATE_TIME_SEPARATOR = "T";
     private static final char HOUR_SEPARATOR = ':';
     private static final String WHITE_SPACE = " ";
+    private static final int BOTTOM_IMAGE_HEIGHT = 500;
+
     private Post post;
     private User user;
 
@@ -35,9 +39,14 @@ public class PostComponentView extends CircularEntryView {
     @Override
     protected CircularImageView getImage() {
         CircularImageView image = new CircularImageView(getCurrentActivity(), null);
-        Drawable groupDrawable = getResources().getDrawable(R.drawable.single_paw, null);
+        Drawable postDrawable = getResources().getDrawable(R.drawable.user_icon_sample, null);
+        Bitmap userImage = post.getForum().getGroup().getUserImage(post.getUsername());
 
-        image.setDrawable(groupDrawable);
+        if (userImage != null) {
+            postDrawable = new BitmapDrawable(getResources(), userImage);
+        }
+
+        image.setDrawable(postDrawable);
         int imageDimensions = getImageDimensions();
         image.setLayoutParams(new LinearLayout.LayoutParams(imageDimensions, imageDimensions));
         int imageId = View.generateViewId();
@@ -56,8 +65,16 @@ public class PostComponentView extends CircularEntryView {
         String strCreationDate = post.getCreationDate().toString();
         String[] dateTimeParts = strCreationDate.split(DATE_TIME_SEPARATOR);
 
-        return post.getUsername() + WHITE_SPACE + dateTimeParts[DATE] + WHITE_SPACE
-            + dateTimeParts[HOUR].substring(0, dateTimeParts[HOUR].lastIndexOf(HOUR_SEPARATOR));
+        String likesLabel;
+
+        if (post.getLikes() == 1) {
+            likesLabel = getResources().getString(R.string.likes_singular);
+        } else {
+            likesLabel = getResources().getString(R.string.likes);
+        }
+
+        return post.getUsername() + WHITE_SPACE + dateTimeParts[HOUR].substring(0,
+            dateTimeParts[HOUR].lastIndexOf(HOUR_SEPARATOR)) + " (" + post.getLikes() + " " + likesLabel + ")";
     }
 
     @Override
@@ -67,9 +84,11 @@ public class PostComponentView extends CircularEntryView {
 
     @Override
     protected ImageView getRightImage() {
-        ImageView likeImage = new ImageView(getContext(), null);
-        likeImage.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        likeImage.setId(View.generateViewId());
+        if (post.getUsername().equals(user.getUsername())) {
+            return null;
+        }
+
+        ImageView likeImage = getBasicImageView();
 
         if (post.isLikedByUser(user.getUsername())) {
             likeImage.setImageDrawable(getResources().getDrawable(R.drawable.icon_like_blue, null));
@@ -78,5 +97,30 @@ public class PostComponentView extends CircularEntryView {
         }
 
         return likeImage;
+    }
+
+    /**
+     * Get the basic image view.
+     * @return The basic image view
+     */
+    private ImageView getBasicImageView() {
+        ImageView imageView = new ImageView(getContext(), null);
+        imageView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        imageView.setId(View.generateViewId());
+        return imageView;
+    }
+
+    @Override
+    protected ImageView getBottomImage() {
+        if (post.getPostImage() == null) {
+            return null;
+        }
+
+        ImageView bottomImage = new ImageView(getContext(), null);
+        bottomImage.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, BOTTOM_IMAGE_HEIGHT));
+        bottomImage.setId(View.generateViewId());
+        bottomImage.setImageBitmap(post.getPostImage());
+
+        return bottomImage;
     }
 }

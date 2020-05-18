@@ -10,9 +10,12 @@ import androidx.fragment.app.Fragment;
 import org.pesmypetcare.mypetcare.databinding.FragmentNotImplementedBinding;
 
 public class NotImplementedFragment extends Fragment {
+    private FragmentNotImplementedBinding binding;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentNotImplementedBinding binding = FragmentNotImplementedBinding.inflate(inflater, container, false);
+        binding = FragmentNotImplementedBinding.inflate(inflater, container, false);
+
         return binding.getRoot();
     }
 

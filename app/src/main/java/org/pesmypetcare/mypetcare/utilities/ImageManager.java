@@ -12,10 +12,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.Arrays;
 
 public class ImageManager {
     public static final String PET_PROFILE_IMAGES_PATH = "petProfileImages";
     public static final String USER_PROFILE_IMAGES_PATH = "userProfileImages";
+    public static final String GROUP_IMAGES_PATH = "groupImages";
+    public static final String POST_IMAGES_PATH = "postImages";
     private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath()
             + File.separator + "MyPetCare";
     private static final String EXTENSION = ".jpg";
@@ -75,6 +78,10 @@ public class ImageManager {
      */
     public static byte[] readImage(String relativePath, String imageName) throws IOException {
         String imagePath = PATH + File.separator + relativePath + File.separator + imageName + EXTENSION;
+        System.out.println("IMAGE PATH " + imagePath);
+        System.out.println("EXISTS " + new File(imagePath).exists());
+        System.out.println("DIRECTORY " + Arrays.toString(new File("/storage/emulated/0/MyPetCare/postImages")
+            .listFiles()));
         FileChannel channel = new FileInputStream(imagePath).getChannel();
         MappedByteBuffer buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
         byte[] bytes = new byte[buffer.remaining()];

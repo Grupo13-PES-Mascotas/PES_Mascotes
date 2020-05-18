@@ -19,12 +19,12 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetVetVisitsBinding;
 import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.VetVisit;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -385,7 +385,7 @@ public class InfoPetVetVisits extends Fragment {
      * @param visitButton The button that has to be initialized
      */
     private void initializeButtonLogic(VetVisit visit, MaterialButton visitButton) {
-        String visitButtonText = getString(R.string.visit_of_the_day) + SPACE + vetVisit.getVisitDate() + EOL
+        String visitButtonText = getString(R.string.visit_of_the_day) + SPACE + visit.getVisitDate() + EOL
             + getString(R.string.visit_reason) + SPACE + visit.getReason() + EOL + getString(R.string.visit_addres)
             + SPACE + visit.getAddress();
         visitButton.setText(visitButtonText);

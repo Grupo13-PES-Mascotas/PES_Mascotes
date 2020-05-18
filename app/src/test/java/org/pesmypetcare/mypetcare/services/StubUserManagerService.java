@@ -4,16 +4,21 @@ import android.graphics.Bitmap;
 
 import org.pesmypetcare.mypetcare.features.users.User;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class StubUserManagerService implements UserManagerService {
     private Set<User> data;
+    private Map<String, String> tokens;
 
     public StubUserManagerService() {
         this.data = new HashSet<>();
         User user = new User("johnDoe", "johndoe@gmail.com","123456");
         data.add(user);
+
+        tokens = new HashMap<>();
     }
   
     @Override
@@ -92,5 +97,20 @@ public class StubUserManagerService implements UserManagerService {
                 break;
             }
         }
+    }
+
+    @Override
+    public Bitmap obtainUserImage(String username, String accessToken) {
+        for (User nextUser : data) {
+            if (username.equals(nextUser.getUsername())) {
+                return nextUser.getUserProfileImage();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void sendFirebaseMessagingToken(User user, String token) {
+        tokens.put(user.getUsername(), token);
     }
 }

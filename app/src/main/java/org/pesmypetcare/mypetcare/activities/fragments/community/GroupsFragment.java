@@ -39,8 +39,8 @@ public class GroupsFragment extends Fragment {
     private static final String TAG_REGEX = "^[a-zA-Z0-9,]*$";
     private static final String INTERROGATION_SIGN = "?";
 
-    private FragmentGroupsBinding binding;
-    private SortedSet<Group> groups;
+    private static FragmentGroupsBinding binding;
+    private static SortedSet<Group> groups;
     private int selectedSearchMode;
     private TextInputLayout inputGroupSearch;
 
@@ -55,6 +55,10 @@ public class GroupsFragment extends Fragment {
         return binding.getRoot();
     }
 
+    public static void showGroups(SortedSet<Group> groups) {
+        GroupsFragment.groups = groups;
+    }
+
     /**
      * Add the listeners to the search button.
      */
@@ -66,6 +70,7 @@ public class GroupsFragment extends Fragment {
             boolean isCorrect = getGroups(inputText);
 
             if (isCorrect) {
+                binding.groupInfoLayout.removeAllViews();
                 binding.groupInfoLayout.showGroups(groups);
                 addGroupsViewListeners();
             }

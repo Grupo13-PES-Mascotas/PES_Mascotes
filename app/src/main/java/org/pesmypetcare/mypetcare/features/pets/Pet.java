@@ -5,11 +5,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -663,7 +663,7 @@ public class Pet {
      * @param event The event to delete
      */
     public void deletePeriodicNotification(Event event) throws ParseException {
-        org.pesmypetcare.usermanagerlib.datacontainers.DateTime dateTime = event.getDateTime();
+        DateTime dateTime = event.getDateTime();
         String desc = event.getDescription();
         PeriodEvent pe = new PeriodEvent(desc, dateTime, 0);
         periodEvents.remove(pe);
@@ -683,7 +683,7 @@ public class Pet {
         }
         return vetVisitEvents;
     }
-  
+
     /**
      * Get the events by the class.
      * @param eventClass The class of the event

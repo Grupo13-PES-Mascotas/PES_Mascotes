@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.controllers.community;
 
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
-import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingException;
+import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.NotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.OwnerCannotDeleteSubscriptionException;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -37,21 +37,22 @@ public class TrDeleteSubscription {
 
     /**
      * Execute the transaction.
-     * @throws GroupNotExistingException Exception thrown when the group does not exist
+     * @throws GroupNotFoundException Exception thrown when the group does not exist
      * @throws NotSubscribedException Exception thrown when the user is not subscribed to the group
      * @throws OwnerCannotDeleteSubscriptionException Exception thrown when the owner of the group tries to
      * unsubscribe from the group
      */
-    public void execute() throws GroupNotExistingException, NotSubscribedException,
+    public void execute() throws GroupNotFoundException, NotSubscribedException,
         OwnerCannotDeleteSubscriptionException {
         boolean groupExisting = communityService.isGroupExisting(group);
         if (!groupExisting) {
-            throw new GroupNotExistingException();
+            throw new GroupNotFoundException();
         } else if (group.getOwnerUsername().equals(user.getUsername())) {
             throw new OwnerCannotDeleteSubscriptionException();
         } else if (!group.isUserSubscriber(user)) {
             throw new NotSubscribedException();
         }
+
         communityService.deleteSubscriber(user, group);
         user.removeSubscribedGroup(group);
     }

@@ -15,7 +15,7 @@ import org.pesmypetcare.mypetcare.databinding.FragmentInfoGroupSubscriptionsBind
 import org.pesmypetcare.mypetcare.features.users.User;
 
 public class InfoGroupSubscriptionsFragment extends Fragment {
-    private FragmentInfoGroupSubscriptionsBinding binding;
+    private static FragmentInfoGroupSubscriptionsBinding binding;
     private MaterialButton btnSubscribe;
 
     @Override
@@ -63,12 +63,12 @@ public class InfoGroupSubscriptionsFragment extends Fragment {
     private void initializeListener() {
         if (isUserSubscriber()) {
             btnSubscribe.setText(getString(R.string.subscribe));
-            btnSubscribe.setBackgroundColor(getResources().getColor(R.color.green));
+            btnSubscribe.setBackgroundColor(getResources().getColor(R.color.green, null));
             InfoGroupFragment.getCommunication().removeSubscription(InfoGroupFragment.getGroup());
             showSubscribers();
         } else {
             btnSubscribe.setText(getString(R.string.desubscribe));
-            btnSubscribe.setBackgroundColor(getResources().getColor(R.color.red));
+            btnSubscribe.setBackgroundColor(getResources().getColor(R.color.red, null));
             InfoGroupFragment.getCommunication().addSubscription(InfoGroupFragment.getGroup());
             showSubscribers();
         }
@@ -102,8 +102,10 @@ public class InfoGroupSubscriptionsFragment extends Fragment {
     /**
      * Show the subscribers of the group.
      */
-    private void showSubscribers() {
-        binding.subscribersViewLayout.removeAllViews();
-        binding.subscribersViewLayout.showSubscribers(InfoGroupFragment.getGroup());
+    public static void showSubscribers() {
+        if (binding != null) {
+            binding.subscribersViewLayout.removeAllViews();
+            binding.subscribersViewLayout.showSubscribers(InfoGroupFragment.getGroup());
+        }
     }
 }

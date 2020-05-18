@@ -25,12 +25,12 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.material.checkbox.MaterialCheckBox;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentWalkBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.WalkPets;
 import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.HashMap;
 import java.util.List;

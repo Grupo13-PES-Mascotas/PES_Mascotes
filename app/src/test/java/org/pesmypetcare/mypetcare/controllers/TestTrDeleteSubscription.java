@@ -2,14 +2,14 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeleteSubscription;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
-import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingException;
+import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.NotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.OwnerCannotDeleteSubscriptionException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import static org.junit.Assert.assertEquals;
 
@@ -28,8 +28,8 @@ public class TestTrDeleteSubscription {
         trDeleteSubscription = new TrDeleteSubscription(new StubCommunityService());
     }
 
-    @Test(expected = GroupNotExistingException.class)
-    public void shouldNotDeleteSubscriptionFromNonExistingGroup() throws GroupNotExistingException,
+    @Test(expected = GroupNotFoundException.class)
+    public void shouldNotDeleteSubscriptionFromNonExistingGroup() throws GroupNotFoundException,
         NotSubscribedException, OwnerCannotDeleteSubscriptionException {
         trDeleteSubscription.setUser(user);
         trDeleteSubscription.setGroup(new Group("Penguins", "Oriol Simo",
@@ -38,7 +38,7 @@ public class TestTrDeleteSubscription {
     }
 
     @Test(expected = NotSubscribedException.class)
-    public void shouldNotDeleteSubscriptionFromNotSubscribedGroup() throws GroupNotExistingException,
+    public void shouldNotDeleteSubscriptionFromNotSubscribedGroup() throws GroupNotFoundException,
         NotSubscribedException, OwnerCannotDeleteSubscriptionException {
         trDeleteSubscription.setUser(user);
         trDeleteSubscription.setGroup(group);
@@ -46,7 +46,7 @@ public class TestTrDeleteSubscription {
     }
 
     @Test(expected = OwnerCannotDeleteSubscriptionException.class)
-    public void shouldNotDeleteSubscriptionFromOwnedGroup() throws GroupNotExistingException, NotSubscribedException,
+    public void shouldNotDeleteSubscriptionFromOwnedGroup() throws GroupNotFoundException, NotSubscribedException,
         OwnerCannotDeleteSubscriptionException {
         trDeleteSubscription.setUser(new User("John Doe", "johnDoe@gmail.com", "1234"));
         trDeleteSubscription.setGroup(group);
@@ -55,7 +55,7 @@ public class TestTrDeleteSubscription {
 
     @Test
     public void shouldDeleteSubscriberFromGroup() throws NotSubscribedException, OwnerCannotDeleteSubscriptionException,
-        GroupNotExistingException {
+        GroupNotFoundException {
         user.addSubscribedGroup(group);
         trDeleteSubscription.setUser(user);
         trDeleteSubscription.setGroup(group);

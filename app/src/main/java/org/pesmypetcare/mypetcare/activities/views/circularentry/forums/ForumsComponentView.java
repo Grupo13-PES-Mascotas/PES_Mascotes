@@ -1,17 +1,19 @@
 package org.pesmypetcare.mypetcare.activities.views.circularentry.forums;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.List;
 
@@ -31,9 +33,14 @@ public class ForumsComponentView extends CircularEntryView {
     @Override
     protected CircularImageView getImage() {
         CircularImageView image = new CircularImageView(getCurrentActivity(), null);
-        Drawable groupDrawable = getResources().getDrawable(R.drawable.single_paw);
+        Drawable forumDrawable = getResources().getDrawable(R.drawable.user_icon_sample, null);
+        Bitmap bitmap = forum.getGroup().getUserImage(forum.getOwnerUsername());
 
-        image.setDrawable(groupDrawable);
+        if (bitmap != null) {
+            forumDrawable = new BitmapDrawable(getResources(), bitmap);
+        }
+
+        image.setDrawable(forumDrawable);
         int imageDimensions = getImageDimensions();
         image.setLayoutParams(new LinearLayout.LayoutParams(imageDimensions, imageDimensions));
         int imageId = View.generateViewId();
@@ -70,6 +77,11 @@ public class ForumsComponentView extends CircularEntryView {
 
     @Override
     protected ImageView getRightImage() {
+        return null;
+    }
+
+    @Override
+    protected ImageView getBottomImage() {
         return null;
     }
 

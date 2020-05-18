@@ -1,6 +1,6 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.httptools.utilities.DateTime;
 
 /**
  * @author Enric Hernando

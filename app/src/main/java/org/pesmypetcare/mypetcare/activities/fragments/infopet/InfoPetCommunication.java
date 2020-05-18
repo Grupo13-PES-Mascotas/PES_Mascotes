@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.pets.Illness;
 import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Meals;
@@ -14,7 +15,6 @@ import org.pesmypetcare.mypetcare.features.pets.Vaccination;
 import org.pesmypetcare.mypetcare.features.pets.VetVisit;
 import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.List;
 

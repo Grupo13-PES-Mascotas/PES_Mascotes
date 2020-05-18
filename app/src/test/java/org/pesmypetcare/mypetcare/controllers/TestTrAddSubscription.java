@@ -2,12 +2,12 @@ package org.pesmypetcare.mypetcare.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddSubscription;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
-import org.pesmypetcare.mypetcare.features.community.groups.GroupNotExistingException;
+import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,15 +26,15 @@ public class TestTrAddSubscription {
         trAddSubscription = new TrAddSubscription(new StubCommunityService());
     }
 
-    @Test(expected = GroupNotExistingException.class)
-    public void shouldNotAddSubscriptionToNonExistingGroup() throws GroupNotExistingException {
+    @Test(expected = GroupNotFoundException.class)
+    public void shouldNotAddSubscriptionToNonExistingGroup() throws GroupNotFoundException {
         trAddSubscription.setUser(user);
         trAddSubscription.setGroup(new Group("petsBCN", "John Doe", DateTime.Builder.buildDateString("2020-04-15")));
         trAddSubscription.execute();
     }
 
     @Test
-    public void shouldAddSubscriptionToGroup() throws GroupNotExistingException {
+    public void shouldAddSubscriptionToGroup() throws GroupNotFoundException {
         trAddSubscription.setUser(user);
         trAddSubscription.setGroup(group);
         trAddSubscription.execute();

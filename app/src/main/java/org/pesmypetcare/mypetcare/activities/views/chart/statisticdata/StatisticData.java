@@ -1,6 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.views.chart.statisticdata;
 
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.httptools.utilities.DateTime;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers.user;
 
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -31,7 +32,7 @@ public class TrObtainUser {
      * Execute the transaction.
      * @throws PetRepeatException The user has already this pet registered.
      */
-    public void execute() throws PetRepeatException {
+    public void execute() throws PetRepeatException, MyPetCareException {
         result = userManagerService.findUserByUsername(username);
         result.setPets((ArrayList<Pet>) petManagerService.findPetsByOwner(result));
     }

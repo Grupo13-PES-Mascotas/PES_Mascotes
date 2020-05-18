@@ -2,8 +2,8 @@ package org.pesmypetcare.mypetcare.features.community.posts;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,6 @@ public class Post implements Comparable<Post> {
         this.forum = forum;
         this.likerUsername = new ArrayList<>();
         this.likerUsername.add(username);
-        this.likes = 1;
     }
 
     /**
@@ -179,7 +178,12 @@ public class Post implements Comparable<Post> {
      * @param likerUsername The liker username to set
      */
     public void setLikerUsername(List<String> likerUsername) {
-        this.likerUsername = likerUsername;
+        if (likerUsername == null) {
+            this.likerUsername = new ArrayList<>();
+        } else {
+            this.likerUsername = likerUsername;
+            this.likes = likerUsername.size();
+        }
     }
 
     /**

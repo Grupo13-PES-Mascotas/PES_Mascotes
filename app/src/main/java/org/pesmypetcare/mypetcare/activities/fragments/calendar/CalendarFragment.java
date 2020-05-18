@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.calendar.EventComponentView;
@@ -31,8 +33,6 @@ import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -192,6 +192,7 @@ public class CalendarFragment extends Fragment {
                 timeText.getText().toString());
         getPet(petName);
         if (isValidTime(timeText.getText().toString()) && reasonText.getText() != null) {
+            //selectedPet.addPeriodicNotification(new Event(reasonText.getText().toString(), dateTime), period);
             communication.newPeriodicNotification(selectedPet, period, reasonText.getText().toString(), dateTime);
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(dateTime, c);
@@ -339,6 +340,8 @@ public class CalendarFragment extends Fragment {
             Calendar c = Calendar.getInstance();
             calendarAlarmInitialization(dateTime, c);
             communication.scheduleNotification(getContext(), c.getTimeInMillis(), selectedPet.getName(), reasonText.getText().toString());
+            communication.scheduleNotification(getContext(), c.getTimeInMillis() , selectedPet.getName(),
+                reasonText.getText().toString());
             setUpCalendar();
         } else {
             toastText(getString(R.string.incorrect_entry));
