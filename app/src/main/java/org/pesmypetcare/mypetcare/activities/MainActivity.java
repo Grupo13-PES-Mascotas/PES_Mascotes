@@ -357,8 +357,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 .setApplicationId("1:117839667395:android:2664d76c5bd0db29758276")
                 .setApiKey("AIzaSyAJ-BNA6kCeXpg__6wUCmKLVZi5yl7yEdw")
                 .build();
-            FirebaseApp.initializeApp(this, options, "Release");
-            isFirebaseDefined = true;*/
+            FirebaseApp.initializeApp(this, options, "Release"); */
 
             FirebaseOptions options = new FirebaseOptions.Builder()
             .setProjectId("my-pet-care-production")
@@ -366,6 +365,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             .setApiKey("AIzaSyAJTGE9IujIzKe9YmJ-nq58Rtk8PgW_ptU")
             .build();
             FirebaseApp.initializeApp(this, options, "Debug");
+            isFirebaseDefined = true;
         }
 
         //mAuth = FirebaseAuth.getInstance();
