@@ -42,6 +42,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -345,10 +347,30 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeleteGroupImage trDeleteGroupImage;
     private TrSendFirebaseMessagingToken trSendFirebaseMessagingToken;
     private TrGetGroupImage trGetGroupImage;
+    private static boolean isFirebaseDefined = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mAuth = FirebaseAuth.getInstance();
+        if (!isFirebaseDefined) {
+            /*FirebaseOptions options = new FirebaseOptions.Builder()
+                .setProjectId("my-pet-care-85883")
+                .setApplicationId("1:117839667395:android:2664d76c5bd0db29758276")
+                .setApiKey("AIzaSyAJ-BNA6kCeXpg__6wUCmKLVZi5yl7yEdw")
+                .build();
+            FirebaseApp.initializeApp(this, options, "Release");
+            isFirebaseDefined = true;*/
+
+            FirebaseOptions options = new FirebaseOptions.Builder()
+            .setProjectId("my-pet-care-production")
+            .setApplicationId("1:719320451385:android:f5afebc96d536c545180e8")
+            .setApiKey("AIzaSyAJTGE9IujIzKe9YmJ-nq58Rtk8PgW_ptU")
+            .build();
+            FirebaseApp.initializeApp(this, options, "Debug");
+        }
+
+        //mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance(FirebaseApp.getInstance("Debug"));
+        System.out.println("MAUTH " + mAuth.getApp().getName());
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -432,12 +454,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 toast.show();
             }
 
-            Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getIdToken(false)
-                .addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    user.setToken(Objects.requireNonNull(task.getResult()).getToken());
-                }
-            });
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                FirebaseAuth.getInstance().getCurrentUser().getIdToken(false).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        user.setToken(Objects.requireNonNull(task.getResult()).getToken());
+                    }
+                });
+            }
         }
     }
 
@@ -475,6 +498,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Make the login to the application.
      */
     private void makeLogin() {
+        System.out.println("MAUTH " + mAuth.getCurrentUser());
         if (enableLoginActivity && mAuth.getCurrentUser() == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
