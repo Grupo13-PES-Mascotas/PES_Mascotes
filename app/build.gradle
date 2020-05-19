@@ -48,21 +48,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             testCoverageEnabled false
             signingConfig signingConfigs.release
-            resValue "string", "google_maps_api_key", "AIzaSyCFrDXTV36YZpT0z7EhDZaiP3znZEaPWaM"
-            resValue "string", "firebase_project", "my-pet-care-85883"
-            resValue "string", "firebase_application_id", "1:117839667395:android:2664d76c5bd0db29758276"
-            resValue "string", "firebase_api_key", "AIzaSyAJ-BNA6kCeXpg__6wUCmKLVZi5yl7yEdw"
-            resValue "string", "build_type", "Release"
+            resValue "string", "google_maps_api_key", google_maps_api_key
+            resValue "string", "facebook_application_id", facebook_application_id
         }
         debug {
             testCoverageEnabled true
-            resValue "string", "google_maps_api_key", "AIzaSyCFrDXTV36YZpT0z7EhDZaiP3znZEaPWaM"
-            resValue "string", "firebase_project", "my-pet-care-production"
-            resValue "string", "firebase_application_id", "1:719320451385:android:f5afebc96d536c545180e8"
-            resValue "string", "firebase_api_key", "AIzaSyAJTGE9IujIzKe9YmJ-nq58Rtk8PgW_ptU"
-            resValue "string", "build_type", "Debug"
+            resValue "string", "google_maps_api_key", google_maps_api_key
+            resValue "string", "facebook_application_id", facebook_application_id
         }
+
     }
+
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8

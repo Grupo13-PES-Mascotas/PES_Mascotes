@@ -245,7 +245,6 @@
     <string name="update_post">Update post</string>
     <string name="edit_post_title">Edit post</string>
     <string name="edit_post_message">Enter the new text for the post</string>
-    <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>
     <string name="unsubscribe_owner">You cannot unsubscribe from your own group</string>
     <string name="add_medication_button">Add medication</string>
