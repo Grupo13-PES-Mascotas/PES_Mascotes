@@ -348,6 +348,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrSendFirebaseMessagingToken trSendFirebaseMessagingToken;
     private TrGetGroupImage trGetGroupImage;
     private static boolean isFirebaseDefined = false;
+    private static String userToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -357,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 .setApplicationId("1:117839667395:android:2664d76c5bd0db29758276")
                 .setApiKey("AIzaSyAJ-BNA6kCeXpg__6wUCmKLVZi5yl7yEdw")
                 .build();
-            FirebaseApp.initializeApp(this, options, "Release"); */
+            FirebaseApp.initializeApp(this, options, "Release");*/
 
             FirebaseOptions options = new FirebaseOptions.Builder()
             .setProjectId("my-pet-care-production")
@@ -369,8 +370,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
 
         //mAuth = FirebaseAuth.getInstance();
+        //mAuth = FirebaseAuth.getInstance(FirebaseApp.getInstance("Release"));
         mAuth = FirebaseAuth.getInstance(FirebaseApp.getInstance("Debug"));
-        System.out.println("MAUTH " + mAuth.getApp().getName());
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -454,11 +455,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 toast.show();
             }
 
-            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                FirebaseAuth.getInstance().getCurrentUser().getIdToken(false).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        user.setToken(Objects.requireNonNull(task.getResult()).getToken());
-                    }
+            if (mAuth.getCurrentUser() != null) {
+                mAuth.getCurrentUser().getIdToken(false).addOnCompleteListener(task -> {
+                    user.setToken(Objects.requireNonNull(task.getResult()).getToken());
                 });
             }
         }
@@ -529,7 +528,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @throws PetRepeatException The pet has already been registered
      */
     private void initializeUser() throws PetRepeatException {
-        trObtainUser.setUsername(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
+        trObtainUser.setUid(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
+        trObtainUser.setToken("token");
 
         try {
             trObtainUser.execute();

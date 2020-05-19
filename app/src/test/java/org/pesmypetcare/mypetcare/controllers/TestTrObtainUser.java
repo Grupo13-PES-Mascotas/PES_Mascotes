@@ -21,7 +21,7 @@ public class TestTrObtainUser {
 
     @Test
     public void shouldObtainUser() throws PetRepeatException, MyPetCareException {
-        trObtainUser.setUsername("johnDoe");
+        trObtainUser.setUid("johnDoe");
         trObtainUser.execute();
         User user = trObtainUser.getResult();
         assertNotNull("should communicate with service to obtain a user", user);

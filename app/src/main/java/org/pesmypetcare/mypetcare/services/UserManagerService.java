@@ -11,10 +11,12 @@ public interface UserManagerService {
 
     /**
      * Registers a new user.
-     * @param username The username of the user to be registered
+     *
+     * @param uid
+     * @param token The username of the user to be registered
      * @return True if the register has been done without any problems
      */
-    User findUserByUsername(String username) throws MyPetCareException;
+    User findUserByUsername(String uid, String token) throws MyPetCareException;
 
     /**
      * Checks if the user had been registered.
