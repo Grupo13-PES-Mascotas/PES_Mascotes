@@ -27,8 +27,6 @@ public class UserManagerAdapter implements UserManagerService {
     public User findUserByUsername(String uid, String token) throws MyPetCareException {
         UserData userData = null;
 
-        System.out.println("UID " + uid);
-
         try {
             userData = ServiceLocator.getInstance().getUserManagerClient().getUser(token, uid);
         } catch (ExecutionException | InterruptedException e) {

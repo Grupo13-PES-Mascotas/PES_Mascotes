@@ -45,10 +45,18 @@ android {
             testCoverageEnabled false
             signingConfig signingConfigs.release
             resValue "string", "google_maps_api_key", "AIzaSyCFrDXTV36YZpT0z7EhDZaiP3znZEaPWaM"
+            resValue "string", "firebase_project", "my-pet-care-85883"
+            resValue "string", "firebase_application_id", "1:117839667395:android:2664d76c5bd0db29758276"
+            resValue "string", "firebase_api_key", "AIzaSyAJ-BNA6kCeXpg__6wUCmKLVZi5yl7yEdw"
+            resValue "string", "build_type", "Release"
         }
         debug {
             testCoverageEnabled true
             resValue "string", "google_maps_api_key", "AIzaSyCFrDXTV36YZpT0z7EhDZaiP3znZEaPWaM"
+            resValue "string", "firebase_project", "my-pet-care-production"
+            resValue "string", "firebase_application_id", "1:719320451385:android:f5afebc96d536c545180e8"
+            resValue "string", "firebase_api_key", "AIzaSyAJTGE9IujIzKe9YmJ-nq58Rtk8PgW_ptU"
+            resValue "string", "build_type", "Debug"
         }
     }
     compileOptions {
@@ -95,8 +103,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.4.1'
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
-    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:usermanager:f64d2fa52f:develop@aar'
-    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:communitymanager:f64d2fa52f:develop@aar'
+    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:usermanager:f64d2fa52f:production@aar'
+    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:communitymanager:f64d2fa52f:production@aar'
     implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:httptools:f64d2fa52f'
     //implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:v2.0.0'
 }

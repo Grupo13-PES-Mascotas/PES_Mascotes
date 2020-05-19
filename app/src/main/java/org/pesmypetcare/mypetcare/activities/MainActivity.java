@@ -42,8 +42,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -273,6 +271,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static SharedPreferences walkingSharedPreferences;
     private static Context context;
     private static int fragmentRequestCode;
+    private static boolean isFirebaseDefined = false;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -347,31 +346,23 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeleteGroupImage trDeleteGroupImage;
     private TrSendFirebaseMessagingToken trSendFirebaseMessagingToken;
     private TrGetGroupImage trGetGroupImage;
-    private static boolean isFirebaseDefined = false;
-    private static String userToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("ON CREATE");
         if (!isFirebaseDefined) {
             /*FirebaseOptions options = new FirebaseOptions.Builder()
                 .setProjectId("my-pet-care-85883")
                 .setApplicationId("1:117839667395:android:2664d76c5bd0db29758276")
                 .setApiKey("AIzaSyAJ-BNA6kCeXpg__6wUCmKLVZi5yl7yEdw")
                 .build();
-            FirebaseApp.initializeApp(this, options, "Release");*/
-
-            FirebaseOptions options = new FirebaseOptions.Builder()
-            .setProjectId("my-pet-care-production")
-            .setApplicationId("1:719320451385:android:f5afebc96d536c545180e8")
-            .setApiKey("AIzaSyAJTGE9IujIzKe9YmJ-nq58Rtk8PgW_ptU")
-            .build();
-            FirebaseApp.initializeApp(this, options, "Debug");
-            isFirebaseDefined = true;
+            FirebaseApp.initializeApp(this, options, "Release");
+            isFirebaseDefined = true;*/
         }
 
-        //mAuth = FirebaseAuth.getInstance();
         //mAuth = FirebaseAuth.getInstance(FirebaseApp.getInstance("Release"));
-        mAuth = FirebaseAuth.getInstance(FirebaseApp.getInstance("Debug"));
+        mAuth = FirebaseAuth.getInstance();
+
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -418,26 +409,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 sendMessageToken(Objects.requireNonNull(task.getResult()).getToken());
             }
         });
-
-        /*SharedPreferences.Editor editor = walkingSharedPreferences.edit();
-
-        for (Map.Entry<String, ?> entry : walkingSharedPreferences.getAll().entrySet()) {
-            editor.remove(entry.getKey());
-        }
-
-        editor.apply();
-        //getMyLocations();
-
-        // Uncomment the following statements to remove all the entries for walking that are stored in SharedPreferences
-        SharedPreferences walkingSharedPreferences = getSharedPreferences(WALKING_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor2 = walkingSharedPreferences.edit();
-        editor2.remove(START_WALKING_DATE_TIME);
-
-        for (Map.Entry<String, ?> entry : walkingSharedPreferences.getAll().entrySet()) {
-            editor2.remove(entry.getKey());
-        }
-
-        editor2.apply();*/
     }
 
     /**
@@ -1233,7 +1204,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment, nextFragment.getClass()
             .getSimpleName());
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
     /**
