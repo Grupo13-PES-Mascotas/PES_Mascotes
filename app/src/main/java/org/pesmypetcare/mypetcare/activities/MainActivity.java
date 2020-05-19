@@ -7,7 +7,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -32,7 +31,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -276,7 +274,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private static SharedPreferences walkingSharedPreferences;
     private static Context context;
     private static int fragmentRequestCode;
-    private static boolean isFirebaseDefined = false;
 
     private ActivityMainBinding binding;
     private DrawerLayout drawerLayout;
@@ -357,20 +354,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         if (BuildConfig.DEBUG) {
             Log.d("MainActivity", "Create MainActivity");
         }
-        if (!isFirebaseDefined) {
-            /*FirebaseOptions options = new FirebaseOptions.Builder()
-                .setProjectId("my-pet-care-85883")
-                .setApplicationId("1:117839667395:android:2664d76c5bd0db29758276")
-                .setApiKey("AIzaSyAJ-BNA6kCeXpg__6wUCmKLVZi5yl7yEdw")
-                .build();
-            FirebaseApp.initializeApp(this, options, "Release");
-            isFirebaseDefined = true;*/
-        }
 
-        //mAuth = FirebaseAuth.getInstance(FirebaseApp.getInstance("Release"));
         mAuth = FirebaseAuth.getInstance();
-        System.out.println("FIREBASE " + mAuth.getApp().getName());
-
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -2191,22 +2176,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void askForPermission(String... permissions) {
-        List<String> permissionList = new ArrayList<>();
-
-        for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-                permissionList.add(permission);
-            }
-        }
-
-        String[] permissionArray = new String[permissionList.size()];
-
-        for (int actual = 0; actual < permissionList.size(); ++actual) {
-            permissionArray[actual] = permissionList.get(actual);
-        }
-
         Thread thread = new Thread(() -> {
-            ActivityCompat.requestPermissions(this, permissionArray, 1);
+            ActivityCompat.requestPermissions(this, permissions, 1);
         });
 
         thread.start();
@@ -2215,16 +2186,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-
-        for (int actual = 0; actual < permissions.length; ++actual) {
-            int permissionCheck = ContextCompat.checkSelfPermission(this, permissions[actual]);
-
-            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                Toast toast = Toast.makeText(this, "All permissions should be granted", Toast.LENGTH_LONG);
-                toast.show();
-                finish();
-            }
         }
     }
 
