@@ -17,6 +17,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,6 +54,8 @@ import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.httptools.utilities.DateTime;
+import org.pesmypetcare.mypetcare.BuildConfig;
+import org.pesmypetcare.mypetcare.BuildConfig;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunication;
@@ -352,7 +356,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("ON CREATE");
+        if (BuildConfig.DEBUG) {
+            Log.d("MainActivity", "Create MainActivity");
+        }
         if (!isFirebaseDefined) {
             /*FirebaseOptions options = new FirebaseOptions.Builder()
                 .setProjectId("my-pet-care-85883")
@@ -399,7 +405,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             //askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             //askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
             //askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-
             LocationUpdater.setContext(this);
             MessagingService.setCommunication(this);
         });
@@ -478,6 +483,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private void makeLogin() {
         System.out.println("MAUTH " + mAuth.getCurrentUser());
         if (enableLoginActivity && mAuth.getCurrentUser() == null) {
+            if (BuildConfig.DEBUG) {
+                Log.d("MainActivity", "User is not logged in, starting log in activity");
+            }
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
