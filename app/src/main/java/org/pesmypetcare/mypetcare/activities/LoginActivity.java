@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
      * Initializes the fragment and the listeners of the activity.
      */
     private void initializeActivity() {
+        System.out.println("INITIALIZING LOGIN");
         replaceFragment(new SignUpFragment());
         binding.tabActivityLogin.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

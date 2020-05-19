@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -29,6 +30,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -362,6 +365,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         //mAuth = FirebaseAuth.getInstance(FirebaseApp.getInstance("Release"));
         mAuth = FirebaseAuth.getInstance();
+        System.out.println("FIREBASE " + mAuth.getApp().getName());
 
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -377,6 +381,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         context = this;
 
+        askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION);
+
         makeLogin();
 
         ExecutorService mainActivitySetUp = Executors.newCachedThreadPool();
@@ -389,9 +396,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             initializeActivity();
             setUpNavigationImage();
 
-            askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-            askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            //askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            //askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            //askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+
             LocationUpdater.setContext(this);
             MessagingService.setCommunication(this);
         });
@@ -2176,14 +2184,41 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void askForPermission(String permission) {
-        Thread askPermissionThread = ThreadFactory.createGenericAskPermissionThread(this, permission);
-        askPermissionThread.start();
+    public void askForPermission(String... permissions) {
+        List<String> permissionList = new ArrayList<>();
+
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                permissionList.add(permission);
+            }
+        }
+
+        String[] permissionArray = new String[permissionList.size()];
+
+        for (int actual = 0; actual < permissionList.size(); ++actual) {
+            permissionArray[actual] = permissionList.get(actual);
+        }
+
+        Thread thread = new Thread(() -> {
+            ActivityCompat.requestPermissions(this, permissionArray, 1);
+        });
+
+        thread.start();
 
         try {
-            askPermissionThread.join();
+            thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+
+        for (int actual = 0; actual < permissions.length; ++actual) {
+            int permissionCheck = ContextCompat.checkSelfPermission(this, permissions[actual]);
+
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                Toast toast = Toast.makeText(this, "All permissions should be granted", Toast.LENGTH_LONG);
+                toast.show();
+                finish();
+            }
         }
     }
 

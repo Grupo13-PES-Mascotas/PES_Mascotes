@@ -302,7 +302,7 @@ public interface InfoPetCommunication {
      * Asks for a permission.
      * @param permission The permission to ask for
      */
-    void askForPermission(String permission);
+    void askForPermission(String... permission);
 
     /**
      * Start the walking of the pets.

@@ -66,7 +66,6 @@ public class SignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         RC_CODE = 9001;
         mAuth = MainActivity.getmAuth();
-        System.out.println("MAUTH " + mAuth.getApp().getName());
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         signUpWithParameters();
