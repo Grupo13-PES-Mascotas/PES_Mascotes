@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.pesmypetcare.communitymanager.ChatException;
 import org.pesmypetcare.communitymanager.ChatModel;
@@ -437,7 +438,7 @@ public class PostsFragment extends Fragment {
         });
 
         try {
-            chatModel.doAction(forum.getGroup().getName(), forum.getName());
+            chatModel.doAction(FirebaseFirestore.getInstance(), forum.getGroup().getName(), forum.getName());
         } catch (ChatException e) {
             e.printStackTrace();
         }

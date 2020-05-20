@@ -55,7 +55,7 @@ public class PetsInfoComponentView extends CircularEntryView {
 
     @Override
     protected String getSecondLineText() {
-        return String.format("%s - %s", pet.getBreed(), pet.getBirthDate());
+        return String.format("%s - %s", pet.getBreed(), pet.getBirthDateInstance().toDateStringReverse());
     }
 
     @Override

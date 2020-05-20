@@ -171,6 +171,14 @@ public class Pet {
      * Get the birth date of the pet.
      * @return The birth date of the pet
      */
+    public DateTime getBirthDateInstance() {
+        return birthDate;
+    }
+
+    /**
+     * Get the birth date of the pet.
+     * @return The birth date of the pet
+     */
     public String getBirthDate() {
         return birthDate.toString();
     }
@@ -182,6 +190,7 @@ public class Pet {
     public void setBirthDate(DateTime birthDate) {
         this.birthDate = birthDate;
     }
+
 
     /**
      * Get the weight of the pet.
