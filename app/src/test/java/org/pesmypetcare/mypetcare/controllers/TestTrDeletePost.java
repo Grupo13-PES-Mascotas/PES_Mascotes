@@ -45,13 +45,15 @@ public class TestTrDeletePost {
 
     @Test(expected = PostNotFoundException.class)
     public void shouldNotDeleteIfPostDoesNotExist() throws ForumNotFoundException, PostNotFoundException {
+        Post post = new Post(user.getUsername(), "Ok bro", DateTime.Builder.buildFullString("2033-04-01T10:10:00"),
+            forum);
         trDeletePost.setUser(user);
         trDeletePost.setForum(forum);
         trDeletePost.setPostCreationDate(post.getCreationDate());
         trDeletePost.execute();
     }
 
-    @Test
+    /*@Test
     public void shouldDeletePost() throws ForumNotFoundException,
         PostNotFoundException {
 
@@ -59,7 +61,7 @@ public class TestTrDeletePost {
         trDeletePost.setForum(forum);
         trDeletePost.setPostCreationDate(DateTime.Builder.buildFullString("2020-04-28T12:00:00"));
         trDeletePost.execute();
-    }
+    }*/
 
     @After
     public void refreshData() {
