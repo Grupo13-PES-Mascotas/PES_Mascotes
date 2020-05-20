@@ -252,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public static final String TAG_REGEX = "^[a-zA-Z0-9,]*$";
     private static final String WALKING_PREFERENCES = "Walking";
     public static final String GROUPS_SHARED_PREFERENCES = "Groups";
+    private static final String GOOGLE_CALENDAR_SHARED_PREFERENCES = "GoogleCalendar";
     private static final String START_WALKING_DATE_TIME = "startWalkingDateTime";
     public static final String ACTUAL_WALK = "ActualWalk";
     public static final int LAT = 0;
@@ -351,47 +352,19 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (BuildConfig.DEBUG) {
-            Log.d("MainActivity", "Create MainActivity");
-        }
-
         mAuth = FirebaseAuth.getInstance();
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         resources = getResources();
 
-        sharedpreferences = getSharedPreferences("GoogleCalendar", Context.MODE_PRIVATE);
-        walkingSharedPreferences = getSharedPreferences(ACTUAL_WALK, Context.MODE_PRIVATE);
-
-        notificationId = 0;
-        requestCode = 0;
-        fragmentManager = getSupportFragmentManager();
-
-        context = this;
-
+        setAttributes();
         askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION);
-
         makeLogin();
 
         ExecutorService mainActivitySetUp = Executors.newCachedThreadPool();
-        mainActivitySetUp.execute(() -> {
-            initializeControllers();
-            getComponents();
-
-            ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw, null));
-            initializeCurrentUser();
-            initializeActivity();
-            setUpNavigationImage();
-
-            //askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            //askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-            //askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-            LocationUpdater.setContext(this);
-            MessagingService.setCommunication(this);
-        });
-
+        mainActivitySetUp.execute(this::initializeMainActivity);
         mainActivitySetUp.shutdown();
 
         try {
@@ -400,11 +373,48 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             e.printStackTrace();
         }
 
+        setMessagingToken();
+    }
+
+    /**
+     * Set the token messaging.
+     */
+    private void setMessagingToken() {
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
             if (task.isSuccessful() && user != null) {
                 sendMessageToken(Objects.requireNonNull(task.getResult()).getToken());
             }
         });
+    }
+
+    /**
+     * Set the attributes of the Main Activity.
+     */
+    private void setAttributes() {
+        sharedpreferences = getSharedPreferences(GOOGLE_CALENDAR_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        walkingSharedPreferences = getSharedPreferences(ACTUAL_WALK, Context.MODE_PRIVATE);
+
+        notificationId = 0;
+        requestCode = 0;
+        fragmentManager = getSupportFragmentManager();
+
+        context = this;
+    }
+
+    /**
+     * Initialize the Main Activity.
+     */
+    private void initializeMainActivity() {
+        initializeControllers();
+        getComponents();
+
+        ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw, null));
+        initializeCurrentUser();
+        initializeActivity();
+        setUpNavigationImage();
+
+        LocationUpdater.setContext(this);
+        MessagingService.setCommunication(this);
     }
 
     /**
@@ -464,7 +474,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Make the login to the application.
      */
     private void makeLogin() {
-        System.out.println("MAUTH " + mAuth.getCurrentUser());
         if (enableLoginActivity && mAuth.getCurrentUser() == null) {
             if (BuildConfig.DEBUG) {
                 Log.d("MainActivity", "User is not logged in, starting log in activity");
@@ -2729,13 +2738,15 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void sendMessageToken(String messageToken) {
-        trSendFirebaseMessagingToken.setUser(user);
-        trSendFirebaseMessagingToken.setToken(messageToken);
+        if (user != null) {
+            trSendFirebaseMessagingToken.setUser(user);
+            trSendFirebaseMessagingToken.setToken(messageToken);
 
-        try {
-            trSendFirebaseMessagingToken.execute();
-        } catch (EmptyMessagingTokenException e) {
-            e.printStackTrace();
+            try {
+                trSendFirebaseMessagingToken.execute();
+            } catch (EmptyMessagingTokenException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

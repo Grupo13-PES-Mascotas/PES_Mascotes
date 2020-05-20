@@ -318,7 +318,6 @@ public class StubCommunityService implements CommunityService {
                 for (Post forumPost : forum.getPosts()) {
                     if (forumPost.equals(post)) {
                         forumPost.reportPost();
-                        System.out.println("Report Message : " + reportMessage);
                     }
                 }
             }

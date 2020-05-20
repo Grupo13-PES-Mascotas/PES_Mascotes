@@ -26,7 +26,6 @@ public class UserManagerAdapter implements UserManagerService {
     @Override
     public User findUserByUsername(String uid, String token) throws MyPetCareException {
         UserData userData = null;
-        System.out.println("UID " + uid);
 
         try {
             userData = ServiceLocator.getInstance().getUserManagerClient().getUser(token, uid);
@@ -223,9 +222,6 @@ public class UserManagerAdapter implements UserManagerService {
 
     @Override
     public void sendFirebaseMessagingToken(User user, String token) {
-        System.out.println("USERNAME " + user.getUsername());
-        System.out.println("MESSAGING TOKEN " + token);
-        System.out.println("TOKEN " + user.getToken());
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
