@@ -55,7 +55,7 @@ public class StubCommunityService implements CommunityService {
         forum.addTag("important");
         new Forum("Washing", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:00:00"),
             StubCommunityService.groups.get(DINOSAURS));
-        new Forum("Sickling", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:10:00"),
+        Forum forum2 = new Forum("Sickling", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:10:00"),
             StubCommunityService.groups.get(DINOSAURS));
         Post post = new Post("John Doe", "I think that the huskies have to be kept cleaned. What do you think?",
             DateTime.Builder.buildFullString("2020-04-21T20:55:10"), forum);
@@ -65,6 +65,8 @@ public class StubCommunityService implements CommunityService {
             DateTime.Builder.buildFullString("2020-04-21T21:15:22"), forum));
         forum.addPost(new Post("Manolo Lama", "I would love to clean the Bicho",
             DateTime.Builder.buildFullString("2020-04-28T12:00:00"), forum));
+        forum2.addPost(new Post("John Doe", "I would love to clean the Bicho 2",
+            DateTime.Builder.buildFullString("2020-04-28T12:00:00"), forum2));
     }
 
     /**

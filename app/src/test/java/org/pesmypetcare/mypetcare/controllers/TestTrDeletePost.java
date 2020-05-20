@@ -1,16 +1,14 @@
 package org.pesmypetcare.mypetcare.controllers;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.httptools.utilities.DateTime;
-import org.pesmypetcare.mypetcare.controllers.community.TrAddNewPost;
 import org.pesmypetcare.mypetcare.controllers.community.TrDeletePost;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
-import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.community.posts.PostCreatedBeforeForumException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubCommunityService;
@@ -20,7 +18,6 @@ import org.pesmypetcare.mypetcare.services.StubCommunityService;
  */
 public class TestTrDeletePost {
     private TrDeletePost trDeletePost;
-    private TrAddNewPost trAddNewPost;
     private User user;
     private Forum forum;
     private Post post;
@@ -28,7 +25,6 @@ public class TestTrDeletePost {
     @Before
     public void setUp() {
         trDeletePost = new TrDeletePost(new StubCommunityService());
-        trAddNewPost = new TrAddNewPost(new StubCommunityService());
         user = new User("John Doe", "johndoe@gmail.com", "1234");
         Group group = new Group("Dinosaur", "Gradle",
             DateTime.Builder.buildDateString("2019-11-23"));
@@ -56,17 +52,17 @@ public class TestTrDeletePost {
     }
 
     @Test
-    public void shouldDeletePost() throws PostAlreadyExistingException, ForumNotFoundException,
-        PostCreatedBeforeForumException, PostNotFoundException {
-        trAddNewPost.setUser(user);
-        trAddNewPost.setForum(forum);
-        trAddNewPost.setPostText(post.getText());
-        trAddNewPost.setPostCreationDate(post.getCreationDate());
-        trAddNewPost.execute();
+    public void shouldDeletePost() throws ForumNotFoundException,
+        PostNotFoundException {
 
         trDeletePost.setUser(user);
         trDeletePost.setForum(forum);
-        trDeletePost.setPostCreationDate(post.getCreationDate());
+        trDeletePost.setPostCreationDate(DateTime.Builder.buildFullString("2020-04-28T12:00:00"));
         trDeletePost.execute();
+    }
+
+    @After
+    public void refreshData() {
+        StubCommunityService.addStubDefaultData();
     }
 }
