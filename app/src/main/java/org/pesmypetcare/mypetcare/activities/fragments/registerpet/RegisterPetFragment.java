@@ -24,6 +24,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
 
+/**
+ * @author Albert Pinto
+ */
 @SuppressWarnings("unchecked")
 public class RegisterPetFragment extends Fragment {
     private FragmentRegisterPetBinding binding;

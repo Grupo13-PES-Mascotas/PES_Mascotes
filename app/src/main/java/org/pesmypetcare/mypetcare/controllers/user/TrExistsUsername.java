@@ -1,9 +1,12 @@
 package org.pesmypetcare.mypetcare.controllers.user;
 
-import org.pesmypetcare.mypetcare.services.UserManagerService;
+import org.pesmypetcare.mypetcare.services.user.UserManagerService;
 
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Enric Hernando
+ */
 public class TrExistsUsername {
     private UserManagerService userManagerService;
     private String newUsername;

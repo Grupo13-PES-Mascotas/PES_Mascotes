@@ -8,7 +8,9 @@ import org.pesmypetcare.mypetcare.services.StubUserManagerService;
 
 import static org.junit.Assert.assertEquals;
 
-
+/**
+ * @author Daniel Clemente
+ */
 public class TestTrChangeMail {
     private User user;
     private TrChangeMail trChangeMail;

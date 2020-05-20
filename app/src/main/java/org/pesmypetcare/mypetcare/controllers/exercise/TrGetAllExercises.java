@@ -1,10 +1,10 @@
 package org.pesmypetcare.mypetcare.controllers.exercise;
 
-import org.pesmypetcare.mypetcare.features.pets.Exercise;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.PetManagerService;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;

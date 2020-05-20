@@ -16,6 +16,9 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+/**
+ * @author Xavier Campos
+ */
 public abstract class CircularEntryView extends ConstraintLayout {
     private static final int PADDING = 15;
     private static final int IMAGE_LAYOUT_MARGIN = 10;

@@ -30,6 +30,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 
+/**
+ * @author Albert Pinto
+ */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class TestInfoPetBasicFragment {

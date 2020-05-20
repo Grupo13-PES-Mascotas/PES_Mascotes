@@ -11,6 +11,9 @@ import org.pesmypetcare.mypetcare.services.StubUserManagerService;
 
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * @author Enric Hernando
+ */
 public class TestTrObtainUser {
     private TrObtainUser trObtainUser;
 

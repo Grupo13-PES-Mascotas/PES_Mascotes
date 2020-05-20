@@ -21,6 +21,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+/**
+ * @author Albert Pinto
+ */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class TestNewPasswordFragment {

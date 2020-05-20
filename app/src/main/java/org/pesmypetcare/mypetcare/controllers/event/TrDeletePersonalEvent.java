@@ -1,11 +1,14 @@
 package org.pesmypetcare.mypetcare.controllers.event;
 
-import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
 
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Enric Hernando
+ */
 public class TrDeletePersonalEvent {
     private GoogleCalendarService googleCalendarService;
     private Pet pet;

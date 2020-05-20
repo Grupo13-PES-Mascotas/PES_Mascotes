@@ -18,6 +18,9 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Albert Pinto
+ */
 public class TestTrDeleteWeight {
     private static final double WEIGHT = 10.0;
     private User user;

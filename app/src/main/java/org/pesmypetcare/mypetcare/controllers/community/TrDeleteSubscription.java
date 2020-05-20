@@ -5,7 +5,7 @@ import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundExcepti
 import org.pesmypetcare.mypetcare.features.community.groups.NotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.OwnerCannotDeleteSubscriptionException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.CommunityService;
+import org.pesmypetcare.mypetcare.services.community.CommunityService;
 
 /**
  * @author Xavier Campos

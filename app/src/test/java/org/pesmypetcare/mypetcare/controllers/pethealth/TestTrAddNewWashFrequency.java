@@ -19,6 +19,9 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Albert Pinto
+ */
 public class TestTrAddNewWashFrequency {
     private User user;
     private Pet pet;

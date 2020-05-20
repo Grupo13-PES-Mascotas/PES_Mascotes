@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class ImageManager {
     public static final String PET_PROFILE_IMAGES_PATH = "petProfileImages";
     public static final String USER_PROFILE_IMAGES_PATH = "userProfileImages";

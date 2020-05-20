@@ -15,6 +15,9 @@ import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageVi
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class PostComponentView extends CircularEntryView {
     private static final int DATE = 0;
     private static final int HOUR = 1;

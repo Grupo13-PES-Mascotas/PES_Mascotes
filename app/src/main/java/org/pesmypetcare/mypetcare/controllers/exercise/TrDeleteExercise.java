@@ -1,13 +1,13 @@
 package org.pesmypetcare.mypetcare.controllers.exercise;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
-import org.pesmypetcare.mypetcare.features.pets.Exercise;
-import org.pesmypetcare.mypetcare.features.pets.NotExistingExerciseException;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.NotExistingExerciseException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.Walk;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.Walk;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.PetManagerService;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
 
 import java.util.concurrent.ExecutionException;
 

@@ -12,6 +12,9 @@ import org.pesmypetcare.mypetcare.services.StubUserManagerService;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Albert Pinto
+ */
 public class TestTrUpdateUserImage {
     private static final int COLOR_GREEN = 0x00FF00;
     private static final int COLOR_BLUE = 0x0000FF;

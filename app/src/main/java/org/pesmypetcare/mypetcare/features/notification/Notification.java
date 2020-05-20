@@ -5,6 +5,9 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * @author Enric Hernando
+ */
 public class Notification {
     private String title;
     private String description;

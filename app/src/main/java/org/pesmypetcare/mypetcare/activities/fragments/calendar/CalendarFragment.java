@@ -29,7 +29,7 @@ import org.pesmypetcare.mypetcare.activities.views.circularentry.calendar.EventC
 import org.pesmypetcare.mypetcare.activities.views.circularentry.calendar.EventView;
 import org.pesmypetcare.mypetcare.databinding.FragmentCalendarBinding;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
-import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -45,6 +45,9 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Daniel Clemente & Enric Hernando
+ */
 public class CalendarFragment extends Fragment {
     private static final int PADDING_20 = 20;
     private static final float TEXT_SIZE_14 = 14f;

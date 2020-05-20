@@ -6,11 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.utilities.DateTime;
-import org.pesmypetcare.mypetcare.controllers.exercise.TrGetAllWalks;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
-import org.pesmypetcare.mypetcare.features.pets.Walk;
-import org.pesmypetcare.mypetcare.features.pets.WalkPets;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.Walk;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.WalkPets;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 

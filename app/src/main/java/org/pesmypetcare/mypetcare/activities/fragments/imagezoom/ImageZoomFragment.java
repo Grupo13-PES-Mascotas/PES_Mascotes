@@ -23,6 +23,9 @@ import org.pesmypetcare.mypetcare.utilities.androidservices.GalleryService;
 
 import java.util.Objects;
 
+/**
+ * @author Albert Pinto
+ */
 public class ImageZoomFragment extends Fragment {
     private static final int GALLERY_ZOOM_REQUEST_CODE = 100;
     private static final float RADIUS = 1000.0f;

@@ -8,6 +8,9 @@ import org.pesmypetcare.mypetcare.services.StubUserManagerService;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * @author Enric Hernando
+ */
 public class TestTrExistsUsername {
     private TrExistsUsername trExistsUsername;
     private final String USERNAME = "johnDoe";

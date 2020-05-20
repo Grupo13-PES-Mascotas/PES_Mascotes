@@ -19,6 +19,9 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Albert Pinto
+ */
 public class TestTrAddNewWeight {
     private static final double DELTA = 0.05;
     private static final double NEW_WEIGHT = 10.0;

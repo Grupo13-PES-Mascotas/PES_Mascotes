@@ -13,6 +13,9 @@ import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryVi
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
+/**
+ * @author Xavier Campos
+ */
 public class PetsInfoComponentView extends CircularEntryView {
     private Pet pet;
 

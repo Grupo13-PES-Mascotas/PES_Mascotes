@@ -10,6 +10,9 @@ import androidx.cardview.widget.CardView;
 
 import org.pesmypetcare.mypetcare.R;
 
+/**
+ * @author Albert Pinto
+ */
 public class CircularImageView extends CardView {
     private static final float RADIUS = 200.0f;
     private ImageView imageView;

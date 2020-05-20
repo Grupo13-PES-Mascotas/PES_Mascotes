@@ -17,6 +17,9 @@ import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 
 import java.util.List;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class ForumsComponentView extends CircularEntryView {
     public static final int TEN = 10;
     private Forum forum;

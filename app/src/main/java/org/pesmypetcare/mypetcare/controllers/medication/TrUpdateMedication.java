@@ -1,10 +1,10 @@
 package org.pesmypetcare.mypetcare.controllers.medication;
 
-import org.pesmypetcare.mypetcare.features.pets.Medication;
-import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.medication.Medication;
+import org.pesmypetcare.mypetcare.features.pets.events.medication.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.MedicationManagerService;
+import org.pesmypetcare.mypetcare.services.medication.MedicationManagerService;
 
 import java.util.concurrent.ExecutionException;
 

@@ -7,7 +7,7 @@ import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.groups.NotGroupOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.CommunityService;
+import org.pesmypetcare.mypetcare.services.community.CommunityService;
 
 /**
  * @author Xavier Campos

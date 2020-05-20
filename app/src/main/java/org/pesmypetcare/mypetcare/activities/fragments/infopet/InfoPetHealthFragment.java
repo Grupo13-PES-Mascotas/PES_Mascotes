@@ -29,6 +29,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
 
+/**
+ * @author Albert Pinto
+ */
 public class InfoPetHealthFragment extends Fragment implements HealthBottomSheetCommunication {
     private static final String BOTTOM_SHEET_TAG = "Bottom sheet";
     private static final int CHART_SIZE = 500;

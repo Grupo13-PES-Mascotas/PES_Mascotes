@@ -15,6 +15,9 @@ import org.pesmypetcare.mypetcare.activities.fragments.login.LogInFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.login.SignUpFragment;
 import org.pesmypetcare.mypetcare.databinding.ActivityLoginBinding;
 
+/**
+ * @author Xavier Campos & Enric Hernando
+ */
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
 

@@ -1,10 +1,10 @@
 package org.pesmypetcare.mypetcare.controllers.vetvisits;
 
-import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.VetVisit;
+import org.pesmypetcare.mypetcare.features.pets.events.vetvisit.VetVisit;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.VetVisitsManagerService;
+import org.pesmypetcare.mypetcare.services.vetvisits.VetVisitsManagerService;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;

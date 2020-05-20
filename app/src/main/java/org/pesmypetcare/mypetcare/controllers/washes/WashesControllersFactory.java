@@ -1,8 +1,7 @@
 package org.pesmypetcare.mypetcare.controllers.washes;
 
-import org.pesmypetcare.mypetcare.services.GoogleCalendarAdapter;
-import org.pesmypetcare.mypetcare.services.WashManagerAdapter;
-
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarAdapter;
+import org.pesmypetcare.mypetcare.services.wash.WashManagerAdapter;
 
 /**
  * @author Enric Hernando

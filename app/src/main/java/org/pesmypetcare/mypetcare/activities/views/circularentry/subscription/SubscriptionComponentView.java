@@ -16,6 +16,9 @@ import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.List;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class SubscriptionComponentView extends CircularEntryView {
     private User user;
     private Group group;

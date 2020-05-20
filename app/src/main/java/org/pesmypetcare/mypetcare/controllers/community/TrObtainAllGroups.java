@@ -1,11 +1,14 @@
 package org.pesmypetcare.mypetcare.controllers.community;
 
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
-import org.pesmypetcare.mypetcare.services.CommunityService;
+import org.pesmypetcare.mypetcare.services.community.CommunityService;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/**
+ * @author Xavier Campos
+ */
 public class TrObtainAllGroups {
     private SortedSet<Group> result;
     private CommunityService communityService;

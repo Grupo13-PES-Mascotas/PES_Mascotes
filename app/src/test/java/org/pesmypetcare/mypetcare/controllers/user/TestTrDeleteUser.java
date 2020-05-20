@@ -14,6 +14,9 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * @author Enric Hernando
+ */
 public class TestTrDeleteUser {
     private User user;
     private TrDeleteUser trDeleteUser;

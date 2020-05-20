@@ -11,10 +11,13 @@ import android.widget.LinearLayout;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
-import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
 
+/**
+ * @author Daniel Clemente & Enric Hernando
+ */
 public class EventComponentView extends CircularEntryView {
     private Pet pet;
     private Event event;

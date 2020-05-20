@@ -3,8 +3,11 @@ package org.pesmypetcare.mypetcare.controllers.pet;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.PetManagerService;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
 
+/**
+ * @author Albert Pinto
+ */
 public class TrUpdatePet {
     private PetManagerService petManagerService;
     private User user;

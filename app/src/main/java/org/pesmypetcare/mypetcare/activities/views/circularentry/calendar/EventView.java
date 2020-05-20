@@ -8,13 +8,16 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
-import org.pesmypetcare.mypetcare.features.pets.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Daniel Clemente & Enric Hernando
+ */
 public class EventView extends LinearLayout {
     private Context context;
     private List<CircularEntryView> petComponents;

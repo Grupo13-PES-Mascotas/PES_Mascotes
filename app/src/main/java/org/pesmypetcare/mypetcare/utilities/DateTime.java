@@ -6,6 +6,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @author Albert Pinto
+ */
 public class DateTime implements Comparable<DateTime> {
     private static final int DAYS_30 = 30;
     private static final int DAYS_31 = 31;

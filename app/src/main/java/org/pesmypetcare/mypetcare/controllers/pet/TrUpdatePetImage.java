@@ -5,8 +5,11 @@ import android.graphics.Bitmap;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.PetManagerService;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
 
+/**
+ * @author Albert Pinto
+ */
 public class TrUpdatePetImage {
     private PetManagerService petManagerService;
     private User user;

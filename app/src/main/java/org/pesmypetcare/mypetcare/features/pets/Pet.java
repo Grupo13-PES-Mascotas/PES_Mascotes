@@ -7,6 +7,16 @@ import androidx.annotation.NonNull;
 
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.utilities.DateTime;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.Walk;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.illness.Illness;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.vaccination.Vaccination;
+import org.pesmypetcare.mypetcare.features.pets.events.medication.Medication;
+import org.pesmypetcare.mypetcare.features.pets.events.periodic.PeriodEvent;
+import org.pesmypetcare.mypetcare.features.pets.events.vetvisit.VetVisit;
+import org.pesmypetcare.mypetcare.features.pets.events.wash.Wash;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
@@ -18,6 +28,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Xavier Campos & Daniel Clemente & Enric Hernando & Albert Pinto
+ */
 public class Pet {
     public static final String BUNDLE_NAME = "petName";
     public static final String BUNDLE_BREED = "petBreed";

@@ -1,6 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers.pethealth;
 
-import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerAdapter;
 
 /**
  * @author Albert Pinto

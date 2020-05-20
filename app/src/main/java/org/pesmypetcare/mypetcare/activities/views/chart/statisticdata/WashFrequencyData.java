@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Albert Pinto
+ */
 public class WashFrequencyData extends StatisticData {
     private static final String UNIT = "times";
 

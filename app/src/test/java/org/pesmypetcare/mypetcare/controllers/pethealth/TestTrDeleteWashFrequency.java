@@ -18,6 +18,9 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Albert Pinto
+ */
 public class TestTrDeleteWashFrequency {
     private User user;
     private Pet pet;

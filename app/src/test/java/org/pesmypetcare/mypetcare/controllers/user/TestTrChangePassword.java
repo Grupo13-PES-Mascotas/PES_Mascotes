@@ -9,6 +9,9 @@ import org.pesmypetcare.mypetcare.services.StubUserManagerService;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * @author Enric Hernando
+ */
 public class TestTrChangePassword {
     private User user;
     private TrChangePassword trChangePassword;

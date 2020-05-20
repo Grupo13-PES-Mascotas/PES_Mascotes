@@ -14,6 +14,9 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentCommunityBinding;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class CommunityFragment extends Fragment {
     private static CommunityCommunication communication;
 

@@ -14,6 +14,9 @@ import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * @author Albert Pinto
+ */
 public class TestTrUpdatePet {
     private Pet pet;
     private User usr;

@@ -1,10 +1,11 @@
 package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
-import org.pesmypetcare.mypetcare.features.pets.Medication;
-import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.medication.Medication;
+import org.pesmypetcare.mypetcare.features.pets.events.medication.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.medication.MedicationManagerService;
 
 import java.util.ArrayList;
 import java.util.List;

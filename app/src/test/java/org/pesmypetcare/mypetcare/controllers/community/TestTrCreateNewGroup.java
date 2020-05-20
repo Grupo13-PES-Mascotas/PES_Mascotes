@@ -15,6 +15,9 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * @author Albert Pinto
+ */
 public class TestTrCreateNewGroup {
     private static final int YEAR = 2020;
     private static final int DAY = 26;

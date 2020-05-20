@@ -21,6 +21,9 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class Group implements Comparable<Group> {
     private String name;
     private String ownerUsername;

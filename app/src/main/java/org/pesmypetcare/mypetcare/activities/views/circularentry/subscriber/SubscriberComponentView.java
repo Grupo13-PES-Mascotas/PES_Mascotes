@@ -15,6 +15,9 @@ import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryVi
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class SubscriberComponentView extends CircularEntryView {
     private static final String HYPHEN = "-";
     private String username;

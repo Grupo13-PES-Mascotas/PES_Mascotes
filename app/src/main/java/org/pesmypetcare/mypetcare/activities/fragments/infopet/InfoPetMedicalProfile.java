@@ -23,10 +23,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetMedicalProfileBinding;
-import org.pesmypetcare.mypetcare.features.pets.Event;
-import org.pesmypetcare.mypetcare.features.pets.Illness;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.illness.Illness;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.Vaccination;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.vaccination.Vaccination;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,6 +34,9 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
 
+/**
+ * @author Xavier Campos & Enric Hernando
+ */
 public class InfoPetMedicalProfile extends Fragment {
     private static final String EOL = "\n";
     private static final String DATESEPARATOR = "-";

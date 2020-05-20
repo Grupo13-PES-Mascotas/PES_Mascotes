@@ -1,13 +1,13 @@
 package org.pesmypetcare.mypetcare.controllers.medicalprofile;
 
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
-import org.pesmypetcare.mypetcare.features.pets.Illness;
-import org.pesmypetcare.mypetcare.features.pets.IllnessAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.illness.Illness;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.illness.IllnessAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
-import org.pesmypetcare.mypetcare.services.MedicalProfileManagerService;
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
+import org.pesmypetcare.mypetcare.services.medicalprofile.MedicalProfileManagerService;
 
 import java.util.concurrent.ExecutionException;
 

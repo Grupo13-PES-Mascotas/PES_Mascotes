@@ -37,12 +37,15 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.databinding.FragmentSignUpBinding;
-import org.pesmypetcare.mypetcare.services.UserManagerAdapter;
-import org.pesmypetcare.mypetcare.services.UserManagerService;
+import org.pesmypetcare.mypetcare.services.user.UserManagerAdapter;
+import org.pesmypetcare.mypetcare.services.user.UserManagerService;
 
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Xavier Campos & Enric Hernando
+ */
 public class SignUpFragment extends Fragment {
     private final int MIN_PASS_LENTGH = 6;
     private final int PASS_POSITION = 2;

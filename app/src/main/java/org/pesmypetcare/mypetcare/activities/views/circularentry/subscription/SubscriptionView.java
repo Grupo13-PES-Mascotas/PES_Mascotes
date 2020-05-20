@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class SubscriptionView extends LinearLayout {
     public static final int MIN_SPACE_SIZE = 20;
     private Context context;

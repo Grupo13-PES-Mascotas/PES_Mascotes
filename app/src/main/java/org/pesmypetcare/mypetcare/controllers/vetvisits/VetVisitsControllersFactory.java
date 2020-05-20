@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.controllers.vetvisits;
 
-import org.pesmypetcare.mypetcare.services.GoogleCalendarAdapter;
-import org.pesmypetcare.mypetcare.services.VetVisitsAdapter;
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarAdapter;
+import org.pesmypetcare.mypetcare.services.vetvisits.VetVisitsAdapter;
 
 /**
  * @author Xavier Campos

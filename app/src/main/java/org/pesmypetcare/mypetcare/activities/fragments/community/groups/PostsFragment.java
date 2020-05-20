@@ -38,6 +38,9 @@ import org.pesmypetcare.mypetcare.utilities.androidservices.GalleryService;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Albert Pinto
+ */
 public class PostsFragment extends Fragment {
     public static final int POST_FRAGMENT_REQUEST_CODE = 200;
     public static final double IMAGE_ALLOWED_SIZE = Math.pow(2, 20);
@@ -427,11 +430,6 @@ public class PostsFragment extends Fragment {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(byteImages, 0, byteImages.length);
                 post.setPostImage(bitmap);
             }
-
-            /*if (messageDisplay.getImagePath() != null) {
-                byte[] imageBytes = InfoGroupFragment.getCommunication().getImageFromPost(post, messageDisplay);
-                post.setPostImage(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
-            }*/
 
             forum.addPost(post);
             showPosts();

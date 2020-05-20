@@ -69,7 +69,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetExercise;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.login.AsyncResponse;
 import org.pesmypetcare.mypetcare.activities.fragments.login.MyAsyncTask;
-import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsComunication;
+import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetFragment;
@@ -184,26 +184,26 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException
 import org.pesmypetcare.mypetcare.features.community.posts.PostReportedByAuthorException;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.notification.NotificationReceiver;
-import org.pesmypetcare.mypetcare.features.pets.Event;
-import org.pesmypetcare.mypetcare.features.pets.Exercise;
-import org.pesmypetcare.mypetcare.features.pets.Illness;
-import org.pesmypetcare.mypetcare.features.pets.IllnessAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.pets.InvalidPeriodException;
-import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.pets.Meals;
-import org.pesmypetcare.mypetcare.features.pets.Medication;
-import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.pets.NotExistingExerciseException;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.illness.Illness;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.illness.IllnessAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.InvalidPeriodException;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.MealAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
+import org.pesmypetcare.mypetcare.features.pets.events.medication.Medication;
+import org.pesmypetcare.mypetcare.features.pets.events.medication.MedicationAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.NotExistingExerciseException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
-import org.pesmypetcare.mypetcare.features.pets.Vaccination;
-import org.pesmypetcare.mypetcare.features.pets.VaccinationAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.pets.VetVisit;
-import org.pesmypetcare.mypetcare.features.pets.VetVisitAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.pets.WalkPets;
-import org.pesmypetcare.mypetcare.features.pets.Wash;
-import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.vaccination.Vaccination;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.vaccination.VaccinationAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.vetvisit.VetVisit;
+import org.pesmypetcare.mypetcare.features.pets.events.vetvisit.VetVisitAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.WalkPets;
+import org.pesmypetcare.mypetcare.features.pets.events.wash.Wash;
+import org.pesmypetcare.mypetcare.features.pets.events.wash.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
@@ -233,8 +233,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author Xavier Campos & Daniel Clemente & Enric Hernando & Albert Pinto
+ */
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
-    InfoPetCommunication, MyPetsComunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
+    InfoPetCommunication, MyPetsCommunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
     CommunityCommunication, InfoGroupCommunication, WalkCommunication, MessagingServiceCommunication, AsyncResponse {
 
     public static final int MAIN_ACTIVITY_ZOOM_IDENTIFIER = 0;

@@ -29,7 +29,7 @@ import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentWalkBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.WalkPets;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.WalkPets;
 import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 
 import java.util.HashMap;
@@ -37,6 +37,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * @author Albert Pinto
+ */
 public class WalkFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPolylineClickListener,
     GoogleMap.OnInfoWindowCloseListener, GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener {
     private static final float ZOOM = 16.0f;

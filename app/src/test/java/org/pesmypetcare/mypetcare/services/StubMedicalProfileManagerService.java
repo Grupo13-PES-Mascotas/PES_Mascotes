@@ -1,12 +1,13 @@
 package org.pesmypetcare.mypetcare.services;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
-import org.pesmypetcare.mypetcare.features.pets.Illness;
-import org.pesmypetcare.mypetcare.features.pets.IllnessAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.illness.Illness;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.illness.IllnessAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.Vaccination;
-import org.pesmypetcare.mypetcare.features.pets.VaccinationAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.vaccination.Vaccination;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.vaccination.VaccinationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.medicalprofile.MedicalProfileManagerService;
 import org.pesmypetcare.usermanager.datacontainers.pet.IllnessType;
 import org.pesmypetcare.usermanager.datacontainers.pet.SeverityType;
 

@@ -16,6 +16,7 @@ import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingEx
 import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyLikedException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.community.CommunityService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,9 @@ import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/**
+ * @author Albert Pinto
+ */
 public class StubCommunityService implements CommunityService {
     private static final int HUSKY = 0;
     private static final int TURTLES = 1;

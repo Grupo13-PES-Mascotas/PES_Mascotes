@@ -11,6 +11,9 @@ import java.util.Map;
 
 import static org.junit.Assert.assertArrayEquals;
 
+/**
+ * @author Albert Pinto
+ */
 public class TestTrObtainAllPetImages {
     private static final int BLUE_COLOR = 0x0000FF;
     private User user;

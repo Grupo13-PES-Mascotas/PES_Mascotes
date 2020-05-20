@@ -1,9 +1,9 @@
 package org.pesmypetcare.mypetcare.controllers.user;
 
-import org.pesmypetcare.mypetcare.services.MealManagerAdapter;
-import org.pesmypetcare.mypetcare.services.MedicationManagerAdapter;
-import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
-import org.pesmypetcare.mypetcare.services.UserManagerAdapter;
+import org.pesmypetcare.mypetcare.services.meal.MealManagerAdapter;
+import org.pesmypetcare.mypetcare.services.medication.MedicationManagerAdapter;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerAdapter;
+import org.pesmypetcare.mypetcare.services.user.UserManagerAdapter;
 
 /**
  * @author Albert Pinto

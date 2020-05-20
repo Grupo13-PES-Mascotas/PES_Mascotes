@@ -7,7 +7,7 @@ import org.pesmypetcare.mypetcare.features.community.forums.UserNotSubscribedExc
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.CommunityService;
+import org.pesmypetcare.mypetcare.services.community.CommunityService;
 
 import java.util.List;
 

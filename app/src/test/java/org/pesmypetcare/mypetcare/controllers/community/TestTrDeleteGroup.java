@@ -8,6 +8,9 @@ import org.pesmypetcare.mypetcare.services.StubCommunityService;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * @author Xavier Campos
+ */
 public class TestTrDeleteGroup {
     private final String groupName = "Elephants";
     private TrDeleteGroup trDeleteGroup;

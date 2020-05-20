@@ -4,10 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.utilities.DateTime;
-import org.pesmypetcare.mypetcare.controllers.meals.TrDeleteMeal;
-import org.pesmypetcare.mypetcare.controllers.meals.TrNewPetMeal;
-import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.pets.Meals;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.MealAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
@@ -18,6 +16,9 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Xavier Campos
+ */
 public class TestTrDeleteMeal {
     private User user;
     private Pet linux;

@@ -1,12 +1,15 @@
 package org.pesmypetcare.mypetcare.controllers.meals;
 
-import org.pesmypetcare.mypetcare.features.pets.Meals;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.MealManagerService;
+import org.pesmypetcare.mypetcare.services.meal.MealManagerService;
 
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Xavier Campos
+ */
 public class TrUpdateMeal {
     private MealManagerService mealManagerService;
     private User user;

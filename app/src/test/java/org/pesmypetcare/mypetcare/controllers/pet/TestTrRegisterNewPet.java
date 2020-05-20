@@ -16,6 +16,9 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * @author Albert Pinto
+ */
 public class TestTrRegisterNewPet {
     private User user;
     private TrRegisterNewPet trRegisterNewPet;

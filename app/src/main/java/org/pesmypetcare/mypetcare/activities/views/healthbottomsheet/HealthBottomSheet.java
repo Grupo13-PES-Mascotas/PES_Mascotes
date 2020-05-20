@@ -12,6 +12,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.pesmypetcare.mypetcare.R;
 
+/**
+ * @author Albert Pinto
+ */
 public class HealthBottomSheet extends BottomSheetDialogFragment {
     private static final int[] STATISTICS_IDENTIFIERS = {
         R.id.healthWeight, R.id.healthDailyKilocalories, R.id.healthExerciseFrequency, R.id.healthWeeklyExercise,

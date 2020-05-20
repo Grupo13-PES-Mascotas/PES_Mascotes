@@ -1,10 +1,10 @@
 package org.pesmypetcare.mypetcare.controllers.washes;
 
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.Wash;
+import org.pesmypetcare.mypetcare.features.pets.events.wash.Wash;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
-import org.pesmypetcare.mypetcare.services.WashManagerService;
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
+import org.pesmypetcare.mypetcare.services.wash.WashManagerService;
 
 import java.util.concurrent.ExecutionException;
 

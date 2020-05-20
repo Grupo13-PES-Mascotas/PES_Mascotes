@@ -7,6 +7,9 @@ import org.pesmypetcare.mypetcare.services.StubCommunityService;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Xavier Campos
+ */
 public class TestTrObtainAllGroups {
     private TrObtainAllGroups trObtainAllGroups;
     private StubCommunityService communityService;

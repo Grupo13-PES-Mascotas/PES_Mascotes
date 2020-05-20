@@ -18,6 +18,9 @@ import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Albert Pinto
+ */
 public class TestTrUpdatePetImage {
     private static final int WIDTH = 20;
     private static final int HEIGHT = 20;

@@ -17,6 +17,9 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertFalse;
 
+/**
+ * @author Albert Pinto
+ */
 public class TestTrDeletePet {
     private User user;
     private Pet pet;

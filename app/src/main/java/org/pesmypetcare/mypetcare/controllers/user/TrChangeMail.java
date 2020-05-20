@@ -1,8 +1,11 @@
 package org.pesmypetcare.mypetcare.controllers.user;
 
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.UserManagerService;
+import org.pesmypetcare.mypetcare.services.user.UserManagerService;
 
+/**
+ * @author Daniel Clemente
+ */
 public class TrChangeMail {
     private UserManagerService userManagerService;
     private User user;

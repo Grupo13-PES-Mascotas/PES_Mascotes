@@ -4,9 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.utilities.DateTime;
-import org.pesmypetcare.mypetcare.controllers.meals.TrNewPetMeal;
-import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.pets.Meals;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.MealAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
@@ -16,6 +15,9 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * @author Xavier Campos
+ */
 public class TestTrNewPetMeal {
     private static final int YEAR = 2020;
     private static final int DAY = 26;

@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.SortedSet;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class UserSubscriptionsFragment extends Fragment {
     private static final String INTERROGATION_SIGN = "?";
     private static final String SPACE = " ";
