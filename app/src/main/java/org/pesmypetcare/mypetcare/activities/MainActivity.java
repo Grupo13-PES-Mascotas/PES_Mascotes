@@ -362,8 +362,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         resources = getResources();
 
         setAttributes();
-        askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        if (enableLoginActivity) {
+            askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+
         makeLogin();
 
         ExecutorService mainActivitySetUp = Executors.newCachedThreadPool();

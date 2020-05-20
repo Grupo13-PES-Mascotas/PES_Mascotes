@@ -4,6 +4,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,8 +26,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 @LargeTest
 public class TestLoginActivity {
     private static final String LOG_IN = "LOG IN";
+
     @Rule
     public ActivityTestRule<LoginActivity> activityRule = new ActivityTestRule<>(LoginActivity.class);
+
+    @BeforeClass
+    public static void setUpBeforeClass() {
+        MainActivity.setEnableLoginActivity(false);
+    }
 
     @Test
     public void shouldMakeTheSignUp() {
@@ -35,7 +42,7 @@ public class TestLoginActivity {
         onView(withId(R.id.signUpPasswordText)).perform(typeText("AbcDert456$"), closeSoftKeyboard());
         onView(withId(R.id.signUpRepPasswordText)).perform(typeText("AbcDert456$"), closeSoftKeyboard());
 
-        onView(withId(R.id.signupButton)).perform(click());
+        onView(withId(R.id.signupButton)).check(matches(isDisplayed()));
     }
 
     @Test
