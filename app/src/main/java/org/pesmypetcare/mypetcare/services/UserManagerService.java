@@ -12,7 +12,7 @@ public interface UserManagerService {
     /**
      * Registers a new user.
      *
-     * @param uid
+     * @param uid The uid of the user
      * @param token The username of the user to be registered
      * @return True if the register has been done without any problems
      */
