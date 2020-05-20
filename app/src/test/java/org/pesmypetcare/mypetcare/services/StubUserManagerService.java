@@ -22,9 +22,9 @@ public class StubUserManagerService implements UserManagerService {
     }
   
     @Override
-    public User findUserByUsername(String username) {
+    public User findUserByUsername(String uid, String token) {
         for (User user : data) {
-            if (user.getUsername().equals(username)) {
+            if (user.getUsername().equals(uid)) {
                 return user;
             }
         }

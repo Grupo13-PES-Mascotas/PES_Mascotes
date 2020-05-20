@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
@@ -11,7 +12,6 @@ import org.pesmypetcare.mypetcare.features.pets.Wash;
 import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubGoogleCalendarService;
-import org.pesmypetcare.mypetcare.services.StubMealManagerService;
 import org.pesmypetcare.mypetcare.services.StubWashManagerService;
 
 import java.util.concurrent.ExecutionException;
@@ -65,7 +65,12 @@ public class TestTrDeleteWash {
         trNewPetWash.setWash(secondWash);
         trNewPetWash.execute();
         stubWashManagerService.deleteWashesFromPet(user, linux);
-        assertEquals("Should be equal", 0, StubMealManagerService.nMeals);
+        assertEquals("Should be equal", 0, StubWashManagerService.nWash);
+    }
+
+    @After
+    public void refreshData() {
+        StubWashManagerService.refreshData();
     }
 
     private Wash getTestWash() {

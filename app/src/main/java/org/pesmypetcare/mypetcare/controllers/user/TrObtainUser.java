@@ -12,7 +12,8 @@ import java.util.ArrayList;
 public class TrObtainUser {
     private UserManagerService userManagerService;
     private PetManagerService petManagerService;
-    private String username;
+    private String uid;
+    private String token;
     private User result;
 
     public TrObtainUser(UserManagerService userManagerService, PetManagerService petManagerService) {
@@ -21,11 +22,19 @@ public class TrObtainUser {
     }
 
     /**
-     * Set the username of the user that will be registered.
-     * @param username The name of the user that wants to be registered
+     * Set the uid of the user that has to be obtained.
+     * @param uid The uid of the user that has to be obtained
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    /**
+     * Set the token of the current user.
+     * @param token The token of the current user
+     */
+    public void setToken(String token) {
+        this.token = token;
     }
 
     /**
@@ -33,7 +42,8 @@ public class TrObtainUser {
      * @throws PetRepeatException The user has already this pet registered.
      */
     public void execute() throws PetRepeatException, MyPetCareException {
-        result = userManagerService.findUserByUsername(username);
+        result = userManagerService.findUserByUsername(uid, token);
+        //result.setToken(token);
         result.setPets((ArrayList<Pet>) petManagerService.findPetsByOwner(result));
     }
 

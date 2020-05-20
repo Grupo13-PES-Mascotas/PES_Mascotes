@@ -27,6 +27,7 @@ jobs:
       env:
         GOOGLE_PASSPHRASE: ${{ secrets.GOOGLE_PASSPHRASE }}
         RELEASE_PASSPHRASE: ${{ secrets.RELEASE_PASSPHRASE }}
+        PROPERTIES_PASSPHRASE: ${{ secrets.PROPERTIES_PASSPHRASE }}
 
     - name: grant execution to gradlew
       run: chmod +x ./gradlew

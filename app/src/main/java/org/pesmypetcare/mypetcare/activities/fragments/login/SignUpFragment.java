@@ -43,9 +43,6 @@ import org.pesmypetcare.mypetcare.services.UserManagerService;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SignUpFragment extends Fragment {
     private final int MIN_PASS_LENTGH = 6;
     private final int PASS_POSITION = 2;
@@ -68,7 +65,7 @@ public class SignUpFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         RC_CODE = 9001;
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = MainActivity.getmAuth();
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         signUpWithParameters();

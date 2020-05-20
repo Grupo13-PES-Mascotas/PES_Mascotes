@@ -16,6 +16,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -49,6 +51,7 @@ import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.httptools.utilities.DateTime;
+import org.pesmypetcare.mypetcare.BuildConfig;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunication;
@@ -249,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public static final String TAG_REGEX = "^[a-zA-Z0-9,]*$";
     private static final String WALKING_PREFERENCES = "Walking";
     public static final String GROUPS_SHARED_PREFERENCES = "Groups";
+    private static final String GOOGLE_CALENDAR_SHARED_PREFERENCES = "GoogleCalendar";
     private static final String START_WALKING_DATE_TIME = "startWalkingDateTime";
     public static final String ACTUAL_WALK = "ActualWalk";
     public static final int LAT = 0;
@@ -354,34 +358,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setContentView(binding.getRoot());
         resources = getResources();
 
-        sharedpreferences = getSharedPreferences("GoogleCalendar", Context.MODE_PRIVATE);
-        walkingSharedPreferences = getSharedPreferences(ACTUAL_WALK, Context.MODE_PRIVATE);
-
-        notificationId = 0;
-        requestCode = 0;
-        fragmentManager = getSupportFragmentManager();
-
-        context = this;
-
+        setAttributes();
+        askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION);
         makeLogin();
 
         ExecutorService mainActivitySetUp = Executors.newCachedThreadPool();
-        mainActivitySetUp.execute(() -> {
-            initializeControllers();
-            getComponents();
-
-            ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw, null));
-            initializeCurrentUser();
-            initializeActivity();
-            setUpNavigationImage();
-
-            askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-            askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-            LocationUpdater.setContext(this);
-            MessagingService.setCommunication(this);
-        });
-
+        mainActivitySetUp.execute(this::initializeMainActivity);
         mainActivitySetUp.shutdown();
 
         try {
@@ -390,31 +373,48 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             e.printStackTrace();
         }
 
+        setMessagingToken();
+    }
+
+    /**
+     * Set the token messaging.
+     */
+    private void setMessagingToken() {
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
             if (task.isSuccessful() && user != null) {
                 sendMessageToken(Objects.requireNonNull(task.getResult()).getToken());
             }
         });
+    }
 
-        /*SharedPreferences.Editor editor = walkingSharedPreferences.edit();
+    /**
+     * Set the attributes of the Main Activity.
+     */
+    private void setAttributes() {
+        sharedpreferences = getSharedPreferences(GOOGLE_CALENDAR_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        walkingSharedPreferences = getSharedPreferences(ACTUAL_WALK, Context.MODE_PRIVATE);
 
-        for (Map.Entry<String, ?> entry : walkingSharedPreferences.getAll().entrySet()) {
-            editor.remove(entry.getKey());
-        }
+        notificationId = 0;
+        requestCode = 0;
+        fragmentManager = getSupportFragmentManager();
 
-        editor.apply();
-        //getMyLocations();
+        context = this;
+    }
 
-        // Uncomment the following statements to remove all the entries for walking that are stored in SharedPreferences
-        SharedPreferences walkingSharedPreferences = getSharedPreferences(WALKING_PREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor2 = walkingSharedPreferences.edit();
-        editor2.remove(START_WALKING_DATE_TIME);
+    /**
+     * Initialize the Main Activity.
+     */
+    private void initializeMainActivity() {
+        initializeControllers();
+        getComponents();
 
-        for (Map.Entry<String, ?> entry : walkingSharedPreferences.getAll().entrySet()) {
-            editor2.remove(entry.getKey());
-        }
+        ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw, null));
+        initializeCurrentUser();
+        initializeActivity();
+        setUpNavigationImage();
 
-        editor2.apply();*/
+        LocationUpdater.setContext(this);
+        MessagingService.setCommunication(this);
     }
 
     /**
@@ -432,12 +432,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 toast.show();
             }
 
-            Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getIdToken(false)
-                .addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
+            if (mAuth.getCurrentUser() != null) {
+                mAuth.getCurrentUser().getIdToken(false).addOnCompleteListener(task -> {
                     user.setToken(Objects.requireNonNull(task.getResult()).getToken());
-                }
-            });
+                });
+            }
         }
     }
 
@@ -476,6 +475,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     private void makeLogin() {
         if (enableLoginActivity && mAuth.getCurrentUser() == null) {
+            if (BuildConfig.DEBUG) {
+                Log.d("MainActivity", "User is not logged in, starting log in activity");
+            }
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
@@ -505,7 +507,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * @throws PetRepeatException The pet has already been registered
      */
     private void initializeUser() throws PetRepeatException {
-        trObtainUser.setUsername(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
+        trObtainUser.setUid(Objects.requireNonNull(mAuth.getCurrentUser()).getUid());
+        trObtainUser.setToken("token");
 
         try {
             trObtainUser.execute();
@@ -1209,7 +1212,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainActivityFrameLayout, nextFragment, nextFragment.getClass()
             .getSimpleName());
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
     /**
@@ -2181,12 +2184,15 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void askForPermission(String permission) {
-        Thread askPermissionThread = ThreadFactory.createGenericAskPermissionThread(this, permission);
-        askPermissionThread.start();
+    public void askForPermission(String... permissions) {
+        Thread thread = new Thread(() -> {
+            ActivityCompat.requestPermissions(this, permissions, 1);
+        });
+
+        thread.start();
 
         try {
-            askPermissionThread.join();
+            thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -2732,13 +2738,15 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void sendMessageToken(String messageToken) {
-        trSendFirebaseMessagingToken.setUser(user);
-        trSendFirebaseMessagingToken.setToken(messageToken);
+        if (user != null) {
+            trSendFirebaseMessagingToken.setUser(user);
+            trSendFirebaseMessagingToken.setToken(messageToken);
 
-        try {
-            trSendFirebaseMessagingToken.execute();
-        } catch (EmptyMessagingTokenException e) {
-            e.printStackTrace();
+            try {
+                trSendFirebaseMessagingToken.execute();
+            } catch (EmptyMessagingTokenException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

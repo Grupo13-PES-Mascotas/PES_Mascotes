@@ -247,7 +247,6 @@
     <string name="update_post">Actualitzar post</string>
     <string name="edit_post_title">Editar post</string>
     <string name="edit_post_message">Introdueix el nou text pel post</string>
-    <string name="facebook_app_id">685773595491268</string>
     <string name="fb_login_protocol_scheme">fb685773595491268</string>
     <string name="unsubscribe_owner">No et pots eliminar la subscripció del teu propi grup</string>
     <string name="add_medication_button">Afegir medicació</string>

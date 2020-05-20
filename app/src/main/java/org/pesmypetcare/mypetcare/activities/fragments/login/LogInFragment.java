@@ -28,9 +28,8 @@ public class LogInFragment extends Fragment {
     private String password = "";
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mAuth = FirebaseAuth.getInstance();
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mAuth = MainActivity.getmAuth();
         FragmentLogInBinding binding = FragmentLogInBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         binding.loginButton.setOnClickListener(v -> {

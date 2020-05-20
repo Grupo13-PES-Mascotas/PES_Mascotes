@@ -38,19 +38,27 @@ android {
         }
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             testCoverageEnabled false
             signingConfig signingConfigs.release
-            resValue "string", "google_maps_api_key", "AIzaSyCFrDXTV36YZpT0z7EhDZaiP3znZEaPWaM"
+            resValue "string", "google_maps_api_key", google_maps_api_key
+            resValue "string", "facebook_application_id", facebook_application_id
         }
         debug {
             testCoverageEnabled true
-            resValue "string", "google_maps_api_key", "AIzaSyCFrDXTV36YZpT0z7EhDZaiP3znZEaPWaM"
+            resValue "string", "google_maps_api_key", google_maps_api_key
+            resValue "string", "facebook_application_id", facebook_application_id
         }
+
     }
+
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
@@ -95,7 +103,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.4.1'
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
-    implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:5198ceb540'
+    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:usermanager:3607ca7f37:develop@aar'
+    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:communitymanager:3607ca7f37:develop@aar'
+    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:httptools:3607ca7f37'
+    //implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:v2.0.0'
 }
 
 configurations.all {

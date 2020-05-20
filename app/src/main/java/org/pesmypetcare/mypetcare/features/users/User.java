@@ -193,10 +193,7 @@ public class User {
     }
 
     public void updatePetProfileImage(Pet actualPet) {
-        System.out.println(pets.toString());
-        System.out.println(actualPet.getName());
         int index = getActualPetIndex(actualPet.getName());
-        System.out.println(index);
         pets.get(index).setProfileImage(actualPet.getProfileImage());
     }
 
