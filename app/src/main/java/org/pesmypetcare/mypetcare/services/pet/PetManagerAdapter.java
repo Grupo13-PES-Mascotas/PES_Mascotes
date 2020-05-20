@@ -4,10 +4,10 @@ import android.graphics.Bitmap;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
-import org.pesmypetcare.mypetcare.features.pets.events.Event;
-import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.Walk;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.ServiceLocator;

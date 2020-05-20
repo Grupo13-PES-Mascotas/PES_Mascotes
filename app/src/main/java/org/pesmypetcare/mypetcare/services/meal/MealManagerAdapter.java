@@ -1,8 +1,8 @@
 package org.pesmypetcare.mypetcare.services.meal;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
-import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.ServiceLocator;
 import org.pesmypetcare.usermanager.datacontainers.pet.Meal;

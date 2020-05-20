@@ -2,7 +2,6 @@ package org.pesmypetcare.mypetcare.controllers.pet;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.mypetcare.controllers.pet.TrObtainAllPetImages;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubPetManagerService;

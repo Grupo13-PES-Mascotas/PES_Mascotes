@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.services.googlecalendar;
 
-import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.ServiceLocator;
 import org.pesmypetcare.usermanager.datacontainers.EventData;

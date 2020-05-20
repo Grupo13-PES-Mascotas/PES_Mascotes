@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.controllers.exercise;
 
-import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.Walk;
 import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.WalkPets;
 import org.pesmypetcare.mypetcare.features.users.User;

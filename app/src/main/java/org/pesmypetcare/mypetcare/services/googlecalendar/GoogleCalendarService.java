@@ -1,8 +1,8 @@
 package org.pesmypetcare.mypetcare.services.googlecalendar;
 
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
-import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.text.ParseException;

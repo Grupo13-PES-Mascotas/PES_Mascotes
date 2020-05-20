@@ -2,7 +2,6 @@ package org.pesmypetcare.mypetcare.controllers.user;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.mypetcare.controllers.user.TrChangeMail;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.StubUserManagerService;
 

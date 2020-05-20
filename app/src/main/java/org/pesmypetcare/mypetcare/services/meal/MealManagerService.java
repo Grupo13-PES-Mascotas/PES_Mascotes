@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.services.meal;
 
-import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.List;

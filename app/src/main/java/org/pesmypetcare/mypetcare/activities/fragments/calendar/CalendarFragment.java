@@ -29,9 +29,9 @@ import org.pesmypetcare.mypetcare.activities.views.circularentry.calendar.EventC
 import org.pesmypetcare.mypetcare.activities.views.circularentry.calendar.EventView;
 import org.pesmypetcare.mypetcare.databinding.FragmentCalendarBinding;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
-import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.text.DateFormat;

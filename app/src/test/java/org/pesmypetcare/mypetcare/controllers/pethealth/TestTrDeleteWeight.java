@@ -3,7 +3,6 @@ package org.pesmypetcare.mypetcare.controllers.pethealth;
 import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.httptools.utilities.DateTime;
-import org.pesmypetcare.mypetcare.controllers.pethealth.TrDeleteWeight;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;

@@ -22,8 +22,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetWashingBinding;
-import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.events.wash.Wash;
 import org.pesmypetcare.mypetcare.features.pets.events.wash.WashAlreadyExistingException;
 

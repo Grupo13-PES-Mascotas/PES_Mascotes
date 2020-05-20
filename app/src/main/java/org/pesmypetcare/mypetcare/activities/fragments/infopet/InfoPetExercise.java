@@ -27,9 +27,9 @@ import org.pesmypetcare.mypetcare.activities.views.datetimebuttons.TimeButton;
 import org.pesmypetcare.mypetcare.activities.views.entryview.EntryView;
 import org.pesmypetcare.mypetcare.activities.views.entryview.InvalidBuildParameters;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetExerciseBinding;
+import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
-import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.Walk;
 
 import java.util.ArrayList;

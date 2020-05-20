@@ -1,8 +1,8 @@
 package org.pesmypetcare.mypetcare.services.medication;
 
+import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.medication.Medication;
 import org.pesmypetcare.mypetcare.features.pets.events.medication.MedicationAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.List;

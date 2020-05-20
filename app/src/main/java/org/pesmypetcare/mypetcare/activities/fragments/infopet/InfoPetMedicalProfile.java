@@ -23,9 +23,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetMedicalProfileBinding;
+import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.illness.Illness;
-import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.vaccination.Vaccination;
 
 import java.text.SimpleDateFormat;

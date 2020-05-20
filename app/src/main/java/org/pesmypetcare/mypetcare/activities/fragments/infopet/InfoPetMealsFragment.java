@@ -21,10 +21,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetMealsBinding;
+import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.events.meals.MealAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
-import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

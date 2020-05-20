@@ -1,9 +1,9 @@
 package org.pesmypetcare.mypetcare.services.medication;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
+import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.medication.Medication;
 import org.pesmypetcare.mypetcare.features.pets.events.medication.MedicationAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.ServiceLocator;
 import org.pesmypetcare.usermanager.datacontainers.pet.MedicationData;
