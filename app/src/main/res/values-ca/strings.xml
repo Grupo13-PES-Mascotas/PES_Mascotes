@@ -114,14 +114,14 @@
     <string name="health_weekly_exercice">Exercici setmanal</string>
     <string name="health_weekly_kilocalories_average">Kilocalories setmanals</string>
     <string name="health_wash_frequency">Freqüencia de bany</string>
-    <string name="change_statistic">Canviar estadístic</string>
+    <string name="change_statistic">Canviar estadis</string>
     <string name="add_new_statistic">Afegir estadístic</string>
     <string name="previous">Recents</string>
     <string name="next">Antics</string>
     <string name="add_weight">Afegir pest</string>
     <string name="add_wash_frequency">Afegir freqüència de bany</string>
-    <string name="auto_calculated">Auto calculades</string>
-    <string name="add_not_implemented">Proxima actualització</string>
+    <string name="auto_calculated">Auto calculat</string>
+    <string name="add_not_implemented">Proxima actualit.</string>
     <string name="stub_statistic">Stub statistic</string>
     <string name="add_weight_message">Introdueix el nou pes i selecciona la data</string>
     <string name="add_weight_hint">Pes (kg)</string>

@@ -80,18 +80,8 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public boolean registerNewPet(User user, Pet pet) throws ExecutionException, InterruptedException {
-        /*ServiceLocator.getInstance().getPetManagerClient().createPet(user.getToken(), user.getUsername(),
-            pet.getName(), pet.getGender().toString(), pet.getBreed(), pet.getBirthDate(), pet.getWeight(),
-            pet.getPathologies(), pet.getRecommendedDailyKiloCalories(), pet.getWashFrequency());*/
         org.pesmypetcare.usermanager.datacontainers.pet.Pet libraryPet = getRegisterPet(pet);
         ServiceLocator.getInstance().getPetManagerClient().createPet(user.getToken(), user.getUsername(), libraryPet);
-
-        /*try {
-            ServiceLocator.getInstance().getPetManagerClient()
-                .createPet(user.getToken(), user.getUsername(), registerPet);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }*/
 
         return true;
     }
@@ -112,8 +102,6 @@ public class PetManagerAdapter implements PetManagerService {
         petData.setGender(pet.getGender());
         petData.setPathologies(pet.getPathologies());
         petData.setRecommendedKcal(pet.getLastRecommendedDailyKiloCalories());
-        //petData.setWashFreq(pet.getWashFrequency());
-        //petData.setWeight(pet.getWeight());
       
         registerPet.setBody(petData);
         return registerPet;
@@ -373,10 +361,7 @@ public class PetManagerAdapter implements PetManagerService {
 
         pet.setName(userPet.getName());
         pet.setGender(petData.getGender());
-        //pet.setBirthDate(DateTime.Builder.buildDateString(petData.getBirth()));
         pet.setBirthDate(DateTime.Builder.buildFullString(petData.getBirth()));
-        /*pet.setWeight(petData.getWeight());
-        pet.setWashFrequency(petData.getWashFreq());*/
         pet.setRecommendedDailyKiloCaloriesForCurrentDate(petData.getRecommendedKcal());
         pet.setBreed(petData.getBreed());
         pet.setPathologies(petData.getPathologies());

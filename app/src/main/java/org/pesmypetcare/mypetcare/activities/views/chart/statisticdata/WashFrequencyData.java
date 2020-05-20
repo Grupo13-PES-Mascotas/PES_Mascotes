@@ -35,11 +35,11 @@ public class WashFrequencyData extends StatisticData {
 
     @Override
     public int getMessageIdentifier() {
-        return R.string.add_wash_frequency;
+        return R.string.auto_calculated;
     }
 
     @Override
     public boolean getFocusableState() {
-        return true;
+        return false;
     }
 }
