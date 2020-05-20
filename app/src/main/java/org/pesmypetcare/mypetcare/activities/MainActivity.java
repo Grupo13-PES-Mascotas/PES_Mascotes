@@ -73,7 +73,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsCommunicatio
 import org.pesmypetcare.mypetcare.activities.fragments.mypets.MyPetsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetFragment;
-import org.pesmypetcare.mypetcare.activities.fragments.settings.NewPasswordInterface;
+import org.pesmypetcare.mypetcare.activities.fragments.settings.NewPasswordInterfaceCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.walks.WalkCommunication;
@@ -236,7 +236,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Xavier Campos & Daniel Clemente & Enric Hernando & Albert Pinto
  */
-public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterface,
+public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterfaceCommunication,
     InfoPetCommunication, MyPetsCommunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
     CommunityCommunication, InfoGroupCommunication, WalkCommunication, MessagingServiceCommunication, AsyncResponse {
 
@@ -1120,6 +1120,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     public static void setActualFragment(Fragment actualFragment) {
         MainActivity.actualFragment = actualFragment;
+    }
+
+    /**
+     * Get the enable of the login activity.
+     * @return The neable of the login activity
+     */
+    public static boolean isEnableLoginActivity() {
+        return enableLoginActivity;
     }
 
     /**

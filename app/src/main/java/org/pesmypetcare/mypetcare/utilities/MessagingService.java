@@ -6,6 +6,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
 
 import java.util.Calendar;
 import java.util.Map;
@@ -19,7 +20,10 @@ public class MessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
-        communication.sendMessageToken(s);
+
+        if (MainActivity.isEnableLoginActivity()) {
+            communication.sendMessageToken(s);
+        }
     }
 
     @Override

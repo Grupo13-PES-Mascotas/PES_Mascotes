@@ -38,7 +38,7 @@ public class NewPasswordFragment extends Fragment {
                 changePassword();
                 Activity thisActivity = getActivity();
                 assert thisActivity != null;
-                ((NewPasswordInterface) thisActivity).changeFragmentPass(new SettingsMenuFragment());
+                ((NewPasswordInterfaceCommunication) thisActivity).changeFragmentPass(new SettingsMenuFragment());
             }
         });
     }

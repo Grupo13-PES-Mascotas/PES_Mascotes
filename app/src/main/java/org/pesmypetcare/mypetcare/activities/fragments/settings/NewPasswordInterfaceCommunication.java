@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment;
 /**
  * @author Enric Hernando
  */
-public interface NewPasswordInterface {
+public interface NewPasswordInterfaceCommunication {
 
     /**
      * Changes the current fragment of the main viewr.
