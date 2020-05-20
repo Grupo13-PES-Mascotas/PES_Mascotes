@@ -37,3 +37,6 @@ jobs:
       with:
         api-level: 23
         script: ./gradlew connectedCheck  
+    
+    - name: get intrumentation coverage file name
+      run: ls app/build/outputs/code_coverage/debugAndroidTest/connected/
