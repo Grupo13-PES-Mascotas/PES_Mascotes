@@ -78,8 +78,8 @@ public class RegisterPetFragment extends Fragment {
             .toString()));
         petInfo.putString(Pet.BUNDLE_PATHOLOGIES, Objects.requireNonNull(binding.inputPathologies.getText())
             .toString());
-        petInfo.putInt(Pet.BUNDLE_WASH, Integer.parseInt(Objects.requireNonNull(binding.inputWashFrequency.getText())
-            .toString()));
+        /*petInfo.putInt(Pet.BUNDLE_WASH, Integer.parseInt(Objects.requireNonNull(binding.inputWashFrequency.getText())
+            .toString()));*/
 
         return petInfo;
     }
@@ -91,7 +91,7 @@ public class RegisterPetFragment extends Fragment {
     private boolean isAnyFieldBlank() {
         boolean isEmptyNameGenderBreed = isEmpty(binding.inputPetName) || isEmpty(binding.inputGender)
             || isEmpty(binding.inputBreed);
-        boolean isEmptyWeightCaloriesWash = isEmpty(binding.inputWeight) || isEmpty(binding.inputWashFrequency);
+        boolean isEmptyWeightCaloriesWash = isEmpty(binding.inputWeight);
 
         return isEmptyNameGenderBreed || isEmptyWeightCaloriesWash || !isBirthDateSelected;
     }

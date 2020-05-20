@@ -115,7 +115,7 @@ public class Pet {
         this.healthInfo = new PetHealthInfo();
         this.healthInfo.addWeightForDate(dateTime, petInfo.getFloat(BUNDLE_WEIGHT));
         this.healthInfo.setPathologies(petInfo.getString(BUNDLE_PATHOLOGIES));
-        this.healthInfo.addWashFrequencyForDate(dateTime, petInfo.getInt(BUNDLE_WASH));
+        //this.healthInfo.addWashFrequencyForDate(dateTime, petInfo.getInt(BUNDLE_WASH));
     }
 
     /**
