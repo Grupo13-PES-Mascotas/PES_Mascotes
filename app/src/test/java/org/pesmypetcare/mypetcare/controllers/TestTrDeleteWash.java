@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
@@ -66,6 +67,11 @@ public class TestTrDeleteWash {
         trNewPetWash.execute();
         stubWashManagerService.deleteWashesFromPet(user, linux);
         assertEquals("Should be equal", 0, StubMealManagerService.nMeals);
+    }
+
+    @After
+    public void refreshData() {
+        StubWashManagerService.refreshData();
     }
 
     private Wash getTestWash() {

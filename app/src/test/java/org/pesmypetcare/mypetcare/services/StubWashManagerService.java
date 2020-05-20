@@ -30,20 +30,27 @@ public class StubWashManagerService implements WashManagerService {
     public static Wash currentWash;
     private static DateTime washDate;
     private static int washDuration = 75;
-    private Map<String, ArrayList<Wash>> data;
+    private static Map<String, ArrayList<Wash>> data;
 
-    public StubWashManagerService() {
-        this.data = new HashMap<>();
+    static {
+        refreshData();
+    }
+
+    /**
+     * Refresh the data.
+     */
+    public static void refreshData() {
+        StubWashManagerService.data = new HashMap<>();
         try {
             washDate = DateTime.Builder.build(YEAR, MONTH, DAY, HOUR, MINUTES, SECONDS);
         } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
 
-        this.data.put(JOHN_DOE + " : " + LINUX, new ArrayList<>());
+        StubWashManagerService.data.put(JOHN_DOE + " : " + LINUX, new ArrayList<>());
         for (int i = 0; i < 2; ++i) {
-            Objects.requireNonNull(this.data.get(JOHN_DOE + " : " + LINUX))
-                    .add(new Wash(washDate, washDuration, MEAL_NAME + i));
+            Objects.requireNonNull(StubWashManagerService.data.get(JOHN_DOE + " : " + LINUX))
+                .add(new Wash(washDate, washDuration, MEAL_NAME + i));
             washDate.increaseDay();
         }
     }
