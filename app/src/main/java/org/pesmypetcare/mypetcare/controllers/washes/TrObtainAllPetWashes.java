@@ -31,8 +31,8 @@ public class TrObtainAllPetWashes {
     }
 
     /**
-     * Setter of the pet from which we want to obtain all the meals.
-     * @param pet The pet from which we want to obtain all the meals
+     * Setter of the pet from which we want to obtain all the washes.
+     * @param pet The pet from which we want to obtain all the washes
      */
     public void setPet(Pet pet) {
         this.pet = pet;

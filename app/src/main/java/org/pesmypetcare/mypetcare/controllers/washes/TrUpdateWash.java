@@ -32,8 +32,8 @@ public class TrUpdateWash {
     }
 
     /**
-     * Setter of the pet from which we want to update the meal.
-     * @param pet The setter of the pet from which we want to update the meal
+     * Setter of the pet from which we want to update the wash.
+     * @param pet The setter of the pet from which we want to update the wash
      */
     public void setPet(Pet pet) {
         this.pet = pet;

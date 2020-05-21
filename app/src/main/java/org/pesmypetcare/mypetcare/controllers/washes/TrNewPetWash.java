@@ -36,8 +36,8 @@ public class TrNewPetWash {
     }
 
     /**
-     * Setter of the pet to whom the meal will be added.
-     * @param pet The pet to whom the meal will be added
+     * Setter of the pet to whom the wash will be added.
+     * @param pet The pet to whom the wash will be added
      */
     public void setPet(Pet pet) {
         this.pet = pet;

@@ -15,20 +15,10 @@ public class Wash extends Event {
         this.washDescription = washDescription;
         this.duration = duration;
     }
-    /*
-    public Wash(Wash wash) {
-        super(WASH + wash.getBody().getWashName() + OF_THE_DAY + wash.getDate(),
-                DateTime.Builder.buildFullString(wash.getDate()));
-        this.washDate = DateTime.Builder.buildFullString(meal.getDate());
-        this.washName = wash.getBody().getMealName();
-        this.duration = wash.getBody().getDuration();
-    }
-
- */
 
     /**
      * Getter of the washName attribute.
-     * @return The name of the meal
+     * @return The name of the wash
      */
     public String getWashDescription() {
         return washDescription;

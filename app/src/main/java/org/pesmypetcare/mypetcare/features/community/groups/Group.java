@@ -239,22 +239,44 @@ public class Group implements Comparable<Group> {
         forums.remove(forum);
     }
 
+    /**
+     * Get the subscribers image.
+     * @return The subscribers image
+     */
     public Map<String, Bitmap> getSubscribersImages() {
         return subscribersImages;
     }
 
+    /**
+     * Add the subscriber image.
+     * @param username The username of the user to add the image to
+     * @param image THe image to add
+     */
     public void addSubscriberImage(String username, Bitmap image) {
         subscribersImages.put(username, image);
     }
 
+    /**
+     * Get the user image.
+     * @param username The username of the user to get the image from
+     * @return The user image
+     */
     public Bitmap getUserImage(String username) {
         return subscribersImages.get(username);
     }
 
+    /**
+     * Get the DateTime of the last group image.
+     * @return The DateTime of the last group iamge
+     */
     public DateTime getLastGroupImage() {
         return lastGroupImage;
     }
 
+    /**
+     * Set the DateTime of the last group image.
+     * @param lastGroupImage The DateTime of the last group image
+     */
     public void setLastGroupImage(DateTime lastGroupImage) {
         this.lastGroupImage = lastGroupImage;
     }
