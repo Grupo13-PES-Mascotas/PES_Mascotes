@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.features.pets;
 import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.httptools.utilities.DateTime;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
@@ -11,6 +12,9 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Albert Pinto
+ */
 public class TestPet {
     private static final String DATE = "2020-04-03";
     private User user;

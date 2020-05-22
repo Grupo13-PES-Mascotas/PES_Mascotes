@@ -15,6 +15,9 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Xavier Campos
+ */
 public class PetsInfoView extends LinearLayout {
     private Context currentActivity;
     private List<CircularEntryView> petComponents;

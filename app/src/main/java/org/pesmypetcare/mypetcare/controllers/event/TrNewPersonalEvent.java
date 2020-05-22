@@ -1,12 +1,15 @@
 package org.pesmypetcare.mypetcare.controllers.event;
 
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
-import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
 
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Enric Hernando
+ */
 public class TrNewPersonalEvent {
     private GoogleCalendarService googleCalendarService;
     private Pet pet;

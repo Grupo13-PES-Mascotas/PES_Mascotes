@@ -2,6 +2,9 @@ package org.pesmypetcare.mypetcare.activities.fragments.imagezoom;
 
 import android.graphics.drawable.Drawable;
 
+/**
+ * @author Albert Pinto
+ */
 public interface ImageZoomCommunication {
 
     /**

@@ -23,6 +23,9 @@ import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
 import java.util.Objects;
 
+/**
+ * @author Daniel Clemente
+ */
 public class InfoPetFragment extends Fragment {
     public static final int INFO_PET_ZOOM_IDENTIFIER = 1;
     private static Pet pet = new Pet("Linux");
@@ -47,8 +50,6 @@ public class InfoPetFragment extends Fragment {
 
         setUpViewPager();
         setUpPet();
-
-        System.out.println("HEALTH " + pet.getHealthInfo().toString());
 
         return binding.getRoot();
     }

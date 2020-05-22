@@ -11,6 +11,9 @@ import androidx.fragment.app.Fragment;
 
 import org.pesmypetcare.mypetcare.databinding.FragmentNewPasswordBinding;
 
+/**
+ * @author Enric Hernando
+ */
 public class NewPasswordFragment extends Fragment {
     private final int MIN_PASS_LENTGH = 6;
     private String passwd;
@@ -35,7 +38,7 @@ public class NewPasswordFragment extends Fragment {
                 changePassword();
                 Activity thisActivity = getActivity();
                 assert thisActivity != null;
-                ((NewPasswordInterface) thisActivity).changeFragmentPass(new SettingsMenuFragment());
+                ((NewPasswordInterfaceCommunication) thisActivity).changeFragmentPass(new SettingsMenuFragment());
             }
         });
     }

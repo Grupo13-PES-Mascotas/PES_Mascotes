@@ -4,20 +4,23 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
-import org.pesmypetcare.mypetcare.features.pets.Illness;
-import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.pets.Meals;
-import org.pesmypetcare.mypetcare.features.pets.Medication;
-import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
-import org.pesmypetcare.mypetcare.features.pets.Vaccination;
-import org.pesmypetcare.mypetcare.features.pets.VetVisit;
-import org.pesmypetcare.mypetcare.features.pets.Wash;
-import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.MealAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.illness.Illness;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.vaccination.Vaccination;
+import org.pesmypetcare.mypetcare.features.pets.events.medication.Medication;
+import org.pesmypetcare.mypetcare.features.pets.events.medication.MedicationAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.vetvisit.VetVisit;
+import org.pesmypetcare.mypetcare.features.pets.events.wash.Wash;
+import org.pesmypetcare.mypetcare.features.pets.events.wash.WashAlreadyExistingException;
 
 import java.util.List;
 
+/**
+ * @author Daniel Clemente
+ */
 public interface InfoPetCommunication {
 
     /**

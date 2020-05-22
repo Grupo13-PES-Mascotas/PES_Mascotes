@@ -1,6 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers.event;
 
-import org.pesmypetcare.mypetcare.services.GoogleCalendarAdapter;
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarAdapter;
 
 /**
  * @author Albert Pinto

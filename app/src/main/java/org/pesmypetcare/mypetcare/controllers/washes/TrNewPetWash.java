@@ -1,13 +1,13 @@
 package org.pesmypetcare.mypetcare.controllers.washes;
 
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
-import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.Wash;
-import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.wash.Wash;
+import org.pesmypetcare.mypetcare.features.pets.events.wash.WashAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
-import org.pesmypetcare.mypetcare.services.WashManagerService;
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
+import org.pesmypetcare.mypetcare.services.wash.WashManagerService;
 
 import java.util.concurrent.ExecutionException;
 
@@ -36,8 +36,8 @@ public class TrNewPetWash {
     }
 
     /**
-     * Setter of the pet to whom the meal will be added.
-     * @param pet The pet to whom the meal will be added
+     * Setter of the pet to whom the wash will be added.
+     * @param pet The pet to whom the wash will be added
      */
     public void setPet(Pet pet) {
         this.pet = pet;

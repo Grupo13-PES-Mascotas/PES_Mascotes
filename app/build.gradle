@@ -103,9 +103,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.4.1'
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
-    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:usermanager:3607ca7f37:develop@aar'
-    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:communitymanager:3607ca7f37:develop@aar'
-    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:httptools:3607ca7f37'
+    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:usermanager:e7627fe115:develop@aar'
+    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:communitymanager:e7627fe115:develop@aar'
+    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:httptools:e7627fe115'
     //implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:v2.0.0'
 }
 
@@ -113,7 +113,7 @@ configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
 
     reports {
         xml.enabled = true
@@ -121,13 +121,16 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
     }
 
     def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*',
-                      'android/**/*.*', '**/*Binding.class']
+                      'android/**/*.*', '**/*Binding.class', '**/*Exception.class', '**/*Communication.class']
     def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug/classes", excludes: fileFilter)
     def mainSrc = "${project.projectDir}/src/main/java"
+    def unitTests = "${buildDir}/jacoco/testDebugUnitTest.exec"
+    def instrumentationTests = "${buildDir}/outputs/code_coverage/debugAndroidTest/connected/test(AVD) - 6.0-coverage.ec"
 
     sourceDirectories.from = files([mainSrc])
     classDirectories.from = files([debugTree])
-    executionData.from = files("${buildDir}/jacoco/testDebugUnitTest.exec")
+
+    executionData.from = files([unitTests, instrumentationTests])
 }
 
 tasks.withType(JavaCompile) {

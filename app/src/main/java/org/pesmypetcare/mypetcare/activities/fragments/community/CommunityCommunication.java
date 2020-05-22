@@ -6,6 +6,9 @@ import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.SortedSet;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public interface CommunityCommunication {
 
     /**

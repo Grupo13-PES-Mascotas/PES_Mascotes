@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Albert Pinto
+ */
 public class WashFrequencyData extends StatisticData {
     private static final String UNIT = "times";
 
@@ -32,11 +35,11 @@ public class WashFrequencyData extends StatisticData {
 
     @Override
     public int getMessageIdentifier() {
-        return R.string.add_wash_frequency;
+        return R.string.auto_calculated;
     }
 
     @Override
     public boolean getFocusableState() {
-        return true;
+        return false;
     }
 }

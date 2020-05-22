@@ -7,6 +7,9 @@ import org.pesmypetcare.usermanager.clients.pet.PetCollectionsManagerClient;
 import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
 import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
 
+/**
+ * @author Albert Pinto
+ */
 public class ServiceLocator {
     private static ServiceLocator instance;
     private UserManagerClient userManagerClient;

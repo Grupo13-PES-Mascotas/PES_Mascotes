@@ -1,6 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.fragments.walks;
 
-import org.pesmypetcare.mypetcare.features.pets.WalkPets;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.WalkPets;
 
 import java.util.List;
 

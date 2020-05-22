@@ -27,15 +27,18 @@ import org.pesmypetcare.mypetcare.activities.views.datetimebuttons.TimeButton;
 import org.pesmypetcare.mypetcare.activities.views.entryview.EntryView;
 import org.pesmypetcare.mypetcare.activities.views.entryview.InvalidBuildParameters;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetExerciseBinding;
-import org.pesmypetcare.mypetcare.features.pets.Event;
-import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.Walk;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.Walk;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Albert Pinto
+ */
 public class InfoPetExercise extends Fragment {
     private static final int MIN_SPACE_SIZE = 20;
     private static final int HOUR_IN_MINUTES = 60;

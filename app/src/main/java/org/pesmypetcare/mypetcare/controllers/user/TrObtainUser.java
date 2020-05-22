@@ -4,11 +4,14 @@ import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.PetManagerService;
-import org.pesmypetcare.mypetcare.services.UserManagerService;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
+import org.pesmypetcare.mypetcare.services.user.UserManagerService;
 
 import java.util.ArrayList;
 
+/**
+ * @author Enric Hernando
+ */
 public class TrObtainUser {
     private UserManagerService userManagerService;
     private PetManagerService petManagerService;

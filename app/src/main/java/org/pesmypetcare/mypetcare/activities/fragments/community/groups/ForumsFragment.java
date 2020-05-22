@@ -20,6 +20,9 @@ import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Albert Pinto
+ */
 public class ForumsFragment extends Fragment {
     private static final String INTERROGATION_SIGN = "?";
     private static final String WHITE_SPACE = " ";

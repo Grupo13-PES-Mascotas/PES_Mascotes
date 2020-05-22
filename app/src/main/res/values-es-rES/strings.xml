@@ -46,7 +46,7 @@
     <string name="languages">Idiomas</string>
     <string name="change_password">Cambiar contraseña</string>
     <string name="change_username">Cambiar Username</string>
-    <string name="current_version">Versión: 1.1.0</string>
+    <string name="current_version">Versión: 2.0.0</string>
     <string name="old_password">Anterior contraseña</string>
     <string name="new_password">Nueva contraseña</string>
     <string name="confirm_new_password">Confirmar nueva contraseña</string>
@@ -115,13 +115,13 @@
     <string name="health_weekly_kilocalories_average">Kilocalorias semanales</string>
     <string name="health_wash_frequency">Frecuencia de baño</string>
     <string name="change_statistic">Cambiar estadístico</string>
-    <string name="add_new_statistic">Añadir estadístico</string>
+    <string name="add_new_statistic">Añadir estadíst.</string>
     <string name="previous">Recientes</string>
     <string name="next">Antiguos</string>
     <string name="add_weight">Añadir peso</string>
     <string name="add_wash_frequency">Añadir frecuencia de baño</string>
-    <string name="auto_calculated">Auto calculadas</string>
-    <string name="add_not_implemented">Próxima actualización</string>
+    <string name="auto_calculated">Auto calc.</string>
+    <string name="add_not_implemented">Próxima actual.</string>
     <string name="stub_statistic">Stub statistic</string>
     <string name="add_weight_message">Introduce el nuevo peso i la fecha</string>
     <string name="add_weight_hint">Peso (kg)</string>
@@ -129,7 +129,7 @@
     <string name="delete_weight">Eliminar peso</string>
     <string name="weight_deleted">Peso eliminado</string>
     <string name="back_to_return_or_outside">Pulsa atrás o fuera para cerrar</string>
-    <string name="accept">Aceptart</string>
+    <string name="accept">Aceptar</string>
     <string name="add_wash_frequency_message">Introduce la nueva frecuencia de baño i la fecha</string>
     <string name="add_wash_frequency_hint">Frecuencia de baño (días)</string>
     <string name="add_wash_frequency_date_hint">Selecciona la fecha de la frecuencia de baño</string>

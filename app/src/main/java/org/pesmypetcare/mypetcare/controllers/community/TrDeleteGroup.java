@@ -1,8 +1,11 @@
 package org.pesmypetcare.mypetcare.controllers.community;
 
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
-import org.pesmypetcare.mypetcare.services.CommunityService;
+import org.pesmypetcare.mypetcare.services.community.CommunityService;
 
+/**
+ * @author Xavier Campos
+ */
 public class TrDeleteGroup {
     private CommunityService communityService;
     private String groupName;

@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.utilities;
 
-
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -17,12 +16,9 @@ import org.pesmypetcare.mypetcare.activities.MainActivity;
 
 import java.util.Objects;
 
-
 /**
  * @author Daniel Clemente
  */
-
-
 public class LocationUpdater {
     private static final int LAT = 0;
     private static final int LNG = 1;

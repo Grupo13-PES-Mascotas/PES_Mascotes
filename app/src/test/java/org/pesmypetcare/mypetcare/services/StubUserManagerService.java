@@ -3,12 +3,16 @@ package org.pesmypetcare.mypetcare.services;
 import android.graphics.Bitmap;
 
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.user.UserManagerService;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @author Enric Hernando
+ */
 public class StubUserManagerService implements UserManagerService {
     private Set<User> data;
     private Map<String, String> tokens;

@@ -22,9 +22,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetVetVisitsBinding;
-import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.VetVisit;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.vetvisit.VetVisit;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +33,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+/**
+ * @author Xavier Campos
+ */
 public class InfoPetVetVisits extends Fragment {
     private static final String EOL = "\n";
     private static final int STROKE_WIDTH = 5;

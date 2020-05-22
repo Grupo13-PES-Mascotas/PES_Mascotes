@@ -14,6 +14,9 @@ import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoGroupSubscriptionsBinding;
 import org.pesmypetcare.mypetcare.features.users.User;
 
+/**
+ * @author Albert Pinto
+ */
 public class InfoGroupSubscriptionsFragment extends Fragment {
     private static FragmentInfoGroupSubscriptionsBinding binding;
     private MaterialButton btnSubscribe;

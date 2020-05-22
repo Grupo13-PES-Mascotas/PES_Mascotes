@@ -19,7 +19,7 @@ import org.pesmypetcare.mypetcare.databinding.FragmentLogInBinding;
 import java.util.Objects;
 
 /**
- * A simple {@link Fragment} subclass.
+ * @author Xavier Campos & Enric Hernando
  */
 public class LogInFragment extends Fragment {
     private FirebaseAuth mAuth;

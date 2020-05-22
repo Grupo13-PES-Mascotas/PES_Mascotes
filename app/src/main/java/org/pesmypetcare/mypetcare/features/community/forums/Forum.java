@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class Forum implements Comparable<Forum> {
     private String name;
     private String ownerUsername;

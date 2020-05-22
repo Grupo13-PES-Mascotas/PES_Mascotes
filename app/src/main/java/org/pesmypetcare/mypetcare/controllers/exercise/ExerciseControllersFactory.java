@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.controllers.exercise;
 
-import org.pesmypetcare.mypetcare.services.GoogleCalendarAdapter;
-import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarAdapter;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerAdapter;
 
 /**
  * @author Albert Pinto

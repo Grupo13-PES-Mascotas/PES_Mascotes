@@ -8,6 +8,9 @@ import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class Post implements Comparable<Post> {
     private String username;
     private String text;

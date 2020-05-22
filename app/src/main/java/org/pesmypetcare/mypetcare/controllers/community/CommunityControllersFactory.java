@@ -1,6 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers.community;
 
-import org.pesmypetcare.mypetcare.services.CommunityAdapter;
+import org.pesmypetcare.mypetcare.services.community.CommunityAdapter;
 
 /**
  * @author Albert Pinto

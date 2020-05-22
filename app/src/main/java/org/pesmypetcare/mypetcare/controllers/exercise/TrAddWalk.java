@@ -3,12 +3,12 @@ package org.pesmypetcare.mypetcare.controllers.exercise;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
-import org.pesmypetcare.mypetcare.features.pets.InvalidPeriodException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.Walk;
+import org.pesmypetcare.mypetcare.features.pets.events.InvalidPeriodException;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.Walk;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.PetManagerService;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;

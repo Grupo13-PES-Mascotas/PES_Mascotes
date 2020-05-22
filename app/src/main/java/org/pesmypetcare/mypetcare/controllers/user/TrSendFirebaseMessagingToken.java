@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.controllers.user;
 
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.UserManagerService;
+import org.pesmypetcare.mypetcare.services.user.UserManagerService;
 
 /**
  * @author Albert Pinto

@@ -11,6 +11,9 @@ import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/**
+ * @author Xavier Campos & Daniel Clemente & Enric Hernando & Albert Pinto
+ */
 public class User {
     private String username;
     private String email;

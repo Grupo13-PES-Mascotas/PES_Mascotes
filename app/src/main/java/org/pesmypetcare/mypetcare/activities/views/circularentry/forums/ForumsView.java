@@ -15,6 +15,9 @@ import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class ForumsView extends LinearLayout {
     private static final int MIN_SPACE_SIZE = 20;
     private Context context;

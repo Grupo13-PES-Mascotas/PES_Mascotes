@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
+/**
+ * @author Xavier Campos
+ */
 public class PetHealthInfo {
     private Map<DateTime, Double> weight;
     private Map<DateTime, Double> recommendedDailyKiloCalories;

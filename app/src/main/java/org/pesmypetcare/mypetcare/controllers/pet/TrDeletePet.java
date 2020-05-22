@@ -3,12 +3,15 @@ package org.pesmypetcare.mypetcare.controllers.pet;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.MealManagerService;
-import org.pesmypetcare.mypetcare.services.MedicationManagerService;
-import org.pesmypetcare.mypetcare.services.PetManagerService;
+import org.pesmypetcare.mypetcare.services.meal.MealManagerService;
+import org.pesmypetcare.mypetcare.services.medication.MedicationManagerService;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
 
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Albert Pinto
+ */
 public class TrDeletePet {
     private PetManagerService petManagerService;
     private MealManagerService mealManagerService;

@@ -6,6 +6,9 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * @author Albert Pinto
+ */
 public class TestDateTime {
     private DateTime dateTime;
     private DateTime dateTime2;

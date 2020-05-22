@@ -24,6 +24,9 @@ import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 
 import java.util.Objects;
 
+/**
+ * @author Albert Pinto
+ */
 public class InfoPetBasicFragment extends Fragment {
     private FragmentInfoPetBasicBinding binding;
     private boolean modified;

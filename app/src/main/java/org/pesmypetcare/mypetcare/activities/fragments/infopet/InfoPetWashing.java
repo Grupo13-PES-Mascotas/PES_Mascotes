@@ -22,10 +22,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetWashingBinding;
-import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.Wash;
-import org.pesmypetcare.mypetcare.features.pets.WashAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.wash.Wash;
+import org.pesmypetcare.mypetcare.features.pets.events.wash.WashAlreadyExistingException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,6 +34,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+/**
+ * @author Enric Hernando
+ */
 public class InfoPetWashing extends Fragment {
     private static final String EOL = "\n";
     private static final int FIRST_TWO_DIGITS = 10;

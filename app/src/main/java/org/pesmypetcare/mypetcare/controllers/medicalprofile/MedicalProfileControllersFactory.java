@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.controllers.medicalprofile;
 
-import org.pesmypetcare.mypetcare.services.GoogleCalendarAdapter;
-import org.pesmypetcare.mypetcare.services.MedicalProfileManagerAdapter;
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarAdapter;
+import org.pesmypetcare.mypetcare.services.medicalprofile.MedicalProfileManagerAdapter;
 
 /**
  * @author Xavier Campos

@@ -26,6 +26,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author Albert Pinto
+ */
 public class InfoGroupFragment extends Fragment {
     public static final int INFO_GROUP_ZOOM_IDENTIFIER = 2;
     private static final int TIMEOUT = 5;

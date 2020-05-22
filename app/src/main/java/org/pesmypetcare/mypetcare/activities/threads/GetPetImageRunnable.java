@@ -8,6 +8,9 @@ import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
 import java.io.IOException;
 
+/**
+ * @author Albert Pinto
+ */
 public class GetPetImageRunnable implements Runnable {
     private int actual;
     private String username;

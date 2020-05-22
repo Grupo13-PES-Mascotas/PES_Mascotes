@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment;
 
 import org.pesmypetcare.mypetcare.databinding.FragmentNotImplementedBinding;
 
+/**
+ * @author Albert Pinto
+ */
 public class NotImplementedFragment extends Fragment {
     private FragmentNotImplementedBinding binding;
 

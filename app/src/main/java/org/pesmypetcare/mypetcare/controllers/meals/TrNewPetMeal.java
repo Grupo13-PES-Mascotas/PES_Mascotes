@@ -1,16 +1,19 @@
 package org.pesmypetcare.mypetcare.controllers.meals;
 
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
-import org.pesmypetcare.mypetcare.features.pets.Event;
-import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.MealAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.GoogleCalendarService;
-import org.pesmypetcare.mypetcare.services.MealManagerService;
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
+import org.pesmypetcare.mypetcare.services.meal.MealManagerService;
 
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Xavier Campos
+ */
 public class TrNewPetMeal {
     private MealManagerService mealManagerService;
     private GoogleCalendarService googleCalendarService;

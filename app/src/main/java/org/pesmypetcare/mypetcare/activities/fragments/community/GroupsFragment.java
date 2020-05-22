@@ -31,6 +31,9 @@ import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class GroupsFragment extends Fragment {
     private static final int[] GROUP_SEARCH_TITLE_ID = {
         R.string.search_group_name, R.string.search_group_tag

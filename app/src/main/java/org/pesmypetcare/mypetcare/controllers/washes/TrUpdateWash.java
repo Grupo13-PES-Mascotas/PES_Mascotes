@@ -1,9 +1,9 @@
 package org.pesmypetcare.mypetcare.controllers.washes;
 
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.Wash;
+import org.pesmypetcare.mypetcare.features.pets.events.wash.Wash;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.WashManagerService;
+import org.pesmypetcare.mypetcare.services.wash.WashManagerService;
 
 import java.util.concurrent.ExecutionException;
 
@@ -32,8 +32,8 @@ public class TrUpdateWash {
     }
 
     /**
-     * Setter of the pet from which we want to update the meal.
-     * @param pet The setter of the pet from which we want to update the meal
+     * Setter of the pet from which we want to update the wash.
+     * @param pet The setter of the pet from which we want to update the wash
      */
     public void setPet(Pet pet) {
         this.pet = pet;

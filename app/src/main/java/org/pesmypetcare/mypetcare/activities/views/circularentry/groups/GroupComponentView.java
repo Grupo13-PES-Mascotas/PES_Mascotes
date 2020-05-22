@@ -15,6 +15,9 @@ import org.pesmypetcare.mypetcare.features.community.groups.Group;
 
 import java.util.List;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class GroupComponentView extends CircularEntryView {
     private Group group;
 

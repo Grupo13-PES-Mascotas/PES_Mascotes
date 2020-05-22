@@ -3,11 +3,12 @@ package org.pesmypetcare.mypetcare.services;
 import android.graphics.Bitmap;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
-import org.pesmypetcare.mypetcare.features.pets.Event;
-import org.pesmypetcare.mypetcare.features.pets.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.features.pets.Walk;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.Walk;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +17,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Albert Pinto
+ */
 public class StubPetManagerService implements PetManagerService {
     private static final String JOHN_DOE = "johnDoe";
     private static final String JOHN_DOE_2 = "johnDoe2";

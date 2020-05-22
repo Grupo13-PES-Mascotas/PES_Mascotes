@@ -19,6 +19,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class SubscribersView extends LinearLayout {
     public static final int MIN_SPACE_SIZE = 20;
     private Context context;
