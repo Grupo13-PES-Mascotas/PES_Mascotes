@@ -27,12 +27,14 @@ public class EstablishmentsFragment extends Fragment implements OnMapReadyCallba
     private static final float ZOOM = 16.0f;
     private static final float TRANSPARENCY = 0.7f;
     private FragmentEstablishmentsBinding binding;
+    private EstablishmentsCommunication communication;
     private MapView mapView;
     private GoogleMap googleMap;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentEstablishmentsBinding.inflate(inflater, container, false);
+        communication = (EstablishmentsCommunication) getActivity();
 
         mapView = binding.mapEstablishmentView;
         mapView.onCreate(savedInstanceState);
