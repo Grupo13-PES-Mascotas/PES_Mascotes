@@ -1,5 +1,10 @@
 package org.pesmypetcare.mypetcare.services;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerException;
@@ -8,15 +13,20 @@ import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExisting
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyLikedException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostNotFoundException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.mypetcare.services.community.CommunityService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/**
+ * @author Albert Pinto
+ */
 public class StubCommunityService implements CommunityService {
     private static final int HUSKY = 0;
     private static final int TURTLES = 1;
@@ -35,13 +45,13 @@ public class StubCommunityService implements CommunityService {
     public static void addStubDefaultData() {
         addGroups();
         addTags();
-        addFroums();
+        addForums();
     }
 
     /**
      * Add the forums.
      */
-    private static void addFroums() {
+    private static void addForums() {
         new Forum("Washing", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:00:00"),
             StubCommunityService.groups.get(HUSKY));
         Forum forum = new Forum("Cleaning", "John Doe", DateTime.Builder.buildFullString("2020-04-21T20:50:10"),
@@ -49,12 +59,18 @@ public class StubCommunityService implements CommunityService {
         forum.addTag("important");
         new Forum("Washing", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:00:00"),
             StubCommunityService.groups.get(DINOSAURS));
-        new Forum("Sickling", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:10:00"),
+        Forum forum2 = new Forum("Sickling", "John Doe", DateTime.Builder.buildFullString("2020-04-22T10:10:00"),
             StubCommunityService.groups.get(DINOSAURS));
-        forum.addPost(new Post("John Doe", "I think that the huskies have to be kept cleaned. What do you think?",
-            DateTime.Builder.buildFullString("2020-04-21T20:55:10"), forum));
+        Post post = new Post("John Doe", "I think that the huskies have to be kept cleaned. What do you think?",
+            DateTime.Builder.buildFullString("2020-04-21T20:55:10"), forum);
+        post.setPostImage(BitmapFactory.decodeByteArray(new byte[]{(byte) 0x00}, 0, 1));
+        forum.addPost(post);
         forum.addPost(new Post("John Doe", "I'm very interested in your answers",
             DateTime.Builder.buildFullString("2020-04-21T21:15:22"), forum));
+        forum.addPost(new Post("Manolo Lama", "I would love to clean the Bicho",
+            DateTime.Builder.buildFullString("2020-04-28T12:00:00"), forum));
+        forum2.addPost(new Post("John Doe", "I would love to clean the Bicho 2",
+            DateTime.Builder.buildFullString("2020-04-28T12:00:00"), forum2));
     }
 
     /**
@@ -257,6 +273,159 @@ public class StubCommunityService implements CommunityService {
         }
     }
 
+    @Override
+    public void likePost(User user, Post post) throws PostNotFoundException, PostAlreadyLikedException {
+        boolean found = false;
+        for (Group g : groups) {
+            if (g.getName().equals(post.getForum().getGroup().getName())) {
+                for (Forum f : g.getForums()) {
+                    if (f.getName().equals(post.getForum().getName())) {
+                        for (Post p : f.getPosts()) {
+                            if (p.getUsername().equals(post.getUsername())
+                                && p.getCreationDate().compareTo(post.getCreationDate()) == 0) {
+                                if (p.getLikerUsername().contains(user.getUsername())) {
+                                    throw new PostAlreadyLikedException();
+                                }
+                                p.addLikerUsername(user.getUsername());
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (!found) {
+            throw new PostNotFoundException();
+        }
+    }
+
+    @Override
+    public void unlikePost(User user, Post post) {
+        int groupIndex = groups.indexOf(post.getForum().getGroup());
+
+        for (Forum forum : groups.get(groupIndex).getForums()) {
+            if (forum.equals(post.getForum())) {
+                for (Post forumPost : forum.getPosts()) {
+                    if (forumPost.equals(post)) {
+                        forumPost.removeLikerUsername(user.getUsername());
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void reportPost(User user, Post post, String reportMessage) {
+        int groupIndex = groups.indexOf(post.getForum().getGroup());
+
+        for (Forum forum : groups.get(groupIndex).getForums()) {
+            if (forum.equals(post.getForum())) {
+                for (Post forumPost : forum.getPosts()) {
+                    if (forumPost.equals(post)) {
+                        forumPost.reportPost();
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void addPostImage(User user, Post post, Bitmap image) throws PostNotFoundException {
+        int groupIndex = groups.indexOf(post.getForum().getGroup());
+        boolean found = false;
+
+        for (Forum forum : groups.get(groupIndex).getForums()) {
+            if (forum.getName().equals(post.getForum().getName())) {
+                for (Post forumPost : forum.getPosts()) {
+                    if (forumPost.getUsername().equals(post.getUsername())
+                    && forumPost.getCreationDate().compareTo(post.getCreationDate()) == 0) {
+                        post.setPostImage(image);
+                        found = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!found) {
+            throw new PostNotFoundException();
+        }
+    }
+
+    @Override
+    public void deletePostImage(User user, Post post) throws PostNotFoundException {
+        int groupIndex = groups.indexOf(post.getForum().getGroup());
+        boolean found = false;
+
+        for (Forum forum : groups.get(groupIndex).getForums()) {
+            if (forum.getName().equals(post.getForum().getName())) {
+                for (Post forumPost : forum.getPosts()) {
+                    if (forumPost.getUsername().equals(post.getUsername())
+                        && forumPost.getCreationDate().compareTo(post.getCreationDate()) == 0) {
+                        post.setPostImage(null);
+                        found = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!found) {
+            throw new PostNotFoundException();
+        }
+    }
+
+    @Override
+    public void addGroupImage(User user, Group group, Bitmap image) throws GroupNotFoundException {
+        int groupIndex = groups.indexOf(group);
+        if (groupIndex == -1) {
+            throw new GroupNotFoundException();
+        } else {
+            groups.get(groupIndex).setGroupIcon(image);
+        }
+    }
+
+    @Override
+    public void deleteGroupImage(User user, Group group) throws GroupNotFoundException {
+        int groupIndex = groups.indexOf(group);
+        if (groupIndex == -1) {
+            throw new GroupNotFoundException();
+        } else {
+            groups.get(groupIndex).setGroupIcon(null);
+        }
+    }
+
+    @Override
+    public byte[] getPostImage(User user, Post post, MessageDisplay messageDisplay) {
+        int groupIndex = groups.indexOf(post.getForum().getGroup());
+        Forum selectedForum = null;
+
+        for (Forum forum : groups.get(groupIndex).getForums()) {
+            if (post.getForum().getName().equals(forum.getName())) {
+                selectedForum = forum;
+                break;
+            }
+        }
+
+        for (Post forumPost : Objects.requireNonNull(selectedForum).getPosts()) {
+            if (forumPost.getCreationDate().compareTo(post.getCreationDate()) == 0) {
+                return new byte[] {0x00};
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public byte[] getGroupImage(User user, Group group) {
+        for (Group g : groups) {
+            if (g.getName().equals(group.getName())) {
+                return new byte[] {0x00};
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Update the forums.
      * @param user The user
@@ -273,7 +442,7 @@ public class StubCommunityService implements CommunityService {
                 boolean found = false;
                 for (Post p : f.getPosts()) {
                     if (p.getUsername().equals(user.getUsername())
-                        && p.getCreationDate().compareTo(post.getCreationDate()) == 0) {
+                            && p.getCreationDate().compareTo(post.getCreationDate()) == 0) {
                         found = true;
                         p.setText(newText);
                     }

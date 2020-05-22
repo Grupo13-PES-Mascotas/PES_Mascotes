@@ -1,71 +1,62 @@
 package org.pesmypetcare.mypetcare.activities.views.circularentry.calendar;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 
-import org.pesmypetcare.mypetcare.R;
+import androidx.annotation.Nullable;
+
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
-import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
-import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.utilities.DateConversion;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
 
-public class EventView extends CircularEntryView {
-    private Pet pet;
-    private Event event;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
-    public EventView(Context context, AttributeSet attrs) {
+/**
+ * @author Daniel Clemente & Enric Hernando
+ */
+public class EventView extends LinearLayout {
+    private Context context;
+    private List<CircularEntryView> petComponents;
+
+    public EventView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-    }
 
-    public EventView(Context context, AttributeSet attrs, Pet pet, Event event) {
-        super(context, attrs);
-        this.pet = pet;
-        this.event = event;
-    }
-
-    @Override
-    protected CircularImageView getImage() {
-        CircularImageView image = new CircularImageView(getCurrentActivity(), null);
-        Drawable petImageDrawable = getResources().getDrawable(R.drawable.single_paw);
-
-        if (pet.getProfileImage() != null) {
-            petImageDrawable = new BitmapDrawable(getResources(), pet.getProfileImage());
-        }
-
-        image.setDrawable(petImageDrawable);
-        int imageDimensions = getImageDimensions();
-        image.setLayoutParams(new LinearLayout.LayoutParams(imageDimensions, imageDimensions));
-        int imageId = View.generateViewId();
-        image.setId(imageId);
-
-        return image;
-    }
-
-    @Override
-    public Object getObject() {
-        return pet;
+        this.context = context;
+        this.petComponents = new ArrayList<>();
+        setOrientation(VERTICAL);
+        LinearLayout.LayoutParams params = new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+            LayoutParams.MATCH_PARENT);
+        params.gravity = Gravity.START;
+        setLayoutParams(params);
     }
 
     /**
-     * Get the event of the view.
-     * @return The event of the view
+     * Show the events that the pet has got on a date.
+     * @param pet The pet that has got the event
+     * @param date The date to obtain the events from
      */
-    public Event getEvent() {
-        return event;
+    public void showEvents(Pet pet, String date) throws ParseException {
+        //pet.addEvent(new Event("Take to vet", "2020-04-03T10:30:00"));
+        List<Event> events = pet.getEvents(date);
+        List<Event> periodicEvents = pet.getPeriodicEvents(date);
+        events.addAll(periodicEvents);
+        for (Event event : events) {
+            CircularEntryView circularEntryView = new EventComponentView(context, null, pet, event)
+                .initializeComponent();
+            addView(circularEntryView);
+            this.petComponents.add(circularEntryView);
+        }
     }
 
-    @Override
-    protected String getFirstLineText() {
-        return pet.getName() + " - " + event.getDescription();
-    }
-
-    @Override
-    protected String getSecondLineText() {
-        return DateConversion.getHourMinutes(event.getDateTime().toString());
+    /**
+     * Get all the views of the pets.
+     * @return All the views of the pets
+     */
+    public List<CircularEntryView> getPetComponents() {
+        return petComponents;
     }
 }

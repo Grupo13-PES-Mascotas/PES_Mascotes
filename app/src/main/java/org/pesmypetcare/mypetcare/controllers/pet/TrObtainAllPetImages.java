@@ -1,10 +1,13 @@
 package org.pesmypetcare.mypetcare.controllers.pet;
 
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.PetManagerService;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
 
 import java.util.Map;
 
+/**
+ * @author Albert Pinto
+ */
 public class TrObtainAllPetImages {
     private PetManagerService petManagerService;
     private User user;

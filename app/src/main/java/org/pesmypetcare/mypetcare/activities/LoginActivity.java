@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -8,16 +9,23 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.tabs.TabLayout;
 
+import org.pesmypetcare.mypetcare.BuildConfig;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.login.LogInFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.login.SignUpFragment;
 import org.pesmypetcare.mypetcare.databinding.ActivityLoginBinding;
 
+/**
+ * @author Xavier Campos & Enric Hernando
+ */
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (BuildConfig.DEBUG) {
+            Log.d("LoginActivity", "Create LoginActivity");
+        }
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

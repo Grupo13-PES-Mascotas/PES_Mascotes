@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetBasicBinding;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
@@ -23,6 +24,9 @@ import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 
 import java.util.Objects;
 
+/**
+ * @author Albert Pinto
+ */
 public class InfoPetBasicFragment extends Fragment {
     private FragmentInfoPetBasicBinding binding;
     private boolean modified;
@@ -30,7 +34,7 @@ public class InfoPetBasicFragment extends Fragment {
     private String newBreed;
     private String newGender;
     private String newPathologies;
-    private String newBirthDate;
+    private DateTime newBirthDate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,10 +55,10 @@ public class InfoPetBasicFragment extends Fragment {
     private void initializePetComponents() {
         newName = InfoPetFragment.getPet().getName();
         newBreed = InfoPetFragment.getPet().getBreed();
-        newBirthDate = InfoPetFragment.getPet().getBirthDate();
+        newBirthDate = InfoPetFragment.getPet().getBirthDateInstance();
 
         Objects.requireNonNull(binding.breed.getEditText()).setText(newBreed);
-        Objects.requireNonNull(binding.inputBirthMonth).setText(newBirthDate);
+        Objects.requireNonNull(binding.inputBirthMonth).setText(newBirthDate.toDateStringReverse());
 
         setPathologies();
         setGender();
@@ -127,7 +131,7 @@ public class InfoPetBasicFragment extends Fragment {
         materialDatePicker.addOnPositiveButtonClickListener(selection -> {
             String selectedDate = materialDatePicker.getHeaderText();
             binding.inputBirthMonth.setText(selectedDate);
-            newBirthDate = selectedDate;
+            //newBirthDate = selectedDate;
         });
     }
 

@@ -1,9 +1,11 @@
 package org.pesmypetcare.mypetcare.services;
 
-import org.pesmypetcare.mypetcare.features.pets.Meals;
+import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.mypetcare.services.meal.MealManagerService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * @author Xavier Campos
+ */
 public class StubMealManagerService implements MealManagerService {
     private static final String JOHN_DOE = "johnDoe";
     private static final String LINUX = "Linux";
@@ -31,7 +36,7 @@ public class StubMealManagerService implements MealManagerService {
         this.data = new HashMap<>();
         try {
             mealDate = DateTime.Builder.build(YEAR, MONTH, DAY, HOUR, MINUTES, SECONDS);
-        } catch (org.pesmypetcare.usermanager.exceptions.InvalidFormatException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -43,6 +48,7 @@ public class StubMealManagerService implements MealManagerService {
             mealKcal++;
         }
     }
+
     @Override
     public void createMeal(User user, Pet pet, Meals meal) {
         data.putIfAbsent(user.getUsername() + " : " + pet.getName(), new ArrayList<>());
@@ -62,7 +68,7 @@ public class StubMealManagerService implements MealManagerService {
     }
 
     @Override
-    public void updateMealDate(User user, Pet pet, String newDate, String oldDate) {
+    public void updateMealKey(User user, Pet pet, String newDate, String oldDate) {
         if (data.containsKey(user.getUsername() + " : " + pet.getName())) {
             ArrayList<Meals> petMeals = data.get(user.getUsername() + " : " + pet.getName());
             assert petMeals != null;
@@ -105,7 +111,7 @@ public class StubMealManagerService implements MealManagerService {
         DateTime date = null;
         try {
             date = DateTime.Builder.build(2020, 2, 26, 15, 23, 56);
-        } catch (org.pesmypetcare.usermanager.exceptions.InvalidFormatException e) {
+        } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
         assert date != null;

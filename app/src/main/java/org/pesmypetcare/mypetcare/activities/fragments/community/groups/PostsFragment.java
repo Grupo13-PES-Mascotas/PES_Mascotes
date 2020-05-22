@@ -1,10 +1,19 @@
 package org.pesmypetcare.mypetcare.activities.fragments.community.groups;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -12,35 +21,65 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.pesmypetcare.communitymanager.ChatException;
 import org.pesmypetcare.communitymanager.ChatModel;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.databinding.FragmentPostsBinding;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.mypetcare.utilities.androidservices.GalleryService;
 
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Albert Pinto
+ */
 public class PostsFragment extends Fragment {
+    public static final int POST_FRAGMENT_REQUEST_CODE = 200;
+    public static final double IMAGE_ALLOWED_SIZE = Math.pow(2, 20);
+    private static Post selectedPost;
     private static Forum forum;
+
     private FragmentPostsBinding binding;
+    private String reportMessage;
+    private Bitmap postImage;
+    private ChatModel chatModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentPostsBinding.inflate(inflater, container, false);
         binding.forumName.setHint(forum.getName());
 
-        //showPosts();
         setForumName();
 
         binding.btnSentMessage.setOnClickListener(v -> sendMessage());
+        binding.postMessageInputLayout.setEndIconOnClickListener(v -> selectImageToPost());
+
+        Bitmap ownerImage = forum.getGroup().getUserImage(forum.getOwnerUsername());
+
+        if (ownerImage == null) {
+            ownerImage = ((BitmapDrawable) getResources().getDrawable(R.drawable.user_icon_sample, null)).getBitmap();
+        }
+
+        binding.imgForum.setDrawable(new BitmapDrawable(getResources(), ownerImage));
 
         return binding.getRoot();
+    }
+
+    /**
+     * Select the image to post.
+     */
+    private void selectImageToPost() {
+        Intent imagePicker = GalleryService.getGalleryIntent();
+        MainActivity.setFragmentRequestCode(POST_FRAGMENT_REQUEST_CODE);
+        startActivityForResult(imagePicker, POST_FRAGMENT_REQUEST_CODE);
     }
 
     /**
@@ -53,9 +92,11 @@ public class PostsFragment extends Fragment {
             Toast toast = Toast.makeText(getContext(), getString(R.string.should_be_subscribed),
                 Toast.LENGTH_LONG);
             toast.show();
-        } else if (!isMessageEmpty(message)) {
-            InfoGroupFragment.getCommunication().addNewPost(forum, message);
+        } else if (!isMessageEmpty(message) || postImage != null) {
+            InfoGroupFragment.getCommunication().addNewPost(forum, message, postImage);
             binding.postMessage.setText("");
+            binding.postMessageInputLayout.setEndIconDrawable(R.drawable.icon_camera);
+            postImage = null;
         }
     }
 
@@ -111,6 +152,24 @@ public class PostsFragment extends Fragment {
     }
 
     /**
+     * Get the selected post.
+     * @return The selected post
+     */
+    public static Post getSelectedPost() {
+        return selectedPost;
+    }
+
+    /**
+     * Set the post image.
+     * @param postImage The post image to set
+     */
+    public void setPostImage(Bitmap postImage) {
+        this.postImage = postImage;
+        binding.postMessageInputLayout.setEndIconTintList(ColorStateList.valueOf(getResources()
+            .getColor(R.color.colorPrimary, null)));
+    }
+
+    /**
      * Method responsible for showing all the posts of the forum.
      */
     private void showPosts() {
@@ -118,9 +177,30 @@ public class PostsFragment extends Fragment {
         binding.postsViewLayout.showPosts(forum);
 
         List<CircularEntryView> components = binding.postsViewLayout.getPostComponents();
+        User user = InfoGroupFragment.getCommunication().getUser();
 
         for (CircularEntryView component : components) {
             component.setOnLongClickListener(v -> setLongClickEvent(component));
+            component.setOnClickListener(v -> setOnClickEvent(user, component));
+        }
+    }
+
+    /**
+     * Set the on click event to the post.
+     * @param user The actual user
+     * @param component The component with the post
+     */
+    private void setOnClickEvent(User user, CircularEntryView component) {
+        selectedPost = (Post) component.getObject();
+
+        if (!selectedPost.getUsername().equals(user.getUsername())) {
+            if (selectedPost.isLikedByUser(user.getUsername())) {
+                InfoGroupFragment.getCommunication().unlikePost(selectedPost);
+            } else {
+                InfoGroupFragment.getCommunication().likePost(selectedPost);
+            }
+
+            showPosts();
         }
     }
 
@@ -132,18 +212,152 @@ public class PostsFragment extends Fragment {
     private boolean setLongClickEvent(CircularEntryView component) {
         Post post = (Post) component.getObject();
         User user = InfoGroupFragment.getCommunication().getUser();
+        AlertDialog dialog;
 
         if (post.getUsername().equals(user.getUsername())) {
-            AlertDialog dialog = createEditPostDialog(component);
-            dialog.show();
-            return true;
+            dialog = createEditPostDialog(component);
+        } else {
+            dialog = createOptionsPostDialog(component);
         }
 
-        return false;
+        dialog.show();
+
+        return true;
     }
 
     /**
-     * Create a dialog to delete the group.
+     * Create a dialog for the options of the post.
+     * @param circularEntryView The entry to which the dialog is associated to
+     * @return The dialog that is associated with the entry
+     */
+    private AlertDialog createOptionsPostDialog(CircularEntryView circularEntryView) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()),
+            R.style.AlertDialogTheme);
+        dialog.setTitle(R.string.post_options_title);
+        dialog.setMessage(R.string.post_options_message);
+
+        View optionsPostLayout = getLayoutInflater().inflate(R.layout.post_options, null);
+        dialog.setView(optionsPostLayout);
+        AlertDialog editPostDialog = dialog.create();
+
+        MaterialButton btnReport = optionsPostLayout.findViewById(R.id.reportPostButtons);
+        btnReport.setOnClickListener(v -> {
+            addReportButtonListener(circularEntryView, editPostDialog);
+        });
+
+        return editPostDialog;
+    }
+
+    /**
+     * Add the report button listener.
+     * @param circularEntryView The component for the post
+     * @param editPostDialog The dialog
+     */
+    private void addReportButtonListener(CircularEntryView circularEntryView, AlertDialog editPostDialog) {
+        editPostDialog.dismiss();
+        AlertDialog reportDialog = createReportDialog(circularEntryView);
+        reportDialog.show();
+    }
+
+    /**
+     * Create the report dialog.
+     * @param circularEntryView The component of the post
+     * @return The report dialog
+     */
+    private AlertDialog createReportDialog(CircularEntryView circularEntryView) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()),
+            R.style.AlertDialogTheme);
+        dialog.setTitle(R.string.post_options_title);
+        dialog.setMessage(R.string.post_options_message);
+
+        View reportPostLayout = getLayoutInflater().inflate(R.layout.report_options, null);
+        dialog.setView(reportPostLayout);
+        AlertDialog reportPostDialog = dialog.create();
+
+        RadioGroup reportOptions = reportPostLayout.findViewById(R.id.reportButtons);
+        TextInputEditText otherMessage = reportPostLayout.findViewById(R.id.otherMessage);
+        MaterialButton confirmReport = reportPostLayout.findViewById(R.id.confirmReportPost);
+
+        setListeners(circularEntryView, reportPostDialog, reportOptions, otherMessage, confirmReport);
+
+        return reportPostDialog;
+    }
+
+    /**
+     * Set the listeners to the components.
+     * @param circularEntryView The component of the post
+     * @param reportPostDialog The report dialog
+     * @param reportOptions The report options
+     * @param otherMessage The other message edit text
+     * @param confirmReport The confirm report button
+     */
+    private void setListeners(CircularEntryView circularEntryView, AlertDialog reportPostDialog,
+                              RadioGroup reportOptions, TextInputEditText otherMessage, MaterialButton confirmReport) {
+        setOtherMessageListener(otherMessage);
+        setRadioButtonsListeners(reportOptions);
+        setConfirmReportListener(circularEntryView, confirmReport, reportPostDialog);
+    }
+
+    /**
+     * Set the confirm report listener.
+     * @param circularEntryView The component of the post
+     * @param confirmReport The button
+     * @param reportPostDialog The alert dialog that is currently displayed
+     */
+    private void setConfirmReportListener(CircularEntryView circularEntryView, MaterialButton confirmReport,
+                                          AlertDialog reportPostDialog) {
+        confirmReport.setOnClickListener(v -> {
+            Post post = (Post) circularEntryView.getObject();
+            InfoGroupFragment.getCommunication().reportPost(post, reportMessage);
+            reportPostDialog.dismiss();
+        });
+    }
+
+    /**
+     * Set the radio buttons listeners.
+     * @param reportOptions The radio button group
+     */
+    private void setRadioButtonsListeners(RadioGroup reportOptions) {
+        for (int actual = 0; actual < reportOptions.getChildCount(); ++actual) {
+            if (reportOptions.getChildAt(actual) instanceof RadioButton) {
+                RadioButton reportButton = (RadioButton) reportOptions.getChildAt(actual);
+                boolean isOtherMessage = reportButton.getText().toString()
+                    .equals(getString(R.string.report_reason_other));
+
+                reportButton.setOnClickListener(v -> {
+                    if (!isOtherMessage) {
+                        reportMessage = reportButton.getText().toString();
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * Set the other message listener.
+     * @param otherMessage The other message text field
+     */
+    private void setOtherMessageListener(TextInputEditText otherMessage) {
+        otherMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not implemented
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                reportMessage = s.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Not implemented
+            }
+        });
+    }
+
+    /**
+     * Create a dialog to delete the post.
      * @param circularEntryView The entry to which the dialog is associated to
      * @return The dialog that is associated with the entry
      */
@@ -175,6 +389,8 @@ public class PostsFragment extends Fragment {
                                      AlertDialog editPostDialog) {
         MaterialButton btnUpdatePost = editPostLayout.findViewById(R.id.updatePostButton);
         MaterialButton btnDeletePost = editPostLayout.findViewById(R.id.deletePostButton);
+        MaterialButton btnDeletePostImage = editPostLayout.findViewById(R.id.deletePostImageButton);
+
         btnUpdatePost.setOnClickListener(v -> {
             InfoGroupFragment.getCommunication().updatePost(post,
                 Objects.requireNonNull(editPostMessage.getText()).toString());
@@ -184,22 +400,43 @@ public class PostsFragment extends Fragment {
             InfoGroupFragment.getCommunication().deletePost(forum, post.getCreationDate());
             editPostDialog.dismiss();
         });
+
+        if (post.getPostImage() != null) {
+            btnDeletePostImage.setVisibility(View.VISIBLE);
+
+            btnDeletePostImage.setOnClickListener(v -> {
+                InfoGroupFragment.getCommunication().deletePostImage(post);
+                editPostDialog.dismiss();
+                showPosts();
+            });
+        } else {
+            btnDeletePostImage.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        ChatModel chatModel = new ViewModelProvider(requireActivity()).get(ChatModel.class);
-        chatModel.getMessage().observe(requireActivity(), messageData -> {
-            Post post = new Post(messageData.getCreator(), messageData.getText(),
-                DateTime.Builder.buildFullString(messageData.getPublicationDate()), forum);
+        chatModel = new ViewModelProvider(requireActivity()).get(ChatModel.class);
+        chatModel.getMessage().observe(requireActivity(), messageDisplay -> {
+            Post post = new Post(messageDisplay.getCreator(), messageDisplay.getText(),
+                DateTime.Builder.buildFullString(messageDisplay.getPublicationDate()), forum);
+            post.setLikerUsername(messageDisplay.getLikedBy());
+
+            byte[] byteImages = messageDisplay.getImage();
+
+            if (byteImages != null) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(byteImages, 0, byteImages.length);
+                post.setPostImage(bitmap);
+            }
+
             forum.addPost(post);
             showPosts();
         });
 
         try {
-            chatModel.doAction(forum.getGroup().getName(), forum.getName());
+            chatModel.doAction(FirebaseFirestore.getInstance(), forum.getGroup().getName(), forum.getName());
         } catch (ChatException e) {
             e.printStackTrace();
         }

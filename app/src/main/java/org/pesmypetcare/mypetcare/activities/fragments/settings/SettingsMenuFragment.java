@@ -35,6 +35,9 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import java.util.Locale;
 import java.util.Objects;
 
+/**
+ * @author Daniel Clemente & Enric Hernando
+ */
 public class SettingsMenuFragment extends Fragment {
     private static final String EN_GB = "en-GB";
     private static final String CA_ES = "ca-ES";
@@ -83,7 +86,7 @@ public class SettingsMenuFragment extends Fragment {
         binding.changePasswordButton.setOnClickListener(v -> {
             Activity thisActivity = getActivity();
             assert thisActivity != null;
-            ((NewPasswordInterface) thisActivity).changeFragmentPass(new NewPasswordFragment());
+            ((NewPasswordInterfaceCommunication) thisActivity).changeFragmentPass(new NewPasswordFragment());
         });
     }
 

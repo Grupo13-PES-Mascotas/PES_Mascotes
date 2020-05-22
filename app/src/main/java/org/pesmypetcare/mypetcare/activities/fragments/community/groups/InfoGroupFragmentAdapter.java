@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+/**
+ * @author Albert Pinto
+ */
 public class InfoGroupFragmentAdapter extends FragmentStateAdapter {
     public static final int FORUMS_FRAGMENT = 0;
     public static final int GROUP_SUBSCRIPTIONS_FRAGMENT = 1;

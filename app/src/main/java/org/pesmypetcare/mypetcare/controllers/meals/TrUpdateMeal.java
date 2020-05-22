@@ -1,10 +1,15 @@
 package org.pesmypetcare.mypetcare.controllers.meals;
 
-import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.MealManagerService;
+import org.pesmypetcare.mypetcare.services.meal.MealManagerService;
 
+import java.util.concurrent.ExecutionException;
+
+/**
+ * @author Xavier Campos
+ */
 public class TrUpdateMeal {
     private MealManagerService mealManagerService;
     private User user;
@@ -54,10 +59,10 @@ public class TrUpdateMeal {
     /**
      * Execute the transaction.
      */
-    public void execute() {
+    public void execute() throws ExecutionException, InterruptedException {
         mealManagerService.updateMealBody(user, pet, meal);
         if (updatesDate) {
-            mealManagerService.updateMealDate(user, pet, newDate, meal.getDateTime().toString());
+            mealManagerService.updateMealKey(user, pet, newDate, meal.getDateTime().toString());
         }
     }
 }

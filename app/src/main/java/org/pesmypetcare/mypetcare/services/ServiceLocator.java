@@ -1,37 +1,31 @@
 package org.pesmypetcare.mypetcare.services;
 
-import org.pesmypetcare.usermanager.clients.GoogleCalendarManagerClient;
 import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
 import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
-import org.pesmypetcare.usermanager.clients.pet.FreqWashManagerClient;
-import org.pesmypetcare.usermanager.clients.pet.MealManagerClient;
-import org.pesmypetcare.usermanager.clients.pet.MedicationManagerClient;
+import org.pesmypetcare.usermanager.clients.GoogleCalendarManagerClient;
+import org.pesmypetcare.usermanager.clients.pet.PetCollectionsManagerClient;
 import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
 import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
-import org.pesmypetcare.usermanager.clients.pet.WeightManagerClient;
 
+/**
+ * @author Albert Pinto
+ */
 public class ServiceLocator {
     private static ServiceLocator instance;
     private UserManagerClient userManagerClient;
     private PetManagerClient petManagerClient;
-    private MealManagerClient mealManagerClient;
     private GoogleCalendarManagerClient googleCalendarManagerClient;
+    private PetCollectionsManagerClient petCollectionsManagerClient;
     private GroupManagerClient groupManagerClient;
     private ForumManagerClient forumManagerClient;
-    private MedicationManagerClient medicationManagerClient;
-    private WeightManagerClient weightManagerClient;
-    private FreqWashManagerClient freqWashManagerClient;
 
     private ServiceLocator() {
         userManagerClient = new UserManagerClient();
         petManagerClient = new PetManagerClient();
-        mealManagerClient = new MealManagerClient();
         googleCalendarManagerClient = new GoogleCalendarManagerClient();
         groupManagerClient = new GroupManagerClient();
         forumManagerClient = new ForumManagerClient();
-        medicationManagerClient = new MedicationManagerClient();
-        weightManagerClient = new WeightManagerClient();
-        freqWashManagerClient = new FreqWashManagerClient();
+        petCollectionsManagerClient = new PetCollectionsManagerClient();
     }
 
     public static ServiceLocator getInstance() {
@@ -50,10 +44,6 @@ public class ServiceLocator {
         return petManagerClient;
     }
 
-    public MealManagerClient getMealManagerClient() {
-        return mealManagerClient;
-    }
-
     public GoogleCalendarManagerClient getGoogleCalendarManagerClient() {
         return googleCalendarManagerClient;
     }
@@ -65,16 +55,8 @@ public class ServiceLocator {
     public ForumManagerClient getForumManagerClient() {
         return forumManagerClient;
     }
-    
-    public MedicationManagerClient getMedicationManagerClient() {
-        return medicationManagerClient;
-    }
 
-    public WeightManagerClient getWeightManagerClient() {
-        return weightManagerClient;
-    }
-
-    public FreqWashManagerClient getFreqWashManagerClient() {
-        return freqWashManagerClient;
+    public PetCollectionsManagerClient getPetCollectionsManagerClient() {
+        return petCollectionsManagerClient;
     }
 }

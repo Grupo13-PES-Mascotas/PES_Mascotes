@@ -1,6 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers.community;
 
-import org.pesmypetcare.mypetcare.services.CommunityAdapter;
+import org.pesmypetcare.mypetcare.services.community.CommunityAdapter;
 
 /**
  * @author Albert Pinto
@@ -88,5 +88,77 @@ public class CommunityControllersFactory {
      */
     public static TrUpdatePost createTrUpdatePost() {
         return new TrUpdatePost(new CommunityAdapter());
+    }
+
+    /**
+     * Create the transaction to like a post.
+     * @return The transaction to like a post
+     */
+    public static TrLikePost createTrLikePost() {
+        return new TrLikePost(new CommunityAdapter());
+    }
+
+    /**
+     * Create the transaction to unlike a post.
+     * @return The transaction to unlike a post
+     */
+    public static TrUnlikePost createTrUnlikePost() {
+        return new TrUnlikePost(new CommunityAdapter());
+    }
+
+    /**
+     * Create the transaction to report a post.
+     * @return The transaction to report a post
+     */
+    public static TrReportPost createTrReportPost() {
+        return new TrReportPost(new CommunityAdapter());
+    }
+
+    /**
+     * Create the transaction to add an image to a post.
+     * @return The transaction to add an image to a post
+     */
+    public static TrAddPostImage createTrAddPostImage() {
+        return new TrAddPostImage(new CommunityAdapter());
+    }
+
+    /**
+     * Create the transaction to delete the image from a post.
+     * @return The transaction to delete the image from a post
+     */
+    public static TrDeletePostImage createTrDeletePostImage() {
+        return new TrDeletePostImage(new CommunityAdapter());
+    }
+
+    /**
+     * Create the transaction to add an image to a group.
+     * @return The transaction to add an image to a group
+     */
+    public static TrAddGroupImage createTrAddGroupImage() {
+        return new TrAddGroupImage(new CommunityAdapter());
+    }
+
+    /**
+     * Create the transaction to delete the image of a group.
+     * @return The transaction to delete the image of a group
+     */
+    public static TrDeleteGroupImage createTrDeleteGroupImage() {
+        return new TrDeleteGroupImage(new CommunityAdapter());
+    }
+
+    /**
+     * Create the transaction to get the image of a post.
+     * @return The transaction to get the image of a post
+     */
+    public static TrGetPostImage createTrGetPostImage() {
+        return new TrGetPostImage(new CommunityAdapter());
+    }
+
+    /**
+     * Create the transaction to get the image of a group.
+     * @return The transaction to get the image of a group
+     */
+    public static TrGetGroupImage createTrGetGroupImage() {
+        return new TrGetGroupImage(new CommunityAdapter());
     }
 }

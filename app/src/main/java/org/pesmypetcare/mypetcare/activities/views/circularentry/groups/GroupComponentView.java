@@ -1,9 +1,11 @@
 package org.pesmypetcare.mypetcare.activities.views.circularentry.groups;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.pesmypetcare.mypetcare.R;
@@ -13,6 +15,9 @@ import org.pesmypetcare.mypetcare.features.community.groups.Group;
 
 import java.util.List;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class GroupComponentView extends CircularEntryView {
     private Group group;
 
@@ -28,7 +33,11 @@ public class GroupComponentView extends CircularEntryView {
     @Override
     protected CircularImageView getImage() {
         CircularImageView image = new CircularImageView(getCurrentActivity(), null);
-        Drawable groupDrawable = getResources().getDrawable(R.drawable.single_paw);
+        Drawable groupDrawable = getResources().getDrawable(R.drawable.icon_group, null);
+
+        if (group.getGroupIcon() != null) {
+            groupDrawable = new BitmapDrawable(getResources(), group.getGroupIcon());
+        }
 
         image.setDrawable(groupDrawable);
         int imageDimensions = getImageDimensions();
@@ -63,6 +72,16 @@ public class GroupComponentView extends CircularEntryView {
         }
 
         return strTags.toString();
+    }
+
+    @Override
+    protected ImageView getRightImage() {
+        return null;
+    }
+
+    @Override
+    protected ImageView getBottomImage() {
+        return null;
     }
 
     /**

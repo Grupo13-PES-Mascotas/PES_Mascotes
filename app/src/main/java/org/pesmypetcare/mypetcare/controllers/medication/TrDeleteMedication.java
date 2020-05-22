@@ -1,9 +1,10 @@
 package org.pesmypetcare.mypetcare.controllers.medication;
 
-import org.pesmypetcare.mypetcare.features.pets.Medication;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.events.medication.Medication;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.MedicationManagerService;
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
+import org.pesmypetcare.mypetcare.services.medication.MedicationManagerService;
 
 import java.util.concurrent.ExecutionException;
 
@@ -12,12 +13,15 @@ import java.util.concurrent.ExecutionException;
  */
 public class TrDeleteMedication {
     private MedicationManagerService medicationManagerService;
+    private GoogleCalendarService googleCalendarService;
     private User user;
     private Pet pet;
     private Medication medication;
 
-    public TrDeleteMedication(MedicationManagerService medicationManagerService) {
+    public TrDeleteMedication(MedicationManagerService medicationManagerService,
+                              GoogleCalendarService googleCalendarService) {
         this.medicationManagerService = medicationManagerService;
+        this.googleCalendarService = googleCalendarService;
     }
 
     /**
@@ -50,5 +54,6 @@ public class TrDeleteMedication {
     public void execute() throws ExecutionException, InterruptedException {
         medicationManagerService.deleteMedication(user, pet, medication);
         pet.deleteEvent(medication);
+        googleCalendarService.deleteEvent(pet, medication);
     }
 }

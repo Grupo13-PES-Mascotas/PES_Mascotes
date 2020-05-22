@@ -19,16 +19,20 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Xavier Campos
+ */
 public class MyPetsFragment extends Fragment {
     private static int index;
     private FragmentMyPetsBinding binding;
     private User currentUser;
-    private MyPetsComunication communication;
+    private MyPetsCommunication communication;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMyPetsBinding.inflate(inflater, container, false);
-        communication = (MyPetsComunication) getActivity();
+        communication = (MyPetsCommunication) getActivity();
+        MainActivity.showShareAppButton();
         if (MainActivity.getmAuth().getCurrentUser() != null) {
             currentUser = Objects.requireNonNull(communication).getUser();
             initializeMainMenuView();
@@ -61,6 +65,7 @@ public class MyPetsFragment extends Fragment {
                 ft.commit();
                 MainActivity.setActualFragment(testFragment);
                 MainActivity.hideFloatingButton();
+                MainActivity.hideShareAppButton();
             });
             ++index;
         }

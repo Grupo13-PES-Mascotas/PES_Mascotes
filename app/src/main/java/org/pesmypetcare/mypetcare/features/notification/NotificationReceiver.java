@@ -14,7 +14,9 @@ import org.pesmypetcare.mypetcare.activities.MainActivity;
 
 import java.util.Objects;
 
-
+/**
+ * @author Enric Hernando
+ */
 public class NotificationReceiver extends BroadcastReceiver {
     private static String channelId = "0";
     private static int requestCode = 0;
@@ -29,7 +31,6 @@ public class NotificationReceiver extends BroadcastReceiver {
         assert notificationManager != null;
         notificationManager.notify(id, builder.build());
         channelId = Integer.toString(Integer.parseInt(channelId) + 1);
-
     }
 
     /**

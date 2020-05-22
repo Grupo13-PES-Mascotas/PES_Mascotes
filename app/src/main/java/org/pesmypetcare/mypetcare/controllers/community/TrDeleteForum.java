@@ -5,7 +5,7 @@ import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundExcepti
 import org.pesmypetcare.mypetcare.features.community.forums.NotForumOwnerException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.CommunityService;
+import org.pesmypetcare.mypetcare.services.community.CommunityService;
 
 /**
  * @author Xavier Campos

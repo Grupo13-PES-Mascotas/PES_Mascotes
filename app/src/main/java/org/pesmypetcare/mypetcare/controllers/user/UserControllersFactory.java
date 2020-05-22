@@ -1,9 +1,9 @@
 package org.pesmypetcare.mypetcare.controllers.user;
 
-import org.pesmypetcare.mypetcare.services.MealManagerAdapter;
-import org.pesmypetcare.mypetcare.services.MedicationManagerAdapter;
-import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
-import org.pesmypetcare.mypetcare.services.UserManagerAdapter;
+import org.pesmypetcare.mypetcare.services.meal.MealManagerAdapter;
+import org.pesmypetcare.mypetcare.services.medication.MedicationManagerAdapter;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerAdapter;
+import org.pesmypetcare.mypetcare.services.user.UserManagerAdapter;
 
 /**
  * @author Albert Pinto
@@ -68,5 +68,21 @@ public class UserControllersFactory {
      */
     public static TrExistsUsername createTrExistsUsername() {
         return new TrExistsUsername(new UserManagerAdapter());
+    }
+
+    /**
+     * Create the transaction for obtaining the user image.
+     * @return The transaction for obtaining the user image
+     */
+    public static TrObtainUserImage createTrObtainUserImage() {
+        return new TrObtainUserImage(new UserManagerAdapter());
+    }
+
+    /**
+     * Create the transaction for sending the firebase messaging token.
+     * @return The transaction for sending the firebase messaging token.
+     */
+    public static TrSendFirebaseMessagingToken createTrSendFirebaseMessagingToken() {
+        return new TrSendFirebaseMessagingToken(new UserManagerAdapter());
     }
 }

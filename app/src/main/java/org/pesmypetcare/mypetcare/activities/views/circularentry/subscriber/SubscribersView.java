@@ -8,14 +8,20 @@ import android.widget.Space;
 
 import androidx.annotation.Nullable;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class SubscribersView extends LinearLayout {
     public static final int MIN_SPACE_SIZE = 20;
     private Context context;
@@ -38,18 +44,50 @@ public class SubscribersView extends LinearLayout {
      * @param group The group to display the subscribers
      */
     public void showSubscribers(Group group) {
+        List<Map.Entry<String, DateTime>> subscriptions = new ArrayList<>(group.getSubscribers().entrySet());
+        CircularEntryView[] components = new CircularEntryView[subscriptions.size()];
+        ExecutorService executorService = Executors.newCachedThreadPool();
+
+        for (int actual = 0; actual < subscriptions.size(); ++actual) {
+            int finalActual = actual;
+            executorService.execute(() -> {
+                String username = subscriptions.get(finalActual).getKey();
+                DateTime subscriptionDate = subscriptions.get(finalActual).getValue();
+                components[finalActual] = new SubscriberComponentView(context, null, username,
+                    subscriptionDate, group);
+                components[finalActual].initializeComponent();
+            });
+        }
+
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(2, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        for (CircularEntryView component : components) {
+            addView(component);
+            groupComponents.add(component);
+
+            Space space = createSpace();
+            addView(space);
+        }
+
+        /*
         for (Map.Entry<String, DateTime> subscription : group.getSubscribers().entrySet()) {
             String username = subscription.getKey();
             DateTime subscriptionDate = subscription.getValue();
             CircularEntryView circularEntryView = new SubscriberComponentView(context, null, username,
                 subscriptionDate, group);
+
             circularEntryView.initializeComponent();
             addView(circularEntryView);
             groupComponents.add(circularEntryView);
 
             Space space = createSpace();
             addView(space);
-        }
+        }*/
     }
 
     /**

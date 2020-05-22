@@ -16,13 +16,13 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetMedicationBinding;
-import org.pesmypetcare.mypetcare.features.pets.Event;
-import org.pesmypetcare.mypetcare.features.pets.Medication;
-import org.pesmypetcare.mypetcare.features.pets.MedicationAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.medication.Medication;
+import org.pesmypetcare.mypetcare.features.pets.events.medication.MedicationAlreadyExistingException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,7 +83,7 @@ public class InfoPetMedicationFragment extends Fragment {
     private void initializeAddMedicationButton() {
         addMedicationButton.setOnClickListener(v -> {
             editing = false;
-            deleteMedicationButton.setVisibility(View.INVISIBLE);
+            deleteMedicationButton.setVisibility(View.GONE);
             inputMedicationName.setText("");
             inputMedicationQuantity.setText("");
             inputMedicationDuration.setText("");

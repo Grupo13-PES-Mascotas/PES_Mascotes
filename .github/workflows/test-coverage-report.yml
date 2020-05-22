@@ -27,12 +27,16 @@ jobs:
       env:
         RELEASE_PASSPHRASE: ${{ secrets.RELEASE_PASSPHRASE }}
         GOOGLE_PASSPHRASE: ${{ secrets.GOOGLE_PASSPHRASE }}
+        PROPERTIES_PASSPHRASE: ${{ secrets.PROPERTIES_PASSPHRASE }}
     
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     
     - name: Create coverage report
-      run: ./gradlew jacocoTestReport
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 23
+        script: ./gradlew jacocoTestReport
     
     - name: Send report to Codacy
       run: |

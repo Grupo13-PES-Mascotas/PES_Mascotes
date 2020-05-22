@@ -5,6 +5,9 @@ import org.pesmypetcare.mypetcare.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * @author Albert Pinto
+ */
 public class StubStatisticData extends StatisticData {
     private static final String[] X_VALUES_STUB = {
         "2020-04-1", "2020-04-2", "2020-04-3", "2020-04-4", "2020-04-5", "2020-04-6", "2020-04-7"

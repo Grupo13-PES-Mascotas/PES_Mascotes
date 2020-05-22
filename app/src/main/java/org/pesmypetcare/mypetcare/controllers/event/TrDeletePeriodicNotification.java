@@ -1,10 +1,10 @@
 package org.pesmypetcare.mypetcare.controllers.event;
 
-import org.pesmypetcare.mypetcare.features.pets.Event;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.UserIsNotOwnerException;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.PetManagerService;
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
 
 import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
@@ -13,14 +13,14 @@ import java.util.concurrent.ExecutionException;
  * @author Daniel Clemente
  */
 public class TrDeletePeriodicNotification {
-    private PetManagerService petManagerService;
+    private GoogleCalendarService googleCalendarService;
     private Pet pet;
     private Event event;
     private boolean result;
     private User user;
 
-    public TrDeletePeriodicNotification(PetManagerService petManagerService) {
-        this.petManagerService = petManagerService;
+    public TrDeletePeriodicNotification(GoogleCalendarService googleCalendarService) {
+        this.googleCalendarService = googleCalendarService;
     }
 
     /**
@@ -66,7 +66,7 @@ public class TrDeletePeriodicNotification {
             throw new UserIsNotOwnerException();
         }
         pet.deletePeriodicNotification(event);
-        petManagerService.deletePeriodicEvent(user, pet, event);
+        googleCalendarService.deletePeriodicEvent(user, pet, event);
         result = true;
     }
 }

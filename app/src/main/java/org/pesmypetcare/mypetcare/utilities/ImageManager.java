@@ -13,11 +13,16 @@ import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
+/**
+ * @author Xavier Campos & Albert Pinto
+ */
 public class ImageManager {
     public static final String PET_PROFILE_IMAGES_PATH = "petProfileImages";
     public static final String USER_PROFILE_IMAGES_PATH = "userProfileImages";
+    public static final String GROUP_IMAGES_PATH = "groupImages";
+    public static final String POST_IMAGES_PATH = "postImages";
     private static final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath()
-        + File.separator + "MyPetCare";
+            + File.separator + "MyPetCare";
     private static final String EXTENSION = ".jpg";
     private static final int QUALITY = 100;
 

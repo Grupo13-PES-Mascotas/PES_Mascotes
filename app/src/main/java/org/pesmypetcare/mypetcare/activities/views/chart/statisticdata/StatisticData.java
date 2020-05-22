@@ -1,11 +1,14 @@
 package org.pesmypetcare.mypetcare.activities.views.chart.statisticdata;
 
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.httptools.utilities.DateTime;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author Albert Pinto
+ */
 public abstract class StatisticData {
     public static final int WEIGHT_STATISTIC = 0;
     public static final int DAILY_KILOCALORIES_STATISTIC = 1;

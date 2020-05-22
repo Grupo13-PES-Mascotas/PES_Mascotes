@@ -1,17 +1,22 @@
 package org.pesmypetcare.mypetcare.controllers.user;
 
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.PetManagerService;
-import org.pesmypetcare.mypetcare.services.UserManagerService;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
+import org.pesmypetcare.mypetcare.services.user.UserManagerService;
 
 import java.util.ArrayList;
 
+/**
+ * @author Enric Hernando
+ */
 public class TrObtainUser {
     private UserManagerService userManagerService;
     private PetManagerService petManagerService;
-    private String username;
+    private String uid;
+    private String token;
     private User result;
 
     public TrObtainUser(UserManagerService userManagerService, PetManagerService petManagerService) {
@@ -20,19 +25,28 @@ public class TrObtainUser {
     }
 
     /**
-     * Set the username of the user that will be registered.
-     * @param username The name of the user that wants to be registered
+     * Set the uid of the user that has to be obtained.
+     * @param uid The uid of the user that has to be obtained
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    /**
+     * Set the token of the current user.
+     * @param token The token of the current user
+     */
+    public void setToken(String token) {
+        this.token = token;
     }
 
     /**
      * Execute the transaction.
      * @throws PetRepeatException The user has already this pet registered.
      */
-    public void execute() throws PetRepeatException {
-        result = userManagerService.findUserByUsername(username);
+    public void execute() throws PetRepeatException, MyPetCareException {
+        result = userManagerService.findUserByUsername(uid, token);
+        //result.setToken(token);
         result.setPets((ArrayList<Pet>) petManagerService.findPetsByOwner(result));
     }
 

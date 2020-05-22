@@ -1,5 +1,8 @@
 package org.pesmypetcare.mypetcare.utilities;
 
+/**
+ * @author Albert Pinto
+ */
 public class DateConversion {
     private static final int APP_DAY = 0;
     private static final int APP_MONTH = 1;

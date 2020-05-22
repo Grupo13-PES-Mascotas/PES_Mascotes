@@ -5,12 +5,22 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
+import org.pesmypetcare.httptools.utilities.DateTime;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
+import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.Walk;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.illness.Illness;
+import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.vaccination.Vaccination;
+import org.pesmypetcare.mypetcare.features.pets.events.medication.Medication;
+import org.pesmypetcare.mypetcare.features.pets.events.periodic.PeriodEvent;
+import org.pesmypetcare.mypetcare.features.pets.events.vetvisit.VetVisit;
+import org.pesmypetcare.mypetcare.features.pets.events.wash.Wash;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.DateConversion;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +28,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Xavier Campos & Daniel Clemente & Enric Hernando & Albert Pinto
+ */
 public class Pet {
     public static final String BUNDLE_NAME = "petName";
     public static final String BUNDLE_BREED = "petBreed";
@@ -97,21 +110,12 @@ public class Pet {
      * @param petInfo A bundle containing all the information of the pet
      */
     public void initializeHealthInfo(Bundle petInfo) {
-        DateTime dateTime = getActualDateTime();
+        DateTime dateTime = DateTime.getCurrentDate();
 
         this.healthInfo = new PetHealthInfo();
         this.healthInfo.addWeightForDate(dateTime, petInfo.getFloat(BUNDLE_WEIGHT));
         this.healthInfo.setPathologies(petInfo.getString(BUNDLE_PATHOLOGIES));
-        this.healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, calculateRecommendedKiloCalories());
-        this.healthInfo.addWashFrequencyForDate(dateTime, petInfo.getInt(BUNDLE_WASH));
-    }
-
-    /**
-     * Calculate the recommended kilocalories for the pet.
-     * @return The recommended kilocalories
-     */
-    private double calculateRecommendedKiloCalories() {
-        return healthInfo.getLastWeight() * FACTOR_PES_1 + FACTOR_PES_2;
+        //this.healthInfo.addWashFrequencyForDate(dateTime, petInfo.getInt(BUNDLE_WASH));
     }
 
     /**
@@ -171,8 +175,16 @@ public class Pet {
      * Get the birth date of the pet.
      * @return The birth date of the pet
      */
+    public DateTime getBirthDateInstance() {
+        return birthDate;
+    }
+
+    /**
+     * Get the birth date of the pet.
+     * @return The birth date of the pet
+     */
     public String getBirthDate() {
-        return birthDate.getYear() + "-" + birthDate.getMonth() + "-" + birthDate.getDay();
+        return birthDate.toString();
     }
 
     /**
@@ -183,32 +195,40 @@ public class Pet {
         this.birthDate = birthDate;
     }
 
+
     /**
-     * Get the weight of the pet.
-     * @return The weight of the pet
+     * Getter of the last weight of the pet.
+     * @return The last weight of the pet
      */
-    public double getWeight() {
+    public double getLastWeight() {
         return healthInfo.getLastWeight();
     }
 
     /**
-     * Set the weight of the pet.
+     * Getter of the weight of the pet for the given date.
+     * @param dateTime The date for which the pet weight has to be recovered
+     * @return The weight of the pet for the given date
+     */
+    public double getWeightForDate(DateTime dateTime) {
+        return healthInfo.getWeightForDate(dateTime);
+    }
+
+    /**
+     * Setter of the weight of the pet for the current date.
      * @param weight The weight to set
      */
-    public void setWeight(double weight) {
-        DateTime dateTime = getActualDateTime();
+    public void setWeightForCurrentDate(double weight) {
+        DateTime dateTime = DateTime.getCurrentDate();
         this.healthInfo.addWeightForDate(dateTime, weight);
     }
 
     /**
-     * Get the actual date time.
-     * @return The actual date time
+     * Setter of the weight of the pet for the given date.
+     * @param weight The weight to set
+     * @param dateTime The date for which the weight has to be set
      */
-    private DateTime getActualDateTime() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d");
-        Date date = new Date();
-        String strData = dateFormat.format(date);
-        return DateTime.Builder.buildDateString(strData);
+    public void setWeightForDate(double weight, DateTime dateTime) {
+        this.healthInfo.addWeightForDate(dateTime, weight);
     }
 
     /**
@@ -228,36 +248,106 @@ public class Pet {
     }
 
     /**
-     * Get the recommended daily kilo calories of the pet.
-     * @return The recommended daily kilo calories of the pet
+     * Getter of the last recommended daily kilo calories of the pet.
+     * @return The last recommended daily kilo calories of the pet
      */
-    public double getRecommendedDailyKiloCalories() {
+    public double getLastRecommendedDailyKiloCalories() {
         return healthInfo.getLastRecommendedDailyKiloCalories();
     }
 
     /**
-     * Set the recommended daily kilo calories of the pet.
-     * @param recommendedDailyKiloCalories The recommended daily kilo calories of the pet to set
+     * Getter of the recommended daily kilo calories of the pet for the given date.
+     * @param dateTime The date for which we want to obtain the recommended daily kilocalories
+     * @return The recommended daily kilo calories of the pet for the given date
      */
-    public void setRecommendedDailyKiloCalories(double recommendedDailyKiloCalories) {
-        /*DateTime dateTime = getActualDateTime();
-        healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, recommendedDailyKiloCalories);*/
+    public double getRecommendedDailyKiloCaloriesForDate(DateTime dateTime) {
+        return healthInfo.getRecommendedDailyKiloCaloriesForDate(dateTime);
     }
 
     /**
-     * Get the wash frequency of the pet.
-     * @return The wash frequency of the pet
+     * Setter of the recommended daily kilo calories of the pet for the current date.
+     * @param recommendedDailyKiloCalories The recommended daily kilo calories of the pet to set
      */
-    public int getWashFrequency() {
+    public void setRecommendedDailyKiloCaloriesForCurrentDate(double recommendedDailyKiloCalories) {
+        DateTime dateTime = DateTime.getCurrentDate();
+        healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, recommendedDailyKiloCalories);
+    }
+
+    /**
+     * Setter of the recommended daily kilo calories of the pet for the given date.
+     * @param recommendedDailyKiloCalories The recommended daily kilo calories of the pet to set
+     * @param dateTime The date for which the daily kilocalories have to be set
+     */
+    public void setRecommendedDailyKiloCaloriesForDate(double recommendedDailyKiloCalories, DateTime dateTime) {
+        healthInfo.addRecommendedDailyKiloCaloriesForDate(dateTime, recommendedDailyKiloCalories);
+    }
+
+    /**
+     * Getter of the last daily kilo calories of the pet.
+     * @return The last daily kilo calories of the pet
+     */
+    public double getLastDailyKiloCalories() {
+        return healthInfo.getLastDailyKiloCalories();
+    }
+
+    /**
+     * Getter of the daily kilo calories of the pet for the given date.
+     * @param dateTime The date for which we want to obtain the daily kilo calories of the pet
+     * @return The daily kilo calories of the pet for the given date
+     */
+    public double getDailyKiloCaloriesForDate(DateTime dateTime) {
+        return healthInfo.getDailyKiloCaloriesForDate(dateTime);
+    }
+
+    /**
+     * Sets the given value to the stored daily kilocalories of the pet.
+     * @param dailyKilocalories The daily kilo calories of the pet to add
+     */
+    public void setDailyKiloCaloriesForCurrentDate(double dailyKilocalories) {
+        DateTime dateTime = DateTime.getCurrentDate();
+        try {
+            healthInfo.addDailyKiloCaloriesForDate(dateTime, dailyKilocalories);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets the given value to the stored daily kilo calories of the pet for the given date.
+     * @param dateTime The date for which we want to obtain the daily kilo calories of the pet
+     * @param dailyKilocalories The daily kilo calories of the pet to add
+     */
+    public void setDailyKiloCaloriesForDate(double dailyKilocalories, DateTime dateTime) {
+        try {
+            healthInfo.addDailyKiloCaloriesForDate(dateTime, dailyKilocalories);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Getter of the last wash frequency of the pet.
+     * @return The last wash frequency of the pet
+     */
+    public int getLastWashFrequency() {
         return (int) healthInfo.getLastWashFrequency();
     }
 
     /**
-     * Set the wash frequency of the pet.
+     * Getter of the wash frequency of the pet for the given date.
+     * @param dateTime The date for which we want to obtain the wash frequency
+     * @return The wash frequency of the pet for the given date
+     */
+    public int getWashFrequencyForDate(DateTime dateTime) {
+        return (int) healthInfo.getWashFrequencyForDate(dateTime);
+    }
+
+    /**
+     * Set the wash frequency of the pet for the current date.
      * @param washFrequency The wash frequency to set
      */
-    public void setWashFrequency(int washFrequency) {
-        DateTime dateTime = getActualDateTime();
+    public void setWashFrequencyForCurrentDate(int washFrequency) {
+        DateTime dateTime = DateTime.getCurrentDate();
         healthInfo.addWashFrequencyForDate(dateTime, washFrequency);
     }
 
@@ -340,6 +430,10 @@ public class Pet {
         this.profileImage = profileImage;
     }
 
+    /**
+     * Get the health info.
+     * @return The health info
+     */
     public PetHealthInfo getHealthInfo() {
         return healthInfo;
     }
@@ -350,12 +444,15 @@ public class Pet {
      */
     public void addEvent(Event event) {
         events.add(event);
-
         if (event instanceof Meals) {
             DateTime eventDate = event.getDateTime();
             double kcal = ((Meals) event).getKcal();
 
-            healthInfo.addRecommendedDailyKiloCaloriesForDate(eventDate, kcal);
+            try {
+                healthInfo.addDailyKiloCaloriesForDate(eventDate, kcal);
+            } catch (InvalidFormatException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -364,6 +461,15 @@ public class Pet {
      * @param event The event to delete
      */
     public void deleteEvent(Event event) {
+        if (event instanceof Meals) {
+            DateTime eventDate = event.getDateTime();
+            double kcal = ((Meals) event).getKcal();
+            try {
+                healthInfo.deleteDailyKiloCaloriesForDate(eventDate, kcal);
+            } catch (InvalidFormatException e) {
+                e.printStackTrace();
+            }
+        }
         events.remove(event);
     }
 
@@ -374,7 +480,6 @@ public class Pet {
      */
     public List<Event> getEvents(String date) {
         ArrayList<Event> selectedEvents = new ArrayList<>();
-
         for (Event event : events) {
             String eventDate = DateConversion.getDate(event.getDateTime().toString());
             if (eventDate.equals(date)) {
@@ -385,31 +490,54 @@ public class Pet {
         return selectedEvents;
     }
 
+    /**
+     * Delete the weight for a date.
+     * @param dateTime The date to delete the weight
+     */
     public void deleteWeightForDate(DateTime dateTime) {
         healthInfo.deleteWeightForDate(dateTime);
     }
 
+    /**
+     * Delete the wash frequency for a date.
+     * @param dateTime The date to delete the wash frequency
+     */
     public void deleteWashFrequencyForDate(DateTime dateTime) {
         healthInfo.deleteWashFrequencyForDate(dateTime);
     }
 
+    /**
+     * Check whether the user is the owner.
+     * @param user The user
+     * @return True if the user is the owner
+     */
     public boolean isOwner(User user) {
         return user.equals(owner);
     }
 
-    public void setWeightForDate(double newWeight, DateTime dateTime) {
+    /**
+     * Set the weight for a date.
+     * @param newWeight The weight to set
+     * @param dateTime The date of the weight to set
+     */
+    public void setWeightForCurrentDate(double newWeight, DateTime dateTime) {
         healthInfo.addWeightForDate(dateTime, newWeight);
     }
 
+    /**
+     * Set the wash frequency for a date.
+     * @param newWashFrequency The wash frequency to set
+     * @param dateTime The date of the wash frequency to set
+     */
     public void setWashFrequencyForDate(int newWashFrequency, DateTime dateTime) {
         healthInfo.addWashFrequencyForDate(dateTime, newWashFrequency);
     }
 
-    @NonNull
     /**
      * Get the list of meals of the pet.
      * @return The list of meals of the pet
      */
+    @NonNull
     public List<Event> getMealEvents() {
         ArrayList<Event> mealEvents = new ArrayList<>();
 
@@ -418,7 +546,39 @@ public class Pet {
                 mealEvents.add(event);
             }
         }
+
         return mealEvents;
+    }
+
+    /**
+     * Get the list of vaccinations of the pet.
+     * @return The list of vaccinations of the pet
+     */
+    public List<Event> getVaccinationEvents() {
+        ArrayList<Event> vaccinationEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof Vaccination) {
+                vaccinationEvents.add(event);
+            }
+        }
+        return vaccinationEvents;
+    }
+
+    @NonNull
+    /**
+     * Get the list of washes of the pet.
+     * @return The list of washes of the pet
+     */
+    public List<Event> getWashEvents() {
+        ArrayList<Event> washEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof Wash) {
+                washEvents.add(event);
+            }
+        }
+        return washEvents;
     }
 
     /**
@@ -525,9 +685,151 @@ public class Pet {
      * @param event The event to delete
      */
     public void deletePeriodicNotification(Event event) throws ParseException {
-        org.pesmypetcare.usermanager.datacontainers.DateTime dateTime = event.getDateTime();
+        DateTime dateTime = event.getDateTime();
         String desc = event.getDescription();
         PeriodEvent pe = new PeriodEvent(desc, dateTime, 0);
         periodEvents.remove(pe);
+    }
+
+    /**
+     * Getter of the list of vet visits of a pet.
+     * @return The list of vet visits of a pet
+     */
+    public List<Event> getVetVisitEvents() {
+        ArrayList<Event> vetVisitEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof VetVisit) {
+                vetVisitEvents.add(event);
+            }
+        }
+        return vetVisitEvents;
+    }
+
+    /**
+     * Get the events by the class.
+     * @param eventClass The class of the event
+     * @return The events of the specified class
+     */
+    public List<Event> getEventsByClass(Class eventClass) {
+        ArrayList<Event> selectedEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event.getClass().equals(eventClass)) {
+                selectedEvents.add(event);
+            }
+        }
+        return selectedEvents;
+    }
+
+    /**
+     * Check whether the pet contains the specified event.
+     * @param dateTime The DateTime of the event
+     * @param exercise The exercise class
+     * @return True if the pet contains the event
+     */
+    public boolean containsEvent(DateTime dateTime, Class exercise) {
+        for (Event event : events) {
+            if (event.getClass().equals(exercise) && event.getDateTime().compareTo(dateTime) == 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Delete the event by the class.
+     * @param dateTime The date of the event
+     * @param eventClass The event class
+     */
+    public void deleteEventByClass(DateTime dateTime, Class eventClass) {
+        for (Event event : events) {
+            if (event.getClass().equals(eventClass) && event.getDateTime().compareTo(dateTime) == 0) {
+                events.remove(event);
+                return;
+            }
+        }
+    }
+
+    /**
+     * Add an exercise.
+     * @param exercise The exercise to add
+     */
+    public void addExercise(Exercise exercise) {
+        addEvent(exercise);
+        int minutes = getMinutes(exercise.getDateTime(), exercise.getEndTime());
+        String dateTime = exercise.getDateTime().toString();
+        String strDate = dateTime.substring(0, dateTime.indexOf('T'));
+        DateTime date = DateTime.Builder.buildDateString(strDate);
+
+        if (healthInfo.getExerciseFrequency().containsKey(date)) {
+            minutes += healthInfo.getExerciseFrequencyForDate(date);
+        }
+
+        healthInfo.addExerciseFrequencyForDate(date, minutes);
+    }
+
+    /**
+     * Get the minutes duration.
+     * @param startDateTime The start DateTime
+     * @param endDateTime The end DateTime
+     * @return The duration in minutes
+     */
+    private int getMinutes(DateTime startDateTime, DateTime endDateTime) {
+        int startMinutes = startDateTime.getHour() * 60 + startDateTime.getMinutes();
+        int endMinutes = endDateTime.getHour() * 60 + endDateTime.getMinutes();
+
+        return endMinutes - startMinutes;
+    }
+
+    /**
+     * Delete an exercise.
+     * @param dateTime The DateTime of the event to delete
+     */
+    public void deleteExerciseForDate(DateTime dateTime) {
+        List<Event> events = getEventsByClass(Exercise.class);
+        Exercise exercise = null;
+        Class classToDelete = Exercise.class;
+
+        for (Event event : events) {
+            if (event.getDateTime().compareTo(dateTime) == 0) {
+                exercise = (Exercise) event;
+            }
+        }
+
+        if (exercise == null) {
+            events = getEventsByClass(Walk.class);
+
+            for (Event event : events) {
+                if (event.getDateTime().compareTo(dateTime) == 0) {
+                    exercise = (Exercise) event;
+                    classToDelete = Walk.class;
+                }
+            }
+        }
+
+        String strDateTime = Objects.requireNonNull(exercise).getDateTime().toString();
+        String strDate = strDateTime.substring(0, strDateTime.indexOf('T'));
+        DateTime date = DateTime.Builder.buildDateString(strDate);
+        int duration = getMinutes(exercise.getDateTime(), exercise.getEndTime());
+
+        healthInfo.removeExerciseFrequency(date, duration);
+        deleteEventByClass(dateTime, classToDelete);
+    }
+
+    /**
+     * Get the list of illness of the pet.
+     * @return The list of illness of the pet
+     */
+    public List<Event> getIllnessEvents() {
+        ArrayList<Event> illnessEvents = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event instanceof Illness) {
+                illnessEvents.add(event);
+            }
+        }
+        return illnessEvents;
     }
 }

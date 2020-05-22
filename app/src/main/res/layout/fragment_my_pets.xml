@@ -6,7 +6,7 @@
     android:layout_gravity="start|top"
     tools:context=".activities.fragments.mypets.MyPetsFragment">
 
-    <org.pesmypetcare.mypetcare.activities.views.circularentry.petsinfo.PetsInfoComponentView
+    <org.pesmypetcare.mypetcare.activities.views.circularentry.petsinfo.PetsInfoView
         android:id="@+id/mainMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,6 +15,6 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp" >
 
-    </org.pesmypetcare.mypetcare.activities.views.circularentry.petsinfo.PetsInfoComponentView>
+    </org.pesmypetcare.mypetcare.activities.views.circularentry.petsinfo.PetsInfoView>
 
 </FrameLayout>

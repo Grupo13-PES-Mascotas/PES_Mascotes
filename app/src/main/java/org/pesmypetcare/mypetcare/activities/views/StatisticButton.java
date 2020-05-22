@@ -10,6 +10,9 @@ import com.google.android.material.button.MaterialButton;
 
 import org.pesmypetcare.mypetcare.R;
 
+/**
+ * @author Albert Pinto
+ */
 public class StatisticButton extends MaterialButton {
     public StatisticButton(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);

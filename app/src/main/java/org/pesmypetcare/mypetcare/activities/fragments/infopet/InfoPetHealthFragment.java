@@ -29,13 +29,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
 
+/**
+ * @author Albert Pinto
+ */
 public class InfoPetHealthFragment extends Fragment implements HealthBottomSheetCommunication {
     private static final String BOTTOM_SHEET_TAG = "Bottom sheet";
     private static final int CHART_SIZE = 500;
+    private static BarChart barChart;
     private FragmentInfoPetHealthBinding binding;
     private TextView statisticTitle;
     private MaterialButton btnAddNewStatistic;
-    private BarChart barChart;
     private HealthBottomSheet healthBottomSheet;
     private MaterialDatePicker materialDatePicker;
 
@@ -134,6 +137,13 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
         btnAddNewStatistic.setFocusable(statisticData.getFocusableState());
 
         addNewStatisticButtonListener(statisticId);
+    }
+
+    /**
+     * Updates the bar chart.
+     */
+    public static void updateBarChart() {
+        barChart.updatePet(InfoPetFragment.getPet());
     }
 
     /**

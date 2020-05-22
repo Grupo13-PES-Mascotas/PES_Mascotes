@@ -1,18 +1,27 @@
 package org.pesmypetcare.mypetcare.controllers.meals;
 
-import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
+import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.MealManagerService;
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
+import org.pesmypetcare.mypetcare.services.meal.MealManagerService;
 
+import java.util.concurrent.ExecutionException;
+
+/**
+ * @author Xavier Campos
+ */
 public class TrDeleteMeal {
     private MealManagerService mealManagerService;
+    private GoogleCalendarService googleCalendarService;
     private User user;
     private Pet pet;
     private Meals meal;
 
-    public TrDeleteMeal(MealManagerService mealManagerService) {
+    public TrDeleteMeal(MealManagerService mealManagerService, GoogleCalendarService googleCalendarService) {
         this.mealManagerService = mealManagerService;
+        this.googleCalendarService = googleCalendarService;
     }
 
     /**
@@ -42,8 +51,12 @@ public class TrDeleteMeal {
     /**
      * Executes the transaction.
      */
-    public void execute() {
+    public void execute() throws NotPetOwnerException, ExecutionException, InterruptedException {
+        if (!user.getUsername().equals(pet.getOwner().getUsername())) {
+            throw new NotPetOwnerException();
+        }
         mealManagerService.deleteMeal(user, pet, meal);
         pet.deleteEvent(meal);
+        googleCalendarService.deleteEvent(pet, meal);
     }
 }

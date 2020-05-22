@@ -18,7 +18,7 @@ android {
         }
     }
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "org.pesmypetcare.mypetcare"
@@ -38,17 +38,27 @@ android {
         }
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             testCoverageEnabled false
             signingConfig signingConfigs.release
+            resValue "string", "google_maps_api_key", google_maps_api_key
+            resValue "string", "facebook_application_id", facebook_application_id
         }
         debug {
             testCoverageEnabled true
+            resValue "string", "google_maps_api_key", google_maps_api_key
+            resValue "string", "facebook_application_id", facebook_application_id
         }
+
     }
+
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
@@ -76,9 +86,10 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
-    implementation 'com.facebook.android:facebook-android-sdk:6.3.0'
+    implementation 'com.facebook.android:facebook-android-sdk:7.0.0'
     implementation 'com.google.firebase:firebase-firestore:21.4.3'
-    implementation 'com.google.firebase:firebase-analytics:17.4.0'
+    implementation 'com.google.firebase:firebase-analytics:17.4.1'
+    implementation 'com.google.firebase:firebase-messaging:20.1.7'
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.mockito:mockito-core:3.3.3'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
@@ -86,18 +97,20 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test:core:1.2.0'
-    implementation 'com.google.firebase:firebase-core:17.4.0'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.firebase:firebase-core:17.4.1'
+    implementation 'com.google.firebase:firebase-messaging:20.1.7'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.firebase:firebase-core:17.4.1'
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
-    implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:b6d72e81d'
+    implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:v2.0.0'
 }
 
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
 
     reports {
         xml.enabled = true
@@ -105,13 +118,16 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
     }
 
     def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*',
-                      'android/**/*.*', '**/*Binding.class']
+                      'android/**/*.*', '**/*Binding.class', '**/*Exception.class', '**/*Communication.class']
     def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug/classes", excludes: fileFilter)
     def mainSrc = "${project.projectDir}/src/main/java"
+    def unitTests = "${buildDir}/jacoco/testDebugUnitTest.exec"
+    def instrumentationTests = "${buildDir}/outputs/code_coverage/debugAndroidTest/connected/test(AVD) - 6.0-coverage.ec"
 
     sourceDirectories.from = files([mainSrc])
     classDirectories.from = files([debugTree])
-    executionData.from = files("${buildDir}/jacoco/testDebugUnitTest.exec")
+
+    executionData.from = files([unitTests, instrumentationTests])
 }
 
 tasks.withType(JavaCompile) {

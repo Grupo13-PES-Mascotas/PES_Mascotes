@@ -36,7 +36,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/groupTags"
                     style="@style/TextAppearance.MaterialComponents.Headline1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center_horizontal"
                     app:startIconContentDescription="Group name"
@@ -61,6 +61,14 @@
                         android:textSize="18sp"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/groupDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@color/white"/>
 
             </LinearLayout>
 

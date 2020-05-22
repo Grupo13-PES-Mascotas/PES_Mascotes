@@ -1,13 +1,16 @@
 package org.pesmypetcare.mypetcare.controllers.community;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.community.groups.GroupAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.CommunityService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.mypetcare.services.community.CommunityService;
 
 import java.util.List;
 
+/**
+ * @author Xavier Campos
+ */
 public class TrCreateNewGroup {
     private CommunityService communityService;
     private String groupName;

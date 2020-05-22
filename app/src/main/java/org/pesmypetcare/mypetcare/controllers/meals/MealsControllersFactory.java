@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.controllers.meals;
 
-import org.pesmypetcare.mypetcare.services.MealManagerAdapter;
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarAdapter;
+import org.pesmypetcare.mypetcare.services.meal.MealManagerAdapter;
 
 /**
  * @author Albert Pinto
@@ -15,7 +16,7 @@ public class MealsControllersFactory {
      * @return The transaction for adding a new pet meal
      */
     public static TrNewPetMeal createTrNewPetMeal() {
-        return new TrNewPetMeal(new MealManagerAdapter());
+        return new TrNewPetMeal(new MealManagerAdapter(), new GoogleCalendarAdapter());
     }
 
     /**
@@ -31,7 +32,7 @@ public class MealsControllersFactory {
      * @return The transaction for deleting a meal
      */
     public static TrDeleteMeal createTrDeleteMeal() {
-        return new TrDeleteMeal(new MealManagerAdapter());
+        return new TrDeleteMeal(new MealManagerAdapter(), new GoogleCalendarAdapter());
     }
 
     /**

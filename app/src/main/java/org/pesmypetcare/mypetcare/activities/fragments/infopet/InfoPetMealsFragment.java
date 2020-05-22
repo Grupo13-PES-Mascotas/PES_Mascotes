@@ -18,13 +18,13 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetMealsBinding;
-import org.pesmypetcare.mypetcare.features.pets.Event;
-import org.pesmypetcare.mypetcare.features.pets.MealAlreadyExistingException;
-import org.pesmypetcare.mypetcare.features.pets.Meals;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.mypetcare.features.pets.events.Event;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.MealAlreadyExistingException;
+import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,7 +83,6 @@ public class InfoPetMealsFragment extends Fragment {
         initializeRemoveMealButton();
         initializeIntervalSwitch();
         initializeAddMealButton();
-
         return binding.getRoot();
     }
 
@@ -93,7 +92,7 @@ public class InfoPetMealsFragment extends Fragment {
     private void initializeAddMealButton() {
         addMealButton.setOnClickListener(v -> {
             editing = false;
-            deleteMealButton.setVisibility(View.INVISIBLE);
+            deleteMealButton.setVisibility(View.GONE);
             inputMealName.setText("");
             inputMealCal.setText("");
             mealDate.setText(R.string.meal_date);
@@ -142,6 +141,7 @@ public class InfoPetMealsFragment extends Fragment {
             InfoPetFragment.getCommunication().deletePetMeal(pet, meal);
             initializeMealsLayoutView();
             dialog.dismiss();
+            InfoPetHealthFragment.updateBarChart();
         });
     }
 
@@ -223,21 +223,28 @@ public class InfoPetMealsFragment extends Fragment {
         } catch (MealAlreadyExistingException e) {
             e.printStackTrace();
         }
+
+        InfoPetHealthFragment.updateBarChart();
     }
 
     /**
      * Method responsible for initializing the editButton listener.
      */
     private void initializeEditButtonListener() {
-        String newDate = getDateTime().toString();
+        DateTime newDateTime = DateTime.Builder.buildDateString(mealDate.getText().toString());
+        newDateTime.setHour(selectedHour);
+        newDateTime.setMinutes(selectedMin);
+
         String mealName = Objects.requireNonNull(inputMealName.getText()).toString();
         double kcal = Double.parseDouble(Objects.requireNonNull(inputMealCal.getText()).toString());
         meal.setMealName(mealName);
         meal.setKcal(kcal);
-        InfoPetFragment.getCommunication().updatePetMeal(pet, meal, newDate, updatesDate);
+        InfoPetFragment.getCommunication().updatePetMeal(pet, meal, newDateTime.toString(), updatesDate);
         if (updatesDate) {
-            meal.setMealDate(DateTime.Builder.buildFullString(newDate));
+            meal.setMealDate(newDateTime);
         }
+
+        InfoPetHealthFragment.updateBarChart();
     }
 
     /**
@@ -427,8 +434,8 @@ public class InfoPetMealsFragment extends Fragment {
     private void initializeButtonParams(MaterialButton mealButton) {
         mealButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT));
-        mealButton.setBackgroundColor(getResources().getColor(R.color.white));
-        mealButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        mealButton.setBackgroundColor(getResources().getColor(R.color.white, null));
+        mealButton.setTextColor(getResources().getColor(R.color.colorPrimary, null));
         mealButton.setStrokeColorResource(R.color.colorAccent);
         mealButton.setStrokeWidth(STROKE_WIDTH);
         mealButton.setGravity(Gravity.START);

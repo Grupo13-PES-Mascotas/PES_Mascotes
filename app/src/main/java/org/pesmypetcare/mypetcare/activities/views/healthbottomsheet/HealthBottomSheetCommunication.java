@@ -1,6 +1,10 @@
 package org.pesmypetcare.mypetcare.activities.views.healthbottomsheet;
 
+/**
+ * @author Albert Pinto
+ */
 public interface HealthBottomSheetCommunication {
+
     /**
      * Select the statistic to display in the barchart.
      * @param statisticId The identifier of the statistic to display

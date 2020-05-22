@@ -25,6 +25,9 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * @author Albert Pinto
+ */
 public class BarChart extends View {
     private static final int BORDER_X = 125;
     private static final int BORDER_Y = 75;

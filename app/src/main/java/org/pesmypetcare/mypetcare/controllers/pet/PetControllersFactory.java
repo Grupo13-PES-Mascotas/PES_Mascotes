@@ -1,8 +1,9 @@
 package org.pesmypetcare.mypetcare.controllers.pet;
 
-import org.pesmypetcare.mypetcare.services.MealManagerAdapter;
-import org.pesmypetcare.mypetcare.services.MedicationManagerAdapter;
-import org.pesmypetcare.mypetcare.services.PetManagerAdapter;
+import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarAdapter;
+import org.pesmypetcare.mypetcare.services.meal.MealManagerAdapter;
+import org.pesmypetcare.mypetcare.services.medication.MedicationManagerAdapter;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerAdapter;
 
 /**
  * @author Albert Pinto
@@ -17,7 +18,7 @@ public class PetControllersFactory {
      * @return The transaction for registering a new pet
      */
     public static TrRegisterNewPet createTrRegisterNewPet() {
-        return new TrRegisterNewPet(new PetManagerAdapter());
+        return new TrRegisterNewPet(new PetManagerAdapter(), new GoogleCalendarAdapter());
     }
 
     /**

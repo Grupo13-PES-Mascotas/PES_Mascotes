@@ -1,13 +1,15 @@
 package org.pesmypetcare.mypetcare.controllers.community;
 
+import android.graphics.Bitmap;
+
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumNotFoundException;
 import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.community.posts.PostAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.community.posts.PostCreatedBeforeForumException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.CommunityService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.mypetcare.services.community.CommunityService;
 
 /**
  * @author Xavier Campos
@@ -18,6 +20,7 @@ public class TrAddNewPost {
     private Forum forum;
     private DateTime postCreationDate;
     private String postText;
+    private Bitmap postImage;
     private boolean result;
 
     public TrAddNewPost(CommunityService communityService) {
@@ -57,6 +60,14 @@ public class TrAddNewPost {
     }
 
     /**
+     * Setter of the post image.
+     * @param postImage The post image
+     */
+    public void setPostImage(Bitmap postImage) {
+        this.postImage = postImage;
+    }
+
+    /**
      * Getter of the result of the transaction.
      * @return True if the post was added successfully or false otherwise
      */
@@ -76,6 +87,8 @@ public class TrAddNewPost {
             throw new PostCreatedBeforeForumException();
         }
         Post post = new Post(user.getUsername(), postText, postCreationDate, forum);
+        post.setPostImage(postImage);
+
         communityService.createPost(user, forum, post);
         result = true;
     }

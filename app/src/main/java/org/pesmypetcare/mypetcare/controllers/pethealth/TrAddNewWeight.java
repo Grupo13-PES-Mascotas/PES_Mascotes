@@ -1,13 +1,16 @@
 package org.pesmypetcare.mypetcare.controllers.pethealth;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.PetManagerService;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
+import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
 
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Albert Pinto
+ */
 public class TrAddNewWeight {
     private PetManagerService petManagerService;
     private User user;
@@ -61,6 +64,6 @@ public class TrAddNewWeight {
         }
 
         petManagerService.addWeight(user, pet, newWeight, dateTime);
-        pet.setWeightForDate(newWeight, dateTime);
+        pet.setWeightForCurrentDate(newWeight, dateTime);
     }
 }

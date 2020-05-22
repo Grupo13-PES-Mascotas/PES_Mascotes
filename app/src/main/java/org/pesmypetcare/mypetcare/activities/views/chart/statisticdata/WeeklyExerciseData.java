@@ -1,13 +1,16 @@
 package org.pesmypetcare.mypetcare.activities.views.chart.statisticdata;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Albert Pinto
+ */
 public class WeeklyExerciseData extends StatisticData {
     private static final String UNIT = "times";
 

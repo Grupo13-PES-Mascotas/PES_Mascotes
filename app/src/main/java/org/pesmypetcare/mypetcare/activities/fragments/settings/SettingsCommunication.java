@@ -3,6 +3,9 @@ package org.pesmypetcare.mypetcare.activities.fragments.settings;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
+/**
+ * @author Daniel Clemente & Enric Hernando
+ */
 public interface SettingsCommunication {
     /**
      * Set the new mail.

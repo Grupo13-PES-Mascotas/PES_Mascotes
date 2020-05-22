@@ -2,9 +2,13 @@ package org.pesmypetcare.mypetcare.controllers.user;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.services.UserManagerService;
+import org.pesmypetcare.mypetcare.services.user.UserManagerService;
 
+/**
+ * @author Albert Pinto
+ */
 public class TrUpdateUserImage {
     private UserManagerService userManagerService;
     private User user;
@@ -33,7 +37,7 @@ public class TrUpdateUserImage {
     /**
      * Executes the transaction.
      */
-    public void execute() {
+    public void execute() throws MyPetCareException {
         userManagerService.updateUserImage(user, image);
         user.setUserProfileImage(image);
     }

@@ -11,6 +11,9 @@ import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/**
+ * @author Xavier Campos & Daniel Clemente & Enric Hernando & Albert Pinto
+ */
 public class User {
     private String username;
     private String email;
@@ -18,6 +21,7 @@ public class User {
     private ArrayList<Pet> pets;
     private Bitmap userProfileImage;
     private String token;
+    private String googleCalendarToken;
     private ArrayList<Notification> notifications;
     private SortedSet<String> subscribedGroups;
 
@@ -31,8 +35,20 @@ public class User {
         this.subscribedGroups = new TreeSet<>();
     }
 
+    /**
+     * Get the token.
+     * @return The token
+     */
     public String getToken() {
         return token;
+    }
+
+    /**
+     * Set the token.
+     * @param token The token to set
+     */
+    public void setToken(String token) {
+        this.token = token;
     }
 
     /**
@@ -180,10 +196,7 @@ public class User {
     }
 
     public void updatePetProfileImage(Pet actualPet) {
-        System.out.println(pets.toString());
-        System.out.println(actualPet.getName());
         int index = getActualPetIndex(actualPet.getName());
-        System.out.println(index);
         pets.get(index).setProfileImage(actualPet.getProfileImage());
     }
 
@@ -229,5 +242,21 @@ public class User {
      */
     public SortedSet<String> getSubscribedGroups() {
         return subscribedGroups;
+    }
+
+    /**
+     * Setter of the google calendar token attribute.
+     * @param googleCalendarToken The google calendar token to set
+     */
+    public void setGoogleCalendarToken(String googleCalendarToken) {
+        this.googleCalendarToken = googleCalendarToken;
+    }
+
+    /**
+     * Getter of the google calendar token attribute.
+     * @return The google calendar token attribute to set
+     */
+    public String getGoogleCalendarToken() {
+        return this.googleCalendarToken;
     }
 }

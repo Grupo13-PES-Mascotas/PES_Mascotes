@@ -1,13 +1,16 @@
 package org.pesmypetcare.mypetcare.activities.views.chart.statisticdata;
 
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Albert Pinto
+ */
 public class WashFrequencyData extends StatisticData {
     private static final String UNIT = "times";
 
@@ -32,11 +35,11 @@ public class WashFrequencyData extends StatisticData {
 
     @Override
     public int getMessageIdentifier() {
-        return R.string.add_wash_frequency;
+        return R.string.auto_calculated;
     }
 
     @Override
     public boolean getFocusableState() {
-        return true;
+        return false;
     }
 }
