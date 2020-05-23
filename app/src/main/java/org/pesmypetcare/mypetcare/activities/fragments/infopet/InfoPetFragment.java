@@ -1,10 +1,14 @@
 package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -21,11 +26,14 @@ import org.pesmypetcare.mypetcare.databinding.FragmentInfoPetBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Objects;
 
 /**
- * @author Daniel Clemente
+ * @author Daniel Clemante & Enric Hernando
  */
+
 public class InfoPetFragment extends Fragment {
     public static final int INFO_PET_ZOOM_IDENTIFIER = 1;
     private static Pet pet = new Pet("Linux");
@@ -35,7 +43,9 @@ public class InfoPetFragment extends Fragment {
     private static boolean isDefaultPetImage;
     private static InfoPetCommunication communication;
     private static boolean isPetDeleted;
+    private static FloatingActionButton sharePetInfoButton;
     private static final String PET_PROFILE_IMAGE_DESCRIPTION = "pet profile image";
+
 
     private FragmentInfoPetBinding binding;
     private InfoPetFragmentAdapter infoPetFragmentAdapter;
@@ -43,15 +53,105 @@ public class InfoPetFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
         binding = FragmentInfoPetBinding.inflate(inflater, container, false);
         communication = (InfoPetCommunication) getActivity();
         resources = Objects.requireNonNull(getActivity()).getResources();
         isPetDeleted = false;
 
+        sharePetInfoButton = binding.flSharePetInfo;
+        setUpSharePetInfoListener();
+
         setUpViewPager();
         setUpPet();
 
         return binding.getRoot();
+    }
+
+    /**
+     * Set the share app button listener.
+     */
+    private void setUpSharePetInfoListener() {
+        sharePetInfoButton.setOnClickListener(v -> {
+            View rootView = Objects.requireNonNull(this.getActivity()).getWindow().getDecorView().findViewById(android.R.id.content);
+            Bitmap bm = getScreenShot(rootView);
+            saveImage(bm);
+
+        });
+    }
+
+    /**
+     * Get a screenshot of the pet info.
+     * @param view The view
+     * @return The bitmap of the screenshot
+     */
+    private static Bitmap getScreenShot(View view) {
+        View screenView = view.getRootView();
+        screenView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
+        screenView.setDrawingCacheEnabled(false);
+        return bitmap;
+    }
+
+    /**
+     * Saves the image as PNG to the app's cache directory and share.
+     * @param image Bitmap to share.
+     */
+    private void saveImage(Bitmap image) {
+        File file = saveBitmap(image);
+        Uri uri = Uri.fromFile(file);
+        shareUri(uri);
+    }
+
+    /**
+     * Creates a intent to share the uri.
+     * @param uri The uri to share
+     */
+    private void shareUri(Uri uri) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("image/jpeg");
+
+        intent.putExtra(Intent.EXTRA_SUBJECT, "My Pet Care");
+        intent.putExtra(Intent.EXTRA_TEXT, "");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivity(intent);
+    }
+
+    /**
+     * Save a bitmap.
+     * @param image The bitmap of the image
+     * @return The file created
+     */
+    @NonNull
+    private File saveBitmap(Bitmap image) {
+        File file = fileCreation();
+        FileOutputStream fOut;
+        try {
+            fOut = new FileOutputStream(file);
+            image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    /**
+     * Creation of the file.
+     * @return The file
+     */
+    @NonNull
+    private File fileCreation() {
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyPetCare/ScreenShot";
+        File dir = new File(file_path);
+        if(!dir.exists()) {
+            dir.mkdirs();
+        }
+        return new File(dir, "name");
     }
 
     /**
@@ -223,6 +323,6 @@ public class InfoPetFragment extends Fragment {
      */
     private Thread createDeleteImageThread() {
         return new Thread(() -> ImageManager.deleteImage(ImageManager.PET_PROFILE_IMAGES_PATH,
-            pet.getOwner().getUsername() + '_' + pet.getName()));
+                pet.getOwner().getUsername() + '_' + pet.getName()));
     }
 }
