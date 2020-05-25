@@ -61,6 +61,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_gravity="center"
+                android:visibility="gone"
                 android:contentDescription="@string/type_of_pet" />
 
         </LinearLayout>
