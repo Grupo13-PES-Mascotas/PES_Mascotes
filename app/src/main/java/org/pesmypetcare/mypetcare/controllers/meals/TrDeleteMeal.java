@@ -56,7 +56,7 @@ public class TrDeleteMeal {
             throw new NotPetOwnerException();
         }
         mealManagerService.deleteMeal(user, pet, meal);
-        pet.deleteEvent(meal);
         googleCalendarService.deleteEvent(pet, meal);
+        pet.deleteEvent(meal);
     }
 }

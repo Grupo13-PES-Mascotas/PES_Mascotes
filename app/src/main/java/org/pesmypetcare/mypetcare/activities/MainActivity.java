@@ -144,6 +144,7 @@ import org.pesmypetcare.mypetcare.controllers.pethealth.TrAddNewWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrAddNewWeight;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrDeleteWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrDeleteWeight;
+import org.pesmypetcare.mypetcare.controllers.pethealth.TrGetAllWeights;
 import org.pesmypetcare.mypetcare.controllers.user.EmptyMessagingTokenException;
 import org.pesmypetcare.mypetcare.controllers.user.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.user.TrChangePassword;
@@ -356,6 +357,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeleteGroupImage trDeleteGroupImage;
     private TrSendFirebaseMessagingToken trSendFirebaseMessagingToken;
     private TrGetGroupImage trGetGroupImage;
+    private TrGetAllWeights trGetAllWeights;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -530,6 +532,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         user = trObtainUser.getResult();
 
         for (Pet pet : user.getPets()) {
+            obtainAllPetWeights(pet);
             obtainAllPetMeals(pet);
             obtainAllPetMedications(pet);
             obtainAllPetVetVisits(pet);
@@ -546,6 +549,24 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         updatePetImagesThread.start();
         setUpNavigationHeader();
     }
+
+    /**
+     * Obtain all the pet weights.
+     * @param pet The pet to get the weights from
+     */
+    private void obtainAllPetWeights(Pet pet) {
+        trGetAllWeights.setUser(user);
+        trGetAllWeights.setPet(pet);
+        try {
+            trGetAllWeights.execute();
+        } catch (NotPetOwnerException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * Obtain all the pet exercises.
+     * @param pet The pet to get the exercises from
+     */
 
     private void obtainAllPetExercises(Pet pet) {
         trGetAllExercises.setUser(user);
@@ -815,6 +836,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteWeight = PetHealthControllersFactory.createTrDeleteWeight();
         trAddNewWashFrequency = PetHealthControllersFactory.createTrAddNewWashFrequency();
         trDeleteWashFrequency = PetHealthControllersFactory.createTrDeleteWashFrequency();
+        trGetAllWeights = PetHealthControllersFactory.createTrGetAllWeights();
     }
 
     /**
@@ -2493,7 +2515,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void deleteUser() {
         trDeleteUser.setUser(user);
         try {
             trDeleteUser.execute();

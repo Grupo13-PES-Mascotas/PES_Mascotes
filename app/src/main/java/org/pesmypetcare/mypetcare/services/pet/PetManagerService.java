@@ -10,6 +10,7 @@ import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.Walk;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanager.datacontainers.pet.Weight;
 
 import java.util.List;
 import java.util.Map;
@@ -161,4 +162,12 @@ public interface PetManagerService {
      * @return All the exercises of the pet
      */
     List<Exercise> getAllExercises(User user, Pet pet) throws ExecutionException, InterruptedException;
+
+    /**
+     * Get all the weights.
+     * @param user The user
+     * @param pet The pet
+     * @return All the weights
+     */
+    List<Weight> getAllWeights(User user, Pet pet);
 }

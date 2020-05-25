@@ -15,10 +15,17 @@
             android:id="@+id/barChartLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal|top"
             android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/healthButtonsLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
             <TextView
                 android:id="@+id/statisticTitle"
@@ -36,7 +43,8 @@
             android:id="@+id/healthButtonsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:gravity="bottom|center_horizontal"
             android:orientation="horizontal"
             android:weightSum="1"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -44,14 +52,15 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <TableRow>
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnPrevious"
-                    android:layout_weight="0.5"
                     style="@style/calendar_button"
-                    app:icon="@drawable/icon_arrow_back"
-                    app:iconTint="@color/white"
+                    android:layout_weight="0.5"
+                    android:text="@string/previous"
                     app:backgroundTint="@color/green"
-                    android:text="@string/previous" />
+                    app:icon="@drawable/icon_arrow_back"
+                    app:iconTint="@color/white" />
 
                 <Space
                     android:layout_width="5dp"
@@ -59,21 +68,22 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnNext"
-                    android:layout_weight="0.5"
                     style="@style/calendar_button"
-                    app:icon="@drawable/icon_arrow_forward"
+                    android:layout_weight="0.5"
+                    android:text="@string/next"
                     app:backgroundTint="@color/red"
-                    app:iconGravity="end"
-                    android:text="@string/next" />
+                    app:icon="@drawable/icon_arrow_forward"
+                    app:iconGravity="end" />
             </TableRow>
 
             <TableRow>
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnChangeStatistic"
-                    android:layout_weight="0.5"
                     style="@style/calendar_button"
-                    app:icon="@drawable/icon_refresh"
-                    android:text="@string/change_statistic" />
+                    android:layout_weight="0.5"
+                    android:text="@string/change_statistic"
+                    app:icon="@drawable/icon_refresh" />
 
                 <Space
                     android:layout_width="5dp"
@@ -81,10 +91,10 @@
 
                 <org.pesmypetcare.mypetcare.activities.views.StatisticButton
                     android:id="@+id/btnAddNewStatistic"
-                    android:layout_weight="0.5"
                     style="@style/calendar_button"
-                    app:iconGravity="end"
-                    android:text="@string/add_new_statistic" />
+                    android:layout_weight="0.5"
+                    android:text="@string/add_new_statistic"
+                    app:iconGravity="end" />
             </TableRow>
 
         </TableLayout>

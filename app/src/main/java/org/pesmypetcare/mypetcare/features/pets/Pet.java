@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.features.pets;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Pair;
 
 import androidx.annotation.NonNull;
 
@@ -447,7 +448,6 @@ public class Pet {
         if (event instanceof Meals) {
             DateTime eventDate = event.getDateTime();
             double kcal = ((Meals) event).getKcal();
-
             try {
                 healthInfo.addDailyKiloCaloriesForDate(eventDate, kcal);
             } catch (InvalidFormatException e) {
@@ -831,5 +831,13 @@ public class Pet {
             }
         }
         return illnessEvents;
+    }
+
+    /**
+     * Get the last weight info.
+     * @return The last weight info
+     */
+    public Pair<DateTime, Double> getLastWeightInfo() {
+        return healthInfo.getLastWeightInfo();
     }
 }
