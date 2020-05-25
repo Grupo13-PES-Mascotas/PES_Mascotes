@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.services.pet;
 
 import android.graphics.Bitmap;
+import android.util.Pair;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
@@ -24,6 +25,8 @@ import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Albert Pinto
@@ -79,9 +82,30 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public boolean registerNewPet(User user, Pet pet) throws ExecutionException, InterruptedException {
-        org.pesmypetcare.usermanager.datacontainers.pet.Pet libraryPet = getRegisterPet(pet);
-        ServiceLocator.getInstance().getPetManagerClient().createPet(user.getToken(), user.getUsername(), libraryPet);
+    public boolean registerNewPet(User user, Pet pet) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            org.pesmypetcare.usermanager.datacontainers.pet.Pet libraryPet = getRegisterPet(pet);
+            try {
+                ServiceLocator.getInstance().getPetManagerClient().createPet(user.getToken(), user.getUsername(),
+                    libraryPet);
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            Pair<DateTime, Double> entry = pet.getLastWeightInfo();
+            System.out.println("ENTRY " + entry.toString());
+            Weight libraryWeight = new Weight(entry.first.toString(), entry.second.intValue());
+            try {
+                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
+                    user.getUsername(), pet.getName(), PetData.WEIGHTS, libraryWeight.getKey(),
+                    libraryWeight.getBodyAsMap());
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        executorService.shutdown();
 
         return true;
     }
