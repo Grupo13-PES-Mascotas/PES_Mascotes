@@ -169,9 +169,10 @@ public class InfoPetBasicFragment extends Fragment {
      * Update the pet.
      */
     private void updatePet() throws PetRepeatException {
-        InfoPetFragment.getPet().setName(newName);
+        //InfoPetFragment.getPet().setName(newName);
         InfoPetFragment.getPet().setGender(getGender());
         InfoPetFragment.getPet().setBreed(newBreed);
+        InfoPetFragment.getPet().setPathologies(newPathologies);
 
         try {
             InfoPetFragment.getCommunication().updatePet(InfoPetFragment.getPet());

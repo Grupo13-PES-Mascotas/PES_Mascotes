@@ -37,29 +37,23 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public void updatePet(Pet pet) {
-        /*String name = pet.getName();
+        String name = pet.getName();
         String ownerUsername = pet.getOwner().getUsername();
         String userToken = pet.getOwner().getToken();
 
-        try {
-            ServiceLocator.getInstance().getPetManagerClient().updateSimpleField(userToken, ownerUsername, name,
-                PetManagerClient.GENDER, pet.getGender().toString());
-            ServiceLocator.getInstance().getPetManagerClient().updateSimpleField(userToken, ownerUsername, name,
-                PetManagerClient.BREED, pet.getBreed());
-            updateHealth(pet);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        /*ServiceLocator.getInstance().getPetManagerClient().updateGender(userToken, ownerUsername, name,
-            pet.getGender().toString());
-        ServiceLocator.getInstance().getPetManagerClient().updateBirthday(pet.getOwner().getToken(), ownerUsername,
-          name, pet.getBirthDate());
-        ServiceLocator.getInstance().getPetManagerClient().updateBreed(userToken, ownerUsername,
-            name, pet.getBreed());
-        ServiceLocator.getInstance().getPetManagerClient().updatePathologies(pet.getOwner().getToken(),
-            ownerUsername, name, pet.getPathologies());
-        updateHealth(pet);*/
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getPetManagerClient().updateSimpleField(userToken, ownerUsername, name,
+                    PetData.BREED, pet.getBreed());
+                ServiceLocator.getInstance().getPetManagerClient().updateSimpleField(userToken, ownerUsername, name,
+                    PetData.GENDER, pet.getGender().toString());
+                ServiceLocator.getInstance().getPetManagerClient().updateSimpleField(userToken, ownerUsername, name,
+                    PetData.PATHOLOGIES, pet.getPathologies());
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -94,7 +88,6 @@ public class PetManagerAdapter implements PetManagerService {
             }
 
             Pair<DateTime, Double> entry = pet.getLastWeightInfo();
-            System.out.println("ENTRY " + entry.toString());
             Weight libraryWeight = new Weight(entry.first.toString(), entry.second.intValue());
             try {
                 ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),

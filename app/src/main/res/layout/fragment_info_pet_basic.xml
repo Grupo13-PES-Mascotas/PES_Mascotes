@@ -10,99 +10,104 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/linearLayout3"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="10dp"
-            android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
             app:layout_constraintStart_toEndOf="@+id/linearLayout2"
             app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/breed"
+            <LinearLayout
+                android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/breed_title"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/colorAccent"
-                app:hintAnimationEnabled="true"
-                app:hintEnabled="true"
-                app:startIconContentDescription="@string/breed_title">
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtBreed"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/breed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/breed_random"
-                    android:textColor="@color/colorPrimary" />
+                    android:hint="@string/breed_title"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxStrokeColor="@color/colorAccent"
+                    app:hintAnimationEnabled="true"
+                    app:hintEnabled="true"
+                    app:startIconContentDescription="@string/breed_title">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txtBreed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/breed_random"
+                        android:textColor="@color/colorPrimary" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/gender"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/gender_title"
-                app:boxBackgroundColor="@color/white"
-                app:endIconMode="dropdown_menu">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <AutoCompleteTextView
-                    android:id="@+id/inputGender"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/gender"
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:ems="10"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:paddingStart="12dp"
-                    android:paddingTop="20dp"
+                    android:layout_height="match_parent"
+                    android:hint="@string/gender_title"
+                    app:boxBackgroundColor="@color/white"
+                    app:endIconMode="dropdown_menu">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/inputGender"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingStart="12dp"
+                        android:paddingTop="20dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16sp"
+                        tools:ignore="RtlSymmetry" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/pathologies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/patologies_title"
+                    app:boxBackgroundColor="@color/white"
+                    app:helperTextEnabled="true"
+                    app:hintAnimationEnabled="true"
+                    app:hintEnabled="true"
+                    app:startIconContentDescription="@string/breed_title">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txtPathologies"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/patologies_random"
+                        android:textColor="@color/colorPrimary" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/inputBirthMonth"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="40dp"
+                    android:layout_weight="0.4"
+                    android:backgroundTint="@color/white"
+                    android:hint="@string/birth_random"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"
-                    tools:ignore="RtlSymmetry" />
+                    app:icon="@drawable/baseline_cake_black_18dp"
+                    app:iconTint="@color/colorPrimary"
+                    app:strokeColor="@color/colorAccent"
+                    app:strokeWidth="2dp" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/pathologies"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/patologies_title"
-                app:boxBackgroundColor="@color/white"
-                app:helperTextEnabled="true"
-                app:hintAnimationEnabled="true"
-                app:hintEnabled="true"
-                app:startIconContentDescription="@string/breed_title">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtPathologies"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:text="@string/patologies_random"
-                    android:textColor="@color/colorPrimary" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/inputBirthMonth"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginBottom="40dp"
-                android:layout_weight="0.4"
-                android:backgroundTint="@color/white"
-                android:hint="@string/birth_random"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16sp"
-                app:icon="@drawable/baseline_cake_black_18dp"
-                app:iconTint="@color/colorPrimary"
-                app:strokeColor="@color/colorAccent"
-                app:strokeWidth="2dp" />
-
-        </LinearLayout>
+        </ScrollView>
 
         <LinearLayout
             android:id="@+id/linearLayout2"
