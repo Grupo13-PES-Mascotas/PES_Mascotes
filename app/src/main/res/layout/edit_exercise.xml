@@ -47,7 +47,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+            android:layout_height="10dp"/>
 
         <org.pesmypetcare.mypetcare.activities.views.datetimebuttons.DateButton
             android:id="@+id/inputExerciseDate"
@@ -124,7 +124,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+            android:layout_height="10dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/editExerciseButton"
@@ -139,9 +139,17 @@
             app:iconSize="24dp"
             tools:ignore="RtlSymmetry" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/flSharePetExercise"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_menu_share"
+            app:backgroundTint="@color/green"
+            app:fabSize="auto"
+            app:tint="@color/white" />
 
     </LinearLayout>
 
