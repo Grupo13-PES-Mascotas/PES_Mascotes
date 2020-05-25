@@ -9,6 +9,7 @@ import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.Walk;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
+import org.pesmypetcare.usermanager.datacontainers.pet.Weight;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -188,5 +189,18 @@ public class StubPetManagerService implements PetManagerService {
         }
 
         return exercises;
+    }
+
+    @Override
+    public List<Weight> getAllWeights(User user, Pet pet) {
+        List<Weight> weights = new ArrayList<>();
+        ArrayList<Pet> pets = data.get(user.getUsername());
+        int petIndex = Objects.requireNonNull(pets).indexOf(pet);
+
+        for (Map.Entry<DateTime, Double> entry : pets.get(petIndex).getHealthInfo().getWeight().entrySet()) {
+            weights.add(new Weight(entry.getKey().toString(), entry.getValue().intValue()));
+        }
+
+        return weights;
     }
 }

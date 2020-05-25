@@ -27,6 +27,8 @@ import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Albert Pinto
@@ -364,6 +366,33 @@ public class PetManagerAdapter implements PetManagerService {
         }
 
         return new ArrayList<>(exercisesSet);
+    }
+
+    @Override
+    public List<Weight> getAllWeights(User user, Pet pet) {
+        String accessToken = user.getToken();
+        String owner = user.getUsername();
+        String petName = pet.getName();
+
+        AtomicReference<List<Weight>> weights = new AtomicReference<>();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                Objects.requireNonNull(weights).set(ServiceLocator.getInstance().getPetCollectionsManagerClient()
+                    .getAllWeights(accessToken, owner, petName));
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(20, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return weights.get();
     }
 
     /**
