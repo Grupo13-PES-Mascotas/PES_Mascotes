@@ -75,7 +75,8 @@ public class InfoPetFragment extends Fragment {
      */
     private void setUpSharePetInfoListener() {
         sharePetInfoButton.setOnClickListener(v -> {
-            View rootView = Objects.requireNonNull(this.getActivity()).getWindow().getDecorView().findViewById(android.R.id.content);
+            View rootView = Objects.requireNonNull(this.getActivity()).getWindow().getDecorView()
+                    .findViewById(android.R.id.content);
             Bitmap bm = getScreenShot(rootView);
             saveImage(bm);
 
