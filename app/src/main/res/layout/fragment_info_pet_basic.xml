@@ -15,7 +15,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
             app:layout_constraintStart_toEndOf="@+id/linearLayout2"
             app:layout_constraintTop_toTopOf="parent">
@@ -36,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/breed_random"
-                    android:textColor="@color/colorPrimary"/>
+                    android:textColor="@color/colorPrimary" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -52,11 +55,11 @@
                     android:id="@+id/inputGender"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:paddingTop="20dp"
-                    android:paddingStart="12dp"
                     android:ems="10"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:paddingStart="12dp"
+                    android:paddingTop="20dp"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"
                     tools:ignore="RtlSymmetry" />
@@ -106,12 +109,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/updatePet"

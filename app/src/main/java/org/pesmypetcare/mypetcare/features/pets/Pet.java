@@ -461,10 +461,12 @@ public class Pet {
      * @param event The event to delete
      */
     public void deleteEvent(Event event) {
+        System.out.println("Soy el delete event");
         if (event instanceof Meals) {
             DateTime eventDate = event.getDateTime();
             double kcal = ((Meals) event).getKcal();
             try {
+                System.out.println("Soy el delete event y ademas soy un meal");
                 healthInfo.deleteDailyKiloCaloriesForDate(eventDate, kcal);
             } catch (InvalidFormatException e) {
                 e.printStackTrace();
