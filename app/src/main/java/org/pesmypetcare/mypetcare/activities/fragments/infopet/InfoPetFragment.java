@@ -151,7 +151,7 @@ public class InfoPetFragment extends Fragment {
         if(!dir.exists()) {
             dir.mkdirs();
         }
-        return new File(dir, "name");
+        return new File(dir, pet.getName()+"Info.jpg");
     }
 
     /**
