@@ -237,7 +237,7 @@ public class SettingsMenuFragment extends Fragment {
     private void deleteAccount() throws NotValidUserException {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         assert currentUser != null;
-        communication.deleteUser(new User(currentUser.getUid(), currentUser.getEmail(), ""));
+        communication.deleteUser();
         deleteUserFromSharedPreferences();
         currentUser.reauthenticate(EmailAuthProvider.getCredential(Objects.requireNonNull(currentUser.getEmail()),
                 "password1234")).addOnCompleteListener(task -> {

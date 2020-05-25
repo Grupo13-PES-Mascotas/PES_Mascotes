@@ -2489,7 +2489,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void deleteUser() {
         trDeleteUser.setUser(user);
         try {
             trDeleteUser.execute();
