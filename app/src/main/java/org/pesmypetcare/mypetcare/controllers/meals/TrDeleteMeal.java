@@ -57,7 +57,6 @@ public class TrDeleteMeal {
         }
         mealManagerService.deleteMeal(user, pet, meal);
         googleCalendarService.deleteEvent(pet, meal);
-        System.out.println("Soy la transaccion");
         pet.deleteEvent(meal);
     }
 }
