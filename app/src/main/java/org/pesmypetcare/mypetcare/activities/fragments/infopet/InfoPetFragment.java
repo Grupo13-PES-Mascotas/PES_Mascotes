@@ -31,7 +31,7 @@ import java.io.FileOutputStream;
 import java.util.Objects;
 
 /**
- * @author Daniel Clemante & Enric Hernando
+ * @author Daniel Clemente & Enric Hernando
  */
 
 public class InfoPetFragment extends Fragment {
