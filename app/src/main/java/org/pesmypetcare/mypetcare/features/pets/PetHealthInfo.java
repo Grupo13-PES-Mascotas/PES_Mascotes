@@ -246,8 +246,7 @@ public class PetHealthInfo {
             double storedKcal = dailyKiloCalories.get(dateTime);
             dailyKiloCalories.put(dateTime, storedKcal + kCal);
         }
-
-        addWeeklyKiloCalAverageForDate(date, kCal);
+        addWeeklyKiloCalAverageForDate(dateTime, kCal);
     }
 
     /**
@@ -404,16 +403,18 @@ public class PetHealthInfo {
      * @param date The date for which we want to find the monday
      */
     private DateTime obtainDateMonday(DateTime date) throws InvalidFormatException {
+        DateTime aux = DateTime.Builder.buildDateString(date.toDateString());
         Calendar c = Calendar.getInstance();
-        c.set(date.getYear(), date.getMonth(), date.getDay());
+        c.set(aux.getYear(), aux.getMonth() - 1, aux.getDay());
         int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
         while (dayOfWeek != Calendar.MONDAY) {
-            date.decreaseDay();
-            c.set(date.getYear(), date.getMonth(), date.getDay());
+            aux.decreaseDay();
+            c.set(date.getYear(), aux.getMonth() - 1, aux.getDay());
             dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
         }
-        return DateTime.Builder.build(c.get(Calendar.YEAR), c.get(Calendar.MONTH),
+        aux = DateTime.Builder.build(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1,
                 c.get(Calendar.DAY_OF_MONTH));
+        return aux;
     }
 
     /**

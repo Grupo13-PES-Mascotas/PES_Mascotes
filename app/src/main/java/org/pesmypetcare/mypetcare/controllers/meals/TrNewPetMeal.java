@@ -69,9 +69,9 @@ public class TrNewPetMeal {
         if (mealHasAlreadyBeenAdded()) {
             throw new MealAlreadyExistingException();
         }
-        pet.addEvent(meal);
         mealManagerService.createMeal(user, pet, meal);
         googleCalendarService.registerNewEvent(pet, meal);
+        pet.addEvent(meal);
         result = true;
     }
 

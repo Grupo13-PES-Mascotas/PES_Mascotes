@@ -151,7 +151,7 @@
     <string name="wash_name">Wash Description</string>
     <string name="wash_duration">Wash Duration</string>
     <string name="wash_date">Wash Date</string>
-    <string name="wash_time">Wah Time</string>
+    <string name="wash_time">Wash Time</string>
     <string name="update_meal">Update meal</string>
     <string name="delete_current_meal">Delete meal</string>
     <string name="update_wash">Update wash</string>
