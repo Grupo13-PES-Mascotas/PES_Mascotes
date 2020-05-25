@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author Albert Pinto
+ * @author Albert Pinto & Enric Hernando
  */
 public class InfoPetExercise extends Fragment {
     private static final int MIN_SPACE_SIZE = 20;
