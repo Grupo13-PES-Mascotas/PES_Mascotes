@@ -248,7 +248,7 @@ public class PetHealthInfo {
             double storedKcal = dailyKiloCalories.get(dateTime);
             dailyKiloCalories.put(dateTime, storedKcal + kCal);
         }
-        addWeeklyKiloCalAverageForDate(dateTime, kCal);
+        //addWeeklyKiloCalAverageForDate(dateTime, kCal);
     }
 
     /**
@@ -257,14 +257,16 @@ public class PetHealthInfo {
      * @param currentMealKcal The kilocalories of the meal that is being deleted
      */
     public void deleteDailyKiloCaloriesForDate(DateTime date, double currentMealKcal) throws InvalidFormatException {
-        if (dailyKiloCalories.containsKey(date)) {
-            double storedKcal = dailyKiloCalories.get(date);
+        String strDate = date.toDateString();
+        DateTime dateTime = DateTime.Builder.buildDateString(strDate);
+        if (dailyKiloCalories.containsKey(dateTime)) {
+            double storedKcal = dailyKiloCalories.get(dateTime);
             if (storedKcal - currentMealKcal == 0) {
-                this.dailyKiloCalories.remove(date);
+                this.dailyKiloCalories.remove(dateTime);
             } else {
-                this.dailyKiloCalories.put(date, storedKcal - currentMealKcal);
+                this.dailyKiloCalories.put(dateTime, storedKcal - currentMealKcal);
             }
-            removeWeeklyKiloCalAverageForDate(date, currentMealKcal);
+            //removeWeeklyKiloCalAverageForDate(date, currentMealKcal);
         }
     }
 
