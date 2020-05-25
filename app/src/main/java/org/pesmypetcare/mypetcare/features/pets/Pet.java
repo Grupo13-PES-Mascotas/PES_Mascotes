@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.features.pets;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Pair;
 
 import androidx.annotation.NonNull;
 
@@ -830,5 +831,13 @@ public class Pet {
             }
         }
         return illnessEvents;
+    }
+
+    /**
+     * Get the last weight info.
+     * @return The last weight info
+     */
+    public Pair<DateTime, Double> getLastWeightInfo() {
+        return healthInfo.getLastWeightInfo();
     }
 }

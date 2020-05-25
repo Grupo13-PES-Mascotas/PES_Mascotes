@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
+import android.util.Pair;
+
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 
@@ -507,6 +509,19 @@ public class PetHealthInfo {
         date.setHour(0);
         date.setMinutes(0);
         date.setSeconds(0);
+    }
+
+    /**
+     * Get the last weight info.
+     * @return The last weight info
+     */
+    public Pair<DateTime, Double> getLastWeightInfo() {
+        if (weight.isEmpty()) {
+            return null;
+        }
+
+        Map.Entry<DateTime, Double> entry = ((TreeMap<DateTime, Double>) weight).lastEntry();
+        return new Pair<>(Objects.requireNonNull(entry).getKey(), entry.getValue());
     }
 
     @Override
