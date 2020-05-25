@@ -39,7 +39,7 @@ public class TrGetAllWeights {
 
     /**
      * Execute the transaction.
-     * @throws NotPetOwnerException
+     * @throws NotPetOwnerException The pet does not belong to the owner
      */
     public void execute() throws NotPetOwnerException {
         if (!pet.isOwner(user)) {

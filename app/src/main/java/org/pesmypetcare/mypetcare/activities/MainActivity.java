@@ -559,6 +559,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             e.printStackTrace();
         }
     }
+    /**
+     * Obtain all the pet exercises.
+     * @param pet The pet to get the exercises from
+     */
 
     private void obtainAllPetExercises(Pet pet) {
         trGetAllExercises.setUser(user);

@@ -35,7 +35,7 @@ public class WashFrequencyData extends StatisticData {
 
     @Override
     public int getMessageIdentifier() {
-        return R.string.auto_calculated;
+        return R.string.add_not_implemented;
     }
 
     @Override
