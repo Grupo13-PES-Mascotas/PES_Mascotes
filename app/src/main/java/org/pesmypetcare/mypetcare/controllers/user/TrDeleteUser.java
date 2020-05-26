@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.controllers.user;
 
-import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.meal.MealManagerService;
@@ -46,12 +45,12 @@ public class TrDeleteUser {
         if (!userHasAlreadyBeenRegistered()) {
             throw new NotValidUserException();
         }
-        for (Pet p:user.getPets()) {
+        /*for (Pet p : user.getPets()) {
             mealManagerService.deleteMealsFromPet(user, p);
             medicationManagerService.deleteMedicationsFromPet(user, p);
-        }
-        userManagerService.deleteUser(user);
+        }*/
         petManagerService.deletePetsFromUser(user);
+        userManagerService.deleteUser(user);
         result = true;
     }
 

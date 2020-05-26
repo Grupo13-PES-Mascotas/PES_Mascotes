@@ -41,4 +41,12 @@ public class PetHealthControllersFactory {
     public static TrDeleteWashFrequency createTrDeleteWashFrequency() {
         return new TrDeleteWashFrequency(new PetManagerAdapter());
     }
+
+    /**
+     * Create the transaction for getting all the pets.
+     * @return The transaction for getting all the pets
+     */
+    public static TrGetAllWeights createTrGetAllWeights() {
+        return new TrGetAllWeights(new PetManagerAdapter());
+    }
 }

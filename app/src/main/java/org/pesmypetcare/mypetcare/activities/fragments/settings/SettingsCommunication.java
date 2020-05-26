@@ -20,10 +20,9 @@ public interface SettingsCommunication {
     void changePassword(String password);
 
     /**
-     * Delete a user.
-     * @param user The user
+     * Delete the current user.
      */
-    void deleteUser(User user) throws NotValidUserException;
+    void deleteUser() throws NotValidUserException;
 
     /**
      * Gets the user for settings.

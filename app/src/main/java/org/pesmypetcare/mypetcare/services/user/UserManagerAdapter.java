@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 
 import org.json.JSONException;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.ServiceLocator;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
@@ -116,9 +117,8 @@ public class UserManagerAdapter implements UserManagerService {
     @Override
     public void deleteUser(User user) {
         try {
-            ServiceLocator.getInstance().getUserManagerClient().deleteUser(user.getToken(), user.getUsername());
-            ServiceLocator.getInstance().getUserManagerClient().deleteUserFromDatabase(user.getToken(),
-                    user.getUsername());
+            ServiceLocator.getInstance().getUserManagerClient().deleteUser(user.getToken(),
+                Objects.requireNonNull(MainActivity.getmAuth().getCurrentUser()).getUid());
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }

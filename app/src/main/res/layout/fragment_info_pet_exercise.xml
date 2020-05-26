@@ -11,6 +11,8 @@
         android:id="@+id/exerciseScrollView"
         android:layout_width="match_parent"
         android:layout_height="400dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -26,21 +28,23 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/linearLayout7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal"
         android:weightSum="1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exerciseScrollView"
-        tools:layout_editor_absoluteX="20dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addExerciseButton"
             style="@style/calendar_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_exercise_title"
-            android:layout_weight="0.5"/>
+            android:layout_weight="0.5"
+            android:text="@string/add_exercise_title" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/walkingButton"
@@ -48,8 +52,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:text="@string/start_walking_title"
-            android:layout_weight="0.5"/>
+            android:layout_weight="0.5"
+            android:text="@string/start_walking_title" />
 
     </LinearLayout>
 
