@@ -259,7 +259,8 @@ public class PostsFragment extends Fragment {
      * @param optionsPostLayout The view
      * @param editPostDialog The dialog
      */
-    private void initializeButtons(CircularEntryView circularEntryView, View optionsPostLayout, AlertDialog editPostDialog) {
+    private void initializeButtons(CircularEntryView circularEntryView, View optionsPostLayout,
+                                   AlertDialog editPostDialog) {
         MaterialButton btnShare = optionsPostLayout.findViewById(R.id.sharePostButtons);
         btnShare.setOnClickListener(v -> {
             View rootView = Objects.requireNonNull(this.getActivity()).getWindow().getDecorView()
