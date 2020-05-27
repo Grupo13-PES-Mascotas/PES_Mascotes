@@ -73,11 +73,9 @@ public abstract class StatisticData {
      * @return The date that has been read
      */
     protected String getDate(DateTime dateTime) {
-        int year = dateTime.getYear();
         int month = dateTime.getMonth();
         int day = dateTime.getDay();
-        StringBuilder date = new StringBuilder(String.valueOf(year));
-        date.append('-');
+        StringBuilder date = new StringBuilder("");
 
         if (month < OCTOBER) {
             date.append('0');
