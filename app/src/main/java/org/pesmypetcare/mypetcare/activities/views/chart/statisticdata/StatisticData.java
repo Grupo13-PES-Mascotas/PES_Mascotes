@@ -18,6 +18,7 @@ public abstract class StatisticData {
     public static final int WASH_FREQUENCY_STATISTIC = 5;
     public static final int STUB_STATISTIC = 6;
     private static final int OCTOBER = 10;
+    private static final int FIRST_TWO_DIGITS_DAY = 10;
 
     private List<String> xAxisValues;
     private List<Double> yAxisValues;
@@ -73,17 +74,21 @@ public abstract class StatisticData {
      * @return The date that has been read
      */
     protected String getDate(DateTime dateTime) {
-        int year = dateTime.getYear();
         int month = dateTime.getMonth();
         int day = dateTime.getDay();
-        StringBuilder date = new StringBuilder(String.valueOf(year));
-        date.append('-');
+        StringBuilder date = new StringBuilder("");
+
+        if (day < FIRST_TWO_DIGITS_DAY) {
+            date.append('0');
+        }
+
+        date.append(day).append('-');
 
         if (month < OCTOBER) {
             date.append('0');
         }
 
-        date.append(month).append('-').append(day);
+        date.append(month);
         return date.toString();
     }
 
