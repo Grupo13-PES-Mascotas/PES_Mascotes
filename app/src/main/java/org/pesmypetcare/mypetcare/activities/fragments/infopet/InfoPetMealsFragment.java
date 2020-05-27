@@ -95,6 +95,8 @@ public class InfoPetMealsFragment extends Fragment {
             deleteMealButton.setVisibility(View.GONE);
             inputMealName.setText("");
             inputMealCal.setText("");
+            mealDate.setFocusable(true);
+            mealDate.setClickable(true);
             mealDate.setText(R.string.meal_date);
             mealTime.setText(R.string.meal_time);
             editMealButton.setText(R.string.add_meal_button);
@@ -421,6 +423,8 @@ public class InfoPetMealsFragment extends Fragment {
         editMealButton.setText(R.string.update_meal);
         inputMealName.setText(meal.getMealName());
         inputMealCal.setText(String.valueOf(meal.getKcal()));
+        mealDate.setFocusable(false);
+        mealDate.setClickable(false);
         updatesDate = false;
         DateTime mealDate = meal.getMealDate();
         showMealDate(mealDate);
