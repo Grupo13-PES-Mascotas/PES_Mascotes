@@ -6,7 +6,10 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -35,6 +39,8 @@ import org.pesmypetcare.mypetcare.features.community.posts.Post;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.androidservices.GalleryService;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,6 +60,8 @@ public class PostsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         binding = FragmentPostsBinding.inflate(inflater, container, false);
         binding.forumName.setHint(forum.getName());
 
@@ -240,12 +248,92 @@ public class PostsFragment extends Fragment {
         dialog.setView(optionsPostLayout);
         AlertDialog editPostDialog = dialog.create();
 
+        MaterialButton btnShare = optionsPostLayout.findViewById(R.id.sharePostButtons);
+        btnShare.setOnClickListener(v -> {
+            View rootView = Objects.requireNonNull(this.getActivity()).getWindow().getDecorView()
+                    .findViewById(android.R.id.content);
+            Bitmap bm = getScreenShot(rootView);
+            saveImage(bm);
+        });
+
         MaterialButton btnReport = optionsPostLayout.findViewById(R.id.reportPostButtons);
         btnReport.setOnClickListener(v -> {
             addReportButtonListener(circularEntryView, editPostDialog);
         });
 
         return editPostDialog;
+    }
+
+    /**
+     * Get a screenshot of the pet info.
+     * @param view The view
+     * @return The bitmap of the screenshot
+     */
+    private static Bitmap getScreenShot(View view) {
+        View screenView = view.getRootView();
+        screenView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
+        screenView.setDrawingCacheEnabled(false);
+        return bitmap;
+    }
+
+    /**
+     * Saves the image as PNG to the app's cache directory and share.
+     * @param image Bitmap to share.
+     */
+    private void saveImage(Bitmap image) {
+        File file = saveBitmap(image);
+        Uri uri = Uri.fromFile(file);
+        shareUri(uri);
+    }
+
+    /**
+     * Creates a intent to share the uri.
+     * @param uri The uri to share
+     */
+    private void shareUri(Uri uri) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("image/jpeg");
+
+        intent.putExtra(Intent.EXTRA_SUBJECT, "My Pet Care");
+        intent.putExtra(Intent.EXTRA_TEXT, "");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivity(intent);
+    }
+
+    /**
+     * Save a bitmap.
+     * @param image The bitmap of the image
+     * @return The file created
+     */
+    @NonNull
+    private File saveBitmap(Bitmap image) {
+        File file = fileCreation();
+        FileOutputStream fOut;
+        try {
+            fOut = new FileOutputStream(file);
+            image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    /**
+     * Creation of the file.
+     * @return The file
+     */
+    @NonNull
+    private File fileCreation() {
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyPetCare/ScreenShot";
+        File dir = new File(file_path);
+        if(!dir.exists()) {
+            dir.mkdirs();
+        }
+        return new File(dir, "sharePost.jpg");
     }
 
     /**
@@ -390,10 +478,18 @@ public class PostsFragment extends Fragment {
         MaterialButton btnUpdatePost = editPostLayout.findViewById(R.id.updatePostButton);
         MaterialButton btnDeletePost = editPostLayout.findViewById(R.id.deletePostButton);
         MaterialButton btnDeletePostImage = editPostLayout.findViewById(R.id.deletePostImageButton);
+        MaterialButton btnShare = editPostLayout.findViewById(R.id.sharePostButtons);
 
         btnUpdatePost.setOnClickListener(v -> {
             InfoGroupFragment.getCommunication().updatePost(post,
                 Objects.requireNonNull(editPostMessage.getText()).toString());
+        });
+
+        btnShare.setOnClickListener(v -> {
+            View rootView = Objects.requireNonNull(this.getActivity()).getWindow().getDecorView()
+                    .findViewById(android.R.id.content);
+            Bitmap bm = getScreenShot(rootView);
+            saveImage(bm);
         });
 
         btnDeletePost.setOnClickListener(v -> {
