@@ -248,6 +248,18 @@ public class PostsFragment extends Fragment {
         dialog.setView(optionsPostLayout);
         AlertDialog editPostDialog = dialog.create();
 
+        initializeButtons(circularEntryView, optionsPostLayout, editPostDialog);
+
+        return editPostDialog;
+    }
+
+    /**
+     * Initialize options post buttons.
+     * @param circularEntryView The circularEntryView
+     * @param optionsPostLayout The view
+     * @param editPostDialog The dialog
+     */
+    private void initializeButtons(CircularEntryView circularEntryView, View optionsPostLayout, AlertDialog editPostDialog) {
         MaterialButton btnShare = optionsPostLayout.findViewById(R.id.sharePostButtons);
         btnShare.setOnClickListener(v -> {
             View rootView = Objects.requireNonNull(this.getActivity()).getWindow().getDecorView()
@@ -260,8 +272,6 @@ public class PostsFragment extends Fragment {
         btnReport.setOnClickListener(v -> {
             addReportButtonListener(circularEntryView, editPostDialog);
         });
-
-        return editPostDialog;
     }
 
     /**
