@@ -82,7 +82,7 @@ public abstract class StatisticData {
             date.append('0');
         }
 
-        date.append(day).append("-");
+        date.append(day).append('-');
 
         if (month < OCTOBER) {
             date.append('0');
