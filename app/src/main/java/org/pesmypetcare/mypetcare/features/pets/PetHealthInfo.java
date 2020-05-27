@@ -248,7 +248,7 @@ public class PetHealthInfo {
             double storedKcal = dailyKiloCalories.get(dateTime);
             dailyKiloCalories.put(dateTime, storedKcal + kCal);
         }
-        //addWeeklyKiloCalAverageForDate(dateTime, kCal);
+        addWeeklyKiloCalAverageForDate(dateTime, kCal);
     }
 
     /**
@@ -266,7 +266,7 @@ public class PetHealthInfo {
             } else {
                 this.dailyKiloCalories.put(dateTime, storedKcal - currentMealKcal);
             }
-            //removeWeeklyKiloCalAverageForDate(date, currentMealKcal);
+            removeWeeklyKiloCalAverageForDate(dateTime, currentMealKcal);
         }
     }
 
@@ -396,9 +396,14 @@ public class PetHealthInfo {
         if (weeklyKiloCaloriesAverage.containsKey(mondayDate)) {
             double oldKcalAvg = weeklyKiloCaloriesAverage.get(mondayDate);
             int size = weeklyStoredMeals.get(mondayDate);
-            double newKcalAvg = (size * oldKcalAvg - kcal) / (size - 1);
-            weeklyKiloCaloriesAverage.put(mondayDate, newKcalAvg);
-            weeklyStoredMeals.put(mondayDate, weeklyStoredMeals.get(mondayDate) - 1);
+            if (size > 1) {
+                double newKcalAvg = (size * oldKcalAvg - kcal) / (size - 1);
+                weeklyKiloCaloriesAverage.put(mondayDate, newKcalAvg);
+                weeklyStoredMeals.put(mondayDate, weeklyStoredMeals.get(mondayDate) - 1);
+            } else {
+                weeklyKiloCaloriesAverage.remove(mondayDate);
+                weeklyStoredMeals.remove(mondayDate);
+            }
         }
     }
 
