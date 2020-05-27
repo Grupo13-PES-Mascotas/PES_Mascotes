@@ -2196,6 +2196,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 break;
             case InfoPetFragment.INFO_PET_ZOOM_IDENTIFIER:
                 InfoPetFragment.setIsDefaultPetImage(false);
+                break;
             default:
         }
     }

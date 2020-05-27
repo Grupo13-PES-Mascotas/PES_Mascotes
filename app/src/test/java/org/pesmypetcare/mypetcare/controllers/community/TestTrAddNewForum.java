@@ -4,7 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.pesmypetcare.httptools.utilities.DateTime;
-import org.pesmypetcare.mypetcare.controllers.community.TrAddNewForum;
 import org.pesmypetcare.mypetcare.features.community.forums.ForumCreatedBeforeGroupException;
 import org.pesmypetcare.mypetcare.features.community.forums.UserNotSubscribedException;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
@@ -58,17 +57,6 @@ public class TestTrAddNewForum {
         trAddNewForum.setForumName(FORUM_NAME);
         trAddNewForum.setTags(tags);
         trAddNewForum.setCreationDate(DateTime.Builder.buildFullString("2020-04-16T15:00:00"));
-        trAddNewForum.execute();
-    }
-
-    @Test(expected = ForumCreatedBeforeGroupException.class)
-    public void shouldTheForumBeCreatedAfterTheGroup() throws UserNotSubscribedException, GroupNotFoundException,
-        ForumCreatedBeforeGroupException {
-        trAddNewForum.setUser(user);
-        trAddNewForum.setGroup(group);
-        trAddNewForum.setForumName(FORUM_NAME);
-        trAddNewForum.setTags(tags);
-        trAddNewForum.setCreationDate(DateTime.Builder.buildFullString("2019-04-16T15:00:00"));
         trAddNewForum.execute();
     }
 

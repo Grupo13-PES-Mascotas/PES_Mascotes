@@ -79,8 +79,6 @@ public class TrAddNewForum {
             throw new GroupNotFoundException();
         } else if (!group.isUserSubscriber(user)) {
             throw new UserNotSubscribedException();
-        } else if (group.getCreationDate().compareTo(creationDate) > 0) {
-            throw new ForumCreatedBeforeGroupException();
         }
 
         Forum forum = new Forum(forumName, user.getUsername(), creationDate, group);
