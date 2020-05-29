@@ -7,6 +7,7 @@ import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -24,6 +25,7 @@ public class User {
     private String googleCalendarToken;
     private ArrayList<Notification> notifications;
     private SortedSet<String> subscribedGroups;
+    private List<UserAchievement> achievements;
 
     public User(String username, String email, String passwd) {
         this.username = username;
@@ -259,4 +261,17 @@ public class User {
     public String getGoogleCalendarToken() {
         return this.googleCalendarToken;
     }
+
+    public List<UserAchievement> getAchievements() {
+        return achievements;
+    }
+
+    public void updateAchievementProgress(String name, Double progress) {
+        for (UserAchievement userAchievement : achievements) {
+            if(userAchievement.getName().equals(name)) {
+                userAchievement.updateProgress(progress);
+            }
+        }
+    }
+
 }
