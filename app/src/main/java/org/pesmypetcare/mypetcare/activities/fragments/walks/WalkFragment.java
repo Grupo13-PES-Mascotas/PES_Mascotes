@@ -45,7 +45,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * @author Albert Pinto
+ * @author Albert Pinto & Enric Hernando
  */
 public class WalkFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPolylineClickListener,
     GoogleMap.OnInfoWindowCloseListener, GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener {
