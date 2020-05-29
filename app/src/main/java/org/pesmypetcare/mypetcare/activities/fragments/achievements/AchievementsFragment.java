@@ -22,6 +22,14 @@ public class AchievementsFragment extends Fragment {
         binding = FragmentAchievementsBinding.inflate(inflater, container, false);
         communication = (AchievementsCommunication) getActivity();
 
+        initializeAchievementsController();
+
         return binding.getRoot();
+    }
+
+    /**
+     * Initializes de achievements controller
+     */
+    private void initializeAchievementsController(){
     }
 }

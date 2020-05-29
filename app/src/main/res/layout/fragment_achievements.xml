@@ -5,4 +5,16 @@
     android:layout_height="match_parent"
     tools:context=".activities.fragments.achievements.AchievementsFragment">
 
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <org.pesmypetcare.mypetcare.activities.views.circularentry.userachievements.UserAchievementsView
+            android:id="@+id/achievementInfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </ScrollView>
 </FrameLayout>
