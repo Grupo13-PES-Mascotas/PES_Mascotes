@@ -31,4 +31,14 @@ public class UserAchievement extends Achievement{
     public Double getProgress() {
         return progress;
     }
+
+    public int getCurrentLevel() {
+        return completedLevelsDate.size();
+    }
+
+    public double getCurrentGoal() {
+        int level = getCurrentLevel();
+        List<Double> levels = getLevels();
+        return levels.get(level+1);
+    }
 }
