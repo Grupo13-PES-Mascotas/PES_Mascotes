@@ -170,4 +170,6 @@ public interface PetManagerService {
      * @return All the weights
      */
     List<Weight> getAllWeights(User user, Pet pet);
+
+    byte[] getPetImage(User user, Pet pet);
 }

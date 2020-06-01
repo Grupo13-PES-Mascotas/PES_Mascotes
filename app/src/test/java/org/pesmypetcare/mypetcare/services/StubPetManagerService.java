@@ -203,4 +203,9 @@ public class StubPetManagerService implements PetManagerService {
 
         return weights;
     }
+
+    @Override
+    public byte[] getPetImage(User user, Pet pet) {
+        return new byte[] {(byte) 0x0000FF};
+    }
 }

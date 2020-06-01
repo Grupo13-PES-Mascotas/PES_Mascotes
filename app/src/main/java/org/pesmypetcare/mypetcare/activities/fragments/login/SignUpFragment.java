@@ -35,10 +35,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.LauncherActivity;
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.databinding.FragmentSignUpBinding;
 import org.pesmypetcare.mypetcare.services.user.UserManagerAdapter;
 import org.pesmypetcare.mypetcare.services.user.UserManagerService;
+import org.pesmypetcare.mypetcare.utilities.ServerData;
 
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -68,7 +70,7 @@ public class SignUpFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         RC_CODE = 9001;
-        mAuth = MainActivity.getmAuth();
+        mAuth = ServerData.getInstance().getMAuth();
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         signUpWithParameters();
@@ -151,7 +153,7 @@ public class SignUpFragment extends Fragment {
                         } catch (ExecutionException | InterruptedException e) {
                             e.printStackTrace();
                         }
-                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        startActivity(new Intent(getActivity(), LauncherActivity.class));
                         Objects.requireNonNull(getActivity()).finish();
                     }
                 });
@@ -200,7 +202,7 @@ public class SignUpFragment extends Fragment {
                         } catch (ExecutionException | InterruptedException e) {
                             e.printStackTrace();
                         }
-                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        startActivity(new Intent(getActivity(), LauncherActivity.class));
                         Objects.requireNonNull(getActivity()).finish();
                     }
                 });
@@ -243,7 +245,7 @@ public class SignUpFragment extends Fragment {
     private void sendEmailVerification() {
         Objects.requireNonNull(mAuth.getCurrentUser()).sendEmailVerification();
         if (mAuth.getCurrentUser().isEmailVerified()) {
-            startActivity(new Intent(getActivity(), MainActivity.class));
+            startActivity(new Intent(getActivity(), LauncherActivity.class));
             Objects.requireNonNull(getActivity()).finish();
         }
         testToast("Verify the Email and login");

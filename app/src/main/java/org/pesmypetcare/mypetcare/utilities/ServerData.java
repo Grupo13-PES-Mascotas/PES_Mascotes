@@ -17,7 +17,7 @@ public class ServerData {
     private List<Group> groups;
 
     private ServerData() {
-
+        // Private constructor
     }
 
     public static ServerData getInstance() {
@@ -28,7 +28,7 @@ public class ServerData {
         return instance;
     }
 
-    public FirebaseAuth getmAuth() {
+    public FirebaseAuth getMAuth() {
         return mAuth;
     }
 
