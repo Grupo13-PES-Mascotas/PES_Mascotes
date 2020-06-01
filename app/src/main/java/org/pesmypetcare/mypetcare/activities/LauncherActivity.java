@@ -55,9 +55,13 @@ import java.util.concurrent.TimeUnit;
 
 public class LauncherActivity extends AppCompatActivity implements AsyncResponse {
     private static final String GOOGLE_CALENDAR_SHARED_PREFERENCES = "GoogleCalendar";
+    private static final int MAX_PROGRESS_VALUE = 100;
+    private static final int NUM_PET_INFO = 9;
     private static boolean enableLoginActivity = true;
 
     private ActivityLauncherBinding binding;
+    private StatusCommunication statusCommunication;
+    private int progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +69,14 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         binding = ActivityLauncherBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setOnStatusChanges(text -> binding.loadingStatus.setText(text));
+
         ExecutorService loadingData = Executors.newSingleThreadExecutor();
         loadingData.execute(() -> {
             ServerData.getInstance().setMAuth(FirebaseAuth.getInstance());
             makeLogin();
+
+            statusCommunication.updateText(getString(R.string.progress_bar_loading_your_pets));
 
             if (enableLoginActivity) {
                 askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
@@ -85,6 +93,9 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            Intent intent = new Intent(LauncherActivity.this, MainActivity.class);
+            startActivity(intent);
         });
 
         loadingData.shutdown();
@@ -164,22 +175,33 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         }
 
         ServerData.getInstance().setUser(trObtainUser.getResult());
+        binding.progressBar.setIndeterminate(false);
 
         ExecutorService petData = Executors.newCachedThreadPool();
         int nPets = ServerData.getInstance().getUser().getPets().size();
+        int petProgressIncrement = (int) Math.ceil((double) MAX_PROGRESS_VALUE / (nPets * NUM_PET_INFO));
 
         for (int actual = 0; actual < nPets; ++actual) {
             int finalActual = actual;
             petData.execute(() -> {
                 obtainAllPetWeights(ServerData.getInstance().getUser().getPets().get(finalActual));
+                updateProgress(petProgressIncrement);
                 obtainAllPetMeals(ServerData.getInstance().getUser().getPets().get(finalActual));
+                updateProgress(petProgressIncrement);
                 obtainAllPetMedications(ServerData.getInstance().getUser().getPets().get(finalActual));
+                updateProgress(petProgressIncrement);
                 obtainAllPetVetVisits(ServerData.getInstance().getUser().getPets().get(finalActual));
+                updateProgress(petProgressIncrement);
                 obtainAllPetWashes(ServerData.getInstance().getUser().getPets().get(finalActual));
+                updateProgress(petProgressIncrement);
                 obtainAllPetVaccinations(ServerData.getInstance().getUser().getPets().get(finalActual));
+                updateProgress(petProgressIncrement);
                 obtainAllPetIllnesses(ServerData.getInstance().getUser().getPets().get(finalActual));
+                updateProgress(petProgressIncrement);
                 obtainAllPetExercises(ServerData.getInstance().getUser().getPets().get(finalActual));
+                updateProgress(petProgressIncrement);
                 getPetImage(ServerData.getInstance().getUser().getPets().get(finalActual));
+                updateProgress(petProgressIncrement);
             });
         }
 
@@ -190,6 +212,16 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private synchronized void updateProgress(int progressIncrement) {
+        int nextProgress = Math.min(progress + progressIncrement, MAX_PROGRESS_VALUE);
+
+        for (int actual = progress + 1; actual <= nextProgress; ++actual) {
+            binding.progressBar.setProgress(actual);
+        }
+
+        progress = nextProgress;
     }
 
     private void getPetImage(Pet pet) {
@@ -240,7 +272,7 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         }
     }
 
-    public void obtainAllPetMeals(Pet pet) {
+    private void obtainAllPetMeals(Pet pet) {
         TrObtainAllPetMeals trObtainAllPetMeals = MealsControllersFactory.createTrObtainAllPetMeals();
         trObtainAllPetMeals.setUser(ServerData.getInstance().getUser());
         trObtainAllPetMeals.setPet(pet);
@@ -251,7 +283,7 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         }
     }
 
-    public void obtainAllPetMedications(Pet pet) {
+    private void obtainAllPetMedications(Pet pet) {
         TrObtainAllPetMedications trObtainAllPetMedications;
         trObtainAllPetMedications = MedicationControllersFactory.createTrObtainAllPetMedications();
 
@@ -264,7 +296,7 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         }
     }
 
-    public void obtainAllPetVetVisits(Pet pet) {
+    private void obtainAllPetVetVisits(Pet pet) {
         TrObtainAllVetVisits trObtainAllVetVisits = VetVisitsControllersFactory.createTrObtainAllVetVisits();
         trObtainAllVetVisits.setUser(ServerData.getInstance().getUser());
         trObtainAllVetVisits.setPet(pet);
@@ -275,14 +307,14 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         }
     }
 
-    public void obtainAllPetWashes(Pet pet) {
+    private void obtainAllPetWashes(Pet pet) {
         TrObtainAllPetWashes trObtainAllPetWashes = WashesControllersFactory.createTrObtainAllPetWashes();
         trObtainAllPetWashes.setUser(ServerData.getInstance().getUser());
         trObtainAllPetWashes.setPet(pet);
         trObtainAllPetWashes.execute();
     }
 
-    public void obtainAllPetVaccinations(Pet pet) {
+    private void obtainAllPetVaccinations(Pet pet) {
         TrObtainAllPetVaccinations trObtainAllPetVaccinations;
         trObtainAllPetVaccinations = MedicalProfileControllersFactory.createTrObtainAllPetVaccinations();
 
@@ -295,7 +327,7 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         }
     }
 
-    public void obtainAllPetIllnesses(Pet pet) {
+    private void obtainAllPetIllnesses(Pet pet) {
         TrObtainAllPetIllness trObtainAllPetIllness = MedicalProfileControllersFactory.createTrObtainAllPetIllnesses();
         trObtainAllPetIllness.setUser(ServerData.getInstance().getUser());
         trObtainAllPetIllness.setPet(pet);
@@ -347,5 +379,17 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void setEnableLoginActivity(boolean enableLoginActivity) {
+        LauncherActivity.enableLoginActivity = enableLoginActivity;
+    }
+
+    public void setOnStatusChanges(StatusCommunication statusCommunication) {
+        this.statusCommunication = statusCommunication;
+    }
+
+    public interface StatusCommunication {
+        void updateText(String text);
     }
 }

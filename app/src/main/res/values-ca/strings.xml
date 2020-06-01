@@ -339,6 +339,7 @@
     <string name="walk_route_start_hour">Hora d\'inici:</string>
     <string name="walk_route_end_hour">Hora de finalització:</string>
     <string name="walk_route_pets">Mascotes:</string>
-    <string name="progress_bar_connecting_to_server">Connectant amb el servidor</string>
+    <string name="progress_bar_connecting_to_server">Conectant amb el servidor</string>
+    <string name="progress_bar_loading_your_pets">Carregant les teves mascotes</string>
 
 </resources>

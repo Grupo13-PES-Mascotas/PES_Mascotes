@@ -213,6 +213,7 @@ import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 import org.pesmypetcare.mypetcare.utilities.MessagingService;
 import org.pesmypetcare.mypetcare.utilities.MessagingServiceCommunication;
+import org.pesmypetcare.mypetcare.utilities.ServerData;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -355,8 +356,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mAuth = FirebaseAuth.getInstance();
-        setTheme(R.style.AppTheme);
+        //mAuth = FirebaseAuth.getInstance();
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -364,12 +364,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         setAttributes();
 
-        if (enableLoginActivity) {
+        /*if (enableLoginActivity) {
             askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION);
         }
 
-        makeLogin();
+        makeLogin();*/
 
         ExecutorService mainActivitySetUp = Executors.newCachedThreadPool();
         mainActivitySetUp.execute(this::initializeMainActivity);
@@ -440,6 +440,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Set the attributes of the Main Activity.
      */
     private void setAttributes() {
+        mAuth = ServerData.getInstance().getMAuth();
+        user = ServerData.getInstance().getUser();
         sharedpreferences = getSharedPreferences(GOOGLE_CALENDAR_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         walkingSharedPreferences = getSharedPreferences(ACTUAL_WALK, Context.MODE_PRIVATE);
 
@@ -458,7 +460,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         getComponents();
 
         ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw, null));
-        initializeCurrentUser();
+        //initializeCurrentUser();
         initializeActivity();
         setUpNavigationImage();
 

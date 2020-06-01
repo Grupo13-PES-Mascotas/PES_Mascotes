@@ -334,7 +334,8 @@
     <string name="likes_singular">me gusta</string>
     <string name="error_too_big_image">La imagen tiene que ser inferior o igual a 1 MB</string>
     <string name="new_post_received">ha hecho una nueva publicación</string>
-    <string name="progress_bar_connecting_to_server">Connectando con el servidor</string>
+    <string name="progress_bar_connecting_to_server">Conectando al servidor</string>
+    <string name="progress_bar_loading_your_pets">Cargando tus mascotas</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
