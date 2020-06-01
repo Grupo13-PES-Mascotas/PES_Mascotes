@@ -160,6 +160,14 @@ public class Group implements Comparable<Group> {
     }
 
     /**
+     * Set the subscribers.
+     * @param subscribers The subscribers to set
+     */
+    public void setSubscribers(Map<String, DateTime> subscribers) {
+        this.subscribers = subscribers;
+    }
+
+    /**
      * Get the tags.
      * @return The tags
      */

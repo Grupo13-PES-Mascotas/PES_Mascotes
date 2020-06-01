@@ -18,6 +18,9 @@ import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.login.AsyncResponse;
 import org.pesmypetcare.mypetcare.activities.fragments.login.MyAsyncTask;
+import org.pesmypetcare.mypetcare.controllers.community.CommunityControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.community.TrGetGroupImage;
+import org.pesmypetcare.mypetcare.controllers.community.TrObtainAllGroups;
 import org.pesmypetcare.mypetcare.controllers.exercise.ExerciseControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.exercise.TrGetAllExercises;
 import org.pesmypetcare.mypetcare.controllers.meals.MealsControllersFactory;
@@ -38,6 +41,7 @@ import org.pesmypetcare.mypetcare.controllers.vetvisits.VetVisitsControllersFact
 import org.pesmypetcare.mypetcare.controllers.washes.TrObtainAllPetWashes;
 import org.pesmypetcare.mypetcare.controllers.washes.WashesControllersFactory;
 import org.pesmypetcare.mypetcare.databinding.ActivityLauncherBinding;
+import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.PetRepeatException;
 import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
@@ -47,7 +51,10 @@ import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.mypetcare.utilities.ServerData;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.SortedSet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -75,7 +82,6 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         loadingData.execute(() -> {
             ServerData.getInstance().setMAuth(FirebaseAuth.getInstance());
             makeLogin();
-
             statusCommunication.updateText(getString(R.string.progress_bar_loading_your_pets));
 
             if (enableLoginActivity) {
@@ -85,11 +91,81 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
 
             ExecutorService userData = Executors.newSingleThreadExecutor();
             userData.execute(this::initializeCurrentUser);
-
             userData.shutdown();
+
+            ExecutorService groupData = Executors.newSingleThreadExecutor();
+            groupData.execute(() -> {
+                SortedSet<Group> groups = getAllGroups();
+                ServerData.getInstance().setGroups(new ArrayList<>(groups));
+            });
+            groupData.shutdown();
 
             try {
                 userData.awaitTermination(5, TimeUnit.MINUTES);
+                groupData.awaitTermination(5, TimeUnit.MINUTES);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            int nPets = ServerData.getInstance().getUser().getPets().size();
+            int nGroups = ServerData.getInstance().getGroups().size();
+            int progressIncrement = getIncrement(nPets, nGroups);
+
+            ExecutorService petData = Executors.newCachedThreadPool();
+
+            for (int actual = 0; actual < nPets; ++actual) {
+                int finalActual = actual;
+                petData.execute(() -> {
+                    obtainAllPetWeights(ServerData.getInstance().getUser().getPets().get(finalActual));
+                    updateProgress(progressIncrement);
+                    obtainAllPetMeals(ServerData.getInstance().getUser().getPets().get(finalActual));
+                    updateProgress(progressIncrement);
+                    obtainAllPetMedications(ServerData.getInstance().getUser().getPets().get(finalActual));
+                    updateProgress(progressIncrement);
+                    obtainAllPetVetVisits(ServerData.getInstance().getUser().getPets().get(finalActual));
+                    updateProgress(progressIncrement);
+                    obtainAllPetWashes(ServerData.getInstance().getUser().getPets().get(finalActual));
+                    updateProgress(progressIncrement);
+                    obtainAllPetVaccinations(ServerData.getInstance().getUser().getPets().get(finalActual));
+                    updateProgress(progressIncrement);
+                    obtainAllPetIllnesses(ServerData.getInstance().getUser().getPets().get(finalActual));
+                    updateProgress(progressIncrement);
+                    obtainAllPetExercises(ServerData.getInstance().getUser().getPets().get(finalActual));
+                    updateProgress(progressIncrement);
+                    getPetImage(ServerData.getInstance().getUser().getPets().get(finalActual));
+                    updateProgress(progressIncrement);
+                });
+            }
+
+            petData.shutdown();
+
+            ExecutorService groupInfo = Executors.newCachedThreadPool();
+
+            for (int actual = 0; actual < nGroups; ++actual) {
+                int finalActual = actual;
+                groupInfo.execute(() -> {
+                    if (isUserSubscriber(ServerData.getInstance().getGroups(), finalActual)) {
+                        ServerData.getInstance().getUser().addSubscribedGroup(ServerData.getInstance().getGroups()
+                            .get(finalActual));
+                    }
+
+                    TrGetGroupImage trGetGroupImage = CommunityControllersFactory.createTrGetGroupImage();
+                    trGetGroupImage.setUser(ServerData.getInstance().getUser());
+                    trGetGroupImage.setGroup(ServerData.getInstance().getGroups().get(finalActual));
+                    trGetGroupImage.execute();
+
+                    byte[] imageBytes = trGetGroupImage.getResult();
+                    Bitmap groupImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    ServerData.getInstance().getGroups().get(finalActual).setGroupIcon(groupImage);
+                    updateProgress(progressIncrement);
+                });
+            }
+
+            groupInfo.shutdown();
+
+            try {
+                petData.awaitTermination(5, TimeUnit.MINUTES);
+                groupInfo.awaitTermination(5, TimeUnit.MINUTES);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -99,6 +175,14 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         });
 
         loadingData.shutdown();
+    }
+
+    private int getIncrement(int nPets, int nGroups) {
+        return (int) Math.ceil((double) MAX_PROGRESS_VALUE / (nPets * NUM_PET_INFO + nGroups));
+    }
+
+    private boolean isUserSubscriber(List<Group> groupList, int finalActual) {
+        return groupList.get(finalActual).getSubscribers().containsKey(ServerData.getInstance().getUser().getUsername());
     }
 
     /**
@@ -176,42 +260,6 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
 
         ServerData.getInstance().setUser(trObtainUser.getResult());
         binding.progressBar.setIndeterminate(false);
-
-        ExecutorService petData = Executors.newCachedThreadPool();
-        int nPets = ServerData.getInstance().getUser().getPets().size();
-        int petProgressIncrement = (int) Math.ceil((double) MAX_PROGRESS_VALUE / (nPets * NUM_PET_INFO));
-
-        for (int actual = 0; actual < nPets; ++actual) {
-            int finalActual = actual;
-            petData.execute(() -> {
-                obtainAllPetWeights(ServerData.getInstance().getUser().getPets().get(finalActual));
-                updateProgress(petProgressIncrement);
-                obtainAllPetMeals(ServerData.getInstance().getUser().getPets().get(finalActual));
-                updateProgress(petProgressIncrement);
-                obtainAllPetMedications(ServerData.getInstance().getUser().getPets().get(finalActual));
-                updateProgress(petProgressIncrement);
-                obtainAllPetVetVisits(ServerData.getInstance().getUser().getPets().get(finalActual));
-                updateProgress(petProgressIncrement);
-                obtainAllPetWashes(ServerData.getInstance().getUser().getPets().get(finalActual));
-                updateProgress(petProgressIncrement);
-                obtainAllPetVaccinations(ServerData.getInstance().getUser().getPets().get(finalActual));
-                updateProgress(petProgressIncrement);
-                obtainAllPetIllnesses(ServerData.getInstance().getUser().getPets().get(finalActual));
-                updateProgress(petProgressIncrement);
-                obtainAllPetExercises(ServerData.getInstance().getUser().getPets().get(finalActual));
-                updateProgress(petProgressIncrement);
-                getPetImage(ServerData.getInstance().getUser().getPets().get(finalActual));
-                updateProgress(petProgressIncrement);
-            });
-        }
-
-        petData.shutdown();
-
-        try {
-            petData.awaitTermination(5, TimeUnit.MINUTES);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private synchronized void updateProgress(int progressIncrement) {
@@ -379,6 +427,13 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public SortedSet<Group> getAllGroups() {
+        TrObtainAllGroups trObtainAllGroups = CommunityControllersFactory.createTrObtainAllGroups();
+        trObtainAllGroups.execute();
+
+        return trObtainAllGroups.getResult();
     }
 
     public static void setEnableLoginActivity(boolean enableLoginActivity) {

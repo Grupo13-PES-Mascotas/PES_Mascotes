@@ -364,13 +364,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         setAttributes();
 
-        /*if (enableLoginActivity) {
-            askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION);
-        }
-
-        makeLogin();*/
-
         ExecutorService mainActivitySetUp = Executors.newCachedThreadPool();
         mainActivitySetUp.execute(this::initializeMainActivity);
         mainActivitySetUp.shutdown();
@@ -382,47 +375,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
 
         setMessagingToken();
-        //binding.splashScreen.setVisibility(View.GONE);
-
-        /*System.out.println("INTERNAL URI " + MediaStore.Images.Media.INTERNAL_CONTENT_URI.toString());
-        System.out.println("EXTERNAL URI " + MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
-        System.out.println("FILES DIR " + getFilesDir().toString());
-        System.out.println("CACHE DIR " + getCacheDir().toString());
-        System.out.println("ABSOLUTE " + getFilesDir().getPath() + File.separator + "test.text");
-
-        File file = new File(String.valueOf(MediaStore.Images.Media.INTERNAL_CONTENT_URI));
-        System.out.println(Arrays.toString(file.listFiles()));*/
-
-        /*String[] projection = new String[] {
-            MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.Media.SIZE,
-            MediaStore.Images.Media._ID
-        };
-
-        String selection = MediaStore.Images.Media.DISPLAY_NAME + " like 'IMG-%'";
-        String[] selectionArgs = new String[] {
-            "IMG-20200525-WA0017.jpg"
-        };
-
-        Cursor cursor = getApplicationContext().getContentResolver().query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, null
-        );
-
-        int idColumn = Objects.requireNonNull(cursor).getColumnIndexOrThrow(MediaStore.Images.Media._ID);
-        int nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME);
-        int sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE);
-
-        while (Objects.requireNonNull(cursor).moveToNext()) {
-            long id = cursor.getLong(idColumn);
-            String name = cursor.getString(nameColumn);
-            String size = cursor.getString(sizeColumn);
-
-            Uri contentUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-            System.out.println("URI " + contentUri.toString());
-            System.out.println("NAME " + name);
-            System.out.println("SIZE " + size);
-            System.out.println();
-        }*/
     }
 
     /**
@@ -463,6 +415,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         //initializeCurrentUser();
         initializeActivity();
         setUpNavigationImage();
+        setUpNavigationHeader();
 
         LocationUpdater.setContext(this);
         MessagingService.setCommunication(this);
@@ -2624,15 +2577,67 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public SortedSet<Group> getAllGroups() {
         trObtainAllGroups.execute();
         SortedSet<Group> groups = trObtainAllGroups.getResult();
+        List<Group> groupList = new ArrayList<>(groups);
+        List<Group> removeGroups = new ArrayList<>();
 
-        for (Group group : groups) {
+        for (Group group : ServerData.getInstance().getGroups()) {
+            if (!groupList.contains(group)) {
+                removeGroups.add(group);
+            }
+        }
+
+        ServerData.getInstance().getGroups().removeAll(removeGroups);
+        /*ExecutorService executorService = Executors.newCachedThreadPool();
+
+        for (int actual = 0; actual < groupList.size(); ++actual) {
+            int finalActual = actual;
+            executorService.execute(() -> {
+                int index = ServerData.getInstance().getGroups().indexOf(groupList.get(finalActual));
+
+                if (index == -1) {
+                    ServerData.getInstance().getGroups().add(groupList.get(finalActual));
+                    index = ServerData.getInstance().getGroups().indexOf(groupList.get(finalActual));
+                    addGroupImage(groupList, finalActual, index);
+                } else {
+                    ServerData.getInstance().getGroups().set(index, groupList.get(finalActual));
+
+                    if (isNewGroupImage(groupList, finalActual, index) < 0) {
+                        addGroupImage(groupList, finalActual, index);
+                    }
+                }
+            });
+        }
+
+        executorService.shutdown();
+
+        try {
+            executorService.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        /*for (Group group : groups) {
             if (group.getSubscribers().containsKey(user.getUsername())) {
                 user.addSubscribedGroupSimple(group);
             }
         }
 
-        getAllGroupImages(groups);
+        getAllGroupImages(groups);*/
         return groups;
+    }
+
+    private void addGroupImage(List<Group> groupList, int finalActual, int index) {
+        trGetGroupImage.setUser(ServerData.getInstance().getUser());
+        trGetGroupImage.setGroup(groupList.get(finalActual));
+        trGetGroupImage.execute();
+
+        byte[] imageBytes = trGetGroupImage.getResult();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        ServerData.getInstance().getGroups().get(index).setGroupIcon(bitmap);
+    }
+
+    private int isNewGroupImage(List<Group> groupList, int finalActual, int index) {
+        return groupList.get(finalActual).getLastGroupImage().compareTo(ServerData.getInstance().getGroups().get(index).getCreationDate());
     }
 
     /**
