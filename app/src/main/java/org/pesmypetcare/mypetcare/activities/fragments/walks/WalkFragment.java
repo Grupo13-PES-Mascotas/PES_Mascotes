@@ -72,7 +72,7 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         communication.askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION);
 
-        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (isNotPermissionGranted()) {
             communication.changeToMyPets();
         } else if (walkPetsList.size() == 0) {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()),
@@ -94,6 +94,15 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         }
 
         return binding.getRoot();
+    }
+
+    /**
+     * Check whether the location permissions are not granted.
+     * @return True if the permission is not granted
+     */
+    private boolean isNotPermissionGranted() {
+        return ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()),
+            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
     }
 
     /**

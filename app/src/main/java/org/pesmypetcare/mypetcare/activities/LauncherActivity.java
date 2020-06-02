@@ -34,7 +34,9 @@ import org.pesmypetcare.mypetcare.controllers.pet.PetControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.pet.TrGetPetImage;
 import org.pesmypetcare.mypetcare.controllers.pethealth.PetHealthControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrGetAllWeights;
+import org.pesmypetcare.mypetcare.controllers.user.EmptyMessagingTokenException;
 import org.pesmypetcare.mypetcare.controllers.user.TrObtainUser;
+import org.pesmypetcare.mypetcare.controllers.user.TrSendFirebaseMessagingToken;
 import org.pesmypetcare.mypetcare.controllers.user.UserControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.TrObtainAllVetVisits;
 import org.pesmypetcare.mypetcare.controllers.vetvisits.VetVisitsControllersFactory;
@@ -48,6 +50,8 @@ import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
+import org.pesmypetcare.mypetcare.utilities.MessagingService;
+import org.pesmypetcare.mypetcare.utilities.MessagingTokenServiceCommunication;
 import org.pesmypetcare.mypetcare.utilities.ServerData;
 
 import java.io.IOException;
@@ -59,7 +63,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class LauncherActivity extends AppCompatActivity implements AsyncResponse {
+public class LauncherActivity extends AppCompatActivity implements MessagingTokenServiceCommunication, AsyncResponse {
     private static final String GOOGLE_CALENDAR_SHARED_PREFERENCES = "GoogleCalendar";
     private static final int MAX_PROGRESS_VALUE = 100;
     private static final int NUM_PET_INFO = 9;
@@ -79,6 +83,8 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         setOnStatusChanges(text -> binding.loadingStatus.setText(text));
         continueExecution = true;
 
+        MessagingService.setTokenCommunication(this);
+
         ExecutorService loadingData = Executors.newSingleThreadExecutor();
         loadingData.execute(() -> {
             loadData();
@@ -92,6 +98,9 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         loadingData.shutdown();
     }
 
+    /**
+     * Load the data.
+     */
     private void loadData() {
         ServerData.getInstance().setMAuth(FirebaseAuth.getInstance());
 
@@ -109,6 +118,11 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         }
     }
 
+    /**
+     * Initialize the pets for the logged user.
+     * @param nPets The number of pets
+     * @param progressIncrement The progress increment
+     */
     void initializeLoggedUserPets(int nPets, int progressIncrement) {
         ExecutorService petData = Executors.newCachedThreadPool();
 
@@ -126,6 +140,9 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         }
     }
 
+    /**
+     * Initialize the logged user.
+     */
     private void initializeLoggedUser() {
         if (enableLoginActivity) {
             askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
@@ -143,6 +160,11 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         }
     }
 
+    /**
+     * Get the actual pet.
+     * @param progressIncrement The progress increment
+     * @param finalActual The actual index of the pet
+     */
     private void getActualPet(int progressIncrement, int finalActual) {
         obtainAllPetWeights(ServerData.getInstance().getUser().getPets().get(finalActual));
         updateProgress(progressIncrement);
@@ -164,6 +186,11 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         updateProgress(progressIncrement);
     }
 
+    /**
+     * Get the actual group.
+     * @param progressIncrement The progress increment
+     * @param finalActual The actual index
+     */
     private void getActualGroup(int progressIncrement, int finalActual) {
         if (isUserSubscriber(ServerData.getInstance().getGroups(), finalActual)) {
             ServerData.getInstance().getUser().addSubscribedGroup(ServerData.getInstance().getGroups()
@@ -181,10 +208,22 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         updateProgress(progressIncrement);
     }
 
+    /**
+     * Get the increment to the progress bar.
+     * @param nPets The number of pets
+     * @param nGroups The number of groups
+     * @return The increment of the progress bar
+     */
     private int getIncrement(int nPets, int nGroups) {
         return (int) Math.ceil((double) MAX_PROGRESS_VALUE / (nPets * NUM_PET_INFO + nGroups));
     }
 
+    /**
+     * Checks whether the user is a subscriber or not.
+     * @param groupList The list of groups
+     * @param finalActual The actual group
+     * @return True if the user is a subscriber of the actual group
+     */
     private boolean isUserSubscriber(List<Group> groupList, int finalActual) {
         return groupList.get(finalActual).getSubscribers().containsKey(ServerData.getInstance().getUser()
             .getUsername());
@@ -267,6 +306,10 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         binding.progressBar.setIndeterminate(false);
     }
 
+    /**
+     * Update the progress bar.
+     * @param progressIncrement The progress bar increment
+     */
     private synchronized void updateProgress(int progressIncrement) {
         int nextProgress = Math.min(progress + progressIncrement, MAX_PROGRESS_VALUE);
 
@@ -277,6 +320,10 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         progress = nextProgress;
     }
 
+    /**
+     * Get the pet image.
+     * @param pet The pet to get the image from
+     */
     private void getPetImage(Pet pet) {
         Bitmap petImage = null;
         String username = ServerData.getInstance().getUser().getUsername();
@@ -296,6 +343,11 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         pet.setProfileImage(petImage);
     }
 
+    /**
+     * Get the image from the server.
+     * @param pet The pet to get the image from
+     * @return An array of bytes containing the image of the pet
+     */
     private byte[] getPetImageFromServer(Pet pet) {
         TrGetPetImage trGetPetImage = PetControllersFactory.createTrGetPetImage();
         trGetPetImage.setUser(ServerData.getInstance().getUser());
@@ -325,6 +377,10 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         }
     }
 
+    /**
+     * Obtain all the pet meals.
+     * @param pet The pet to get the meals from
+     */
     private void obtainAllPetMeals(Pet pet) {
         TrObtainAllPetMeals trObtainAllPetMeals = MealsControllersFactory.createTrObtainAllPetMeals();
         trObtainAllPetMeals.setUser(ServerData.getInstance().getUser());
@@ -336,6 +392,10 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         }
     }
 
+    /**
+     * Obtain all the pet medications.
+     * @param pet The pet to get the medications from
+     */
     private void obtainAllPetMedications(Pet pet) {
         TrObtainAllPetMedications trObtainAllPetMedications;
         trObtainAllPetMedications = MedicationControllersFactory.createTrObtainAllPetMedications();
@@ -349,6 +409,10 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         }
     }
 
+    /**
+     * Obtain all the pet vet visits.
+     * @param pet The pet to get the vet visits from
+     */
     private void obtainAllPetVetVisits(Pet pet) {
         TrObtainAllVetVisits trObtainAllVetVisits = VetVisitsControllersFactory.createTrObtainAllVetVisits();
         trObtainAllVetVisits.setUser(ServerData.getInstance().getUser());
@@ -360,6 +424,10 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         }
     }
 
+    /**
+     * Obtain all the pet washes.
+     * @param pet The pet to get the washes from
+     */
     private void obtainAllPetWashes(Pet pet) {
         TrObtainAllPetWashes trObtainAllPetWashes = WashesControllersFactory.createTrObtainAllPetWashes();
         trObtainAllPetWashes.setUser(ServerData.getInstance().getUser());
@@ -367,6 +435,10 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         trObtainAllPetWashes.execute();
     }
 
+    /**
+     * Obtain all the pet vaccinations.
+     * @param pet The pet to get the vaccinations from
+     */
     private void obtainAllPetVaccinations(Pet pet) {
         TrObtainAllPetVaccinations trObtainAllPetVaccinations;
         trObtainAllPetVaccinations = MedicalProfileControllersFactory.createTrObtainAllPetVaccinations();
@@ -380,6 +452,10 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         }
     }
 
+    /**
+     * Obtain all the pet illnesses.
+     * @param pet The pet to get the illnesses from
+     */
     private void obtainAllPetIllnesses(Pet pet) {
         TrObtainAllPetIllness trObtainAllPetIllness = MedicalProfileControllersFactory.createTrObtainAllPetIllnesses();
         trObtainAllPetIllness.setUser(ServerData.getInstance().getUser());
@@ -420,6 +496,10 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         ServerData.getInstance().getUser().setGoogleCalendarToken(token);
     }
 
+    /**
+     * Ask the permissions.
+     * @param permissions The permissisons to ask
+     */
     public void askForPermission(String... permissions) {
         Thread thread = new Thread(() -> {
             ActivityCompat.requestPermissions(this, permissions, 1);
@@ -434,6 +514,10 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         }
     }
 
+    /**
+     * Get all the groups.
+     * @return The groups form the server
+     */
     public SortedSet<Group> getAllGroups() {
         TrObtainAllGroups trObtainAllGroups = CommunityControllersFactory.createTrObtainAllGroups();
         trObtainAllGroups.execute();
@@ -441,15 +525,44 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         return trObtainAllGroups.getResult();
     }
 
+    /**
+     * Set the enable login activity status.
+     * @param enableLoginActivity The enable login activity status
+     */
     public static void setEnableLoginActivity(boolean enableLoginActivity) {
         LauncherActivity.enableLoginActivity = enableLoginActivity;
     }
 
+    /**
+     * Set the on status changes.
+     * @param statusCommunication The status communication
+     */
     public void setOnStatusChanges(StatusCommunication statusCommunication) {
         this.statusCommunication = statusCommunication;
     }
 
+    @Override
+    public void sendMessageToken(String messageToken) {
+        if (ServerData.getInstance().getUser() != null) {
+            TrSendFirebaseMessagingToken trSendFirebaseMessagingToken;
+            trSendFirebaseMessagingToken = UserControllersFactory.createTrSendFirebaseMessagingToken();
+
+            trSendFirebaseMessagingToken.setUser(ServerData.getInstance().getUser());
+            trSendFirebaseMessagingToken.setToken(messageToken);
+
+            try {
+                trSendFirebaseMessagingToken.execute();
+            } catch (EmptyMessagingTokenException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public interface StatusCommunication {
+        /**
+         * Update the actual text.
+         * @param text The text to set into the display
+         */
         void updateText(String text);
     }
 }

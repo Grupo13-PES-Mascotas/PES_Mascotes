@@ -213,6 +213,7 @@ import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 import org.pesmypetcare.mypetcare.utilities.MessagingService;
 import org.pesmypetcare.mypetcare.utilities.MessagingServiceCommunication;
+import org.pesmypetcare.mypetcare.utilities.MessagingTokenServiceCommunication;
 import org.pesmypetcare.mypetcare.utilities.ServerData;
 
 import java.io.IOException;
@@ -238,7 +239,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterfaceCommunication,
     InfoPetCommunication, MyPetsCommunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
-    CommunityCommunication, InfoGroupCommunication, WalkCommunication, MessagingServiceCommunication, AsyncResponse {
+    CommunityCommunication, InfoGroupCommunication, WalkCommunication, MessagingServiceCommunication,
+    MessagingTokenServiceCommunication, AsyncResponse {
 
     public static final int MAIN_ACTIVITY_ZOOM_IDENTIFIER = 0;
     private static final int[] NAVIGATION_OPTIONS = {
