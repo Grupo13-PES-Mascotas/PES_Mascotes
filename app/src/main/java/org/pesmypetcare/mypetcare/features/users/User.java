@@ -2,9 +2,11 @@ package org.pesmypetcare.mypetcare.features.users;
 
 import android.graphics.Bitmap;
 
+import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
+import org.pesmypetcare.mypetcare.utilities.InvalidFormatException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,7 @@ public class User {
         this.notifications = new ArrayList<>();
         this.token = "token";
         this.subscribedGroups = new TreeSet<>();
+        initializeAchievements();
     }
 
     /**
@@ -266,12 +269,116 @@ public class User {
         return achievements;
     }
 
-    public void updateAchievementProgress(String name, Double progress) {
+    public void updateAchievementProgress(String name, Double progress) throws InvalidFormatException {
         for (UserAchievement userAchievement : achievements) {
             if(userAchievement.getName().equals(name)) {
                 userAchievement.updateProgress(progress);
             }
         }
     }
+    private void initializeAchievements() {
+        initializeCommentator();
+        initializeContributor();
+        initializeWalker();
+        initializeZoo();
+        initializeSuperwalker();
+        initializeCleaner();
+        initializeScaler();
+        initializeFounder();
+        iniitializeMealer();
+        initializeEvent();
+    }
+
+    private void initializeCommentator() {
+        UserAchievement commentator = new UserAchievement("Commentator", R.string.commentator_desc);
+        List<Integer> levels = new ArrayList<>();
+        levels.add(0, 0);
+        levels.add(1, 10);
+        levels.add(1, 30);
+        levels.add(1, 50);
+        commentator.setLevels(levels);
+    }
+    private void initializeContributor() {
+        UserAchievement contributor = new UserAchievement("Contributor", R.string.contributor_desc);
+        List<Integer> levels = new ArrayList<>();
+        levels.add(0, 0);
+        levels.add(1, 5);
+        levels.add(1, 20);
+        levels.add(1, 40);
+        contributor.setLevels(levels);
+    }
+    private void initializeWalker() {
+        UserAchievement walker = new UserAchievement("Walker", R.string.walker_desc);
+        List<Integer> levels = new ArrayList<>();
+        levels.add(0, 0);
+        levels.add(1, 30);
+        levels.add(1, 100);
+        levels.add(1, 200);
+        walker.setLevels(levels);
+    }
+    private void initializeZoo() {
+        UserAchievement zoo = new UserAchievement("Zoo", R.string.walker_desc);
+        List<Integer> levels = new ArrayList<>();
+        levels.add(0, 0);
+        levels.add(1, 2);
+        levels.add(1, 3);
+        levels.add(1, 4);
+        zoo.setLevels(levels);
+    }
+    private void initializeSuperwalker() {
+        UserAchievement superwalker = new UserAchievement("Superwalker", R.string.superwalker_desc);
+        List<Integer> levels = new ArrayList<>();
+        levels.add(0, 0);
+        levels.add(1, 20);
+        levels.add(1, 60);
+        levels.add(1, 100);
+        superwalker.setLevels(levels);
+    }
+    private void initializeCleaner() {
+        UserAchievement cleaner = new UserAchievement("Clean as a whistle", R.string.clean_desc);
+        List<Integer> levels = new ArrayList<>();
+        levels.add(0, 0);
+        levels.add(1, 3);
+        levels.add(1, 10);
+        levels.add(1, 20);
+        cleaner.setLevels(levels);
+    }
+    private void initializeScaler() {
+        UserAchievement scaler = new UserAchievement("Master of scale", R.string.scale_desc);
+        List<Integer> levels = new ArrayList<>();
+        levels.add(0, 0);
+        levels.add(1, 5);
+        levels.add(1, 10);
+        levels.add(1, 20);
+        scaler.setLevels(levels);
+    }
+    private void initializeFounder() {
+        UserAchievement founder = new UserAchievement("Founder", R.string.founder_desc);
+        List<Integer> levels = new ArrayList<>();
+        levels.add(0, 0);
+        levels.add(1, 1);
+        levels.add(1, 5);
+        levels.add(1, 10);
+        founder.setLevels(levels);
+    }
+    private void iniitializeMealer() {
+        UserAchievement mealer = new UserAchievement("You are what you eat", R.string.meals_desc);
+        List<Integer> levels = new ArrayList<>();
+        levels.add(0, 0);
+        levels.add(1, 15);
+        levels.add(1, 100);
+        levels.add(1, 200);
+        mealer.setLevels(levels);
+    }
+    private void initializeEvent() {
+        UserAchievement event = new UserAchievement("All under control", R.string.event_desc);
+        List<Integer> levels = new ArrayList<>();
+        levels.add(0, 0);
+        levels.add(1, 10);
+        levels.add(1, 30);
+        levels.add(1, 50);
+        event.setLevels(levels);
+    }
+
 
 }

@@ -333,6 +333,17 @@
     <string name="likes_singular">like</string>
     <string name="error_too_big_image">The image should be smaller or equal than 1 MB</string>
     <string name="new_post_received">has made a new post</string>
+    <string name="commentator_desc">Make comments in community</string>
+    <string name="contributor_desc">Make contributions in community</string>
+    <string name="walker_desc">Make too km in your walks</string>
+    <string name="zoo_desc">Add more pets on the app</string>
+    <string name="superwalker_desc">Make too walks</string>
+    <string name="clean_desc">Wash your pet</string>
+    <string name="scale_desc">Measure the weight of your pet some times</string>
+    <string name="founder_desc">Create groups in the community</string>
+    <string name="meals_desc">Add meals of your pet</string>
+    <string name="event_desc">Add events at the calendar</string>
+
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open" translatable="false">Open</string>

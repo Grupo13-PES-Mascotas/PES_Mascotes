@@ -10,17 +10,17 @@ import java.util.List;
  */
 public class UserAchievement extends Achievement{
 
-    private Double progress;
+    private Integer progress;
     private List<DateTime> completedLevelsDate;
 
-    public UserAchievement(String name, String description) {
+    public UserAchievement(String name, int description) {
         super(name, description);
     }
 
-    public void updateProgress(Double newProgress) throws InvalidFormatException {
+    public void updateProgress(Integer newProgress) throws InvalidFormatException {
         DateTime today = DateTime.Builder.build(2020, 5, 29);
         this.progress = newProgress;
-        List<Double> levels = getLevels();
+        List<Integer> levels = getLevels();
         for (int i = 0; i < levels.size(); ++i) {
             if(progress.equals(levels.get(i))) {
                 completedLevelsDate.add(i, today);
@@ -28,7 +28,7 @@ public class UserAchievement extends Achievement{
         }
     }
 
-    public Double getProgress() {
+    public Integer getProgress() {
         return progress;
     }
 
@@ -38,7 +38,7 @@ public class UserAchievement extends Achievement{
 
     public double getCurrentGoal() {
         int level = getCurrentLevel();
-        List<Double> levels = getLevels();
+        List<Integer> levels = getLevels();
         return levels.get(level+1);
     }
 }
