@@ -341,5 +341,12 @@
     <string name="walk_route_pets">Mascotes:</string>
     <string name="progress_bar_connecting_to_server">Conectant amb el servidor</string>
     <string name="progress_bar_loading_your_pets">Carregant les teves mascotes</string>
+    <string name="walking_routes_not_found_title">Rutes de passeig no trobades</string>
+    <string name="walking_routes_not_found_message">
+        No tens cap ruta de passeig amb les teves mascotes.
+        Has de crear-ne com a mínim una abans d\'utiltizar aquesta funcionalitat.
+        Selecciona una de les teves mascotes i inicia un passeig
+    </string>
+    <string name="go_to_my_pets">Anar a les meves mascotes</string>
 
 </resources>

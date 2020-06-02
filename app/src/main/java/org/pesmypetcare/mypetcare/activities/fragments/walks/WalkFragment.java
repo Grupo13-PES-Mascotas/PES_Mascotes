@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.fragments.walks;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,6 +27,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
@@ -56,20 +60,38 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
     private WalkPets selectedWalkPets;
     private int[] colors;
     private int nextColor;
+    private List<WalkPets> walkPetsList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentWalkBinding.inflate(inflater, container, false);
         communication = (WalkCommunication) getActivity();
         polylines = new HashMap<>();
+        walkPetsList = communication.getWalkingRoutes();
 
-        mapView = binding.mapView;
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this);
+        communication.askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION);
 
-        initializeAvailableColors();
+        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            communication.changeToMyPets();
+        } else if (walkPetsList.size() == 0) {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()),
+                R.style.AlertDialogTheme);
+            builder.setTitle(R.string.walking_routes_not_found_title);
+            builder.setMessage(R.string.walking_routes_not_found_message);
+            builder.setPositiveButton(R.string.go_to_my_pets, (dialog, which) -> dialog.dismiss());
 
-        binding.walkingRoutesFilterScrollView.setAlpha(TRANSPARENCY);
+            builder.show();
+            communication.changeToMyPets();
+        } else {
+            mapView = binding.mapView;
+            mapView.onCreate(savedInstanceState);
+            mapView.getMapAsync(this);
+
+            initializeAvailableColors();
+
+            binding.walkingRoutesFilterScrollView.setAlpha(TRANSPARENCY);
+        }
 
         return binding.getRoot();
     }
@@ -101,8 +123,6 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         googleMap.setOnInfoWindowCloseListener(this);
         googleMap.setInfoWindowAdapter(this);
         googleMap.setOnInfoWindowClickListener(this);
-
-        List<WalkPets> walkPetsList = communication.getWalkingRoutes();
 
         for (WalkPets walkPets : walkPetsList) {
             addWalkRoute(walkPets);
@@ -163,25 +183,37 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onResume() {
         super.onResume();
-        mapView.onResume();
+
+        if (mapView != null) {
+            mapView.onResume();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mapView.onPause();
+
+        if (mapView != null) {
+            mapView.onPause();
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mapView.onDestroy();
+
+        if (mapView != null) {
+            mapView.onDestroy();
+        }
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mapView.onLowMemory();
+
+        if (mapView != null) {
+            mapView.onLowMemory();
+        }
     }
 
     @Override

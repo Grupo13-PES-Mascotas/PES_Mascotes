@@ -335,6 +335,13 @@
     <string name="new_post_received">has made a new post</string>
     <string name="progress_bar_connecting_to_server">Connecting to server</string>
     <string name="progress_bar_loading_your_pets">Loading your pets</string>
+    <string name="walking_routes_not_found_title">Walking routes not found</string>
+    <string name="walking_routes_not_found_message">
+        You do not have any walking route with your pets.
+        You should create at least one before using this functionality.
+        Select one of your pets and start a walk
+    </string>
+    <string name="go_to_my_pets">Go to my pets</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open" translatable="false">Open</string>

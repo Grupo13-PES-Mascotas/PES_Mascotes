@@ -2814,6 +2814,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
+    public void changeToMyPets() {
+        toolbar.setTitle(R.string.navigation_my_pets);
+        changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+    }
+
+    @Override
     public void schedulePostNotification(String title, String text, long time) {
         scheduleNotification(this, time, title, text);
     }
