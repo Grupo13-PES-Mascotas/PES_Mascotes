@@ -51,7 +51,6 @@ import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.mypetcare.utilities.ServerData;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.SortedSet;
@@ -80,96 +79,7 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
 
         ExecutorService loadingData = Executors.newSingleThreadExecutor();
         loadingData.execute(() -> {
-            ServerData.getInstance().setMAuth(FirebaseAuth.getInstance());
-            makeLogin();
-            statusCommunication.updateText(getString(R.string.progress_bar_loading_your_pets));
-
-            if (enableLoginActivity) {
-                askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION);
-            }
-
-            ExecutorService userData = Executors.newSingleThreadExecutor();
-            userData.execute(this::initializeCurrentUser);
-            userData.shutdown();
-
-            ExecutorService groupData = Executors.newSingleThreadExecutor();
-            groupData.execute(() -> {
-                SortedSet<Group> groups = getAllGroups();
-                ServerData.getInstance().setGroups(new ArrayList<>(groups));
-            });
-            groupData.shutdown();
-
-            try {
-                userData.awaitTermination(5, TimeUnit.MINUTES);
-                groupData.awaitTermination(5, TimeUnit.MINUTES);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            int nPets = ServerData.getInstance().getUser().getPets().size();
-            int nGroups = ServerData.getInstance().getGroups().size();
-            int progressIncrement = getIncrement(nPets, nGroups);
-
-            ExecutorService petData = Executors.newCachedThreadPool();
-
-            for (int actual = 0; actual < nPets; ++actual) {
-                int finalActual = actual;
-                petData.execute(() -> {
-                    obtainAllPetWeights(ServerData.getInstance().getUser().getPets().get(finalActual));
-                    updateProgress(progressIncrement);
-                    obtainAllPetMeals(ServerData.getInstance().getUser().getPets().get(finalActual));
-                    updateProgress(progressIncrement);
-                    obtainAllPetMedications(ServerData.getInstance().getUser().getPets().get(finalActual));
-                    updateProgress(progressIncrement);
-                    obtainAllPetVetVisits(ServerData.getInstance().getUser().getPets().get(finalActual));
-                    updateProgress(progressIncrement);
-                    obtainAllPetWashes(ServerData.getInstance().getUser().getPets().get(finalActual));
-                    updateProgress(progressIncrement);
-                    obtainAllPetVaccinations(ServerData.getInstance().getUser().getPets().get(finalActual));
-                    updateProgress(progressIncrement);
-                    obtainAllPetIllnesses(ServerData.getInstance().getUser().getPets().get(finalActual));
-                    updateProgress(progressIncrement);
-                    obtainAllPetExercises(ServerData.getInstance().getUser().getPets().get(finalActual));
-                    updateProgress(progressIncrement);
-                    getPetImage(ServerData.getInstance().getUser().getPets().get(finalActual));
-                    updateProgress(progressIncrement);
-                });
-            }
-
-            petData.shutdown();
-
-            ExecutorService groupInfo = Executors.newCachedThreadPool();
-
-            for (int actual = 0; actual < nGroups; ++actual) {
-                int finalActual = actual;
-                groupInfo.execute(() -> {
-                    if (isUserSubscriber(ServerData.getInstance().getGroups(), finalActual)) {
-                        ServerData.getInstance().getUser().addSubscribedGroup(ServerData.getInstance().getGroups()
-                            .get(finalActual));
-                    }
-
-                    TrGetGroupImage trGetGroupImage = CommunityControllersFactory.createTrGetGroupImage();
-                    trGetGroupImage.setUser(ServerData.getInstance().getUser());
-                    trGetGroupImage.setGroup(ServerData.getInstance().getGroups().get(finalActual));
-                    trGetGroupImage.execute();
-
-                    byte[] imageBytes = trGetGroupImage.getResult();
-                    Bitmap groupImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                    ServerData.getInstance().getGroups().get(finalActual).setGroupIcon(groupImage);
-                    updateProgress(progressIncrement);
-                });
-            }
-
-            groupInfo.shutdown();
-
-            try {
-                petData.awaitTermination(5, TimeUnit.MINUTES);
-                groupInfo.awaitTermination(5, TimeUnit.MINUTES);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+            loadData();
             Intent intent = new Intent(LauncherActivity.this, MainActivity.class);
             startActivity(intent);
         });
@@ -177,12 +87,98 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         loadingData.shutdown();
     }
 
+    private void loadData() {
+        ServerData.getInstance().setMAuth(FirebaseAuth.getInstance());
+        makeLogin();
+        statusCommunication.updateText(getString(R.string.progress_bar_loading_your_pets));
+        initializeLoggedUser();
+
+        int nPets = ServerData.getInstance().getUser().getPets().size();
+        int nGroups = 0;
+        int progressIncrement = getIncrement(nPets, nGroups);
+
+        initializeLoggedUserPets(nPets, progressIncrement);
+    }
+
+    void initializeLoggedUserPets(int nPets, int progressIncrement) {
+        ExecutorService petData = Executors.newCachedThreadPool();
+
+        for (int actual = 0; actual < nPets; ++actual) {
+            int finalActual = actual;
+            petData.execute(() -> getActualPet(progressIncrement, finalActual));
+        }
+
+        petData.shutdown();
+
+        try {
+            petData.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initializeLoggedUser() {
+        if (enableLoginActivity) {
+            askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+
+        ExecutorService userData = Executors.newSingleThreadExecutor();
+        userData.execute(this::initializeCurrentUser);
+        userData.shutdown();
+
+        try {
+            userData.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getActualPet(int progressIncrement, int finalActual) {
+        obtainAllPetWeights(ServerData.getInstance().getUser().getPets().get(finalActual));
+        updateProgress(progressIncrement);
+        obtainAllPetMeals(ServerData.getInstance().getUser().getPets().get(finalActual));
+        updateProgress(progressIncrement);
+        obtainAllPetMedications(ServerData.getInstance().getUser().getPets().get(finalActual));
+        updateProgress(progressIncrement);
+        obtainAllPetVetVisits(ServerData.getInstance().getUser().getPets().get(finalActual));
+        updateProgress(progressIncrement);
+        obtainAllPetWashes(ServerData.getInstance().getUser().getPets().get(finalActual));
+        updateProgress(progressIncrement);
+        obtainAllPetVaccinations(ServerData.getInstance().getUser().getPets().get(finalActual));
+        updateProgress(progressIncrement);
+        obtainAllPetIllnesses(ServerData.getInstance().getUser().getPets().get(finalActual));
+        updateProgress(progressIncrement);
+        obtainAllPetExercises(ServerData.getInstance().getUser().getPets().get(finalActual));
+        updateProgress(progressIncrement);
+        getPetImage(ServerData.getInstance().getUser().getPets().get(finalActual));
+        updateProgress(progressIncrement);
+    }
+
+    private void getActualGroup(int progressIncrement, int finalActual) {
+        if (isUserSubscriber(ServerData.getInstance().getGroups(), finalActual)) {
+            ServerData.getInstance().getUser().addSubscribedGroup(ServerData.getInstance().getGroups()
+                .get(finalActual));
+        }
+
+        TrGetGroupImage trGetGroupImage = CommunityControllersFactory.createTrGetGroupImage();
+        trGetGroupImage.setUser(ServerData.getInstance().getUser());
+        trGetGroupImage.setGroup(ServerData.getInstance().getGroups().get(finalActual));
+        trGetGroupImage.execute();
+
+        byte[] imageBytes = trGetGroupImage.getResult();
+        Bitmap groupImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        ServerData.getInstance().getGroups().get(finalActual).setGroupIcon(groupImage);
+        updateProgress(progressIncrement);
+    }
+
     private int getIncrement(int nPets, int nGroups) {
         return (int) Math.ceil((double) MAX_PROGRESS_VALUE / (nPets * NUM_PET_INFO + nGroups));
     }
 
     private boolean isUserSubscriber(List<Group> groupList, int finalActual) {
-        return groupList.get(finalActual).getSubscribers().containsKey(ServerData.getInstance().getUser().getUsername());
+        return groupList.get(finalActual).getSubscribers().containsKey(ServerData.getInstance().getUser()
+            .getUsername());
     }
 
     /**
@@ -214,9 +210,8 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
             }
 
             if (ServerData.getInstance().getMAuth().getCurrentUser() != null) {
-                ServerData.getInstance().getMAuth().getCurrentUser().getIdToken(false).addOnCompleteListener(task -> {
-                    ServerData.getInstance().getUser().setToken(Objects.requireNonNull(task.getResult()).getToken());
-                });
+                ServerData.getInstance().getMAuth().getCurrentUser().getIdToken(false).addOnCompleteListener(task ->
+                    ServerData.getInstance().getUser().setToken(Objects.requireNonNull(task.getResult()).getToken()));
             }
         }
     }
