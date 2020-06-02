@@ -36,7 +36,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.LauncherActivity;
-import org.pesmypetcare.mypetcare.activities.MainActivity;
+import org.pesmypetcare.mypetcare.activities.LoginActivity;
 import org.pesmypetcare.mypetcare.databinding.FragmentSignUpBinding;
 import org.pesmypetcare.mypetcare.services.user.UserManagerAdapter;
 import org.pesmypetcare.mypetcare.services.user.UserManagerService;
@@ -70,7 +70,7 @@ public class SignUpFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         RC_CODE = 9001;
-        mAuth = ServerData.getInstance().getMAuth();
+        //mAuth = ServerData.getInstance().getMAuth();
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         signUpWithParameters();
@@ -141,13 +141,13 @@ public class SignUpFragment extends Fragment {
      */
     private void handleFacebookAccessToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        mAuth.signInWithCredential(credential)
+        ServerData.getInstance().getMAuth().signInWithCredential(credential)
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                     if (task.isSuccessful()) {
                         try {
-                            if (!userManagerService.usernameExists(Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName())) {
-                                userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
-                                        mAuth.getCurrentUser().getDisplayName(), mAuth.getCurrentUser().getEmail(),
+                            if (!userManagerService.usernameExists(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getDisplayName())) {
+                                userManagerService.createUser(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getUid(),
+                                        ServerData.getInstance().getMAuth().getCurrentUser().getDisplayName(), ServerData.getInstance().getMAuth().getCurrentUser().getEmail(),
                                         "");
                             }
                         } catch (ExecutionException | InterruptedException e) {
@@ -190,13 +190,13 @@ public class SignUpFragment extends Fragment {
      */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), acct.getIdToken());
-        MainActivity.setGoogleAccount(acct);
-        mAuth.signInWithCredential(credential)
+        LoginActivity.setGoogleAccount(acct);
+        ServerData.getInstance().getMAuth().signInWithCredential(credential)
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                     if (task.isSuccessful()) {
                         try {
                             if (!userManagerService.usernameExists(acct.getDisplayName())) {
-                                userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
+                                userManagerService.createUser(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getUid(),
                                         acct.getDisplayName(), acct.getEmail(), "");
                             }
                         } catch (ExecutionException | InterruptedException e) {
@@ -223,13 +223,13 @@ public class SignUpFragment extends Fragment {
      */
     private void userCreationAndValidation() throws ExecutionException, InterruptedException {
         if (!userManagerService.usernameExists(username)) {
-            mAuth.createUserWithEmailAndPassword(email, password)
+            ServerData.getInstance().getMAuth().createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                         if (task.isSuccessful()) {
                             sendEmailVerification();
-                            userManagerService.createUser(Objects.requireNonNull(mAuth.getCurrentUser()).getUid(),
+                            userManagerService.createUser(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getUid(),
                                     username, email, password);
-                            mAuth.signOut();
+                            ServerData.getInstance().getMAuth().signOut();
                         } else {
                             testToast(Objects.requireNonNull(task.getException()).toString());
                         }
@@ -243,8 +243,8 @@ public class SignUpFragment extends Fragment {
      * This method is responsible for the validation of the new user.
      */
     private void sendEmailVerification() {
-        Objects.requireNonNull(mAuth.getCurrentUser()).sendEmailVerification();
-        if (mAuth.getCurrentUser().isEmailVerified()) {
+        Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).sendEmailVerification();
+        if (ServerData.getInstance().getMAuth().getCurrentUser().isEmailVerified()) {
             startActivity(new Intent(getActivity(), LauncherActivity.class));
             Objects.requireNonNull(getActivity()).finish();
         }

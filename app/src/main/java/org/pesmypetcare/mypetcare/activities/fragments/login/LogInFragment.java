@@ -30,7 +30,7 @@ public class LogInFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mAuth = ServerData.getInstance().getMAuth();
+        //mAuth = ServerData.getInstance().getMAuth();
         FragmentLogInBinding binding = FragmentLogInBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         binding.loginButton.setOnClickListener(v -> {
@@ -67,9 +67,9 @@ public class LogInFragment extends Fragment {
      * Tries to initialize the current user.
      */
     private void loginUser() {
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+        ServerData.getInstance().getMAuth().signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                if (Objects.requireNonNull(mAuth.getCurrentUser()).isEmailVerified()) {
+                if (Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).isEmailVerified()) {
                     startActivity(new Intent(getActivity(), LauncherActivity.class));
                     Objects.requireNonNull(getActivity()).finish();
                 } else {

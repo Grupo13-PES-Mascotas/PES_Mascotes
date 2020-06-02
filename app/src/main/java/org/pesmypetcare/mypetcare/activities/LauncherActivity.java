@@ -68,6 +68,7 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
     private ActivityLauncherBinding binding;
     private StatusCommunication statusCommunication;
     private int progress;
+    private boolean continueExecution;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +77,16 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
         setContentView(binding.getRoot());
 
         setOnStatusChanges(text -> binding.loadingStatus.setText(text));
+        continueExecution = true;
 
         ExecutorService loadingData = Executors.newSingleThreadExecutor();
         loadingData.execute(() -> {
             loadData();
-            Intent intent = new Intent(LauncherActivity.this, MainActivity.class);
-            startActivity(intent);
+
+            if (continueExecution) {
+                Intent intent = new Intent(LauncherActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
         });
 
         loadingData.shutdown();
@@ -89,15 +94,19 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
 
     private void loadData() {
         ServerData.getInstance().setMAuth(FirebaseAuth.getInstance());
+
         makeLogin();
-        statusCommunication.updateText(getString(R.string.progress_bar_loading_your_pets));
-        initializeLoggedUser();
+        //statusCommunication.updateText(getString(R.string.progress_bar_loading_your_pets));
 
-        int nPets = ServerData.getInstance().getUser().getPets().size();
-        int nGroups = 0;
-        int progressIncrement = getIncrement(nPets, nGroups);
+        if (continueExecution) {
+            initializeLoggedUser();
 
-        initializeLoggedUserPets(nPets, progressIncrement);
+            int nPets = ServerData.getInstance().getUser().getPets().size();
+            int nGroups = 0;
+            int progressIncrement = getIncrement(nPets, nGroups);
+
+            initializeLoggedUserPets(nPets, progressIncrement);
+        }
     }
 
     void initializeLoggedUserPets(int nPets, int progressIncrement) {
@@ -185,8 +194,9 @@ public class LauncherActivity extends AppCompatActivity implements AsyncResponse
      * Make the login to the application.
      */
     private void makeLogin() {
-        if (enableLoginActivity && ServerData.getInstance().getMAuth().getCurrentUser() == null) {
+        if (enableLoginActivity && (ServerData.getInstance().getMAuth().getCurrentUser() == null)) {
             startActivity(new Intent(LauncherActivity.this, LoginActivity.class));
+            continueExecution = false;
             finish();
         }
         else if (!enableLoginActivity) {
