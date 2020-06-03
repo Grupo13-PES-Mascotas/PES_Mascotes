@@ -29,7 +29,7 @@ public class UserManagerAdapter implements UserManagerService {
 
     @Override
     public User findUserByUsername(String uid, String token) {
-        AtomicReference<User> user = null;
+        AtomicReference<User> user = new AtomicReference<>();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             UserData userData = null;
@@ -51,6 +51,7 @@ public class UserManagerAdapter implements UserManagerService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         return user.get();
     }
 
@@ -100,7 +101,7 @@ public class UserManagerAdapter implements UserManagerService {
 
     @Override
     public boolean userExists(User user) {
-        AtomicReference<UserData> userData = null;
+        AtomicReference<UserData> userData = new AtomicReference<>();;
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {

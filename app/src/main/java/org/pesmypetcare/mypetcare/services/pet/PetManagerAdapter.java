@@ -92,7 +92,7 @@ public class PetManagerAdapter implements PetManagerService {
             }
 
             Pair<DateTime, Double> entry = pet.getLastWeightInfo();
-            Weight libraryWeight = new Weight(entry.first.toString(), entry.second.intValue());
+            Weight libraryWeight = new Weight(entry.first.toString(), entry.second);
             try {
                 ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
                     user.getUsername(), pet.getName(), PetData.WEIGHTS, libraryWeight.getKey(),
@@ -199,7 +199,7 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public List<Pet> findPetsByOwner(User user) throws PetRepeatException {
-        AtomicReference<List<org.pesmypetcare.usermanager.datacontainers.pet.Pet>> userPets = null;
+        AtomicReference<List<org.pesmypetcare.usermanager.datacontainers.pet.Pet>> userPets = new AtomicReference<>();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
@@ -239,7 +239,7 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public Map<String, byte[]> getAllPetsImages(User user) {
-        AtomicReference<Map<String, byte[]>> pets = null;
+        AtomicReference<Map<String, byte[]>> pets = new AtomicReference<>();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
@@ -309,7 +309,7 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public void addWeight(User user, Pet pet, double newWeight, DateTime dateTime) {
-        Weight libraryWeight = new Weight(dateTime.toString(), (int) newWeight);
+        Weight libraryWeight = new Weight(dateTime.toString(), newWeight);
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
