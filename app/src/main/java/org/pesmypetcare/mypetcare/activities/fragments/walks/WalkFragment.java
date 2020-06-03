@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,8 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         binding = FragmentWalkBinding.inflate(inflater, container, false);
         communication = (WalkCommunication) getActivity();
         polylines = new HashMap<>();
@@ -90,26 +93,11 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
      */
     private void setUpSharePetWalkRouteListener() {
         flSharePetWalkRouteButton.setOnClickListener(v -> {
-            View rootView = Objects.requireNonNull(this.getActivity()).getWindow().getDecorView()
-                    .findViewById(android.R.id.content);
-            Bitmap bm = getScreenShot(rootView);
-            saveImage(bm);
-
+            GoogleMap.SnapshotReadyCallback callback = this::saveImage;
+            googleMap.snapshot(callback);
         });
     }
 
-    /**
-     * Get a screenshot of the pet info.
-     * @param view The view
-     * @return The bitmap of the screenshot
-     */
-    private static Bitmap getScreenShot(View view) {
-        View screenView = view.getRootView();
-        screenView.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
-        screenView.setDrawingCacheEnabled(false);
-        return bitmap;
-    }
 
     /**
      * Saves the image as PNG to the app's cache directory and share.
@@ -167,7 +155,7 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         if(!dir.exists()) {
             dir.mkdirs();
         }
-        return new File(dir, selectedWalkPets.toString()+"Info.jpg");
+        return new File(dir, "WalkInfo.jpg");
     }
 
     /**
