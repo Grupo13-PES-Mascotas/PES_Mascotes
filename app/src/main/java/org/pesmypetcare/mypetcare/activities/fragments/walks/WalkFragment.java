@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,9 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         binding = FragmentWalkBinding.inflate(inflater, container, false);
         communication = (WalkCommunication) getActivity();
         polylines = new HashMap<>();
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
         mapView = binding.mapView;
         mapView.onCreate(savedInstanceState);
@@ -167,7 +171,7 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         if(!dir.exists()) {
             dir.mkdirs();
         }
-        return new File(dir, selectedWalkPets.toString()+"Info.jpg");
+        return new File(dir, "WalkInfo.jpg");
     }
 
     /**
