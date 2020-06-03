@@ -2,8 +2,6 @@ package org.pesmypetcare.mypetcare.controllers.user;
 
 import org.pesmypetcare.mypetcare.services.user.UserManagerService;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Enric Hernando
  */
@@ -28,11 +26,7 @@ public class TrExistsUsername {
      * Execute the transaction.
      */
     public void execute() {
-        try {
-            result = userManagerService.usernameExists(newUsername);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        result = userManagerService.usernameExists(newUsername);
     }
 
     /**

@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -65,7 +64,7 @@ public class PetManagerAdapter implements PetManagerService {
      * Update the health data of the pet.
      * @param pet The pet to which its health data has to be updated
      */
-    private void updateHealth(Pet pet) throws ExecutionException, InterruptedException {
+    private void updateHealth(Pet pet) {
         String name = pet.getName();
         String ownerUsername = pet.getOwner().getUsername();
         String userToken = pet.getOwner().getToken();
@@ -324,8 +323,7 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public void addWashFrequency(User user, Pet pet, int newWashFrequency, DateTime dateTime)
-        throws ExecutionException, InterruptedException {
+    public void addWashFrequency(User user, Pet pet, int newWashFrequency, DateTime dateTime) {
         /*String accessToken = user.getToken();
         String userName = user.getUsername();
         String petName = pet.getName();
@@ -336,8 +334,7 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) throws ExecutionException,
-        InterruptedException {
+    public void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) {
         /*String accessToken = user.getToken();
         String userName = user.getUsername();
         String petName = pet.getName();
@@ -411,7 +408,7 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public void addWalking(User user, Pet pet, Walk walk) throws ExecutionException, InterruptedException {
+    public void addWalking(User user, Pet pet, Walk walk) {
         ExerciseData libraryExerciseData = new ExerciseData(walk.getName(), walk.getDescription(),
             walk.getEndTime().toString(), walk.getCoordinates());
         org.pesmypetcare.usermanager.datacontainers.pet.Exercise libraryExercise =
