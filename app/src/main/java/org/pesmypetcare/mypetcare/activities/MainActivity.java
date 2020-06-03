@@ -1578,7 +1578,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public Bitmap findImageByUser(String username) {
         trObtainUserImage.setUsername(username);
         trObtainUserImage.setAccessToken(user.getToken());
-
         try {
             trObtainUserImage.execute();
         } catch (MyPetCareException e) {
