@@ -1,9 +1,11 @@
 package org.pesmypetcare.mypetcare.utilities;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import android.provider.MediaStore;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -28,6 +30,12 @@ public class ImageManager {
 
     private static Bitmap defaultPetImage;
     private static byte[] defaultBytesPetImage;
+    private static final String[] PROJECTION = new String[]{
+        MediaStore.Images.Media._ID
+    };
+    private static final String MY_PET_CARE = "MyPetCare";
+    private static final String SELECTION = MediaStore.Images.Media.DISPLAY_NAME + " = " + MY_PET_CARE + "_?";
+    private static Context context;
 
     private ImageManager() {
 
@@ -133,17 +141,7 @@ public class ImageManager {
         return username + "_" + petName;
     }
 
-    /*FileInputStream input = new FileInputStream(PATH + File.separator + relativePath + File.separator
-            + imageName + EXTENSION);
-
-        ArrayList<Byte> bytesList = new ArrayList<>();
-        int actualByte = input.read();
-
-        while (actualByte != -1) {
-            bytesList.add((byte) actualByte);
-            actualByte = input.read();
-        }
-
-        byte[] bytes = convertToByteArray(bytesList);
-        input.close();*/
+    public static void setContext(Context context) {
+        ImageManager.context = context;
+    }
 }

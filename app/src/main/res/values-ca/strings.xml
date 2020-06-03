@@ -46,7 +46,7 @@
     <string name="languages">Idiomes</string>
     <string name="change_password">Modificar Contrasenya</string>
     <string name="change_username">Modificar Username</string>
-    <string name="current_version">Versió: 2.0.2</string>
+    <string name="current_version">Versió: 2.0.3</string>
     <string name="old_password">Contrasenya Antiga</string>
     <string name="new_password">Nova Contrasenya</string>
     <string name="confirm_new_password">Confirma la nova contrasenya</string>
@@ -266,6 +266,7 @@
     <string name="post_options_title">Opcions del post</string>
     <string name="post_options_message">Selecciona una acció per realitzar en el post</string>
     <string name="post_report">Reportar un post</string>
+    <string name="post_share">Compartir un post</string>
     <string name="report_reason_sexual_content">Contingut sexual</string>
     <string name="report_reason_violent_or_repulsive_content">Contingut violent o repulsiu</string>
     <string name="report_reason_abusive_or_hate_content">Contingut abussiu o que incita a l\'odi</string>
@@ -339,5 +340,18 @@
     <string name="walk_route_start_hour">Hora d\'inici:</string>
     <string name="walk_route_end_hour">Hora de finalització:</string>
     <string name="walk_route_pets">Mascotes:</string>
+    <string name="progress_bar_connecting_to_server">Conectant amb el servidor</string>
+    <string name="progress_bar_loading_your_pets">Carregant les teves mascotes</string>
+    <string name="walking_routes_not_found_title">Rutes de passeig no trobades</string>
+    <string name="walking_routes_not_found_message">
+        No tens cap ruta de passeig amb les teves mascotes.
+        Has de crear-ne com a mínim una abans d\'utiltizar aquesta funcionalitat.
+        Selecciona una de les teves mascotes i inicia un passeig
+    </string>
+    <string name="go_to_my_pets">Anar a les meves mascotes</string>
+    <string name="do_not_have_any_pet">
+        No tens cap mascota\n
+        Fes clic al botó + per afegir-ne una
+    </string>
 
 </resources>

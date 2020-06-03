@@ -2,8 +2,12 @@ package org.pesmypetcare.mypetcare.activities.fragments.infopet;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.jetbrains.annotations.Nullable;
@@ -32,12 +37,14 @@ import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.Walk;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * @author Albert Pinto
+ * @author Albert Pinto & Enric Hernando
  */
 public class InfoPetExercise extends Fragment {
     private static final int MIN_SPACE_SIZE = 20;
@@ -60,6 +67,7 @@ public class InfoPetExercise extends Fragment {
     private static MaterialButton editExerciseButton;
     private static MaterialButton deleteExerciseButton;
     private static String walkExercisePrefix;
+    private static FloatingActionButton sharePetExerciseButton;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -303,6 +311,7 @@ public class InfoPetExercise extends Fragment {
     private void setAddExerciseButtonListener() {
         createEditExerciseDialog(R.string.add_exercise_title, R.string.add_exercice_message,
             true, null, null);
+        sharePetExerciseButton.hide();
         dialog.show();
     }
 
@@ -340,6 +349,7 @@ public class InfoPetExercise extends Fragment {
         Objects.requireNonNull(entryView).setOnClickListener(v -> {
             createEditExerciseDialog(R.string.update_exercise_title, R.string.update_exercice_message, false,
                 builder.getName(), builder.getEntries());
+            sharePetExerciseButton.show();
             dialog.show();
         });
     }
@@ -446,12 +456,95 @@ public class InfoPetExercise extends Fragment {
         builder.setTitle(titleId);
         builder.setMessage(messageId);
         initializeDialog(builder);
-
         if (isAdding) {
             setAddExerciseListeners();
         } else {
             setEditExerciseListeners(name, entries);
         }
+    }
+
+    /**
+     * Set the share app button listener.
+     */
+    private static void setUpSharePetExerciseListener() {
+        sharePetExerciseButton.setOnClickListener(v -> {
+            View rootView = Objects.requireNonNull(dialog).getWindow().getDecorView().getRootView();
+            Bitmap bm = getScreenShot(rootView);
+            saveImage(bm);
+
+        });
+    }
+
+    /**
+     * Get a screenshot of the pet info.
+     * @param view The view
+     * @return The bitmap of the screenshot
+     */
+    private static Bitmap getScreenShot(View view) {
+        View screenView = view.getRootView();
+        screenView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
+        screenView.setDrawingCacheEnabled(false);
+        return bitmap;
+    }
+
+    /**
+     * Saves the image as PNG to the app's cache directory and share.
+     * @param image Bitmap to share.
+     */
+    private static void saveImage(Bitmap image) {
+        File file = saveBitmap(image);
+        Uri uri = Uri.fromFile(file);
+        shareUri(uri);
+    }
+
+    /**
+     * Creates a intent to share the uri.
+     * @param uri The uri to share
+     */
+    private static void shareUri(Uri uri) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("image/jpeg");
+
+        intent.putExtra(Intent.EXTRA_SUBJECT, "My Pet Care");
+        intent.putExtra(Intent.EXTRA_TEXT, "");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        context.startActivity(intent);
+    }
+
+    /**
+     * Save a bitmap.
+     * @param image The bitmap of the image
+     * @return The file created
+     */
+    @NonNull
+    private static File saveBitmap(Bitmap image) {
+        File file = fileCreation();
+        FileOutputStream fOut;
+        try {
+            fOut = new FileOutputStream(file);
+            image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    /**
+     * Creation of the file.
+     * @return The file
+     */
+    @NonNull
+    private static File fileCreation() {
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyPetCare/ScreenShot";
+        File dir = new File(file_path);
+        if(!dir.exists()) {
+            dir.mkdirs();
+        }
+        return new File(dir, "Exercise.jpg");
     }
 
     /**
@@ -463,6 +556,9 @@ public class InfoPetExercise extends Fragment {
         builder.setView(editExerciseLayout);
         dialog = builder.create();
         setLayoutViews(editExerciseLayout);
+        sharePetExerciseButton = editExerciseLayout.findViewById(R.id.flSharePetExercise);
+        setUpSharePetExerciseListener();
+        sharePetExerciseButton.show();
         editExerciseButton = editExerciseLayout.findViewById(R.id.editExerciseButton);
         deleteExerciseButton = editExerciseLayout.findViewById(R.id.deleteExerciseButton);
     }

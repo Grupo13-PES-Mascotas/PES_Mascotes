@@ -37,6 +37,7 @@ public class PetManagerAdapter implements PetManagerService {
     private static final String A_REALLY_PRETTY_LOCATION = "A really pretty Location";
     private static final int EMAIL_REMINDER_MINUTES = 10;
     private static final int TIME = 20;
+    private byte[] bytes;
 
     @Override
     public void updatePet(Pet pet) {
@@ -394,6 +395,24 @@ public class PetManagerAdapter implements PetManagerService {
         }
 
         return weights.get();
+    }
+
+    @Override
+    public byte[] getPetImage(User user, Pet pet) {
+        bytes = new byte[0];
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                bytes = ServiceLocator.getInstance().getPetManagerClient().downloadProfileImage(user.getToken(),
+                    user.getUsername(), pet.getName());
+            } catch (NullPointerException ignored) {
+
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        return bytes;
     }
 
     /**

@@ -16,13 +16,14 @@ import java.util.Map;
  */
 public class MessagingService extends FirebaseMessagingService {
     private static MessagingServiceCommunication communication;
+    private static MessagingTokenServiceCommunication tokenCommunication;
 
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
 
         if (MainActivity.isEnableLoginActivity()) {
-            communication.sendMessageToken(s);
+            tokenCommunication.sendMessageToken(s);
         }
     }
 
@@ -45,5 +46,13 @@ public class MessagingService extends FirebaseMessagingService {
      */
     public static void setCommunication(MessagingServiceCommunication communication) {
         MessagingService.communication = communication;
+    }
+
+    /**
+     * Set the token communication instance.
+     * @param tokenCommunication The token communication instance to set
+     */
+    public static void setTokenCommunication(MessagingTokenServiceCommunication tokenCommunication) {
+        MessagingService.tokenCommunication = tokenCommunication;
     }
 }

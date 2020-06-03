@@ -46,7 +46,7 @@
     <string name="languages">Idiomas</string>
     <string name="change_password">Cambiar contraseña</string>
     <string name="change_username">Cambiar Username</string>
-    <string name="current_version">Versión: 2.0.2</string>
+    <string name="current_version">Versión: 2.0.3</string>
     <string name="old_password">Anterior contraseña</string>
     <string name="new_password">Nueva contraseña</string>
     <string name="confirm_new_password">Confirmar nueva contraseña</string>
@@ -265,6 +265,7 @@
     <string name="post_options_title">Opciones del post</string>
     <string name="post_options_message">Selecciona una acción para realizar en el post</string>
     <string name="post_report">Reportar post</string>
+    <string name="post_share">Compartir post</string>
     <string name="report_reason_sexual_content">Contenido sexual</string>
     <string name="report_reason_violent_or_repulsive_content">Contenido violento o repulsivo</string>
     <string name="report_reason_abusive_or_hate_content">Contenido abusivo o que incita al odio</string>
@@ -334,6 +335,19 @@
     <string name="likes_singular">me gusta</string>
     <string name="error_too_big_image">La imagen tiene que ser inferior o igual a 1 MB</string>
     <string name="new_post_received">ha hecho una nueva publicación</string>
+    <string name="progress_bar_connecting_to_server">Conectando al servidor</string>
+    <string name="progress_bar_loading_your_pets">Cargando tus mascotas</string>
+    <string name="walking_routes_not_found_title">No hay ninguna ruta de paseo</string>
+    <string name="walking_routes_not_found_message">
+        No tienes ninguna ruta de paseo con tus mascotas.
+        Tienes que crear al menos una ruta de paseo para poder usar esta funcionalidad.
+        Selecciona una mascota para empezar un paseo
+    </string>
+    <string name="go_to_my_pets">Ir a mis mascotas</string>
+    <string name="do_not_have_any_pet">
+        No tienes ninguna mascota\n
+        Haz clic en el botón + para añadir una
+    </string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
