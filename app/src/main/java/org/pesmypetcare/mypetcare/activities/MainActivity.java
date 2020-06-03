@@ -86,6 +86,7 @@ import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.controllers.achievement.AchievementsControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.achievement.TrGetAllAchievements;
+import org.pesmypetcare.mypetcare.controllers.achievement.TrUpdateAchievement;
 import org.pesmypetcare.mypetcare.controllers.community.CommunityControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddGroupImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewForum;
@@ -360,6 +361,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrSendFirebaseMessagingToken trSendFirebaseMessagingToken;
     private TrGetGroupImage trGetGroupImage;
     private TrGetAllAchievements trGetAllAchievements;
+    private TrUpdateAchievement trUpdateAchievement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -756,6 +758,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     private void initializeAchievementsControllers() {
         trGetAllAchievements = AchievementsControllersFactory.createTrGetAllAchievements();
+        trUpdateAchievement = AchievementsControllersFactory.createTrUpdateAchievement();
     }
 
     /**
@@ -1407,6 +1410,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trRegisterNewPet.execute();
+
+            try {
+                updateAchievement("Zoo", 1);
+            } catch (org.pesmypetcare.mypetcare.utilities.InvalidFormatException e) {
+                e.printStackTrace();
+            }
         } catch (PetAlreadyExistingException e) {
             Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing), Toast.LENGTH_LONG);
             toast.show();
@@ -1497,6 +1506,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trAddNewPost.execute();
         } catch (PostAlreadyExistingException | ForumNotFoundException | PostCreatedBeforeForumException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            updateAchievement("Contributor", 1);
+        } catch (org.pesmypetcare.mypetcare.utilities.InvalidFormatException e) {
             e.printStackTrace();
         }
     }
@@ -1618,6 +1633,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trNewPersonalEvent.setPet(pet);
         trNewPersonalEvent.setEvent(new Event(description, DateTime.Builder.buildFullString(dateTime)));
         trNewPersonalEvent.execute();
+        try {
+            updateAchievement("All under control", 1);
+        } catch (org.pesmypetcare.mypetcare.utilities.InvalidFormatException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -1715,10 +1735,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewWeight.setDateTime(dateTime);
         try {
             trAddNewWeight.execute();
+            updateAchievement("Master of scale", 1);
         } catch (NotPetOwnerException e) {
             Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
             toast.show();
         } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } catch (org.pesmypetcare.mypetcare.utilities.InvalidFormatException e) {
             e.printStackTrace();
         }
 
@@ -1783,6 +1806,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (MealAlreadyExistingException | InterruptedException | ExecutionException | InvalidFormatException e) {
             e.printStackTrace();
         }
+        try {
+            updateAchievement("You are what you eat", 1);
+        } catch (org.pesmypetcare.mypetcare.utilities.InvalidFormatException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -1830,7 +1858,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trNewPetWash.setWash(wash);
         try {
             trNewPetWash.execute();
-        } catch (InterruptedException | ExecutionException | InvalidFormatException e) {
+            updateAchievement("Clean as a whistle", 1);
+        } catch (InterruptedException | ExecutionException | InvalidFormatException |
+                org.pesmypetcare.mypetcare.utilities.InvalidFormatException e) {
             e.printStackTrace();
         }
     }
@@ -2286,7 +2316,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trAddWalk.execute();
-        } catch (NotPetOwnerException | InvalidPeriodException | ExecutionException | InterruptedException e) {
+            updateAchievement("Superwalker", 1);
+        } catch (NotPetOwnerException | InvalidPeriodException | ExecutionException |
+                InterruptedException | org.pesmypetcare.mypetcare.utilities.InvalidFormatException e) {
             e.printStackTrace();
         }
     }
@@ -2706,7 +2738,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trCreateNewGroup.execute();
-        } catch (GroupAlreadyExistingException e) {
+            updateAchievement("Founder", 1);
+        } catch (GroupAlreadyExistingException | org.pesmypetcare.mypetcare.utilities.InvalidFormatException e) {
             Toast toast = Toast.makeText(this, getString(R.string.group_already_created), Toast.LENGTH_LONG);
             toast.show();
         }
@@ -2787,5 +2820,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trGetAllAchievements.setUser(user);
         trGetAllAchievements.execute();
         return trGetAllAchievements.getResult();
+    }
+
+    public void updateAchievement(String nameAchievement, int newProgress)
+            throws org.pesmypetcare.mypetcare.utilities.InvalidFormatException {
+        trUpdateAchievement.setUser(user);
+        trUpdateAchievement.setNameAchievement(nameAchievement);
+        trUpdateAchievement.setNewProgress(newProgress);
+        trUpdateAchievement.execute();
     }
 }

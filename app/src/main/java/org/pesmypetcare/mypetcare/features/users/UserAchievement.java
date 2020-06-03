@@ -19,7 +19,7 @@ public class UserAchievement extends Achievement{
 
     public void updateProgress(Integer newProgress) throws InvalidFormatException {
         DateTime today = DateTime.Builder.build(2020, 5, 29);
-        this.progress = newProgress;
+        this.progress += newProgress;
         List<Integer> levels = getLevels();
         for (int i = 0; i < levels.size(); ++i) {
             if(progress.equals(levels.get(i))) {
@@ -39,6 +39,9 @@ public class UserAchievement extends Achievement{
     public double getCurrentGoal() {
         int level = getCurrentLevel();
         List<Integer> levels = getLevels();
-        return levels.get(level+1);
+        if (level + 1 <= 3) {
+            return levels.get(level + 1);
+        }
+        else return levels.get(3);
     }
 }

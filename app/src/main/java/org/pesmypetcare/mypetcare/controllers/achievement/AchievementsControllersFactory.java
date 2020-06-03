@@ -16,4 +16,8 @@ public class AchievementsControllersFactory {
         return new TrGetAllAchievements(new AchievementAdapter());
         //si quieres probar un stub, cambia el new AchievementAdapter por el stub
     }
+
+    public static TrUpdateAchievement createTrUpdateAchievement() {
+        return new TrUpdateAchievement(new AchievementAdapter());
+    }
 }

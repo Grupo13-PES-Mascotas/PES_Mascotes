@@ -13,4 +13,8 @@ public class AchievementAdapter implements AchievementService {
     public List<UserAchievement> getAllAchievements(User user) {
         return user.getAchievements();
     }
+
+    public void updateAchievement(String nameAchievement, int progress, User user) {
+
+    }
 }
