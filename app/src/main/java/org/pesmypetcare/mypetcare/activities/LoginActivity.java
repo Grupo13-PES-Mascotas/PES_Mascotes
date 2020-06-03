@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
 
         StringBuilder scopes = new StringBuilder();
         for (Scope s : acct.getRequestedScopes())
-            scopes.append(s.toString()).append(" ");
+            scopes.append(s.toString()).append(' ');
         scopes = new StringBuilder(scopes.substring(0, scopes.toString().lastIndexOf(' ')));
 
         editor.putString("GoogleScopes", scopes.toString());

@@ -67,6 +67,7 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
     private static final String GOOGLE_CALENDAR_SHARED_PREFERENCES = "GoogleCalendar";
     private static final int MAX_PROGRESS_VALUE = 100;
     private static final int NUM_PET_INFO = 9;
+    private static final int WAITING_TIME = 5;
     private static boolean enableLoginActivity = true;
 
     private ActivityLauncherBinding binding;
@@ -123,7 +124,7 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
      * @param nPets The number of pets
      * @param progressIncrement The progress increment
      */
-    void initializeLoggedUserPets(int nPets, int progressIncrement) {
+    private void initializeLoggedUserPets(int nPets, int progressIncrement) {
         ExecutorService petData = Executors.newCachedThreadPool();
 
         for (int actual = 0; actual < nPets; ++actual) {
@@ -134,7 +135,7 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
         petData.shutdown();
 
         try {
-            petData.awaitTermination(5, TimeUnit.MINUTES);
+            petData.awaitTermination(WAITING_TIME, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -154,7 +155,7 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
         userData.shutdown();
 
         try {
-            userData.awaitTermination(5, TimeUnit.MINUTES);
+            userData.awaitTermination(WAITING_TIME, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -233,7 +234,7 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
      * Make the login to the application.
      */
     private void makeLogin() {
-        if (enableLoginActivity && (ServerData.getInstance().getMAuth().getCurrentUser() == null)) {
+        if (enableLoginActivity && ServerData.getInstance().getMAuth().getCurrentUser() == null) {
             startActivity(new Intent(LauncherActivity.this, LoginActivity.class));
             continueExecution = false;
             finish();
