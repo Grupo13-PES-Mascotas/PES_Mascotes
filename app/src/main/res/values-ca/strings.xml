@@ -348,5 +348,9 @@
         Selecciona una de les teves mascotes i inicia un passeig
     </string>
     <string name="go_to_my_pets">Anar a les meves mascotes</string>
+    <string name="do_not_have_any_pet">
+        No tens cap mascota\n
+        Fes clic al botó + per afegir-ne una
+    </string>
 
 </resources>

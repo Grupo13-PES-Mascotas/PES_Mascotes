@@ -343,6 +343,10 @@
         Selecciona una mascota para empezar un paseo
     </string>
     <string name="go_to_my_pets">Ir a mis mascotas</string>
+    <string name="do_not_have_any_pet">
+        No tienes ninguna mascota\n
+        Haz clic en el botón + para añadir una
+    </string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

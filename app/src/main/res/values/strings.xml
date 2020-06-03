@@ -342,6 +342,10 @@
         Select one of your pets and start a walk
     </string>
     <string name="go_to_my_pets">Go to my pets</string>
+    <string name="do_not_have_any_pet">
+        You do not have any pet\n
+        Click the + button to register one
+    </string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open" translatable="false">Open</string>
