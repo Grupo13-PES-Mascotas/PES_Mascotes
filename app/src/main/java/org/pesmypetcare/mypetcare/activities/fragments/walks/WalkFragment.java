@@ -74,6 +74,9 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         communication = (WalkCommunication) getActivity();
         polylines = new HashMap<>();
 
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
         mapView = binding.mapView;
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
