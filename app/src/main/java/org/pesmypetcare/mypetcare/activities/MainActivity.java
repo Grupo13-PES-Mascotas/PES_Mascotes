@@ -77,6 +77,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetFr
 import org.pesmypetcare.mypetcare.activities.fragments.settings.NewPasswordInterfaceCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.walks.ActualWalkingFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.walks.WalkCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.walks.WalkFragment;
 import org.pesmypetcare.mypetcare.activities.threads.GetPetImageRunnable;
@@ -2188,7 +2189,10 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void startWalk(List<String> walkingPetNames) {
         addPetsToWalkRegister(walkingPetNames);
-        LocationUpdater.startRoute();
+
+        ActualWalkingFragment actualWalkingFragment = new ActualWalkingFragment();
+        LocationUpdater.setCommunication(actualWalkingFragment);
+        changeFragment(actualWalkingFragment);
     }
 
     @Override
@@ -2219,6 +2223,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
 
         addWalk(pets, name, description, DateTime.Builder.buildFullString(strStartDateTime), endDateTime);
+        changeFragment(new InfoPetFragment());
     }
 
     /**

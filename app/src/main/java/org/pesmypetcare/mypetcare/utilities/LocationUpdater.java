@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.pesmypetcare.mypetcare.activities.MainActivity;
+import org.pesmypetcare.mypetcare.activities.fragments.walks.ActualWalkingCommunication;
 
 import java.util.Objects;
 
@@ -25,6 +26,8 @@ public class LocationUpdater {
     private static final int MIN_TIME = 5000;
     private static Context context;
     private static LocationManager locationManager;
+
+    private static ActualWalkingCommunication communication;
 
     private static LocationListener locationListener = new LocationListener() {
         @Override
@@ -102,6 +105,7 @@ public class LocationUpdater {
      */
     private static void updateCoordinates(Location location) {
         if (location != null) {
+            communication.updateActualLocation(location.getLatitude(), location.getLongitude());
             MainActivity.updateLocation(location.getLatitude(), location.getLongitude());
         }
     }
@@ -121,5 +125,13 @@ public class LocationUpdater {
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         updateCoordinates(location);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, 0, locationListener);
+    }
+
+    /**
+     * Set the communication.
+     * @param communication The communication to set
+     */
+    public static void setCommunication(ActualWalkingCommunication communication) {
+        LocationUpdater.communication = communication;
     }
 }
