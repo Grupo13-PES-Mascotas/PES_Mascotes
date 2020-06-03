@@ -323,7 +323,7 @@ public class StubCommunityService implements CommunityService {
             if (forum.equals(post.getForum())) {
                 for (Post forumPost : forum.getPosts()) {
                     if (forumPost.equals(post)) {
-                        forumPost.reportPost();
+                        forumPost.reportPost(user);
                     }
                 }
             }

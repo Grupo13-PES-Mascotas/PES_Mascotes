@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.community.forums.Forum;
+import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class Post implements Comparable<Post> {
     private int likes;
     private int reportsCount;
     private boolean isBanned;
+    private List<String> reporterUsername;
     private List<String> likerUsername;
     private DateTime creationDate;
     private Bitmap userImage;
@@ -28,6 +30,7 @@ public class Post implements Comparable<Post> {
         this.text = text;
         this.creationDate = creationDate;
         this.forum = forum;
+        this.reporterUsername = new ArrayList<>();
         this.likerUsername = new ArrayList<>();
         this.likerUsername.add(username);
     }
@@ -237,7 +240,8 @@ public class Post implements Comparable<Post> {
     /**
      * Increases the number of reports of the post.
      */
-    public void reportPost() {
+    public void reportPost(User user) {
+        reporterUsername.add(user.getUsername());
         reportsCount++;
     }
 }

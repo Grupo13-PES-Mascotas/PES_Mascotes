@@ -406,7 +406,10 @@ public class CommunityAdapter implements CommunityService {
 
     @Override
     public void reportPost(User user, Post post, String reportMessage) {
-        // Not implemented yet
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+        });
+        executorService.shutdown();
     }
 
     @Override
