@@ -265,6 +265,7 @@
     <string name="post_options_title">Opciones del post</string>
     <string name="post_options_message">Selecciona una acción para realizar en el post</string>
     <string name="post_report">Reportar post</string>
+    <string name="post_share">Compartir post</string>
     <string name="report_reason_sexual_content">Contenido sexual</string>
     <string name="report_reason_violent_or_repulsive_content">Contenido violento o repulsivo</string>
     <string name="report_reason_abusive_or_hate_content">Contenido abusivo o que incita al odio</string>
