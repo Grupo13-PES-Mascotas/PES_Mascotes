@@ -44,6 +44,10 @@ public class MyPetsFragment extends Fragment {
      * Method responsible for initializing and showing the main menu view.
      */
     private void initializeMainMenuView() {
+        if (currentUser.getPets().size() > 0) {
+            binding.emptyPetListText.setVisibility(View.GONE);
+        }
+
         binding.mainMenu.showPets(currentUser);
         setPetComponentsListeners();
     }
