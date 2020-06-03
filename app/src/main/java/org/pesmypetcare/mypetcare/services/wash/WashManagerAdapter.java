@@ -30,6 +30,18 @@ public class WashManagerAdapter implements WashManagerService {
         org.pesmypetcare.usermanager.datacontainers.pet.Wash libraryWash =
                 new org.pesmypetcare.usermanager.datacontainers.pet.Wash(wash.getDateTime().toString(),
                         wash.getWashDescription(), wash.getDuration());
+        createWashLibraryCall(accessToken, owner, petName, libraryWash);
+    }
+
+    /**
+     * Method responsible for calling the library for creating a new wash
+     * @param accessToken The access token of the user
+     * @param owner The owner of the pet
+     * @param petName The name of the pet
+     * @param libraryWash The wash that has to be created
+     */
+    private void createWashLibraryCall(String accessToken, String owner, String petName,
+                                       org.pesmypetcare.usermanager.datacontainers.pet.Wash libraryWash) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
@@ -95,6 +107,21 @@ public class WashManagerAdapter implements WashManagerService {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
+        updateWashDateLibraryCall(user, pet, newDate, oldDate, accessToken, owner, petName);
+    }
+
+    /**
+     * Method responsible for calling the library for updating the date of a meal
+     * @param user The current user
+     * @param pet The pet from which the meal has to be updated
+     * @param newDate The new date of the meal
+     * @param oldDate The old date of the meal
+     * @param accessToken The accesss token of the user
+     * @param owner The owner of the pet
+     * @param petName The pet name
+     */
+    private void updateWashDateLibraryCall(User user, Pet pet, String newDate, String oldDate, String accessToken,
+                                           String owner, String petName) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             WashData libraryWashData = null;

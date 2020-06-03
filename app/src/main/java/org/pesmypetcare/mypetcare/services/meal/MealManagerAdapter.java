@@ -60,6 +60,17 @@ public class MealManagerAdapter implements MealManagerService {
         String petName = pet.getName();
         MealData mealData = new MealData(meal.getMealName(), meal.getKcal());
         Meal libraryMeal = new Meal(meal.getMealDate().toString(), mealData);
+        updateMealBodyLibraryCall(accessToken, owner, petName, libraryMeal);
+    }
+
+    /**
+     * Method responsible for calling the library for updating the body of a meal.
+     * @param accessToken The access token of the user
+     * @param owner The owner of the pet
+     * @param petName The name of the pet
+     * @param libraryMeal The updated meal
+     */
+    private void updateMealBodyLibraryCall(String accessToken, String owner, String petName, Meal libraryMeal) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
@@ -175,7 +186,8 @@ public class MealManagerAdapter implements MealManagerService {
      * @param petName The name of the pet
      * @param appMeals The list of the meals of the pet
      */
-    private void findMealsByPetLibraryCall(String accessToken, String owner, String petName, ArrayList<Meals> appMeals) {
+    private void findMealsByPetLibraryCall(String accessToken, String owner, String petName,
+                                           List<Meals> appMeals) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             List<Meal> libraryMeals = null;
@@ -185,7 +197,6 @@ public class MealManagerAdapter implements MealManagerService {
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
-            assert libraryMeals != null;
             for (Meal libMeal : libraryMeals) {
                 appMeals.add(new Meals(DateTime.Builder.buildFullString(libMeal.getKey()),
                         libMeal.getBody().getKcal(), libMeal.getBody().getMealName()));

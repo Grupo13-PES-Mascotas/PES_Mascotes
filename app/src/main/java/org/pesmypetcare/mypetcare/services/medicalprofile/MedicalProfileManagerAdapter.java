@@ -66,7 +66,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
      * @param appVaccinations The list with all the vaccinations of the pet
      */
     private void findVaccinationsByPetLibraryCall(String accessToken, String owner, String petName,
-                                                  ArrayList<Vaccination> appVaccinations) {
+                                                  List<Vaccination> appVaccinations) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             List<org.pesmypetcare.usermanager.datacontainers.pet.Vaccination> libraryVaccinations = null;

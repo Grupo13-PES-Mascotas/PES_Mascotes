@@ -104,7 +104,8 @@ public class UserManagerAdapter implements UserManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                userData.set(ServiceLocator.getInstance().getUserManagerClient().getUser(user.getToken(), user.getUsername()));
+                userData.set(ServiceLocator.getInstance().getUserManagerClient().getUser(user.getToken(),
+                        user.getUsername()));
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }

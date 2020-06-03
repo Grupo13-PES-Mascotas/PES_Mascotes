@@ -79,6 +79,17 @@ public class GoogleCalendarAdapter implements GoogleCalendarService {
     public void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) {
         String id = (pet.getName() + event.getDateTime().getDay() + event.getDateTime().getMonth()
                 + event.getDateTime().getYear() + event.getDescription()).toLowerCase();
+        registerNewPeriodicEventLibraryCall(pet, event, period, id);
+    }
+
+    /**
+     * Method responsible for calling the library function for registering a new periodic event.
+     * @param pet The pet to whom the event has to be added
+     * @param event The event that has to be added to the pet
+     * @param period The periodicity of the event
+     * @param id The event id
+     */
+    private void registerNewPeriodicEventLibraryCall(Pet pet, Event event, int period, String id) {
         EventData eventData = new EventData(id, pet.getName(), A_REALLY_PRETTY_LOCATION,
                 event.getDescription(), EventData.FLAMINGO, EMAIL_REMINDER_MINUTES, period,
                 event.getDateTime().toString(), event.getDateTime().toString());

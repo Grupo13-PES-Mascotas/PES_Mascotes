@@ -152,13 +152,13 @@ public class PetManagerAdapter implements PetManagerService {
      */
     private Thread createSavePetImageThread(User user, Pet pet, byte[] finalBytesImage) {
         return new Thread(() -> {
-                try {
-                    ServiceLocator.getInstance().getPetManagerClient().saveProfileImage(user.getToken(),
-                        user.getUsername(), pet.getName(), finalBytesImage);
-                } catch (MyPetCareException e) {
-                    e.printStackTrace();
-                }
-            });
+            try {
+                ServiceLocator.getInstance().getPetManagerClient().saveProfileImage(user.getToken(),
+                    user.getUsername(), pet.getName(), finalBytesImage);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -258,9 +258,24 @@ public class PetManagerAdapter implements PetManagerService {
         return pets.get();
     }
 
+    /**
+     * Register a new event for the given pet.
+     * @param pet The pet for which the event has to be added
+     * @param event The event that has to be added
+     */
     public void registerNewEvent(Pet pet, Event event) {
         String id = (pet.getName() + event.getDateTime().getDay() + event.getDateTime().getMonth()
                 + event.getDateTime().getYear() + event.getDescription()).toLowerCase();
+        registerNewEventLibraryCall(pet, event, id);
+    }
+
+    /**
+     * Method responsible for calling the library to register a new event
+     * @param pet The pet for which the event has to be added
+     * @param event The event that has to be added
+     * @param id The id of the event
+     */
+    private void registerNewEventLibraryCall(Pet pet, Event event, String id) {
         EventData eventData = new EventData(id, pet.getName(), A_REALLY_PRETTY_LOCATION,
                 event.getDescription(), EventData.BLUEBERRY, EMAIL_REMINDER_MINUTES, 0,
                 event.getDateTime().toString(), event.getDateTime().toString());
@@ -434,9 +449,9 @@ public class PetManagerAdapter implements PetManagerService {
         executorService.execute(() -> {
             List<org.pesmypetcare.usermanager.datacontainers.pet.Exercise> exercises = null;
             try {
-                exercises = ServiceLocator.getInstance().
-                        getPetCollectionsManagerClient().getAllExercises(user.getToken(), user.getUsername(),
-                        pet.getName());
+                exercises = ServiceLocator.getInstance()
+                        .getPetCollectionsManagerClient().getAllExercises(user.getToken(), user.getUsername(),
+                                pet.getName());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -451,7 +466,8 @@ public class PetManagerAdapter implements PetManagerService {
                 } else {
                     Walk actualExercise = new Walk(exerciseData.getName(), exerciseData.getDescription(),
                             DateTime.Builder.buildFullString(exercise.getKey()),
-                            DateTime.Builder.buildFullString(exerciseData.getEndDateTime()), exerciseData.getCoordinates());
+                            DateTime.Builder.buildFullString(exerciseData.getEndDateTime()),
+                            exerciseData.getCoordinates());
                     exercisesSet.add(actualExercise);
                 }
             }

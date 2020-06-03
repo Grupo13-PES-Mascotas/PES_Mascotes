@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.services.vetvisits;
 
+import androidx.annotation.NonNull;
+
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
@@ -28,6 +30,19 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
+        ArrayList<VetVisit> appVisits = (ArrayList<VetVisit>) getVetVisitsLibraryCall(accessToken, owner, petName);
+        return appVisits;
+    }
+
+    /**
+     * Method responsible for calling the library for getting all the vet visits from a pet.
+     * @param accessToken The access token of the user
+     * @param owner The owner of the pet
+     * @param petName The name of the pet
+     * @return A list containing all the vet visits of the pet
+     */
+    @NonNull
+    private List<VetVisit> getVetVisitsLibraryCall(String accessToken, String owner, String petName) {
         ArrayList<VetVisit> appVisits = new ArrayList<>();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {

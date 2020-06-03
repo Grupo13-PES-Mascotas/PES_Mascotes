@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.services.medication;
 
+import androidx.annotation.NonNull;
+
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
@@ -32,6 +34,18 @@ public class MedicationManagerAdapter implements MedicationManagerService {
         org.pesmypetcare.usermanager.datacontainers.pet.Medication libraryMedication =
             new org.pesmypetcare.usermanager.datacontainers.pet.Medication(medication.getMedicationDate().toString(),
                 medication.getMedicationName(), libraryMedicationData);
+        createMedLibraryCall(accessToken, owner, petName, libraryMedication);
+    }
+
+    /**
+     * Method responsible for calling the library for creating a medication.
+     * @param accessToken The access token of the user
+     * @param owner The owner of the pet
+     * @param petName The name of the pet
+     * @param libraryMedication The medication that has to be created
+     */
+    private void createMedLibraryCall(String accessToken, String owner, String petName,
+                                      org.pesmypetcare.usermanager.datacontainers.pet.Medication libraryMedication) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
@@ -133,6 +147,19 @@ public class MedicationManagerAdapter implements MedicationManagerService {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
+        List<Medication> result = findPetMedsLibraryCall(accessToken, owner, petName);
+        return result;
+    }
+
+    /**
+     * Method responsible for calling the library for obtaining all the medications from a pet.
+     * @param accessToken The access token of the user
+     * @param owner The owner of the pet
+     * @param petName The name of the pet
+     * @return All the medications of the given pet
+     */
+    @NonNull
+    private List<Medication> findPetMedsLibraryCall(String accessToken, String owner, String petName) {
         List<Medication> result = new ArrayList<>();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
