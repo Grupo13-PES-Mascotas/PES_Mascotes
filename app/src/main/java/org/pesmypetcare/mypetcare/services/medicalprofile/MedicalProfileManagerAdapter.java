@@ -54,6 +54,19 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         String owner = user.getUsername();
         String petName = pet.getName();
         ArrayList<Vaccination> appVaccinations = new ArrayList<>();
+        findVaccinationsByPetLibraryCall(accessToken, owner, petName, appVaccinations);
+        return appVaccinations;
+    }
+
+    /**
+     * Method responsible for calling the library to obtain all the vaccinations of a given pet.
+     * @param accessToken The access token of the user
+     * @param owner The owner of the pet
+     * @param petName The name of the pet
+     * @param appVaccinations The list with all the vaccinations of the pet
+     */
+    private void findVaccinationsByPetLibraryCall(String accessToken, String owner, String petName,
+                                                  ArrayList<Vaccination> appVaccinations) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             List<org.pesmypetcare.usermanager.datacontainers.pet.Vaccination> libraryVaccinations = null;
@@ -74,7 +87,6 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return appVaccinations;
     }
 
     @Override

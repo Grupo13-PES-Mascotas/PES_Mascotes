@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.services.pet;
 import android.graphics.Bitmap;
 import android.util.Pair;
 
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
@@ -54,7 +55,7 @@ public class PetManagerAdapter implements PetManagerService {
                     PetData.GENDER, pet.getGender().toString());
                 ServiceLocator.getInstance().getPetManagerClient().updateSimpleField(userToken, ownerUsername, name,
                     PetData.PATHOLOGIES, pet.getPathologies());
-            } catch (ExecutionException | InterruptedException e) {
+            } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
         });
@@ -87,7 +88,7 @@ public class PetManagerAdapter implements PetManagerService {
             try {
                 ServiceLocator.getInstance().getPetManagerClient().createPet(user.getToken(), user.getUsername(),
                     libraryPet);
-            } catch (ExecutionException | InterruptedException e) {
+            } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
 
@@ -97,7 +98,7 @@ public class PetManagerAdapter implements PetManagerService {
                 ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
                     user.getUsername(), pet.getName(), PetData.WEIGHTS, libraryWeight.getKey(),
                     libraryWeight.getBodyAsMap());
-            } catch (ExecutionException | InterruptedException e) {
+            } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
         });
@@ -155,7 +156,7 @@ public class PetManagerAdapter implements PetManagerService {
                 try {
                     ServiceLocator.getInstance().getPetManagerClient().saveProfileImage(user.getToken(),
                         user.getUsername(), pet.getName(), finalBytesImage);
-                } catch (ExecutionException | InterruptedException e) {
+                } catch (MyPetCareException e) {
                     e.printStackTrace();
                 }
             });
@@ -163,14 +164,18 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public void deletePet(Pet pet, User user) {
-        try {
-            ServiceLocator.getInstance().getPetManagerClient().deletePet(user.getToken(), user.getUsername(),
-                pet.getName());
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        ImageManager.deleteImage(ImageManager.PET_PROFILE_IMAGES_PATH, user.getUsername() + '_' + pet.getName());
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getPetManagerClient().deletePet(user.getToken(), user.getUsername(),
+                        pet.getName());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
+        ImageManager.deleteImage(ImageManager.PET_PROFILE_IMAGES_PATH, user.getUsername()
+                + '_' + pet.getName());
     }
 
     @Override
@@ -178,28 +183,40 @@ public class PetManagerAdapter implements PetManagerService {
         ArrayList<Pet> pets = user.getPets();
 
         for (Pet pet : pets) {
-            ImageManager.deleteImage(ImageManager.PET_PROFILE_IMAGES_PATH, user.getUsername() + "_" + pet.getName());
-            try {
-                ServiceLocator.getInstance().getPetManagerClient().deletePet(user.getToken(), user.getUsername(),
-                    pet.getName());
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
+            ImageManager.deleteImage(ImageManager.PET_PROFILE_IMAGES_PATH, user.getUsername()
+                    + "_" + pet.getName());
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(() -> {
+                try {
+                    ServiceLocator.getInstance().getPetManagerClient().deletePet(user.getToken(), user.getUsername(),
+                            pet.getName());
+                } catch (MyPetCareException e) {
+                    e.printStackTrace();
+                }
+            });
+            executorService.shutdown();
         }
     }
 
     @Override
     public List<Pet> findPetsByOwner(User user) throws PetRepeatException {
-        List<org.pesmypetcare.usermanager.datacontainers.pet.Pet> userPets = null;
-
+        AtomicReference<List<org.pesmypetcare.usermanager.datacontainers.pet.Pet>> userPets = null;
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                userPets.set(ServiceLocator.getInstance().getPetManagerClient().getAllPets(user.getToken(),
+                        user.getUsername()));
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
         try {
-            userPets = ServiceLocator.getInstance().getPetManagerClient().getAllPets(user.getToken(),
-                user.getUsername());
-        } catch (ExecutionException | InterruptedException e) {
+            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        return getPets(userPets);
+        return getPets(userPets.get());
     }
 
     /**
@@ -223,53 +240,87 @@ public class PetManagerAdapter implements PetManagerService {
 
     @Override
     public Map<String, byte[]> getAllPetsImages(User user) {
-        Map<String, byte[]> pets = null;
+        AtomicReference<Map<String, byte[]>> pets = null;
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                pets.set(ServiceLocator.getInstance().getPetManagerClient().downloadAllProfileImages(user.getToken(),
+                        user.getUsername()));
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
         try {
-            pets = ServiceLocator.getInstance().getPetManagerClient().downloadAllProfileImages(user.getToken(),
-                user.getUsername());
-        } catch (ExecutionException | InterruptedException e) {
+            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        return pets;
+        return pets.get();
     }
 
-    public void registerNewEvent(Pet pet, Event event) throws ExecutionException, InterruptedException {
+    public void registerNewEvent(Pet pet, Event event) {
         String id = (pet.getName() + event.getDateTime().getDay() + event.getDateTime().getMonth()
                 + event.getDateTime().getYear() + event.getDescription()).toLowerCase();
         EventData eventData = new EventData(id, pet.getName(), A_REALLY_PRETTY_LOCATION,
                 event.getDescription(), EventData.BLUEBERRY, EMAIL_REMINDER_MINUTES, 0,
                 event.getDateTime().toString(), event.getDateTime().toString());
-        ServiceLocator.getInstance().getGoogleCalendarManagerClient().createEvent(pet.getOwner()
-                .getGoogleCalendarToken(), pet.getOwner().getUsername(), pet.getName(), eventData);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getGoogleCalendarManagerClient().createEvent(pet.getOwner()
+                        .getGoogleCalendarToken(), pet.getOwner().getUsername(), pet.getName(), eventData);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     @Override
-    public void deleteEvent(Pet pet, Event event) throws ExecutionException, InterruptedException {
+    public void deleteEvent(Pet pet, Event event) {
         String id = (pet.getName() + event.getDateTime().getDay() + event.getDateTime().getMonth()
                 + event.getDateTime().getYear() + event.getDescription()).toLowerCase();
-        ServiceLocator.getInstance().getGoogleCalendarManagerClient().deleteEvent(pet.getOwner()
-                .getGoogleCalendarToken(), pet.getOwner().getUsername(), pet.getName(), id);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getGoogleCalendarManagerClient().deleteEvent(pet.getOwner()
+                        .getGoogleCalendarToken(), pet.getOwner().getUsername(), pet.getName(), id);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     @Override
-    public void addWeight(User user, Pet pet, double newWeight, DateTime dateTime) throws ExecutionException,
-        InterruptedException {
+    public void addWeight(User user, Pet pet, double newWeight, DateTime dateTime) {
         Weight libraryWeight = new Weight(dateTime.toString(), (int) newWeight);
-        ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
-                user.getUsername(), pet.getName(), PetData.WEIGHTS, libraryWeight.getKey(),
-            libraryWeight.getBodyAsMap());
-
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
+                        user.getUsername(), pet.getName(), PetData.WEIGHTS, libraryWeight.getKey(),
+                        libraryWeight.getBodyAsMap());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     @Override
-    public void deletePetWeight(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException {
-        String accessToken = user.getToken();
-        String userName = user.getUsername();
-        String petName = pet.getName();
-        //ServiceLocator.getInstance().getWeightManagerClient().deleteByDate(accessToken, userName, petName, dateTime);
-        ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(user.getToken(),
-                user.getUsername(), pet.getName(), PetData.WEIGHTS, dateTime.toString());
+    public void deletePetWeight(User user, Pet pet, DateTime dateTime) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(user.getToken(),
+                        user.getUsername(), pet.getName(), PetData.WEIGHTS, dateTime.toString());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     @Override
@@ -295,41 +346,68 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     @Override
-    public void addExercise(User user, Pet pet, Exercise exercise) throws ExecutionException, InterruptedException {
+    public void addExercise(User user, Pet pet, Exercise exercise) {
         ExerciseData libraryExerciseData = new ExerciseData(exercise.getName(), exercise.getDescription(),
                 exercise.getEndTime().toString());
         org.pesmypetcare.usermanager.datacontainers.pet.Exercise libraryExercise =
                 new org.pesmypetcare.usermanager.datacontainers.pet.Exercise(exercise.getDateTime().toString(),
                     libraryExerciseData);
-        ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
-                user.getUsername(), pet.getName(), PetData.EXERCISES, libraryExercise.getKey(),
-            libraryExercise.getBodyAsMap());
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
+                        user.getUsername(), pet.getName(), PetData.EXERCISES, libraryExercise.getKey(),
+                        libraryExercise.getBodyAsMap());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     @Override
-    public void deleteExercise(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException {
-        ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(user.getToken(),
-                user.getUsername(), pet.getName(), PetData.EXERCISES, dateTime.toString());
+    public void deleteExercise(User user, Pet pet, DateTime dateTime) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(user.getToken(),
+                        user.getUsername(), pet.getName(), PetData.EXERCISES, dateTime.toString());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     @Override
-    public void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise)
-        throws ExecutionException, InterruptedException {
-        ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(user.getToken(),
-                user.getUsername(), pet.getName(), PetData.EXERCISES, originalDateTime.toString());
-        ExerciseData libraryExerciseData = new ExerciseData(exercise.getName(), exercise.getDescription(),
-                exercise.getEndTime().toString());
+    public void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(user.getToken(),
+                        user.getUsername(), pet.getName(), PetData.EXERCISES, originalDateTime.toString());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+            ExerciseData libraryExerciseData = new ExerciseData(exercise.getName(), exercise.getDescription(),
+                    exercise.getEndTime().toString());
 
-        if (exercise instanceof Walk) {
-            libraryExerciseData.setCoordinates(((Walk) exercise).getCoordinates());
-        }
+            if (exercise instanceof Walk) {
+                libraryExerciseData.setCoordinates(((Walk) exercise).getCoordinates());
+            }
 
-        org.pesmypetcare.usermanager.datacontainers.pet.Exercise libraryExercise =
-                new org.pesmypetcare.usermanager.datacontainers.pet.Exercise(exercise.getDateTime().toString(),
-                    libraryExerciseData);
-        ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
-                user.getUsername(), pet.getName(), PetData.EXERCISES, libraryExercise.getKey(),
-            libraryExercise.getBodyAsMap());
+            org.pesmypetcare.usermanager.datacontainers.pet.Exercise libraryExercise =
+                    new org.pesmypetcare.usermanager.datacontainers.pet.Exercise(exercise.getDateTime().toString(),
+                            libraryExerciseData);
+            try {
+                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
+                        user.getUsername(), pet.getName(), PetData.EXERCISES, libraryExercise.getKey(),
+                        libraryExercise.getBodyAsMap());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     @Override
@@ -339,34 +417,54 @@ public class PetManagerAdapter implements PetManagerService {
         org.pesmypetcare.usermanager.datacontainers.pet.Exercise libraryExercise =
             new org.pesmypetcare.usermanager.datacontainers.pet.Exercise(walk.getDateTime().toString(),
                 libraryExerciseData);
-        ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
-            user.getUsername(), pet.getName(), PetData.EXERCISES, libraryExercise.getKey(),
-            libraryExercise.getBodyAsMap());
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
+                        user.getUsername(), pet.getName(), PetData.EXERCISES, libraryExercise.getKey(),
+                        libraryExercise.getBodyAsMap());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     @Override
-    public List<Exercise> getAllExercises(User user, Pet pet) throws ExecutionException, InterruptedException {
-        List<org.pesmypetcare.usermanager.datacontainers.pet.Exercise> exercises = ServiceLocator.getInstance()
-            .getPetCollectionsManagerClient().getAllExercises(user.getToken(), user.getUsername(), pet.getName());
-
+    public List<Exercise> getAllExercises(User user, Pet pet) {
         SortedSet<Exercise> exercisesSet = new TreeSet<>();
-
-        for (org.pesmypetcare.usermanager.datacontainers.pet.Exercise exercise : exercises) {
-            ExerciseData exerciseData = exercise.getBody();
-
-            if (exerciseData.getCoordinates() == null) {
-                Exercise actualExercise = new Exercise(exerciseData.getName(), exerciseData.getDescription(),
-                    DateTime.Builder.buildFullString(exercise.getKey()),
-                    DateTime.Builder.buildFullString(exerciseData.getEndDateTime()));
-                exercisesSet.add(actualExercise);
-            } else {
-                Walk actualExercise = new Walk(exerciseData.getName(), exerciseData.getDescription(),
-                    DateTime.Builder.buildFullString(exercise.getKey()),
-                    DateTime.Builder.buildFullString(exerciseData.getEndDateTime()), exerciseData.getCoordinates());
-                exercisesSet.add(actualExercise);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            List<org.pesmypetcare.usermanager.datacontainers.pet.Exercise> exercises = null;
+            try {
+                exercises = ServiceLocator.getInstance().
+                        getPetCollectionsManagerClient().getAllExercises(user.getToken(), user.getUsername(),
+                        pet.getName());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
             }
-        }
+            for (org.pesmypetcare.usermanager.datacontainers.pet.Exercise exercise : exercises) {
+                ExerciseData exerciseData = exercise.getBody();
 
+                if (exerciseData.getCoordinates() == null) {
+                    Exercise actualExercise = new Exercise(exerciseData.getName(), exerciseData.getDescription(),
+                            DateTime.Builder.buildFullString(exercise.getKey()),
+                            DateTime.Builder.buildFullString(exerciseData.getEndDateTime()));
+                    exercisesSet.add(actualExercise);
+                } else {
+                    Walk actualExercise = new Walk(exerciseData.getName(), exerciseData.getDescription(),
+                            DateTime.Builder.buildFullString(exercise.getKey()),
+                            DateTime.Builder.buildFullString(exerciseData.getEndDateTime()), exerciseData.getCoordinates());
+                    exercisesSet.add(actualExercise);
+                }
+            }
+        });
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return new ArrayList<>(exercisesSet);
     }
 
@@ -382,7 +480,7 @@ public class PetManagerAdapter implements PetManagerService {
             try {
                 Objects.requireNonNull(weights).set(ServiceLocator.getInstance().getPetCollectionsManagerClient()
                     .getAllWeights(accessToken, owner, petName));
-            } catch (ExecutionException | InterruptedException e) {
+            } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
         });
@@ -407,11 +505,16 @@ public class PetManagerAdapter implements PetManagerService {
                     user.getUsername(), pet.getName());
             } catch (NullPointerException ignored) {
 
-            } catch (ExecutionException | InterruptedException e) {
+            } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
         });
-
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return bytes;
     }
 

@@ -6,7 +6,6 @@ import org.pesmypetcare.mypetcare.features.pets.events.medication.MedicationAlre
 import org.pesmypetcare.mypetcare.features.users.User;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Xavier Campos
@@ -19,8 +18,7 @@ public interface MedicationManagerService {
      * @param pet The pet to which we want to add the medication
      * @param medication The medication that has to be added to the pet
      */
-    void createMedication(User user, Pet pet, Medication medication) throws MedicationAlreadyExistingException,
-        ExecutionException, InterruptedException;
+    void createMedication(User user, Pet pet, Medication medication) throws MedicationAlreadyExistingException;
 
     /**
      * Method that updates the body of the indicated medication.
@@ -28,8 +26,7 @@ public interface MedicationManagerService {
      * @param pet The pet from which we want to update the medication
      * @param medication The updated medication
      */
-    void updateMedicationBody(User user, Pet pet, Medication medication) throws ExecutionException,
-        InterruptedException;
+    void updateMedicationBody(User user, Pet pet, Medication medication);
 
     /**
      * Method that updates the date of the indicated medication.
@@ -41,7 +38,7 @@ public interface MedicationManagerService {
      * @param oldName The old name of the medication
      */
     void updateMedicationKey(User user, Pet pet, String newDate, String oldDate, String newName, String oldName)
-        throws ExecutionException, InterruptedException, MedicationAlreadyExistingException;
+        throws MedicationAlreadyExistingException;
 
     /**
      * Method that removes a medication from the indicated pet.
@@ -49,14 +46,14 @@ public interface MedicationManagerService {
      * @param pet The pet from which we want to delete the medication
      * @param medication The medication that has to be deleted from the pet
      */
-    void deleteMedication(User user, Pet pet, Medication medication) throws ExecutionException, InterruptedException;
+    void deleteMedication(User user, Pet pet, Medication medication);
 
     /**
      * Method that deletes all the medications from the indicated pet.
      * @param user The owner of the pet.
      * @param pet The pet from which we want to delete all the medications
      */
-    void deleteMedicationsFromPet(User user, Pet pet) throws ExecutionException, InterruptedException;
+    void deleteMedicationsFromPet(User user, Pet pet);
 
     /**
      * Method that obtains all the medications of the indicated pet.
@@ -64,5 +61,5 @@ public interface MedicationManagerService {
      * @param pet The pet from which we want to obtain all the medications
      * @return A list containing all the medications of the pet
      */
-    List<Medication> findMedicationsByPet(User user, Pet pet) throws ExecutionException, InterruptedException;
+    List<Medication> findMedicationsByPet(User user, Pet pet);
 }

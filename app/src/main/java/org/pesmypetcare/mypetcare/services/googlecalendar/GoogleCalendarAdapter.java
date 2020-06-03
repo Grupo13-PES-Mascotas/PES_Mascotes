@@ -24,6 +24,15 @@ public class GoogleCalendarAdapter implements GoogleCalendarService {
         EventData eventData = new EventData(id, pet.getName(), A_REALLY_PRETTY_LOCATION,
                 event.getDescription(), EventData.BLUEBERRY, EMAIL_REMINDER_MINUTES, 0,
                 event.getDateTime().toString(), event.getDateTime().toString());
+        registerNewEventLibraryCall(pet, eventData);
+    }
+
+    /**
+     * Method responsible for calling the library to create a new event.
+     * @param pet The pet for which we want to create a new event
+     * @param eventData The data of the new event
+     */
+    private void registerNewEventLibraryCall(Pet pet, EventData eventData) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {

@@ -30,6 +30,17 @@ public class MealManagerAdapter implements MealManagerService {
 
         MealData mealData = new MealData(meal.getMealName(), meal.getKcal());
         Meal libraryMeal = new Meal(meal.getMealDate().toString(), mealData);
+        createMealLibraryCall(accessToken, owner, petName, libraryMeal);
+    }
+
+    /**
+     * Method responsible for calling the library to create a new meal.
+     * @param accessToken The access token of the user
+     * @param owner The owner of the pet
+     * @param petName The name of the pet
+     * @param libraryMeal The meal that has to be created
+     */
+    private void createMealLibraryCall(String accessToken, String owner, String petName, Meal libraryMeal) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
@@ -153,6 +164,18 @@ public class MealManagerAdapter implements MealManagerService {
         String owner = user.getUsername();
         String petName = pet.getName();
         ArrayList<Meals> appMeals = new ArrayList<>();
+        findMealsByPetLibraryCall(accessToken, owner, petName, appMeals);
+        return appMeals;
+    }
+
+    /**
+     * Method responsible for calling the library to obtain all the meals of the given pet.
+     * @param accessToken The access token of the user
+     * @param owner The owner of the pet
+     * @param petName The name of the pet
+     * @param appMeals The list of the meals of the pet
+     */
+    private void findMealsByPetLibraryCall(String accessToken, String owner, String petName, ArrayList<Meals> appMeals) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             List<Meal> libraryMeals = null;
@@ -174,7 +197,6 @@ public class MealManagerAdapter implements MealManagerService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return appMeals;
     }
 
     @Override
