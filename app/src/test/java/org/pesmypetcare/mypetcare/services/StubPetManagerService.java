@@ -196,7 +196,7 @@ public class StubPetManagerService implements PetManagerService {
         int petIndex = Objects.requireNonNull(pets).indexOf(pet);
 
         for (Map.Entry<DateTime, Double> entry : pets.get(petIndex).getHealthInfo().getWeight().entrySet()) {
-            weights.add(new Weight(entry.getKey().toString(), entry.getValue().intValue()));
+            weights.add(new Weight(entry.getKey().toString(), entry.getValue()));
         }
 
         return weights;

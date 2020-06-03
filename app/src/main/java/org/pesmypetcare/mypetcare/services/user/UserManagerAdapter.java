@@ -101,7 +101,7 @@ public class UserManagerAdapter implements UserManagerService {
 
     @Override
     public boolean userExists(User user) {
-        AtomicReference<UserData> userData = new AtomicReference<>();;
+        AtomicReference<UserData> userData = new AtomicReference<>();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
