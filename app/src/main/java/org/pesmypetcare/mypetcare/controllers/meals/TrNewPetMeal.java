@@ -9,8 +9,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.meal.MealManagerService;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Xavier Campos
  */
@@ -61,9 +59,10 @@ public class TrNewPetMeal {
 
     /**
      * Execute the transaction.
+     * @throws MealAlreadyExistingException The meal already exists
+     * @throws InvalidFormatException The format is invalid
      */
-    public void execute() throws MealAlreadyExistingException, InterruptedException, ExecutionException,
-        InvalidFormatException {
+    public void execute() throws MealAlreadyExistingException, InvalidFormatException {
         result = false;
 
         if (mealHasAlreadyBeenAdded()) {

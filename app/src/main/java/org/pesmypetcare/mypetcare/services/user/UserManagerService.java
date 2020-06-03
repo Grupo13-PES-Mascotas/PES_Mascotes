@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.users.User;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Albert Pinto
  */
@@ -76,7 +74,7 @@ public interface UserManagerService {
      * @param username The username
      * @return True if exists a user with the same username, false otherwise
      */
-    boolean usernameExists(String username) throws ExecutionException, InterruptedException;
+    boolean usernameExists(String username);
 
     /**
      * Change the username of a user.
@@ -92,8 +90,7 @@ public interface UserManagerService {
      * @param accessToken The access token of the current user
      * @throws MyPetCareException There has been a problem with the server connection
      */
-    Bitmap obtainUserImage(String username, String accessToken) throws ExecutionException, InterruptedException,
-        MyPetCareException;
+    Bitmap obtainUserImage(String username, String accessToken) throws MyPetCareException;
 
     /**
      * Sent the firebase messaging token.

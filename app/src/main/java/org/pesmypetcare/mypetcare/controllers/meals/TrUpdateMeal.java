@@ -5,8 +5,6 @@ import org.pesmypetcare.mypetcare.features.pets.events.meals.Meals;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.meal.MealManagerService;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Xavier Campos
  */
@@ -59,7 +57,7 @@ public class TrUpdateMeal {
     /**
      * Execute the transaction.
      */
-    public void execute() throws ExecutionException, InterruptedException {
+    public void execute() {
         mealManagerService.updateMealBody(user, pet, meal);
         if (updatesDate) {
             mealManagerService.updateMealKey(user, pet, newDate, meal.getDateTime().toString());

@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.controllers.medicalprofile;
 
-import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.illness.Illness;
 import org.pesmypetcare.mypetcare.features.pets.events.medicalprofile.illness.IllnessAlreadyExistingException;
@@ -8,8 +7,6 @@ import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.medicalprofile.MedicalProfileManagerService;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Xavier Campos
@@ -62,9 +59,10 @@ public class TrAddNewPetIllness {
 
     /**
      * Executes the transaction.
+     * @throws NotPetOwnerException The user is not the owner of the pet
+     * @throws IllnessAlreadyExistingException The illness already exists
      */
-    public void execute() throws NotPetOwnerException, IllnessAlreadyExistingException, ExecutionException,
-        InterruptedException, InvalidFormatException {
+    public void execute() throws NotPetOwnerException, IllnessAlreadyExistingException {
         result = false;
         if (!user.getUsername().equals(pet.getOwner().getUsername())) {
             throw new NotPetOwnerException();

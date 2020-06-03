@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Enric Hernando
@@ -37,33 +36,41 @@ public class StubGoogleCalendarService implements GoogleCalendarService {
     }
 
     @Override
-    public void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) throws ParseException {
+    public void registerNewPeriodicNotification(User user, Pet pet, Event event, int period) {
         ArrayList<Pet> pets = data.get(user.getUsername());
         assert pets != null;
         int index = Objects.requireNonNull(pets).indexOf(pet);
-        pets.get(index).addPeriodicNotification(event, period);
+        try {
+            pets.get(index).addPeriodicNotification(event, period);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void deletePeriodicEvent(User user, Pet pet, Event event) throws ParseException {
+    public void deletePeriodicEvent(User user, Pet pet, Event event) {
         ArrayList<Pet> pets = data.get(user.getUsername());
         assert pets != null;
         int index = Objects.requireNonNull(pets).indexOf(pet);
-        pets.get(index).deletePeriodicNotification(event);
+        try {
+            pets.get(index).deletePeriodicNotification(event);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void registerNewEvent(Pet pet, Event event) throws ExecutionException, InterruptedException {
+    public void registerNewEvent(Pet pet, Event event) {
         //
     }
 
     @Override
-    public void deleteEvent(Pet pet, Event event) throws ExecutionException, InterruptedException {
+    public void deleteEvent(Pet pet, Event event) {
         //
     }
 
     @Override
-    public void newSecondaryCalendar(Pet pet) throws ExecutionException, InterruptedException {
+    public void newSecondaryCalendar(Pet pet) {
         //
     }
 }

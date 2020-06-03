@@ -144,14 +144,10 @@ public class SignUpFragment extends Fragment {
         ServerData.getInstance().getMAuth().signInWithCredential(credential)
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                     if (task.isSuccessful()) {
-                        try {
-                            if (!userManagerService.usernameExists(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getDisplayName())) {
-                                userManagerService.createUser(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getUid(),
-                                        ServerData.getInstance().getMAuth().getCurrentUser().getDisplayName(), ServerData.getInstance().getMAuth().getCurrentUser().getEmail(),
-                                        "");
-                            }
-                        } catch (ExecutionException | InterruptedException e) {
-                            e.printStackTrace();
+                        if (!userManagerService.usernameExists(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getDisplayName())) {
+                            userManagerService.createUser(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getUid(),
+                                    ServerData.getInstance().getMAuth().getCurrentUser().getDisplayName(), ServerData.getInstance().getMAuth().getCurrentUser().getEmail(),
+                                    "");
                         }
                         startActivity(new Intent(getActivity(), LauncherActivity.class));
                         Objects.requireNonNull(getActivity()).finish();
@@ -194,13 +190,9 @@ public class SignUpFragment extends Fragment {
         ServerData.getInstance().getMAuth().signInWithCredential(credential)
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                     if (task.isSuccessful()) {
-                        try {
-                            if (!userManagerService.usernameExists(acct.getDisplayName())) {
-                                userManagerService.createUser(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getUid(),
-                                        acct.getDisplayName(), acct.getEmail(), "");
-                            }
-                        } catch (ExecutionException | InterruptedException e) {
-                            e.printStackTrace();
+                        if (!userManagerService.usernameExists(acct.getDisplayName())) {
+                            userManagerService.createUser(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getUid(),
+                                    acct.getDisplayName(), acct.getEmail(), "");
                         }
                         startActivity(new Intent(getActivity(), LauncherActivity.class));
                         Objects.requireNonNull(getActivity()).finish();

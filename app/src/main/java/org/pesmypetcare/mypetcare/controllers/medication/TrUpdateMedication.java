@@ -6,8 +6,6 @@ import org.pesmypetcare.mypetcare.features.pets.events.medication.MedicationAlre
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.medication.MedicationManagerService;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Xavier Campos
  */
@@ -71,8 +69,9 @@ public class TrUpdateMedication {
 
     /**
      * Execute the transaction.
+     * @throws MedicationAlreadyExistingException The medication already exists
      */
-    public void execute() throws InterruptedException, ExecutionException, MedicationAlreadyExistingException {
+    public void execute() throws MedicationAlreadyExistingException {
         medicationManagerService.updateMedicationBody(user, pet, medication);
         if (updatesDate || updatesName) {
             if (!updatesDate) {
