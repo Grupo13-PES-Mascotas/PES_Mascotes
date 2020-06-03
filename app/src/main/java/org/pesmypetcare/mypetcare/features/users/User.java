@@ -277,6 +277,7 @@ public class User {
         }
     }
     private void initializeAchievements() {
+        achievements = new ArrayList<>();
         initializeCommentator();
         initializeContributor();
         initializeWalker();
@@ -297,6 +298,7 @@ public class User {
         levels.add(1, 30);
         levels.add(1, 50);
         commentator.setLevels(levels);
+        achievements.add(commentator);
     }
 
     private void initializeContributor() {
@@ -307,6 +309,7 @@ public class User {
         levels.add(1, 20);
         levels.add(1, 40);
         contributor.setLevels(levels);
+        achievements.add(contributor);
     }
 
     private void initializeWalker() {
@@ -317,6 +320,7 @@ public class User {
         levels.add(1, 100);
         levels.add(1, 200);
         walker.setLevels(levels);
+        achievements.add(walker);
     }
 
     private void initializeZoo() {
@@ -327,6 +331,7 @@ public class User {
         levels.add(1, 3);
         levels.add(1, 4);
         zoo.setLevels(levels);
+        achievements.add(zoo);
     }
 
     private void initializeSuperwalker() {
@@ -337,6 +342,8 @@ public class User {
         levels.add(1, 60);
         levels.add(1, 100);
         superwalker.setLevels(levels);
+        achievements.add(superwalker);
+
     }
 
     private void initializeCleaner() {
@@ -347,6 +354,7 @@ public class User {
         levels.add(1, 10);
         levels.add(1, 20);
         cleaner.setLevels(levels);
+        achievements.add(cleaner);
     }
 
     private void initializeScaler() {
@@ -357,6 +365,7 @@ public class User {
         levels.add(1, 10);
         levels.add(1, 20);
         scaler.setLevels(levels);
+        achievements.add(scaler);
     }
 
     private void initializeFounder() {
@@ -367,6 +376,7 @@ public class User {
         levels.add(1, 5);
         levels.add(1, 10);
         founder.setLevels(levels);
+        achievements.add(founder);
     }
 
     private void iniitializeMealer() {
@@ -377,6 +387,7 @@ public class User {
         levels.add(1, 100);
         levels.add(1, 200);
         mealer.setLevels(levels);
+        achievements.add(mealer);
     }
 
     private void initializeEvent() {
@@ -387,6 +398,7 @@ public class User {
         levels.add(1, 30);
         levels.add(1, 50);
         event.setLevels(levels);
+        achievements.add(event);
     }
 
 }

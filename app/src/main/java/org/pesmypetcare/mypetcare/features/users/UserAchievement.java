@@ -14,7 +14,9 @@ public class UserAchievement extends Achievement{
     private List<DateTime> completedLevelsDate;
 
     public UserAchievement(String name, int description) {
+
         super(name, description);
+        progress = 0;
     }
 
     public void updateProgress(Integer newProgress) throws InvalidFormatException {
