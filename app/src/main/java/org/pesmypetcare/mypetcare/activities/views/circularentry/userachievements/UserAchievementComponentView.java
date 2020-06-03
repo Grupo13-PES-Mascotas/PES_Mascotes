@@ -1,7 +1,6 @@
 package org.pesmypetcare.mypetcare.activities.views.circularentry.userachievements;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -31,7 +30,7 @@ public class UserAchievementComponentView extends CircularEntryView {
     @Override
     protected CircularImageView getImage() {
         CircularImageView image = new CircularImageView(getCurrentActivity(), null);
-        Drawable achievementDrawable = getResources().getDrawable(R.drawable.icon_medal_placeholder, null);
+        Drawable achievementDrawable = getResources().getDrawable(R.drawable.medalla, null);
 
         /*
         if (achievement.getAchievementIcon() != null) {
