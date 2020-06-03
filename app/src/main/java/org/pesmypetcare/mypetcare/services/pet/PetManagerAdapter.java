@@ -270,7 +270,7 @@ public class PetManagerAdapter implements PetManagerService {
     }
 
     /**
-     * Method responsible for calling the library to register a new event
+     * Method responsible for calling the library to register a new event.
      * @param pet The pet for which the event has to be added
      * @param event The event that has to be added
      * @param id The id of the event

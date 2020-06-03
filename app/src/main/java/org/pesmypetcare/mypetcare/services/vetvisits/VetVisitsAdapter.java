@@ -30,8 +30,7 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
-        ArrayList<VetVisit> appVisits = (ArrayList<VetVisit>) getVetVisitsLibraryCall(accessToken, owner, petName);
-        return appVisits;
+        return getVetVisitsLibraryCall(accessToken, owner, petName);
     }
 
     /**

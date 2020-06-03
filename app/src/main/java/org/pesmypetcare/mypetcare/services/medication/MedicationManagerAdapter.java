@@ -147,8 +147,7 @@ public class MedicationManagerAdapter implements MedicationManagerService {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
-        List<Medication> result = findPetMedsLibraryCall(accessToken, owner, petName);
-        return result;
+        return findPetMedsLibraryCall(accessToken, owner, petName);
     }
 
     /**

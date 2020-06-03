@@ -34,7 +34,7 @@ public class WashManagerAdapter implements WashManagerService {
     }
 
     /**
-     * Method responsible for calling the library for creating a new wash
+     * Method responsible for calling the library for creating a new wash.
      * @param accessToken The access token of the user
      * @param owner The owner of the pet
      * @param petName The name of the pet
