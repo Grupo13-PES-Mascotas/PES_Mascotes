@@ -72,7 +72,8 @@ public class WashManagerAdapter implements WashManagerService {
      * @param petName The name of the pet
      * @param libraryWash The wash that has to be deleted
      */
-    private void deleteWashLibraryCall(String accessToken, String owner, String petName, org.pesmypetcare.usermanager.datacontainers.pet.Wash libraryWash) {
+    private void deleteWashLibraryCall(String accessToken, String owner, String petName,
+                                       org.pesmypetcare.usermanager.datacontainers.pet.Wash libraryWash) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
