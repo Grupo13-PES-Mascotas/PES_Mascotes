@@ -42,6 +42,10 @@ public class TrObtainUserImage {
         return result;
     }
 
+    /**
+     * Execute the transaction.
+     * @throws MyPetCareException There has been a problem with the server
+     */
     public void execute() throws MyPetCareException {
         result = userManagerService.obtainUserImage(username, accessToken);
     }

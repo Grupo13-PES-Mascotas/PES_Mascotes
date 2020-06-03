@@ -77,6 +77,8 @@ public class TrAddExercise {
 
     /**
      * Execute the transaction.
+     * @throws NotPetOwnerException The user is not the owner of the pet
+     * @throws InvalidPeriodException The period is not valid
      */
     public void execute() throws NotPetOwnerException, InvalidPeriodException {
         if (!pet.isOwner(user)) {

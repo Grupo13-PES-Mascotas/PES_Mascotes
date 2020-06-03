@@ -58,6 +58,8 @@ public class TrNewVetVisit {
 
     /**
      * Executes the transaction.
+     * @throws NotPetOwnerException The user is not the owner
+     * @throws VetVisitAlreadyExistingException The vet visit already exists
      */
     public void execute() throws VetVisitAlreadyExistingException, NotPetOwnerException {
         result = false;

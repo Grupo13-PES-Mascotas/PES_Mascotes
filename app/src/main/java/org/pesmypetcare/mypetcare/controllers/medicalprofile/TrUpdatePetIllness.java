@@ -57,6 +57,7 @@ public class TrUpdatePetIllness {
 
     /**
      * Executes the transaction.
+     * @throws NotPetOwnerException The user is not the owner of the pet
      */
     public void execute() throws NotPetOwnerException {
         if (!user.getUsername().equals(pet.getOwner().getUsername())) {

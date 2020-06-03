@@ -59,6 +59,8 @@ public class TrAddNewPetIllness {
 
     /**
      * Executes the transaction.
+     * @throws NotPetOwnerException The user is not the owner of the pet
+     * @throws IllnessAlreadyExistingException The illness already exists
      */
     public void execute() throws NotPetOwnerException, IllnessAlreadyExistingException {
         result = false;

@@ -57,6 +57,11 @@ public class TrAddNewPetVaccination {
         return result;
     }
 
+    /**
+     * Execute the transaction.
+     * @throws NotPetOwnerException The user is not the owner of the pet
+     * @throws VaccinationAlreadyExistingException The vaccination already exist
+     */
     public void execute() throws NotPetOwnerException, VaccinationAlreadyExistingException {
         result = false;
         if (!user.getUsername().equals(pet.getOwner().getUsername())) {

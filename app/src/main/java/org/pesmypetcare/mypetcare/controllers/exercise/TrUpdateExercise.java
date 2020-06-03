@@ -88,6 +88,9 @@ public class TrUpdateExercise {
 
     /**
      * Execute the transaction.
+     * @throws NotPetOwnerException The user is not the owner of the pet
+     * @throws NotExistingExerciseException The exercise does not exist
+     * @throws InvalidPeriodException The period is invalid
      */
     public void execute() throws NotPetOwnerException, NotExistingExerciseException, InvalidPeriodException {
         if (!pet.isOwner(user)) {

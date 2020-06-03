@@ -59,6 +59,8 @@ public class TrNewPetMeal {
 
     /**
      * Execute the transaction.
+     * @throws MealAlreadyExistingException The meal already exists
+     * @throws InvalidFormatException The format is invalid
      */
     public void execute() throws MealAlreadyExistingException, InvalidFormatException {
         result = false;

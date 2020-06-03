@@ -69,6 +69,7 @@ public class TrUpdateMedication {
 
     /**
      * Execute the transaction.
+     * @throws MedicationAlreadyExistingException The medication already exists
      */
     public void execute() throws MedicationAlreadyExistingException {
         medicationManagerService.updateMedicationBody(user, pet, medication);

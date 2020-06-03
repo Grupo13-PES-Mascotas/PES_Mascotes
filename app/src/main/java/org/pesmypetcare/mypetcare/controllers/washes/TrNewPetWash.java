@@ -58,6 +58,7 @@ public class TrNewPetWash {
 
     /**
      * Execute the transaction.
+     * @throws WashAlreadyExistingException The wash already exists
      */
     public void execute() throws WashAlreadyExistingException {
         result = false;

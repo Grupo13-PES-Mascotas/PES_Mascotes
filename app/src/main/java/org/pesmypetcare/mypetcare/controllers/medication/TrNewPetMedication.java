@@ -59,6 +59,7 @@ public class TrNewPetMedication {
 
     /**
      * Executes the transaction.
+     * @throws MedicationAlreadyExistingException The medication already exists
      */
     public void execute() throws MedicationAlreadyExistingException {
         result = false;
