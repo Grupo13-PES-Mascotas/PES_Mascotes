@@ -7,8 +7,6 @@ import org.pesmypetcare.mypetcare.services.meal.MealManagerService;
 import org.pesmypetcare.mypetcare.services.medication.MedicationManagerService;
 import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Albert Pinto
  */
@@ -46,7 +44,7 @@ public class TrDeletePet {
      * Execute the transaction.
      * @throws UserIsNotOwnerException The user is not the owner of the pet
      */
-    public void execute() throws UserIsNotOwnerException, ExecutionException, InterruptedException {
+    public void execute() throws UserIsNotOwnerException {
         if (pet.getOwner() != user) {
             throw new UserIsNotOwnerException();
         }

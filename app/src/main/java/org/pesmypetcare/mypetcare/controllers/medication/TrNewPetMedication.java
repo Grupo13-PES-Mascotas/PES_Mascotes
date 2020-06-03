@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.controllers.medication;
 
-import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.events.medication.Medication;
@@ -8,8 +7,6 @@ import org.pesmypetcare.mypetcare.features.pets.events.medication.MedicationAlre
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.medication.MedicationManagerService;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Xavier Campos
@@ -63,8 +60,7 @@ public class TrNewPetMedication {
     /**
      * Executes the transaction.
      */
-    public void execute() throws MedicationAlreadyExistingException, ExecutionException, InterruptedException,
-        InvalidFormatException {
+    public void execute() throws MedicationAlreadyExistingException {
         result = false;
         if (medicationHasAlreadyBeenAdded()) {
             throw new MedicationAlreadyExistingException();

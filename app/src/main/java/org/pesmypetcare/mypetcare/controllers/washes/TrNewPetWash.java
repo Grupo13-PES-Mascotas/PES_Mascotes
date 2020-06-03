@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.controllers.washes;
 
-import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.features.pets.events.wash.Wash;
@@ -8,8 +7,6 @@ import org.pesmypetcare.mypetcare.features.pets.events.wash.WashAlreadyExistingE
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.wash.WashManagerService;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Enric Hernando
@@ -62,8 +59,7 @@ public class TrNewPetWash {
     /**
      * Execute the transaction.
      */
-    public void execute() throws WashAlreadyExistingException, InterruptedException, ExecutionException,
-        InvalidFormatException {
+    public void execute() throws WashAlreadyExistingException {
         result = false;
         if (mealHasAlreadyBeenAdded()) {
             throw new WashAlreadyExistingException();

@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.services.user.UserManagerService;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Xavier Campos
  */
@@ -44,7 +42,7 @@ public class TrObtainUserImage {
         return result;
     }
 
-    public void execute() throws ExecutionException, InterruptedException, MyPetCareException {
+    public void execute() throws MyPetCareException {
         result = userManagerService.obtainUserImage(username, accessToken);
     }
 }

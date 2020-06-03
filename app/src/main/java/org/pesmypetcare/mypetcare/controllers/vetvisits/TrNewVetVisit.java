@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.controllers.vetvisits;
 
-import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.vetvisit.VetVisit;
 import org.pesmypetcare.mypetcare.features.pets.events.vetvisit.VetVisitAlreadyExistingException;
@@ -8,8 +7,6 @@ import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.vetvisits.VetVisitsManagerService;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Xavier Campos
@@ -62,8 +59,7 @@ public class TrNewVetVisit {
     /**
      * Executes the transaction.
      */
-    public void execute() throws VetVisitAlreadyExistingException, NotPetOwnerException, ExecutionException,
-        InterruptedException, InvalidFormatException {
+    public void execute() throws VetVisitAlreadyExistingException, NotPetOwnerException {
         result = false;
         if (!pet.getOwner().getUsername().equals(user.getUsername())) {
             throw new NotPetOwnerException();

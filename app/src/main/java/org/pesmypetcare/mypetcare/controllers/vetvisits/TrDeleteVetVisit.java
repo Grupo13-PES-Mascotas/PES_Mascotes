@@ -7,8 +7,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.vetvisits.VetVisitsManagerService;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Xavier Campos
  */
@@ -61,7 +59,7 @@ public class TrDeleteVetVisit {
     /**
      * Executes the transaction.
      */
-    public void execute() throws NotPetOwnerException, ExecutionException, InterruptedException {
+    public void execute() throws NotPetOwnerException {
         result = false;
         if (!pet.getOwner().getUsername().equals(user.getUsername())) {
             throw new NotPetOwnerException();

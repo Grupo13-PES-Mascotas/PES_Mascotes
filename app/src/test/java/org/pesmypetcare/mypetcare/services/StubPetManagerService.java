@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Albert Pinto
@@ -132,8 +131,7 @@ public class StubPetManagerService implements PetManagerService {
     }
 
     @Override
-    public void addWashFrequency(User user, Pet pet, int newWashFrequency, DateTime dateTime) throws ExecutionException,
-        InterruptedException {
+    public void addWashFrequency(User user, Pet pet, int newWashFrequency, DateTime dateTime) {
         ArrayList<Pet> pets = data.get(user.getUsername());
         int petIndex = Objects.requireNonNull(pets).indexOf(pet);
         pets.get(petIndex).setWashFrequencyForDate(newWashFrequency, dateTime);

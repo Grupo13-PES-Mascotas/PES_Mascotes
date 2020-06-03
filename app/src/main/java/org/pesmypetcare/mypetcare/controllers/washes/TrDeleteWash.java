@@ -6,8 +6,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.wash.WashManagerService;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Enric Hernando
  */
@@ -50,7 +48,7 @@ public class TrDeleteWash {
     /**
      * Executes the transaction.
      */
-    public void execute() throws ExecutionException, InterruptedException {
+    public void execute() {
         washManagerService.deleteWash(user, pet, wash);
         pet.deleteEvent(wash);
         googleCalendarService.deleteEvent(pet, wash);
