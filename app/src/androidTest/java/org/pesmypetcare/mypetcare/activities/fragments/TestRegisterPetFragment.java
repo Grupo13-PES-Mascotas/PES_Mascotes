@@ -11,12 +11,13 @@ import androidx.test.rule.ActivityTestRule;
 import com.google.android.material.button.MaterialButton;
 
 import org.hamcrest.Matcher;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pesmypetcare.mypetcare.R;
-import org.pesmypetcare.mypetcare.activities.MainActivity;
+import org.pesmypetcare.mypetcare.activities.TestActivity;
+import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetFragment;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -36,7 +37,61 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class TestRegisterPetFragment {
+
     @Rule
+    public ActivityTestRule<TestActivity> activityRule = new ActivityTestRule<>(TestActivity.class);
+
+    @Before
+    public void setUp() {
+        TestActivity.changeFragment(new RegisterPetFragment());
+    }
+
+    @Test
+    public void shouldRegisterNewPet() {
+        onView(withId(R.id.inputPetName)).perform(typeText("Linux"), closeSoftKeyboard());
+        onView(withId(R.id.inputGender)).perform(typeText("Male"), closeSoftKeyboard());
+        onView(withId(R.id.inputBirthMonth)).perform(click());
+        onView(withText("Selected date")).check(matches(isDisplayed())).perform(pressBack());
+        onView(withId(R.id.inputBirthMonth)).perform(setButtonText("5 MAR 2020"));
+        onView(withId(R.id.inputBreed)).perform(typeText("Husky"), closeSoftKeyboard());
+        onView(withId(R.id.inputWeight)).perform(typeText("5"), closeSoftKeyboard());
+        onView(withId(R.id.inputPathologies)).perform(typeText("lame"), closeSoftKeyboard());
+
+        onView(withId(R.id.btnAddPet)).perform(click());
+    }
+
+    @Test
+    public void shouldNotRegisterNewPetIfAnyFieldIsEmpty() {
+        onView(withId(R.id.inputPetName)).perform(typeText("Linux"));
+        onView(withId(R.id.inputGender)).perform(typeText("Male"), closeSoftKeyboard());
+
+        onView(withId(R.id.btnAddPet)).perform(click());
+        onView(withId(R.id.inputPetName)).check(matches(isDisplayed()));
+    }
+
+    private static ViewAction setButtonText(String text) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return allOf(isAssignableFrom(MaterialButton.class), isDisplayed());
+            }
+
+            @Override
+            public String getDescription() {
+                return "The button is not found";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                if (view instanceof MaterialButton) {
+                    MaterialButton button = (MaterialButton) view;
+                    button.setText(text);
+                }
+            }
+        };
+    }
+
+    /*@Rule
     public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
 
     @BeforeClass
@@ -94,5 +149,5 @@ public class TestRegisterPetFragment {
                 }
             }
         };
-    }
+    }*/
 }

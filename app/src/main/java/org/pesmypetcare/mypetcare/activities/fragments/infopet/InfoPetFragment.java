@@ -46,7 +46,6 @@ public class InfoPetFragment extends Fragment {
     private static FloatingActionButton sharePetInfoButton;
     private static final String PET_PROFILE_IMAGE_DESCRIPTION = "pet profile image";
 
-
     private FragmentInfoPetBinding binding;
     private InfoPetFragmentAdapter infoPetFragmentAdapter;
     private ViewPager2 viewPager;
