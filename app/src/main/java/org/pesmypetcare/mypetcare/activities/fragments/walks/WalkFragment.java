@@ -1,9 +1,14 @@
 package org.pesmypetcare.mypetcare.activities.fragments.walks;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +33,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
@@ -36,13 +42,15 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.WalkPets;
 import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * @author Albert Pinto
+ * @author Albert Pinto & Enric Hernando
  */
 public class WalkFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnPolylineClickListener,
     GoogleMap.OnInfoWindowCloseListener, GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener {
@@ -60,10 +68,14 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
     private WalkPets selectedWalkPets;
     private int[] colors;
     private int nextColor;
+    private static FloatingActionButton flSharePetWalkRouteButton;
     private List<WalkPets> walkPetsList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        StrictMode.VmPolicy.Builder builder2 = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder2.build());
+
         binding = FragmentWalkBinding.inflate(inflater, container, false);
         communication = (WalkCommunication) getActivity();
         polylines = new HashMap<>();
@@ -87,15 +99,91 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
             mapView = binding.mapView;
             mapView.onCreate(savedInstanceState);
             mapView.getMapAsync(this);
-
             initializeAvailableColors();
 
             binding.walkingRoutesFilterScrollView.setAlpha(TRANSPARENCY);
         }
 
+        flSharePetWalkRouteButton = binding.flSharePetWalkRouteButton;
+        setUpSharePetWalkRouteListener();
         return binding.getRoot();
     }
 
+    /**
+     * Set the share app button listener.
+     */
+    private void setUpSharePetWalkRouteListener() {
+        flSharePetWalkRouteButton.setOnClickListener(v -> {
+            GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback() {
+            @Override
+                public void onSnapshotReady(Bitmap bitmap) {
+                    saveImage(bitmap);
+                }
+            };
+            googleMap.snapshot(callback);
+        });
+    }
+
+
+    /**
+     * Saves the image as PNG to the app's cache directory and share.
+     * @param image Bitmap to share.
+     */
+    private void saveImage(Bitmap image) {
+        File file = saveBitmap(image);
+        Uri uri = Uri.fromFile(file);
+        shareUri(uri);
+    }
+
+    /**
+     * Creates a intent to share the uri.
+     * @param uri The uri to share
+     */
+    private void shareUri(Uri uri) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("image/jpeg");
+
+        intent.putExtra(Intent.EXTRA_SUBJECT, "My Pet Care");
+        intent.putExtra(Intent.EXTRA_TEXT, "");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivity(intent);
+    }
+
+    /**
+     * Save a bitmap.
+     * @param image The bitmap of the image
+     * @return The file created
+     */
+    @NonNull
+    private File saveBitmap(Bitmap image) {
+        File file = fileCreation();
+        FileOutputStream fOut;
+        try {
+            fOut = new FileOutputStream(file);
+            image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    /**
+     * Creation of the file.
+     * @return The file
+     */
+    @NonNull
+    private File fileCreation() {
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyPetCare/ScreenShot";
+        File dir = new File(file_path);
+        if(!dir.exists()) {
+            dir.mkdirs();
+        }
+        return new File(dir, "WalkInfo.jpg");
+    }
+    
     /**
      * Check whether the location permissions are not granted.
      * @return True if the permission is not granted
