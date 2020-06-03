@@ -70,12 +70,10 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
+
         binding = FragmentWalkBinding.inflate(inflater, container, false);
         communication = (WalkCommunication) getActivity();
         polylines = new HashMap<>();
-
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
 
         mapView = binding.mapView;
         mapView.onCreate(savedInstanceState);
@@ -96,7 +94,12 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
      */
     private void setUpSharePetWalkRouteListener() {
         flSharePetWalkRouteButton.setOnClickListener(v -> {
-            GoogleMap.SnapshotReadyCallback callback = this::saveImage;
+            GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback() {
+            @Override
+                public void onSnapshotReady(Bitmap bitmap) {
+                    saveImage(bitmap);
+                }
+            };
             googleMap.snapshot(callback);
         });
     }
