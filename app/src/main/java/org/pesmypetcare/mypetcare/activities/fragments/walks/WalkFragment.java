@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.fragments.walks;
 
-import android.content.Intent;
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -32,8 +32,8 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
@@ -73,8 +73,8 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
+        StrictMode.VmPolicy.Builder builder2 = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder2.build());
 
         binding = FragmentWalkBinding.inflate(inflater, container, false);
         communication = (WalkCommunication) getActivity();
