@@ -45,7 +45,7 @@
     <string name="languages">Languages</string>
     <string name="change_password">Change Password</string>
     <string name="change_username">Change Username</string>
-    <string name="current_version">Version: 2.0.2</string>
+    <string name="current_version">Version: 2.0.3</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
@@ -334,6 +334,19 @@
     <string name="likes_singular">like</string>
     <string name="error_too_big_image">The image should be smaller or equal than 1 MB</string>
     <string name="new_post_received">has made a new post</string>
+    <string name="progress_bar_connecting_to_server">Connecting to server</string>
+    <string name="progress_bar_loading_your_pets">Loading your pets</string>
+    <string name="walking_routes_not_found_title">Walking routes not found</string>
+    <string name="walking_routes_not_found_message">
+        You do not have any walking route with your pets.
+        You should create at least one before using this functionality.
+        Select one of your pets and start a walk
+    </string>
+    <string name="go_to_my_pets">Go to my pets</string>
+    <string name="do_not_have_any_pet">
+        You do not have any pet\n
+        Click the + button to register one
+    </string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open" translatable="false">Open</string>

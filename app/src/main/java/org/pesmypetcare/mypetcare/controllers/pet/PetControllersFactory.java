@@ -52,4 +52,8 @@ public class PetControllersFactory {
     public static TrObtainAllPetImages createTrObtainAllPetImages() {
         return new TrObtainAllPetImages(new PetManagerAdapter());
     }
+
+    public static TrGetPetImage createTrGetPetImage() {
+        return new TrGetPetImage(new PetManagerAdapter());
+    }
 }
