@@ -161,4 +161,12 @@ public class CommunityControllersFactory {
     public static TrGetGroupImage createTrGetGroupImage() {
         return new TrGetGroupImage(new CommunityAdapter());
     }
+
+    /**
+     * Create the transaction to unban a post.
+     * @return The transaction to unban a post
+     */
+    public static TrUnbanPost createTrUnbanPost() {
+        return new TrUnbanPost(new CommunityAdapter());
+    }
 }

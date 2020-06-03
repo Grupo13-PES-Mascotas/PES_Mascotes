@@ -98,6 +98,7 @@ import org.pesmypetcare.mypetcare.controllers.community.TrGetPostImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrLikePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrObtainAllGroups;
 import org.pesmypetcare.mypetcare.controllers.community.TrReportPost;
+import org.pesmypetcare.mypetcare.controllers.community.TrUnbanPost;
 import org.pesmypetcare.mypetcare.controllers.community.TrUnlikePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrUpdatePost;
 import org.pesmypetcare.mypetcare.controllers.event.EventControllersFactory;
@@ -357,6 +358,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrSendFirebaseMessagingToken trSendFirebaseMessagingToken;
     private TrGetGroupImage trGetGroupImage;
     private TrGetAllWeights trGetAllWeights;
+    private TrUnbanPost trUnbanPost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -872,6 +874,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddGroupImage = CommunityControllersFactory.createTrAddGroupImage();
         trDeleteGroupImage = CommunityControllersFactory.createTrDeleteGroupImage();
         trGetGroupImage = CommunityControllersFactory.createTrGetGroupImage();
+        trUnbanPost = CommunityControllersFactory.createTrUnbanPost();
     }
 
     /**
@@ -1556,6 +1559,17 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         try {
             trReportPost.execute();
         } catch (PostReportedByAuthorException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void unbanPost(Post post) {
+        trUnbanPost.setUser(user);
+        trUnbanPost.setPost(post);
+        try {
+            trUnbanPost.execute();
+        } catch (NotForumOwnerException e) {
             e.printStackTrace();
         }
     }

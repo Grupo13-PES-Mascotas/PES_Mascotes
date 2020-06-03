@@ -175,4 +175,11 @@ public interface CommunityService {
      * @return The image of the group in form of a byte array
      */
     byte[] getGroupImage(User user, Group group);
+
+    /**
+     * Unbans the given post.
+     * @param user The owner of the group were the post is banned
+     * @param post The post that has to be unbanned
+     */
+    void unbanPost(User user, Post post);
 }

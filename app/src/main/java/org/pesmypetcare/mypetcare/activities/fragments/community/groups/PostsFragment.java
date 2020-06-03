@@ -188,8 +188,15 @@ public class PostsFragment extends Fragment {
         User user = InfoGroupFragment.getCommunication().getUser();
 
         for (CircularEntryView component : components) {
-            component.setOnLongClickListener(v -> setLongClickEvent(component));
-            component.setOnClickListener(v -> setOnClickEvent(user, component));
+            boolean postBanned = ((Post) component.getObject()).isBanned();
+            boolean postReported = ((Post) component.getObject()).isReportedByUser(user.getUsername());
+            String postAuthor = ((Post) component.getObject()).getUsername();
+            String forumOwner = ((Post) component.getObject()).getForum().getOwnerUsername();
+            if ((!postBanned && !postReported) || postAuthor.equals(user.getUsername())
+                    || forumOwner.equals(user.getUsername())) {
+                component.setOnLongClickListener(v -> setLongClickEvent(component));
+                component.setOnClickListener(v -> setOnClickEvent(user, component));
+            }
         }
     }
 
@@ -529,7 +536,9 @@ public class PostsFragment extends Fragment {
         chatModel.getMessage().observe(requireActivity(), messageDisplay -> {
             Post post = new Post(messageDisplay.getCreator(), messageDisplay.getText(),
                 DateTime.Builder.buildFullString(messageDisplay.getPublicationDate()), forum);
+
             post.setLikerUsername(messageDisplay.getLikedBy());
+            post.setReporterUsername(messageDisplay.getReportedList());
 
             byte[] byteImages = messageDisplay.getImage();
 

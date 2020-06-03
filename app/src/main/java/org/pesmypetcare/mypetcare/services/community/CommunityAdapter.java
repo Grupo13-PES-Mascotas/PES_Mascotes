@@ -408,6 +408,13 @@ public class CommunityAdapter implements CommunityService {
     public void reportPost(User user, Post post, String reportMessage) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getForumManagerClient().reportMessage(user.getToken(),
+                        post.getForum().getGroup().getName(), post.getForum().getName(), post.getUsername(), user.getUsername(),
+                        post.getCreationDate().toString());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
         });
         executorService.shutdown();
     }
@@ -496,6 +503,21 @@ public class CommunityAdapter implements CommunityService {
         }
 
         return imageBytes;
+    }
+
+    @Override
+    public void unbanPost(User user, Post post) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getForumManagerClient().unbanMessage(user.getToken(),
+                        post.getForum().getGroup().getName(), post.getForum().getName(), post.getUsername(),
+                        post.getCreationDate().toString());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     /**

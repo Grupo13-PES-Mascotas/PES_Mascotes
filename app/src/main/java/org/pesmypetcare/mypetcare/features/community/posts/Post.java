@@ -220,6 +220,46 @@ public class Post implements Comparable<Post> {
     }
 
 
+    /**
+     * Get the reporter username.
+     * @return The reporter username
+     */
+    public List<String> getReporterUsername() {
+        return reporterUsername;
+    }
+
+    /**
+     * Set the reporter username.
+     * @param reporterUsername The reporter username to set
+     */
+    public void setReporterUsername(List<String> reporterUsername) {
+        if (reporterUsername == null) {
+            this.reporterUsername = new ArrayList<>();
+        } else {
+            this.reporterUsername = reporterUsername;
+            this.reportsCount = reporterUsername.size();
+        }
+    }
+
+    /**
+     * Increases the number of reports of the post.
+     */
+    public void reportPost(User user) {
+        if (!reporterUsername.contains(user.getUsername())) {
+            reporterUsername.add(user.getUsername());
+            reportsCount++;
+        }
+    }
+
+    /**
+     * Check whether the user reported the post.
+     * @param username The username
+     * @return True if the user has reported the post
+     */
+    public boolean isReportedByUser(String username) {
+        return reporterUsername.contains(username);
+    }
+
     @Override
     public int compareTo(Post post) {
         if (!creationDate.equals(post.getCreationDate())) {
@@ -237,11 +277,5 @@ public class Post implements Comparable<Post> {
             + '}';
     }
 
-    /**
-     * Increases the number of reports of the post.
-     */
-    public void reportPost(User user) {
-        reporterUsername.add(user.getUsername());
-        reportsCount++;
-    }
+
 }
