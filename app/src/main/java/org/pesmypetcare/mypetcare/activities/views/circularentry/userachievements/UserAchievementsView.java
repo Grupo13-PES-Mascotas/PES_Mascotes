@@ -37,7 +37,7 @@ public class UserAchievementsView extends LinearLayout {
 
     /**
      * Show the specified achievements.
-     * @param achievements The groups to display
+     * @param achievements The medals to display
      */
     public void showAchievement(SortedSet<UserAchievement> achievements) {
         for (UserAchievement achievement : achievements) {

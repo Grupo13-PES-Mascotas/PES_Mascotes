@@ -84,6 +84,8 @@ import org.pesmypetcare.mypetcare.activities.fragments.walks.WalkFragment;
 import org.pesmypetcare.mypetcare.activities.threads.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
+import org.pesmypetcare.mypetcare.controllers.achievement.AchievementsControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.achievement.TrGetAllAchievements;
 import org.pesmypetcare.mypetcare.controllers.community.CommunityControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddGroupImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewForum;
@@ -213,6 +215,7 @@ import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.features.users.UserAchievement;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 import org.pesmypetcare.mypetcare.utilities.MessagingService;
@@ -356,6 +359,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrDeleteGroupImage trDeleteGroupImage;
     private TrSendFirebaseMessagingToken trSendFirebaseMessagingToken;
     private TrGetGroupImage trGetGroupImage;
+    private TrGetAllAchievements trGetAllAchievements;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -743,6 +747,15 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeVetVisitsControllers();
         initializeExerciseControllers();
         initializeMedicalProfileControllers();
+        initializeAchievementsControllers();
+    }
+
+    /**
+     * Inititalize the achievements controllers
+     */
+
+    private void initializeAchievementsControllers() {
+        trGetAllAchievements = AchievementsControllersFactory.createTrGetAllAchievements();
     }
 
     /**
@@ -2767,5 +2780,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public List<UserAchievement> getAllAchievements() {
+        trGetAllAchievements.setUser(user);
+        trGetAllAchievements.execute();
+        return trGetAllAchievements.getResult();
     }
 }
