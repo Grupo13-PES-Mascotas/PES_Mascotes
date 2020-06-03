@@ -33,6 +33,7 @@ public class GoogleCalendarAdapter implements GoogleCalendarService {
                 e.printStackTrace();
             }
         });
+        executorService.shutdown();
     }
 
     @Override
@@ -48,6 +49,7 @@ public class GoogleCalendarAdapter implements GoogleCalendarService {
                 e.printStackTrace();
             }
         });
+        executorService.shutdown();
     }
 
     @Override
@@ -61,6 +63,7 @@ public class GoogleCalendarAdapter implements GoogleCalendarService {
                 e.printStackTrace();
             }
         });
+        executorService.shutdown();
     }
 
     @Override
@@ -79,6 +82,7 @@ public class GoogleCalendarAdapter implements GoogleCalendarService {
                 e.printStackTrace();
             }
         });
+        executorService.shutdown();
     }
 
     @Override
@@ -94,6 +98,6 @@ public class GoogleCalendarAdapter implements GoogleCalendarService {
                 e.printStackTrace();
             }
         });
-
+        executorService.shutdown();
     }
 }
