@@ -103,6 +103,7 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
 
             binding.walkingRoutesFilterScrollView.setAlpha(TRANSPARENCY);
         }
+
         flSharePetWalkRouteButton = binding.flSharePetWalkRouteButton;
         setUpSharePetWalkRouteListener();
         return binding.getRoot();
