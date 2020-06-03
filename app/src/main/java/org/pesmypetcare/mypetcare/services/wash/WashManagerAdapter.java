@@ -62,6 +62,17 @@ public class WashManagerAdapter implements WashManagerService {
         org.pesmypetcare.usermanager.datacontainers.pet.Wash libraryWash =
                 new org.pesmypetcare.usermanager.datacontainers.pet.Wash(wash.getDateTime().toString(),
                         wash.getWashDescription(), wash.getDuration());
+        deleteWashLibraryCall(accessToken, owner, petName, libraryWash);
+    }
+
+    /**
+     * Method responsible for calling the library for deleting a wash.
+     * @param accessToken The access token of the user
+     * @param owner The owner of the pet
+     * @param petName The name of the pet
+     * @param libraryWash The wash that has to be deleted
+     */
+    private void deleteWashLibraryCall(String accessToken, String owner, String petName, org.pesmypetcare.usermanager.datacontainers.pet.Wash libraryWash) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
@@ -111,7 +122,7 @@ public class WashManagerAdapter implements WashManagerService {
     }
 
     /**
-     * Method responsible for calling the library for updating the date of a meal
+     * Method responsible for calling the library for updating the date of a meal.
      * @param user The current user
      * @param pet The pet from which the meal has to be updated
      * @param newDate The new date of the meal

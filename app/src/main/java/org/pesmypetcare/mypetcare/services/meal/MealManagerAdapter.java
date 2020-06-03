@@ -157,6 +157,17 @@ public class MealManagerAdapter implements MealManagerService {
         String petName = pet.getName();
         MealData mealData = new MealData(meal.getMealName(), meal.getKcal());
         Meal libraryMeal = new Meal(meal.getMealDate().toString(), mealData);
+        deleteMealLibraryCall(accessToken, owner, petName, libraryMeal);
+    }
+
+    /**
+     * Method responsible for calling the library for deleting a meal.
+     * @param accessToken The access token of the user
+     * @param owner The owner of the pet
+     * @param petName The name of the pet
+     * @param libraryMeal The meal that has to be deleted
+     */
+    private void deleteMealLibraryCall(String accessToken, String owner, String petName, Meal libraryMeal) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {

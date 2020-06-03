@@ -72,12 +72,23 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
         String accessToken = user.getToken();
         String owner = user.getUsername();
         String petName = pet.getName();
-
         VetVisitData visitData = new VetVisitData(vetVisit.getReason(), vetVisit.getAddress());
         org.pesmypetcare.usermanager.datacontainers.pet.VetVisit libraryVisit =
             new org.pesmypetcare.usermanager.datacontainers.pet.VetVisit(vetVisit.getVisitDate().toString(),
                     visitData);
 
+        createVisitLibCall(accessToken, owner, petName, libraryVisit);
+    }
+
+    /**
+     * Method responsible for calling the library for creating a vet visit.
+     * @param accessToken The access token of the user
+     * @param owner The owner of the pet
+     * @param petName The name of the pet
+     * @param libraryVisit The visit that has to be created
+     */
+    private void createVisitLibCall(String accessToken, String owner, String petName,
+                                    org.pesmypetcare.usermanager.datacontainers.pet.VetVisit libraryVisit) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
