@@ -45,7 +45,7 @@ public class WashManagerAdapter implements WashManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner,
+                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken,
                         petName, PetData.WASHES, libraryWash.getKey(), libraryWash.getBodyAsMap());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -77,7 +77,7 @@ public class WashManagerAdapter implements WashManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner,
+                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken,
                         petName, PetData.WASHES, libraryWash.getKey());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -105,7 +105,7 @@ public class WashManagerAdapter implements WashManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken, owner,
+                ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken,
                         petName, PetData.WASHES, libraryWash.getKey(), libraryWash.getBodyAsMap());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -139,7 +139,7 @@ public class WashManagerAdapter implements WashManagerService {
             WashData libraryWashData = null;
             try {
                 libraryWashData = ServiceLocator.getInstance().getPetCollectionsManagerClient().getWash(
-                        user.getToken(), user.getUsername(), pet.getName(), oldDate);
+                        user.getToken(), pet.getName(), oldDate);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -147,13 +147,13 @@ public class WashManagerAdapter implements WashManagerService {
                     new org.pesmypetcare.usermanager.datacontainers.pet.Wash(newDate,
                             libraryWashData.getDescription(), libraryWashData.getDuration());
             try {
-                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner,
+                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken,
                         petName, PetData.WASHES, oldDate);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
             try {
-                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner,
+                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken,
                         petName, PetData.WASHES, libraryUpdatedWash.getKey(), libraryUpdatedWash.getBodyAsMap());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -170,7 +170,7 @@ public class WashManagerAdapter implements WashManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollection(accessToken, owner, petName,
+                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollection(accessToken, petName,
                         PetData.WASHES);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -193,7 +193,7 @@ public class WashManagerAdapter implements WashManagerService {
             List<org.pesmypetcare.usermanager.datacontainers.pet.Wash> washes = null;
             try {
                 washes = ServiceLocator.getInstance()
-                        .getPetCollectionsManagerClient().getAllWashes(accessToken, owner, petName);
+                        .getPetCollectionsManagerClient().getAllWashes(accessToken, petName);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }

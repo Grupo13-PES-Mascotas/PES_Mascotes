@@ -1,18 +1,24 @@
 package org.pesmypetcare.mypetcare.controllers.community;
 
 import org.pesmypetcare.mypetcare.features.community.groups.GroupNotFoundException;
+import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.community.CommunityService;
 
 /**
  * @author Xavier Campos
  */
 public class TrDeleteGroup {
+    private User user;
     private CommunityService communityService;
     private String groupName;
     private boolean result;
 
     public TrDeleteGroup(CommunityService communityService) {
         this.communityService = communityService;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     /**
@@ -37,7 +43,7 @@ public class TrDeleteGroup {
      */
     public void execute() throws GroupNotFoundException {
         result = false;
-        communityService.deleteGroup(groupName);
+        communityService.deleteGroup(user, groupName);
         result = true;
     }
 }

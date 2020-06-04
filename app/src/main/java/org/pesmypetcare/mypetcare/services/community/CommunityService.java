@@ -42,7 +42,7 @@ public interface CommunityService {
      * Method responsible for deleting a group from the system.
      * @param groupName The name of the group that has to be deleted
      */
-    void deleteGroup(String groupName) throws GroupNotFoundException;
+    void deleteGroup(User user, String groupName) throws GroupNotFoundException;
 
     /**
      * Check whether the group exists.

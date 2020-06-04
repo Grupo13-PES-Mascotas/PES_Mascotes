@@ -2688,6 +2688,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void deleteGroup(String groupName) {
+        trDeleteGroup.setUser(user);
         trDeleteGroup.setGroupName(groupName);
         try {
             trDeleteGroup.execute();

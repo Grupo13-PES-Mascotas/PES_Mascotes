@@ -44,7 +44,7 @@ public class MealManagerAdapter implements MealManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner,
+                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken,
                         petName, PetData.MEALS, libraryMeal.getKey(), libraryMeal.getBodyAsMap());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -74,7 +74,7 @@ public class MealManagerAdapter implements MealManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken, owner,
+                ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken,
                         petName, PetData.MEALS, libraryMeal.getKey(), libraryMeal.getBodyAsMap());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -108,7 +108,7 @@ public class MealManagerAdapter implements MealManagerService {
      */
     private void createNewMeal(String accessToken, String owner, String petName, Meal newLibraryMeal) {
         try {
-            ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner, petName,
+            ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, petName,
                     PetData.MEALS, newLibraryMeal.getKey(), newLibraryMeal.getBodyAsMap());
         } catch (MyPetCareException e) {
             e.printStackTrace();
@@ -124,7 +124,7 @@ public class MealManagerAdapter implements MealManagerService {
      */
     private void deleteOldMeal(String accessToken, String owner, String petName, Meal oldLibraryMeal) {
         try {
-            ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner,
+            ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken,
                     petName, PetData.MEALS, oldLibraryMeal.getKey());
         } catch (MyPetCareException e) {
             e.printStackTrace();
@@ -143,7 +143,7 @@ public class MealManagerAdapter implements MealManagerService {
         MealData result = null;
         try {
             result = ServiceLocator.getInstance().getPetCollectionsManagerClient().getMeal(
-                    accessToken, owner, petName, oldDate);
+                    accessToken, petName, oldDate);
         } catch (MyPetCareException e) {
             e.printStackTrace();
         }
@@ -171,7 +171,7 @@ public class MealManagerAdapter implements MealManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner,
+                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken,
                         petName, PetData.MEALS, libraryMeal.getKey());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -204,7 +204,7 @@ public class MealManagerAdapter implements MealManagerService {
             List<Meal> libraryMeals = null;
             try {
                 libraryMeals = ServiceLocator.getInstance().getPetCollectionsManagerClient().getAllMeals(
-                        accessToken, owner, petName);
+                        accessToken, petName);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -229,7 +229,7 @@ public class MealManagerAdapter implements MealManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollection(accessToken, owner, petName,
+                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollection(accessToken, petName,
                         PetData.MEALS);
             } catch (MyPetCareException e) {
                 e.printStackTrace();

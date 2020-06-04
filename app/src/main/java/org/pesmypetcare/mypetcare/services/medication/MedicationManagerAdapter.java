@@ -49,7 +49,7 @@ public class MedicationManagerAdapter implements MedicationManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner,
+                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken,
                         petName, PetData.MEDICATIONS, libraryMedication.getKey(), libraryMedication.getBodyAsMap());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -71,7 +71,7 @@ public class MedicationManagerAdapter implements MedicationManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken, owner,
+                ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken,
                         petName, PetData.MEDICATIONS, libraryMedication.getKey(), libraryMedication.getBodyAsMap());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -89,7 +89,7 @@ public class MedicationManagerAdapter implements MedicationManagerService {
             MedicationData medicationData = null;
             try {
                 medicationData = ServiceLocator.getInstance().getPetCollectionsManagerClient()
-                        .getMedication(user.getToken(), user.getUsername(), pet.getName(), oldDate);
+                        .getMedication(user.getToken(), pet.getName(), oldDate);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -116,7 +116,7 @@ public class MedicationManagerAdapter implements MedicationManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner,
+                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken,
                         petName, PetData.MEDICATIONS, libraryMedication.getKey());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -133,7 +133,7 @@ public class MedicationManagerAdapter implements MedicationManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollection(accessToken, owner, petName,
+                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollection(accessToken, petName,
                         PetData.MEDICATIONS);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -165,7 +165,7 @@ public class MedicationManagerAdapter implements MedicationManagerService {
             List<org.pesmypetcare.usermanager.datacontainers.pet.Medication> serverMedications = new ArrayList<>();
             try {
                 serverMedications = ServiceLocator.getInstance().getPetCollectionsManagerClient()
-                        .getAllMedications(accessToken, owner, petName);
+                        .getAllMedications(accessToken, petName);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
