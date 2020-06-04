@@ -51,7 +51,6 @@ public class UserManagerAdapter implements UserManagerService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         return user.get();
     }
 

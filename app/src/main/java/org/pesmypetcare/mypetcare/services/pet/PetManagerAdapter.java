@@ -227,7 +227,6 @@ public class PetManagerAdapter implements PetManagerService {
     private List<Pet> getPets(List<org.pesmypetcare.usermanager.datacontainers.pet.Pet> userPets)
         throws PetRepeatException {
         List<Pet> pets = new ArrayList<>();
-
         for (org.pesmypetcare.usermanager.datacontainers.pet.Pet userPet : Objects.requireNonNull(userPets)) {
             if (userPet != null) {
                 pets.add(decodePet(userPet));

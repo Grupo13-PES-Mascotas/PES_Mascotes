@@ -186,17 +186,9 @@ public class PostsFragment extends Fragment {
 
         List<CircularEntryView> components = binding.postsViewLayout.getPostComponents();
         User user = InfoGroupFragment.getCommunication().getUser();
-
         for (CircularEntryView component : components) {
-            boolean postBanned = ((Post) component.getObject()).isBanned();
-            boolean postReported = ((Post) component.getObject()).isReportedByUser(user.getUsername());
-            String postAuthor = ((Post) component.getObject()).getUsername();
-            String forumOwner = ((Post) component.getObject()).getForum().getOwnerUsername();
-            if ((!postBanned && !postReported) || postAuthor.equals(user.getUsername())
-                    || forumOwner.equals(user.getUsername())) {
-                component.setOnLongClickListener(v -> setLongClickEvent(component));
-                component.setOnClickListener(v -> setOnClickEvent(user, component));
-            }
+            component.setOnLongClickListener(v -> setLongClickEvent(component));
+            component.setOnClickListener(v -> setOnClickEvent(user, component));
         }
     }
 
@@ -546,7 +538,7 @@ public class PostsFragment extends Fragment {
         chatModel.getMessage().observe(requireActivity(), messageDisplay -> {
             Post post = new Post(messageDisplay.getCreator(), messageDisplay.getText(),
                 DateTime.Builder.buildFullString(messageDisplay.getPublicationDate()), forum);
-
+            post.setBanned(messageDisplay.isBanned());
             post.setLikerUsername(messageDisplay.getLikedBy());
             post.setReporterUsername(messageDisplay.getReportedList());
 
@@ -556,8 +548,18 @@ public class PostsFragment extends Fragment {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(byteImages, 0, byteImages.length);
                 post.setPostImage(bitmap);
             }
-
-            forum.addPost(post);
+            User user = InfoGroupFragment.getCommunication().getUser();
+            boolean postBanned = post.isBanned();
+            boolean postReported = post.isReportedByUser(user.getUsername());
+            String postAuthor = post.getUsername();
+            String forumOwner = post.getForum().getOwnerUsername();
+            if (postBanned || postReported) {
+                if (postAuthor.equals(user.getUsername()) || forumOwner.equals(user.getUsername())) {
+                    forum.addPost(post);
+                }
+            } else {
+                forum.addPost(post);
+            }
             showPosts();
         });
 

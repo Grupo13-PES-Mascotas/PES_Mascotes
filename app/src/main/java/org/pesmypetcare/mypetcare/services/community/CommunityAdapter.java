@@ -390,6 +390,12 @@ public class CommunityAdapter implements CommunityService {
 
     @Override
     public void unlikePost(User user, Post post) {
+        System.out.println("user token " + user.getToken());
+        System.out.println("username " + user.getUsername());
+        System.out.println("post group name " + post.getForum().getGroup().getName());
+        System.out.println("post forum name" + post.getForum().getName());
+        System.out.println("post author " + post.getUsername());
+        System.out.println("post creation date" + post.getCreationDate());
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {

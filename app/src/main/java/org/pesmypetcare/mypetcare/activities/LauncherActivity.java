@@ -103,13 +103,11 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
      */
     private void loadData() {
         ServerData.getInstance().setMAuth(FirebaseAuth.getInstance());
-
         makeLogin();
         //statusCommunication.updateText(getString(R.string.progress_bar_loading_your_pets));
 
         if (continueExecution) {
             initializeLoggedUser();
-
             int nPets = ServerData.getInstance().getUser().getPets().size();
             int nGroups = 0;
             int progressIncrement = getIncrement(nPets, nGroups);
