@@ -8,8 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.databinding.FragmentAchievementsBinding;
-import org.pesmypetcare.mypetcare.features.users.UserAchievement;
+import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 
 import java.util.List;
 
@@ -25,7 +26,11 @@ public class AchievementsFragment extends Fragment {
         binding = FragmentAchievementsBinding.inflate(inflater, container, false);
         communication = (AchievementsCommunication) getActivity(); //debería pedir al mainActivity de todas las medals
 
-        initializeAchievementsController();
+        try {
+            initializeAchievementsController();
+        } catch (MyPetCareException e) {
+            e.printStackTrace();
+        }
 
         return binding.getRoot();
     }
@@ -33,7 +38,7 @@ public class AchievementsFragment extends Fragment {
     /**
      * Initializes de achievements controller
      */
-    private void initializeAchievementsController(){
-        List<UserAchievement> userAchievementList = communication.getAllAchievements();
+    private void initializeAchievementsController() throws MyPetCareException {
+        List<UserMedalData> userAchievementList = communication.getAllAchievements();
     }
 }

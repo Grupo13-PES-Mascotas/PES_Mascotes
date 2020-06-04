@@ -1,5 +1,6 @@
 package org.pesmypetcare.mypetcare.controllers.achievement;
 
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.achievement.AchievementService;
 import org.pesmypetcare.mypetcare.utilities.InvalidFormatException;
@@ -33,8 +34,10 @@ public class TrUpdateAchievement {
         this.newProgress = newProgress;
     }
 
-    public void execute() throws InvalidFormatException {
+    public void execute() throws InvalidFormatException, MyPetCareException {
         user.updateAchievementProgress(this.nameAchievement, newProgress);
+        Double progress = (double) newProgress;
+        achievementService.updateAchievement(nameAchievement, progress, user);
     }
 
 }

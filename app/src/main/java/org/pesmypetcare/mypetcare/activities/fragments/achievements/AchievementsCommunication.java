@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.fragments.achievements;
 
-import org.pesmypetcare.mypetcare.features.users.UserAchievement;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 
 import java.util.List;
 
@@ -9,5 +10,5 @@ import java.util.List;
  */
 public interface AchievementsCommunication {
 
-    List<UserAchievement> getAllAchievements();
+    List<UserMedalData> getAllAchievements() throws MyPetCareException;
 }

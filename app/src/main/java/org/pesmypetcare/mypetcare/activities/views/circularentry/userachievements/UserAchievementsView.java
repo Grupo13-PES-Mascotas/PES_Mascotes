@@ -9,7 +9,7 @@ import android.widget.Space;
 import androidx.annotation.Nullable;
 
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
-import org.pesmypetcare.mypetcare.features.users.UserAchievement;
+import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +39,8 @@ public class UserAchievementsView extends LinearLayout {
      * Show the specified achievements.
      * @param achievements The medals to display
      */
-    public void showAchievement(SortedSet<UserAchievement> achievements) {
-        for (UserAchievement achievement : achievements) {
+    public void showAchievement(SortedSet<UserMedalData> achievements) {
+        for (UserMedalData achievement : achievements) {
             CircularEntryView circularEntryView = new UserAchievementComponentView(context, null,
                     achievement).initializeComponent();
             addView(circularEntryView);

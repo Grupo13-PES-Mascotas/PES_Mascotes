@@ -1,8 +1,9 @@
 package org.pesmypetcare.mypetcare.controllers.achievement;
 
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.features.users.UserAchievement;
 import org.pesmypetcare.mypetcare.services.achievement.AchievementService;
+import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public class TrGetAllAchievements {
     private AchievementService achievementService;
     private User user;
-    private List<UserAchievement> result;
+    private List<UserMedalData> result;
 
     public TrGetAllAchievements(AchievementService achievementService) {
         this.achievementService = achievementService;
@@ -26,11 +27,11 @@ public class TrGetAllAchievements {
         this.user = user;
     }
 
-    public void execute() {
-        result = user.getAchievements();
+    public void execute() throws MyPetCareException {
+        result = achievementService.getAllAchievements(user);
     }
 
-    public List<UserAchievement> getResult() {
+    public List<UserMedalData> getResult() {
         return result;
     }
 }

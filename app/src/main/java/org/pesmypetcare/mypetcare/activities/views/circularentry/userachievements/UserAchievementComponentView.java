@@ -10,19 +10,21 @@ import android.widget.LinearLayout;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
-import org.pesmypetcare.mypetcare.features.users.UserAchievement;
+import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
+
+import java.util.List;
 
 /**
  * @author Álvaro Trius Béjar
  */
 public class UserAchievementComponentView extends CircularEntryView {
-    private UserAchievement achievement;
+    private UserMedalData achievement;
 
     public UserAchievementComponentView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public UserAchievementComponentView(Context context, AttributeSet attrs, UserAchievement achievement) {
+    public UserAchievementComponentView(Context context, AttributeSet attrs, UserMedalData achievement) {
         super(context, attrs);
         this.achievement = achievement;
     }
@@ -57,7 +59,11 @@ public class UserAchievementComponentView extends CircularEntryView {
 
     @Override
     protected String getSecondLineText() {
-        return achievement.getProgress().toString() + "/" + achievement.getCurrentGoal();
+        Double newData = achievement.getCurrentLevel();
+        int currentLevel = newData.intValue();
+        List<Double> list = achievement.getLevels();
+        list.get(currentLevel + 1);
+        return achievement.getProgress().toString() + "/" + achievement.getCurrentLevel();
         //Preguntar a oriol: porcentaje o discreto?
     }
 

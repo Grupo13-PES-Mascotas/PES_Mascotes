@@ -1,7 +1,8 @@
 package org.pesmypetcare.mypetcare.services.achievement;
 
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.features.users.UserAchievement;
+import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 
 import java.util.List;
 
@@ -10,5 +11,7 @@ import java.util.List;
  */
 public interface AchievementService {
 
-    List<UserAchievement> getAllAchievements(User user);
+    List<UserMedalData> getAllAchievements(User user) throws MyPetCareException;
+
+    void updateAchievement(String nameAchievement, Double newProgress, User user) throws MyPetCareException;
 }

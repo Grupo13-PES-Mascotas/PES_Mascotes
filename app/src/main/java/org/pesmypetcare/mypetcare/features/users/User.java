@@ -278,9 +278,7 @@ public class User {
     }
     private void initializeAchievements() {
         achievements = new ArrayList<>();
-        initializeCommentator();
         initializeContributor();
-        initializeWalker();
         initializeZoo();
         initializeSuperwalker();
         initializeCleaner();
@@ -290,16 +288,6 @@ public class User {
         initializeEvent();
     }
 
-    private void initializeCommentator() {
-        UserAchievement commentator = new UserAchievement("Commentator", R.string.commentator_desc);
-        List<Integer> levels = new ArrayList<>();
-        levels.add(0, 0);
-        levels.add(1, 10);
-        levels.add(1, 30);
-        levels.add(1, 50);
-        commentator.setLevels(levels);
-        achievements.add(commentator);
-    }
 
     private void initializeContributor() {
         UserAchievement contributor = new UserAchievement("Contributor", R.string.contributor_desc);
@@ -312,16 +300,6 @@ public class User {
         achievements.add(contributor);
     }
 
-    private void initializeWalker() {
-        UserAchievement walker = new UserAchievement("Walker", R.string.walker_desc);
-        List<Integer> levels = new ArrayList<>();
-        levels.add(0, 0);
-        levels.add(1, 30);
-        levels.add(1, 100);
-        levels.add(1, 200);
-        walker.setLevels(levels);
-        achievements.add(walker);
-    }
 
     private void initializeZoo() {
         UserAchievement zoo = new UserAchievement("Zoo", R.string.walker_desc);

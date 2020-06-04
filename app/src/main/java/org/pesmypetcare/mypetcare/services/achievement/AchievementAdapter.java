@@ -1,7 +1,9 @@
 package org.pesmypetcare.mypetcare.services.achievement;
 
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.features.users.UserAchievement;
+import org.pesmypetcare.mypetcare.services.ServiceLocator;
+import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 
 import java.util.List;
 
@@ -10,11 +12,18 @@ import java.util.List;
  */
 public class AchievementAdapter implements AchievementService {
     @Override
-    public List<UserAchievement> getAllAchievements(User user) {
-        return user.getAchievements();
+    public List<UserMedalData> getAllAchievements(User user) throws MyPetCareException {
+        return ServiceLocator.getInstance().getUserMedalManagerClient().getAllMedals(user.getToken(), user.getUsername());
     }
 
-    public void updateAchievement(String nameAchievement, int progress, User user) {
-
+    @Override
+    public void updateAchievement(String nameAchievement, Double newProgress, User user) throws MyPetCareException {
+        UserMedalData medal = ServiceLocator.getInstance().getUserMedalManagerClient().
+                getMedal(user.getToken(), user.getUsername(), nameAchievement);
+        Double progress = medal.getProgress();
+        ServiceLocator.getInstance().getUserMedalManagerClient().
+                updateField(user.getToken(), user.getUsername(), nameAchievement, "progress",
+                        progress + newProgress);
     }
+
 }

@@ -6,6 +6,7 @@ import org.pesmypetcare.usermanager.clients.GoogleCalendarManagerClient;
 import org.pesmypetcare.usermanager.clients.pet.PetCollectionsManagerClient;
 import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
 import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
+import org.pesmypetcare.usermanager.clients.user.UserMedalManagerClient;
 
 /**
  * @author Albert Pinto
@@ -18,6 +19,7 @@ public class ServiceLocator {
     private PetCollectionsManagerClient petCollectionsManagerClient;
     private GroupManagerClient groupManagerClient;
     private ForumManagerClient forumManagerClient;
+    private UserMedalManagerClient userMedalManagerClient;
 
     private ServiceLocator() {
         userManagerClient = new UserManagerClient();
@@ -26,6 +28,7 @@ public class ServiceLocator {
         groupManagerClient = new GroupManagerClient();
         forumManagerClient = new ForumManagerClient();
         petCollectionsManagerClient = new PetCollectionsManagerClient();
+        userMedalManagerClient = new UserMedalManagerClient();
     }
 
     public static ServiceLocator getInstance() {
@@ -58,5 +61,9 @@ public class ServiceLocator {
 
     public PetCollectionsManagerClient getPetCollectionsManagerClient() {
         return petCollectionsManagerClient;
+    }
+
+    public UserMedalManagerClient getUserMedalManagerClient() {
+        return userMedalManagerClient;
     }
 }
