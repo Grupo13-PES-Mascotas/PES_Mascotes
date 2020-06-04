@@ -2778,6 +2778,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void changeToMyPets() {
         toolbar.setTitle(R.string.navigation_my_pets);
         changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+        floatingActionButton.show();
     }
 
     @Override

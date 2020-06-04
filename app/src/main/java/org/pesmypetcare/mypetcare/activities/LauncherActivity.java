@@ -96,6 +96,7 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
         });
 
         loadingData.shutdown();
+        binding.progressBar.setIndeterminate(false);
     }
 
     /**
@@ -303,7 +304,6 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
         }
 
         ServerData.getInstance().setUser(trObtainUser.getResult());
-        binding.progressBar.setIndeterminate(false);
     }
 
     /**
