@@ -56,7 +56,7 @@ public class UserAchievementComponentView extends CircularEntryView {
 
     @Override
     protected String getFirstLineText() {
-        return achievement.getName() + ": " + achievement.getDescription();
+        return achievement.getName();
     }
 
     @Override
@@ -66,7 +66,6 @@ public class UserAchievementComponentView extends CircularEntryView {
         List<Double> list = achievement.getLevels();
         list.get(currentLevel + 1);
         return achievement.getProgress().toString() + "/" + achievement.getCurrentLevel();
-        //Preguntar a oriol: porcentaje o discreto?
     }
 
     @Override

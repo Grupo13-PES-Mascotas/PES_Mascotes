@@ -39,7 +39,7 @@ public class UserAchievementsView extends LinearLayout {
      * Show the specified achievements.
      * @param achievements The medals to display
      */
-    public void showAchievement(SortedSet<UserMedalData> achievements) {
+    public void showAchievement(List<UserMedalData> achievements) {
         for (UserMedalData achievement : achievements) {
             CircularEntryView circularEntryView = new UserAchievementComponentView(context, null,
                     achievement).initializeComponent();

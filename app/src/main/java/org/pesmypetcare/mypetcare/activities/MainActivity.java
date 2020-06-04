@@ -845,6 +845,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteWeight = PetHealthControllersFactory.createTrDeleteWeight();
         trAddNewWashFrequency = PetHealthControllersFactory.createTrAddNewWashFrequency();
         trDeleteWashFrequency = PetHealthControllersFactory.createTrDeleteWashFrequency();
+        trGetAllWeights = PetHealthControllersFactory.createTrGetAllWeights();
     }
 
     /**
