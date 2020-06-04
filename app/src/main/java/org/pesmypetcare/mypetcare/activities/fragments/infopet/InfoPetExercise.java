@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,6 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -136,9 +138,37 @@ public class InfoPetExercise extends Fragment {
         binding.walkingButton.setOnClickListener(v -> {
             InfoPetFragment.getCommunication().askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
             InfoPetFragment.getCommunication().askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-            AlertDialog startWalkDialog = createStartWalkDialog();
-            startWalkDialog.show();
+
+            if (areLocationServicesDisabled()) {
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+                builder.setTitle(R.string.location_services_not_enabled_title);
+                builder.setMessage(R.string.location_services_not_enabled_message);
+                builder.setPositiveButton(R.string.ok, null);
+
+                builder.show();
+            } else {
+                AlertDialog startWalkDialog = createStartWalkDialog();
+                startWalkDialog.show();
+            }
         });
+    }
+
+    /**
+     * Check whether the location services are disables.
+     * @return True if the location services are disabled
+     */
+    private boolean areLocationServicesDisabled() {
+        LocationManager locationManager = (LocationManager) Objects.requireNonNull(getContext())
+            .getSystemService(Context.LOCATION_SERVICE);
+        boolean gpsEnabled = false;
+        boolean networkEnabled = false;
+
+        gpsEnabled = Objects.requireNonNull(locationManager).isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        networkEnabled = Objects.requireNonNull(locationManager)
+            .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        return !gpsEnabled && !networkEnabled;
     }
 
     /**

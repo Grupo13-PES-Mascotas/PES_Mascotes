@@ -1652,11 +1652,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }*/
     }
 
-    public void getMyLocations() {
-        LocationUpdater.startRoute();
-    }
-
-
     @Override
     public void makeZoomImage(Drawable drawable) {
         floatingActionButton.hide();

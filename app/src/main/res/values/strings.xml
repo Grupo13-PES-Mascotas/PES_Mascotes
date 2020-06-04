@@ -347,6 +347,10 @@
         You do not have any pet\n
         Click the + button to register one
     </string>
+    <string name="location_services_not_enabled_title">Location services not enabled</string>
+    <string name="location_services_not_enabled_message">
+        Please, enable the location services to use this functionality
+    </string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open" translatable="false">Open</string>

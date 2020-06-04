@@ -353,5 +353,9 @@
         No tens cap mascota\n
         Fes clic al botó + per afegir-ne una
     </string>
+    <string name="location_services_not_enabled_title">Serveis de localització deshabilitats</string>
+    <string name="location_services_not_enabled_message">
+        Si us plau, habilita els serveis de localització per a fer servir aquesta funcionalitat
+    </string>
 
 </resources>
