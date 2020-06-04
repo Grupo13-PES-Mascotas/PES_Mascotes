@@ -1309,6 +1309,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 InfoGroupFragment.setGroup(group);
                 changeFragment(new InfoGroupFragment());
                 return true;
+            } else if (actualFragment instanceof ActualWalkingFragment) {
+                ActualWalkingFragment.showEndWalkDialog();
+                return true;
             } else if (!(actualFragment instanceof MyPetsFragment)){
                 changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
                 setUpNewFragment(getString(R.string.navigation_my_pets), NAVIGATION_OPTIONS[0]);
@@ -2193,6 +2196,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         ActualWalkingFragment actualWalkingFragment = new ActualWalkingFragment();
         LocationUpdater.setCommunication(actualWalkingFragment);
         changeFragment(actualWalkingFragment);
+        toolbar.setVisibility(View.GONE);
+        navigationView.setVisibility(View.GONE);
     }
 
     @Override
@@ -2224,6 +2229,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         addWalk(pets, name, description, DateTime.Builder.buildFullString(strStartDateTime), endDateTime);
         changeFragment(new InfoPetFragment());
+        toolbar.setVisibility(View.VISIBLE);
+        navigationView.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -2278,6 +2285,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void cancelWalking() {
         SharedPreferences sharedPreferences = getSharedPreferences(WALKING_PREFERENCES, Context.MODE_PRIVATE);
         endPetWalking(sharedPreferences, null);
+        changeFragment(new InfoPetFragment());
+        toolbar.setVisibility(View.VISIBLE);
+        navigationView.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -2796,5 +2806,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        LocationUpdater.endRoute();
+        cancelWalking();
     }
 }

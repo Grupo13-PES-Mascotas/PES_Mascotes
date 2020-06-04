@@ -95,8 +95,7 @@ public class InfoPetExercise extends Fragment {
         resources = getResources();
         walkExercisePrefix = getString(R.string.exercise_walking) + " | ";
         showExercises();
-
-        updateWalkingButton();
+        setStartWalkingButton();
     }
 
     /**
@@ -287,7 +286,6 @@ public class InfoPetExercise extends Fragment {
         } else {
             InfoPetFragment.getCommunication().startWalk(walkingPetNames);
             dialog.dismiss();
-            updateWalkingButton();
         }
     }
 
