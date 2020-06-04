@@ -48,7 +48,6 @@ public class ActualWalkingFragment extends Fragment implements OnMapReadyCallbac
     private static Context context;
     private static LayoutInflater inflater;
     private static String errorMessage;
-    private GoogleMap googleMap;
     private static FusedLocationProviderClient fusedLocationProviderClient;
     private static LocationRequest locationRequest;
     private static LocationCallback locationCallback;
@@ -57,6 +56,7 @@ public class ActualWalkingFragment extends Fragment implements OnMapReadyCallbac
     private MapView mapView;
     private List<LatLng> coordinates;
     private Polyline actualPolyline;
+    private GoogleMap googleMap;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
