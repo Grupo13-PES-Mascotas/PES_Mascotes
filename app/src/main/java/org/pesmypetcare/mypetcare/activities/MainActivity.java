@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -40,6 +41,7 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
@@ -77,6 +79,7 @@ import org.pesmypetcare.mypetcare.activities.fragments.registerpet.RegisterPetFr
 import org.pesmypetcare.mypetcare.activities.fragments.settings.NewPasswordInterfaceCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.settings.SettingsMenuFragment;
+import org.pesmypetcare.mypetcare.activities.fragments.walks.ActualWalkingFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.walks.WalkCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.walks.WalkFragment;
 import org.pesmypetcare.mypetcare.activities.threads.GetPetImageRunnable;
@@ -213,7 +216,6 @@ import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
-import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 import org.pesmypetcare.mypetcare.utilities.MessagingService;
 import org.pesmypetcare.mypetcare.utilities.MessagingServiceCommunication;
 import org.pesmypetcare.mypetcare.utilities.MessagingTokenServiceCommunication;
@@ -421,7 +423,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setUpNavigationImage();
         setUpNavigationHeader();
 
-        LocationUpdater.setContext(this);
         MessagingService.setCommunication(this);
     }
 
@@ -1170,11 +1171,21 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private void setUpNavigationDrawer() {
         navigationView.setNavigationItemSelectedListener(item -> {
             Fragment nextFragment = findNextFragment(item.getItemId());
-            changeFragment(nextFragment);
 
-            item.setChecked(true);
-            drawerLayout.closeDrawers();
-            setUpNewFragment(item.getTitle(), item.getItemId());
+            if (nextFragment instanceof WalkFragment && areLocationServicesDisabled()) {
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+                builder.setTitle(R.string.location_services_not_enabled_title);
+                builder.setMessage(R.string.location_services_not_enabled_message);
+                builder.setPositiveButton(R.string.ok, null);
+
+                builder.show();
+            } else {
+                changeFragment(nextFragment);
+
+                item.setChecked(true);
+                drawerLayout.closeDrawers();
+                setUpNewFragment(item.getTitle(), item.getItemId());
+            }
 
             return true;
         });
@@ -1307,6 +1318,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 toolbar.setTitle(group.getName());
                 InfoGroupFragment.setGroup(group);
                 changeFragment(new InfoGroupFragment());
+                return true;
+            } else if (actualFragment instanceof ActualWalkingFragment) {
+                ActualWalkingFragment.showEndWalkDialog();
                 return true;
             } else if (!(actualFragment instanceof MyPetsFragment)){
                 changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
@@ -1647,11 +1661,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             }
         }*/
     }
-
-    public void getMyLocations() {
-        LocationUpdater.startRoute();
-    }
-
 
     @Override
     public void makeZoomImage(Drawable drawable) {
@@ -2188,7 +2197,11 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     public void startWalk(List<String> walkingPetNames) {
         addPetsToWalkRegister(walkingPetNames);
-        LocationUpdater.startRoute();
+
+        ActualWalkingFragment actualWalkingFragment = new ActualWalkingFragment();
+        changeFragment(actualWalkingFragment);
+        toolbar.setVisibility(View.GONE);
+        navigationView.setVisibility(View.GONE);
     }
 
     @Override
@@ -2219,6 +2232,9 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
 
         addWalk(pets, name, description, DateTime.Builder.buildFullString(strStartDateTime), endDateTime);
+        changeFragment(new InfoPetFragment());
+        toolbar.setVisibility(View.VISIBLE);
+        navigationView.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -2253,7 +2269,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private List<LatLng> getCoordinates() {
 
         List<LatLng> list = new ArrayList<>();
-        LocationUpdater.endRoute();
         SharedPreferences.Editor editor = walkingSharedPreferences.edit();
         int size = walkingSharedPreferences.getInt(user.getUsername(), 0);
         for(int actual = 0; actual < size; actual++) {
@@ -2273,6 +2288,24 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void cancelWalking() {
         SharedPreferences sharedPreferences = getSharedPreferences(WALKING_PREFERENCES, Context.MODE_PRIVATE);
         endPetWalking(sharedPreferences, null);
+        changeFragment(new InfoPetFragment());
+        toolbar.setVisibility(View.VISIBLE);
+        navigationView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public boolean areLocationServicesDisabled() {
+        LocationManager locationManager = (LocationManager) Objects.requireNonNull(this)
+            .getSystemService(Context.LOCATION_SERVICE);
+        boolean gpsEnabled = false;
+        boolean networkEnabled = false;
+
+        gpsEnabled = Objects.requireNonNull(locationManager).isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        networkEnabled = Objects.requireNonNull(locationManager)
+            .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        return !gpsEnabled && !networkEnabled;
     }
 
     /**
@@ -2772,6 +2805,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void changeToMyPets() {
         toolbar.setTitle(R.string.navigation_my_pets);
         changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+        floatingActionButton.show();
     }
 
     @Override
@@ -2791,5 +2825,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        cancelWalking();
     }
 }

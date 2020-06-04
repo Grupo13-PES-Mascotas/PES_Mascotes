@@ -330,4 +330,10 @@ public interface InfoPetCommunication {
      * Cancel the current walking.
      */
     void cancelWalking();
+
+    /**
+     * Check whether the location services are enabled or not.
+     * @return True if the location services are enabled
+     */
+    boolean areLocationServicesDisabled();
 }
