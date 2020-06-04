@@ -6,24 +6,57 @@ import org.pesmypetcare.mypetcare.services.ServiceLocator;
 import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Daniel Clemente
  */
 public class AchievementAdapter implements AchievementService {
+    private static final int TIME = 20;
+
+
     @Override
     public List<UserMedalData> getAllAchievements(User user) throws MyPetCareException {
-        return ServiceLocator.getInstance().getUserMedalManagerClient().getAllMedals(user.getToken(), user.getUsername());
+        AtomicReference<List<UserMedalData>> listMedals = new AtomicReference<>();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                listMedals.set(ServiceLocator.getInstance().getUserMedalManagerClient().getAllMedals(user.getToken(), user.getUsername()));
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return listMedals.get();
+
     }
 
     @Override
     public void updateAchievement(String nameAchievement, Double newProgress, User user) throws MyPetCareException {
-        UserMedalData medal = ServiceLocator.getInstance().getUserMedalManagerClient().
-                getMedal(user.getToken(), user.getUsername(), nameAchievement);
-        Double progress = medal.getProgress();
-        ServiceLocator.getInstance().getUserMedalManagerClient().
-                updateField(user.getToken(), user.getUsername(), nameAchievement, "progress",
-                        progress + newProgress);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            UserMedalData medal = null;
+            try {
+                medal = ServiceLocator.getInstance().getUserMedalManagerClient().
+                        getMedal(user.getToken(), user.getUsername(), nameAchievement);
+                Double progress = medal.getProgress();
+                ServiceLocator.getInstance().getUserMedalManagerClient().
+                        updateField(user.getToken(), user.getUsername(), nameAchievement, "progress",
+                                progress + newProgress);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
+
 
 }
