@@ -22,7 +22,9 @@ public class TestTrUpdateAchievement {
     private Integer progress = 1;
     private Integer one = 1;
     private Integer zero = 0;
-    UserAchievement userAchievement;
+    private UserAchievement userAchievement;
+    private String name = "Contributor";
+    private String name2 = "Superwalker";
 
     @Before
     public void setUp() {
@@ -35,11 +37,11 @@ public class TestTrUpdateAchievement {
     public void shouldUpdateContributorAchievement() throws InvalidFormatException, MyPetCareException {
         trUpdateAchievement.setUser(user);
         trUpdateAchievement.setNewProgress(progress);
-        trUpdateAchievement.setNameAchievement("Contributor");
+        trUpdateAchievement.setNameAchievement(name);
         trUpdateAchievement.execute();
         List<UserAchievement> list = user.getAchievements();
         for(UserAchievement achievement : list) {
-            if (achievement.getName().equals("Contributor")) {
+            if (achievement.getName().equals(name)) {
                 userAchievement = achievement;
             }
         }
@@ -50,14 +52,14 @@ public class TestTrUpdateAchievement {
     public void shouldNoUpdateAchievementFromOtherUser() throws InvalidFormatException, MyPetCareException {
         trUpdateAchievement.setUser(user);
         trUpdateAchievement.setNewProgress(progress);
-        trUpdateAchievement.setNameAchievement("Superwalker");
+        trUpdateAchievement.setNameAchievement(name2);
         trUpdateAchievement.execute();
         List<UserAchievement> list = user2.getAchievements();
-        for(UserAchievement achievement : list) {
-            if (achievement.getName().equals("Superwalker")) {
+        for (UserAchievement achievement : list) {
+            if (achievement.getName().equals(name2)) {
                 userAchievement = achievement;
             }
         }
-        assertEquals("Should be one", zero, userAchievement.getProgress());
+        assertEquals("Should be zero", zero, userAchievement.getProgress());
     }
 }

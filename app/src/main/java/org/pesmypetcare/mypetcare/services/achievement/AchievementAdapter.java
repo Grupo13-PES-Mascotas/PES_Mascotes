@@ -24,7 +24,8 @@ public class AchievementAdapter implements AchievementService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                listMedals.set(ServiceLocator.getInstance().getUserMedalManagerClient().getAllMedals(user.getToken(), user.getUsername()));
+                listMedals.set(ServiceLocator.getInstance().getUserMedalManagerClient()
+                        .getAllMedals(user.getToken(), user.getUsername()));
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -36,7 +37,6 @@ public class AchievementAdapter implements AchievementService {
             e.printStackTrace();
         }
         return listMedals.get();
-
     }
 
     @Override
@@ -45,11 +45,11 @@ public class AchievementAdapter implements AchievementService {
         executorService.execute(() -> {
             UserMedalData medal = null;
             try {
-                medal = ServiceLocator.getInstance().getUserMedalManagerClient().
-                        getMedal(user.getToken(), user.getUsername(), nameAchievement);
+                medal = ServiceLocator.getInstance().getUserMedalManagerClient()
+                        .getMedal(user.getToken(), user.getUsername(), nameAchievement);
                 Double progress = medal.getProgress();
-                ServiceLocator.getInstance().getUserMedalManagerClient().
-                        updateField(user.getToken(), user.getUsername(), nameAchievement, "progress",
+                ServiceLocator.getInstance().getUserMedalManagerClient()
+                        .updateField(user.getToken(), user.getUsername(), nameAchievement, "progress",
                                 progress + newProgress);
             } catch (MyPetCareException e) {
                 e.printStackTrace();

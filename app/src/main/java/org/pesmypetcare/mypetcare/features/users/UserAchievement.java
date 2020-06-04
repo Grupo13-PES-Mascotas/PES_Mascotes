@@ -42,11 +42,10 @@ public class UserAchievement extends Achievement {
     public double getCurrentGoal() {
         int level = getCurrentLevel();
         List<Integer> levels = getLevels();
-        if (level + 1 <= levels.size()) {
+        if (level + 1 <= levels.size()-1) {
             return levels.get(level + 1);
-        }
-        else {
-            return levels.get(3);
+        } else {
+            return levels.get(levels.size()-1);
         }
     }
 }

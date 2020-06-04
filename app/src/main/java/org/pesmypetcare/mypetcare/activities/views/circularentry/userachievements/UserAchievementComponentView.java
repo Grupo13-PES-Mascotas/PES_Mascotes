@@ -55,7 +55,9 @@ public class UserAchievementComponentView extends CircularEntryView {
     }
 
     @Override
-    protected String getFirstLineText() { return achievement.getName() + ": " + achievement.getDescription(); }
+    protected String getFirstLineText() {
+        return achievement.getName() + ": " + achievement.getDescription();
+    }
 
     @Override
     protected String getSecondLineText() {

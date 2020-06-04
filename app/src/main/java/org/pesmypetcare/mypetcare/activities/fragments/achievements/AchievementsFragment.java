@@ -36,7 +36,7 @@ public class AchievementsFragment extends Fragment {
     }
 
     /**
-     * Initializes de achievements controller
+     * Initializes de achievements controller.
      */
     private void initializeAchievementsController() throws MyPetCareException {
         List<UserMedalData> userAchievementList = communication.getAllAchievements();
