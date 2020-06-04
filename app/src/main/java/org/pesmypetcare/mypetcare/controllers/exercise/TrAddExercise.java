@@ -1,6 +1,5 @@
 package org.pesmypetcare.mypetcare.controllers.exercise;
 
-import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.InvalidPeriodException;
@@ -9,8 +8,6 @@ import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Albert Pinto
@@ -80,9 +77,10 @@ public class TrAddExercise {
 
     /**
      * Execute the transaction.
+     * @throws NotPetOwnerException The user is not the owner of the pet
+     * @throws InvalidPeriodException The period is not valid
      */
-    public void execute() throws NotPetOwnerException, InvalidPeriodException, ExecutionException,
-        InterruptedException, InvalidFormatException {
+    public void execute() throws NotPetOwnerException, InvalidPeriodException {
         if (!pet.isOwner(user)) {
             throw new NotPetOwnerException();
         } else if (startDateTime.compareTo(endDateTime) > 0 || isDifferentDate(startDateTime, endDateTime)) {

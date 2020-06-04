@@ -9,13 +9,13 @@ import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.Walk;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
+import org.pesmypetcare.usermanager.datacontainers.pet.Weight;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Albert Pinto
@@ -131,8 +131,7 @@ public class StubPetManagerService implements PetManagerService {
     }
 
     @Override
-    public void addWashFrequency(User user, Pet pet, int newWashFrequency, DateTime dateTime) throws ExecutionException,
-        InterruptedException {
+    public void addWashFrequency(User user, Pet pet, int newWashFrequency, DateTime dateTime) {
         ArrayList<Pet> pets = data.get(user.getUsername());
         int petIndex = Objects.requireNonNull(pets).indexOf(pet);
         pets.get(petIndex).setWashFrequencyForDate(newWashFrequency, dateTime);
@@ -188,5 +187,23 @@ public class StubPetManagerService implements PetManagerService {
         }
 
         return exercises;
+    }
+
+    @Override
+    public List<Weight> getAllWeights(User user, Pet pet) {
+        List<Weight> weights = new ArrayList<>();
+        ArrayList<Pet> pets = data.get(user.getUsername());
+        int petIndex = Objects.requireNonNull(pets).indexOf(pet);
+
+        for (Map.Entry<DateTime, Double> entry : pets.get(petIndex).getHealthInfo().getWeight().entrySet()) {
+            weights.add(new Weight(entry.getKey().toString(), entry.getValue()));
+        }
+
+        return weights;
+    }
+
+    @Override
+    public byte[] getPetImage(User user, Pet pet) {
+        return new byte[] {(byte) 0x0000FF};
     }
 }

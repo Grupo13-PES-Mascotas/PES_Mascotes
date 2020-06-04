@@ -13,8 +13,9 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.pesmypetcare.mypetcare.activities.MainActivity;
+import org.pesmypetcare.mypetcare.activities.LauncherActivity;
 import org.pesmypetcare.mypetcare.databinding.FragmentLogInBinding;
+import org.pesmypetcare.mypetcare.utilities.ServerData;
 
 import java.util.Objects;
 
@@ -29,7 +30,7 @@ public class LogInFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mAuth = MainActivity.getmAuth();
+        //mAuth = ServerData.getInstance().getMAuth();
         FragmentLogInBinding binding = FragmentLogInBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         binding.loginButton.setOnClickListener(v -> {
@@ -66,10 +67,10 @@ public class LogInFragment extends Fragment {
      * Tries to initialize the current user.
      */
     private void loginUser() {
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+        ServerData.getInstance().getMAuth().signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                if (Objects.requireNonNull(mAuth.getCurrentUser()).isEmailVerified()) {
-                    startActivity(new Intent(getActivity(), MainActivity.class));
+                if (Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).isEmailVerified()) {
+                    startActivity(new Intent(getActivity(), LauncherActivity.class));
                     Objects.requireNonNull(getActivity()).finish();
                 } else {
                     testToast("User not verified, check your email");

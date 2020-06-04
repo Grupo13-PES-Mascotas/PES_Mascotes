@@ -12,7 +12,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Albert Pinto
@@ -89,8 +88,11 @@ public class TrUpdateExercise {
 
     /**
      * Execute the transaction.
+     * @throws NotPetOwnerException The user is not the owner of the pet
+     * @throws NotExistingExerciseException The exercise does not exist
+     * @throws InvalidPeriodException The period is invalid
      */
-    public void execute() throws NotPetOwnerException, NotExistingExerciseException, InvalidPeriodException, ExecutionException, InterruptedException {
+    public void execute() throws NotPetOwnerException, NotExistingExerciseException, InvalidPeriodException {
         if (!pet.isOwner(user)) {
             throw new NotPetOwnerException();
         } else if (startDateTime.compareTo(endDateTime) > 0 || isDifferentDate(startDateTime, endDateTime)) {

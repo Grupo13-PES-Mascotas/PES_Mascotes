@@ -1,11 +1,8 @@
 package org.pesmypetcare.mypetcare.controllers.event;
 
-import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Enric Hernando
@@ -47,7 +44,7 @@ public class TrNewPersonalEvent {
     /**
      * Execute the transaction.
      */
-    public void execute() throws ExecutionException, InterruptedException, InvalidFormatException {
+    public void execute() {
         result = false;
         pet.addEvent(event);
         googleCalendarService.registerNewEvent(pet, event);

@@ -14,4 +14,14 @@ public interface WalkCommunication {
      * @return The walking routes
      */
     List<WalkPets> getWalkingRoutes();
+
+    /**
+     * Changes to my pets fragment.
+     */
+    void changeToMyPets();
+
+    /**
+     * Asks for permissions.
+     */
+    void askForPermission(String... permissions);
 }

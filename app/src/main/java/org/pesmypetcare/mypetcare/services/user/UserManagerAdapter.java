@@ -3,8 +3,8 @@ package org.pesmypetcare.mypetcare.services.user;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import org.json.JSONException;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.ServiceLocator;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
@@ -13,11 +13,11 @@ import org.pesmypetcare.usermanager.datacontainers.user.UserData;
 
 import java.io.IOException;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Albert Pinto
@@ -28,18 +28,31 @@ public class UserManagerAdapter implements UserManagerService {
     private byte[] userProfileImageBytes;
 
     @Override
-    public User findUserByUsername(String uid, String token) throws MyPetCareException {
-        UserData userData = null;
-
+    public User findUserByUsername(String uid, String token) {
+        AtomicReference<User> user = new AtomicReference<>();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            UserData userData = null;
+            try {
+                userData = ServiceLocator.getInstance().getUserManagerClient().getUser(token, uid);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+            user.set(new User(Objects.requireNonNull(userData).getUsername(), userData.getEmail(), ""));
+            try {
+                assignUserImage(user.get());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
         try {
-            userData = ServiceLocator.getInstance().getUserManagerClient().getUser(token, uid);
-        } catch (ExecutionException | InterruptedException e) {
+            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        User user = new User(Objects.requireNonNull(userData).getUsername(), userData.getEmail(), "");
-        assignUserImage(user);
 
-        return user;
+        return user.get();
     }
 
     /**
@@ -88,70 +101,95 @@ public class UserManagerAdapter implements UserManagerService {
 
     @Override
     public boolean userExists(User user) {
-        UserData userData = null;
+        AtomicReference<UserData> userData = new AtomicReference<>();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                userData.set(ServiceLocator.getInstance().getUserManagerClient().getUser(user.getToken(),
+                        user.getUsername()));
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
         try {
-            userData = ServiceLocator.getInstance().getUserManagerClient().getUser(user.getToken(), user.getUsername());
-        } catch (ExecutionException | InterruptedException e) {
+            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        return userData != null;
+        return userData.get() != null;
     }
 
     @Override
     public boolean changePassword(User user, String newPassword) {
         /*ServiceLocator.getInstance().getUserManagerClient().updatePassword(user.getToken(), user.getUsername(),
             newPassword);*/
-
-        try {
-            ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(), user.getUsername(),
-                UserManagerClient.PASSWORD, newPassword);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(), user.getUsername(),
+                        UserManagerClient.PASSWORD, newPassword);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
         return true;
     }
 
     @Override
     public void deleteUser(User user) {
-        try {
-            ServiceLocator.getInstance().getUserManagerClient().deleteUser(user.getToken(), user.getUsername());
-            ServiceLocator.getInstance().getUserManagerClient().deleteUserFromDatabase(user.getToken(),
-                    user.getUsername());
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getUserManagerClient().deleteUser(user.getToken(),
+                        Objects.requireNonNull(MainActivity.getmAuth().getCurrentUser()).getUid());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     @Override
     public void changeMail(String email, User user) {
-        //ServiceLocator.getInstance().getUserManagerClient().updateEmail(user.getToken(), user.getUsername(), email);
-        try {
-            ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(), user.getUsername(),
-                UserManagerClient.EMAIL, email);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(), user.getUsername(),
+                        UserManagerClient.EMAIL, email);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     @Override
     public void createUser(String uid, String username, String email, String password) {
-        try {
-            ServiceLocator.getInstance().getUserManagerClient().createUser(uid,
-                    new UserData(username, email, password));
-        } catch (ExecutionException | InterruptedException | JSONException e) {
-            e.printStackTrace();
-        }
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getUserManagerClient().createUser(uid,
+                        new UserData(username, email, password));
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     @Override
     public void deleteUserFromDatabase(String username) {
-        try {
-            ServiceLocator.getInstance().getUserManagerClient().deleteUserFromDatabase("token", username);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getUserManagerClient().deleteUserFromDatabase("token", username);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     @Override
@@ -171,7 +209,7 @@ public class UserManagerAdapter implements UserManagerService {
     }
 
     @Override
-    public boolean usernameExists(String username) throws InterruptedException {
+    public boolean usernameExists(String username) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         AtomicBoolean exists = new AtomicBoolean(false);
 
@@ -184,19 +222,27 @@ public class UserManagerAdapter implements UserManagerService {
         });
 
         executorService.shutdown();
-        executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+        try {
+            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return exists.get();
     }
 
     @Override
     public void changeUsername(User user, String newUsername) {
-        try {
-            ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(), user.getUsername(),
-                    UserManagerClient.USERNAME, newUsername);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(), user.getUsername(),
+                        UserManagerClient.USERNAME, newUsername);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     @Override

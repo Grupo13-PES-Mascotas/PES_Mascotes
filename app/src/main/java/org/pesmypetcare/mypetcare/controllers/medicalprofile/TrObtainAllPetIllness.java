@@ -8,7 +8,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.medicalprofile.MedicalProfileManagerService;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Enric Hernando
@@ -50,10 +49,8 @@ public class TrObtainAllPetIllness {
     /**
      * Executes the transaction.
      * @throws NotPetOwnerException Exception thrown when the user is not the owner of the pet
-     * @throws ExecutionException Exception thrown when there is an exception during the execution
-     * @throws InterruptedException Exception thrown when there is an interruption during the exception
      */
-    public void execute() throws NotPetOwnerException, ExecutionException, InterruptedException {
+    public void execute() throws NotPetOwnerException {
         if (!user.getUsername().equals(pet.getOwner().getUsername())) {
             throw new NotPetOwnerException();
         }

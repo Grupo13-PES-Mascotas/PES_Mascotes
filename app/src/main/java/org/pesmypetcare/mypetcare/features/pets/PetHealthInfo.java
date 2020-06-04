@@ -1,5 +1,7 @@
 package org.pesmypetcare.mypetcare.features.pets;
 
+import android.util.Pair;
+
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 
@@ -246,8 +248,7 @@ public class PetHealthInfo {
             double storedKcal = dailyKiloCalories.get(dateTime);
             dailyKiloCalories.put(dateTime, storedKcal + kCal);
         }
-
-        addWeeklyKiloCalAverageForDate(date, kCal);
+        addWeeklyKiloCalAverageForDate(dateTime, kCal);
     }
 
     /**
@@ -256,14 +257,16 @@ public class PetHealthInfo {
      * @param currentMealKcal The kilocalories of the meal that is being deleted
      */
     public void deleteDailyKiloCaloriesForDate(DateTime date, double currentMealKcal) throws InvalidFormatException {
-        if (dailyKiloCalories.containsKey(date)) {
-            double storedKcal = dailyKiloCalories.get(date);
+        String strDate = date.toDateString();
+        DateTime dateTime = DateTime.Builder.buildDateString(strDate);
+        if (dailyKiloCalories.containsKey(dateTime)) {
+            double storedKcal = dailyKiloCalories.get(dateTime);
             if (storedKcal - currentMealKcal == 0) {
-                this.dailyKiloCalories.remove(date);
+                this.dailyKiloCalories.remove(dateTime);
             } else {
-                this.dailyKiloCalories.put(date, storedKcal - currentMealKcal);
+                this.dailyKiloCalories.put(dateTime, storedKcal - currentMealKcal);
             }
-            removeWeeklyKiloCalAverageForDate(date, currentMealKcal);
+            removeWeeklyKiloCalAverageForDate(dateTime, currentMealKcal);
         }
     }
 
@@ -393,9 +396,14 @@ public class PetHealthInfo {
         if (weeklyKiloCaloriesAverage.containsKey(mondayDate)) {
             double oldKcalAvg = weeklyKiloCaloriesAverage.get(mondayDate);
             int size = weeklyStoredMeals.get(mondayDate);
-            double newKcalAvg = (size * oldKcalAvg - kcal) / (size - 1);
-            weeklyKiloCaloriesAverage.put(mondayDate, newKcalAvg);
-            weeklyStoredMeals.put(mondayDate, weeklyStoredMeals.get(mondayDate) - 1);
+            if (size > 1) {
+                double newKcalAvg = (size * oldKcalAvg - kcal) / (size - 1);
+                weeklyKiloCaloriesAverage.put(mondayDate, newKcalAvg);
+                weeklyStoredMeals.put(mondayDate, weeklyStoredMeals.get(mondayDate) - 1);
+            } else {
+                weeklyKiloCaloriesAverage.remove(mondayDate);
+                weeklyStoredMeals.remove(mondayDate);
+            }
         }
     }
 
@@ -404,16 +412,18 @@ public class PetHealthInfo {
      * @param date The date for which we want to find the monday
      */
     private DateTime obtainDateMonday(DateTime date) throws InvalidFormatException {
+        DateTime aux = DateTime.Builder.buildDateString(date.toDateString());
         Calendar c = Calendar.getInstance();
-        c.set(date.getYear(), date.getMonth(), date.getDay());
+        c.set(aux.getYear(), aux.getMonth() - 1, aux.getDay());
         int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
         while (dayOfWeek != Calendar.MONDAY) {
-            date.decreaseDay();
-            c.set(date.getYear(), date.getMonth(), date.getDay());
+            aux.decreaseDay();
+            c.set(date.getYear(), aux.getMonth() - 1, aux.getDay());
             dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
         }
-        return DateTime.Builder.build(c.get(Calendar.YEAR), c.get(Calendar.MONTH),
+        aux = DateTime.Builder.build(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1,
                 c.get(Calendar.DAY_OF_MONTH));
+        return aux;
     }
 
     /**
@@ -506,6 +516,19 @@ public class PetHealthInfo {
         date.setHour(0);
         date.setMinutes(0);
         date.setSeconds(0);
+    }
+
+    /**
+     * Get the last weight info.
+     * @return The last weight info
+     */
+    public Pair<DateTime, Double> getLastWeightInfo() {
+        if (weight.isEmpty()) {
+            return null;
+        }
+
+        Map.Entry<DateTime, Double> entry = ((TreeMap<DateTime, Double>) weight).lastEntry();
+        return new Pair<>(Objects.requireNonNull(entry).getKey(), entry.getValue());
     }
 
     @Override

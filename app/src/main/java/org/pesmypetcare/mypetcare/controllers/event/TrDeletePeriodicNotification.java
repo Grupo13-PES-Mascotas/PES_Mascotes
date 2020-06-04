@@ -7,7 +7,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
 
 import java.text.ParseException;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Daniel Clemente
@@ -60,7 +59,7 @@ public class TrDeletePeriodicNotification {
      * @throws UserIsNotOwnerException The user is not the owner of the pet
      * @throws ParseException The date of the event is not in correct format
      */
-    public void execute() throws ParseException, UserIsNotOwnerException, ExecutionException, InterruptedException {
+    public void execute() throws UserIsNotOwnerException, ParseException {
         result = false;
         if (pet.getOwner() != user) {
             throw new UserIsNotOwnerException();

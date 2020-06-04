@@ -8,6 +8,19 @@
     android:padding="20dp">
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/sharePostButtons"
+        style="@style/rounded_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/green"
+        android:text="@string/post_share"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:icon="@drawable/ic_menu_share"
+        app:iconSize="24dp"
+        app:iconTint="@color/white" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/reportPostButtons"
         style="@style/rounded_button"
         android:layout_width="match_parent"

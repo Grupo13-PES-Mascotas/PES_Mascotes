@@ -14,7 +14,9 @@
 
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="10dp"
         android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/illnessButtonLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -44,7 +46,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+            android:layout_height="20dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/inputIllnessTime"
@@ -59,7 +61,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+            android:layout_height="20dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/inputIllnessEndDate"
@@ -74,7 +76,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+            android:layout_height="20dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/inputIllnessEndTime"
@@ -89,25 +91,25 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+            android:layout_height="20dp" />
 
         <Spinner
             android:id="@+id/spinnerIllnessSeverity"
-            android:hint="@string/illness_severity"
-            android:textColorHint="@color/colorPrimary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="@string/illness_severity"
+            android:textColorHint="@color/colorPrimary" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+            android:layout_height="20dp" />
 
         <Spinner
             android:id="@+id/spinnerIllnessType"
-            android:hint="@string/illness_type"
-            android:textColorHint="@color/colorPrimary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="@string/illness_type"
+            android:textColorHint="@color/colorPrimary" />
 
     </LinearLayout>
 
@@ -117,11 +119,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/deleteIllnessButton"
@@ -138,7 +140,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="10dp"/>
+            android:layout_height="10dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/editIllnessButton"

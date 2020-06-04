@@ -34,6 +34,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class CommunityAdapter implements CommunityService {
     private static final int TIME = 20;
+    private static final int TIMEOUT = 2;
     private byte[] imageBytes;
 
     @Override
@@ -51,7 +52,7 @@ public class CommunityAdapter implements CommunityService {
         executorService.shutdown();
 
         try {
-            executorService.awaitTermination(2, TimeUnit.MINUTES);
+            executorService.awaitTermination(TIMEOUT, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

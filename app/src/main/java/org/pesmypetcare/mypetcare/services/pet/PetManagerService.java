@@ -10,10 +10,10 @@ import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
 import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.Walk;
 import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.usermanager.datacontainers.pet.Weight;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Albert Pinto
@@ -33,7 +33,7 @@ public interface PetManagerService {
      * @return True if the register has been done without any problems
      * @throws PetAlreadyExistingException The pet already belongs to the user
      */
-    boolean registerNewPet(User user, Pet pet) throws ExecutionException, InterruptedException;
+    boolean registerNewPet(User user, Pet pet);
 
     /**
      * Updates the image of the pet.
@@ -75,14 +75,14 @@ public interface PetManagerService {
      * @param pet The pet
      * @param event The event
      */
-    void registerNewEvent(Pet pet, Event event) throws ExecutionException, InterruptedException;
+    void registerNewEvent(Pet pet, Event event);
 
     /**
      * Delete a event from a pet.
      * @param pet The pet
      * @param event The event
      */
-    void deleteEvent(Pet pet, Event event) throws ExecutionException, InterruptedException;
+    void deleteEvent(Pet pet, Event event);
 
     /**
      * Update the weight for a pet.
@@ -91,8 +91,7 @@ public interface PetManagerService {
      * @param newWeight The new weight
      * @param dateTime The dateTime
      */
-    void addWeight(User user, Pet pet, double newWeight, DateTime dateTime) throws ExecutionException,
-        InterruptedException;
+    void addWeight(User user, Pet pet, double newWeight, DateTime dateTime);
 
     /**
      * Delete the weight of a date.
@@ -100,7 +99,7 @@ public interface PetManagerService {
      * @param pet The pet
      * @param dateTime The dateTime
      */
-    void deletePetWeight(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException;
+    void deletePetWeight(User user, Pet pet, DateTime dateTime);
 
     /**
      * Update the wash frequency for a pet.
@@ -109,8 +108,7 @@ public interface PetManagerService {
      * @param newWashFrequency The new wash frequency
      * @param dateTime The date time of the new wash frequency
      */
-    void addWashFrequency(User user, Pet pet, int newWashFrequency, DateTime dateTime) throws ExecutionException,
-        InterruptedException;
+    void addWashFrequency(User user, Pet pet, int newWashFrequency, DateTime dateTime);
 
     /**
      * Delete the pet wash frequency of a date.
@@ -118,7 +116,7 @@ public interface PetManagerService {
      * @param pet The pet
      * @param dateTime The dateTime
      */
-    void deletePetWashFrequency(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException;
+    void deletePetWashFrequency(User user, Pet pet, DateTime dateTime);
 
     /**
      * Add an exercise to the pet.
@@ -126,7 +124,7 @@ public interface PetManagerService {
      * @param pet The pet
      * @param exercise The exercise
      */
-    void addExercise(User user, Pet pet, Exercise exercise) throws ExecutionException, InterruptedException;
+    void addExercise(User user, Pet pet, Exercise exercise);
 
     /**
      * Delete an exercise of the pet.
@@ -134,7 +132,7 @@ public interface PetManagerService {
      * @param pet The pet
      * @param dateTime The DateTime of the exercise
      */
-    void deleteExercise(User user, Pet pet, DateTime dateTime) throws ExecutionException, InterruptedException;
+    void deleteExercise(User user, Pet pet, DateTime dateTime);
 
     /**
      * Update the exercise of the pet.
@@ -143,8 +141,7 @@ public interface PetManagerService {
      * @param originalDateTime The original DateTime
      * @param exercise The exercise
      */
-    void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise) throws ExecutionException,
-            InterruptedException;
+    void updateExercise(User user, Pet pet, DateTime originalDateTime, Exercise exercise);
 
     /**
      * Add the walking to the pet.
@@ -152,7 +149,7 @@ public interface PetManagerService {
      * @param pet The pet
      * @param walk The walking
      */
-    void addWalking(User user, Pet pet, Walk walk) throws ExecutionException, InterruptedException;
+    void addWalking(User user, Pet pet, Walk walk);
 
     /**
      * Get all the exercises.
@@ -160,5 +157,15 @@ public interface PetManagerService {
      * @param pet The pet
      * @return All the exercises of the pet
      */
-    List<Exercise> getAllExercises(User user, Pet pet) throws ExecutionException, InterruptedException;
+    List<Exercise> getAllExercises(User user, Pet pet);
+
+    /**
+     * Get all the weights.
+     * @param user The user
+     * @param pet The pet
+     * @return All the weights
+     */
+    List<Weight> getAllWeights(User user, Pet pet);
+
+    byte[] getPetImage(User user, Pet pet);
 }

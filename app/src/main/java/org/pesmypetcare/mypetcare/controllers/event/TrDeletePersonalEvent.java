@@ -4,8 +4,6 @@ import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.Event;
 import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Enric Hernando
  */
@@ -46,7 +44,7 @@ public class TrDeletePersonalEvent {
     /**
      * Execute the transaction.
      */
-    public void execute() throws ExecutionException, InterruptedException {
+    public void execute() {
         result = false;
         pet.deleteEvent(event);
         googleCalendarService.deleteEvent(pet, event);

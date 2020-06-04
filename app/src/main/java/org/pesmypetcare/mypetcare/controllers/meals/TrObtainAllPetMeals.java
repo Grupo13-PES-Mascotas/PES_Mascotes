@@ -7,7 +7,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.meal.MealManagerService;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Xavier Campos
@@ -49,7 +48,7 @@ public class TrObtainAllPetMeals {
     /**
      * Method responsible for executing the transaction.
      */
-    public void execute() throws ExecutionException, InterruptedException {
+    public void execute() {
         result = mealManagerService.findMealsByPet(user, pet);
         for (Event e:result) {
             pet.addEvent(e);

@@ -16,7 +16,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,7 +50,6 @@ import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.httptools.utilities.DateTime;
-import org.pesmypetcare.mypetcare.BuildConfig;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.achievements.AchievementsCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.achievements.AchievementsFragment;
@@ -147,6 +145,7 @@ import org.pesmypetcare.mypetcare.controllers.pethealth.TrAddNewWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrAddNewWeight;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrDeleteWashFrequency;
 import org.pesmypetcare.mypetcare.controllers.pethealth.TrDeleteWeight;
+import org.pesmypetcare.mypetcare.controllers.pethealth.TrGetAllWeights;
 import org.pesmypetcare.mypetcare.controllers.user.EmptyMessagingTokenException;
 import org.pesmypetcare.mypetcare.controllers.user.TrChangeMail;
 import org.pesmypetcare.mypetcare.controllers.user.TrChangePassword;
@@ -216,11 +215,12 @@ import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
-import org.pesmypetcare.mypetcare.features.users.UserAchievement;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 import org.pesmypetcare.mypetcare.utilities.MessagingService;
 import org.pesmypetcare.mypetcare.utilities.MessagingServiceCommunication;
+import org.pesmypetcare.mypetcare.utilities.MessagingTokenServiceCommunication;
+import org.pesmypetcare.mypetcare.utilities.ServerData;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -246,7 +246,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterfaceCommunication,
     InfoPetCommunication, MyPetsCommunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
     CommunityCommunication, InfoGroupCommunication, WalkCommunication, MessagingServiceCommunication,
-    EstablishmentsCommunication, AchievementsCommunication, AsyncResponse {
+    MessagingTokenServiceCommunication, EstablishmentsCommunication, AchievementsCommunication, AsyncResponse {
 
     public static final int MAIN_ACTIVITY_ZOOM_IDENTIFIER = 0;
     private static final int[] NAVIGATION_OPTIONS = {
@@ -362,6 +362,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrGetGroupImage trGetGroupImage;
     private TrGetAllAchievements trGetAllAchievements;
     private TrUpdateAchievement trUpdateAchievement;
+    private TrGetAllWeights trGetAllWeights;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -372,13 +373,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         resources = getResources();
 
         setAttributes();
-
-        if (enableLoginActivity) {
-            askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION);
-        }
-
-        makeLogin();
 
         ExecutorService mainActivitySetUp = Executors.newCachedThreadPool();
         mainActivitySetUp.execute(this::initializeMainActivity);
@@ -408,6 +402,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      * Set the attributes of the Main Activity.
      */
     private void setAttributes() {
+        mAuth = ServerData.getInstance().getMAuth();
+        user = ServerData.getInstance().getUser();
         sharedpreferences = getSharedPreferences(GOOGLE_CALENDAR_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         walkingSharedPreferences = getSharedPreferences(ACTUAL_WALK, Context.MODE_PRIVATE);
 
@@ -429,6 +425,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeCurrentUser();
         initializeActivity();
         setUpNavigationImage();
+        setUpNavigationHeader();
 
         LocationUpdater.setContext(this);
         MessagingService.setCommunication(this);
@@ -492,9 +489,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
      */
     private void makeLogin() {
         if (enableLoginActivity && mAuth.getCurrentUser() == null) {
-            if (BuildConfig.DEBUG) {
-                Log.d("MainActivity", "User is not logged in, starting log in activity");
-            }
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
@@ -536,6 +530,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         user = trObtainUser.getResult();
 
         for (Pet pet : user.getPets()) {
+            obtainAllPetWeights(pet);
             obtainAllPetMeals(pet);
             obtainAllPetMedications(pet);
             obtainAllPetVetVisits(pet);
@@ -553,13 +548,31 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setUpNavigationHeader();
     }
 
+    /**
+     * Obtain all the pet weights.
+     * @param pet The pet to get the weights from
+     */
+    private void obtainAllPetWeights(Pet pet) {
+        trGetAllWeights.setUser(user);
+        trGetAllWeights.setPet(pet);
+        try {
+            trGetAllWeights.execute();
+        } catch (NotPetOwnerException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * Obtain all the pet exercises.
+     * @param pet The pet to get the exercises from
+     */
+
     private void obtainAllPetExercises(Pet pet) {
         trGetAllExercises.setUser(user);
         trGetAllExercises.setPet(pet);
 
         try {
             trGetAllExercises.execute();
-        } catch (NotPetOwnerException | ExecutionException | InterruptedException e) {
+        } catch (NotPetOwnerException e) {
             e.printStackTrace();
         }
 
@@ -1583,7 +1596,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trObtainUserImage.execute();
-        } catch (ExecutionException | InterruptedException | MyPetCareException e) {
+        } catch (MyPetCareException e) {
             e.printStackTrace();
         }
         Bitmap result = trObtainUserImage.getResult();
@@ -1642,7 +1655,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void deletePersonalEvent(Pet pet, Event event) throws ExecutionException, InterruptedException {
+    public void deletePersonalEvent(Pet pet, Event event) {
         trDeletePersonalEvent.setPet(pet);
         trDeletePersonalEvent.setEvent(event);
         trDeletePersonalEvent.execute();
@@ -1706,8 +1719,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (UserIsNotOwnerException e) {
             Toast toast = Toast.makeText(this, getString(R.string.error_user_not_owner), Toast.LENGTH_LONG);
             toast.show();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
         }
 
         changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
@@ -1821,11 +1832,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         if (updatesDate) {
             trUpdateMeal.setNewDate(newDate);
         }
-        try {
-            trUpdateMeal.execute();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        trUpdateMeal.execute();
     }
 
     @Override
@@ -1835,7 +1842,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteMeal.setMeal(meal);
         try {
             trDeleteMeal.execute();
-        } catch (NotPetOwnerException | ExecutionException | InterruptedException e) {
+        } catch (NotPetOwnerException e) {
             e.printStackTrace();
         }
     }
@@ -1844,11 +1851,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void obtainAllPetMeals(Pet pet) {
         trObtainAllPetMeals.setUser(user);
         trObtainAllPetMeals.setPet(pet);
-        try {
-            trObtainAllPetMeals.execute();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        trObtainAllPetMeals.execute();
     }
 
     @Override
@@ -1856,6 +1859,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trNewPetWash.setUser(user);
         trNewPetWash.setPet(pet);
         trNewPetWash.setWash(wash);
+        trNewPetWash.execute();
         try {
             trNewPetWash.execute();
             updateAchievement("Clean as a whistle", 1);
@@ -1881,11 +1885,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteWash.setUser(user);
         trDeleteWash.setPet(pet);
         trDeleteWash.setWash(wash);
-        try {
-            trDeleteWash.execute();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        trDeleteWash.execute();
     }
 
     @Override
@@ -1902,8 +1902,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trNewPetMedication.setMedication(medication);
         try {
             trNewPetMedication.execute();
-        } catch (MedicationAlreadyExistingException | ExecutionException | InterruptedException
-            | InvalidFormatException e) {
+        } catch (MedicationAlreadyExistingException e) {
             e.printStackTrace();
         }
     }
@@ -1922,7 +1921,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
         try {
             trUpdateMedication.execute();
-        } catch (InterruptedException | ExecutionException | MedicationAlreadyExistingException e) {
+        } catch (MedicationAlreadyExistingException e) {
             e.printStackTrace();
         }
     }
@@ -1932,22 +1931,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteMedication.setUser(user);
         trDeleteMedication.setPet(pet);
         trDeleteMedication.setMedication(medication);
-        try {
-            trDeleteMedication.execute();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        trDeleteMedication.execute();
     }
 
     @Override
     public void obtainAllPetMedications(Pet pet) {
         trObtainAllPetMedications.setUser(user);
         trObtainAllPetMedications.setPet(pet);
-        try {
-            trObtainAllPetMedications.execute();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        trObtainAllPetMedications.execute();
     }
 
     @Override
@@ -1957,8 +1948,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trNewVetVisit.setVetVisit(vetVisit);
         try {
             trNewVetVisit.execute();
-        } catch (VetVisitAlreadyExistingException | NotPetOwnerException | InterruptedException | ExecutionException
-            | InvalidFormatException e)
+        } catch (VetVisitAlreadyExistingException | NotPetOwnerException e)
         {
             e.printStackTrace();
         }
@@ -1974,7 +1964,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
         try {
             trUpdateVetVisit.execute();
-        } catch (NotPetOwnerException | ExecutionException | InterruptedException e) {
+        } catch (NotPetOwnerException e) {
             e.printStackTrace();
         }
     }
@@ -1990,8 +1980,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trAddExercise.execute();
-        } catch (NotPetOwnerException | InvalidPeriodException | InterruptedException | ExecutionException
-            | InvalidFormatException e) {
+        } catch (NotPetOwnerException | InvalidPeriodException e) {
             e.printStackTrace();
         }
 
@@ -2006,7 +1995,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trDeleteExercise.execute();
-        } catch (NotPetOwnerException | NotExistingExerciseException | ExecutionException | InterruptedException e) {
+        } catch (NotPetOwnerException | NotExistingExerciseException e) {
             e.printStackTrace();
         }
     }
@@ -2018,7 +2007,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeleteVetVisit.setVetVisit(vetVisit);
         try {
             trDeleteVetVisit.execute();
-        } catch (NotPetOwnerException | ExecutionException | InterruptedException e) {
+        } catch (NotPetOwnerException e) {
             e.printStackTrace();
         }
     }
@@ -2035,8 +2024,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trUpdateExercise.execute();
-        } catch (NotPetOwnerException | InvalidPeriodException | NotExistingExerciseException | ExecutionException |
-            InterruptedException e) {
+        } catch (NotPetOwnerException | InvalidPeriodException | NotExistingExerciseException e) {
             e.printStackTrace();
         }
     }
@@ -2049,8 +2037,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewPetVaccination.setVaccination(vaccination);
         try {
             trAddNewPetVaccination.execute();
-        } catch (NotPetOwnerException | VaccinationAlreadyExistingException | ExecutionException
-            | InterruptedException | InvalidFormatException e) {
+        } catch (NotPetOwnerException | VaccinationAlreadyExistingException e) {
             e.printStackTrace();
         }
     }
@@ -2066,7 +2053,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
         try {
             trUpdatePetVaccination.execute();
-        } catch (NotPetOwnerException | InterruptedException | ExecutionException e) {
+        } catch (NotPetOwnerException e) {
             e.printStackTrace();
         }
     }
@@ -2078,7 +2065,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeletePetVaccination.setVaccination(vaccination);
         try {
             trDeletePetVaccination.execute();
-        } catch (NotPetOwnerException | ExecutionException | InterruptedException e) {
+        } catch (NotPetOwnerException e) {
             e.printStackTrace();
         }
     }
@@ -2089,7 +2076,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainAllPetVaccinations.setPet(pet);
         try {
             trObtainAllPetVaccinations.execute();
-        } catch (NotPetOwnerException | InterruptedException | ExecutionException e) {
+        } catch (NotPetOwnerException e) {
             e.printStackTrace();
         }
     }
@@ -2103,8 +2090,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewPetIllness.setIllness(illness);
         try {
             trAddNewPetIllness.execute();
-        } catch (NotPetOwnerException | IllnessAlreadyExistingException | InterruptedException | ExecutionException
-            | InvalidFormatException e) {
+        } catch (NotPetOwnerException | IllnessAlreadyExistingException e) {
             e.printStackTrace();
         }
 
@@ -2116,7 +2102,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trObtainAllPetIllness.setPet(pet);
         try {
             trObtainAllPetIllness.execute();
-        } catch (NotPetOwnerException | InterruptedException | ExecutionException e) {
+        } catch (NotPetOwnerException e) {
             e.printStackTrace();
         }
     }
@@ -2128,7 +2114,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trDeletePetIllness.setIllness(illness);
         try {
             trDeletePetIllness.execute();
-        } catch (NotPetOwnerException | ExecutionException | InterruptedException e) {
+        } catch (NotPetOwnerException e) {
             e.printStackTrace();
         }
     }
@@ -2143,7 +2129,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
         try {
             trUpdatePetIllness.execute();
-        } catch (NotPetOwnerException | ExecutionException | InterruptedException e) {
+        } catch (NotPetOwnerException e) {
             e.printStackTrace();
         }
     }
@@ -2152,11 +2138,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public void obtainAllPetVetVisits(Pet pet) {
         trObtainAllVetVisits.setUser(user);
         trObtainAllVetVisits.setPet(pet);
-        try {
-            trObtainAllVetVisits.execute();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        trObtainAllVetVisits.execute();
     }
 
     @Override
@@ -2221,6 +2203,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 break;
             case InfoPetFragment.INFO_PET_ZOOM_IDENTIFIER:
                 InfoPetFragment.setIsDefaultPetImage(false);
+                break;
             default:
         }
     }
@@ -2319,6 +2302,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             updateAchievement("Superwalker", 1);
         } catch (NotPetOwnerException | InvalidPeriodException | ExecutionException |
                 InterruptedException | org.pesmypetcare.mypetcare.utilities.InvalidFormatException e) {
+        } catch (NotPetOwnerException | InvalidPeriodException e) {
             e.printStackTrace();
         }
     }
@@ -2475,7 +2459,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void newPeriodicNotification(Pet selectedPet, int periodicity, String reasonText, DateTime dateTime)
-        throws ParseException, UserIsNotOwnerException, ExecutionException, InterruptedException {
+        throws ParseException, UserIsNotOwnerException {
 
         trNewPeriodicNotification.setUser(user);
         trNewPeriodicNotification.setPeriodicity(periodicity);
@@ -2487,7 +2471,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void deletePeriodicNotification(Pet selectedPet, Event event, User user)
-        throws ParseException, UserIsNotOwnerException, ExecutionException, InterruptedException {
+        throws ParseException, UserIsNotOwnerException {
 
         trDeletePeriodicNotification.setUser(user);
         trDeletePeriodicNotification.setPet(selectedPet);
@@ -2538,15 +2522,13 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void deleteUser() {
         trDeleteUser.setUser(user);
         try {
             trDeleteUser.execute();
         } catch (NotValidUserException e) {
             Toast toast = Toast.makeText(this, "Not valid user", Toast.LENGTH_LONG);
             toast.show();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
         }
     }
 
@@ -2611,15 +2593,67 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public SortedSet<Group> getAllGroups() {
         trObtainAllGroups.execute();
         SortedSet<Group> groups = trObtainAllGroups.getResult();
+        List<Group> groupList = new ArrayList<>(groups);
+        List<Group> removeGroups = new ArrayList<>();
 
-        for (Group group : groups) {
+        for (Group group : ServerData.getInstance().getGroups()) {
+            if (!groupList.contains(group)) {
+                removeGroups.add(group);
+            }
+        }
+
+        ServerData.getInstance().getGroups().removeAll(removeGroups);
+        /*ExecutorService executorService = Executors.newCachedThreadPool();
+
+        for (int actual = 0; actual < groupList.size(); ++actual) {
+            int finalActual = actual;
+            executorService.execute(() -> {
+                int index = ServerData.getInstance().getGroups().indexOf(groupList.get(finalActual));
+
+                if (index == -1) {
+                    ServerData.getInstance().getGroups().add(groupList.get(finalActual));
+                    index = ServerData.getInstance().getGroups().indexOf(groupList.get(finalActual));
+                    addGroupImage(groupList, finalActual, index);
+                } else {
+                    ServerData.getInstance().getGroups().set(index, groupList.get(finalActual));
+
+                    if (isNewGroupImage(groupList, finalActual, index) < 0) {
+                        addGroupImage(groupList, finalActual, index);
+                    }
+                }
+            });
+        }
+
+        executorService.shutdown();
+
+        try {
+            executorService.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        /*for (Group group : groups) {
             if (group.getSubscribers().containsKey(user.getUsername())) {
                 user.addSubscribedGroupSimple(group);
             }
         }
 
-        getAllGroupImages(groups);
+        getAllGroupImages(groups);*/
         return groups;
+    }
+
+    private void addGroupImage(List<Group> groupList, int finalActual, int index) {
+        trGetGroupImage.setUser(ServerData.getInstance().getUser());
+        trGetGroupImage.setGroup(groupList.get(finalActual));
+        trGetGroupImage.execute();
+
+        byte[] imageBytes = trGetGroupImage.getResult();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        ServerData.getInstance().getGroups().get(index).setGroupIcon(bitmap);
+    }
+
+    private int isNewGroupImage(List<Group> groupList, int finalActual, int index) {
+        return groupList.get(finalActual).getLastGroupImage().compareTo(ServerData.getInstance().getGroups().get(index).getCreationDate());
     }
 
     /**
@@ -2794,6 +2828,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trGetAllWalks.execute();
 
         return trGetAllWalks.getResult();
+    }
+
+    @Override
+    public void changeToMyPets() {
+        toolbar.setTitle(R.string.navigation_my_pets);
+        changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
     }
 
     @Override

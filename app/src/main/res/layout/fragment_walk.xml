@@ -40,7 +40,18 @@
                 android:orientation="vertical" />
 
         </ScrollView>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/flSharePetWalkRouteButton"
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_menu_share"
+        app:backgroundTint="@color/green"
+        app:fabSize="auto"
+        app:tint="@color/white" />
 
 </FrameLayout>

@@ -1,14 +1,11 @@
 package org.pesmypetcare.mypetcare.controllers.user;
 
-import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.users.NotValidUserException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.meal.MealManagerService;
 import org.pesmypetcare.mypetcare.services.medication.MedicationManagerService;
 import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
 import org.pesmypetcare.mypetcare.services.user.UserManagerService;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Enric Hernando
@@ -41,17 +38,17 @@ public class TrDeleteUser {
      * Execute the transaction.
      * @throws NotValidUserException The user doesn't exist
      */
-    public void execute() throws NotValidUserException, ExecutionException, InterruptedException {
+    public void execute() throws NotValidUserException {
         result = false;
         if (!userHasAlreadyBeenRegistered()) {
             throw new NotValidUserException();
         }
-        for (Pet p:user.getPets()) {
+        /*for (Pet p : user.getPets()) {
             mealManagerService.deleteMealsFromPet(user, p);
             medicationManagerService.deleteMedicationsFromPet(user, p);
-        }
-        userManagerService.deleteUser(user);
+        }*/
         petManagerService.deletePetsFromUser(user);
+        userManagerService.deleteUser(user);
         result = true;
     }
 

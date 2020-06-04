@@ -6,15 +6,32 @@
     android:layout_gravity="start|top"
     tools:context=".activities.fragments.mypets.MyPetsFragment">
 
-    <org.pesmypetcare.mypetcare.activities.views.circularentry.petsinfo.PetsInfoView
-        android:id="@+id/mainMenu"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp" >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    </org.pesmypetcare.mypetcare.activities.views.circularentry.petsinfo.PetsInfoView>
+        <TextView
+            android:id="@+id/emptyPetListText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/do_not_have_any_pet"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:gravity="center" />
+
+        <org.pesmypetcare.mypetcare.activities.views.circularentry.petsinfo.PetsInfoView
+            android:id="@+id/mainMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp">
+
+        </org.pesmypetcare.mypetcare.activities.views.circularentry.petsinfo.PetsInfoView>
+
+    </LinearLayout>
 
 </FrameLayout>

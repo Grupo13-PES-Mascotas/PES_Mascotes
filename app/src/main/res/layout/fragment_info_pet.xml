@@ -61,7 +61,25 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_gravity="center"
+                android:visibility="gone"
                 android:contentDescription="@string/type_of_pet" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="10" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/flSharePetInfo"
+                style="@style/Widget.MaterialComponents.FloatingActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|top"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_menu_share"
+                app:backgroundTint="@color/green"
+                app:fabSize="auto"
+                app:tint="@color/white" />
 
         </LinearLayout>
 
