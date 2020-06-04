@@ -50,7 +50,6 @@ import org.pesmypetcare.mypetcare.features.pets.events.exercise.Exercise;
 import org.pesmypetcare.mypetcare.features.users.NotPetOwnerException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
-import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 import org.pesmypetcare.mypetcare.utilities.MessagingService;
 import org.pesmypetcare.mypetcare.utilities.MessagingTokenServiceCommunication;
 import org.pesmypetcare.mypetcare.utilities.ServerData;
@@ -79,7 +78,6 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityLauncherBinding.inflate(getLayoutInflater());
-        LocationUpdater.endRoute();
         setContentView(binding.getRoot());
 
         setOnStatusChanges(text -> binding.loadingStatus.setText(text));

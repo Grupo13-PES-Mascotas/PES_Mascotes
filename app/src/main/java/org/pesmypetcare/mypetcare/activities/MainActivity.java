@@ -214,7 +214,6 @@ import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
-import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 import org.pesmypetcare.mypetcare.utilities.MessagingService;
 import org.pesmypetcare.mypetcare.utilities.MessagingServiceCommunication;
 import org.pesmypetcare.mypetcare.utilities.MessagingTokenServiceCommunication;
@@ -422,7 +421,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         setUpNavigationImage();
         setUpNavigationHeader();
 
-        LocationUpdater.setContext(this);
         MessagingService.setCommunication(this);
     }
 
@@ -2189,7 +2187,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         addPetsToWalkRegister(walkingPetNames);
 
         ActualWalkingFragment actualWalkingFragment = new ActualWalkingFragment();
-        LocationUpdater.setCommunication(actualWalkingFragment);
         changeFragment(actualWalkingFragment);
         toolbar.setVisibility(View.GONE);
         navigationView.setVisibility(View.GONE);
@@ -2260,7 +2257,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private List<LatLng> getCoordinates() {
 
         List<LatLng> list = new ArrayList<>();
-        LocationUpdater.endRoute();
         SharedPreferences.Editor editor = walkingSharedPreferences.edit();
         int size = walkingSharedPreferences.getInt(user.getUsername(), 0);
         for(int actual = 0; actual < size; actual++) {
@@ -2807,7 +2803,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     protected void onDestroy() {
         super.onDestroy();
 
-        LocationUpdater.endRoute();
         cancelWalking();
     }
 }

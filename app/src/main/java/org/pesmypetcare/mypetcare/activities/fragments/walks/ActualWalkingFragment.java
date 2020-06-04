@@ -49,14 +49,14 @@ public class ActualWalkingFragment extends Fragment implements OnMapReadyCallbac
     private static LayoutInflater inflater;
     private static String errorMessage;
     private GoogleMap googleMap;
+    private static FusedLocationProviderClient fusedLocationProviderClient;
+    private static LocationRequest locationRequest;
+    private static LocationCallback locationCallback;
 
     private FragmentActualWalkingBinding binding;
     private MapView mapView;
     private List<LatLng> coordinates;
     private Polyline actualPolyline;
-    private static FusedLocationProviderClient fusedLocationProviderClient;
-    private static LocationRequest locationRequest;
-    private static LocationCallback locationCallback;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,11 +72,29 @@ public class ActualWalkingFragment extends Fragment implements OnMapReadyCallbac
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(
             Objects.requireNonNull(getContext()));
 
+        getLocationRequest();
+        getLocationCallback();
+
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
+        binding.endWalkingButton.setOnClickListener(v -> showEndWalkDialog());
+
+        return binding.getRoot();
+    }
+
+    /**
+     * Get the location request.
+     */
+    private void getLocationRequest() {
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(REQUEST_INTERVAL);
         locationRequest.setFastestInterval(FASTEST_INTERVAL_REQUEST);
+    }
 
+    /**
+     * Get the location callback.
+     */
+    private void getLocationCallback() {
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -91,11 +109,6 @@ public class ActualWalkingFragment extends Fragment implements OnMapReadyCallbac
                 }
             }
         };
-
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
-        binding.endWalkingButton.setOnClickListener(v -> showEndWalkDialog());
-
-        return binding.getRoot();
     }
 
     @Override
@@ -114,6 +127,10 @@ public class ActualWalkingFragment extends Fragment implements OnMapReadyCallbac
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+
+        if (fusedLocationProviderClient != null && locationCallback != null) {
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+        }
     }
 
     @Override
@@ -185,7 +202,6 @@ public class ActualWalkingFragment extends Fragment implements OnMapReadyCallbac
      */
     private static void setCancelWalkButtonListener(MaterialButton btnCancelWalking, AlertDialog dialog) {
         btnCancelWalking.setOnClickListener(v -> {
-            //LocationUpdater.endRoute();
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
             InfoPetFragment.getCommunication().cancelWalking();
             dialog.dismiss();
@@ -220,7 +236,6 @@ public class ActualWalkingFragment extends Fragment implements OnMapReadyCallbac
             inputWalkingName.setErrorEnabled(true);
             inputWalkingName.setError(errorMessage);
         } else {
-            //LocationUpdater.endRoute();
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
             InfoPetFragment.getCommunication().endWalk(walkingName, walkingDescription);
             dialog.dismiss();
