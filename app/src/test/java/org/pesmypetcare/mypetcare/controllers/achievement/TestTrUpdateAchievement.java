@@ -2,6 +2,7 @@ package org.pesmypetcare.mypetcare.controllers.achievement;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.features.users.UserAchievement;
 import org.pesmypetcare.mypetcare.services.achievement.AchievementAdapter;
@@ -31,7 +32,7 @@ public class TestTrUpdateAchievement {
     }
 
     @Test
-    public void shouldUpdateContributorAchievement() throws InvalidFormatException {
+    public void shouldUpdateContributorAchievement() throws InvalidFormatException, MyPetCareException {
         trUpdateAchievement.setUser(user);
         trUpdateAchievement.setNewProgress(progress);
         trUpdateAchievement.setNameAchievement("Contributor");
@@ -46,7 +47,7 @@ public class TestTrUpdateAchievement {
     }
 
     @Test
-    public void shouldNoUpdateAchievementFromOtherUser() throws InvalidFormatException {
+    public void shouldNoUpdateAchievementFromOtherUser() throws InvalidFormatException, MyPetCareException {
         trUpdateAchievement.setUser(user);
         trUpdateAchievement.setNewProgress(progress);
         trUpdateAchievement.setNameAchievement("Superwalker");

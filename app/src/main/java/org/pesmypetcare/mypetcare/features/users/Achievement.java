@@ -19,9 +19,13 @@ public class Achievement {
         return name;
     }
 
-    public int getDescription() { return description; }
+    public int getDescription() {
+        return description;
+    }
 
-    public List<Integer> getLevels() { return levels; }
+    public List<Integer> getLevels() {
+        return levels;
+    }
 
     public void setLevels(List<Integer> levels) {
         this.levels = levels;

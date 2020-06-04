@@ -8,10 +8,11 @@ import java.util.List;
 /**
  * @author Daniel Clemente
  */
-public class UserAchievement extends Achievement{
+public class UserAchievement extends Achievement {
 
     private Integer progress;
     private List<DateTime> completedLevelsDate;
+    private int year = 2020;
 
     public UserAchievement(String name, int description) {
 
@@ -20,11 +21,11 @@ public class UserAchievement extends Achievement{
     }
 
     public void updateProgress(Integer newProgress) throws InvalidFormatException {
-        DateTime today = DateTime.Builder.build(2020, 5, 29);
+        DateTime today = DateTime.Builder.build(year, 5, 29);
         this.progress += newProgress;
         List<Integer> levels = getLevels();
         for (int i = 0; i < levels.size(); ++i) {
-            if(progress.equals(levels.get(i))) {
+            if (progress.equals(levels.get(i))) {
                 completedLevelsDate.add(i, today);
             }
         }
@@ -41,9 +42,11 @@ public class UserAchievement extends Achievement{
     public double getCurrentGoal() {
         int level = getCurrentLevel();
         List<Integer> levels = getLevels();
-        if (level + 1 <= 3) {
+        if (level + 1 <= levels.size()) {
             return levels.get(level + 1);
         }
-        else return levels.get(3);
+        else {
+            return levels.get(3);
+        }
     }
 }
