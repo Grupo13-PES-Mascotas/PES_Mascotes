@@ -224,8 +224,10 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         googleMap.setOnInfoWindowClickListener(this);
 
         fusedLocationProviderClient.getLastLocation().addOnCompleteListener(task -> {
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(task.getResult().getLatitude(),
-                task.getResult().getLongitude()), ZOOM));
+            if (task.getResult() != null) {
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(task.getResult().getLatitude(),
+                    task.getResult().getLongitude()), ZOOM));
+            }
         });
 
         for (WalkPets walkPets : walkPetsList) {
