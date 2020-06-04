@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -139,7 +138,7 @@ public class InfoPetExercise extends Fragment {
             InfoPetFragment.getCommunication().askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
             InfoPetFragment.getCommunication().askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
 
-            if (areLocationServicesDisabled()) {
+            if (InfoPetFragment.getCommunication().areLocationServicesDisabled()) {
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
                 builder.setTitle(R.string.location_services_not_enabled_title);
                 builder.setMessage(R.string.location_services_not_enabled_message);
@@ -151,24 +150,6 @@ public class InfoPetExercise extends Fragment {
                 startWalkDialog.show();
             }
         });
-    }
-
-    /**
-     * Check whether the location services are disables.
-     * @return True if the location services are disabled
-     */
-    private boolean areLocationServicesDisabled() {
-        LocationManager locationManager = (LocationManager) Objects.requireNonNull(getContext())
-            .getSystemService(Context.LOCATION_SERVICE);
-        boolean gpsEnabled = false;
-        boolean networkEnabled = false;
-
-        gpsEnabled = Objects.requireNonNull(locationManager).isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-        networkEnabled = Objects.requireNonNull(locationManager)
-            .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-        return !gpsEnabled && !networkEnabled;
     }
 
     /**

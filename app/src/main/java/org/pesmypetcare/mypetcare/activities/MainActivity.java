@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -40,6 +41,7 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
@@ -1169,11 +1171,21 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private void setUpNavigationDrawer() {
         navigationView.setNavigationItemSelectedListener(item -> {
             Fragment nextFragment = findNextFragment(item.getItemId());
-            changeFragment(nextFragment);
 
-            item.setChecked(true);
-            drawerLayout.closeDrawers();
-            setUpNewFragment(item.getTitle(), item.getItemId());
+            if (nextFragment instanceof WalkFragment && areLocationServicesDisabled()) {
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+                builder.setTitle(R.string.location_services_not_enabled_title);
+                builder.setMessage(R.string.location_services_not_enabled_message);
+                builder.setPositiveButton(R.string.ok, null);
+
+                builder.show();
+            } else {
+                changeFragment(nextFragment);
+
+                item.setChecked(true);
+                drawerLayout.closeDrawers();
+                setUpNewFragment(item.getTitle(), item.getItemId());
+            }
 
             return true;
         });
@@ -2279,6 +2291,21 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         changeFragment(new InfoPetFragment());
         toolbar.setVisibility(View.VISIBLE);
         navigationView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public boolean areLocationServicesDisabled() {
+        LocationManager locationManager = (LocationManager) Objects.requireNonNull(this)
+            .getSystemService(Context.LOCATION_SERVICE);
+        boolean gpsEnabled = false;
+        boolean networkEnabled = false;
+
+        gpsEnabled = Objects.requireNonNull(locationManager).isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        networkEnabled = Objects.requireNonNull(locationManager)
+            .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        return !gpsEnabled && !networkEnabled;
     }
 
     /**
