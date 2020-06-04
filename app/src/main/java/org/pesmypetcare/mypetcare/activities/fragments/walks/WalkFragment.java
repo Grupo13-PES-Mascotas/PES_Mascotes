@@ -20,6 +20,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -40,7 +42,6 @@ import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.databinding.FragmentWalkBinding;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 import org.pesmypetcare.mypetcare.features.pets.events.exercise.walk.WalkPets;
-import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -70,6 +71,7 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
     private int nextColor;
     private static FloatingActionButton flSharePetWalkRouteButton;
     private List<WalkPets> walkPetsList;
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,6 +82,8 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         communication = (WalkCommunication) getActivity();
         polylines = new HashMap<>();
         walkPetsList = communication.getWalkingRoutes();
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(
+            Objects.requireNonNull(getContext()));
 
         communication.askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION);
@@ -212,14 +216,17 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
 
-        LatLng currentLocation = LocationUpdater.getCurrentLocation();
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
         googleMap.setMyLocationEnabled(true);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, ZOOM));
         googleMap.setOnPolylineClickListener(this);
         googleMap.setOnInfoWindowCloseListener(this);
         googleMap.setInfoWindowAdapter(this);
         googleMap.setOnInfoWindowClickListener(this);
+
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(task -> {
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(task.getResult().getLatitude(),
+                task.getResult().getLongitude()), ZOOM));
+        });
 
         for (WalkPets walkPets : walkPetsList) {
             addWalkRoute(walkPets);
@@ -440,5 +447,9 @@ public class WalkFragment extends Fragment implements OnMapReadyCallback, Google
         date.setText(strDate);
         startHour.setText(strStartHour);
         endHour.setText(strEndHour);
+    }
+
+    public static void setCurrentLocation(double latitude, double longitude) {
+
     }
 }

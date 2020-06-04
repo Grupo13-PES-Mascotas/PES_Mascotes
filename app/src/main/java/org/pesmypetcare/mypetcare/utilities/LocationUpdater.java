@@ -10,12 +10,11 @@ import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 
 import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.fragments.walks.ActualWalkingCommunication;
-
-import java.util.Objects;
 
 /**
  * @author Daniel Clemente
@@ -26,7 +25,7 @@ public class LocationUpdater {
     private static final int MIN_TIME = 5000;
     private static Context context;
     private static LocationManager locationManager;
-
+    private static FusedLocationProviderClient fusedLocationProviderClient;
     private static ActualWalkingCommunication communication;
 
     private static LocationListener locationListener = new LocationListener() {
@@ -68,6 +67,7 @@ public class LocationUpdater {
      */
     public static void setContext(Context context) {
         LocationUpdater.context = context;
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
     }
 
     /**
@@ -83,21 +83,19 @@ public class LocationUpdater {
      * Get the current location of the user.
      * @return The current location
      */
-    public static LatLng getCurrentLocation() {
+    public static void getCurrentLocation() {
         if (ActivityCompat.checkSelfPermission(context,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            return null;
+                == PackageManager.PERMISSION_GRANTED) {
         }
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        /*locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         Location location = Objects.requireNonNull(locationManager).getLastKnownLocation(LocationManager.GPS_PROVIDER);
         String loc = Objects.requireNonNull(location).getLatitude() + " " + location.getLongitude();
         String[] splitPos = loc.split(" ");
-        return new LatLng(Double.parseDouble(splitPos[LAT]), Double.parseDouble(splitPos[LNG]));
+        return new LatLng(Double.parseDouble(splitPos[LAT]), Double.parseDouble(splitPos[LNG]));*/
     }
-
-
 
     /**
      * Update the coordinates of the last location detected.

@@ -1,6 +1,7 @@
 package org.pesmypetcare.mypetcare.activities.fragments.walks;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -23,10 +29,10 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetHealthFragment;
 import org.pesmypetcare.mypetcare.databinding.FragmentActualWalkingBinding;
-import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,15 +43,20 @@ import java.util.Objects;
  */
 public class ActualWalkingFragment extends Fragment implements OnMapReadyCallback, ActualWalkingCommunication {
     private static final float ZOOM = 16.0f;
+    private static final int REQUEST_INTERVAL = 10000;
+    private static final int FASTEST_INTERVAL_REQUEST = 5000;
     private static Context context;
     private static LayoutInflater inflater;
     private static String errorMessage;
+    private GoogleMap googleMap;
 
     private FragmentActualWalkingBinding binding;
     private MapView mapView;
-    private GoogleMap googleMap;
     private List<LatLng> coordinates;
     private Polyline actualPolyline;
+    private static FusedLocationProviderClient fusedLocationProviderClient;
+    private static LocationRequest locationRequest;
+    private static LocationCallback locationCallback;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,7 +69,30 @@ public class ActualWalkingFragment extends Fragment implements OnMapReadyCallbac
         mapView.onResume();
         mapView.getMapAsync(this);
         coordinates = new ArrayList<>();
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(
+            Objects.requireNonNull(getContext()));
 
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(REQUEST_INTERVAL);
+        locationRequest.setFastestInterval(FASTEST_INTERVAL_REQUEST);
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                for (Location location : locationResult.getLocations()) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+
+                    System.out.println("LATLNG " + latitude + " " + longitude);
+
+                    MainActivity.updateLocation(latitude, longitude);
+                    updateActualLocation(latitude, longitude);
+                }
+            }
+        };
+
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
         binding.endWalkingButton.setOnClickListener(v -> showEndWalkDialog());
 
         return binding.getRoot();
@@ -92,12 +126,15 @@ public class ActualWalkingFragment extends Fragment implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
 
-        LatLng currentLocation = LocationUpdater.getCurrentLocation();
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
         googleMap.setMyLocationEnabled(true);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, ZOOM));
 
-        LocationUpdater.startRoute();
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(task -> {
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(task.getResult().getLatitude(),
+                task.getResult().getLongitude()), ZOOM));
+        });
+
+        //LocationUpdater.startRoute();
     }
 
     @Override
@@ -148,7 +185,8 @@ public class ActualWalkingFragment extends Fragment implements OnMapReadyCallbac
      */
     private static void setCancelWalkButtonListener(MaterialButton btnCancelWalking, AlertDialog dialog) {
         btnCancelWalking.setOnClickListener(v -> {
-            LocationUpdater.endRoute();
+            //LocationUpdater.endRoute();
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
             InfoPetFragment.getCommunication().cancelWalking();
             dialog.dismiss();
         });
@@ -182,7 +220,8 @@ public class ActualWalkingFragment extends Fragment implements OnMapReadyCallbac
             inputWalkingName.setErrorEnabled(true);
             inputWalkingName.setError(errorMessage);
         } else {
-            LocationUpdater.endRoute();
+            //LocationUpdater.endRoute();
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
             InfoPetFragment.getCommunication().endWalk(walkingName, walkingDescription);
             dialog.dismiss();
         }
@@ -190,6 +229,9 @@ public class ActualWalkingFragment extends Fragment implements OnMapReadyCallbac
         InfoPetHealthFragment.updateBarChart();
     }
 
+    /**
+     * Show the end walk dialog.
+     */
     public static void showEndWalkDialog() {
         AlertDialog endWalkDialog = createEndDialog();
         endWalkDialog.show();
