@@ -2851,6 +2851,12 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         return trGetAllAchievements.getResult();
     }
 
+    /**
+     * Update the progress of an achievement.
+     * @param nameAchievement The name of the achievement
+     * @param newProgress The progress of the achievement
+     * @throws org.pesmypetcare.mypetcare.utilities.InvalidFormatException if the date is invalid
+     */
     public void updateAchievement(String nameAchievement, int newProgress)
             throws org.pesmypetcare.mypetcare.utilities.InvalidFormatException {
         trUpdateAchievement.setUser(user);

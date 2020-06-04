@@ -9,6 +9,10 @@ import java.util.List;
  * @author Daniel Clemente & Álvaro Trius
  */
 public interface AchievementsCommunication {
-
+    /**
+     * Get all the achievements.
+     * @return The achievements
+     * @throws MyPetCareException if the user doesn't exist
+     */
     List<UserMedalData> getAllAchievements() throws MyPetCareException;
 }

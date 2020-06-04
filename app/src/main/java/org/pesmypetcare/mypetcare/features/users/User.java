@@ -265,10 +265,20 @@ public class User {
         return this.googleCalendarToken;
     }
 
+    /**
+     * Get all the achievements of the user.
+     * @return All the achievements
+     */
     public List<UserAchievement> getAchievements() {
         return achievements;
     }
 
+    /**
+     * Update the progress of an achievement.
+     * @param name The name of the achievement
+     * @param progress The progress to set
+     * @throws InvalidFormatException throws this exception if the date is in an invalid format
+     */
     public void updateAchievementProgress(String name, Integer progress) throws InvalidFormatException {
         for (UserAchievement userAchievement : achievements) {
             if(userAchievement.getName().equals(name)) {
@@ -276,6 +286,10 @@ public class User {
             }
         }
     }
+
+    /**
+     * Initialize all the achievements
+     */
     private void initializeAchievements() {
         achievements = new ArrayList<>();
         initializeContributor();
@@ -288,7 +302,9 @@ public class User {
         initializeEvent();
     }
 
-
+    /**
+     * Initialize "Contributor" achievement
+     */
     private void initializeContributor() {
         UserAchievement contributor = new UserAchievement("Contributor", R.string.contributor_desc);
         List<Integer> levels = new ArrayList<>();
@@ -300,7 +316,9 @@ public class User {
         achievements.add(contributor);
     }
 
-
+    /**
+     * Initialize "Zoo" achievement
+     */
     private void initializeZoo() {
         UserAchievement zoo = new UserAchievement("Zoo", R.string.walker_desc);
         List<Integer> levels = new ArrayList<>();
@@ -312,6 +330,9 @@ public class User {
         achievements.add(zoo);
     }
 
+    /**
+     * Initialize "Superwalker" achievement
+     */
     private void initializeSuperwalker() {
         UserAchievement superwalker = new UserAchievement("Superwalker", R.string.superwalker_desc);
         List<Integer> levels = new ArrayList<>();
@@ -324,6 +345,9 @@ public class User {
 
     }
 
+    /**
+     * Initialize "Cleaner" achievement
+     */
     private void initializeCleaner() {
         UserAchievement cleaner = new UserAchievement("Clean as a whistle", R.string.clean_desc);
         List<Integer> levels = new ArrayList<>();
@@ -335,6 +359,9 @@ public class User {
         achievements.add(cleaner);
     }
 
+    /**
+     * Initialize "Scaler" achievement
+     */
     private void initializeScaler() {
         UserAchievement scaler = new UserAchievement("Master of scale", R.string.scale_desc);
         List<Integer> levels = new ArrayList<>();
@@ -346,6 +373,9 @@ public class User {
         achievements.add(scaler);
     }
 
+    /**
+     * Initialize "Founder" achievement
+     */
     private void initializeFounder() {
         UserAchievement founder = new UserAchievement("Founder", R.string.founder_desc);
         List<Integer> levels = new ArrayList<>();
@@ -357,6 +387,9 @@ public class User {
         achievements.add(founder);
     }
 
+    /**
+     * Initialize "Mealer" achievement
+     */
     private void iniitializeMealer() {
         UserAchievement mealer = new UserAchievement("You are what you eat", R.string.meals_desc);
         List<Integer> levels = new ArrayList<>();
@@ -368,6 +401,9 @@ public class User {
         achievements.add(mealer);
     }
 
+    /**
+     * Initialize "Event" achievement
+     */
     private void initializeEvent() {
         UserAchievement event = new UserAchievement("All under control", R.string.event_desc);
         List<Integer> levels = new ArrayList<>();

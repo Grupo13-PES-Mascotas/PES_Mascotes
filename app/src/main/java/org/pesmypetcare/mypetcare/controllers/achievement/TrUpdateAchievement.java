@@ -26,14 +26,27 @@ public class TrUpdateAchievement {
         this.user = user;
     }
 
+    /**
+     * Set the name of the achievement to update.
+     * @param nameAchievement The name of the achievement
+     */
     public void setNameAchievement(String nameAchievement) {
         this.nameAchievement = nameAchievement;
     }
 
+    /**
+     * Set the new value to add to progress of the achievement.
+     * @param newProgress The value to add
+     */
     public void setNewProgress(int newProgress) {
         this.newProgress = newProgress;
     }
 
+    /**
+     * Execute the transaction.
+     * @throws InvalidFormatException throws an exception if the date is in an invalid format
+     * @throws MyPetCareException throws an exception if the current not exists
+     */
     public void execute() throws InvalidFormatException, MyPetCareException {
         user.updateAchievementProgress(this.nameAchievement, newProgress);
         Double progress = (double) newProgress;

@@ -40,7 +40,7 @@ public class TestTrUpdateAchievement {
         trUpdateAchievement.setNameAchievement(name);
         trUpdateAchievement.execute();
         List<UserAchievement> list = user.getAchievements();
-        for(UserAchievement achievement : list) {
+        for (UserAchievement achievement : list) {
             if (achievement.getName().equals(name)) {
                 userAchievement = achievement;
             }

@@ -17,6 +17,10 @@ public class AchievementsControllersFactory {
         //si quieres probar un stub, cambia el new AchievementAdapter por el stub
     }
 
+    /**
+     * Create the transaction for update an achievement.
+     * @return The transaction for update an achievements
+     */
     public static TrUpdateAchievement createTrUpdateAchievement() {
         return new TrUpdateAchievement(new AchievementAdapter());
     }

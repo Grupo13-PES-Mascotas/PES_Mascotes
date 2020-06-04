@@ -20,6 +20,11 @@ public class UserAchievement extends Achievement {
         progress = 0;
     }
 
+    /**
+     * Update the progress of an achievement.
+     * @param newProgress The value to add to progress
+     * @throws InvalidFormatException Throw if the date is in invalid format
+     */
     public void updateProgress(Integer newProgress) throws InvalidFormatException {
         DateTime today = DateTime.Builder.build(year, 5, 29);
         this.progress += newProgress;
@@ -31,21 +36,33 @@ public class UserAchievement extends Achievement {
         }
     }
 
+    /**
+     * Get the progress of an achievement.
+     * @return The progress
+     */
     public Integer getProgress() {
         return progress;
     }
 
+    /**
+     * Get the current level of an achievement.
+     * @return The current level
+     */
     public int getCurrentLevel() {
         return completedLevelsDate.size();
     }
 
+    /**
+     * Get the goal to get the next level.
+     * @return The goal
+     */
     public double getCurrentGoal() {
         int level = getCurrentLevel();
         List<Integer> levels = getLevels();
-        if (level + 1 <= levels.size()-1) {
+        if (level + 1 <= levels.size() - 1) {
             return levels.get(level + 1);
         } else {
-            return levels.get(levels.size()-1);
+            return levels.get(levels.size() - 1);
         }
     }
 }

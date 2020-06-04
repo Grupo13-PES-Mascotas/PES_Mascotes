@@ -27,10 +27,18 @@ public class TrGetAllAchievements {
         this.user = user;
     }
 
+    /**
+     * Execute the transaction.
+     * @throws MyPetCareException Throws an exception if user not exists
+     */
     public void execute() throws MyPetCareException {
         result = achievementService.getAllAchievements(user);
     }
 
+    /**
+     * Return the result of the transaction.
+     * @return All achievements of the user
+     */
     public List<UserMedalData> getResult() {
         return result;
     }
