@@ -2545,52 +2545,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public SortedSet<Group> getAllGroups() {
         trObtainAllGroups.execute();
         SortedSet<Group> groups = trObtainAllGroups.getResult();
-        List<Group> groupList = new ArrayList<>(groups);
-        List<Group> removeGroups = new ArrayList<>();
 
-        for (Group group : ServerData.getInstance().getGroups()) {
-            if (!groupList.contains(group)) {
-                removeGroups.add(group);
-            }
-        }
-
-        ServerData.getInstance().getGroups().removeAll(removeGroups);
-        /*ExecutorService executorService = Executors.newCachedThreadPool();
-
-        for (int actual = 0; actual < groupList.size(); ++actual) {
-            int finalActual = actual;
-            executorService.execute(() -> {
-                int index = ServerData.getInstance().getGroups().indexOf(groupList.get(finalActual));
-
-                if (index == -1) {
-                    ServerData.getInstance().getGroups().add(groupList.get(finalActual));
-                    index = ServerData.getInstance().getGroups().indexOf(groupList.get(finalActual));
-                    addGroupImage(groupList, finalActual, index);
-                } else {
-                    ServerData.getInstance().getGroups().set(index, groupList.get(finalActual));
-
-                    if (isNewGroupImage(groupList, finalActual, index) < 0) {
-                        addGroupImage(groupList, finalActual, index);
-                    }
-                }
-            });
-        }
-
-        executorService.shutdown();
-
-        try {
-            executorService.awaitTermination(5, TimeUnit.MINUTES);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        /*for (Group group : groups) {
-            if (group.getSubscribers().containsKey(user.getUsername())) {
-                user.addSubscribedGroupSimple(group);
-            }
-        }
-
-        getAllGroupImages(groups);*/
+        //getAllGroupImages(groups);
         return groups;
     }
 
