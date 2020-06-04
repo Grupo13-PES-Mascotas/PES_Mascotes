@@ -332,6 +332,7 @@
     <string name="wait_for_update">Wait for an update to use this functionality</string>
     <string name="likes">likes</string>
     <string name="likes_singular">like</string>
+    <string name="unban_post">Unban post</string>
     <string name="error_too_big_image">The image should be smaller or equal than 1 MB</string>
     <string name="new_post_received">has made a new post</string>
     <string name="progress_bar_connecting_to_server">Connecting to server</string>

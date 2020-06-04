@@ -333,6 +333,7 @@
     <string name="wait_for_update">Espera una actualización para usar esta funcionalidad</string>
     <string name="likes">me gustas</string>
     <string name="likes_singular">me gusta</string>
+    <string name="unban_post">Desbannear post</string>
     <string name="error_too_big_image">La imagen tiene que ser inferior o igual a 1 MB</string>
     <string name="new_post_received">ha hecho una nueva publicación</string>
     <string name="progress_bar_connecting_to_server">Conectando al servidor</string>

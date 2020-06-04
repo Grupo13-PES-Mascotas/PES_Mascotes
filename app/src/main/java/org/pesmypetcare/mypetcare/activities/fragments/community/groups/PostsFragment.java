@@ -280,6 +280,16 @@ public class PostsFragment extends Fragment {
         btnReport.setOnClickListener(v -> {
             addReportButtonListener(circularEntryView, editPostDialog);
         });
+
+        User user = InfoGroupFragment.getCommunication().getUser();
+        if (selectedPost.isBanned() && forum.getOwnerUsername().equals(user.getUsername())) {
+            MaterialButton btnUnban = optionsPostLayout.findViewById(R.id.unbanPostButton);
+            btnUnban.setOnClickListener(v -> {
+                InfoGroupFragment.getCommunication().unbanPost(selectedPost);
+            });
+        } else {
+            optionsPostLayout.findViewById(R.id.unbanPostButton).setVisibility(View.GONE);
+        }
     }
 
     /**

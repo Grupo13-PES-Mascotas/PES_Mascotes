@@ -33,4 +33,17 @@
         app:iconSize="24dp"
         app:iconTint="@color/white" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/unbanPostButton"
+        style="@style/rounded_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/ocean_blue"
+        android:text="@string/unban_post"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:icon="@drawable/icon_flag"
+        app:iconSize="24dp"
+        app:iconTint="@color/white" />
+
 </LinearLayout>
