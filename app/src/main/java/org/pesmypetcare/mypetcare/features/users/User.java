@@ -334,7 +334,7 @@ public class User {
      * Initialize "Superwalker" achievement
      */
     private void initializeSuperwalker() {
-        UserAchievement superwalker = new UserAchievement("Superwalker", R.string.superwalker_desc);
+        UserAchievement superwalker = new UserAchievement("Walker", R.string.superwalker_desc);
         List<Integer> levels = new ArrayList<>();
         levels.add(0, 0);
         levels.add(1, 20);
@@ -363,7 +363,7 @@ public class User {
      * Initialize "Scaler" achievement
      */
     private void initializeScaler() {
-        UserAchievement scaler = new UserAchievement("Master of scale", R.string.scale_desc);
+        UserAchievement scaler = new UserAchievement("Scale Master", R.string.scale_desc);
         List<Integer> levels = new ArrayList<>();
         levels.add(0, 0);
         levels.add(1, 5);
@@ -391,7 +391,7 @@ public class User {
      * Initialize "Mealer" achievement
      */
     private void iniitializeMealer() {
-        UserAchievement mealer = new UserAchievement("You are what you eat", R.string.meals_desc);
+        UserAchievement mealer = new UserAchievement("Gourmet", R.string.meals_desc);
         List<Integer> levels = new ArrayList<>();
         levels.add(0, 0);
         levels.add(1, 15);
@@ -405,7 +405,7 @@ public class User {
      * Initialize "Event" achievement
      */
     private void initializeEvent() {
-        UserAchievement event = new UserAchievement("All under control", R.string.event_desc);
+        UserAchievement event = new UserAchievement("Planner", R.string.event_desc);
         List<Integer> levels = new ArrayList<>();
         levels.add(0, 0);
         levels.add(1, 10);

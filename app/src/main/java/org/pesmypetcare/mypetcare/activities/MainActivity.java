@@ -1647,7 +1647,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trNewPersonalEvent.setEvent(new Event(description, DateTime.Builder.buildFullString(dateTime)));
         trNewPersonalEvent.execute();
         try {
-            updateAchievement("All under control", 1);
+            updateAchievement("Planner", 1);
         } catch (org.pesmypetcare.mypetcare.utilities.InvalidFormatException e) {
             e.printStackTrace();
         }
@@ -1746,7 +1746,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddNewWeight.setDateTime(dateTime);
         try {
             trAddNewWeight.execute();
-            updateAchievement("Master of scale", 1);
+            updateAchievement("Scale Master", 1);
         } catch (NotPetOwnerException e) {
             Toast toast = Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
             toast.show();
@@ -1810,7 +1810,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             e.printStackTrace();
         }
         try {
-            updateAchievement("You are what you eat", 1);
+            updateAchievement("Gourmet", 1);
         } catch (org.pesmypetcare.mypetcare.utilities.InvalidFormatException e) {
             e.printStackTrace();
         }
@@ -2291,7 +2291,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         try {
             trAddWalk.execute();
-            updateAchievement("Superwalker", 1);
+            updateAchievement("Walker", 1);
         } catch (NotPetOwnerException | InvalidPeriodException |
                 org.pesmypetcare.mypetcare.utilities.InvalidFormatException e) {
         }

@@ -32,8 +32,9 @@ public class UserAchievementComponentView extends CircularEntryView {
 
     @Override
     protected CircularImageView getImage() {
+        String medalName = achievement.getName();
         CircularImageView image = new CircularImageView(getCurrentActivity(), null);
-        Drawable achievementDrawable = getResources().getDrawable(R.drawable.medalla, null);
+        Drawable achievementDrawable = getResources().getDrawable(R.drawable.gourmet, null);
 
         /*
         if (achievement.getAchievementIcon() != null) {
