@@ -119,7 +119,7 @@ public class StubCommunityService implements CommunityService {
     }
 
     @Override
-    public void deleteGroup(String groupName) throws GroupNotFoundException {
+    public void deleteGroup(User user, String groupName) throws GroupNotFoundException {
         boolean found = false;
         for (int i = 0; i < groups.size() && !found; ++i) {
             if (groupName.equals(groups.get(i).getName())) {
@@ -323,7 +323,7 @@ public class StubCommunityService implements CommunityService {
             if (forum.equals(post.getForum())) {
                 for (Post forumPost : forum.getPosts()) {
                     if (forumPost.equals(post)) {
-                        forumPost.reportPost();
+                        forumPost.reportPost(user);
                     }
                 }
             }
@@ -424,6 +424,21 @@ public class StubCommunityService implements CommunityService {
         }
 
         return null;
+    }
+
+    @Override
+    public void unbanPost(User user, Post post) {
+        int groupIndex = groups.indexOf(post.getForum().getGroup());
+
+        for (Forum forum : groups.get(groupIndex).getForums()) {
+            if (forum.equals(post.getForum())) {
+                for (Post forumPost : forum.getPosts()) {
+                    if (forumPost.equals(post) && forumPost.isBanned()) {
+                        forumPost.setBanned(false);
+                    }
+                }
+            }
+        }
     }
 
     /**

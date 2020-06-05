@@ -60,7 +60,7 @@ public interface UserManagerService {
      * Delete a user from database.
      * @param username User username
      */
-    void deleteUserFromDatabase(String username);
+    void deleteUserFromDatabase(User user, String username);
 
     /**
      * Updates the image of the user.

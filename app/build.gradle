@@ -100,12 +100,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.4.2'
     implementation 'com.google.firebase:firebase-messaging:20.2.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
+    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:usermanager:d4008c2fdd:develop@aar'
+    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:communitymanager:d4008c2fdd:develop@aar'
+    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:httptools:d4008c2fdd'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata:2.2.0'
-    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:usermanager:efe9e3ff7e:develop@aar'
-    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:communitymanager:efe9e3ff7e:develop@aar'
-    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:httptools:efe9e3ff7e'
     //implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:v2.0.1'
 }
 

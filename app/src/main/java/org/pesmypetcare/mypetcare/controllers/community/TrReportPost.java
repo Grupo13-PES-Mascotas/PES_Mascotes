@@ -60,7 +60,7 @@ public class TrReportPost {
             throw new PostReportedByAuthorException();
         }
         communityService.reportPost(user, post, reportMessage);
-        post.reportPost();
+        post.reportPost(user);
         result = true;
     }
 }

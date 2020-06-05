@@ -139,7 +139,7 @@ public class WashManagerAdapter implements WashManagerService {
             WashData libraryWashData = null;
             try {
                 libraryWashData = ServiceLocator.getInstance().getPetCollectionsManagerClient().getWash(
-                        user.getToken(), user.getUsername(), pet.getName(), oldDate);
+                        user.getToken(), owner, pet.getName(), oldDate);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }

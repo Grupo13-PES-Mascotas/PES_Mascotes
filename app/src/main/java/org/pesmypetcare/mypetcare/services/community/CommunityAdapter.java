@@ -206,7 +206,7 @@ public class CommunityAdapter implements CommunityService {
     }
 
     @Override
-    public void deleteGroup(String groupName) throws GroupNotFoundException {
+    public void deleteGroup(User user, String groupName) throws GroupNotFoundException {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
@@ -390,6 +390,12 @@ public class CommunityAdapter implements CommunityService {
 
     @Override
     public void unlikePost(User user, Post post) {
+        System.out.println("user token " + user.getToken());
+        System.out.println("username " + user.getUsername());
+        System.out.println("post group name " + post.getForum().getGroup().getName());
+        System.out.println("post forum name" + post.getForum().getName());
+        System.out.println("post author " + post.getUsername());
+        System.out.println("post creation date" + post.getCreationDate());
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
@@ -406,7 +412,17 @@ public class CommunityAdapter implements CommunityService {
 
     @Override
     public void reportPost(User user, Post post, String reportMessage) {
-        // Not implemented yet
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getForumManagerClient().reportMessage(user.getToken(),
+                        post.getForum().getGroup().getName(), post.getForum().getName(), post.getUsername(),
+                        user.getUsername(), post.getCreationDate().toString());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     @Override
@@ -493,6 +509,21 @@ public class CommunityAdapter implements CommunityService {
         }
 
         return imageBytes;
+    }
+
+    @Override
+    public void unbanPost(User user, Post post) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getForumManagerClient().unbanMessage(user.getToken(),
+                        post.getForum().getGroup().getName(), post.getForum().getName(), post.getUsername(),
+                        post.getCreationDate().toString());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
     }
 
     /**

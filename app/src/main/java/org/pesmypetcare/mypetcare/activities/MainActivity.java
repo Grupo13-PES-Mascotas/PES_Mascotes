@@ -101,6 +101,7 @@ import org.pesmypetcare.mypetcare.controllers.community.TrGetPostImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrLikePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrObtainAllGroups;
 import org.pesmypetcare.mypetcare.controllers.community.TrReportPost;
+import org.pesmypetcare.mypetcare.controllers.community.TrUnbanPost;
 import org.pesmypetcare.mypetcare.controllers.community.TrUnlikePost;
 import org.pesmypetcare.mypetcare.controllers.community.TrUpdatePost;
 import org.pesmypetcare.mypetcare.controllers.event.EventControllersFactory;
@@ -359,6 +360,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrSendFirebaseMessagingToken trSendFirebaseMessagingToken;
     private TrGetGroupImage trGetGroupImage;
     private TrGetAllWeights trGetAllWeights;
+    private TrUnbanPost trUnbanPost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -873,6 +875,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trAddGroupImage = CommunityControllersFactory.createTrAddGroupImage();
         trDeleteGroupImage = CommunityControllersFactory.createTrDeleteGroupImage();
         trGetGroupImage = CommunityControllersFactory.createTrGetGroupImage();
+        trUnbanPost = CommunityControllersFactory.createTrUnbanPost();
     }
 
     /**
@@ -1575,10 +1578,20 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     }
 
     @Override
+    public void unbanPost(Post post) {
+        trUnbanPost.setUser(user);
+        trUnbanPost.setPost(post);
+        try {
+            trUnbanPost.execute();
+        } catch (NotForumOwnerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public Bitmap findImageByUser(String username) {
         trObtainUserImage.setUsername(username);
         trObtainUserImage.setAccessToken(user.getToken());
-
         try {
             trObtainUserImage.execute();
         } catch (MyPetCareException e) {
@@ -2565,52 +2578,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     public SortedSet<Group> getAllGroups() {
         trObtainAllGroups.execute();
         SortedSet<Group> groups = trObtainAllGroups.getResult();
-        List<Group> groupList = new ArrayList<>(groups);
-        List<Group> removeGroups = new ArrayList<>();
 
-        for (Group group : ServerData.getInstance().getGroups()) {
-            if (!groupList.contains(group)) {
-                removeGroups.add(group);
-            }
-        }
-
-        ServerData.getInstance().getGroups().removeAll(removeGroups);
-        /*ExecutorService executorService = Executors.newCachedThreadPool();
-
-        for (int actual = 0; actual < groupList.size(); ++actual) {
-            int finalActual = actual;
-            executorService.execute(() -> {
-                int index = ServerData.getInstance().getGroups().indexOf(groupList.get(finalActual));
-
-                if (index == -1) {
-                    ServerData.getInstance().getGroups().add(groupList.get(finalActual));
-                    index = ServerData.getInstance().getGroups().indexOf(groupList.get(finalActual));
-                    addGroupImage(groupList, finalActual, index);
-                } else {
-                    ServerData.getInstance().getGroups().set(index, groupList.get(finalActual));
-
-                    if (isNewGroupImage(groupList, finalActual, index) < 0) {
-                        addGroupImage(groupList, finalActual, index);
-                    }
-                }
-            });
-        }
-
-        executorService.shutdown();
-
-        try {
-            executorService.awaitTermination(5, TimeUnit.MINUTES);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        /*for (Group group : groups) {
-            if (group.getSubscribers().containsKey(user.getUsername())) {
-                user.addSubscribedGroupSimple(group);
-            }
-        }
-
-        getAllGroupImages(groups);*/
+        //getAllGroupImages(groups);
         return groups;
     }
 
@@ -2752,6 +2721,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     @Override
     public void deleteGroup(String groupName) {
+        trDeleteGroup.setUser(user);
         trDeleteGroup.setGroupName(groupName);
         try {
             trDeleteGroup.execute();

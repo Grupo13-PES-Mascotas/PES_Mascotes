@@ -95,7 +95,7 @@ public class PetManagerAdapter implements PetManagerService {
             Weight libraryWeight = new Weight(entry.first.toString(), entry.second);
             try {
                 ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(user.getToken(),
-                    user.getUsername(), pet.getName(), PetData.WEIGHTS, libraryWeight.getKey(),
+                        user.getUsername(), pet.getName(), PetData.WEIGHTS, libraryWeight.getKey(),
                     libraryWeight.getBodyAsMap());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -227,7 +227,6 @@ public class PetManagerAdapter implements PetManagerService {
     private List<Pet> getPets(List<org.pesmypetcare.usermanager.datacontainers.pet.Pet> userPets)
         throws PetRepeatException {
         List<Pet> pets = new ArrayList<>();
-
         for (org.pesmypetcare.usermanager.datacontainers.pet.Pet userPet : Objects.requireNonNull(userPets)) {
             if (userPet != null) {
                 pets.add(decodePet(userPet));
