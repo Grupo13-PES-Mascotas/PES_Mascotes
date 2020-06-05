@@ -55,11 +55,11 @@ public class AchievementAdapter implements AchievementService {
                         .getField(user.getToken(), user.getUsername(), nameAchievement, "currentLevel");
                 List<Double> levels = (List<Double>) ServiceLocator.getInstance().getUserMedalManagerClient()
                         .getField(user.getToken(), user.getUsername(), nameAchievement, "levels");
-                        if(progress >= levels.get((int) (currentLevel + 1))) {
-                            ServiceLocator.getInstance().getUserMedalManagerClient()
-                                    .updateField(user.getToken(), user.getUsername(), nameAchievement, "currentLevel",
-                                            currentLevel + 1);
-                        }
+                if (progress >= levels.get((int) (currentLevel + 1))) {
+                    ServiceLocator.getInstance().getUserMedalManagerClient()
+                            .updateField(user.getToken(), user.getUsername(), nameAchievement, "currentLevel",
+                                    currentLevel + 1);
+                }
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }

@@ -13,7 +13,6 @@ import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
 
 /**
  * @author Álvaro Trius Béjar

@@ -9,12 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
-import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.databinding.FragmentAchievementsBinding;
 import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 
 import java.util.List;
-import java.util.SortedSet;
 
 /**
  * @author Daniel Clemente & Álvaro Trius
