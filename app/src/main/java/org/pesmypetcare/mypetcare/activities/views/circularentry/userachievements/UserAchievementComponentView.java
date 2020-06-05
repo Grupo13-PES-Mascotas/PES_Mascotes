@@ -14,6 +14,7 @@ import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Locale;
 
 /**
  * @author Álvaro Trius Béjar
@@ -58,7 +59,9 @@ public class UserAchievementComponentView extends CircularEntryView {
 
     @Override
     protected String getFirstLineText() {
-        return achievement.getName();
+        String medalName = achievement.getName().toLowerCase(Locale.getDefault()).replace(' ', '_');
+        int id = getResources().getIdentifier("medal_" + medalName, "string", getContext().getPackageName());
+        return getResources().getString(id);
     }
 
     @Override
@@ -85,7 +88,7 @@ public class UserAchievementComponentView extends CircularEntryView {
         bigDecimal = bigDecimal.setScale(0, RoundingMode.HALF_EVEN);
 
         return levelInfo + achievement.getProgress() + " / " + nextLevelBorder
-            + "(" + bigDecimal.toString() + "%)";
+            + " (" + bigDecimal.toString() + "%)";
     }
 
     @Override

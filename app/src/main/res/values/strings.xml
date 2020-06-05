@@ -358,6 +358,14 @@
     <string name="level">Level:</string>
     <string name="next_level">Next level:</string>
     <string name="max">MAX</string>
+    <string name="medal_contributor">Contributor</string>
+    <string name="medal_zoo">Zoo</string>
+    <string name="medal_walker">Walker</string>
+    <string name="medal_clean_as_a_whistle">Clean as a whistle</string>
+    <string name="medal_scale_master">Scale Master</string>
+    <string name="medal_founder">Founder</string>
+    <string name="medal_gourmet">Gourmet</string>
+    <string name="medal_planner">Planner</string>
 
 
     <!-- The next two strings cannot be translated into any other language -->
