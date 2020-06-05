@@ -349,6 +349,10 @@
         No tienes ninguna mascota\n
         Haz clic en el botón + para añadir una
     </string>
+    <string name="location_services_not_enabled_title">Servicio de localizaciçon deshabilitado</string>
+    <string name="location_services_not_enabled_message">
+        Por favor, habilite los servicios de localización para utilizar esta funcionalidad
+    </string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

@@ -8,16 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
 
 import org.pesmypetcare.mypetcare.databinding.FragmentEstablishmentsBinding;
-import org.pesmypetcare.mypetcare.utilities.LocationUpdater;
 
 /**
  * @author Xavier Campos & Enric Hernando
@@ -48,10 +45,10 @@ public class EstablishmentsFragment extends Fragment implements OnMapReadyCallba
     public void onMapReady(GoogleMap googleMap) {
         // Called after the map is ready to be used
         this.googleMap = googleMap;
-        LatLng currentLocation = LocationUpdater.getCurrentLocation();
+        //LatLng currentLocation = LocationUpdater.getCurrentLocation();
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
         googleMap.setMyLocationEnabled(true);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, ZOOM));
+        //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, ZOOM));
         googleMap.setOnPolylineClickListener(this);
         googleMap.setOnInfoWindowCloseListener(this);
         googleMap.setInfoWindowAdapter(this);

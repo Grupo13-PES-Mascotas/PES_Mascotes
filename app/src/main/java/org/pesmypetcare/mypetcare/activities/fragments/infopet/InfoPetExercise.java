@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -95,8 +96,7 @@ public class InfoPetExercise extends Fragment {
         resources = getResources();
         walkExercisePrefix = getString(R.string.exercise_walking) + " | ";
         showExercises();
-
-        updateWalkingButton();
+        setStartWalkingButton();
     }
 
     /**
@@ -137,8 +137,18 @@ public class InfoPetExercise extends Fragment {
         binding.walkingButton.setOnClickListener(v -> {
             InfoPetFragment.getCommunication().askForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
             InfoPetFragment.getCommunication().askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-            AlertDialog startWalkDialog = createStartWalkDialog();
-            startWalkDialog.show();
+
+            if (InfoPetFragment.getCommunication().areLocationServicesDisabled()) {
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+                builder.setTitle(R.string.location_services_not_enabled_title);
+                builder.setMessage(R.string.location_services_not_enabled_message);
+                builder.setPositiveButton(R.string.ok, null);
+
+                builder.show();
+            } else {
+                AlertDialog startWalkDialog = createStartWalkDialog();
+                startWalkDialog.show();
+            }
         });
     }
 
@@ -287,7 +297,6 @@ public class InfoPetExercise extends Fragment {
         } else {
             InfoPetFragment.getCommunication().startWalk(walkingPetNames);
             dialog.dismiss();
-            updateWalkingButton();
         }
     }
 
