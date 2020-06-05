@@ -69,7 +69,7 @@ public class StubUserManagerService implements UserManagerService {
     }
 
     @Override
-    public void deleteUserFromDatabase(String username) {
+    public void deleteUserFromDatabase(User user, String username) {
         data.remove(new User(username, "", ""));
     }
 

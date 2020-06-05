@@ -119,7 +119,7 @@ public class StubCommunityService implements CommunityService {
     }
 
     @Override
-    public void deleteGroup(String groupName) throws GroupNotFoundException {
+    public void deleteGroup(User user, String groupName) throws GroupNotFoundException {
         boolean found = false;
         for (int i = 0; i < groups.size() && !found; ++i) {
             if (groupName.equals(groups.get(i).getName())) {
