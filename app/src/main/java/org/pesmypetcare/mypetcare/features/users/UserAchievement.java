@@ -3,6 +3,7 @@ package org.pesmypetcare.mypetcare.features.users;
 import org.pesmypetcare.mypetcare.utilities.DateTime;
 import org.pesmypetcare.mypetcare.utilities.InvalidFormatException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,9 +16,9 @@ public class UserAchievement extends Achievement {
     private int year = 2020;
 
     public UserAchievement(String name, int description) {
-
         super(name, description);
         progress = 0;
+        completedLevelsDate = new ArrayList<>();
     }
 
     /**

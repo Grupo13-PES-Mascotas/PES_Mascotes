@@ -33,15 +33,12 @@ public class UserAchievementComponentView extends CircularEntryView {
 
     @Override
     protected CircularImageView getImage() {
-        String medalName = achievement.getName();
         CircularImageView image = new CircularImageView(getCurrentActivity(), null);
-        Drawable achievementDrawable = getResources().getDrawable(R.drawable.medal_gourmet_2, null);
 
-        /*
-        if (achievement.getAchievementIcon() != null) {
-            achievementDrawable = new BitmapDrawable(getResources(), achievement.getAchievementIcon());
-        }
-        */
+        String medalName = achievement.getName().toLowerCase(Locale.getDefault()).replace(' ', '_');
+        String medalDrawableName = "medal_" + medalName + "_" + achievement.getCurrentLevel().intValue();
+        int id = getResources().getIdentifier(medalDrawableName, "drawable", getContext().getPackageName());
+        Drawable achievementDrawable = getResources().getDrawable(id, null);
 
         image.setDrawable(achievementDrawable);
         int imageDimensions = getImageDimensions();
@@ -66,6 +63,11 @@ public class UserAchievementComponentView extends CircularEntryView {
 
     @Override
     protected String getSecondLineText() {
+        String medalName = achievement.getName().toLowerCase(Locale.getDefault()).replace(' ', '_');
+        String medalNameString = "medal_" + medalName + "_description";
+        int id = getResources().getIdentifier(medalNameString, "string", getContext().getPackageName());
+        String description = getResources().getString(id);
+
         int currentLevel = achievement.getCurrentLevel().intValue();
         int currentLevelBorder;
 
@@ -81,13 +83,13 @@ public class UserAchievementComponentView extends CircularEntryView {
             + getResources().getString(R.string.next_level) + " ";
 
         if (currentLevel == 2 && achievement.getProgress() >= nextLevelBorder) {
-            return levelInfo + getResources().getString(R.string.max);
+            return description + "\n" + levelInfo + getResources().getString(R.string.max);
         }
 
         BigDecimal bigDecimal = new BigDecimal(percentage);
         bigDecimal = bigDecimal.setScale(0, RoundingMode.HALF_EVEN);
 
-        return levelInfo + achievement.getProgress() + " / " + nextLevelBorder
+        return description + "\n" + levelInfo + achievement.getProgress() + " / " + nextLevelBorder
             + " (" + bigDecimal.toString() + "%)";
     }
 

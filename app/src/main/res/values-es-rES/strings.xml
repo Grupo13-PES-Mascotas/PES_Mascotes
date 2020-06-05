@@ -368,6 +368,14 @@
     <string name="medal_founder">Fundador</string>
     <string name="medal_gourmet">Gourmet</string>
     <string name="medal_planner">Planificador</string>
+    <string name="medal_contributor_description">Haz muchas contribuciones!</string>
+    <string name="medal_zoo_description">Registra muchas mascotas!</string>
+    <string name="medal_walker_description">Pasea a tu mascota a menudo!</string>
+    <string name="medal_clean_as_a_whistle_description">Limpia a tu mascota!</string>
+    <string name="medal_scale_master_description">Toma el peso a tu mascota!</string>
+    <string name="medal_founder_description">Funda grupos para la comunidad!</string>
+    <string name="medal_gourmet_description">Controla las comidas de tu mascota!</string>
+    <string name="medal_planner_description">Apunta todo en el calendario!</string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
