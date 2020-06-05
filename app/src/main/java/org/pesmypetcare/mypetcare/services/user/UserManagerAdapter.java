@@ -10,6 +10,7 @@ import org.pesmypetcare.mypetcare.services.ServiceLocator;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
 import org.pesmypetcare.usermanager.datacontainers.user.UserData;
+import org.pesmypetcare.usermanager.datacontainers.user.UserDataSender;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -170,8 +171,8 @@ public class UserManagerAdapter implements UserManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getUserManagerClient().createUser(uid,
-                        new UserData(username, email, password));
+                ServiceLocator.getInstance().getUserManagerClient().createUser(
+                        new UserDataSender(uid, username, email, password));
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
