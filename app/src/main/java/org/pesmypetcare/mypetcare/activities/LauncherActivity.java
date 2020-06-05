@@ -304,6 +304,7 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
         }
 
         ServerData.getInstance().setUser(trObtainUser.getResult());
+
     }
 
     /**
