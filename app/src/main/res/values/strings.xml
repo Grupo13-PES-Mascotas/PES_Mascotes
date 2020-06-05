@@ -347,9 +347,7 @@
         You do not have any pet\n
         Click the + button to register one
     </string>
-    <string name="commentator_desc">Make comments in community</string>
     <string name="contributor_desc">Make contributions in community</string>
-    <string name="walker_desc">Make too km in your walks</string>
     <string name="zoo_desc">Add more pets on the app</string>
     <string name="superwalker_desc">Make too walks</string>
     <string name="clean_desc">Wash your pet</string>

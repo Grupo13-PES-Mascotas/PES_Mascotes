@@ -354,4 +354,13 @@
         Fes clic al botó + per afegir-ne una
     </string>
 
+    <string name="contributor_desc">Fes contribucions a la comunitat</string>
+    <string name="zoo_desc">Afegeix més mascotes a l\'aplicació</string>
+    <string name="superwalker_desc">Fes passejos</string>
+    <string name="clean_desc">Afeigeix els rentats de la teva mascota</string>
+    <string name="scale_desc">Mesura el pes de la teva mascota</string>
+    <string name="founder_desc">Crea grups en la comunitat</string>
+    <string name="meals_desc">Afegeix àpats a la teva mascota</string>
+    <string name="event_desc">Afegeix events al calendari</string>
+
 </resources>

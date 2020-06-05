@@ -320,7 +320,7 @@ public class User {
      * Initialize "Zoo" achievement
      */
     private void initializeZoo() {
-        UserAchievement zoo = new UserAchievement("Zoo", R.string.walker_desc);
+        UserAchievement zoo = new UserAchievement("Zoo", R.string.zoo_desc);
         List<Integer> levels = new ArrayList<>();
         levels.add(0, 0);
         levels.add(1, 2);

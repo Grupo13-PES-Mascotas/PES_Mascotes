@@ -349,6 +349,15 @@
         Haz clic en el botón + para añadir una
     </string>
 
+    <string name="contributor_desc">Haz contribuciones en la comunidad</string>
+    <string name="zoo_desc">Añade más mascotas en la aplicación</string>
+    <string name="superwalker_desc">Haz paseos</string>
+    <string name="clean_desc">Añade lavados de tu mascota</string>
+    <string name="scale_desc">Mide el peso de tu mascota</string>
+    <string name="founder_desc">Crea grupos en la comunidad</string>
+    <string name="meals_desc">Añade comidas de tu mascota</string>
+    <string name="event_desc">Añade eventos en el calendario</string>
+
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>
     <string name="navigation_view_closed">Closed</string>

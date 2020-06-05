@@ -64,8 +64,8 @@ public class UserAchievementComponentView extends CircularEntryView {
         Double newData = achievement.getCurrentLevel();
         int currentLevel = newData.intValue();
         List<Double> list = achievement.getLevels();
-        list.get(currentLevel + 1);
-        return achievement.getProgress().toString() + "/" + achievement.getCurrentLevel();
+        Double level = list.get(currentLevel + 1);
+        return achievement.getProgress().toString() + "/" + level.toString();
     }
 
     @Override
