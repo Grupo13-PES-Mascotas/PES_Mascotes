@@ -355,6 +355,9 @@
     <string name="founder_desc">Create groups in the community</string>
     <string name="meals_desc">Add meals of your pet</string>
     <string name="event_desc">Add events at the calendar</string>
+    <string name="level">Level:</string>
+    <string name="next_level">Next level:</string>
+    <string name="max">MAX</string>
 
 
     <!-- The next two strings cannot be translated into any other language -->

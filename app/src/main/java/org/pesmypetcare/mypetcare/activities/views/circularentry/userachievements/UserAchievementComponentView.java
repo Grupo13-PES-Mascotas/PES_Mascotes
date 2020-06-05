@@ -12,7 +12,8 @@ import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryVi
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * @author Álvaro Trius Béjar
@@ -61,11 +62,29 @@ public class UserAchievementComponentView extends CircularEntryView {
 
     @Override
     protected String getSecondLineText() {
-        Double newData = achievement.getCurrentLevel();
-        int currentLevel = newData.intValue();
-        List<Double> list = achievement.getLevels();
-        Double level = list.get(currentLevel + 1);
-        return achievement.getProgress().toString() + "/" + level.toString();
+        int currentLevel = achievement.getCurrentLevel().intValue();
+        int currentLevelBorder;
+
+        if (currentLevel == 0) {
+            currentLevelBorder = 0;
+        } else {
+            currentLevelBorder = achievement.getLevels().get(currentLevel - 1).intValue();
+        }
+
+        double nextLevelBorder = achievement.getLevels().get(currentLevel);
+        double percentage = (achievement.getProgress() - currentLevelBorder) / (nextLevelBorder - currentLevel);
+        String levelInfo = getResources().getString(R.string.level) + " " + (currentLevel + 1) + " - "
+            + getResources().getString(R.string.next_level) + " ";
+
+        if (currentLevel == 2 && achievement.getProgress() >= nextLevelBorder) {
+            return levelInfo + getResources().getString(R.string.max);
+        }
+
+        BigDecimal bigDecimal = new BigDecimal(percentage);
+        bigDecimal = bigDecimal.setScale(0, RoundingMode.HALF_EVEN);
+
+        return levelInfo + achievement.getProgress() + " / " + nextLevelBorder
+            + "(" + bigDecimal.toString() + "%)";
     }
 
     @Override

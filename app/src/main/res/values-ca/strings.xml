@@ -362,5 +362,8 @@
     <string name="founder_desc">Crea grups en la comunitat</string>
     <string name="meals_desc">Afegeix àpats a la teva mascota</string>
     <string name="event_desc">Afegeix events al calendari</string>
+    <string name="level">Nivell:</string>
+    <string name="next_level">Següent nivell:</string>
+    <string name="max">MAX</string>
 
 </resources>
