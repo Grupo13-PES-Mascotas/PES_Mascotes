@@ -20,15 +20,15 @@ public class TrUnbanPost {
 
     /**
      * Setter of the user that wants to unban the post.
-     * @param user
+     * @param user The user
      */
     public void setUser(User user) {
         this.user = user;
     }
 
     /**
-     * Setter of the post that has to be unbanned
-     * @param post
+     * Setter of the post that has to be unbanned.
+     * @param post The post
      */
     public void setPost(Post post) {
         this.post = post;
@@ -49,8 +49,7 @@ public class TrUnbanPost {
     public void execute() throws NotForumOwnerException {
         if (post.getForum().getOwnerUsername().equals(user.getUsername())) {
             this.communityService.unbanPost(user, post);
-        }
-        else {
+        } else {
             throw new NotForumOwnerException();
         }
     }

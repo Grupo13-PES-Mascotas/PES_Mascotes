@@ -416,8 +416,8 @@ public class CommunityAdapter implements CommunityService {
         executorService.execute(() -> {
             try {
                 ServiceLocator.getInstance().getForumManagerClient().reportMessage(user.getToken(),
-                        post.getForum().getGroup().getName(), post.getForum().getName(), post.getUsername(), user.getUsername(),
-                        post.getCreationDate().toString());
+                        post.getForum().getGroup().getName(), post.getForum().getName(), post.getUsername(),
+                        user.getUsername(), post.getCreationDate().toString());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }

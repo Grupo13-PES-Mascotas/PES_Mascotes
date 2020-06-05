@@ -89,7 +89,7 @@ public class MedicationManagerAdapter implements MedicationManagerService {
             MedicationData medicationData = null;
             try {
                 medicationData = ServiceLocator.getInstance().getPetCollectionsManagerClient()
-                        .getMedication(user.getToken(), user.getUsername() ,pet.getName(), oldDate);
+                        .getMedication(user.getToken(), user.getUsername(), pet.getName(), oldDate);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
