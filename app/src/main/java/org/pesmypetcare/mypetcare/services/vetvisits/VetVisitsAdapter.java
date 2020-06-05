@@ -49,7 +49,7 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
                     null;
             try {
                 libraryVisit = ServiceLocator.getInstance().getPetCollectionsManagerClient()
-                        .getAllVetVisits(accessToken, petName);
+                        .getAllVetVisits(accessToken, owner, petName);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -92,7 +92,7 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken,
+                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner,
                         petName, PetData.VET_VISITS, libraryVisit.getKey(), libraryVisit.getBodyAsMap());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -113,7 +113,7 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken,
+                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner,
                         petName, PetData.VET_VISITS, libraryVisit.getKey());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -132,7 +132,7 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
             VetVisitData vetVisitData = null;
             try {
                 vetVisitData = ServiceLocator.getInstance().getPetCollectionsManagerClient().getVetVisit(
-                        accessToken, petName, visitDate.toString());
+                        accessToken, owner, petName, visitDate.toString());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -141,13 +141,13 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
             org.pesmypetcare.usermanager.datacontainers.pet.VetVisit newLibraryVisit =
                     new org.pesmypetcare.usermanager.datacontainers.pet.VetVisit(newDate, vetVisitData);
             try {
-                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken,
+                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner,
                         petName, PetData.VET_VISITS, oldLibraryVisit.getKey());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
             try {
-                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken,
+                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner,
                         petName, PetData.VET_VISITS, newLibraryVisit.getKey(), newLibraryVisit.getBodyAsMap());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -169,7 +169,7 @@ public class VetVisitsAdapter implements VetVisitsManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken,
+                ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken, owner,
                         petName, PetData.VET_VISITS, libraryVisit.getKey(), libraryVisit.getBodyAsMap());
             } catch (MyPetCareException e) {
                 e.printStackTrace();

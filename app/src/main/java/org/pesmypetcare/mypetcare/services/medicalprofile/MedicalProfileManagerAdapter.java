@@ -39,7 +39,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken,
+                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner,
                         petName, PetData.VACCINATIONS, libraryVaccination.getKey(), libraryVaccination.getBodyAsMap());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -72,7 +72,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
             List<org.pesmypetcare.usermanager.datacontainers.pet.Vaccination> libraryVaccinations = null;
             try {
                 libraryVaccinations = ServiceLocator.getInstance().getPetCollectionsManagerClient()
-                        .getAllVaccinations(accessToken, petName);
+                        .getAllVaccinations(accessToken, owner, petName);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -102,7 +102,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken,
+                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner,
                         petName, PetData.VACCINATIONS, libraryVaccination.getKey());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -142,7 +142,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
     private void createNewVaccination(String accessToken, String owner, String petName,
                                       org.pesmypetcare.usermanager.datacontainers.pet.Vaccination newVaccination) {
         try {
-            ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, petName,
+            ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner, petName,
                     PetData.VACCINATIONS, newVaccination.getKey(), newVaccination.getBodyAsMap());
         } catch (MyPetCareException e) {
             e.printStackTrace();
@@ -159,7 +159,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
     private void deleteOldVaccination(String accessToken, String owner, String petName,
                                       org.pesmypetcare.usermanager.datacontainers.pet.Vaccination oldVaccination) {
         try {
-            ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken,
+            ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner,
                     petName, PetData.VACCINATIONS, oldVaccination.getKey());
         } catch (MyPetCareException e) {
             e.printStackTrace();
@@ -177,7 +177,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         VaccinationData vaccinationData = new VaccinationData();
         try {
             vaccinationData = ServiceLocator.getInstance().getPetCollectionsManagerClient()
-                    .getVaccination(accessToken, petName, vaccinationDate.toString());
+                    .getVaccination(accessToken, owner, petName, vaccinationDate.toString());
         } catch (MyPetCareException e) {
             e.printStackTrace();
         }
@@ -197,7 +197,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken,
+                ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken, owner,
                         petName, PetData.VACCINATIONS, libraryVaccination.getKey(), libraryVaccination.getBodyAsMap());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -220,7 +220,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken,
+                ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner,
                         petName, PetData.ILLNESSES, libraryIllness.getKey(), libraryIllness.getBodyAsMap());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -237,7 +237,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
             List<org.pesmypetcare.usermanager.datacontainers.pet.Illness> illnesses = null;
             try {
                 illnesses = ServiceLocator.getInstance()
-                        .getPetCollectionsManagerClient().getAllIllnesses(user.getToken(),
+                        .getPetCollectionsManagerClient().getAllIllnesses(user.getToken(), user.getUsername(),
                                 pet.getName());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -269,7 +269,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken,
+                ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner,
                         petName, PetData.ILLNESSES, libraryIllness.getKey());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -293,7 +293,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken,
+                ServiceLocator.getInstance().getPetManagerClient().updateFieldCollectionElement(accessToken, owner,
                         petName, PetData.ILLNESSES, libraryIllness.getKey(), libraryIllness.getBodyAsMap());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -332,7 +332,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
     private void createNewIllness(String accessToken, String owner, String petName,
                                   org.pesmypetcare.usermanager.datacontainers.pet.Illness newIllness) {
         try {
-            ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, petName,
+            ServiceLocator.getInstance().getPetManagerClient().addFieldCollectionElement(accessToken, owner, petName,
                     PetData.ILLNESSES, newIllness.getKey(), newIllness.getBodyAsMap());
         } catch (MyPetCareException e) {
             e.printStackTrace();
@@ -349,7 +349,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
     private void deleteOldIllness(String accessToken, String owner, String petName,
                                   org.pesmypetcare.usermanager.datacontainers.pet.Illness oldIllness) {
         try {
-            ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken,
+            ServiceLocator.getInstance().getPetManagerClient().deleteFieldCollectionElement(accessToken, owner,
                     petName, PetData.ILLNESSES, oldIllness.getKey());
         } catch (MyPetCareException e) {
             e.printStackTrace();
@@ -366,7 +366,7 @@ public class MedicalProfileManagerAdapter implements MedicalProfileManagerServic
         IllnessData illnessData = new IllnessData();
         try {
             illnessData = ServiceLocator.getInstance().getPetCollectionsManagerClient()
-                    .getIllness(accessToken, petName, dateTime.toString());
+                    .getIllness(accessToken, owner, petName, dateTime.toString());
         } catch (MyPetCareException e) {
             e.printStackTrace();
         }

@@ -34,7 +34,7 @@ public class UserManagerAdapter implements UserManagerService {
         executorService.execute(() -> {
             UserData userData = null;
             try {
-                userData = ServiceLocator.getInstance().getUserManagerClient().getUser(token);
+                userData = ServiceLocator.getInstance().getUserManagerClient().getUser(token, uid);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -104,7 +104,7 @@ public class UserManagerAdapter implements UserManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                userData.set(ServiceLocator.getInstance().getUserManagerClient().getUser(user.getToken()));
+                userData.set(ServiceLocator.getInstance().getUserManagerClient().getUser(user.getToken(), user.getUsername()));
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -125,7 +125,7 @@ public class UserManagerAdapter implements UserManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(),
+                ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(), user.getUsername(),
                         UserManagerClient.PASSWORD, newPassword);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -140,7 +140,7 @@ public class UserManagerAdapter implements UserManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getUserManagerClient().deleteUser(user.getToken());
+                ServiceLocator.getInstance().getUserManagerClient().deleteUser(user.getToken(), user.getUsername());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -153,7 +153,7 @@ public class UserManagerAdapter implements UserManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(),
+                ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(), user.getUsername(),
                         UserManagerClient.EMAIL, email);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
@@ -181,7 +181,7 @@ public class UserManagerAdapter implements UserManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getUserManagerClient().deleteUserFromDatabase(user.getToken());
+                ServiceLocator.getInstance().getUserManagerClient().deleteUserFromDatabase(user.getToken(), username);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -233,7 +233,7 @@ public class UserManagerAdapter implements UserManagerService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(),
+                ServiceLocator.getInstance().getUserManagerClient().updateField(user.getToken(), user.getUsername(),
                         UserManagerClient.USERNAME, newUsername);
             } catch (MyPetCareException e) {
                 e.printStackTrace();

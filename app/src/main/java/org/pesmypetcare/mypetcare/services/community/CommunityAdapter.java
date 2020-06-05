@@ -196,7 +196,7 @@ public class CommunityAdapter implements CommunityService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getGroupManagerClient().createGroup(user.getToken(), groupData);
+                ServiceLocator.getInstance().getGroupManagerClient().createGroup(groupData);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -210,7 +210,7 @@ public class CommunityAdapter implements CommunityService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getGroupManagerClient().deleteGroup(user.getToken(), groupName);
+                ServiceLocator.getInstance().getGroupManagerClient().deleteGroup(groupName);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -278,7 +278,7 @@ public class CommunityAdapter implements CommunityService {
         executorService.execute(() -> {
             try {
                 ForumData forumData = new ForumData(forum.getName(), forum.getOwnerUsername(), forum.getTags());
-                ServiceLocator.getInstance().getForumManagerClient().createForum(user.getToken(), group.getName(), forumData);
+                ServiceLocator.getInstance().getForumManagerClient().createForum(group.getName(), forumData);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
@@ -292,7 +292,7 @@ public class CommunityAdapter implements CommunityService {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ServiceLocator.getInstance().getForumManagerClient().deleteForum(user.getToken(), group.getName(), forum.getName());
+                ServiceLocator.getInstance().getForumManagerClient().deleteForum(group.getName(), forum.getName());
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
