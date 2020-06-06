@@ -358,5 +358,24 @@
     <string name="location_services_not_enabled_message">
         Si us plau, habilita els serveis de localització per a fer servir aquesta funcionalitat
     </string>
+    <string name="level">Nivell:</string>
+    <string name="next_level">Progrés:</string>
+    <string name="max">MAX</string>
+    <string name="medal_contributor">Contribuidor</string>
+    <string name="medal_zoo">Zoo</string>
+    <string name="medal_walker">Passejador</string>
+    <string name="medal_clean_as_a_whistle">Com una patena</string>
+    <string name="medal_scale_master">Mestre de la bàscula</string>
+    <string name="medal_founder">Fundador</string>
+    <string name="medal_gourmet">Gourmet</string>
+    <string name="medal_planner">Planificador</string>
+    <string name="medal_contributor_description">Fes moltes contribucions!</string>
+    <string name="medal_zoo_description">Registra moltes mascotes!</string>
+    <string name="medal_walker_description">Passeja la teva mascota sovint!</string>
+    <string name="medal_clean_as_a_whistle_description">Neteja a la teva mascota!</string>
+    <string name="medal_scale_master_description">Pren el pes de la teva mascota</string>
+    <string name="medal_founder_description">Funda grups per a la comunitat</string>
+    <string name="medal_gourmet_description">Controla els àpats de la teva mascota!</string>
+    <string name="medal_planner_description">Apunta-ho tot al calendari</string>
 
 </resources>

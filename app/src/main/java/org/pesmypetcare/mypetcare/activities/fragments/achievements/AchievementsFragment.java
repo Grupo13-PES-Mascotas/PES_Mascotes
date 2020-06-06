@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 
 import org.pesmypetcare.mypetcare.databinding.FragmentAchievementsBinding;
 
+import java.util.Objects;
+
 /**
  * @author Daniel Clemente & Álvaro Trius
  */
@@ -21,6 +23,9 @@ public class AchievementsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAchievementsBinding.inflate(inflater, container, false);
         communication = (AchievementsCommunication) getActivity();
+
+        binding.achievementInfoLayout.showAchievement(Objects.requireNonNull(communication).getUser()
+            .getAchievements());
 
         return binding.getRoot();
     }

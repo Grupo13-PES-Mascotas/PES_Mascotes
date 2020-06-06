@@ -55,6 +55,7 @@ import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.achievements.AchievementsCommunication;
+import org.pesmypetcare.mypetcare.activities.fragments.achievements.AchievementsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityCommunication;
@@ -84,6 +85,8 @@ import org.pesmypetcare.mypetcare.activities.fragments.walks.WalkFragment;
 import org.pesmypetcare.mypetcare.activities.threads.GetPetImageRunnable;
 import org.pesmypetcare.mypetcare.activities.threads.ThreadFactory;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
+import org.pesmypetcare.mypetcare.controllers.achievements.AchievementsControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.achievements.TrUpdateMedalProgress;
 import org.pesmypetcare.mypetcare.controllers.community.CommunityControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddGroupImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrAddNewForum;
@@ -215,6 +218,7 @@ import org.pesmypetcare.mypetcare.features.users.PetAlreadyExistingException;
 import org.pesmypetcare.mypetcare.features.users.SamePasswordException;
 import org.pesmypetcare.mypetcare.features.users.SameUsernameException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.features.users.UserAchievement;
 import org.pesmypetcare.mypetcare.utilities.ImageManager;
 import org.pesmypetcare.mypetcare.utilities.MessagingService;
 import org.pesmypetcare.mypetcare.utilities.MessagingServiceCommunication;
@@ -255,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     private static final Class[] APPLICATION_FRAGMENTS = {
         MyPetsFragment.class, CommunityFragment.class, WalkFragment.class,
-        NotImplementedFragment.class, CalendarFragment.class, NotImplementedFragment.class,
+        NotImplementedFragment.class, CalendarFragment.class, AchievementsFragment.class,
         SettingsMenuFragment.class
     };
     public static final String TAG_REGEX = "^[a-zA-Z0-9,]*$";
@@ -360,6 +364,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     private TrGetGroupImage trGetGroupImage;
     private TrGetAllWeights trGetAllWeights;
     private TrUnbanPost trUnbanPost;
+    private TrUpdateMedalProgress trUpdateMedalProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -756,6 +761,14 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         initializeVetVisitsControllers();
         initializeExerciseControllers();
         initializeMedicalProfileControllers();
+        initializeAchievementsControllers();
+    }
+
+    /**
+     * Initialize the achievements controllers.
+     */
+    private void initializeAchievementsControllers() {
+        trUpdateMedalProgress = AchievementsControllersFactory.createTrUpdateMedalProgress();
     }
 
     /**
@@ -1430,6 +1443,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
         changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
         setUpNewFragment(getString(R.string.navigation_my_pets), NAVIGATION_OPTIONS[0]);
+
+        updateMedalProgress(UserAchievement.ZOO);
     }
 
     @Override
@@ -1512,6 +1527,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (PostAlreadyExistingException | ForumNotFoundException | PostCreatedBeforeForumException e) {
             e.printStackTrace();
         }
+
+        updateMedalProgress(UserAchievement.CONTRIBUTOR);
     }
 
     @Override
@@ -1641,6 +1658,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trNewPersonalEvent.setEvent(new Event(description, DateTime.Builder.buildFullString(dateTime)));
         trNewPersonalEvent.execute();
 
+        updateMedalProgress(UserAchievement.PLANNER);
     }
 
     @Override
@@ -1736,6 +1754,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
 
         hideWindowSoftKeyboard();
+
+        updateMedalProgress(UserAchievement.SCALE_MASTER);
     }
 
     @Override
@@ -1790,6 +1810,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (MealAlreadyExistingException | InvalidFormatException e) {
             e.printStackTrace();
         }
+
+        updateMedalProgress(UserAchievement.GOURMET);
     }
 
     @Override
@@ -1828,6 +1850,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trNewPetWash.setPet(pet);
         trNewPetWash.setWash(wash);
         trNewPetWash.execute();
+
+        updateMedalProgress(UserAchievement.CLEAN_AS_A_WHISTLE);
     }
 
     @Override
@@ -2270,6 +2294,8 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         } catch (NotPetOwnerException | InvalidPeriodException e) {
             e.printStackTrace();
         }
+
+        updateMedalProgress(UserAchievement.WALKER);
     }
 
     /**
@@ -2449,6 +2475,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         trNewPeriodicNotification.setEvent(new Event(reasonText, dateTime));
         trNewPeriodicNotification.execute();
 
+        updateMedalProgress(UserAchievement.PLANNER);
     }
 
     @Override
@@ -2714,6 +2741,18 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             Toast toast = Toast.makeText(this, getString(R.string.group_already_created), Toast.LENGTH_LONG);
             toast.show();
         }
+
+        updateMedalProgress(UserAchievement.FOUNDER);
+    }
+
+    /**
+     * Update the medal progress.
+     * @param medal The name of the medal to update the progress
+     */
+    private void updateMedalProgress(String medal) {
+        trUpdateMedalProgress.setUser(user);
+        trUpdateMedalProgress.setMedalName(medal);
+        trUpdateMedalProgress.execute();
     }
 
     @Override

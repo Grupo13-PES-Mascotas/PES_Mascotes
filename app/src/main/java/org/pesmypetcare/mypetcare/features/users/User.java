@@ -25,6 +25,7 @@ public class User {
     private ArrayList<Notification> notifications;
     private SortedSet<String> subscribedGroups;
     private int messagesBanned;
+    private SortedSet<UserAchievement> achievements;
 
     public User(String username, String email, String passwd) {
         this.username = username;
@@ -35,6 +36,7 @@ public class User {
         this.token = "token";
         this.subscribedGroups = new TreeSet<>();
         this.messagesBanned = 0;
+        this.achievements = new TreeSet<>();
     }
 
     /**
@@ -276,5 +278,50 @@ public class User {
      */
     public void setMessagesBanned(int messagesBanned) {
         this.messagesBanned = messagesBanned;
+    }
+
+    /**
+     * Get the achievements.
+     * @return The achievements
+     */
+    public SortedSet<UserAchievement> getAchievements() {
+        return achievements;
+    }
+
+    /**
+     * Add an achievement.
+     * @param achievement The achievement to add
+     */
+    public void addAchievement(UserAchievement achievement) {
+        achievements.add(achievement);
+    }
+
+    public int getMedalProgress(String medal) {
+        for (UserAchievement userAchievement : achievements) {
+            if (userAchievement.getName().equals(medal)) {
+                return (int) userAchievement.getProgress();
+            }
+        }
+
+        return 0;
+    }
+
+    public void incrementMedalProgress(String medal) {
+        for (UserAchievement userAchievement : achievements) {
+            if (userAchievement.getName().equals(medal)) {
+                userAchievement.incrementProgress();
+                return;
+            }
+        }
+    }
+
+    public int getMedalLevel(String medal) {
+        for (UserAchievement userAchievement : achievements) {
+            if (userAchievement.getName().equals(medal)) {
+                return userAchievement.getCurrentLevel();
+            }
+        }
+
+        return 0;
     }
 }
