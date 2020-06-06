@@ -1,4 +1,4 @@
-package org.pesmypetcare.mypetcare.controllers.achievement;
+package org.pesmypetcare.mypetcare.controllers.achievements;
 
 import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.features.users.UserAchievement;

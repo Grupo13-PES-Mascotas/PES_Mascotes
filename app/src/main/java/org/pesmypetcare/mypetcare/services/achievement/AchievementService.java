@@ -16,4 +16,6 @@ public interface AchievementService {
      * @return The achievements
      */
     List<UserMedalData> getAllAchievements(User user);
+
+    void updateMedalProgress(User user, String medal);
 }

@@ -31,7 +31,6 @@ public class AchievementAdapter implements AchievementService {
         });
         executorService.shutdown();
 
-        System.out.println("WAITING");
         try {
             executorService.awaitTermination(TIME, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
@@ -39,6 +38,23 @@ public class AchievementAdapter implements AchievementService {
         }
 
         return listMedals.get();
+    }
+
+    @Override
+    public void updateMedalProgress(User user, String medal) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getUserMedalManagerClient().updateField(user.getToken(),
+                    user.getUsername(), medal, UserMedalData.PROGRESS, user.getMedalProgress(medal));
+                ServiceLocator.getInstance().getUserMedalManagerClient().updateField(user.getToken(),
+                    user.getUsername(), medal, UserMedalData.LEVELS, user.getMedalLevel(medal));
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+
+        executorService.shutdown();
     }
 
     /*@Override

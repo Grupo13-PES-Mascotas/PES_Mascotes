@@ -13,6 +13,7 @@ import org.pesmypetcare.mypetcare.features.users.UserAchievement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
 
 /**
  * @author Álvaro Trius Béjar
@@ -38,7 +39,7 @@ public class AchievementsView extends LinearLayout {
      * Show the specified achievements.
      * @param achievements The medals to display
      */
-    public void showAchievement(List<UserAchievement> achievements) {
+    public void showAchievement(SortedSet<UserAchievement> achievements) {
         for (UserAchievement achievement : achievements) {
             CircularEntryView circularEntryView = new AchievementsComponentView(context, null,
                 achievement).initializeComponent();
