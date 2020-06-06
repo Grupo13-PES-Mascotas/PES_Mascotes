@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * @author Daniel Clemente
+ *
  */
 public class TestTrGetAllAchievements {
     private User user;

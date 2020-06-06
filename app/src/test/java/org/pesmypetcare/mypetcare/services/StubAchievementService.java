@@ -4,6 +4,7 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.achievement.AchievementService;
 import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +23,7 @@ public class StubAchievementService implements AchievementService {
         UserMedalData userMedalData = new UserMedalData("Medal", Arrays.asList(10.0, 20.0, 30.0), "Test", new byte[0],
             0.0, 0.0, null);
         medals.put("JohnSmith", Collections.singletonList(userMedalData));
+        medals.put("JohnDoe", new ArrayList<>());
     }
 
     @Override
