@@ -8,7 +8,7 @@ import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 import java.util.List;
 
 /**
- * @author Albert Pinto
+ * @author Daniel Clemente
  */
 public class TrGetAllAchievements {
     private AchievementService achievementService;

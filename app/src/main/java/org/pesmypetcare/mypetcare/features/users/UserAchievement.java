@@ -7,14 +7,15 @@ import java.util.Objects;
  * @author Albert Pinto
  */
 public class UserAchievement implements Comparable<UserAchievement> {
-    public static String CONTRIBUTOR = "Contributor";
-    public static String ZOO = "Zoo";
-    public static String WALKER = "Walker";
-    public static String CLEAN_AS_A_WHISTLE = "Clean as a whistle";
-    public static String SCALE_MASTER = "Scale Master";
-    public static String FOUNDER = "Founder";
-    public static String GOURMET = "Gourmet";
-    public static String PLANNER = "Planner";
+    public static final int MAX_LEVEL = 3;
+    public static final String CONTRIBUTOR = "Contributor";
+    public static final String ZOO = "Zoo";
+    public static final String WALKER = "Walker";
+    public static final String CLEAN_AS_A_WHISTLE = "Clean as a whistle";
+    public static final String SCALE_MASTER = "Scale Master";
+    public static final String FOUNDER = "Founder";
+    public static final String GOURMET = "Gourmet";
+    public static final String PLANNER = "Planner";
 
     private String name;
     private String description;
@@ -111,7 +112,7 @@ public class UserAchievement implements Comparable<UserAchievement> {
      * Increment the progress of the medal.
      */
     public void incrementProgress() {
-        if (currentLevel != 3) {
+        if (currentLevel != MAX_LEVEL) {
             ++progress;
 
             if (progress == levels.get(currentLevel)) {
@@ -127,8 +128,14 @@ public class UserAchievement implements Comparable<UserAchievement> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         UserAchievement that = (UserAchievement) o;
         return Objects.equals(name, that.name);
     }

@@ -36,10 +36,7 @@ public class AchievementsComponentView extends CircularEntryView {
         Drawable achievementDrawable = getResources().getDrawable(R.drawable.medal_empty, null);
 
         if (currentLevel > 0) {
-            String medalName = achievement.getName().toLowerCase(Locale.getDefault()).replace(' ', '_');
-            String medalDrawableName = "medal_" + medalName + "_" + (currentLevel - 1);
-            int id = getResources().getIdentifier(medalDrawableName, "drawable", getContext().getPackageName());
-            achievementDrawable = getResources().getDrawable(id, null);
+            achievementDrawable = getMedalImage(currentLevel);
         }
 
         image.setDrawable(achievementDrawable);
@@ -49,6 +46,20 @@ public class AchievementsComponentView extends CircularEntryView {
         image.setId(imageId);
 
         return image;
+    }
+
+    /**
+     * Get the medal image.
+     * @param currentLevel The current level
+     * @return The image of the medal
+     */
+    private Drawable getMedalImage(int currentLevel) {
+        Drawable achievementDrawable;
+        String medalName = achievement.getName().toLowerCase(Locale.getDefault()).replace(' ', '_');
+        String medalDrawableName = "medal_" + medalName + "_" + (currentLevel - 1);
+        int id = getResources().getIdentifier(medalDrawableName, "drawable", getContext().getPackageName());
+        achievementDrawable = getResources().getDrawable(id, null);
+        return achievementDrawable;
     }
 
     @Override
@@ -75,7 +86,7 @@ public class AchievementsComponentView extends CircularEntryView {
         String levelInfo = getResources().getString(R.string.level) + " " + currentLevel + " - "
             + getResources().getString(R.string.next_level) + " ";
 
-        if (currentLevel == 3) {
+        if (currentLevel == UserAchievement.MAX_LEVEL) {
             return description + "\n" + levelInfo + getResources().getString(R.string.max);
         }
 
