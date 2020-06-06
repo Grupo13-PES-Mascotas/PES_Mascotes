@@ -221,7 +221,6 @@ import org.pesmypetcare.mypetcare.utilities.MessagingService;
 import org.pesmypetcare.mypetcare.utilities.MessagingServiceCommunication;
 import org.pesmypetcare.mypetcare.utilities.MessagingTokenServiceCommunication;
 import org.pesmypetcare.mypetcare.utilities.ServerData;
-import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -2843,13 +2842,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public List<UserMedalData> getAllAchievements() throws MyPetCareException {
-        trGetAllAchievements.setUser(user);
-        trGetAllAchievements.execute();
-        return trGetAllAchievements.getResult();
     }
 
     /**

@@ -14,9 +14,8 @@ public interface AchievementService {
      * Get all the achievements of a user and his information.
      * @param user The user to get the achievements
      * @return The achievements
-     * @throws MyPetCareException if the user doesn't exist
      */
-    List<UserMedalData> getAllAchievements(User user) throws MyPetCareException;
+    List<UserMedalData> getAllAchievements(User user);
 
     /**
      * Update an achievement of an user.

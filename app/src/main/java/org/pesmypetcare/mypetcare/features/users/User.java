@@ -2,11 +2,9 @@ package org.pesmypetcare.mypetcare.features.users;
 
 import android.graphics.Bitmap;
 
-import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.features.community.groups.Group;
 import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
-import org.pesmypetcare.mypetcare.utilities.InvalidFormatException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +35,7 @@ public class User {
         this.notifications = new ArrayList<>();
         this.token = "token";
         this.subscribedGroups = new TreeSet<>();
-        initializeAchievements();
+        this.achievements = new ArrayList<>();
     }
 
     /**
@@ -273,146 +271,7 @@ public class User {
         return achievements;
     }
 
-    /**
-     * Update the progress of an achievement.
-     * @param name The name of the achievement
-     * @param progress The progress to set
-     * @throws InvalidFormatException throws this exception if the date is in an invalid format
-     */
-    public void updateAchievementProgress(String name, Integer progress) throws InvalidFormatException {
-        for (UserAchievement userAchievement : achievements) {
-            if(userAchievement.getName().equals(name)) {
-                userAchievement.updateProgress(progress);
-            }
-        }
+    public void addAchievement(UserAchievement achievement) {
+        achievements.add(achievement);
     }
-
-    /**
-     * Initialize all the achievements
-     */
-    private void initializeAchievements() {
-        achievements = new ArrayList<>();
-        initializeContributor();
-        initializeZoo();
-        initializeSuperwalker();
-        initializeCleaner();
-        initializeScaler();
-        initializeFounder();
-        iniitializeMealer();
-        initializeEvent();
-    }
-
-    /**
-     * Initialize "Contributor" achievement
-     */
-    private void initializeContributor() {
-        UserAchievement contributor = new UserAchievement("Contributor", R.string.contributor_desc);
-        List<Integer> levels = new ArrayList<>();
-        levels.add(0, 0);
-        levels.add(1, 5);
-        levels.add(1, 20);
-        levels.add(1, 40);
-        contributor.setLevels(levels);
-        achievements.add(contributor);
-    }
-
-    /**
-     * Initialize "Zoo" achievement
-     */
-    private void initializeZoo() {
-        UserAchievement zoo = new UserAchievement("Zoo", R.string.zoo_desc);
-        List<Integer> levels = new ArrayList<>();
-        levels.add(0, 0);
-        levels.add(1, 2);
-        levels.add(1, 3);
-        levels.add(1, 4);
-        zoo.setLevels(levels);
-        achievements.add(zoo);
-    }
-
-    /**
-     * Initialize "Superwalker" achievement
-     */
-    private void initializeSuperwalker() {
-        UserAchievement superwalker = new UserAchievement("Walker", R.string.superwalker_desc);
-        List<Integer> levels = new ArrayList<>();
-        levels.add(0, 0);
-        levels.add(1, 20);
-        levels.add(1, 60);
-        levels.add(1, 100);
-        superwalker.setLevels(levels);
-        achievements.add(superwalker);
-
-    }
-
-    /**
-     * Initialize "Cleaner" achievement
-     */
-    private void initializeCleaner() {
-        UserAchievement cleaner = new UserAchievement("Clean as a whistle", R.string.clean_desc);
-        List<Integer> levels = new ArrayList<>();
-        levels.add(0, 0);
-        levels.add(1, 3);
-        levels.add(1, 10);
-        levels.add(1, 20);
-        cleaner.setLevels(levels);
-        achievements.add(cleaner);
-    }
-
-    /**
-     * Initialize "Scaler" achievement
-     */
-    private void initializeScaler() {
-        UserAchievement scaler = new UserAchievement("Scale Master", R.string.scale_desc);
-        List<Integer> levels = new ArrayList<>();
-        levels.add(0, 0);
-        levels.add(1, 5);
-        levels.add(1, 10);
-        levels.add(1, 20);
-        scaler.setLevels(levels);
-        achievements.add(scaler);
-    }
-
-    /**
-     * Initialize "Founder" achievement
-     */
-    private void initializeFounder() {
-        UserAchievement founder = new UserAchievement("Founder", R.string.founder_desc);
-        List<Integer> levels = new ArrayList<>();
-        levels.add(0, 0);
-        levels.add(1, 1);
-        levels.add(1, 5);
-        levels.add(1, 10);
-        founder.setLevels(levels);
-        achievements.add(founder);
-    }
-
-    /**
-     * Initialize "Mealer" achievement
-     */
-    private void iniitializeMealer() {
-        UserAchievement mealer = new UserAchievement("Gourmet", R.string.meals_desc);
-        List<Integer> levels = new ArrayList<>();
-        levels.add(0, 0);
-        levels.add(1, 15);
-        levels.add(1, 100);
-        levels.add(1, 200);
-        mealer.setLevels(levels);
-        achievements.add(mealer);
-    }
-
-    /**
-     * Initialize "Event" achievement
-     */
-    private void initializeEvent() {
-        UserAchievement event = new UserAchievement("Planner", R.string.event_desc);
-        List<Integer> levels = new ArrayList<>();
-        levels.add(0, 0);
-        levels.add(1, 10);
-        levels.add(1, 30);
-        levels.add(1, 50);
-        event.setLevels(levels);
-        achievements.add(event);
-    }
-
 }

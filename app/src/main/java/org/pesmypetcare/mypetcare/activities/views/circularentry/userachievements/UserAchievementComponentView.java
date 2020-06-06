@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
-import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
+import org.pesmypetcare.mypetcare.features.users.UserAchievement;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -20,13 +20,13 @@ import java.util.Locale;
  * @author Álvaro Trius Béjar
  */
 public class UserAchievementComponentView extends CircularEntryView {
-    private UserMedalData achievement;
+    private UserAchievement achievement;
 
     public UserAchievementComponentView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public UserAchievementComponentView(Context context, AttributeSet attrs, UserMedalData achievement) {
+    public UserAchievementComponentView(Context context, AttributeSet attrs, UserAchievement achievement) {
         super(context, attrs);
         this.achievement = achievement;
     }
@@ -36,7 +36,7 @@ public class UserAchievementComponentView extends CircularEntryView {
         CircularImageView image = new CircularImageView(getCurrentActivity(), null);
 
         String medalName = achievement.getName().toLowerCase(Locale.getDefault()).replace(' ', '_');
-        String medalDrawableName = "medal_" + medalName + "_" + achievement.getCurrentLevel().intValue();
+        String medalDrawableName = "medal_" + medalName + "_" + achievement.getCurrentLevel();
         int id = getResources().getIdentifier(medalDrawableName, "drawable", getContext().getPackageName());
         Drawable achievementDrawable = getResources().getDrawable(id, null);
 
@@ -68,7 +68,7 @@ public class UserAchievementComponentView extends CircularEntryView {
         int id = getResources().getIdentifier(medalNameString, "string", getContext().getPackageName());
         String description = getResources().getString(id);
 
-        int currentLevel = achievement.getCurrentLevel().intValue();
+        int currentLevel = achievement.getCurrentLevel();
         int currentLevelBorder;
 
         if (currentLevel == 0) {

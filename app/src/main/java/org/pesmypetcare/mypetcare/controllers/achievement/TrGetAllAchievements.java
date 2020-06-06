@@ -1,7 +1,7 @@
 package org.pesmypetcare.mypetcare.controllers.achievement;
 
-import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.features.users.User;
+import org.pesmypetcare.mypetcare.features.users.UserAchievement;
 import org.pesmypetcare.mypetcare.services.achievement.AchievementService;
 import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 
@@ -13,7 +13,6 @@ import java.util.List;
 public class TrGetAllAchievements {
     private AchievementService achievementService;
     private User user;
-    private List<UserMedalData> result;
 
     public TrGetAllAchievements(AchievementService achievementService) {
         this.achievementService = achievementService;
@@ -29,17 +28,17 @@ public class TrGetAllAchievements {
 
     /**
      * Execute the transaction.
-     * @throws MyPetCareException Throws an exception if user not exists
      */
-    public void execute() throws MyPetCareException {
-        result = achievementService.getAllAchievements(user);
-    }
+    public void execute() {
+        List<UserMedalData> userMedalDataList = achievementService.getAllAchievements(user);
 
-    /**
-     * Return the result of the transaction.
-     * @return All achievements of the user
-     */
-    public List<UserMedalData> getResult() {
-        return result;
+        for (UserMedalData medalData : userMedalDataList) {
+            UserAchievement achievement = new UserAchievement(medalData.getName(), medalData.getDescription());
+            achievement.setLevels(medalData.getLevels());
+            achievement.setCurrentLevel(medalData.getCurrentLevel().intValue());
+            achievement.setProgress(medalData.getProgress());
+
+            user.addAchievement(achievement);
+        }
     }
 }

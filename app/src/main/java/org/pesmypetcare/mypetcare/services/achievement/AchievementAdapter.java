@@ -19,7 +19,7 @@ public class AchievementAdapter implements AchievementService {
 
 
     @Override
-    public List<UserMedalData> getAllAchievements(User user) throws MyPetCareException {
+    public List<UserMedalData> getAllAchievements(User user) {
         AtomicReference<List<UserMedalData>> listMedals = new AtomicReference<>();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {

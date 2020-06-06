@@ -18,6 +18,8 @@ import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.fragments.login.AsyncResponse;
 import org.pesmypetcare.mypetcare.activities.fragments.login.MyAsyncTask;
+import org.pesmypetcare.mypetcare.controllers.achievement.AchievementsControllersFactory;
+import org.pesmypetcare.mypetcare.controllers.achievement.TrGetAllAchievements;
 import org.pesmypetcare.mypetcare.controllers.community.CommunityControllersFactory;
 import org.pesmypetcare.mypetcare.controllers.community.TrGetGroupImage;
 import org.pesmypetcare.mypetcare.controllers.community.TrObtainAllGroups;
@@ -303,8 +305,16 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
             e.printStackTrace();
         }
 
-        ServerData.getInstance().setUser(trObtainUser.getResult());
+        User user = trObtainUser.getResult();
+        addUserAchievements(user);
 
+        ServerData.getInstance().setUser(user);
+    }
+
+    private void addUserAchievements(User user) {
+        TrGetAllAchievements trGetAllAchievements = AchievementsControllersFactory.createTrGetAllAchievements();
+        trGetAllAchievements.setUser(user);
+        trGetAllAchievements.execute();
     }
 
     /**

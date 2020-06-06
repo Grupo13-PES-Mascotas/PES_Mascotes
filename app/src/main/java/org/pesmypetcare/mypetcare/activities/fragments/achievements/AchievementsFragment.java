@@ -8,11 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.mypetcare.databinding.FragmentAchievementsBinding;
-import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
 
-import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Daniel Clemente & Álvaro Trius
@@ -24,27 +22,11 @@ public class AchievementsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAchievementsBinding.inflate(inflater, container, false);
-        communication = (AchievementsCommunication) getActivity(); //debería pedir al mainActivity de todas las medals
+        communication = (AchievementsCommunication) getActivity();
 
-        try {
-            binding.achievementInfoLayout.showAchievement(communication.getAllAchievements());
-        } catch (MyPetCareException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            initializeAchievementsController();
-        } catch (MyPetCareException e) {
-            e.printStackTrace();
-        }
+        binding.achievementInfoLayout.showAchievement(Objects.requireNonNull(communication).getUser()
+            .getAchievements());
 
         return binding.getRoot();
-    }
-
-    /**
-     * Initializes de achievements controller.
-     */
-    private void initializeAchievementsController() throws MyPetCareException {
-        List<UserMedalData> userAchievementList = communication.getAllAchievements();
     }
 }

@@ -48,9 +48,9 @@ public class TrUpdateAchievement {
      * @throws MyPetCareException throws an exception if the current not exists
      */
     public void execute() throws InvalidFormatException, MyPetCareException {
-        user.updateAchievementProgress(this.nameAchievement, newProgress);
+        /*user.updateAchievementProgress(this.nameAchievement, newProgress);
         Double progress = (double) newProgress;
-        achievementService.updateAchievement(nameAchievement, progress, user);
+        achievementService.updateAchievement(nameAchievement, progress, user);*/
     }
 
 }
