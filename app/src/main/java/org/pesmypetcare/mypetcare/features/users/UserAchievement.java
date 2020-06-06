@@ -27,46 +27,89 @@ public class UserAchievement implements Comparable<UserAchievement> {
         this.description = description;
     }
 
+    /**
+     * Get the name.
+     * @return The name to get
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set the name.
+     * @param name The name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Get the description.
+     * @return The description to get
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Set the description.
+     * @param description The description to set
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Get the levels.
+     * @return The levels to get
+     */
     public List<Double> getLevels() {
         return levels;
     }
 
+    /**
+     * Set the levels.
+     * @param levels The levels to set
+     */
     public void setLevels(List<Double> levels) {
         this.levels = levels;
     }
 
+    /**
+     * Get the current level.
+     * @return The current level to get
+     */
     public int getCurrentLevel() {
         return currentLevel;
     }
 
+    /**
+     * Set the current level.
+     * @param currentLevel The current level to set
+     */
     public void setCurrentLevel(int currentLevel) {
         this.currentLevel = currentLevel;
     }
 
+    /**
+     * Get the progress.
+     * @return The progress to get
+     */
     public double getProgress() {
         return progress;
     }
 
+    /**
+     * Set the progress.
+     * @param progress The progress to set
+     */
     public void setProgress(double progress) {
         this.progress = progress;
     }
 
+    /**
+     * Increment the progress of the medal.
+     */
     public void incrementProgress() {
         if (currentLevel != 3) {
             ++progress;

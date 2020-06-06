@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * @author Albert Pinto
+ * @author Daniel Clemente
  */
 public class StubAchievementService implements AchievementService {
     private Map<String, List<UserMedalData>> medals;

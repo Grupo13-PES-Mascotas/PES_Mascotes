@@ -17,5 +17,10 @@ public interface AchievementService {
      */
     List<UserMedalData> getAllAchievements(User user);
 
+    /**
+     * Update the medal progress.
+     * @param user The user to update the medal progress
+     * @param medal The medal name to update
+     */
     void updateMedalProgress(User user, String medal);
 }
