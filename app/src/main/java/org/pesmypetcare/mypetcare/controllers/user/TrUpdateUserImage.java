@@ -36,6 +36,7 @@ public class TrUpdateUserImage {
 
     /**
      * Executes the transaction.
+     * @throws MyPetCareException There has been a problem with the server
      */
     public void execute() throws MyPetCareException {
         userManagerService.updateUserImage(user, image);

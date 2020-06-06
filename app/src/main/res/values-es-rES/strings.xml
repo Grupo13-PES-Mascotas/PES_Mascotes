@@ -46,7 +46,7 @@
     <string name="languages">Idiomas</string>
     <string name="change_password">Cambiar contraseña</string>
     <string name="change_username">Cambiar Username</string>
-    <string name="current_version">Versión: 2.0.3</string>
+    <string name="current_version">Versión: 2.1.0</string>
     <string name="old_password">Anterior contraseña</string>
     <string name="new_password">Nueva contraseña</string>
     <string name="confirm_new_password">Confirmar nueva contraseña</string>
@@ -333,6 +333,7 @@
     <string name="wait_for_update">Espera una actualización para usar esta funcionalidad</string>
     <string name="likes">me gustas</string>
     <string name="likes_singular">me gusta</string>
+    <string name="unban_post">Desbannear post</string>
     <string name="error_too_big_image">La imagen tiene que ser inferior o igual a 1 MB</string>
     <string name="new_post_received">ha hecho una nueva publicación</string>
     <string name="progress_bar_connecting_to_server">Conectando al servidor</string>
@@ -347,6 +348,10 @@
     <string name="do_not_have_any_pet">
         No tienes ninguna mascota\n
         Haz clic en el botón + para añadir una
+    </string>
+    <string name="location_services_not_enabled_title">Servicio de localizaciçon deshabilitado</string>
+    <string name="location_services_not_enabled_message">
+        Por favor, habilite los servicios de localización para utilizar esta funcionalidad
     </string>
 
     <!-- The next two strings cannot be translated into any other language -->

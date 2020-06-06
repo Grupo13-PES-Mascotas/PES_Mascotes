@@ -26,6 +26,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -108,7 +109,7 @@ public class SignUpFragment extends Fragment {
                 .requestProfile()
                 .requestId()
                 .requestIdToken(getString(R.string.default_web_client_id))
-                //.requestScopes(new Scope("https://www.googleapis.com/auth/calendar"))
+                .requestScopes(new Scope("https://www.googleapis.com/auth/calendar"))
                 .build();
 
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(Objects.requireNonNull(getActivity()), gso);
@@ -144,14 +145,10 @@ public class SignUpFragment extends Fragment {
         ServerData.getInstance().getMAuth().signInWithCredential(credential)
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                     if (task.isSuccessful()) {
-                        try {
-                            if (!userManagerService.usernameExists(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getDisplayName())) {
-                                userManagerService.createUser(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getUid(),
-                                        ServerData.getInstance().getMAuth().getCurrentUser().getDisplayName(), ServerData.getInstance().getMAuth().getCurrentUser().getEmail(),
-                                        "");
-                            }
-                        } catch (ExecutionException | InterruptedException e) {
-                            e.printStackTrace();
+                        if (!userManagerService.usernameExists(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getDisplayName())) {
+                            userManagerService.createUser(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getUid(),
+                                    ServerData.getInstance().getMAuth().getCurrentUser().getDisplayName(), ServerData.getInstance().getMAuth().getCurrentUser().getEmail(),
+                                    "");
                         }
                         startActivity(new Intent(getActivity(), LauncherActivity.class));
                         Objects.requireNonNull(getActivity()).finish();
@@ -194,13 +191,9 @@ public class SignUpFragment extends Fragment {
         ServerData.getInstance().getMAuth().signInWithCredential(credential)
                 .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
                     if (task.isSuccessful()) {
-                        try {
-                            if (!userManagerService.usernameExists(acct.getDisplayName())) {
-                                userManagerService.createUser(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getUid(),
-                                        acct.getDisplayName(), acct.getEmail(), "");
-                            }
-                        } catch (ExecutionException | InterruptedException e) {
-                            e.printStackTrace();
+                        if (!userManagerService.usernameExists(acct.getDisplayName())) {
+                            userManagerService.createUser(Objects.requireNonNull(ServerData.getInstance().getMAuth().getCurrentUser()).getUid(),
+                                    acct.getDisplayName(), acct.getEmail(), "");
                         }
                         startActivity(new Intent(getActivity(), LauncherActivity.class));
                         Objects.requireNonNull(getActivity()).finish();

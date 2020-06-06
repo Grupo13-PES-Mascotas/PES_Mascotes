@@ -93,6 +93,12 @@ public interface InfoGroupCommunication {
     void reportPost(Post post, String reportMessage);
 
     /**
+     * Unbans the given post.
+     * @param post The post that has to be unbanned
+     */
+    void unbanPost(Post post);
+
+    /**
      * Get the image from the user.
      * @param username The username
      * @return The user image

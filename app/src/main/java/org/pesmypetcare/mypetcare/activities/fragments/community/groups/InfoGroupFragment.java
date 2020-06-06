@@ -53,7 +53,7 @@ public class InfoGroupFragment extends Fragment {
 
         addButtonListeners();
 
-        ExecutorService obtainSubscribersImages = Executors.newSingleThreadExecutor();
+        /*ExecutorService obtainSubscribersImages = Executors.newSingleThreadExecutor();
         obtainSubscribersImages.execute(() -> getImageExecutor());
 
         obtainSubscribersImages.shutdown();
@@ -62,7 +62,7 @@ public class InfoGroupFragment extends Fragment {
             obtainSubscribersImages.awaitTermination(TIMEOUT, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return binding.getRoot();
     }

@@ -58,7 +58,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.SortedSet;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -97,6 +96,7 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
         });
 
         loadingData.shutdown();
+        binding.progressBar.setIndeterminate(false);
     }
 
     /**
@@ -104,13 +104,11 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
      */
     private void loadData() {
         ServerData.getInstance().setMAuth(FirebaseAuth.getInstance());
-
         makeLogin();
         //statusCommunication.updateText(getString(R.string.progress_bar_loading_your_pets));
 
         if (continueExecution) {
             initializeLoggedUser();
-
             int nPets = ServerData.getInstance().getUser().getPets().size();
             int nGroups = 0;
             int progressIncrement = getIncrement(nPets, nGroups);
@@ -304,7 +302,6 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
         }
 
         ServerData.getInstance().setUser(trObtainUser.getResult());
-        binding.progressBar.setIndeterminate(false);
     }
 
     /**
@@ -386,11 +383,7 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
         TrObtainAllPetMeals trObtainAllPetMeals = MealsControllersFactory.createTrObtainAllPetMeals();
         trObtainAllPetMeals.setUser(ServerData.getInstance().getUser());
         trObtainAllPetMeals.setPet(pet);
-        try {
-            trObtainAllPetMeals.execute();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        trObtainAllPetMeals.execute();
     }
 
     /**
@@ -403,11 +396,7 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
 
         trObtainAllPetMedications.setUser(ServerData.getInstance().getUser());
         trObtainAllPetMedications.setPet(pet);
-        try {
-            trObtainAllPetMedications.execute();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        trObtainAllPetMedications.execute();
     }
 
     /**
@@ -418,11 +407,7 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
         TrObtainAllVetVisits trObtainAllVetVisits = VetVisitsControllersFactory.createTrObtainAllVetVisits();
         trObtainAllVetVisits.setUser(ServerData.getInstance().getUser());
         trObtainAllVetVisits.setPet(pet);
-        try {
-            trObtainAllVetVisits.execute();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        trObtainAllVetVisits.execute();
     }
 
     /**
@@ -448,7 +433,7 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
         trObtainAllPetVaccinations.setPet(pet);
         try {
             trObtainAllPetVaccinations.execute();
-        } catch (NotPetOwnerException | InterruptedException | ExecutionException e) {
+        } catch (NotPetOwnerException e) {
             e.printStackTrace();
         }
     }
@@ -463,7 +448,7 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
         trObtainAllPetIllness.setPet(pet);
         try {
             trObtainAllPetIllness.execute();
-        } catch (NotPetOwnerException | InterruptedException | ExecutionException e) {
+        } catch (NotPetOwnerException e) {
             e.printStackTrace();
         }
     }
@@ -479,7 +464,7 @@ public class LauncherActivity extends AppCompatActivity implements MessagingToke
 
         try {
             trGetAllExercises.execute();
-        } catch (NotPetOwnerException | ExecutionException | InterruptedException e) {
+        } catch (NotPetOwnerException e) {
             e.printStackTrace();
         }
 

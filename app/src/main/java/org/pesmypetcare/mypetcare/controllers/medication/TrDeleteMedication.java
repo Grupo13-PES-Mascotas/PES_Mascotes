@@ -6,8 +6,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.medication.MedicationManagerService;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Xavier Campos
  */
@@ -51,7 +49,7 @@ public class TrDeleteMedication {
     /**
      * Executes the transaction.
      */
-    public void execute() throws ExecutionException, InterruptedException {
+    public void execute() {
         medicationManagerService.deleteMedication(user, pet, medication);
         pet.deleteEvent(medication);
         googleCalendarService.deleteEvent(pet, medication);

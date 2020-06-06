@@ -45,7 +45,7 @@
     <string name="languages">Languages</string>
     <string name="change_password">Change Password</string>
     <string name="change_username">Change Username</string>
-    <string name="current_version">Version: 2.0.3</string>
+    <string name="current_version">Version: 2.1.0</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
@@ -332,6 +332,7 @@
     <string name="wait_for_update">Wait for an update to use this functionality</string>
     <string name="likes">likes</string>
     <string name="likes_singular">like</string>
+    <string name="unban_post">Unban post</string>
     <string name="error_too_big_image">The image should be smaller or equal than 1 MB</string>
     <string name="new_post_received">has made a new post</string>
     <string name="progress_bar_connecting_to_server">Connecting to server</string>
@@ -346,6 +347,10 @@
     <string name="do_not_have_any_pet">
         You do not have any pet\n
         Click the + button to register one
+    </string>
+    <string name="location_services_not_enabled_title">Location services not enabled</string>
+    <string name="location_services_not_enabled_message">
+        Please, enable the location services to use this functionality
     </string>
 
     <!-- The next two strings cannot be translated into any other language -->

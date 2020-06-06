@@ -7,8 +7,6 @@ import org.pesmypetcare.mypetcare.services.medication.MedicationManagerService;
 import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
 import org.pesmypetcare.mypetcare.services.user.UserManagerService;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Enric Hernando
  */
@@ -40,7 +38,7 @@ public class TrDeleteUser {
      * Execute the transaction.
      * @throws NotValidUserException The user doesn't exist
      */
-    public void execute() throws NotValidUserException, ExecutionException, InterruptedException {
+    public void execute() throws NotValidUserException {
         result = false;
         if (!userHasAlreadyBeenRegistered()) {
             throw new NotValidUserException();

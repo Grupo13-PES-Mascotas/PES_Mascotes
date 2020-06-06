@@ -24,6 +24,7 @@ public class User {
     private String googleCalendarToken;
     private ArrayList<Notification> notifications;
     private SortedSet<String> subscribedGroups;
+    private int messagesBanned;
 
     public User(String username, String email, String passwd) {
         this.username = username;
@@ -33,6 +34,7 @@ public class User {
         this.notifications = new ArrayList<>();
         this.token = "token";
         this.subscribedGroups = new TreeSet<>();
+        this.messagesBanned = 0;
     }
 
     /**
@@ -258,5 +260,21 @@ public class User {
      */
     public String getGoogleCalendarToken() {
         return this.googleCalendarToken;
+    }
+
+    /**
+     * Getter of the messages banned from this user.
+     * @return The number of messages banned to this user
+     */
+    public int getMessagesBanned() {
+        return messagesBanned;
+    }
+
+    /**
+     * Setter of the amount of messages banned.
+     * @param messagesBanned The new number of banned messages
+     */
+    public void setMessagesBanned(int messagesBanned) {
+        this.messagesBanned = messagesBanned;
     }
 }

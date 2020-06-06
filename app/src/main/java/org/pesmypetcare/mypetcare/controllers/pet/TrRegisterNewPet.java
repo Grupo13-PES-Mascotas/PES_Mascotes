@@ -6,8 +6,6 @@ import org.pesmypetcare.mypetcare.features.users.User;
 import org.pesmypetcare.mypetcare.services.googlecalendar.GoogleCalendarService;
 import org.pesmypetcare.mypetcare.services.pet.PetManagerService;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Albert Pinto
  */
@@ -43,7 +41,7 @@ public class TrRegisterNewPet {
      * Execute the transaction.
      * @throws PetAlreadyExistingException The pet has already been registered by the user
      */
-    public void execute() throws PetAlreadyExistingException, ExecutionException, InterruptedException {
+    public void execute() throws PetAlreadyExistingException {
         result = false;
         if (petHasAlreadyBeenRegistered()) {
             throw new PetAlreadyExistingException();
