@@ -7,6 +7,15 @@ import java.util.Objects;
  * @author Albert Pinto
  */
 public class UserAchievement implements Comparable<UserAchievement> {
+    public static String CONTRIBUTOR = "Contributor";
+    public static String ZOO = "Zoo";
+    public static String WALKER = "Walker";
+    public static String CLEAN_AS_A_WHISTLE = "Clean as a whistle";
+    public static String SCALE_MASTER = "Scale Master";
+    public static String FOUNDER = "Founder";
+    public static String GOURMET = "Gourmet";
+    public static String PLANNER = "Planner";
+
     private String name;
     private String description;
     private List<Double> levels;

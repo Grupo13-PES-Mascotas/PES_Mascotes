@@ -18,4 +18,12 @@ public class AchievementsControllersFactory {
     public static TrGetAllAchievements createTrGetAllAchievements() {
         return new TrGetAllAchievements(new AchievementAdapter());
     }
+
+    /**
+     * Create the transaction for updating the medal progress.
+     * @return The transaction for updating the medal progress
+     */
+    public static TrUpdateMedalProgress createTrUpdateMedalProgress() {
+        return new TrUpdateMedalProgress(new AchievementAdapter());
+    }
 }

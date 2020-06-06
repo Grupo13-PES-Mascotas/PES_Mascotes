@@ -48,7 +48,7 @@ public class AchievementAdapter implements AchievementService {
                 ServiceLocator.getInstance().getUserMedalManagerClient().updateField(user.getToken(),
                     user.getUsername(), medal, UserMedalData.PROGRESS, user.getMedalProgress(medal));
                 ServiceLocator.getInstance().getUserMedalManagerClient().updateField(user.getToken(),
-                    user.getUsername(), medal, UserMedalData.LEVELS, user.getMedalLevel(medal));
+                    user.getUsername(), medal, UserMedalData.CURRENT_LEVEL, user.getMedalLevel(medal));
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }

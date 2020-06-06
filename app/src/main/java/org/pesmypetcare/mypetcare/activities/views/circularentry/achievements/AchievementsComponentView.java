@@ -12,8 +12,6 @@ import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryVi
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.features.users.UserAchievement;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Locale;
 
 /**
@@ -81,21 +79,8 @@ public class AchievementsComponentView extends CircularEntryView {
             return description + "\n" + levelInfo + getResources().getString(R.string.max);
         }
 
-        int currentLevelBorder;
-
-        if (currentLevel == 0) {
-            currentLevelBorder = 0;
-        } else {
-            currentLevelBorder = achievement.getLevels().get(currentLevel - 1).intValue();
-        }
-
         double nextLevelBorder = achievement.getLevels().get(currentLevel);
-        double percentage = (achievement.getProgress() - currentLevelBorder) / (nextLevelBorder - currentLevel);
-        BigDecimal bigDecimal = new BigDecimal(percentage);
-        bigDecimal = bigDecimal.setScale(0, RoundingMode.HALF_EVEN);
-
-        return description + "\n" + levelInfo + (int) achievement.getProgress() + " / " + (int) nextLevelBorder
-            + " (" + bigDecimal.toString() + "%)";
+        return description + "\n" + levelInfo + (int) achievement.getProgress() + " / " + (int) nextLevelBorder;
     }
 
     @Override
