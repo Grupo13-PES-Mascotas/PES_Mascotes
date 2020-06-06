@@ -7,6 +7,7 @@ import org.pesmypetcare.mypetcare.features.notification.Notification;
 import org.pesmypetcare.mypetcare.features.pets.Pet;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -26,6 +27,8 @@ public class User {
     private SortedSet<String> subscribedGroups;
     private int messagesBanned;
 
+    private List<UserAchievement> achievements;
+
     public User(String username, String email, String passwd) {
         this.username = username;
         this.email = email;
@@ -35,6 +38,7 @@ public class User {
         this.token = "token";
         this.subscribedGroups = new TreeSet<>();
         this.messagesBanned = 0;
+        this.achievements = new ArrayList<>();
     }
 
     /**
@@ -276,5 +280,21 @@ public class User {
      */
     public void setMessagesBanned(int messagesBanned) {
         this.messagesBanned = messagesBanned;
+    }
+
+    /**
+     * Get the achievements.
+     * @return The achievements
+     */
+    public List<UserAchievement> getAchievements() {
+        return achievements;
+    }
+
+    /**
+     * Add an achievement.
+     * @param achievement The achievement to add
+     */
+    public void addAchievement(UserAchievement achievement) {
+        achievements.add(achievement);
     }
 }

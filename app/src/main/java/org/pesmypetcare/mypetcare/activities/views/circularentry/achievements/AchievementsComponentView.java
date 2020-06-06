@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import org.pesmypetcare.mypetcare.R;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularImageView;
 import org.pesmypetcare.mypetcare.features.users.UserAchievement;
@@ -78,11 +79,11 @@ public class AchievementsComponentView extends CircularEntryView {
 
         double nextLevelBorder = achievement.getLevels().get(currentLevel);
         double percentage = (achievement.getProgress() - currentLevelBorder) / (nextLevelBorder - currentLevel);
-        String levelInfo = getResources().getString(0) + " " + (currentLevel + 1) + " - "
-            + getResources().getString(0) + " ";
+        String levelInfo = getResources().getString(R.string.level) + " " + (currentLevel + 1) + " - "
+            + getResources().getString(R.string.next_level) + " ";
 
         if (currentLevel == 2 && achievement.getProgress() >= nextLevelBorder) {
-            return description + "\n" + levelInfo + getResources().getString(0);
+            return description + "\n" + levelInfo + getResources().getString(R.string.max);
         }
 
         BigDecimal bigDecimal = new BigDecimal(percentage);
