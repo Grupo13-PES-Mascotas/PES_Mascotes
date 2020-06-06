@@ -103,6 +103,22 @@ public class PetManagerAdapter implements PetManagerService {
         });
 
         executorService.shutdown();
+        try {
+            executorService.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getGoogleCalendarManagerClient().createSecondaryCalendar(pet.getOwner()
+                    .getGoogleCalendarToken(), pet.getOwner().getUsername(), pet.getName());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.shutdown();
 
         return true;
     }
