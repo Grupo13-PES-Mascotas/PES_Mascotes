@@ -64,7 +64,6 @@ public class GoogleCalendarAdapter implements GoogleCalendarService {
     @Override
     public void newSecondaryCalendar(Pet pet) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
-        System.out.println("CALENDAR TOKEN "+ pet.getOwner().getGoogleCalendarToken());
         executorService.execute(() -> {
             try {
                 ServiceLocator.getInstance().getGoogleCalendarManagerClient().createSecondaryCalendar(pet.getOwner()

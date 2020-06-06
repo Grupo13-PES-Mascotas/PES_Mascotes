@@ -37,6 +37,7 @@ public class PetManagerAdapter implements PetManagerService {
     private static final String A_REALLY_PRETTY_LOCATION = "A really pretty Location";
     private static final int EMAIL_REMINDER_MINUTES = 10;
     private static final int TIME = 20;
+    private static final int TIMEOUT = 5;
     private byte[] bytes;
 
     @Override
@@ -104,7 +105,7 @@ public class PetManagerAdapter implements PetManagerService {
 
         executorService.shutdown();
         try {
-            executorService.awaitTermination(5, TimeUnit.MINUTES);
+            executorService.awaitTermination(TIMEOUT, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
