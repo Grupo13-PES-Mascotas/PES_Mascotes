@@ -37,6 +37,7 @@ public class PetManagerAdapter implements PetManagerService {
     private static final String A_REALLY_PRETTY_LOCATION = "A really pretty Location";
     private static final int EMAIL_REMINDER_MINUTES = 10;
     private static final int TIME = 20;
+    private static final int TIMEOUT = 5;
     private byte[] bytes;
 
     @Override
@@ -102,6 +103,22 @@ public class PetManagerAdapter implements PetManagerService {
             }
         });
 
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(TIMEOUT, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                ServiceLocator.getInstance().getGoogleCalendarManagerClient().createSecondaryCalendar(pet.getOwner()
+                    .getGoogleCalendarToken(), pet.getOwner().getUsername(), pet.getName());
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
         executorService.shutdown();
 
         return true;

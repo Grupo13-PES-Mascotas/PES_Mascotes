@@ -53,8 +53,8 @@ import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.fragments.NotImplementedFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.achievements.AchievementsCommunication;
-import org.pesmypetcare.mypetcare.activities.fragments.achievements.AchievementsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.calendar.CalendarFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.community.CommunityCommunication;
@@ -64,7 +64,6 @@ import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGrou
 import org.pesmypetcare.mypetcare.activities.fragments.community.groups.InfoGroupFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.community.groups.PostsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.establishments.EstablishmentsCommunication;
-import org.pesmypetcare.mypetcare.activities.fragments.establishments.EstablishmentsFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomCommunication;
 import org.pesmypetcare.mypetcare.activities.fragments.imagezoom.ImageZoomFragment;
 import org.pesmypetcare.mypetcare.activities.fragments.infopet.InfoPetCommunication;
@@ -256,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
 
     private static final Class[] APPLICATION_FRAGMENTS = {
         MyPetsFragment.class, CommunityFragment.class, WalkFragment.class,
-        EstablishmentsFragment.class, CalendarFragment.class, AchievementsFragment.class,
+        NotImplementedFragment.class, CalendarFragment.class, NotImplementedFragment.class,
         SettingsMenuFragment.class
     };
     public static final String TAG_REGEX = "^[a-zA-Z0-9,]*$";
@@ -420,7 +419,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         getComponents();
 
         ImageManager.setPetDefaultImage(getResources().getDrawable(R.drawable.single_paw, null));
-        //initializeCurrentUser();
         initializeActivity();
         setUpNavigationImage();
         setUpNavigationHeader();
@@ -436,7 +434,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
             try {
                 initializeUser();
                 refreshGoogleCalendarToken();
-                //changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
             } catch (PetRepeatException e) {
                 Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing),
                     Toast.LENGTH_LONG);
