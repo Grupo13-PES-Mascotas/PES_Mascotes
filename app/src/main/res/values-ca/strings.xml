@@ -359,7 +359,7 @@
         Si us plau, habilita els serveis de localització per a fer servir aquesta funcionalitat
     </string>
     <string name="level">Nivell:</string>
-    <string name="next_level">Següent nivell:</string>
+    <string name="next_level">Progrés:</string>
     <string name="max">MAX</string>
     <string name="medal_contributor">Contribuidor</string>
     <string name="medal_zoo">Zoo</string>

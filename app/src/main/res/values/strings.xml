@@ -353,7 +353,7 @@
         Please, enable the location services to use this functionality
     </string>
     <string name="level">Level:</string>
-    <string name="next_level">Next level:</string>
+    <string name="next_level">Progress:</string>
     <string name="max">MAX</string>
     <string name="medal_contributor">Contributor</string>
     <string name="medal_zoo">Zoo</string>

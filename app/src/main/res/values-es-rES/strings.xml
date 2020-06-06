@@ -349,12 +349,12 @@
         No tienes ninguna mascota\n
         Haz clic en el botón + para añadir una
     </string>
-    <string name="location_services_not_enabled_title">Servicio de localizaciçon deshabilitado</string>
+    <string name="location_services_not_enabled_title">Servicio de localización deshabilitado</string>
     <string name="location_services_not_enabled_message">
         Por favor, habilite los servicios de localización para utilizar esta funcionalidad
     </string>
     <string name="level">Nivel:</string>
-    <string name="next_level">Próximo nivel:</string>
+    <string name="next_level">Progreso:</string>
     <string name="max">MAX</string>
     <string name="medal_contributor">Contribuidor</string>
     <string name="medal_zoo">Zoo</string>
