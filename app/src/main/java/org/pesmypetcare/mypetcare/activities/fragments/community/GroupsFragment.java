@@ -58,10 +58,6 @@ public class GroupsFragment extends Fragment {
         return binding.getRoot();
     }
 
-    public static void showGroups(SortedSet<Group> groups) {
-        GroupsFragment.groups = groups;
-    }
-
     /**
      * Add the listeners to the search button.
      */

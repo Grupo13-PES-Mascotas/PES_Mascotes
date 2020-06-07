@@ -247,6 +247,8 @@ public class InfoPetWashing extends Fragment {
         if (updatesDate) {
             wash.setDateTime(DateTime.Builder.buildDateString(newDate));
         }
+
+        InfoPetHealthFragment.updateBarChart();
     }
 
     /**
@@ -280,6 +282,8 @@ public class InfoPetWashing extends Fragment {
         } catch (WashAlreadyExistingException e) {
             e.printStackTrace();
         }
+
+        InfoPetHealthFragment.updateBarChart();
     }
 
     /**
@@ -290,6 +294,7 @@ public class InfoPetWashing extends Fragment {
             InfoPetFragment.getCommunication().deletePetWash(pet, wash);
             initializeWashLayoutView();
             dialog.dismiss();
+            InfoPetHealthFragment.updateBarChart();
         });
     }
 

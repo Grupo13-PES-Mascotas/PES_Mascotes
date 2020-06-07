@@ -152,14 +152,8 @@ public class InfoPetHealthFragment extends Fragment implements HealthBottomSheet
      */
     private void addNewStatisticButtonListener(int statisticId) {
         btnAddNewStatistic.setOnClickListener(v -> {
-            switch (statisticId) {
-                case StatisticData.WEIGHT_STATISTIC:
-                    createAddWeightDialog();
-                    break;
-                case StatisticData.WASH_FREQUENCY_STATISTIC:
-                    createAddWashFrequencyDialog();
-                    break;
-                default:
+            if (statisticId == StatisticData.WEIGHT_STATISTIC) {
+                createAddWeightDialog();
             }
         });
     }

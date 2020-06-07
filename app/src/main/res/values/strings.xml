@@ -45,7 +45,7 @@
     <string name="languages">Languages</string>
     <string name="change_password">Change Password</string>
     <string name="change_username">Change Username</string>
-    <string name="current_version">Version: 2.2.0</string>
+    <string name="current_version">Version: 2.2.1</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
@@ -149,7 +149,7 @@
     <string name="meal_date">Meal Date</string>
     <string name="meal_time">Meal Time</string>
     <string name="wash_name">Wash Description</string>
-    <string name="wash_duration">Wash Duration</string>
+    <string name="wash_duration">Wash Duration (minutes)</string>
     <string name="wash_date">Wash Date</string>
     <string name="wash_time">Wash Time</string>
     <string name="update_meal">Update meal</string>
@@ -249,7 +249,7 @@
     <string name="unsubscribe_owner">You cannot unsubscribe from your own group</string>
     <string name="add_medication_button">Add medication</string>
     <string name="medication_name">Medication name</string>
-    <string name="medication_duration">Medication duration</string>
+    <string name="medication_duration">Medication duration (days)</string>
     <string name="medication_inidate">Medication start date</string>
     <string name="medication_quantity">Medication quantity</string>
     <string name="medication_periodicity">Medication periodicity</string>
@@ -371,6 +371,9 @@
     <string name="medal_founder_description">Set up community groups!</string>
     <string name="medal_gourmet_description">Control your pet\'s food!</string>
     <string name="medal_planner_description">Write everything on the calendar!</string>
+    <string name="google_account_not_detected">
+        You need to sign in with Google \nto sync with Google Calendar
+    </string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open" translatable="false">Open</string>
