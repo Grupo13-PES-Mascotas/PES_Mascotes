@@ -20,10 +20,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.UserInfo;
 
 import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.mypetcare.R;
+import org.pesmypetcare.mypetcare.activities.MainActivity;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.CircularEntryView;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.calendar.EventComponentView;
 import org.pesmypetcare.mypetcare.activities.views.circularentry.calendar.EventView;
@@ -69,8 +71,7 @@ public class CalendarFragment extends Fragment {
     private String selectedDate;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentCalendarBinding.inflate(inflater, container, false);
         communication = (CalendarCommunication) getActivity();
         user = Objects.requireNonNull(communication).getUser();
@@ -94,6 +95,19 @@ public class CalendarFragment extends Fragment {
                 e.printStackTrace();
             }
         });
+
+        boolean isSignInWithGoogle = false;
+
+        for (UserInfo userInfo : Objects.requireNonNull(MainActivity.getmAuth().getCurrentUser()).getProviderData()) {
+            if ("google.com".equals(userInfo.getProviderId())) {
+                isSignInWithGoogle = true;
+                break;
+            }
+        }
+
+        if (!isSignInWithGoogle) {
+            binding.googleAcountDetectedText.setVisibility(View.VISIBLE);
+        }
 
         return binding.getRoot();
     }

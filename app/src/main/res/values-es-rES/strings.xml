@@ -141,9 +141,9 @@
     <string name="meal_name">Nombre de la comida</string>
     <string name="meal_kcal">Kilocalorias de la comida</string>
     <string name="meal_date">Fecha de la comida</string>
-    <string name="meal_time">Hora del baño</string>
+    <string name="meal_time">Hora de la comida</string>
     <string name="wash_name">Descripción del baño</string>
-    <string name="wash_duration">Duración del baño</string>
+    <string name="wash_duration">Duración del baño (minutos)</string>
     <string name="wash_date">Fecha del baño</string>
     <string name="wash_time">Hora del baño</string>
     <string name="update_meal">Actualizar comida</string>
@@ -229,7 +229,7 @@
     <string name="vaccination_description">Descripción de la vacuna</string>
     <string name="select_vaccination_date">Selecciona la fecha de la vacuna</string>
     <string name="medication_name">Nombre de la medicación</string>
-    <string name="medication_duration">Duración de la medicación</string>
+    <string name="medication_duration">Duración de la medicación (días)</string>
     <string name="vaccination_time">Hora de la vacuna</string>
     <string name="vaccination_date">Fecha de la vacuna</string>
     <string name="vaccination">Vacuna</string>
@@ -372,6 +372,9 @@
     <string name="medal_founder_description">Funda grupos para la comunidad!</string>
     <string name="medal_gourmet_description">Controla las comidas de tu mascota!</string>
     <string name="medal_planner_description">Apunta todo en el calendario!</string>
+    <string name="google_account_not_detected">
+        Tienes que iniciar sessión con Google \npara sincronizar con el calendario de Google
+    </string>
 
     <!-- The next two strings cannot be translated into any other language -->
     <string name="navigation_view_open">Open</string>

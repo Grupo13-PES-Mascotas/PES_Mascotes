@@ -33,7 +33,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Albert Pinto
  */
 public class CommunityAdapter implements CommunityService {
-    private static final int TIME = 20;
     private static final int TIMEOUT = 2;
     private byte[] imageBytes;
 
@@ -104,7 +103,7 @@ public class CommunityAdapter implements CommunityService {
 
         executorService.shutdown();
         try {
-            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+            executorService.awaitTermination(TIMEOUT, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -155,7 +154,7 @@ public class CommunityAdapter implements CommunityService {
 
         executorService.shutdown();
         try {
-            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+            executorService.awaitTermination(TIMEOUT, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -234,7 +233,7 @@ public class CommunityAdapter implements CommunityService {
 
         executorService.shutdown();
         try {
-            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+            executorService.awaitTermination(TIMEOUT, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -363,7 +362,7 @@ public class CommunityAdapter implements CommunityService {
         ExecutorService executorService = getExecutorServiceForDeletingPost(user, post);
         executorService.shutdown();
         try {
-            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+            executorService.awaitTermination(TIMEOUT, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -503,7 +502,7 @@ public class CommunityAdapter implements CommunityService {
         executorService.shutdown();
 
         try {
-            executorService.awaitTermination(TIME, TimeUnit.SECONDS);
+            executorService.awaitTermination(TIMEOUT, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
