@@ -1724,6 +1724,7 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
         }
 
         changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
+        floatingActionButton.show();
     }
 
     @Override

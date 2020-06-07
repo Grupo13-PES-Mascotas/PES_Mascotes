@@ -7,155 +7,167 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center_horizontal|top">
 
-    <LinearLayout
-        android:id="@+id/linearLayout4"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent">
 
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/illnessButtonLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textfield.TextInputLayout style="@style/inputPetContainer">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputIllnessDescription"
-                style="@style/inputPetField"
-                android:hint="@string/illness_description"
-                android:inputType="text">
-
-            </com.google.android.material.textfield.TextInputEditText>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/inputIllnessDate"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/illness_date"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="16sp"
-            app:icon="@drawable/calendar_icon"
-            app:iconSize="24dp" />
+            android:layout_height="wrap_content">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/inputIllnessTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/illness_time"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="16sp"
-            app:icon="@drawable/time_icon"
-            app:iconSize="24dp" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/illnessButtonLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
+                <com.google.android.material.textfield.TextInputLayout style="@style/inputPetContainer">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/inputIllnessEndDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/illness_end_date"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="16sp"
-            app:icon="@drawable/calendar_icon"
-            app:iconSize="24dp" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputIllnessDescription"
+                        style="@style/inputPetField"
+                        android:hint="@string/illness_description"
+                        android:inputType="text">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
+                    </com.google.android.material.textfield.TextInputEditText>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/inputIllnessEndTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/illness_end_time"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="16sp"
-            app:icon="@drawable/time_icon"
-            app:iconSize="24dp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/inputIllnessDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/illness_date"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="16sp"
+                    app:icon="@drawable/calendar_icon"
+                    app:iconSize="24dp" />
 
-        <Spinner
-            android:id="@+id/spinnerIllnessSeverity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/illness_severity"
-            android:textColorHint="@color/colorPrimary" />
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/inputIllnessTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/illness_time"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="16sp"
+                    app:icon="@drawable/time_icon"
+                    app:iconSize="24dp" />
 
-        <Spinner
-            android:id="@+id/spinnerIllnessType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/illness_type"
-            android:textColorHint="@color/colorPrimary" />
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
 
-    </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/inputIllnessEndDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/illness_end_date"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="16sp"
+                    app:icon="@drawable/calendar_icon"
+                    app:iconSize="24dp" />
 
-    <LinearLayout
-        android:id="@+id/illnessButtonLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/deleteIllnessButton"
-            style="@style/rounded_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/red"
-            android:text="@string/delete_current_illness"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:icon="@drawable/baseline_delete_black_18dp"
-            app:iconSize="24dp"
-            app:iconTint="@color/white" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/inputIllnessEndTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/illness_end_time"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="16sp"
+                    app:icon="@drawable/time_icon"
+                    app:iconSize="24dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/editIllnessButton"
-            style="@style/rounded_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/add_illness_button"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:icon="@drawable/icon_add"
-            app:iconSize="24dp"
-            tools:ignore="RtlSymmetry" />
+                <Spinner
+                    android:id="@+id/spinnerIllnessSeverity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/illness_severity"
+                    android:textColorHint="@color/colorPrimary" />
 
-    </LinearLayout>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
 
+                <Spinner
+                    android:id="@+id/spinnerIllnessType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/illness_type"
+                    android:textColorHint="@color/colorPrimary" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/illnessButtonLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/deleteIllnessButton"
+                    style="@style/rounded_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/red"
+                    android:text="@string/delete_current_illness"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:icon="@drawable/baseline_delete_black_18dp"
+                    app:iconSize="24dp"
+                    app:iconTint="@color/white" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/editIllnessButton"
+                    style="@style/rounded_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="@string/add_illness_button"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:icon="@drawable/icon_add"
+                    app:iconSize="24dp"
+                    tools:ignore="RtlSymmetry" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

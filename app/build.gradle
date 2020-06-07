@@ -20,12 +20,16 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
+    lintOptions {
+        abortOnError false
+    }
+
     defaultConfig {
         applicationId "org.pesmypetcare.mypetcare"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
-        versionName "2.2.0"
+        versionName "2.2.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -102,11 +106,11 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:usermanager:ae2a83dc0c:develop@aar'
     implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:communitymanager:ae2a83dc0c:develop@aar'
     implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:httptools:ae2a83dc0c'
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
-    //implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:v2.0.1'
+    //implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:v2.1.0'
 }
 
 configurations.all {
