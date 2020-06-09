@@ -107,10 +107,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
     implementation 'com.google.android.gms:play-services-location:17.0.0'
-    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:usermanager:ae2a83dc0c:develop@aar'
-    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:communitymanager:ae2a83dc0c:develop@aar'
-    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:httptools:ae2a83dc0c'
-    //implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:v2.1.0'
+    implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:v2.1.0'
 }
 
 configurations.all {
