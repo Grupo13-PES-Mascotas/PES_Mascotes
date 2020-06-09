@@ -13,6 +13,7 @@ import org.pesmypetcare.usermanager.datacontainers.user.UserDataSender;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -38,7 +39,9 @@ public class UserManagerAdapter implements UserManagerService {
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
-            user.set(new User(Objects.requireNonNull(userData).getUsername(), userData.getEmail(), ""));
+            User userReceived = new User(Objects.requireNonNull(userData).getUsername(), userData.getEmail(), "");
+            userReceived.setSubscribedGroups(new TreeSet<>(userData.getGroupSubscriptions()));
+            user.set(userReceived);
             try {
                 assignUserImage(user.get());
             } catch (MyPetCareException e) {

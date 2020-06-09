@@ -81,8 +81,10 @@ public class CommunityAdapter implements CommunityService {
             DateTime.Builder.buildFullString(groupData.getCreationDate()));
         group.setDescription(groupData.getDescription());
 
-        for (String tag : groupData.getTags()) {
-            group.addTag(tag);
+        if (groupData.getTags() != null) {
+            for (String tag : groupData.getTags()) {
+                group.addTag(tag);
+            }
         }
 
         for (Map.Entry<String, String> subscription : groupData.getMembers().entrySet()) {
