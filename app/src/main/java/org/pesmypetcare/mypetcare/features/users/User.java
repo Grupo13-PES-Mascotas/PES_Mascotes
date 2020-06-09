@@ -249,6 +249,14 @@ public class User {
     }
 
     /**
+     * Set the subscribed groups.
+     * @param subscribedGroups  The subscribed groups to set
+     */
+    public void setSubscribedGroups(SortedSet<String> subscribedGroups) {
+        this.subscribedGroups = subscribedGroups;
+    }
+
+    /**
      * Setter of the google calendar token attribute.
      * @param googleCalendarToken The google calendar token to set
      */
