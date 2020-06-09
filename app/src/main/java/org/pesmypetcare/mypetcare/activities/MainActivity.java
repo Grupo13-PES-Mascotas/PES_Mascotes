@@ -245,10 +245,11 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Xavier Campos & Daniel Clemente & Enric Hernando & Albert Pinto
  */
-public class MainActivity extends AppCompatActivity implements RegisterPetCommunication, NewPasswordInterfaceCommunication,
-    InfoPetCommunication, MyPetsCommunication, SettingsCommunication, CalendarCommunication, ImageZoomCommunication,
-    CommunityCommunication, InfoGroupCommunication, WalkCommunication, MessagingServiceCommunication,
-    MessagingTokenServiceCommunication, EstablishmentsCommunication, AchievementsCommunication, AsyncResponse {
+public class MainActivity extends AppCompatActivity implements RegisterPetCommunication,
+    NewPasswordInterfaceCommunication, InfoPetCommunication, MyPetsCommunication, SettingsCommunication,
+    CalendarCommunication, ImageZoomCommunication, CommunityCommunication, InfoGroupCommunication, WalkCommunication,
+    MessagingServiceCommunication, MessagingTokenServiceCommunication, EstablishmentsCommunication,
+    AchievementsCommunication, AsyncResponse {
 
     public static final int MAIN_ACTIVITY_ZOOM_IDENTIFIER = 0;
     private static final int[] NAVIGATION_OPTIONS = {
@@ -1672,22 +1673,6 @@ public class MainActivity extends AppCompatActivity implements RegisterPetCommun
     @Override
     protected void onStart() {
         super.onStart();
-        /*if (enableLoginActivity && mAuth.getCurrentUser() == null) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            finish();
-        }
-
-        if (mAuth.getCurrentUser() != null && actualFragment == null) {
-            try {
-                System.out.println("On START");
-                initializeUser();
-                changeFragment(getFragment(APPLICATION_FRAGMENTS[0]));
-            } catch (PetRepeatException e) {
-                Toast toast = Toast.makeText(this, getString(R.string.error_pet_already_existing),
-                    Toast.LENGTH_LONG);
-                toast.show();
-            }
-        }*/
     }
 
     @Override

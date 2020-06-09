@@ -131,7 +131,7 @@ public class PostsFragment extends Fragment {
     private void setForumName() {
         binding.txtForumName.setText(R.string.no_tags);
 
-        if (forum.getTags().size() > 0) {
+        if (forum.getTags() != null && forum.getTags().size() > 0) {
             StringBuilder tags = new StringBuilder();
 
             for (String tag : forum.getTags()) {

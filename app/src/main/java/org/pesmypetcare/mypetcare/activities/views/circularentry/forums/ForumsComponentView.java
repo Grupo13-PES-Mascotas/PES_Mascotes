@@ -125,12 +125,14 @@ public class ForumsComponentView extends CircularEntryView {
         List<String> tags = forum.getTags();
         StringBuilder strTags = new StringBuilder("");
 
-        for (int actual = 0; actual < tags.size(); ++actual) {
-            addActualTag(tags, strTags, actual);
-        }
+        if (tags != null) {
+            for (int actual = 0; actual < tags.size(); ++actual) {
+                addActualTag(tags, strTags, actual);
+            }
 
-        if (strTags.length() == 0) {
-            return null;
+            if (strTags.length() == 0) {
+                return null;
+            }
         }
 
         return strTags.toString();
